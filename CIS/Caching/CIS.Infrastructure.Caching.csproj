@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	<LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
+    <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Security\CIS.Security.csproj" />
+  </ItemGroup>
+
+</Project>

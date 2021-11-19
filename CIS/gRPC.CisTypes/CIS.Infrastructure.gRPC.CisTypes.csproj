@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net6.0</TargetFramework>
+	  <OutputType>Library</OutputType>
+	  <Company>Wookiee.Apps s.r.o.</Company>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <LangVersion>preview</LangVersion>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Google.Protobuf" Version="3.19.1" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.40.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.42.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="./Protos/GrpcDate.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
+		<Protobuf Include="./Protos/GrpcDecimal.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
+		<Protobuf Include="./Protos/ModificationStamp.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
+		<Protobuf Include="./Protos/GrpcDateTime.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
+		<Protobuf Include="./Protos/IdentitySchemas.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
+		<Protobuf Include="./Protos/Identity.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
+		<Protobuf Include="./Protos/NullableGrpcDate.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./Protos/PaginationResponse.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./Protos/PaginationRequest.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
+	</ItemGroup>
+
+</Project>

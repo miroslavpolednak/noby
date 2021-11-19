@@ -1,0 +1,9 @@
+syntax = "proto3";
+package cis.types;
+option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
+
+message GrpcDecimal {
+  int64 units = 1;
+
+  sfixed32 nanos = 2;
+}

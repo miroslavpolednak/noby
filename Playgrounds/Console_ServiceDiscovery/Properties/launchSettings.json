@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Console_ServiceDiscovery": {
+      "commandName": "Project",
+      "commandLineArgs": "uat https://localhost:5005"
+    }
+  }
+}

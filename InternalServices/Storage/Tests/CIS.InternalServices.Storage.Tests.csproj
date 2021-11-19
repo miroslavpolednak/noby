@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	<Company>Wookiee.Apps s.r.o.</Company>
+    <Product>Common Infrastructure Solution</Product>
+    <Authors>Filip Tuma</Authors>
+    <IsPackable>false</IsPackable>
+	<LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="Tests\BlobDatabaseSeed.sql" />
+    <None Remove="Tests\BlobServiceAbstraction\configuration.json" />
+    <None Remove="Tests\BlobService\configuration.json" />
+    <None Remove="Tests\BlobTempService\configuration.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Tests\BlobServiceAbstraction\configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Tests\BlobService\configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Tests\BlobTempService\configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Tests\BlobDatabaseSeed.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Testing\CIS.Testing.csproj" />
+    <ProjectReference Include="..\Abstraction\CIS.InternalServices.Storage.Abstraction.csproj" />
+    <ProjectReference Include="..\Api\CIS.InternalServices.Storage.Api.csproj" />
+  </ItemGroup>
+
+</Project>

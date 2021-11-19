@@ -1,0 +1,13 @@
+syntax = "proto3";
+package CIS.InternalServices.Storage.v1;
+option csharp_namespace = " CIS.InternalServices.Storage.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "Types.proto";
+
+service BlobTemp {
+   rpc Get (CIS.InternalServices.Storage.BlobGetRequest) returns (CIS.InternalServices.Storage.BlobGetResponse);
+   rpc Move (CIS.InternalServices.Storage.BlobMoveFromTempRequest) returns (google.protobuf.Empty);
+   rpc MoveSession (CIS.InternalServices.Storage.BlobMoveSessionFromTempRequest) returns (google.protobuf.Empty);
+   rpc Save (CIS.InternalServices.Storage.BlobTempSaveRequest) returns (CIS.InternalServices.Storage.BlobSaveResponse);
+}

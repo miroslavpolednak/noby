@@ -1,0 +1,6 @@
+﻿{
+  "AppConfiguration": {
+    "CacheType": "Redis",
+    "CacheConnectionString": "127.0.0.1:6379,defaultDatabase=1"
+  }
+}

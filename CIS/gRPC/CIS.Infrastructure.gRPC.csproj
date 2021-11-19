@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Library</OutputType>
+	  <Company>Wookiee.Apps s.r.o.</Company>
+    <Product>Common Infrastructure Solution</Product>
+    <Authors>Filip Tuma</Authors>
+	<LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="CIS.Infrastructure.gRPC.Tests" />
+	</ItemGroup>
+		
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.4" />
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.40.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.40.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\CIS.Core.csproj" />
+  </ItemGroup>
+
+</Project>

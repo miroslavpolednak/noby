@@ -1,0 +1,11 @@
+syntax = "proto3";
+package cis.types;
+option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
+
+import "GrpcDateTime.proto";
+
+message ModificationStamp {
+  int32 userId = 1;
+
+  cis.types.GrpcDateTime dateTime = 2;
+}

@@ -1,0 +1,38 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.Storage;
+option csharp_namespace = " CIS.InternalServices.Storage.Contracts";
+
+message BlobDeleteRequest {
+   string BlobKey = 1;
+}
+message BlobFileStructure {
+   string Name = 1;
+   string ContentType = 2;
+   bytes Data = 3;
+}
+message BlobGetRequest {
+   string BlobKey = 1;
+}
+message BlobGetResponse {
+   bytes Data = 1;
+   string ContentType = 2;
+   string Name = 3;
+}
+message BlobSaveRequest {
+   string ApplicationKey = 1;
+   BlobFileStructure BlobData = 2;
+}
+message BlobSaveResponse {
+   string BlobKey = 1;
+}
+message BlobMoveFromTempRequest {
+   repeated string BlobKey = 1;
+}
+message BlobMoveSessionFromTempRequest {
+   string SessionId = 1;
+}
+message BlobTempSaveRequest {
+   string ApplicationKey = 1;
+   BlobFileStructure BlobData = 2;
+   string SessionId = 3;
+}

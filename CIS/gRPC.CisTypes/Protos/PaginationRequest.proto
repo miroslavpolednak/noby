@@ -1,0 +1,8 @@
+syntax = "proto3";
+package cis.types;
+option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
+
+message PaginationRequest {
+	int32 recordOffset = 1;
+	int32 pageSize = 2;
+}

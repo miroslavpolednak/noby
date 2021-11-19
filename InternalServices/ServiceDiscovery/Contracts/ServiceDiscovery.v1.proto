@@ -1,0 +1,11 @@
+syntax = "proto3";
+package CIS.InternalServices.ServiceDiscovery.v1;
+
+option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts.v1";
+
+import "Types.proto";
+
+service DiscoveryService {
+   rpc GetService (CIS.InternalServices.ServiceDiscovery.GetServiceRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServiceResponse);
+   rpc GetServices (CIS.InternalServices.ServiceDiscovery.GetServicesRequest) returns (CIS.InternalServices.ServiceDiscovery.GetServicesResponse);
+}

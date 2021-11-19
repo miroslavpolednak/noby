@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	<Company>Wookiee.Apps s.r.o.</Company>
+    <Product>Common Infrastructure Solution</Product>
+    <Authors>Filip Tuma</Authors>
+	<LangVersion>preview</LangVersion>
+	<Nullable>enable</Nullable>
+	<Platforms>AnyCPU;x64</Platforms>
+	<ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="CIS.InternalServices.ServiceDiscovery.Tests" />
+	</ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.40.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
+    <ProjectReference Include="..\Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

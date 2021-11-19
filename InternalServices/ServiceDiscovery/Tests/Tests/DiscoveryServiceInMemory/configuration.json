@@ -1,0 +1,5 @@
+﻿{
+  "AppConfiguration": {
+    "CacheType": "InMemory"
+  }
+}
