@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "DomainServices.CodebookService.Api": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5225;https://localhost:7225",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

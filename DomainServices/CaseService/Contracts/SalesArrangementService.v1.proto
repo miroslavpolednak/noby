@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService.v1;
+option csharp_namespace = "DomainServices.CaseService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "SalesArrangementServiceTypes.proto";
+
+service SalesArrangementService {
+   rpc CreateSalesArrangement (DomainServices.CaseService.CreateSalesArrangementRequest) returns (DomainServices.CaseService.CreateSalesArrangementResponse);
+   rpc GetSalesArrangementDetail (DomainServices.CaseService.SalesArrangementIdRequest) returns (DomainServices.CaseService.GetSalesArrangementDetailResponse);
+   rpc GetSalesArrangementsByCaseId (DomainServices.CaseService.GetSalesArrangementsByCaseIdRequest) returns (DomainServices.CaseService.GetSalesArrangementsByCaseIdResponse);
+   rpc UpdateSalesArrangementState (DomainServices.CaseService.UpdateSalesArrangementStateRequest) returns (google.protobuf.Empty);
+   rpc ValidateSalesArrangement (DomainServices.CaseService.SalesArrangementIdRequest) returns (DomainServices.CaseService.ValidateSalesArrangementResponse);
+   rpc UpdateSalesArrangementData (DomainServices.CaseService.UpdateSalesArrangementDataRequest) returns (google.protobuf.Empty);
+}

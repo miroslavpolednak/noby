@@ -1,0 +1,14 @@
+syntax = "proto3";
+package DomainServices.ProductService.v1;
+option csharp_namespace = "DomainServices.ProductService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "Types.proto";
+
+service ProductService {
+   rpc CreateProductInstance (DomainServices.ProductService.CreateProductInstanceRequest) returns (DomainServices.ProductService.CreateProductInstanceResponse);
+   rpc GetHousingSavingsInstance (DomainServices.ProductService.ProductInstanceIdRequest) returns (DomainServices.ProductService.GetHousingSavingsInstanceResponse);
+   rpc GetHousingSavingsInstanceBasicDetail (DomainServices.ProductService.ProductInstanceIdRequest) returns (DomainServices.ProductService.GetHousingSavingsInstanceBasicDetailResponse);
+   rpc GetProductInstanceList (DomainServices.ProductService.GetProductInstanceListRequest) returns (DomainServices.ProductService.GetProductInstanceListResponse);
+   rpc UpdateHousingSavingsInstance (DomainServices.ProductService.ProductInstanceIdRequest) returns (google.protobuf.Empty);
+}

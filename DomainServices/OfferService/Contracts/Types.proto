@@ -1,0 +1,112 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
+import "ModificationStamp.proto";
+import "google/protobuf/wrappers.proto";
+
+enum ScheduleItemTypes {
+   Unknown = 0;
+   DepositSchedule = 9;
+   PaymentSchedule = 1;
+}
+
+enum SimulationTypes {
+   Unknown2 = 0;
+   BuildingSavings = 1;
+   BuildingSavingsWithLoan = 2;
+}
+
+message OfferInstanceIdRequest {
+	int32 OfferInstanceId = 1;
+}
+
+message BuildingSavingsData {
+   int32 SavingPeriod = 1;
+   cis.types.GrpcDate ContractTerminationDate = 2;
+   cis.types.GrpcDecimal InterestRate = 3;
+   cis.types.GrpcDecimal TotalSaved = 4;
+   cis.types.GrpcDecimal TotalDeposits = 5;
+   cis.types.GrpcDecimal TotalInterests = 6;
+   cis.types.GrpcDecimal TotalFees = 7;
+   cis.types.GrpcDecimal InterestsAdvantage = 8;
+   cis.types.GrpcDecimal TotalGovernmentIncentives = 9;
+   cis.types.GrpcDate ExpectedGrantedLoanDate = 10;
+   cis.types.GrpcDecimal DepositBalance = 11;
+   cis.types.GrpcDecimal BenefitInterests = 12;
+   cis.types.GrpcDecimal TaxFromBenefitInterests = 13;
+}
+message BuildingSavingsInput {
+   int32 TargetAmount = 1;
+   int32 ProductCode = 2;
+   int32 ActionCode = 3;
+   google.protobuf.Int32Value LoanActionCode = 4;
+   bool ClientIsNaturalPerson = 5;
+   bool ClientIsSVJ = 6;
+   bool IsWithLoan = 7;
+   bool StateSubsidy = 8;
+}
+message DealerData {
+   string FirstName = 1;
+   string LastName = 2;
+   string JobTitle = 3;
+   string PhoneNumber = 4;
+   string Email = 5;
+}
+message ScheduleItem {
+   ScheduleItemTypes Type = 1;
+   cis.types.GrpcDate Date = 2;
+   int32 Sum = 3;
+   int32 Balance = 4;
+   string Note = 5;
+   string Info = 6;
+}
+message LoanData {
+   cis.types.GrpcDate GrantedLoanDate = 1;
+   cis.types.GrpcDate GrantedLoanLastPaymentDate = 2;
+   cis.types.GrpcDecimal GrantedLoanAmount = 3;
+   cis.types.GrpcDecimal GrantedLoanInterestRate = 4;
+   cis.types.GrpcDecimal GrantedLoanMonthlyPayment = 5;
+   cis.types.GrpcDecimal GrantedLoanTotalFees = 6;
+   cis.types.GrpcDecimal GrantedLoanRPSN = 7;
+   cis.types.GrpcDecimal GrantedLoanRPSNPaymentAmount = 8;
+   int32 GrantedLoanRPSNNumberOfPaymentsForClient = 9;
+}
+
+message GetBuildingSavingsDataResponse {
+   int32 OfferInstanceId = 1;
+   BuildingSavingsData BuildingSavings = 2;
+   LoanData Loan = 3;
+   SimulationTypes SimulationType = 4;
+   BuildingSavingsInput InputData = 5;
+   cis.types.ModificationStamp InsertStamp = 6;
+}
+
+message GetBuildingSavingsScheduleResponse {
+   int32 OfferInstanceId = 1;
+   SimulationTypes SimulationType = 2;
+   repeated ScheduleItem ScheduleItems = 3;
+   cis.types.ModificationStamp InsertStamp = 4;
+}
+
+message PrintBuildingSavingsOfferRequest {
+   int32 OfferInstanceId = 1;
+   DealerData Dealer = 2;
+}
+message PrintBuildingSavingsOfferResponse {
+   int32 OfferInstanceId = 1;
+   string ContentType = 2;
+   bytes FileData = 3;
+}
+
+message SimulateBuildingSavingsRequest {
+   BuildingSavingsInput InputData = 1;
+}
+message SimulateBuildingSavingsResponse {
+   int32 OfferInstanceId = 1;
+   BuildingSavingsData BuildingSavings = 2;
+   LoanData Loan = 3;
+   cis.types.ModificationStamp InsertStamp = 4;
+}

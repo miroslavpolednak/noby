@@ -1,0 +1,76 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "NullableGrpcDate.proto";
+import "Identity.proto";
+import "PaginationRequest.proto";
+import "PaginationResponse.proto";
+import "google/protobuf/wrappers.proto";
+
+message CreateCaseRequest {
+	cis.types.Identity Customer = 1;
+	int32 PartyId = 2;
+	string FirstNameNaturalPerson = 3;
+	string Name = 4;
+	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
+	int32 ProductInstanceType = 6;
+}
+message CreateCaseResponse {
+	int64 CaseId = 1;
+}
+
+message GetCaseDetailRequest {
+	int64 CaseId = 1;
+}
+message GetCaseDetailResponse {
+	int64 CaseId = 1;
+	int32 State = 2;
+	int32 PartyId = 3;
+	int32 ProductInstanceType = 4;
+	string ContractNumber = 5;
+	bool ActionRequired = 6;
+	cis.types.Identity Customer = 7;
+}
+
+message CaseListModel {
+	int64 CaseId =  1;
+	int32 State = 2;
+	string FirstNameNaturalPerson = 3;
+	string Name = 4;
+	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
+	bool ActionRequired = 6;
+	string ContractNumber = 7;
+}
+message GetCaseListRequest {
+	int32 PartyId = 1;
+	google.protobuf.Int32Value State = 2;
+	cis.types.PaginationRequest Pagination = 3;
+}
+message GetCaseListResponse {
+	repeated CaseListModel CaseInstances = 1;
+	cis.types.PaginationResponse Pagination = 2;
+}
+
+message LinkOwnerToCaseRequest {
+	int64 CaseId = 1;
+	int32 PartyId = 2;
+}
+
+message UpdateCaseDataRequest {
+	int64 CaseId = 1;
+	string ContractNumber = 2;
+}
+
+message UpdateCaseStateRequest {
+	int64 CaseId = 1;
+	int32 State = 2;
+}
+
+message UpdateCaseCustomerRequest {
+	int64 CaseId = 1;
+	cis.types.Identity Customer = 2;
+	string FirstNameNaturalPerson = 3;
+	string Name = 4;
+	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
+}

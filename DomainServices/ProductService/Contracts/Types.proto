@@ -1,0 +1,56 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
+
+message ProductInstanceIdRequest {
+   int64 ProductInstanceId = 1;
+}
+message BasicDetail {
+	string ContractNumber = 1;
+	bool StateSubsidy = 2;
+	int32 TargetAmount = 3;
+	int32 BusinessAction = 4;
+	int32 Tarif = 5;
+	cis.types.GrpcDecimal CurrentAmount = 6;
+	cis.types.GrpcDecimal InterestRate = 7;
+	int32 State = 8;
+	cis.types.GrpcDate ContractDate = 9;
+	cis.types.GrpcDate GrantedLoanDate = 10;
+}
+message FullDetail {
+	int32 MonthlyDeposit = 1;
+}
+message ProductInstanceListItem {
+	int64 ProductInstanceId = 1;
+	int32 ProductInstanceType = 2;
+	int32 ProductInstanceState = 3;
+	string ProductInstanceTypeName = 4;
+	string ProductInstanceStateName = 5;
+}
+
+message CreateProductInstanceRequest {
+   int64 CaseId = 1;
+   int32 ProductInstanceType = 2;
+}
+message CreateProductInstanceResponse {
+	int64 ProductInstanceId = 1;
+}
+
+message GetHousingSavingsInstanceResponse {
+	BasicDetail Overview = 1;
+	FullDetail Detail = 2;
+}
+
+message GetHousingSavingsInstanceBasicDetailResponse {
+	BasicDetail Overview = 1;
+}
+
+message GetProductInstanceListRequest {
+	int64 CaseId = 1;
+}
+message GetProductInstanceListResponse {
+	repeated ProductInstanceListItem Instances = 1;
+}

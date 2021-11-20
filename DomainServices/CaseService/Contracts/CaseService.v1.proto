@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService.v1;
+option csharp_namespace = "DomainServices.CaseService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "CaseServiceTypes.proto";
+
+service CaseService {
+   rpc CreateCase (DomainServices.CaseService.CreateCaseRequest) returns (DomainServices.CaseService.CreateCaseResponse);
+   rpc GetCaseDetail (DomainServices.CaseService.GetCaseDetailRequest) returns (DomainServices.CaseService.GetCaseDetailResponse);
+   rpc GetCaseList (DomainServices.CaseService.GetCaseListRequest) returns (DomainServices.CaseService.GetCaseListResponse);
+   rpc LinkOwnerToCase (DomainServices.CaseService.LinkOwnerToCaseRequest) returns (google.protobuf.Empty);
+   rpc UpdateCaseData (DomainServices.CaseService.UpdateCaseDataRequest) returns (google.protobuf.Empty);
+   rpc UpdateCaseState (DomainServices.CaseService.UpdateCaseStateRequest) returns (google.protobuf.Empty);
+   rpc UpdateCaseCustomer (DomainServices.CaseService.UpdateCaseCustomerRequest) returns (google.protobuf.Empty);
+}

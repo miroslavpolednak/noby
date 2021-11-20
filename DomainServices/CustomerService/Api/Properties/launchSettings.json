@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "DomainServices.CustomerService.API": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:5052"
+    }
+  }
+}

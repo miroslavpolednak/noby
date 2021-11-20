@@ -1,0 +1,13 @@
+syntax = "proto3";
+package DomainServices.OfferService.v1;
+option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
+
+import "Types.proto";
+
+service OfferService {
+   rpc GetBuildingSavingsData (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetBuildingSavingsDataResponse);
+   rpc GetBuildingSavingsDepositSchedule (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetBuildingSavingsScheduleResponse);
+   rpc GetBuildingSavingsPaymentSchedule (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetBuildingSavingsScheduleResponse);
+   rpc PrintBuildingSavingsOffer (DomainServices.OfferService.PrintBuildingSavingsOfferRequest) returns (DomainServices.OfferService.PrintBuildingSavingsOfferResponse);
+   rpc SimulateBuildingSavings (DomainServices.OfferService.SimulateBuildingSavingsRequest) returns (DomainServices.OfferService.SimulateBuildingSavingsResponse);
+}
