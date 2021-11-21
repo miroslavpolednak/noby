@@ -1,0 +1,2 @@
+﻿# SalesArrangementTypes
+Číselník formulářů.

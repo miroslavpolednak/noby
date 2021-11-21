@@ -1,6 +1,7 @@
 ﻿namespace FOMS.Api.Endpoints.User.Handlers;
 
-internal class GetCurrentUserHandler : IRequestHandler<Dto.GetCurrentUserRequest, Dto.GetCurrentUserResponse>
+internal class GetCurrentUserHandler
+    : IRequestHandler<Dto.GetCurrentUserRequest, Dto.GetCurrentUserResponse>
 {
     public Task<Dto.GetCurrentUserResponse> Handle(Dto.GetCurrentUserRequest request, CancellationToken cancellationToken)
     {

@@ -4,10 +4,11 @@ using Microsoft.Extensions.Logging;
 using System;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Core.Types;
+using System.Linq;
 
-string env = args[0];
-string uri = args[1];
-Console.WriteLine("service discovery " + uri);
+string env = args.Any() ? args[0] : "uat";
+string uri = args.Any() && args.Length > 1 ? args[1] : "https://127.0.0.1:5005";
+Console.WriteLine($"service discovery for {env} on {uri}");
 
 //setup our DI
 var services = new ServiceCollection();
@@ -21,17 +22,19 @@ services.AddSingleton<ILoggerFactory, LoggerFactory>();
 services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 services.AddLogging(builder =>
 {
-    //builder.AddConfiguration(configuration.GetSection("Logging"));
     builder.AddConsole();
-    builder.SetMinimumLevel(LogLevel.Information);
+    builder.SetMinimumLevel(LogLevel.Debug);
 });
 services.AddSingleton<CIS.Core.Configuration.ICisEnvironmentConfiguration>(new CIS.Infrastructure.Configuration.CisEnvironmentConfiguration
  {
-     EnvironmentName = env,
-     DefaultApplicationKey = "console"
+    ServiceDiscoveryUrl = uri,
+    InternalServicePassword = "a",
+    InternalServicesLogin = "a",
+    EnvironmentName = env,
+    DefaultApplicationKey = "console"
  });
 services.AddHttpContextAccessor();
-services.AddCisServiceDiscovery(uri, true);
+services.AddCisServiceDiscovery(true);
 var provider = services.BuildServiceProvider();
             
 var svc = provider.GetRequiredService<IDiscoveryServiceAbstraction>();

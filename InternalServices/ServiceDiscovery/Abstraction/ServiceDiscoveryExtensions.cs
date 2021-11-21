@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using CIS.Security.InternalServices;
 using CIS.Infrastructure.Caching;
+using Microsoft.Extensions.Logging;
 
 namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
@@ -39,6 +40,8 @@ public static class ServiceDiscoveryExtensions
             services.AddSingleton(provider =>
             {
                 string url = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
+                var logger = provider.GetService<ILoggerFactory>();
+                if (logger != null) logger.CreateLogger<GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>().LogInformation("DiscoveryServiceClient={url}", url);
                 return new GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url, isInvalidCertificateAllowed);
             });
         }

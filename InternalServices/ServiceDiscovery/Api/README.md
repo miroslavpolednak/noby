@@ -74,4 +74,4 @@ Vrácí všechny služby daného typu, dostupné v daném prostředí.
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5002 list
 
-        grpcurl -insecure -d "{\"Environment\":\"FAT\"}" 172.30.35.51:5002 CIS.InternalServices.ServiceDiscovery.DiscoveryService/GetServices
+        grpcurl -insecure -d "{\"Environment\":\"FAT\"}" 172.30.35.51:5002 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices
