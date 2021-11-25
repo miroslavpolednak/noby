@@ -3,21 +3,21 @@ using DomainServices.OfferService.Abstraction;
 
 namespace FOMS.Api.Endpoints.Offer.Handlers;
 
-internal class GetBuildingSavingsDataHandler
-    : IRequestHandler<Dto.GetBuildingSavingsDataRequest, Dto.GetBuildingSavingsDataResponse>
+internal class GetDataHandler
+    : IRequestHandler<Dto.GetDataRequest, Dto.GetDataResponse>
 {
     private readonly IOfferServiceAbstraction _offerService;
 
-    public GetBuildingSavingsDataHandler(IOfferServiceAbstraction offerService)
+    public GetDataHandler(IOfferServiceAbstraction offerService)
     {
         _offerService = offerService;
     }
 
-    public async Task<Dto.GetBuildingSavingsDataResponse> Handle(Dto.GetBuildingSavingsDataRequest request, CancellationToken cancellationToken)
+    public async Task<Dto.GetDataResponse> Handle(Dto.GetDataRequest request, CancellationToken cancellationToken)
     {
         var result = resolveResult(await _offerService.GetBuildingSavingsData(request.OfferInstanceId));
         
-        var model = new Dto.GetBuildingSavingsDataResponse
+        var model = new Dto.GetDataResponse
         {
             SimulationType = result.SimulationType,
             BuildingSavings = result.BuildingSavings,

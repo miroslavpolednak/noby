@@ -11,6 +11,7 @@ public sealed partial class GrpcDecimal
 
     public static implicit operator decimal(GrpcDecimal grpcDecimal)
     {
+        if (grpcDecimal == null) return 0;
         return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
     }
 

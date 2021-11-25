@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-internal sealed class GetBuildingSavingsDataResponse
+internal sealed class GetDataResponse
 {
     public int OfferInstanceId { get; set; }
 

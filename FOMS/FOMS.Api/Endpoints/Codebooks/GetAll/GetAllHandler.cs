@@ -16,11 +16,13 @@ internal class GetAllHandler
     private async Task<Dto.GetAllResponseItem> fillCodebook(string code, string original)
         => code switch
         {
+            "persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),
+            "persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),
             "productinstancetypes" => new(original, await _codebooks.ProductInstanceTypes()),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes()),
             "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings()).Where(t => t.IsActual)),
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan()).Where(t => t.IsActual)),
-            "savingstarif" => new(original, new List<DomainServices.CodebookService.Contracts.GenericCodebookItem> { new DomainServices.CodebookService.Contracts.GenericCodebookItem { Id = 1, Name = "Alfa 1" } }),
+            "savingstarif" => new(original, new List<DomainServices.CodebookService.Contracts.GenericCodebookItem> { new DomainServices.CodebookService.Contracts.GenericCodebookItem { Id = 61, Name = "Alfa 1" } }),
 
             _ => throw new NotImplementedException($"Codebook code '{original}' is not implemented")
         };

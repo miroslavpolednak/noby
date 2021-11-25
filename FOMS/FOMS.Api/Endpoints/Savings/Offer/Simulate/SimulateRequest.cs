@@ -2,7 +2,7 @@
 
 namespace FOMS.Api.Endpoints.Offer.Dto;
 
-internal sealed class SimulateBuildingSavingsRequest 
+internal sealed class SimulateRequest 
     : BuildingSavingsInput, IRequest<OfferInstance>, IValidatableRequest
 {
 }

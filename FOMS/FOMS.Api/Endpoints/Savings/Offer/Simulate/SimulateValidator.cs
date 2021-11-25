@@ -3,10 +3,10 @@ using FluentValidation;
 
 namespace FOMS.Api.Endpoints.Offer.Validators;
 
-internal class SimulateBuildingSavingsValidator 
-    : AbstractValidator<Dto.SimulateBuildingSavingsRequest>, IValidatableRequest
+internal class SimulateValidator 
+    : AbstractValidator<Dto.SimulateRequest>, IValidatableRequest
 {
-    public SimulateBuildingSavingsValidator()
+    public SimulateValidator()
     {
         RuleFor(x => x.TargetAmount)
             .NotNull().WithMessage("Cílová částka není zadána")

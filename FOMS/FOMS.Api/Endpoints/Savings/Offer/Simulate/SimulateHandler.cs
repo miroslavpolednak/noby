@@ -4,19 +4,20 @@ using FOMS.Api.Endpoints.Offer.Dto;
 
 namespace FOMS.Api.Endpoints.Offer.Handlers;
 
-internal class SimulateBuildingSavingsHandler 
-    : IRequestHandler<SimulateBuildingSavingsRequest, OfferInstance>
+internal class SimulateHandler 
+    : IRequestHandler<SimulateRequest, OfferInstance>
 {
     private readonly IOfferServiceAbstraction _offerService;
         
-    public SimulateBuildingSavingsHandler(IOfferServiceAbstraction offerService)
+    public SimulateHandler(IOfferServiceAbstraction offerService)
     {
         _offerService = offerService;
     }
 
-    public async Task<OfferInstance> Handle(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken)
+    public async Task<OfferInstance> Handle(SimulateRequest request, CancellationToken cancellationToken)
     {
-        var result = resolveResult(await _offerService.SimulateBuildingSavings(request));
+        var result2 = await _offerService.SimulateBuildingSavings(request);
+        var result = resolveResult(result2);
 
         return new OfferInstance(result.OfferInstanceId, request, result.BuildingSavings);
     }

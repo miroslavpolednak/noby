@@ -1,5 +1,5 @@
 ﻿
-namespace FOMS.Api.Endpoints.Party.GetFromContext;
+namespace FOMS.Api.Endpoints.Party.Handlers;
 
 internal class GetFromContextHandler
     : IRequestHandler<Dto.GetFromContextRequest, Dto.GetFromContextResponse>
