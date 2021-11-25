@@ -4,7 +4,7 @@ namespace FOMS.Api.Endpoints.User;
 
 internal class UserApiModule : IApiEndpointModule
 {
-    const string _prefix = "/users";
+    const string _prefix = "/api/users";
 
     public void Register(IEndpointRouteBuilder builder)
     {

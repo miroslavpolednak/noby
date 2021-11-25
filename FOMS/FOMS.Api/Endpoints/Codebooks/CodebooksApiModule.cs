@@ -1,10 +1,11 @@
 ﻿using CIS.Infrastructure.WebApi;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FOMS.Api.Endpoints.Codebooks;
 
 internal class CodebooksApiModule : IApiEndpointModule
 {
-    const string _prefix = "/codebooks";
+    const string _prefix = "/api/codebooks";
 
     public void Register(IEndpointRouteBuilder builder)
     {
@@ -12,8 +13,8 @@ internal class CodebooksApiModule : IApiEndpointModule
 
         // vraci vsechny vyzadane ciselniky
         // q = kody ciselniku oddelene ","
-        builder.MapGet(_prefix + "/get-all", (string q) => mediatr.Send(new Dto.GetAllRequest(q)))
+        builder.MapGet(_prefix + "/get-all", async ([FromQuery(Name = "q")] string codebookTypes) => await mediatr.Send(new Dto.GetAllRequest(codebookTypes)))
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces<Dto.GetAllResponse>(StatusCodes.Status200OK);
+            .Produces<Dto.GetAllResponseItem>(StatusCodes.Status200OK);
     }
 }

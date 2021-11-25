@@ -10,5 +10,8 @@ namespace DomainServices.CodebookService.Contracts
 
         [DataMember(Order = 2)]
         public string Name {  get; set; }
+
+        [DataMember(Order = 3)]
+        public bool IsActual { get; set; }
     }
 }

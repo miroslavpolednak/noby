@@ -85,12 +85,12 @@ public class InMemoryGlobalCache : IGlobalCache
         if (expiry.HasValue)
             _cache.Set(KeyPrefix + key, value, new DateTimeOffset(DateTime.Now, expiry.Value));
         else
-            _cache.Set(KeyPrefix + key, value, new CacheItemPolicy() { AbsoluteExpiration = DateTime.Now.AddMonths(1) });
+            _cache.Set(KeyPrefix + key, value, new CacheItemPolicy() { AbsoluteExpiration = DateTime.Now.AddDays(1) });
     }
 
     public void Set(string key, List<HashItem> hashset)
     {
-        _cache.Set(KeyPrefix + key, hashset, new CacheItemPolicy() { AbsoluteExpiration = DateTime.Now.AddMonths(1) });
+        _cache.Set(KeyPrefix + key, hashset, new CacheItemPolicy() { AbsoluteExpiration = DateTime.Now.AddDays(1) });
     }
 
     public void Set(string key, HashItem item)
@@ -111,18 +111,18 @@ public class InMemoryGlobalCache : IGlobalCache
             Set(key, new List<HashItem> { item });
     }
 
-    public Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType)
+    public Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType = SerializationTypes.Protobuf)
         => SetAsync(key, items, serializationType);
 
-    public Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType)
+    public Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf)
         => Task.FromResult((List<T>)_cache.Get(KeyPrefix + key));
 
-    public Task SetAsync(string key, object item, SerializationTypes serializationType)
+    public Task SetAsync(string key, object item, SerializationTypes serializationType = SerializationTypes.Protobuf)
     {
-        _cache.Set(KeyPrefix + key, item, new CacheItemPolicy() { AbsoluteExpiration = DateTime.Now.AddMonths(1) });
+        _cache.Set(KeyPrefix + key, item, new CacheItemPolicy() { AbsoluteExpiration = DateTime.Now.AddDays(1) });
         return Task.CompletedTask;
     }
 
-    public Task<T?> GetAsync<T>(string key, SerializationTypes serializationType)
+    public Task<T?> GetAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf)
         => Task.FromResult((T?)_cache.Get(KeyPrefix + key));
 }

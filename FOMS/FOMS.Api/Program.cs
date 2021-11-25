@@ -1,6 +1,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using System.Reflection;
 
@@ -18,6 +19,7 @@ builder.Services.AddCisWebApiCors();
 // add domain services
 builder.Services.AddOfferService(true);
 builder.Services.AddCodebookService(true);
+builder.Services.AddCustomerService(true);
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);

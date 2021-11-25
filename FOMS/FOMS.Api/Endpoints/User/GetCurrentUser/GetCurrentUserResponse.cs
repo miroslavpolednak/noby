@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.User.Dto;
 
-internal sealed class GetCurrentUserResponse
+internal class GetCurrentUserResponse
 {
     /// <summary>
     /// v33id
@@ -11,4 +11,9 @@ internal sealed class GetCurrentUserResponse
     /// Jmeno uzivatele
     /// </summary>
     public string Name { get; set; } = "";
+
+    /// <summary>
+    /// Login
+    /// </summary>
+    public string? Username { get; set; }
 }

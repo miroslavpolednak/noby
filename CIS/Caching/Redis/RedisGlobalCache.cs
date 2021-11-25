@@ -104,7 +104,7 @@ public class RedisGlobalCache : IGlobalCache
         _database.HashSet(KeyPrefix + key, item.Name, item.Value);
     }
 
-    public async Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType)
+    public async Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType = SerializationTypes.Protobuf)
     {
         List<RedisValue> serializedObjects = new();
 
@@ -131,7 +131,7 @@ public class RedisGlobalCache : IGlobalCache
         await _database.SetAddAsync(KeyPrefix + key, serializedObjects.ToArray());
     }
 
-    public async Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType)
+    public async Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf)
     {
         var members = await _database.SetMembersAsync(KeyPrefix + key);
         List<T> newList = new();
@@ -158,7 +158,7 @@ public class RedisGlobalCache : IGlobalCache
         return newList;
     }
 
-    public async Task SetAsync(string key, object item, SerializationTypes serializationType)
+    public async Task SetAsync(string key, object item, SerializationTypes serializationType = SerializationTypes.Protobuf)
     {
         switch (serializationType)
         {
@@ -180,7 +180,7 @@ public class RedisGlobalCache : IGlobalCache
         }
     }
 
-    public async Task<T?> GetAsync<T>(string key, SerializationTypes serializationType)
+    public async Task<T?> GetAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf)
     {
         switch (serializationType)
         {

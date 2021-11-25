@@ -22,13 +22,13 @@ public interface IGlobalCache
 
     void Set(string key, HashItem item);
 
-    Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType);
+    Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf);
 
-    Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType);
+    Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType = SerializationTypes.Protobuf);
 
-    Task SetAsync(string key, object item, SerializationTypes serializationType);
+    Task SetAsync(string key, object item, SerializationTypes serializationType = SerializationTypes.Protobuf);
 
-    Task<T?> GetAsync<T>(string key, SerializationTypes serializationType);
+    Task<T?> GetAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf);
 }
 
 public interface IGlobalCache<T> : IGlobalCache { }

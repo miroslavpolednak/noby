@@ -19,6 +19,9 @@ internal static class StartupExtensions
         // add current user context
         services.AddCisCurrentUser();
 
+        // add inmem cache
+        services.AddInMemoryGlobalCache<Endpoints.ISharedInMemoryCache>();
+
         // add distributed cache
         switch (appConfiguration.CacheType)
         {

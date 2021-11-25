@@ -1,27 +1,26 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
 
-namespace CIS.Infrastructure.Data
+namespace CIS.Infrastructure.Data;
+
+public class SqlConnectionProvider<TConnectionProvider> 
+    : SqlConnectionProvider, Core.Data.IConnectionProvider<TConnectionProvider>
 {
-    public class SqlConnectionProvider<TConnectionProvider> 
-        : SqlConnectionProvider, Core.Data.IConnectionProvider<TConnectionProvider>
+    public SqlConnectionProvider(string connectionString) : base(connectionString)
+    { }
+}
+
+public class SqlConnectionProvider : CIS.Core.Data.IConnectionProvider
+{
+    public string ConnectionString { get; init; }
+
+    public SqlConnectionProvider(string connectionString)
     {
-        public SqlConnectionProvider(string connectionString) : base(connectionString)
-        { }
+        this.ConnectionString = connectionString;
     }
 
-    public class SqlConnectionProvider : CIS.Core.Data.IConnectionProvider
+    public DbConnection Create()
     {
-        public string ConnectionString { get; init; }
-
-        public SqlConnectionProvider(string connectionString)
-        {
-            this.ConnectionString = connectionString;
-        }
-
-        public DbConnection Create()
-        {
-            return new SqlConnection(ConnectionString);
-        }
+        return new SqlConnection(ConnectionString);
     }
 }

@@ -3,31 +3,6 @@
 public class MyTestCodebookHandler // nazev handleru musi byt ve formatu "{nazev_endpointu_z_Contracts.ICodebookService}Handler"
     : IRequestHandler<Contracts.Endpoints.MyTestCodebook.MyTestCodebookRequest, List<Contracts.GenericCodebookItem>> // TRequest a TResponse musi souhlasit se signaturou endpointu z Contracts.ICodebookService
 {
-    // mohu si vytahnout instanci custom konfigurace kdybych potreboval
-    private readonly MyTestCodebookConfiguration _configuration;
-    
-    // mohu si pripravit instanci loggeru
-    private readonly ILogger<MyTestCodebookHandler> _logger;
-    
-    // repository - ukazka custom DI
-    private readonly MyTestCodebookRepository _repository;
-    
-    // distribuovana cache
-    private readonly CIS.Infrastructure.Caching.IGlobalCache _cache;
-
-    //ctr
-    public MyTestCodebookHandler(
-        MyTestCodebookRepository repository,
-        MyTestCodebookConfiguration configuration, 
-        ILogger<MyTestCodebookHandler> logger,
-        CIS.Infrastructure.Caching.IGlobalCache cache)
-    {
-        _repository = repository;
-        _cache = cache;
-        _logger = logger;
-        _configuration = configuration;
-    }
-
     /// <summary>
     /// Metodu Handle musi obsahovat kazdy endpoint - viz. MediatR a Mediator pattern
     /// </summary>
@@ -63,6 +38,31 @@ public class MyTestCodebookHandler // nazev handleru musi byt ve formatu "{nazev
         }
 
         return data;
+    }
+
+    // mohu si vytahnout instanci custom konfigurace kdybych potreboval
+    private readonly MyTestCodebookConfiguration _configuration;
+    
+    // mohu si pripravit instanci loggeru
+    private readonly ILogger<MyTestCodebookHandler> _logger;
+    
+    // repository - ukazka custom DI
+    private readonly MyTestCodebookRepository _repository;
+    
+    // distribuovana cache
+    private readonly CIS.Infrastructure.Caching.IGlobalCache _cache;
+
+    //ctr
+    public MyTestCodebookHandler(
+        MyTestCodebookRepository repository,
+        MyTestCodebookConfiguration configuration, 
+        ILogger<MyTestCodebookHandler> logger,
+        CIS.Infrastructure.Caching.IGlobalCache cache)
+    {
+        _repository = repository;
+        _cache = cache;
+        _logger = logger;
+        _configuration = configuration;
     }
 
     private const string _cacheKey = "MyTestCodebookList";

@@ -8,17 +8,7 @@ internal class BuildingSavingsInput
     /// <summary>
     /// Kód produktu. V UI pojmenováno jako tarif.
     /// </summary>
-    public int ProductCode { get; set; }
-
-    /// <summary>
-    /// Jmeno klienta
-    /// </summary>
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// Datum narozeni klienta
-    /// </summary>
-    public DateTime? BirthDate { get; set; }
+    public int? ProductCode { get; set; }
 
     /// <summary>
     /// Cílová částka v CZK 
@@ -30,10 +20,19 @@ internal class BuildingSavingsInput
     /// </summary>
     public int? ActionCode { get; set; }
 
+    public bool IsWithLoan { get; set; }
+
+    /// <summary>
+    /// Uverova akce
+    /// </summary>
+    public int? LoanActionCode { get; set; }
+
     /// <summary>
     /// True pokud se jedna o fyzickou osobu
     /// </summary>
     public bool ClientIsNaturalPerson { get; set; }
+
+    public bool StateSubsidy { get; set; }
 
     /// <summary>
     /// True pokud se jedna o spolecenstvi vlastniku
@@ -47,7 +46,10 @@ internal class BuildingSavingsInput
             ActionCode = data.ActionCode,
             TargetAmount = data.TargetAmount,
             ClientIsNaturalPerson = data.ClientIsNaturalPerson,
-            ProductCode = data.ProductCode
+            ProductCode = data.ProductCode,
+            LoanActionCode = data.LoanActionCode,
+            StateSubsidy = data.StateSubsidy,
+            IsWithLoan = data.IsWithLoan
         };
 
     public static implicit operator DomainServices.OfferService.Contracts.SimulateBuildingSavingsRequest(BuildingSavingsInput data)
@@ -59,7 +61,10 @@ internal class BuildingSavingsInput
                 ActionCode = data.ActionCode.GetValueOrDefault(),
                 TargetAmount = data.TargetAmount.GetValueOrDefault(),
                 ClientIsNaturalPerson = data.ClientIsNaturalPerson,
-                ProductCode = data.ProductCode
+                ProductCode = data.ProductCode.GetValueOrDefault(),
+                LoanActionCode = data.LoanActionCode,
+                StateSubsidy = data.StateSubsidy,
+                IsWithLoan = data.IsWithLoan
             }
         };
 }
