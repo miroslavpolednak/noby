@@ -74,8 +74,7 @@ message LoanData {
    cis.types.GrpcDecimal GrantedLoanRPSNPaymentAmount = 8;
    int32 GrantedLoanRPSNNumberOfPaymentsForClient = 9;
    cis.types.GrpcDecimal GrantedLoanTotalInterests = 10;
-   cis.types.GrpcDate GrantedLoanLastPaymentDate = 11;
-   int32 GrantedLoanOverpayment = 12;
+   int32 GrantedLoanOverpayment = 11;
 }
 
 message GetBuildingSavingsDataResponse {

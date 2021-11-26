@@ -44,7 +44,6 @@ public static class EasExtensions
             GrantedLoanRPSNPaymentAmount = result.RPSN_pu_uss_suma_plateb,
             GrantedLoanRPSNNumberOfPaymentsForClient = result.RPSN_pu_uss_pocet_plateb,
             GrantedLoanTotalInterests = result.USS_uroky_celkem,
-            GrantedLoanLastPaymentDate = EasHelpers.CreateDateFromEas(result.USS_datum_posledni_splatky),
             GrantedLoanOverpayment = result.ZAJISTENI_minimalni_kategoria
         };
 
