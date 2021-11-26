@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Common\Testing\CIS.Testing.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Testing\CIS.Testing.csproj" />
     <ProjectReference Include="..\..\FOMS.Api\FOMS.Api.csproj" />
   </ItemGroup>
 
