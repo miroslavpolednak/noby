@@ -42,7 +42,10 @@ public static class EasExtensions
             GrantedLoanTotalFees = result.USS_poplatky_za_vedeni_uctu_celkem,
             GrantedLoanRPSN = result.RPSN_pu_uss,
             GrantedLoanRPSNPaymentAmount = result.RPSN_pu_uss_suma_plateb,
-            GrantedLoanRPSNNumberOfPaymentsForClient = result.RPSN_pu_uss_pocet_plateb
+            GrantedLoanRPSNNumberOfPaymentsForClient = result.RPSN_pu_uss_pocet_plateb,
+            GrantedLoanTotalInterests = result.USS_uroky_celkem,
+            GrantedLoanLastPaymentDate = EasHelpers.CreateDateFromEas(result.USS_datum_posledni_splatky),
+            GrantedLoanOverpayment = result.ZAJISTENI_minimalni_kategoria
         };
 
     public static BuildingSavingsData ToBuildingSavingsData(this Eas.EasWrapper.ESBI_SIMULATION_RESULTS result)
@@ -54,6 +57,7 @@ public static class EasExtensions
             TotalSaved = result.SS_celkem_nasporeno,
             TotalDeposits = result.SS_vklady_celkem,
             TotalFees = result.SS_uhrady_a_poplatky_celkem,
+            TotalInterests = result.SS_uroky_celkem,
             InterestsAdvantage = result.SS_urokove_zvyhodneni,
             TotalGovernmentIncentives = result.SS_statni_podpora_celkem + result.SS_evidovana_statni_podpora,
             ExpectedGrantedLoanDate = EasHelpers.CreateDateFromEas(result.SS_predpokladany_datum_prideleni),

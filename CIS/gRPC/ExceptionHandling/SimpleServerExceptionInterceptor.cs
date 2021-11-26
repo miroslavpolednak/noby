@@ -37,7 +37,7 @@ public class SimpleServerExceptionInterceptor : Interceptor
 
             throw GrpcExceptionHelpers.CreateRpcException(e);
         }
-        catch (System.Exception e) when (e is not RpcException) // neosetrena vyjimka
+        catch (Exception e) when (e is not RpcException) // neosetrena vyjimka
         {
             var httpContext = context.GetHttpContext();
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;

@@ -55,7 +55,7 @@ public sealed class GrpcErrorCollection : List<GrpcErrorCollection.GrpcErrorColl
 
         public Metadata.Entry CreateTrailerEntry(int index)
         {
-            return new Metadata.Entry($"ciserr_{index}_{this.Code}", this.Message);
+            return new Metadata.Entry($"ciserr_{index}_{this.Code}-bin", GrpcExceptionHelpers.TryConvertStringToTrailerValue(this.Message));
         }
     }
 }

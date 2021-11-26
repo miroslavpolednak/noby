@@ -52,6 +52,8 @@ internal sealed class RealEasClient
 
                 if (result.SIM_error != 0)
                     _logger.LogInformation("Incorrect inputs to EAS Simulation {error}: {errorText}", result.SIM_error, result.SIM_error_text);
+                else
+                    _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
 
                 return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
             }

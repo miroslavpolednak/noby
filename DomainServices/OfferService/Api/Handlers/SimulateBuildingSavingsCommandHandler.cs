@@ -52,7 +52,7 @@ internal class SimulateBuildingSavingsCommandHandler
             SuccessfulServiceCallResult<Eas.EasWrapper.ESBI_SIMULATION_RESULTS> r when r.Model.SIM_error != 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to EAS Simulation", 10011, new()
             {
                 ("eassimerrorcode", r.Model.SIM_error.ToString()),
-                ("eassimerrortext", Uri.EscapeDataString(r.Model.SIM_error_text))
+                ("eassimerrortext", r.Model.SIM_error_text)
             }),
             ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
             _ => throw new NotImplementedException()

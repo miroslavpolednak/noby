@@ -7,7 +7,7 @@ public sealed class SimulationServiceErrorResult : CIS.Core.Results.IServiceCall
 
     public SimulationServiceErrorResult(string? key, string? message)
     {
-        if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
+        //if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("key");
 
         Errors = (new List<(string Key, string Message)>(1) { (key ?? "", message ?? "") }).AsReadOnly();
     }

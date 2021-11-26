@@ -1,7 +1,5 @@
 ﻿using CIS.Core.Exceptions;
 using Grpc.Core;
-using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -21,13 +19,8 @@ public static class GrpcExceptionHelpers
 
         if (trailers != null)
         {
-            foreach (var item in trailers)
-            {
-                if (!string.IsNullOrEmpty(item.Value))
-                    trailersCollection.Add(new(item.Key, cleanHeaderString(item.Value)));
-                else
-                    trailersCollection.Add(new(item.Key, ""));
-            }
+            foreach (var item in trailers.Where(t => !string.IsNullOrEmpty(t.Value)))
+                trailersCollection.Add(new(item.Key + "-bin", TryConvertStringToTrailerValue(item.Value)));
         }
 
         return new RpcException(new Status(statusCode, message, baseException), trailersCollection, message);
@@ -81,9 +74,7 @@ public static class GrpcExceptionHelpers
             {
                 if (int.TryParse(ids[i], out int code))
                 {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    var message = exception.Trailers.Get($"ciserr_{i}_{code}")?.Value;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    var message = TryConvertTrailerValueToString(exception.Trailers?.GetValueBytes($"ciserr_{i}_{code}-bin"));
                     if (!string.IsNullOrEmpty(message))
                         list.Add((ids[i], message));
                 }
@@ -105,9 +96,7 @@ public static class GrpcExceptionHelpers
             {
                 if (int.TryParse(ids[i], out int code))
                 {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    var message = exception.Trailers.Get($"ciserr_{i}_{code}")?.Value;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    var message = TryConvertTrailerValueToString(exception.Trailers?.GetValueBytes($"ciserr_{i}_{code}-bin"));
                     if (!string.IsNullOrEmpty(message))
                         list.Add((code, message));
                 }
@@ -134,24 +123,9 @@ public static class GrpcExceptionHelpers
             return exception.Message;
     }
 
-    //TODO nahradit nejak jinak. Je potreba, aby se do headeru neposilaly nonascii znaky. Nebo nastavit grpc channel tak, aby prijimal utf8.
-    private static string cleanHeaderString(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-        {
-            return "";
-        }
-        else
-        {
-            string stringFormD = value.Normalize(System.Text.NormalizationForm.FormD);
-            System.Text.StringBuilder retVal = new System.Text.StringBuilder();
-            for (int index = 0; index < stringFormD.Length; index++)
-            {
-                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(stringFormD[index]) != System.Globalization.UnicodeCategory.NonSpacingMark)
-                    retVal.Append(stringFormD[index]);
-            }
-            string normalized = retVal.ToString().Normalize(System.Text.NormalizationForm.FormC);
-            return Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(normalized));
-        }
-    }
+    // do Trailers je treba davat byte[] protoze jinak se rozhodi non-ascii kodovani
+    public static byte[] TryConvertStringToTrailerValue(string? value)
+        => Encoding.UTF8.GetBytes(value ?? "");
+    public static string? TryConvertTrailerValueToString(byte[]? value)
+        => value != null ? Encoding.UTF8.GetString(value) : null;
 }

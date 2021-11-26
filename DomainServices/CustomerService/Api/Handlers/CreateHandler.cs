@@ -33,7 +33,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                 throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to EAS NewKlientAsync", 10011, new()
                 {
                     ("eassimerrorcode", easResult.return_info.ToString()),
-                    ("eassimerrortext", Uri.EscapeDataString(easResult.return_info))
+                    ("eassimerrortext", easResult.return_info)
                 });
 
             // u cizincu aktualizovat data v modelu

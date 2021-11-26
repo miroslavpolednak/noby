@@ -37,11 +37,17 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            throw new CisArgumentException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
+            var excode = ex.GetExceptionCodeFromTrailers();
+            var exmessage = ex.GetErrorMessageFromRpcException();
+            _logger.LogError("EAS error {code} || {message}", excode, exmessage);
+            throw new CisArgumentException(excode, exmessage, ex.GetArgumentFromTrailers());
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.Aborted) // EAS/sim nebylo mozne zavolat
         {
-            throw new Exceptions.SimulationServiceFatalException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
+            var excode = ex.GetExceptionCodeFromTrailers();
+            var exmessage = ex.GetErrorMessageFromRpcException();
+            _logger.LogError("EAS unavailable {code} || {message}", excode, exmessage);
+            throw new Exceptions.SimulationServiceFatalException(excode, exmessage);
         }
         catch (RpcException ex)
         {

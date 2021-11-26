@@ -34,15 +34,22 @@ internal class OfferService : IOfferServiceAbstraction
 
             return new SuccessfulServiceCallResult<SimulateBuildingSavingsResponse>(result);
         }
+        catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument) // EAS chyba zadani
+        {
+            _logger.LogDebug("Abstraction SimulateBuildingSavings failed gracefully with code {code}", ex.GetExceptionCodeFromTrailers());
+            
+            return new ErrorServiceCallResult(ex.GetErrorMessagesFromRpcExceptionWithIntKeys());
+        }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.FailedPrecondition) // EAS vratilo standardni chybu
         {
             int code = ex.GetExceptionCodeFromTrailers();
 
             _logger.LogDebug("Abstraction SimulateBuildingSavings failed gracefully with code {code}", code);
+            _logger.LogDebug("EAS error codes: {code} || {text}", ex.GetValueFromTrailers("eassimerrorcode-bin"), ex.GetValueFromTrailers("eassimerrortext-bin"));
 
             return code switch
             {
-                10011 => new SimulationServiceErrorResult(ex.GetValueFromTrailers("eassimerrorcode"), ex.GetValueFromTrailers("eassimerrortext")),
+                10011 => new SimulationServiceErrorResult(ex.GetValueFromTrailers("eassimerrorcode-bin"), ex.GetValueFromTrailers("eassimerrortext-bin")),
                 _ => new ErrorServiceCallResult(ex.GetErrorMessagesFromRpcExceptionWithIntKeys())
             };
         }

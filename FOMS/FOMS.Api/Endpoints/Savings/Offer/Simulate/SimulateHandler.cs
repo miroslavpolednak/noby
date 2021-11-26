@@ -1,4 +1,5 @@
-﻿using CIS.Core.Results;
+﻿using CIS.Core.Exceptions;
+using CIS.Core.Results;
 using DomainServices.OfferService.Abstraction;
 using FOMS.Api.Endpoints.Offer.Dto;
 
@@ -26,7 +27,8 @@ internal class SimulateHandler
         result switch
         {
             SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.SimulateBuildingSavingsResponse> r => r.Model,
-            SimulationServiceErrorResult e1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors),
+            SimulationServiceErrorResult e1 when e1.Errors.Count() == 1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors.First().Message),
+            SimulationServiceErrorResult e1 when e1.Errors.Count() > 1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors),
             ErrorServiceCallResult e2 => throw new CIS.Core.Exceptions.CisValidationException(e2.Errors),
             _ => throw new NotImplementedException()
         };

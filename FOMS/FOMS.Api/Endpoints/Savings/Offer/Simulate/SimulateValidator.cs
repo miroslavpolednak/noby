@@ -19,5 +19,9 @@ internal class SimulateValidator
         RuleFor(x => x.ActionCode)
             .NotNull().WithMessage("Obchodní akce není zadána")
             .GreaterThanOrEqualTo(0).WithMessage("Obchodní akce není zadána");
+
+        RuleFor(t => t.LoanActionCode)
+            .Must((data, loanActionCode) => !data.IsWithLoan || loanActionCode.HasValue)
+            .WithMessage("Obchodní akce není zadána pro úvěr");
     }
 }
