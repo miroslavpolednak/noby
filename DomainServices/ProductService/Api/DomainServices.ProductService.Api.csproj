@@ -29,7 +29,7 @@
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
-		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas\ExternalServices.Eas.csproj" />
+		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.ProductService.Contracts.csproj" />

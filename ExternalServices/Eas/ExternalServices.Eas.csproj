@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+    <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

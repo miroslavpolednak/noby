@@ -5,16 +5,11 @@ internal class GetFromContextHandler
 {
     public async Task<Dto.GetFromContextResponse> Handle(Dto.GetFromContextRequest request, CancellationToken cancellationToken)
     {
-        /*var result = await _customerService.GetBasicDataByIdentifier(new DomainServices.CustomerService.Contracts.GetBasicDataByIdentifierRequest()
-        {
-            Identifier = ""
-        });*/
-
         return new Dto.GetFromContextResponse
         {
             FirstName = "John",
             LastName = "Doe",
-            DateOfBirth = new DateTime(1978, 11, 8)
+            DateOfBirth = DateTime.Now
         };
     }
 
