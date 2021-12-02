@@ -1,8 +1,8 @@
 ﻿using DomainServices.OfferService.Abstraction;
-using FOMS.Api.Endpoints.Offer.Dto;
+using FOMS.Api.Endpoints.Savings.Offer.Dto;
 using CIS.Core.Results;
 
-namespace FOMS.Api.Endpoints.Offer.Handlers;
+namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class GetScheduleHandler 
     : IRequestHandler<GetScheduleRequest, GetScheduleResponse>

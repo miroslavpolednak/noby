@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
   </ItemGroup>
 

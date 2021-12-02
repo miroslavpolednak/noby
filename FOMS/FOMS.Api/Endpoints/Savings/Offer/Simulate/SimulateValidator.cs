@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Validation;
 using FluentValidation;
 
-namespace FOMS.Api.Endpoints.Offer.Validators;
+namespace FOMS.Api.Endpoints.Savings.Offer.Validators;
 
 internal class SimulateValidator 
     : AbstractValidator<Dto.SimulateRequest>, IValidatableRequest

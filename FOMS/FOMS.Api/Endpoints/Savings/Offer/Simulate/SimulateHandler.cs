@@ -1,20 +1,13 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Core.Results;
 using DomainServices.OfferService.Abstraction;
-using FOMS.Api.Endpoints.Offer.Dto;
+using FOMS.Api.Endpoints.Savings.Offer.Dto;
 
-namespace FOMS.Api.Endpoints.Offer.Handlers;
+namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class SimulateHandler 
     : IRequestHandler<SimulateRequest, OfferInstance>
 {
-    private readonly IOfferServiceAbstraction _offerService;
-        
-    public SimulateHandler(IOfferServiceAbstraction offerService)
-    {
-        _offerService = offerService;
-    }
-
     public async Task<OfferInstance> Handle(SimulateRequest request, CancellationToken cancellationToken)
     {
         var result2 = await _offerService.SimulateBuildingSavings(request);
@@ -32,4 +25,11 @@ internal class SimulateHandler
             ErrorServiceCallResult e2 => throw new CIS.Core.Exceptions.CisValidationException(e2.Errors),
             _ => throw new NotImplementedException()
         };
+
+    private readonly IOfferServiceAbstraction _offerService;
+        
+    public SimulateHandler(IOfferServiceAbstraction offerService)
+    {
+        _offerService = offerService;
+    }
 }

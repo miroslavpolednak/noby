@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Offer.Dto;
+﻿namespace FOMS.Api.Endpoints.Savings.Offer.Dto;
 
 internal sealed class GetDataResponse
 {

@@ -2,6 +2,7 @@ using CIS.Infrastructure.StartupExtensions;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
+using DomainServices.ProductService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using System.Reflection;
 
@@ -21,6 +22,7 @@ builder.Host.UseAppLogging();
 builder.Services.AddOfferService(true);
 builder.Services.AddCodebookService(true);
 builder.Services.AddCustomerService(true);
+builder.Services.AddProductService(true);
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);

@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FOMS.Api.Endpoints.Offer;
+namespace FOMS.Api.Endpoints.Savings.Offer;
 
 internal class OfferApiModule 
     : IApiEndpointModule
@@ -16,6 +16,12 @@ internal class OfferApiModule
         builder
             .MapPost(_prefix, async ([FromBody] Dto.SimulateRequest request) => await mediatr.Send(request))
             .Produces<Dto.OfferInstance>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest);
+
+        // vytvoreni case z modelace
+        builder
+            .MapPost(_prefix + "/{offerInstanceId}/create-case", async ([FromRoute] int offerInstanceId, [FromBody] Dto.CreateCase request) => await mediatr.Send(new Dto.CreateCaseRequest(offerInstanceId, request)))
+            .Produces<int>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
 
         // instance nabidky

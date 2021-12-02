@@ -6,11 +6,11 @@ internal class SearchHandler
     public async Task<List<Dto.SearchResponse>> Handle(Dto.SearchRequest request, CancellationToken cancellationToken)
     {
         return new List<Dto.SearchResponse>
-    {
-        new Dto.SearchResponse { Id = 1, Name = "John Doe" },
-        new Dto.SearchResponse { Id = 2, Name = "Marky Mark" },
-        new Dto.SearchResponse { Id = 3, Name = "Franky Moore" },
-    };
+        {
+            new Dto.SearchResponse { Id = 1, Name = "John Doe" },
+            new Dto.SearchResponse { Id = 2, Name = "Marky Mark" },
+            new Dto.SearchResponse { Id = 3, Name = "Franky Moore" },
+        };
     }
 
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;

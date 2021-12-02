@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Results;
 using DomainServices.OfferService.Abstraction;
 
-namespace FOMS.Api.Endpoints.Offer.Handlers;
+namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class GetDataHandler
     : IRequestHandler<Dto.GetDataRequest, Dto.GetDataResponse>

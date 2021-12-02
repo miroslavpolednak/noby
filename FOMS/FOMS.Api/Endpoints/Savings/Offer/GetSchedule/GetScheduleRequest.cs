@@ -1,10 +1,10 @@
-﻿namespace FOMS.Api.Endpoints.Offer.Dto;
+﻿namespace FOMS.Api.Endpoints.Savings.Offer.Dto;
 
 internal sealed class GetScheduleRequest
     : IRequest<GetScheduleResponse>
 {
-    public int OfferInstanceId { get; set; }
-    public DomainServices.OfferService.Contracts.ScheduleItemTypes ScheduleType { get; set; }
+    public int OfferInstanceId { get; init; }
+    public DomainServices.OfferService.Contracts.ScheduleItemTypes ScheduleType { get; init; }
 
     public GetScheduleRequest(int offerInstanceId, int type)
     {
