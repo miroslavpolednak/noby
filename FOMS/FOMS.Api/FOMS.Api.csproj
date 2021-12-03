@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\CIS\Security\CIS.Security.csproj" />
     <ProjectReference Include="..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
+    <ProjectReference Include="..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />

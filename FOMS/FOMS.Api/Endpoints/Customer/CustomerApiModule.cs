@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FOMS.Api.Endpoints.Party;
+namespace FOMS.Api.Endpoints.Customer;
 
-internal class PartyApiModule : IApiEndpointModule
+internal class CustomerApiModule : IApiEndpointModule
 {
-    const string _prefix = "/api/party";
+    const string _prefix = "/api/customer";
 
     public void Register(IEndpointRouteBuilder builder)
     {

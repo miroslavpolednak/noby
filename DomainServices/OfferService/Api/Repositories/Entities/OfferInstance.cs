@@ -9,6 +9,8 @@ internal class OfferInstance : CIS.Core.Data.BaseInsertableWithoutActual
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int OfferInstanceId { get; set; }
 
+    public Guid ResourceProcessId { get; set; }
+
     public byte SimulationType { get; set; }
 
     public string? Inputs { get; set; }

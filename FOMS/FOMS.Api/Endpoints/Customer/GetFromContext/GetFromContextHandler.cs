@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Party.Handlers;
+﻿namespace FOMS.Api.Endpoints.Customer.Handlers;
 
 internal class GetFromContextHandler
     : IRequestHandler<Dto.GetFromContextRequest, Dto.GetFromContextResponse>

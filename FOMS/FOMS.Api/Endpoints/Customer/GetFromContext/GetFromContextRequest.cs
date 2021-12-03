@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Party.Dto;
+﻿namespace FOMS.Api.Endpoints.Customer.Dto;
 
 internal sealed class GetFromContextRequest
     : IRequest<GetFromContextResponse>

@@ -10,8 +10,7 @@ internal class SimulateHandler
 {
     public async Task<OfferInstance> Handle(SimulateRequest request, CancellationToken cancellationToken)
     {
-        var result2 = await _offerService.SimulateBuildingSavings(request);
-        var result = resolveResult(result2);
+        var result = resolveResult(await _offerService.SimulateBuildingSavings(request));
 
         return new OfferInstance(result.OfferInstanceId, request, result.BuildingSavings);
     }

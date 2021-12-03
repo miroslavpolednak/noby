@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Party.Handlers;
+﻿namespace FOMS.Api.Endpoints.Customer.Handlers;
 
 internal class SearchHandler
     : IRequestHandler<Dto.SearchRequest, List<Dto.SearchResponse>>

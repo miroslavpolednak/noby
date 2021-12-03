@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Party.Dto;
+﻿namespace FOMS.Api.Endpoints.Customer.Dto;
 
 internal class GetFromContextResponse
 {

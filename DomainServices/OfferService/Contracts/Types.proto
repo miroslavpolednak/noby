@@ -105,6 +105,7 @@ message PrintBuildingSavingsOfferResponse {
 
 message SimulateBuildingSavingsRequest {
    BuildingSavingsInput InputData = 1;
+   string ResourceProcessId = 2;
 }
 message SimulateBuildingSavingsResponse {
    int32 OfferInstanceId = 1;

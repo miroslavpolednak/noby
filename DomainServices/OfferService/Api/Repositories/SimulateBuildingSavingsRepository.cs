@@ -18,6 +18,7 @@ internal class SimulateBuildingSavingsRepository
     /// Ulozeni housing savings s uverem
     /// </summary>
     public async Task<int> Save(
+        Guid resourceProcessId,
         SimulationTypes simulationType,
         DateTime timestamp, 
         BuildingSavingsInput inputs, 
@@ -27,6 +28,7 @@ internal class SimulateBuildingSavingsRepository
     {
         var entity = new Entities.OfferInstance
         {
+            ResourceProcessId = resourceProcessId,
             InsertTime = timestamp,
             SimulationType = (byte)simulationType,
             OutputBuildingSavings = JsonSerializer.Serialize(buildingSavingsData),

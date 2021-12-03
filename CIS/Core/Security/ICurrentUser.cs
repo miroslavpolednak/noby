@@ -2,7 +2,7 @@
 
 namespace CIS.Core.Security
 {
-    public interface ICisUser
+    public interface ICurrentUser
     {
         int Id { get; }
 

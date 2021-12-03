@@ -13,6 +13,7 @@ internal class SimulateBuildingSavingsCommandHandler
         var timestamp = DateTime.Now;
         _logger.LogInformation("Run Savings simulation in {time} with {inputs}", timestamp, request);
 
+        var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
         var simulationType = request.Request.InputData.IsWithLoan ? SimulationTypes.BuildingSavingsWithLoan : SimulationTypes.BuildingSavings;
         var inputs = request.Request.InputData.ToContract();
 
@@ -31,7 +32,7 @@ internal class SimulateBuildingSavingsCommandHandler
         var scheduleItems = result.ToScheduleItems();
 
         // ulozit do databaze
-        int modelationId = await _repository.Save(simulationType, timestamp, request.Request.InputData, savingsData, loanData, scheduleItems);
+        int modelationId = await _repository.Save(resourceProcessId, simulationType, timestamp, request.Request.InputData, savingsData, loanData, scheduleItems);
 
         _logger.LogInformation("Simulation #{id} created", modelationId);
 
@@ -41,7 +42,7 @@ internal class SimulateBuildingSavingsCommandHandler
             BuildingSavings = savingsData,
             Loan = loanData,
             OfferInstanceId = modelationId,
-            InsertStamp = new(_userProvider.Get()?.Id ?? 0, timestamp)
+            InsertStamp = new(_userProvider.User?.Id ?? 0, timestamp)
         };
     }
 
@@ -61,13 +62,13 @@ internal class SimulateBuildingSavingsCommandHandler
     private readonly Repositories.SimulateBuildingSavingsRepository _repository;
     private readonly ILogger<SimulateBuildingSavingsCommandHandler> _logger;
     private readonly Eas.IEasClient _easClient;
-    private readonly CIS.Core.Security.ICurrentUserProvider _userProvider;
+    private readonly CIS.Core.Security.ICurrentUserAccessor _userProvider;
 
     public SimulateBuildingSavingsCommandHandler(
         Repositories.SimulateBuildingSavingsRepository repository,
         ILogger<SimulateBuildingSavingsCommandHandler> logger,
         Eas.IEasClient easClient, CIS.Core.Security.
-        ICurrentUserProvider userProvider)
+        ICurrentUserAccessor userProvider)
     {
         _repository = repository;
         _logger = logger;

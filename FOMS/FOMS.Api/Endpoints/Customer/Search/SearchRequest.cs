@@ -1,7 +1,7 @@
-﻿namespace FOMS.Api.Endpoints.Party.Dto;
+﻿namespace FOMS.Api.Endpoints.Customer.Dto;
 
 internal sealed class SearchRequest
-    : IRequest<List<Dto.SearchResponse>>
+    : IRequest<List<SearchResponse>>
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

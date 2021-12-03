@@ -25,5 +25,9 @@ internal class SimulateBuildingSavingsRequestValidator : AbstractValidator<Dto.S
         RuleFor(t => t.Request.InputData.IsWithLoan)
             .Must((data, isWithLoan) => !isWithLoan || data.Request.InputData.LoanActionCode.GetValueOrDefault(0) > 0)
             .WithMessage(t => $"LoanActionCode (={t.Request.InputData.LoanActionCode}) must be >= 0").WithErrorCode("10006");
+
+        RuleFor(t => t.Request.ResourceProcessId)
+            .Must((_, resourceProcessId) => !Guid.TryParse(resourceProcessId, out Guid g))
+            .WithMessage("ResourceProcessId is missing or is in invalid format");
     }
 }

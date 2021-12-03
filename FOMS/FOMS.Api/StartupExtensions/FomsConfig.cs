@@ -7,8 +7,8 @@ internal static class FomsConfig
         Infrastructure.Configuration.AppConfiguration appConfiguration = new();
 
         // bind from config files
-        builder.Configuration.Bind("FOMS", appConfiguration);
+        builder.Configuration.Bind("NOBY", appConfiguration);
         // register to DI
-        builder.Services.AddSingleton<Core.IAppConfiguration>(appConfiguration);
+        builder.Services.AddSingleton(appConfiguration);
     }
 }

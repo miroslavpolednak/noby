@@ -10,7 +10,7 @@ namespace CIS.Infrastructure.StartupExtensions
         /// </summary>
         public static IServiceCollection AddCisCurrentUser(this IServiceCollection services)
         {
-            services.TryAddScoped<CIS.Core.Security.ICurrentUserProvider, Security.CisCurrentUserProvider>();
+            services.TryAddScoped<CIS.Core.Security.ICurrentUserAccessor, Security.CisCurrentUserAccessor>();
 
             return services;
         }

@@ -11,10 +11,10 @@ namespace CIS.Infrastructure.Data
         /// </summary>
         protected int? _currentUserId = null;
 
-        public BaseDbContext(DbContextOptions options, Core.Security.ICurrentUserProvider userProvider)
+        public BaseDbContext(DbContextOptions options, Core.Security.ICurrentUserAccessor userProvider)
             : base(options)
         {
-            _currentUserId = userProvider.Get()?.Id;
+            _currentUserId = userProvider.User?.Id;
         }
 
         /// <summary>
