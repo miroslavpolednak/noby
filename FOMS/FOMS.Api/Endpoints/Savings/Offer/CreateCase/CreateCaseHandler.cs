@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions;
-using CIS.Core.Results;
+﻿using CIS.Core.Results;
 using DomainServices.OfferService.Abstraction;
 using FOMS.Api.Endpoints.Savings.Offer.Dto;
 
@@ -11,23 +10,54 @@ internal class CreateCaseHandler
     public async Task<int> Handle(CreateCaseRequest request, CancellationToken cancellationToken)
     {
         // vytvorit case
+        long caseId = await createCase(request);
+
+        // vytvorit zadost
+        int salesArrangementId = resolveSalesArrangementResult(await _salesArrangementService.CreateSalesArrangement(caseId, _configuration.Savings.SavingsSalesArrangementType));
+
+        // bind offer to SA
+
+        // vytvorit produkt, pokud se jedna o finalni simulaci
+        if (request.CreateProduct)
+            resolveProductResult(await _productService.CreateProductInstance(caseId, _configuration.Savings.SavingsProductInstanceType));
+
+        return salesArrangementId;
+    }
+
+    private int resolveProductResult(IServiceCallResult result) =>
+        result switch
+        {
+            SuccessfulServiceCallResult<int> r => r.Model,
+            SimulationServiceErrorResult e1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors),
+            _ => throw new NotImplementedException()
+        };
+
+    private int resolveSalesArrangementResult(IServiceCallResult result) =>
+        result switch
+        {
+            SuccessfulServiceCallResult<int> r => r.Model,
+            SimulationServiceErrorResult e1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors),
+            _ => throw new NotImplementedException()
+        };
+
+    private async Task<long> createCase(CreateCaseRequest request)
+    {
         var caseModel = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
             PartyId = _userAccessor.User.Id,
-            ProductInstanceType = 1,
+            ProductInstanceType = _configuration.Savings.SavingsProductInstanceType,
             DateOfBirthNaturalPerson = request.Request.DateOfBirth,
             FirstNameNaturalPerson = request.Request.FirstName,
             Name = request.Request.LastName
         };
+        if (request.Customer is not null)
+            caseModel.Customer = new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Customer);
+
         _logger.LogInformation("Create case with {model}", caseModel);
-        long caseId = resolveCaseResult(await _caseService.CreateCase(caseModel));
 
-        // vytvorit zadost
-        //_salesArrangementService.CreateSalesArrangement(caseId, _configuration.Savings.SavingsProductInstanceType, )
-
-        return 1;
+        return resolveCaseResult(await _caseService.CreateCase(caseModel));
     }
-
+    
     private long resolveCaseResult(IServiceCallResult result) =>
         result switch
         {
@@ -37,6 +67,7 @@ internal class CreateCaseHandler
             _ => throw new NotImplementedException()
         };
 
+    private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly DomainServices.CaseService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly Infrastructure.Configuration.AppConfiguration _configuration;
@@ -47,9 +78,11 @@ internal class CreateCaseHandler
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ILogger<CreateCaseHandler> logger,
         Infrastructure.Configuration.AppConfiguration configuration,
+        DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService, 
         DomainServices.CaseService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _productService = productService;
         _userAccessor = userAccessor;
         _logger = logger;
         _configuration = configuration;

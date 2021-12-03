@@ -14,6 +14,8 @@ internal class CreateCaseModel : CIS.Core.Data.BaseInsertable
     
     public int PartyId { get; set; }
     
+    public CIS.Core.IdentitySchemes CustomerIdentityScheme { get; set; }
+
     public int? CustomerIdentityId { get; set; }
     
     public string? FirstNameNaturalPerson { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace CIS.Core;
 
-public enum MandantTypes
+public enum IdentitySchemes : byte
 {
     Unknown = 0,
 

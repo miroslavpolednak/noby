@@ -7,7 +7,7 @@ internal sealed class CreateSalesArrangementMediatrRequest
 {
     public long CaseId { get; init; }
     public int SalesArrangementType { get; init; }
-    public long ProductInstanceId { get;init; }
+    public long? ProductInstanceId { get;init; }
 
     public CreateSalesArrangementMediatrRequest(CreateSalesArrangementRequest request)
     {

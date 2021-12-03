@@ -28,5 +28,5 @@ public interface IEasClient
     /// <returns>
     /// SuccessfulServiceCallResult[long] -> nove SporeniId (CaseId)
     /// </returns>
-    Task<IServiceCallResult> GetCaseId(CIS.Core.MandantTypes mandant, int productInstanceType);
+    Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int productInstanceType);
 }

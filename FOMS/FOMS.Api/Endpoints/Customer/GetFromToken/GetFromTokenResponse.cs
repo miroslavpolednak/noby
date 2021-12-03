@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Customer.Dto;
 
-internal class GetFromContextResponse
+internal class GetFromTokenResponse
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

@@ -26,7 +26,7 @@ internal class CreateCaseHandler
         {
             case CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings:
             case CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan:
-                newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.MandantTypes.MP, request.Request.ProductInstanceType));
+                newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.MP, request.Request.ProductInstanceType));
                 break;
 
             default:
@@ -41,6 +41,7 @@ internal class CreateCaseHandler
                 CaseId = newCaseId.Value,
                 Name = request.Request.Name,
                 FirstNameNaturalPerson = request.Request.FirstNameNaturalPerson,
+                CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(request.Request.Customer?.IdentityScheme ?? CIS.Infrastructure.gRPC.CisTypes.IdentitySchemes.Unknown),
                 CustomerIdentityId = request.Request.Customer?.IdentityId,
                 State = defaultCaseState,
                 PartyId = request.Request.PartyId,

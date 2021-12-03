@@ -10,7 +10,7 @@ internal class CreateSalesArrangementModel : CIS.Core.Data.BaseInsertable
 
     public long CaseId { get; set; }
 
-    public long ProductInstanceId { get; set; }
+    public long? ProductInstanceId { get; set; }
 
     public int SalesArrangementType { get; set; }
 }

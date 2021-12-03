@@ -19,5 +19,6 @@ internal static class FomsServices
                 .WithTransientLifetime());
 
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
     }
 }

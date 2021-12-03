@@ -4,7 +4,7 @@ namespace DomainServices.CaseService.Abstraction;
 
 public interface ISalesArrangementServiceAbstraction
 {
-    Task<IServiceCallResult> CreateSalesArrangement(long caseId, long productInstanceId, int salesArrangementType);
+    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null);
 
     Task<IServiceCallResult> GetSalesArrangementDetail(long salesArrangementId);
     

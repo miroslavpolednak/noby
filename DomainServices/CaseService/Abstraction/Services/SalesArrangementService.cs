@@ -6,7 +6,7 @@ namespace DomainServices.CaseService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public Task<IServiceCallResult> CreateSalesArrangement(long caseId, long productInstanceId, int salesArrangementType)
+    public Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null)
     {
         throw new NotImplementedException();
     }

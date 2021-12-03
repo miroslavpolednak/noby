@@ -22,6 +22,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Core\CIS.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Protobuf Include="./Protos/GrpcDate.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
 		<Protobuf Include="./Protos/GrpcDecimal.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
 		<Protobuf Include="./Protos/ModificationStamp.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />

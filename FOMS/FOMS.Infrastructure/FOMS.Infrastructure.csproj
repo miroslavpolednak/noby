@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\FOMS.Core\FOMS.Core.csproj" />
   </ItemGroup>
 

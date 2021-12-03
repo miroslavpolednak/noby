@@ -3,6 +3,7 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "google/protobuf/any.proto";
+import "google/protobuf/wrappers.proto";
 
 message SalesArrangementIdRequest {
 	int32 SalesArrangementId = 1;
@@ -19,7 +20,7 @@ message SalesArrangementListModel {
 message CreateSalesArrangementRequest {
 	int64 CaseId = 1;
 	int32 SalesArrangementType = 2;
-	int64 ProductInstanceId = 3;
+	google.protobuf.Int64Value ProductInstanceId = 3;
 }
 message CreateSalesArrangementResponse {
 	int32 SalesArrangementId = 1;

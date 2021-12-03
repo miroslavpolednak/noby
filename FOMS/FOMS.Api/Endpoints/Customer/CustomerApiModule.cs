@@ -12,13 +12,13 @@ internal class CustomerApiModule : IApiEndpointModule
         var mediatr = builder.ServiceProvider.GetRequiredService<IMediator>();
 
         // vraci klienta podle tokenu z externi app
-        builder.MapGet(_prefix + "/from-context", async ([FromQuery] string token) => await mediatr.Send(new Dto.GetFromContextRequest(token)))
+        builder.MapGet(_prefix + "/from-token", async ([FromQuery] string token) => await mediatr.Send(new Dto.GetFromTokenRequest(token)))
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces<Dto.GetFromContextResponse>(StatusCodes.Status200OK);
+            .Produces<Dto.GetFromTokenResponse>(StatusCodes.Status200OK);
 
         // vyhledani klienta
         builder.MapPost(_prefix + "/search", async ([FromBody] Dto.SearchRequest request) => await mediatr.Send(request))
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces<Dto.GetFromContextResponse>(StatusCodes.Status200OK);
+            .Produces<Dto.GetFromTokenResponse>(StatusCodes.Status200OK);
     }
 }
