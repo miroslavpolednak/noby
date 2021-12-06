@@ -18,7 +18,8 @@ Spuštění služby:
 
 Testování endpointu pomocí *grpcurl* (https://github.com/fullstorydev/grpcurl):
 
-        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/MyTestCodebook
+        grpcurl -insecure 172.30.35.51:5006 list DomainServices.CodebookService
+        grpcurl -insecure -H "Authorization: Basic YTph" 172.30.35.51:5006 DomainServices.CodebookService/MyTestCodebook
 
 
 ## Struktura solution - Visual Studio projects
