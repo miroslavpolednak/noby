@@ -3,6 +3,7 @@ using DomainServices.OfferService.Abstraction;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.ProductService.Abstraction;
+using DomainServices.CaseService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using System.Reflection;
 
@@ -23,6 +24,7 @@ builder.Services.AddOfferService(true);
 builder.Services.AddCodebookService(true);
 builder.Services.AddCustomerService(true);
 builder.Services.AddProductService(true);
+builder.Services.AddCaseService(true);
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);

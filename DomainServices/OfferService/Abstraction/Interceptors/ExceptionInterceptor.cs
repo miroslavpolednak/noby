@@ -40,7 +40,8 @@ internal class ExceptionInterceptor : Interceptor
             var excode = ex.GetExceptionCodeFromTrailers();
             var exmessage = ex.GetErrorMessageFromRpcException();
             _logger.LogError("EAS error {code} || {message}", excode, exmessage);
-            throw new CisArgumentException(excode, exmessage, ex.GetArgumentFromTrailers());
+
+            throw new CisValidationException(ex.GetErrorMessagesFromRpcException(), exmessage);
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.Aborted) // EAS/sim nebylo mozne zavolat
         {

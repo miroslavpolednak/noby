@@ -54,6 +54,17 @@ public static class GrpcStartupExtensions
         });
     }
 
+    public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services)
+        where TService : class 
+        where TServiceUriSettings : class
+    {
+        return services.AddGrpcClient<TService>((provider, options) =>
+        {
+            var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
+            options.Address = serviceUri.Url;
+        });
+    }
+
     public static IHttpClientBuilder ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<TService>(this IHttpClientBuilder builder)
         where TService : class
     {

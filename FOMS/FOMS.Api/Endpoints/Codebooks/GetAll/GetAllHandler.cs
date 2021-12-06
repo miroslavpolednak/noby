@@ -7,8 +7,12 @@ internal class GetAllHandler
     {
         List<Dto.GetAllResponseItem> model = new();
 
+        _logger.LogDebug("Getting {codebooks}", request.CodebookCodes);
+
         foreach (var code in request.CodebookCodes)
             model.Add(await fillCodebook(code.Key, code.Original));
+
+        _logger.LogDebug("{count} codebooks resolved", model.Count());
 
         return model;
     }
@@ -29,9 +33,11 @@ internal class GetAllHandler
         };
 
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebooks;
+    private readonly ILogger<GetAllHandler> _logger;
 
-    public GetAllHandler(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebooks)
+    public GetAllHandler(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebooks, ILogger<GetAllHandler> logger)
     {
+        _logger = logger;
         _codebooks = codebooks;
     }
 }

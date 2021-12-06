@@ -45,6 +45,7 @@ public static class CaseServiceExtensions
 
         // register storage services
         services.TryAddTransient<ICaseServiceAbstraction, Services.CaseService>();
+        services.TryAddTransient<ISalesArrangementServiceAbstraction, Services.SalesArrangementService>();
 
         // exception handling
         services.TryAddSingleton<ExceptionInterceptor>();
@@ -59,6 +60,15 @@ public static class CaseServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
+                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
+                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<AuthenticationInterceptor>();
+        }
+
+        if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient)))
+        {
+            services
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.CaseService.CaseServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();

@@ -31,10 +31,10 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
+		<ProjectReference Include="..\Endpoints\DomainServices.CodebookService.Endpoints.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ApiGenerators\DomainServices.CodebookService.ApiGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\Endpoints\DomainServices.CodebookService.Endpoints.csproj" />
 	</ItemGroup>
 </Project>

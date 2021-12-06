@@ -9,17 +9,24 @@ internal class CreateCaseHandler
 {
     public async Task<int> Handle(CreateCaseRequest request, CancellationToken cancellationToken)
     {
+        _logger.LogDebug("Create case for {offerInstanceId}", request.OfferInstanceId);
+
         // vytvorit case
         long caseId = await createCase(request);
+        _logger.LogDebug("Case #{caseId} created", caseId);
 
         // vytvorit zadost
         int salesArrangementId = resolveSalesArrangementResult(await _salesArrangementService.CreateSalesArrangement(caseId, _configuration.Savings.SavingsSalesArrangementType));
+        _logger.LogDebug("Sales arrangement #{salesArrangementId} created", salesArrangementId);
 
         // bind offer to SA
 
         // vytvorit produkt, pokud se jedna o finalni simulaci
         if (request.CreateProduct)
-            resolveProductResult(await _productService.CreateProductInstance(caseId, _configuration.Savings.SavingsProductInstanceType));
+        {
+            var productId = resolveProductResult(await _productService.CreateProductInstance(caseId, _configuration.Savings.SavingsProductInstanceType));
+            _logger.LogDebug("Product #{productInstanceId} created", productId);
+        }
 
         return salesArrangementId;
     }
