@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 
 // logging 
-builder.Host.UseAppLogging();
+builder.Host.AddCisLogging();
 
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);

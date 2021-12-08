@@ -17,7 +17,7 @@ builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 builder.Services.AddCisCoreFeatures();
 builder.Services.AddCisCurrentUser();
 builder.Services.AddCisWebApiCors();
-builder.Host.UseAppLogging();
+builder.Host.AddCisLogging();
 
 // add domain services
 builder.Services.AddOfferService(true);

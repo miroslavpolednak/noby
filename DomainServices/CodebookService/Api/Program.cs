@@ -29,7 +29,7 @@ builder.Services.AddSingleton(appConfiguration);
 builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 
 // logging 
-builder.Host.UseAppLogging();
+builder.Host.AddCisLogging();
 
 // add mediatr
 builder.Services.AddMediatR(assembly);

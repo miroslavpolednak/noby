@@ -28,7 +28,7 @@ builder.Services.AddSingleton(appConfiguration);
 builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 
 // logging 
-builder.Host.UseAppLogging();
+builder.Host.AddCisLogging();
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);
