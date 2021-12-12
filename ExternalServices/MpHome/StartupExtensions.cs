@@ -6,7 +6,7 @@ namespace ExternalServices.MpHome;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddExternalServiceEas(this IServiceCollection services, MpHomeConfiguration? mpHomeConfiguration)
+    public static IServiceCollection AddExternalServiceMpHome(this IServiceCollection services, MpHomeConfiguration? mpHomeConfiguration)
     {
         if (mpHomeConfiguration == null)
             throw new ArgumentNullException(nameof(mpHomeConfiguration), "MpHome configuration not set");

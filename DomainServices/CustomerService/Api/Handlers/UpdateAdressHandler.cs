@@ -20,7 +20,7 @@ namespace DomainServices.CustomerService.Api.Handlers
         {
             _logger.LogInformation("Run UpdateAdress with {inputs}", request);
 
-            await _mpHome.UpdateAddress(request.Request.Address.ToMpHomeAddress(), request.Request.Identity);
+            (await _mpHome.UpdateAddress(request.Request.Address.ToMpHomeAddress(), request.Request.Identity)).CheckMpHomeResult();
 
             return new Empty();
         }

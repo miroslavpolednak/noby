@@ -1,6 +1,4 @@
-﻿using Grpc.Core;
-using CIS.Infrastructure.gRPC;
-using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf.WellKnownTypes;
 using DomainServices.CustomerService.Dto;
 
 namespace DomainServices.CustomerService.Api.Handlers
@@ -20,7 +18,7 @@ namespace DomainServices.CustomerService.Api.Handlers
         {
             _logger.LogInformation("Run DeleteContact with {inputs}", request);
 
-            await _mpHome.DeleteContact(request.Request.ContactId, request.Request.Identity);
+            (await _mpHome.DeleteContact(request.Request.ContactId, request.Request.Identity)).CheckMpHomeResult();
 
             return new Empty();
         }

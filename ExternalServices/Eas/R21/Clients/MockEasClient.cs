@@ -26,4 +26,9 @@ internal sealed class MockEasClient : IEasClient
     {
         return new SuccessfulServiceCallResult<long>(1);
     }
+
+    public async Task<IServiceCallResult> NewKlient(S_KLIENTDATA client)
+    {
+        return await Task.FromResult(new SuccessfulServiceCallResult<S_KLIENTDATA>(new S_KLIENTDATA() { klient_id = 123 }));
+    }
 }

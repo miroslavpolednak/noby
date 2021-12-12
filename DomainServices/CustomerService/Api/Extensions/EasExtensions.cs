@@ -1,15 +1,14 @@
-﻿using DomainServices.CustomerService.Api.ExternalServices.EAS.EasWrapper;
-using DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Api.ExternalServices.EAS;
+namespace DomainServices.CustomerService.Api;
 
-internal static class Extensions
+internal static class EasExtensions
 {
-    public static S_KLIENTDATA ToEasKlientData(this CreateRequest model) 
+    public static Eas.EasWrapper.S_KLIENTDATA ToEasKlientData(this CreateRequest model) 
     {
         var typKlienta = model.EasTypKlienta();
 
-        var partner = new S_KLIENTDATA
+        var partner = new Eas.EasWrapper.S_KLIENTDATA
         {
             klient_type = (int)typKlienta,
             rodne_cislo_ico = model.BirthNumber,

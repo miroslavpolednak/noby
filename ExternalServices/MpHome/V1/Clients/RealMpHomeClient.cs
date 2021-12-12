@@ -6,9 +6,18 @@ namespace ExternalServices.MpHome.V1
     {
         public RealMpHomeClient(HttpClient httpClient, ILogger<RealMpHomeClient> logger) : base(httpClient, logger) { }
 
-        public Task<IServiceCallResult> Create(PartnerRequest partner, int partnerId)
+        public async Task<IServiceCallResult> Create(PartnerRequest partner, int partnerId) 
         {
-            throw new NotImplementedException();
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdatePartnerAsync(partnerId, partner);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
         }
 
         public async Task<IServiceCallResult> CreateContact(ContactData contact, int partnerId)
@@ -26,7 +35,7 @@ namespace ExternalServices.MpHome.V1
         }
 
         public async Task<IServiceCallResult> DeleteContact(int contactId, int partnerId)
-        {
+        { 
             return await WithClient(async c => {
 
                 return await callMethod(async () => {
@@ -39,23 +48,50 @@ namespace ExternalServices.MpHome.V1
             });
         }
 
-        public Task<IServiceCallResult> UpdateAddress(AddressData address, int partnerId)
-        {
-            throw new NotImplementedException();
+        public async Task<IServiceCallResult> UpdateAddress(AddressData address, int partnerId)
+        { 
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdateAddressAsync(partnerId, address);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
         }
 
-        public Task<IServiceCallResult> UpdateBaseData(PartnerBaseRequest partner, int partnerId)
-        {
-            throw new NotImplementedException();
+        public async Task<IServiceCallResult> UpdateBaseData(PartnerBaseRequest partner, int partnerId)
+        { 
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdatePartner2Async(partnerId, partner);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
         }
 
-        public Task<IServiceCallResult> UpdateIdentificationDocument(IdentificationDocument identificationDocument, int partnerId)
-        {
-            throw new NotImplementedException();
+        public async Task<IServiceCallResult> UpdateIdentificationDocument(IdentificationDocument identificationDocument, int partnerId)
+        { 
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdateIdentificationDocumentAsync(partnerId, identificationDocument);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
         }
 
         private Client CreateClient()
-        => new(_httpClient?.BaseAddress?.ToString(), _httpClient);
+            => new(_httpClient?.BaseAddress?.ToString(), _httpClient);
 
         private async Task<IServiceCallResult> WithClient(Func<Client, Task<IServiceCallResult>> fce)
         {

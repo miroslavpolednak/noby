@@ -1,8 +1,5 @@
-﻿using Grpc.Core;
-using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
-using CIS.Core.Results;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {

@@ -128,27 +128,45 @@ internal static class MpHomeExtensions
             }
         };
 
-    public static T ToMpHomeResult<T>(this IServiceCallResult result) =>
-        result switch
+    // TODO: jinak, jinam + status, code, text ...
+    public static T ToMpHomeResult<T>(this IServiceCallResult result) {
+        CheckMpHomeResult(result);
+
+        var ret = result switch
         {
             SuccessfulServiceCallResult<T> r => r.Model,
-            SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ApiException<MpHome.MpHomeWrapper.ModelErrorWrapper>> r => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Incorrect inputs to MpHome: {r.Model.Result.Title}", 10011, r.Model.Result.Errors.Select(s => (s.Key, Value: s.Value.First())).ToList()),
-            SuccessfulServiceCallResult<MpHome.MpHomeWrapper.Error> r => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"MpHome error: {r.Model.Title}", 10011, new()
-            {
-                ("mphomeerrorcode", r.Model.Code),
-                ("mphomeerrortext", r.Model.Message)
-            }),
-            SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ProblemDetails> r => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"MpHome error: {r.Model.Title}", 10011, new()
-            {
-                ("mphomeerrorcode", r.Model.Status?.ToString() ?? "404"),
-                ("mphomeerrortext", "Not Found")
-            }),
-            SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ApiException> r => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to MpHome", 10011, new()
-            {
-                ("mphomeerrorcode", r.Model.StatusCode.ToString()),
-                ("mphomeerrortext", r.Model.Message)
-            }),
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
             _ => throw new NotImplementedException()
         };
+
+        return ret;
+    }
+
+    public static void CheckMpHomeResult(this IServiceCallResult result) {
+
+        switch (result) {
+            case SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ApiException<MpHome.MpHomeWrapper.ModelErrorWrapper>> r:
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Incorrect inputs to MpHome: {r.Model.Result.Title}", 10011, r.Model.Result.Errors.Select(s => (s.Key, Value: s.Value.First())).ToList());
+            case SuccessfulServiceCallResult<MpHome.MpHomeWrapper.Error> r:
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"MpHome error: {r.Model.Title}", 10011, new()
+                {
+                    ("mphomeerrorcode", r.Model.Code),
+                    ("mphomeerrortext", r.Model.Message)
+                });
+            case SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ProblemDetails> r:
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"MpHome error: {r.Model.Title}", 10011, new()
+                {
+                    ("mphomeerrorcode", r.Model.Status?.ToString() ?? "404"),
+                    ("mphomeerrortext", "Not Found")
+                });
+            case SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ApiException> r:
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to MpHome", 10011, new()
+                {
+                    ("mphomeerrorcode", r.Model.StatusCode.ToString()),
+                    ("mphomeerrortext", r.Model.Message)
+                });
+            case ErrorServiceCallResult err:
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key);
+        }
+
+    }
 }
