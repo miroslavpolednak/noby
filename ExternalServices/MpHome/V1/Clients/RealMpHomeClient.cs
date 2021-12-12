@@ -48,6 +48,11 @@ namespace ExternalServices.MpHome.V1
             });
         }
 
+        public Task<IServiceCallResult> DeletePartnerLoanLink(long loanId, long partnerId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IServiceCallResult> UpdateAddress(AddressData address, int partnerId)
         { 
             return await WithClient(async c => {
@@ -83,6 +88,48 @@ namespace ExternalServices.MpHome.V1
                 return await callMethod(async () => {
 
                     await c.FomsUpdateIdentificationDocumentAsync(partnerId, identificationDocument);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
+        }
+
+        public async Task<IServiceCallResult> UpdateLoan(long loanId, LoanRequest loanRequest)
+        {
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdateLoanAsync(loanId, loanRequest);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
+        }
+
+        public async Task<IServiceCallResult> UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest)
+        {
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdateLoanPartnerLinkAsync(loanId, partnerId, loanLinkRequest);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
+        }
+
+        public async Task<IServiceCallResult> UpdateSavings(long savingId, SavingRequest savingRequest)
+        {
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdateSavingsAsync(savingId, savingRequest);
 
                     return new SuccessfulServiceCallResult();
                 });
