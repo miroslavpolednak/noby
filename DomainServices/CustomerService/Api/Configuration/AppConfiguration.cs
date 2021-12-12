@@ -1,4 +1,6 @@
 ﻿
+using ExternalServices.MpHome;
+
 namespace DomainServices.CustomerService.Api;
 
 internal sealed class AppConfiguration
@@ -28,17 +30,17 @@ internal sealed class AppConfiguration
     /// </summary>
     public MpHomeConfiguration MpHome { get; set; } = new MpHomeConfiguration();
 
-    public class MpHomeConfiguration
-    {
-        public CIS.Core.ServiceImplementationTypes Implementation { get; set; }
+    //public class MpHomeConfiguration
+    //{
+    //    public CIS.Core.ServiceImplementationTypes Implementation { get; set; }
 
-        /// <summary>
-        /// URL endpointu
-        /// </summary>
-        public string ServiceUrl { get; set; } = string.Empty;
+    //    /// <summary>
+    //    /// URL endpointu
+    //    /// </summary>
+    //    public string ServiceUrl { get; set; } = string.Empty;
 
-        public string Username { get; set; } = string.Empty;
+    //    public string Username { get; set; } = string.Empty;
 
-        public string Password { get; set; } = string.Empty;
-    }
+    //    public string Password { get; set; } = string.Empty;
+    //}
 }

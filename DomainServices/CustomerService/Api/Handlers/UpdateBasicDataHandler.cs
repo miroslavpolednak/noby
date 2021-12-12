@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Api.ExternalServices.MpHome;
 using Grpc.Core;
 using Google.Protobuf.WellKnownTypes;
 using DomainServices.CustomerService.Dto;
@@ -9,9 +8,9 @@ namespace DomainServices.CustomerService.Api.Handlers
     internal class UpdateBasicDataHandler : IRequestHandler<UpdateBasicDataMediatrRequest, Empty>
     {
         private readonly ILogger<UpdateBasicDataHandler> _logger;
-        private readonly ExternalServices.MpHome.IMpHomeClient _mpHome;
+        private readonly MpHome.IMpHomeClient _mpHome;
 
-        public UpdateBasicDataHandler(ILogger<UpdateBasicDataHandler> logger, ExternalServices.MpHome.IMpHomeClient mpHome)
+        public UpdateBasicDataHandler(ILogger<UpdateBasicDataHandler> logger, MpHome.IMpHomeClient mpHome)
         {
             _logger = logger;
             _mpHome = mpHome;
