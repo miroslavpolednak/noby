@@ -11,7 +11,7 @@ internal class KonsDbRepository : DapperBaseRepository<KonsDbRepository>
     const string sqlGetDetail = @"Select Id, RodneCisloIco, Titul, TitulZa, Jmeno, Prijmeni,
         DatumNarozeni, MistoNarozeni, Pohlavi, ZdrojDat, TypDokladu, PreukazPlatnostDo,
         PrukazTotoznosti, PrukazVydal, PrukazStatVydaniId, PrukazVydalDatum,
-        Ulice, VypisyUlice, CisloDomu2, VypisyCisloDomu2, CisloDomu1, VypisyCisloDomu1,
+        Ulice, VypisyUlice, CisloDomu2, VypisyCisloDomu2, CisloDomu4, VypisyCisloDomu4,
         Psc, VypisyPsc, Misto, VypisyMisto,
         b.KontaktId, b.PrimarniKontakt, b.TypKontaktu, b.[Value] 
         From dbo.PARTNER a

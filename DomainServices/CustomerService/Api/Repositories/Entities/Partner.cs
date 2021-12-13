@@ -47,9 +47,9 @@ internal record Partner
 
     public string? VypisyCisloDomu2 {  get; init; }
 
-    public string? CisloDomu1 {  get; init; }
+    public string? CisloDomu4 {  get; init; }
 
-    public string? VypisyCisloDomu1 {  get; init; }
+    public string? VypisyCisloDomu4 {  get; init; }
 
     public string? Psc { get; init; }
 

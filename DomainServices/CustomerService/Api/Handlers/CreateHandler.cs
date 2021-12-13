@@ -25,14 +25,14 @@ namespace DomainServices.CustomerService.Api.Handlers
 
             // vytvorit klienta v eas kvuli rezervaci id partnera
             var easResult = getEasResult(await _eas.NewKlient(request.Request.ToEasKlientData()));
-            //var easResult = new ExternalServices.EAS.EasWrapper.S_KLIENTDATA { klient_id = 300495957 };
+            //var easResult = new Eas.EasWrapper.S_KLIENTDATA { klient_id = 300500167 };
 
             // u cizincu aktualizovat data v modelu
             if (request.Request.EasTypKlienta() == EasKlientTypes.CizinecBezRc)
                 request.Request.BirthNumber = easResult.rodne_cislo_ico;
 
             // poslat klienta do mphome
-            await _mpHome.Create(request.Request.ToMpHomePartner(), easResult.klient_id);
+            (await _mpHome.Create(request.Request.ToMpHomePartner(), easResult.klient_id)).CheckMpHomeResult();
 
             return await Task.FromResult(new CreateResponse { Identity = easResult.klient_id });
         }
