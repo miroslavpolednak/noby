@@ -61,11 +61,11 @@ namespace DomainServices.CustomerService.Api
                 {
                     model.Addresses.Add(new Address
                     {
-                        BuildingIdentificationNumber = nr2 ?? "",
+                        BuildingIdentificationNumber = nr4 ?? "",
                         City = city ?? "",
                         CountryCode = "",
                         IsPrimary = type == AddressTypes.Mailing,
-                        LandRegistryNumber = nr4 ?? "",
+                        LandRegistryNumber = nr2 ?? "",
                         Postcode = zip ?? "",
                         Street = street ?? "",
                         Type = type
