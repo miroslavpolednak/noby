@@ -76,7 +76,7 @@ internal class CreateCaseHandler
 
     private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
-    private readonly DomainServices.CaseService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly Infrastructure.Configuration.AppConfiguration _configuration;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
@@ -87,7 +87,7 @@ internal class CreateCaseHandler
         Infrastructure.Configuration.AppConfiguration configuration,
         DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService, 
-        DomainServices.CaseService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _productService = productService;
         _userAccessor = userAccessor;

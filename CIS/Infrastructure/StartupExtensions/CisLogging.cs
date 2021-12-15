@@ -2,7 +2,6 @@
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Reflection;
-using System.Linq;
 
 namespace CIS.Infrastructure.StartupExtensions;
 

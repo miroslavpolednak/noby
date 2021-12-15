@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <None Remove="CaseService.v1.proto" />
-    <None Remove="SalesArrangementService.v1.proto" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -32,9 +31,5 @@
 	<ItemGroup>
 		<Protobuf Include="CaseService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CaseServiceTypes.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangementServiceTypes.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-
-		<Protobuf Include="./SalesArrangements/Form1001.proto" GrpcServices="None" AdditionalImportDirs="../../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>

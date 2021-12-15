@@ -1,7 +1,0 @@
-﻿syntax = "proto3";
-package DomainServices.CaseService.SalesArrangements;
-option csharp_namespace = "DomainServices.CaseService.Contracts.SalesArrangements";
-
-message Form1001 {
-	int32 Version = 1;
-}

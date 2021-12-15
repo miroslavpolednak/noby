@@ -32,8 +32,4 @@
 		<ProjectReference Include="..\Contracts\DomainServices.CaseService.Contracts.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Code\" />
-	</ItemGroup>
-
 </Project>
