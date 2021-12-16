@@ -1,0 +1,10 @@
+﻿TargetAmount,ProductCode,ActionCode,ClientIsNaturalPerson,ClientIsSVJ,IsWithLoan,StateSubsidy,LoanActionCode
+460000,61,30,true,false,false,false,4
+300000,61,30,true,false,false,false,4
+100000,61,30,true,false,false,true,4
+100000,61,30,true,false,true,false,4
+100000,61,30,true,false,true,true,4
+100000,61,30,false,false,false,false,4
+100000,61,30,false,true,false,false,4
+100000,61,30,false,false,true,false,4
+100000,61,30,false,true,true,false,4
