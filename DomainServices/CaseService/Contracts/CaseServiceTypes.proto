@@ -10,7 +10,7 @@ import "google/protobuf/wrappers.proto";
 
 message CreateCaseRequest {
 	cis.types.Identity Customer = 1;
-	int32 PartyId = 2;
+	int32 UserId = 2;
 	string FirstNameNaturalPerson = 3;
 	string Name = 4;
 	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
@@ -26,7 +26,7 @@ message GetCaseDetailRequest {
 message GetCaseDetailResponse {
 	int64 CaseId = 1;
 	int32 State = 2;
-	int32 PartyId = 3;
+	int32 UserId = 3;
 	int32 ProductInstanceType = 4;
 	string ContractNumber = 5;
 	bool ActionRequired = 6;
@@ -43,7 +43,7 @@ message CaseListModel {
 	string ContractNumber = 7;
 }
 message GetCaseListRequest {
-	int32 PartyId = 1;
+	int32 UserId = 1;
 	google.protobuf.Int32Value State = 2;
 	cis.types.PaginationRequest Pagination = 3;
 }
@@ -54,7 +54,7 @@ message GetCaseListResponse {
 
 message LinkOwnerToCaseRequest {
 	int64 CaseId = 1;
-	int32 PartyId = 2;
+	int32 UserId = 2;
 }
 
 message UpdateCaseDataRequest {

@@ -3,6 +3,8 @@ package DomainServices.OfferService.v1;
 option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 
 import "Types.proto";
+import "TypesMortgage.proto";
+import "TypesHousingSavings.proto";
 
 service OfferService {
    rpc GetBuildingSavingsData (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetBuildingSavingsDataResponse);
@@ -10,4 +12,7 @@ service OfferService {
    rpc GetBuildingSavingsPaymentSchedule (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetBuildingSavingsScheduleResponse);
    rpc PrintBuildingSavingsOffer (DomainServices.OfferService.PrintBuildingSavingsOfferRequest) returns (DomainServices.OfferService.PrintBuildingSavingsOfferResponse);
    rpc SimulateBuildingSavings (DomainServices.OfferService.SimulateBuildingSavingsRequest) returns (DomainServices.OfferService.SimulateBuildingSavingsResponse);
+
+   rpc SimulateMortgage (DomainServices.OfferService.SimulateMortgageRequest) returns (DomainServices.OfferService.SimulateMortgageResponse);
+   rpc GetMortgageData (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetMortgageDataResponse);
 }

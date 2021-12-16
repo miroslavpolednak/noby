@@ -20,7 +20,6 @@ internal class SimulateBuildingSavingsRepository
     public async Task<int> Save(
         Guid resourceProcessId,
         SimulationTypes simulationType,
-        DateTime timestamp, 
         BuildingSavingsInput inputs, 
         BuildingSavingsData? buildingSavingsData, 
         LoanData? loanData, 
@@ -29,7 +28,6 @@ internal class SimulateBuildingSavingsRepository
         var entity = new Entities.OfferInstance
         {
             ResourceProcessId = resourceProcessId,
-            InsertTime = timestamp,
             SimulationType = (byte)simulationType,
             OutputBuildingSavings = JsonSerializer.Serialize(buildingSavingsData),
             OutputScheduleItems = JsonSerializer.Serialize(scheduleItems),
@@ -52,8 +50,8 @@ internal class SimulateBuildingSavingsRepository
             .Select(t => new
             {
                 SimulationType = t.SimulationType,
-                InsertTime = t.InsertTime,
-                InsertUserId = t.InsertUserId ?? 0,
+                InsertTime = EF.Property<DateTime>(t, "InsertTime"),
+                InsertUserId = t.InsertUserId,
                 ScheduleItems = t.OutputScheduleItems
             })
             .FirstAsync();
@@ -62,7 +60,7 @@ internal class SimulateBuildingSavingsRepository
         {
             OfferInstanceId = offerInstanceId,
             SimulationType = (SimulationTypes)entity.SimulationType,
-            InsertStamp = new(entity.InsertUserId, entity.InsertTime.GetValueOrDefault())
+            InsertStamp = new(entity.InsertUserId, entity.InsertTime)
             
         };
         if (!string.IsNullOrEmpty(entity.ScheduleItems))
@@ -82,8 +80,8 @@ internal class SimulateBuildingSavingsRepository
            .Select(t => new
            {
                SimulationType = t.SimulationType,
-               InsertTime = t.InsertTime,
-               InsertUserId = t.InsertUserId ?? 0,
+               InsertTime = EF.Property<DateTime>(t, "InsertTime"),
+               InsertUserId = t.InsertUserId,
                Inputs = t.Inputs,
                OutputBuildingSavings = t.OutputBuildingSavings,
                OutputBuildingSavingsLoan = t.OutputBuildingSavingsLoan
@@ -94,7 +92,7 @@ internal class SimulateBuildingSavingsRepository
         {
             OfferInstanceId = offerInstanceId,
             SimulationType = (SimulationTypes)entity.SimulationType,
-            InsertStamp = new(entity.InsertUserId, entity.InsertTime.GetValueOrDefault()),
+            InsertStamp = new(entity.InsertUserId, entity.InsertTime),
             InputData = JsonSerializer.Deserialize<BuildingSavingsInput>(entity.Inputs ?? ""),
             BuildingSavings = JsonSerializer.Deserialize<BuildingSavingsData>(entity.OutputBuildingSavings ?? ""),
             Loan = string.IsNullOrEmpty(entity.OutputBuildingSavingsLoan) ? null : JsonSerializer.Deserialize<LoanData>(entity.OutputBuildingSavingsLoan)

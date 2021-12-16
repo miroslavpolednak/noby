@@ -5,5 +5,10 @@
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list DomainServices.OfferService.v1.OfferService
-        grpcurl -insecure -d "{\"OfferInstanceId\":1}" -H "Authorization: Basic YTph" 172.30.35.51:5003 DomainServices.OfferService.v1.OfferService/GetBuildingSavingsData
+        grpcurl -insecure -d "{\"OfferInstanceId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetBuildingSavingsData
         grpcurl -insecure -d "{\"InputData\":{\"TargetAmount\":500000,\"ProductCode\":61,\"ActionCode\":30,\"IsWithLoan\":false},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3726\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateBuildingSavings
+
+## run batch
+        dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
+        dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"
+        dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\OfferService\Api\DomainServices.OfferService.Api.csproj"

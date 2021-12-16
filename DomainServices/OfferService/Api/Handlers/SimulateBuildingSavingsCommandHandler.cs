@@ -10,8 +10,7 @@ internal class SimulateBuildingSavingsCommandHandler
 {
     public async Task<SimulateBuildingSavingsResponse> Handle(Dto.SimulateBuildingSavingsMediatrRequest request, CancellationToken cancellation)
     {
-        var timestamp = DateTime.Now;
-        _logger.LogInformation("Run Savings simulation in {time} with {inputs}", timestamp, request);
+        _logger.LogInformation("Run Savings simulation with {inputs}", request);
 
         var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
         var simulationType = request.Request.InputData.IsWithLoan ? SimulationTypes.BuildingSavingsWithLoan : SimulationTypes.BuildingSavings;
@@ -32,7 +31,7 @@ internal class SimulateBuildingSavingsCommandHandler
         var scheduleItems = result.ToScheduleItems();
 
         // ulozit do databaze
-        int modelationId = await _repository.Save(resourceProcessId, simulationType, timestamp, request.Request.InputData, savingsData, loanData, scheduleItems);
+        int modelationId = await _repository.Save(resourceProcessId, simulationType, request.Request.InputData, savingsData, loanData, scheduleItems);
 
         _logger.LogInformation("Simulation #{id} created", modelationId);
 
@@ -42,7 +41,7 @@ internal class SimulateBuildingSavingsCommandHandler
             BuildingSavings = savingsData,
             Loan = loanData,
             OfferInstanceId = modelationId,
-            InsertStamp = new(_userProvider.User?.Id ?? 0, timestamp)
+            InsertStamp = new(_userProvider.User?.Id ?? 0, DateTime.Now)
         };
     }
 

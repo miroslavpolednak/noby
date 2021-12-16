@@ -7,7 +7,7 @@ internal class UpdateSalesArrangementDataMediatrRequestValidator
 {
     public UpdateSalesArrangementDataMediatrRequestValidator()
     {
-        RuleFor(t => t.SalesArrangementId)
+        RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
             .WithMessage("SalesArrangementId must be > 0").WithErrorCode("13000");
     }

@@ -10,8 +10,8 @@ internal class LinkOwnerToCaseMediatrRequestValidator : AbstractValidator<Dto.Li
             .GreaterThan(0)
             .WithMessage("CaseId must be > 0").WithErrorCode("13000");
 
-        RuleFor(t => t.PartyId)
+        RuleFor(t => t.UserId)
             .GreaterThan(0)
-            .WithMessage("PartyId must be > 0").WithErrorCode("13000");
+            .WithMessage("UserId must be > 0").WithErrorCode("13000");
     }
 }

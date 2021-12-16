@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.SalesArrangementService.Contracts;
-using Grpc.Core;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -11,18 +9,27 @@ internal class GetSalesArrangementDetailHandler
     {
         _logger.LogInformation("Get detail for #{id}", request.SalesArrangementId);
 
-        var model = await _repository.GetSalesArrangementDetail(request.SalesArrangementId);
-        if (model == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "CaseId does not exist.", 13000);
+        var sa = await _repository.GetSalesArrangement(request.SalesArrangementId);
+        var data = await _repository.GetSalesArrangementData(request.SalesArrangementId);
+
+        var model = new GetSalesArrangementDetailResponse
+        {
+            SalesArrangementId = sa.SalesArrangementId,
+            SalesArrangementType = sa.SalesArrangementType,
+            State = sa.State,
+            CaseId = sa.CaseId,
+            OfferInstanceId = sa.OfferInstanceId,
+            SalesArrangement = data.Data
+        };
 
         return model;
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<GetSalesArrangementDetailHandler> _logger;
 
     public GetSalesArrangementDetailHandler(
-        Repositories.NobyDbRepository repository,
+        Repositories.SalesArrangementServiceRepository repository,
         ILogger<GetSalesArrangementDetailHandler> logger)
     {
         _repository = repository;

@@ -5,6 +5,12 @@
         public int Id { get; init; }
         public IdentitySchemes Scheme { get; init; }
 
+        public CustomerIdentity(int id, IdentitySchemes scheme)
+        {
+            Id = id;
+            Scheme = scheme;
+        }
+
         public CustomerIdentity(int id, string scheme)
         {
             Id = id;

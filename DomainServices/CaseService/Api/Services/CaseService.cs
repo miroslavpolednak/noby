@@ -29,5 +29,8 @@ internal class CaseService : Contracts.v1.CaseService.CaseServiceBase
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseState(UpdateCaseStateRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateCaseStateMediatrRequest(request));
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseCustomer(UpdateCaseCustomerRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateCaseCustomerMediatrRequest(request));
 }
 

@@ -51,7 +51,7 @@ internal class CreateCaseHandler
     {
         var caseModel = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
-            PartyId = _userAccessor.User.Id,
+            UserId = _userAccessor.User.Id,
             ProductInstanceType = _configuration.Savings.SavingsProductInstanceType,
             DateOfBirthNaturalPerson = request.Request.DateOfBirth,
             FirstNameNaturalPerson = request.Request.FirstName,

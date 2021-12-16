@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.SalesArrangementService.Contracts;
-using Grpc.Core;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -11,23 +9,27 @@ internal class GetSalesArrangementsByCaseIdHandler
     {
         _logger.LogInformation("Get list for CaseId #{id}", request.CaseId);
 
-        var caseInstance = await _repository.GetCaseDetail(request.CaseId);
-        if (caseInstance == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "CaseId does not exist.", 13000);
-        //TODO nejaka validace na case?
+        var listData = await _repository.GetSalesArrangementsByCaseId(request.CaseId);
+        var finalData = listData.Select(t => new SalesArrangementListModel
+        {
+            SalesArrangementId = t.SalesArrangementId,
+            SalesArrangementType = t.SalesArrangementType,
+            State = t.State,
+            CaseId = t.CaseId,
+            OfferInstanceId = t.OfferInstanceId
+        }).ToList();
 
         var model = new GetSalesArrangementsByCaseIdResponse();
-        var listData = await _repository.GetSalesArrangementsByCaseId(request.CaseId);
-        model.SalesArrangements.AddRange(listData);
+        model.SalesArrangements.AddRange(finalData);
 
         return model;
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<GetSalesArrangementsByCaseIdHandler> _logger;
 
     public GetSalesArrangementsByCaseIdHandler(
-        Repositories.NobyDbRepository repository,
+        Repositories.SalesArrangementServiceRepository repository,
         ILogger<GetSalesArrangementsByCaseIdHandler> logger)
     {
         _repository = repository;

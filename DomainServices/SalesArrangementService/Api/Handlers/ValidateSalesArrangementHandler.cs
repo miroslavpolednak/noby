@@ -1,7 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using Grpc.Core;
-
-namespace DomainServices.SalesArrangementService.Api.Handlers;
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class ValidateSalesArrangementHandler
     : IRequestHandler<Dto.ValidateSalesArrangementMediatrRequest, Contracts.ValidateSalesArrangementResponse>
@@ -10,23 +7,19 @@ internal class ValidateSalesArrangementHandler
     {
         _logger.LogInformation("Validate #{id}", request.SalesArrangementId);
 
-        var arrangement = await _repository.GetSalesArrangementDetail(request.SalesArrangementId);
-        if (arrangement == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "SalesArrangementId does not exist.", 13000);
-        //TODO nejaka validace na case?
-
+        //var arrangement = await _repository.GetSalesArrangementDetail(request.SalesArrangementId);
 
 
         return null;
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<ValidateSalesArrangementHandler> _logger;
     private readonly Eas.IEasClient _easClient;
 
     public ValidateSalesArrangementHandler(
         Eas.IEasClient easClient,
-        Repositories.NobyDbRepository repository,
+        Repositories.SalesArrangementServiceRepository repository,
         ILogger<ValidateSalesArrangementHandler> logger)
     {
         _easClient = easClient;

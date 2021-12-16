@@ -14,44 +14,41 @@ internal class CreateCaseHandler
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
         var productInstanceTypeCategory = await getProductCategory(request.Request.ProductInstanceType);
-        // kontrola, zda se jedna jen o SS nebo Hypo
+        
+        // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
         if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan)
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "productInstanceTypeCategory is not valid for this operation", 13001);
 
         // get default case state
-        int defaultCaseState = 1; //TODO jak poresit vychozi stav? Nastavit v codebook svc?
-        long? newCaseId = default(long);
+        int defaultCaseState = (await _codebookService.CaseStates()).First(t => t.IsDefaultNewState).Id;
 
-        switch (productInstanceTypeCategory)
-        {
-            case CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings:
-            case CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan:
-                newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.MP, request.Request.ProductInstanceType));
-                break;
-
-            default:
-                throw new NotImplementedException($"Processing for category type {productInstanceTypeCategory} is not implemented");
-        }
+        // ziskat caseId
+        //TODO proc se tady dava schema?
+        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.MP, request.Request.ProductInstanceType));
 
         // zalozit case v NOBY
         try
         {
-            await _repository.CreateCase(new()
+            var entity = new Repositories.Entities.CaseInstance
             {
-                CaseId = newCaseId.Value,
+                CaseId = newCaseId,
                 Name = request.Request.Name,
                 FirstNameNaturalPerson = request.Request.FirstNameNaturalPerson,
-                CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(request.Request.Customer?.IdentityScheme ?? CIS.Infrastructure.gRPC.CisTypes.IdentitySchemes.Unknown),
-                CustomerIdentityId = request.Request.Customer?.IdentityId,
                 State = defaultCaseState,
-                PartyId = request.Request.PartyId,
+                UserId = request.Request.UserId,
                 ProductInstanceType = request.Request.ProductInstanceType,
-                DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson,
-                InsertTime = _dateTime.Now,
-                InsertUserId = 1//TODO pridat userid
-            });
+                DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson
+            };
+            // pokud je zadany customer
+            if (request.Request.Customer is not null)
+            {
+                entity.CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(request.Request.Customer?.IdentityScheme);
+                entity.CustomerIdentityId = request.Request.Customer?.IdentityId;
+            }
+
+            await _repository.CreateCase(entity);
         }
-        catch (System.Data.SqlClient.SqlException ex) when (ex.Number == 2627) // ID uz existuje, jak je to mozne? 
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
             _logger.LogError("Case ID #{id} already exists", newCaseId);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Case ID #{newCaseId} already exists", 13001);
@@ -63,7 +60,7 @@ internal class CreateCaseHandler
 
         return new CreateCaseResponse() 
         {
-            CaseId = newCaseId.Value 
+            CaseId = newCaseId 
         };
     }
 
@@ -85,20 +82,17 @@ internal class CreateCaseHandler
         return item.ProductCategory;
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly Eas.IEasClient _easClient;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly CIS.Core.IDateTime _dateTime;
 
     public CreateCaseHandler(
-        CIS.Core.IDateTime dateTime,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Eas.IEasClient easClient,
-        Repositories.NobyDbRepository repository,
+        Repositories.CaseServiceRepository repository,
         ILogger<CreateCaseHandler> logger)
     {
-        _dateTime = dateTime;
         _easClient = easClient;
         _repository = repository;
         _logger = logger;

@@ -13,10 +13,6 @@ internal class CreateSalesArrangementMediatrRequestValidator : AbstractValidator
         RuleFor(t => t.SalesArrangementType)
             .GreaterThan(0)
             .WithMessage("SalesArrangementType must be > 0").WithErrorCode("13000");
-
-        RuleFor(t => t.ProductInstanceId)
-            .GreaterThan(0)
-            .WithMessage("ProductInstanceId must be > 0").WithErrorCode("13000");
     }
 }
 

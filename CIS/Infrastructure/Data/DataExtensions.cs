@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using CIS.Infrastructure.Data;
+﻿using CIS.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIS.Infrastructure.StartupExtensions
 {
-    public static class DataExtensions
+    public static class DataStartupExtensions
     {
         public static IServiceCollection AddDapper(this IServiceCollection services, string connectionString)
         {
@@ -18,6 +18,22 @@ namespace CIS.Infrastructure.StartupExtensions
 
             return services;
         }
+    }
+}
 
+namespace CIS.Infrastructure.Data
+{
+    public static class DataExtensions
+    {
+        public static void RegisterCisTemporalTable<TEntity>(this ModelBuilder modelBuilder) where TEntity : class
+        {
+            modelBuilder
+                .Entity<TEntity>()
+                .ToTable(b => b.IsTemporal(x =>
+                {
+                    x.HasPeriodStart("InsertTime").HasColumnName("InsertTime");
+                    x.HasPeriodEnd("ValidTo").HasColumnName("ValidTo");
+                }));
+        }
     }
 }

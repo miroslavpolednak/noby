@@ -10,7 +10,8 @@ internal sealed class MockEasClient : IEasClient
     public async Task<IServiceCallResult> GetSavingsLoanId(long caseId)
 #pragma warning restore CS1998
     {
-        return new SuccessfulServiceCallResult<long>(1);
+        Random random = new Random();
+        return new SuccessfulServiceCallResult<long>(random.NextInt64(100, 199));
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -24,6 +25,7 @@ internal sealed class MockEasClient : IEasClient
     public async Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int productInstanceType)
 #pragma warning restore CS1998
     {
-        return new SuccessfulServiceCallResult<long>(1);
+        Random random = new Random();
+        return new SuccessfulServiceCallResult<long>(random.NextInt64(1, 99));
     }
 }

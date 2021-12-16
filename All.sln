@@ -162,15 +162,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Eas", "Ext
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.Abstraction", "DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj", "{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.FormContracts", "FOMS\FOMS.FormContracts\FOMS.FormContracts.csproj", "{EAD67976-9E81-4617-B15E-490988DAEA64}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SalesArrangementService", "SalesArrangementService", "{36409700-CB0A-4C91-97A5-071D3300FF91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Contracts", "DomainServices\SalesArrangementService\Contracts\DomainServices.SalesArrangementService.Contracts.csproj", "{FA5B30A4-38EA-4AB8-B745-CF638AED50EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Api", "DomainServices\SalesArrangementService\Api\DomainServices.SalesArrangementService.Api.csproj", "{3ADB008A-E627-45B0-B46F-EACEA1A55A20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.SalesArrangementService.Abstraction", "DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj", "{1940849F-E9B4-4C09-A10A-870988C94D4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Abstraction", "DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj", "{1940849F-E9B4-4C09-A10A-870988C94D4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FOMS.DocumentContracts", "FOMS\FOMS.DocumentContracts\FOMS.DocumentContracts.csproj", "{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FOMS.DocumentProcessing", "FOMS\FOMS.DocumentProcessing\FOMS.DocumentProcessing.csproj", "{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -612,14 +614,6 @@ Global
 		{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}.Release|x64.ActiveCfg = Release|Any CPU
 		{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}.Release|x64.Build.0 = Release|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Debug|x64.Build.0 = Debug|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Release|x64.ActiveCfg = Release|Any CPU
-		{EAD67976-9E81-4617-B15E-490988DAEA64}.Release|x64.Build.0 = Release|Any CPU
 		{FA5B30A4-38EA-4AB8-B745-CF638AED50EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA5B30A4-38EA-4AB8-B745-CF638AED50EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA5B30A4-38EA-4AB8-B745-CF638AED50EF}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -644,6 +638,22 @@ Global
 		{1940849F-E9B4-4C09-A10A-870988C94D4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1940849F-E9B4-4C09-A10A-870988C94D4A}.Release|x64.ActiveCfg = Release|Any CPU
 		{1940849F-E9B4-4C09-A10A-870988C94D4A}.Release|x64.Build.0 = Release|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Debug|x64.Build.0 = Debug|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Release|x64.ActiveCfg = Release|Any CPU
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06}.Release|x64.Build.0 = Release|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Debug|x64.Build.0 = Debug|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Release|x64.ActiveCfg = Release|Any CPU
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -714,11 +724,12 @@ Global
 		{6B463FAE-98A9-4525-A700-68D7BDBD79EA} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
 		{2E4D42D7-F764-4E3A-B05F-13E2A83F4853} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
-		{EAD67976-9E81-4617-B15E-490988DAEA64} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{36409700-CB0A-4C91-97A5-071D3300FF91} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{FA5B30A4-38EA-4AB8-B745-CF638AED50EF} = {36409700-CB0A-4C91-97A5-071D3300FF91}
 		{3ADB008A-E627-45B0-B46F-EACEA1A55A20} = {36409700-CB0A-4C91-97A5-071D3300FF91}
 		{1940849F-E9B4-4C09-A10A-870988C94D4A} = {36409700-CB0A-4C91-97A5-071D3300FF91}
+		{43A9B631-E053-4FCB-A9B3-529BC5B2ED06} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
+		{A9A6B2E7-676D-49B6-B823-EF5D2274A45F} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

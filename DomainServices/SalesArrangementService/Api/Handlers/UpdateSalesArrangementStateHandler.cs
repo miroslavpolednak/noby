@@ -1,7 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using Grpc.Core;
-
-namespace DomainServices.SalesArrangementService.Api.Handlers;
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class UpdateSalesArrangementStateHandler
     : IRequestHandler<Dto.UpdateSalesArrangementStateMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
@@ -10,21 +7,17 @@ internal class UpdateSalesArrangementStateHandler
     {
         _logger.LogInformation("Update state of #{id} to {state}", request.SalesArrangementId, request.State);
 
-        var arrangement = await _repository.GetSalesArrangement(request.SalesArrangementId);
-        if (arrangement == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "SalesArrangementId does not exist.", 13000);
-        //TODO nejaka validace na case?
-
+        await _repository.GetSalesArrangement(request.SalesArrangementId);
         await _repository.UpdateSalesArrangementState(request.SalesArrangementId, request.State);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<UpdateSalesArrangementStateHandler> _logger;
 
     public UpdateSalesArrangementStateHandler(
-        Repositories.NobyDbRepository repository,
+        Repositories.SalesArrangementServiceRepository repository,
         ILogger<UpdateSalesArrangementStateHandler> logger)
     {
         _repository = repository;

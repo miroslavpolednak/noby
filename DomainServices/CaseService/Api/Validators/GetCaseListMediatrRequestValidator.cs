@@ -6,9 +6,9 @@ internal class GetCaseListMediatrRequest : AbstractValidator<Dto.GetCaseListMedi
 {
     public GetCaseListMediatrRequest()
     {
-        RuleFor(t => t.PartyId)
+        RuleFor(t => t.UserId)
             .GreaterThan(0)
-            .WithMessage("PartyId must be > 0").WithErrorCode("13000");
+            .WithMessage("UserId must be > 0").WithErrorCode("13000");
         
         // strankovani asi neni povinne?
     }

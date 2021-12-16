@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.OfferService.Api.Repositories.Entities;
 
 [Table("OfferInstance", Schema = "dbo")]
-internal class OfferInstance : CIS.Core.Data.BaseInsertableWithoutActual
+internal class OfferInstance : CIS.Core.Data.BaseInsertUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int OfferInstanceId { get; set; }

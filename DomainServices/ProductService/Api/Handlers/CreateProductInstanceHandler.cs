@@ -50,7 +50,7 @@ internal class CreateProductInstanceHandler
         {
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings => await _mpHomeClient.CreateSavingsInstance(productId),
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan => await _mpHomeClient.CreateSavingsLoanInstance(productId),
-            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Morgage => await _mpHomeClient.CreateMorgageInstance(productId),
+            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage => await _mpHomeClient.CreateMorgageInstance(productId),
             _ => throw new NotImplementedException()
         };
 

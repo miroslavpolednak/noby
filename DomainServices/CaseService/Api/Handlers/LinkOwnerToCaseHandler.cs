@@ -1,31 +1,26 @@
-﻿using CIS.Infrastructure.gRPC;
-using Grpc.Core;
-
-namespace DomainServices.CaseService.Api.Handlers;
+﻿namespace DomainServices.CaseService.Api.Handlers;
 
 internal class LinkOwnerToCaseHandler
     : IRequestHandler<Dto.LinkOwnerToCaseMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkOwnerToCaseMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Link owner #{partyId} to case #{caseId}", request.PartyId, request.CaseId);
+        _logger.LogInformation("Link owner #{userId} to case #{caseId}", request.UserId, request.CaseId);
 
         var caseInstance = await _repository.GetCaseDetail(request.CaseId);
-        if (caseInstance == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "CaseId does not exist.", 13000);
         //TODO nejaka validace na case?
 
         // update majitele v databazi
-        await _repository.LinkOwnerToCase(request.CaseId, request.PartyId);
+        await _repository.LinkOwnerToCase(request.CaseId, request.UserId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<LinkOwnerToCaseHandler> _logger;
 
     public LinkOwnerToCaseHandler(
-        Repositories.NobyDbRepository repository,
+        Repositories.CaseServiceRepository repository,
         ILogger<LinkOwnerToCaseHandler> logger)
     {
         _repository = repository;

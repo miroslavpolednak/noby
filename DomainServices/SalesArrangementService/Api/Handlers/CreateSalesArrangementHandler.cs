@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.SalesArrangementService.Contracts;
-using Grpc.Core;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -9,35 +7,31 @@ internal class CreateSalesArrangementHandler
 {
     public async Task<CreateSalesArrangementResponse> Handle(Dto.CreateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Create SA {type} for #{caseId}, #{productId}", request.SalesArrangementType, request.CaseId, request.ProductInstanceId);
+        _logger.LogInformation("Create SA {type} for #{caseId}", request.SalesArrangementType, request.CaseId);
 
-        var caseInstance = await _repository.GetCaseDetail(request.CaseId);
-        if (caseInstance == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "CaseId does not exist.", 13000);
+        var caseInstance = await _caseService.GetCaseDetail(request.CaseId);
         //TODO nejaka validace na case?
 
         var salesArrangementId = await _repository.CreateSalesArrangement(new()
         {
             CaseId = request.CaseId,
             SalesArrangementType = request.SalesArrangementType,
-            ProductInstanceId = request.ProductInstanceId,
-            InsertTime = _dateTime.Now,
-            InsertUserId = 1//TODO pridat userid
+            InsertUserId = request.UserId
         });
 
         return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };
     }
 
-    private readonly Repositories.NobyDbRepository _repository;
+    private readonly CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
-    private readonly CIS.Core.IDateTime _dateTime;
 
     public CreateSalesArrangementHandler(
-        CIS.Core.IDateTime dateTime,
-        Repositories.NobyDbRepository repository,
+        CaseService.Abstraction.ICaseServiceAbstraction caseService,
+        Repositories.SalesArrangementServiceRepository repository,
         ILogger<CreateSalesArrangementHandler> logger)
     {
-        _dateTime = dateTime;
+        _caseService = caseService;
         _repository = repository;
         _logger = logger;
     }

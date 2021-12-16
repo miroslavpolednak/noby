@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+message SimulateMortgageRequest {
+
+}
+
+message SimulateMortgageResponse {
+
+}
+
+message GetMortgageDataResponse {
+
+}

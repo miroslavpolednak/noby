@@ -24,6 +24,6 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceType
         BuildingSavingsLoan = 2,
         
         [DataMember(Order = 3)]
-        Morgage = 3
+        Mortgage = 3
     }
 }

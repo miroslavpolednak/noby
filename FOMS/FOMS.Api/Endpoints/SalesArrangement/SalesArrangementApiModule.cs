@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FOMS.Api.Endpoints.Forms;
 
-internal class FormsApiModule : IApiEndpointModule
+internal class SalesArrangementApiModule : IApiEndpointModule
 {
-    const string _prefix = "/api/forms";
+    const string _prefix = "/api/sales-arrangements";
 
     public void Register(IEndpointRouteBuilder builder)
     {

@@ -2,7 +2,6 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
-import "google/protobuf/any.proto";
 import "google/protobuf/wrappers.proto";
 
 message SalesArrangementIdRequest {
@@ -12,15 +11,14 @@ message SalesArrangementListModel {
 	int32 SalesArrangementId = 1;
 	int64 CaseId = 2;
 	int32 SalesArrangementType = 3;
-	int64 ProductInstanceId = 4;
-	int32 Status = 5;
-	int32 OfferInstanceId = 6;
+	int32 State = 4;
+	int32 OfferInstanceId = 5;
 }
 
 message CreateSalesArrangementRequest {
 	int64 CaseId = 1;
 	int32 SalesArrangementType = 2;
-	google.protobuf.Int64Value ProductInstanceId = 3;
+	int32 UserId = 3;
 }
 message CreateSalesArrangementResponse {
 	int32 SalesArrangementId = 1;
@@ -30,10 +28,9 @@ message GetSalesArrangementDetailResponse {
 	int32 SalesArrangementId = 1;
 	int64 CaseId = 2;
 	int32 SalesArrangementType = 3;
-	int64 ProductInstanceId = 4;
-	int32 Status = 5;
-	int32 OfferInstanceId = 6;
-	google.protobuf.Any SalesArrangement = 7;
+	int32 State = 4;
+	int32 OfferInstanceId = 5;
+	string SalesArrangement = 6;
 }
 
 message GetSalesArrangementsByCaseIdRequest {
@@ -60,5 +57,5 @@ message ValidateSalesArrangementResponse {
 
 message UpdateSalesArrangementDataRequest {
 	int32 SalesArrangementId = 1;
-	google.protobuf.Any SalesArrangement = 7;
+	string SalesArrangement = 7;
 }

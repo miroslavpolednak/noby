@@ -30,4 +30,8 @@
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\SalesArrangement\SavePart\" />
+  </ItemGroup>
+
 </Project>
