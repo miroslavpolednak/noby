@@ -3,7 +3,7 @@
 namespace DomainServices.SalesArrangementService.Api.Validators;
 
 internal class GetSalesArrangementDetailMediatrRequestValidator
-    : AbstractValidator<Dto.GetSalesArrangementDetailMediatrRequest>
+    : AbstractValidator<Dto.GetSalesArrangementMediatrRequest>
 {
     public GetSalesArrangementDetailMediatrRequestValidator()
     {

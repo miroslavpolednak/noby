@@ -25,13 +25,29 @@ internal class SalesArrangementServiceRepository
     public async Task<Entities.SalesArrangement> GetSalesArrangement(int salesArrangementId)
         => await getSalesArrangement(salesArrangementId);
 
-    public async Task<Entities.SalesArrangementData> GetSalesArrangementData(int salesArrangementId)
-        => await _dbContext.SalesArrangementsData.AsNoTracking().FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"SalesArrangement #{salesArrangementId} data not found");
+    public async Task<Entities.SalesArrangementData?> GetSalesArrangementData(int salesArrangementId)
+        => await _dbContext.SalesArrangementsData.AsNoTracking().FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
     
+    public async Task UpdateOfferInstanceId(int salesArrangementId, int offerInstanceId)
+    {
+        var entity = await getSalesArrangement(salesArrangementId);
+        entity.OfferInstanceId = offerInstanceId;
+        await _dbContext.SaveChangesAsync();
+    }
+
     public async Task UpdateSalesArrangementData(int salesArrangementId, string data)
     {
-        var entity = await _dbContext.SalesArrangementsData.FindAsync(salesArrangementId) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"SalesArrangement data #{salesArrangementId} not found");
-        entity.Data = data;
+        var entity = await _dbContext.SalesArrangementsData.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
+        
+        if (entity is null)
+            _dbContext.SalesArrangementsData.Add(new Entities.SalesArrangementData
+            {
+                SalesArrangementId = salesArrangementId,
+                Data = data
+            });
+        else
+            entity.Data = data;
+
         await _dbContext.SaveChangesAsync();
     }
 

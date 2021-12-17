@@ -1,15 +1,24 @@
 ﻿namespace FOMS.Api.Endpoints.Customer.Handlers;
 
 internal class SearchHandler
-    : IRequestHandler<Dto.SearchRequest, List<Dto.SearchResponse>>
+    : IRequestHandler<Dto.SearchRequest, Dto.SearchResponse>
 {
-    public async Task<List<Dto.SearchResponse>> Handle(Dto.SearchRequest request, CancellationToken cancellationToken)
+    public async Task<Dto.SearchResponse> Handle(Dto.SearchRequest request, CancellationToken cancellationToken)
     {
-        return new List<Dto.SearchResponse>
+
+        return new Dto.SearchResponse
         {
-            new Dto.SearchResponse { Id = 1, Name = "John Doe" },
-            new Dto.SearchResponse { Id = 2, Name = "Marky Mark" },
-            new Dto.SearchResponse { Id = 3, Name = "Franky Moore" },
+            Pagination = new CIS.Core.Types.PaginableResponse()
+            {
+                PageSize = request.Pagination.PageSize,
+                RecordsTotalSize = 2,
+                RecordOffset = request.Pagination.RecordOffset
+            },
+            Rows = new List<Dto.SearchResponse.Customer>()
+            {
+                new Dto.SearchResponse.Customer { Id = 1, FullName = "John Doe", City = "Praha", Street = "josefova 1", Phone = "999 999 999" },
+                new Dto.SearchResponse.Customer { Id = 2, FullName = "John Doe", City = "Praha", Street = "josefova 1", Phone = "999 999 999" },
+            }
         };
     }
 

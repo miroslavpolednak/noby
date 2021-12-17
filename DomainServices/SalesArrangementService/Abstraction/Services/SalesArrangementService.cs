@@ -1,19 +1,60 @@
 ﻿using CIS.Core.Results;
-using CIS.Core.Types;
 using DomainServices.SalesArrangementService.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null)
+    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null, int? offerInstanceId = null)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementType);
+        var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
+            new CreateSalesArrangementRequest() { 
+                CaseId = caseId, 
+                SalesArrangementType = salesArrangementType, 
+                OfferInstanceId = offerInstanceId,
+                UserId = _userAccessor.User.Id 
+            })
+        );
+        return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
     }
 
-    public Task<IServiceCallResult> GetSalesArrangementDetail(long salesArrangementId)
+    public async Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Abstraction GetSalesArrangement for #{salesArrangementId}", salesArrangementId);
+        var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementAsync(
+            new SalesArrangementIdRequest()
+            {
+                SalesArrangementId = salesArrangementId
+            })
+        );
+        return new SuccessfulServiceCallResult<GetSalesArrangementResponse>(result);
+    }
+
+    public async Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId)
+    {
+        _logger.LogDebug("Abstraction GetSalesArrangementData for #{salesArrangementId}", salesArrangementId);
+        var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementDataAsync(
+            new SalesArrangementIdRequest()
+            {
+                SalesArrangementId = salesArrangementId
+            })
+        );
+        return new SuccessfulServiceCallResult<string>(result.Data);
+    }
+
+    public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId)
+    {
+        _logger.LogDebug("Abstraction LinkModelationToSalesArrangement for #{salesArrangementId}", salesArrangementId);
+        var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
+            new LinkModelationToSalesArrangementRequest()
+            {
+                SalesArrangementId = salesArrangementId,
+                OfferInstanceId = offerInstanceId
+            })
+        );
+        return new SuccessfulServiceCallResult();
     }
 
     public Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states)
@@ -21,18 +62,35 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         throw new NotImplementedException();
     }
 
-    public Task<IServiceCallResult> UpdateSalesArrangementData(long salesArrangementId)
+    public Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IServiceCallResult> UpdateSalesArrangementState(long salesArrangementType, int state)
+    public Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IServiceCallResult> ValidateSalesArrangement(long salesArrangementId)
+    public Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId)
     {
         throw new NotImplementedException();
+    }
+
+    private readonly ILogger<SalesArrangementService> _logger;
+    private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
+    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+
+    public SalesArrangementService(
+        CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        ILogger<SalesArrangementService> logger,
+        Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service,
+        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+    {
+        _userAccessor = userAccessor;
+        _userContext = userContext;
+        _service = service;
+        _logger = logger;
     }
 }

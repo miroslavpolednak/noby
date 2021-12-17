@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FOMS.Api.Endpoints.Forms;
+namespace FOMS.Api.Endpoints.SalesArrangement;
 
 internal class SalesArrangementApiModule : IApiEndpointModule
 {
@@ -10,6 +10,15 @@ internal class SalesArrangementApiModule : IApiEndpointModule
     public void Register(IEndpointRouteBuilder builder)
     {
         var mediatr = builder.ServiceProvider.GetRequiredService<IMediator>();
+
+        // vraci cast SA pro zobrazeni formulare na UI
+        builder
+            .MapGet(_prefix + "/{salesArrangementId}/part/{partId}", async (int salesArrangementId, int partId) => await mediatr.Send(new Dto.GetPartRequest(salesArrangementId, partId)))
+            .Produces<object>(StatusCodes.Status200OK);
+
+        builder
+            .MapGet(_prefix + "/{salesArrangementId}", async (int salesArrangementId) => await mediatr.Send(new Dto.GetDetailRequest(salesArrangementId)))
+            .Produces<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>(StatusCodes.Status200OK);
 
         // GET /forms/{caseid}/{formid}/structure - vrati strukturu formu do wizarda
         // GET /forms/{said}/{formid}/{partid} - vrati template dane casti formu

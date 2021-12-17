@@ -16,10 +16,8 @@ internal class CreateCaseHandler
         _logger.LogDebug("Case #{caseId} created", caseId);
 
         // vytvorit zadost
-        int salesArrangementId = resolveSalesArrangementResult(await _salesArrangementService.CreateSalesArrangement(caseId, _configuration.Savings.SavingsSalesArrangementType));
+        int salesArrangementId = resolveSalesArrangementResult(await _salesArrangementService.CreateSalesArrangement(caseId, _configuration.Savings.SavingsSalesArrangementType, offerInstanceId: request.OfferInstanceId));
         _logger.LogDebug("Sales arrangement #{salesArrangementId} created", salesArrangementId);
-
-        // bind offer to SA
 
         // vytvorit produkt, pokud se jedna o finalni simulaci
         if (request.CreateProduct)

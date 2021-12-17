@@ -7,9 +7,18 @@ import "SalesArrangementServiceTypes.proto";
 
 service SalesArrangementService {
    rpc CreateSalesArrangement (DomainServices.SalesArrangementService.CreateSalesArrangementRequest) returns (DomainServices.SalesArrangementService.CreateSalesArrangementResponse);
-   rpc GetSalesArrangementDetail (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementDetailResponse);
+   
+   rpc GetSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementResponse);
+
+   rpc GetSalesArrangementData (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementDataResponse);
+   
    rpc GetSalesArrangementsByCaseId (DomainServices.SalesArrangementService.GetSalesArrangementsByCaseIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementsByCaseIdResponse);
+   
    rpc UpdateSalesArrangementState (DomainServices.SalesArrangementService.UpdateSalesArrangementStateRequest) returns (google.protobuf.Empty);
+   
    rpc ValidateSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.ValidateSalesArrangementResponse);
+   
    rpc UpdateSalesArrangementData (DomainServices.SalesArrangementService.UpdateSalesArrangementDataRequest) returns (google.protobuf.Empty);
+
+   rpc LinkModelationToSalesArrangement (LinkModelationToSalesArrangementRequest) returns (google.protobuf.Empty);
 }

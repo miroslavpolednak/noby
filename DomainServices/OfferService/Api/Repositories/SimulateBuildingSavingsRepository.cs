@@ -50,8 +50,8 @@ internal class SimulateBuildingSavingsRepository
             .Select(t => new
             {
                 SimulationType = t.SimulationType,
-                InsertTime = EF.Property<DateTime>(t, "InsertTime"),
-                InsertUserId = t.InsertUserId,
+                InsertTime = t.CreatedTime,
+                InsertUserId = t.CreatedUserId,
                 ScheduleItems = t.OutputScheduleItems
             })
             .FirstAsync();
@@ -80,8 +80,8 @@ internal class SimulateBuildingSavingsRepository
            .Select(t => new
            {
                SimulationType = t.SimulationType,
-               InsertTime = EF.Property<DateTime>(t, "InsertTime"),
-               InsertUserId = t.InsertUserId,
+               InsertTime = t.CreatedTime,
+               InsertUserId = t.CreatedUserId,
                Inputs = t.Inputs,
                OutputBuildingSavings = t.OutputBuildingSavings,
                OutputBuildingSavingsLoan = t.OutputBuildingSavingsLoan

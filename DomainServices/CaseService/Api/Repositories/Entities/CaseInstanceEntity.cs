@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.CaseService.Api.Repositories.Entities;
 
 [Table("CaseInstance", Schema = "dbo")]
-internal class CaseInstance : CIS.Core.Data.BaseInsertUserId
+internal class CaseInstance : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key]
     public long CaseId { get; set; }

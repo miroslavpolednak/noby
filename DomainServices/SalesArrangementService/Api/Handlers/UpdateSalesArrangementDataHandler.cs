@@ -7,7 +7,7 @@ internal class UpdateSalesArrangementDataHandler
     {
         _logger.LogInformation("Update #{id}", request.Request.SalesArrangementId);
 
-        await _repository.UpdateSalesArrangementData(request.Request.SalesArrangementId, request.Request.SalesArrangement);
+        await _repository.UpdateSalesArrangementData(request.Request.SalesArrangementId, request.Request.Data);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

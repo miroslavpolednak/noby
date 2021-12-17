@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Infrastructure.StartupExtensions
 {
@@ -10,7 +9,7 @@ namespace CIS.Infrastructure.StartupExtensions
         /// </summary>
         public static IServiceCollection AddCisCurrentUser(this IServiceCollection services)
         {
-            services.TryAddScoped<CIS.Core.Security.ICurrentUserAccessor, Security.CisCurrentUserAccessor>();
+            services.TryAddTransient<CIS.Core.Security.ICurrentUserAccessor, Security.CisCurrentUserAccessor>();
 
             return services;
         }

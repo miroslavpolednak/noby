@@ -15,8 +15,11 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateSalesArrangementMediatrRequest(request));
 
-    public override async Task<GetSalesArrangementDetailResponse> GetSalesArrangementDetail(SalesArrangementIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetSalesArrangementDetailMediatrRequest(request));
+    public override async Task<GetSalesArrangementResponse> GetSalesArrangement(SalesArrangementIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(request));
+
+    public override async Task<GetSalesArrangementDataResponse> GetSalesArrangementData(SalesArrangementIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetSalesArrangementDataMediatrRequest(request));
 
     public override async Task<GetSalesArrangementsByCaseIdResponse> GetSalesArrangementsByCaseId(GetSalesArrangementsByCaseIdRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetSalesArrangementsByCaseIdMediatrRequest(request));
@@ -29,4 +32,7 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangementData(UpdateSalesArrangementDataRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateSalesArrangementDataMediatrRequest(request));
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkModelationToSalesArrangement(LinkModelationToSalesArrangementRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(request));
 }

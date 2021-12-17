@@ -32,6 +32,7 @@ public abstract class BaseDbContext : DbContext
         return base.SaveChanges();
     }
 
+    #region DateOnly conversions
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
         builder.Properties<DateOnly>()
@@ -62,6 +63,7 @@ public abstract class BaseDbContext : DbContext
                 d => DateOnly.FromDateTime(d))
         { }
     }
+    #endregion DateOnly conversions
 
     private void addInterfaceFields()
     {
@@ -70,10 +72,22 @@ public abstract class BaseDbContext : DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                case EntityState.Modified:
-                    if (entry.Entity is IInsertUserId)
+                    if (entry.Entity is ICreated)
                     {
-                        ((IInsertUserId)entry.Entity).InsertUserId = _currentUserId.GetValueOrDefault();
+                        var obj = (ICreated)entry.Entity;
+                        obj.CreatedUserId = _currentUserId.GetValueOrDefault();
+                        obj.CreatedTime = DateTime.Now;
+                    }
+                    if (entry.Entity is IModifiedUserId)
+                    {
+                        ((IModifiedUserId)entry.Entity).ModifiedUserId = _currentUserId.GetValueOrDefault();
+                    }
+                    break;
+
+                case EntityState.Modified:
+                    if (entry.Entity is IModifiedUserId)
+                    {
+                        ((IModifiedUserId)entry.Entity).ModifiedUserId = _currentUserId.GetValueOrDefault();
                     }
                     break;
             }

@@ -18,7 +18,10 @@ internal class GetCaseDetailHandler
             CaseId = entity.CaseId,
             ContractNumber = entity.ContractNumber ?? "",
             ProductInstanceType = entity.ProductInstanceType,
-            UserId = entity.UserId
+            UserId = entity.UserId,
+            DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
+            FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
+            Name = entity.Name
         };
         if (entity.CustomerIdentityId.HasValue)
             model.Customer = new CIS.Core.Types.CustomerIdentity(entity.CustomerIdentityId.Value, entity.CustomerIdentityScheme.GetValueOrDefault());

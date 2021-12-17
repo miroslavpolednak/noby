@@ -27,11 +27,8 @@
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
+    <ProjectReference Include="..\FOMS.DocumentProcessing\FOMS.DocumentProcessing.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Endpoints\SalesArrangement\SavePart\" />
   </ItemGroup>
 
 </Project>

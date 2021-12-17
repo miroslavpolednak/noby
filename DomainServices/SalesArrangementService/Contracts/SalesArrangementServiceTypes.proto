@@ -12,25 +12,31 @@ message SalesArrangementListModel {
 	int64 CaseId = 2;
 	int32 SalesArrangementType = 3;
 	int32 State = 4;
-	int32 OfferInstanceId = 5;
+	google.protobuf.Int32Value OfferInstanceId = 5;
 }
 
 message CreateSalesArrangementRequest {
 	int64 CaseId = 1;
 	int32 SalesArrangementType = 2;
 	int32 UserId = 3;
+	google.protobuf.Int32Value OfferInstanceId = 4;
+	google.protobuf.Int32Value State = 5;
 }
 message CreateSalesArrangementResponse {
 	int32 SalesArrangementId = 1;
 }
 
-message GetSalesArrangementDetailResponse {
+message GetSalesArrangementResponse {
 	int32 SalesArrangementId = 1;
 	int64 CaseId = 2;
 	int32 SalesArrangementType = 3;
 	int32 State = 4;
-	int32 OfferInstanceId = 5;
-	string SalesArrangement = 6;
+	google.protobuf.Int32Value OfferInstanceId = 5;
+}
+
+message GetSalesArrangementDataResponse {
+	int32 SalesArrangementId = 1;
+	string Data = 2;
 }
 
 message GetSalesArrangementsByCaseIdRequest {
@@ -57,5 +63,10 @@ message ValidateSalesArrangementResponse {
 
 message UpdateSalesArrangementDataRequest {
 	int32 SalesArrangementId = 1;
-	string SalesArrangement = 7;
+	string Data = 7;
+}
+
+message LinkModelationToSalesArrangementRequest {
+	int32 OfferInstanceId = 1;
+	int32 SalesArrangementId = 2;
 }

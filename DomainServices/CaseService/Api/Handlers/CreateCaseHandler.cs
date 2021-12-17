@@ -16,6 +16,7 @@ internal class CreateCaseHandler
         var productInstanceTypeCategory = await getProductCategory(request.Request.ProductInstanceType);
         
         // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
+        //TODO je to tak i pro 4001?
         if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan)
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "productInstanceTypeCategory is not valid for this operation", 13001);
 

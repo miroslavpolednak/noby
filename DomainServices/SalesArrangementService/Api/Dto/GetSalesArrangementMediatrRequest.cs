@@ -2,12 +2,12 @@
 
 namespace DomainServices.SalesArrangementService.Api.Dto;
 
-internal sealed class GetSalesArrangementDetailMediatrRequest
-    : IRequest<GetSalesArrangementDetailResponse>, CIS.Core.Validation.IValidatableRequest
+internal sealed class GetSalesArrangementMediatrRequest
+    : IRequest<GetSalesArrangementResponse>, CIS.Core.Validation.IValidatableRequest
 {
     public int SalesArrangementId { get; init; }
 
-    public GetSalesArrangementDetailMediatrRequest(SalesArrangementIdRequest request)
+    public GetSalesArrangementMediatrRequest(SalesArrangementIdRequest request)
     {
         SalesArrangementId = request.SalesArrangementId;
     }

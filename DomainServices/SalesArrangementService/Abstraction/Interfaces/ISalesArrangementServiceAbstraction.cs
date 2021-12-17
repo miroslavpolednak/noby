@@ -4,15 +4,43 @@ namespace DomainServices.SalesArrangementService.Abstraction;
 
 public interface ISalesArrangementServiceAbstraction
 {
-    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null);
+    /// <summary>
+    /// Vytvoreni Sales Arrangement
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[int (SalesArrangementId)] - OK;
+    /// </returns>
+    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null, int? offerInstanceId = null);
 
-    Task<IServiceCallResult> GetSalesArrangementDetail(long salesArrangementId);
-    
+    /// <summary>
+    /// Vraci detail Sales Arrangement bez JSON dat
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[Contracts.GetSalesArrangementResponse] - OK;
+    /// </returns>
+    Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId);
+
+    /// <summary>
+    /// Vraci JSON data pro dany Sales Arrangement
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[string] - OK;
+    /// </returns>
+    Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId);
+
+    /// <summary>
+    /// Napojeni OfferInstance na SA
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[string] - OK;
+    /// </returns>
+    Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId);
+
     Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states);
     
-    Task<IServiceCallResult> UpdateSalesArrangementState(long salesArrangementType, int state);
+    Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state);
     
-    Task<IServiceCallResult> ValidateSalesArrangement(long salesArrangementId);
+    Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId);
     
-    Task<IServiceCallResult> UpdateSalesArrangementData(long salesArrangementId);
+    Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId);
 }

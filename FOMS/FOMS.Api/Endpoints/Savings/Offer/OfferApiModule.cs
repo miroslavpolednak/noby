@@ -20,13 +20,18 @@ internal class OfferApiModule
 
         // vytvoreni case z modelace - verze Ulozit a zavrit
         builder
-            .MapPost(_prefix + "/{offerInstanceId}/create-case", async ([FromRoute] int offerInstanceId, [FromBody] Dto.CreateCase request) => await mediatr.Send(new Dto.CreateCaseRequest(offerInstanceId, request, false)))
-            .Produces<int>(StatusCodes.Status200OK)
+            .MapPost(_prefix + "/draft", async ([FromBody] Dto.SaveDraftRequest request) => await mediatr.Send(request))
+            .Produces<Dto.SaveDraftResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest);
+        // editace case z modelace - verze Ulozit a zavrit
+        builder
+            .MapPut(_prefix + "/draft", async ([FromBody] Dto.UpdateDraftRequest request) => await mediatr.Send(request))
+            .Produces<Dto.SaveDraftResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
 
         // vytvoreni case z modelace - verze se zalozenim produktu
         builder
-            .MapPost(_prefix + "/{offerInstanceId}/create-product", async ([FromRoute] int offerInstanceId, [FromBody] Dto.CreateCase request) => await mediatr.Send(new Dto.CreateCaseRequest(offerInstanceId, request, true)))
+            .MapPost(_prefix + "/{offerInstanceId}/create", async ([FromRoute] int offerInstanceId, [FromBody] Dto.CreateCase request) => await mediatr.Send(new Dto.CreateCaseRequest(offerInstanceId, request, true)))
             .Produces<int>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
 

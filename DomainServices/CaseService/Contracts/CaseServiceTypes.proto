@@ -31,6 +31,9 @@ message GetCaseDetailResponse {
 	string ContractNumber = 5;
 	bool ActionRequired = 6;
 	cis.types.Identity Customer = 7;
+	string FirstNameNaturalPerson = 8;
+	string Name = 9;
+	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 10;
 }
 
 message CaseListModel {
