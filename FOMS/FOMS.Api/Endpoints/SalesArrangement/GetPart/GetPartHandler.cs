@@ -1,35 +1,25 @@
-﻿using CIS.Core.Results;
+﻿namespace FOMS.Api.Endpoints.SalesArrangement.Handlers;
 
-namespace FOMS.Api.Endpoints.SalesArrangement.Handlers;
-
-/*internal class GetPartHandler
-    : IRequestHandler<Dto.GetPartRequest, int>
+internal class GetPartHandler
+    : IRequestHandler<Dto.GetPartRequest, object>
 {
     public async Task<object> Handle(Dto.GetPartRequest request, CancellationToken cancellationToken)
     {
-        //var salesArrangement = resolveResult(await _salesArrangementService.GetSalesArrangementDetail(request.SalesArrangementId));
-        //var processor = _documentFactory.CreateDocumentProcessor(salesArrangement.SalesArrangementType);
-        return 0;
-    }
+        _logger.LogDebug("Create Document Factory for SA #{salesArrangementId}", request.SalesArrangementId);
+        var processor = await _documentFactory.CreateDocumentProcessor(request.SalesArrangementId);
 
-    private DomainServices.SalesArrangementService.Contracts.GetSalesArrangementDetailResponse resolveResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementDetailResponse> r => r.Model,
-            _ => throw new NotImplementedException()
-        };
+        _logger.LogDebug("Get part {partId} of document", request.PartId);
+        return await processor.GetPart(request.PartId);
+    }
 
     private readonly ILogger<GetPartHandler> _logger;
     private readonly DocumentProcessing.IDocumentProcessorFactory _documentFactory;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public GetPartHandler(
-        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
         DocumentProcessing.IDocumentProcessorFactory documentFactory,
         ILogger<GetPartHandler> logger)
     {
-        _salesArrangementService = salesArrangementService;
         _logger = logger;
         _documentFactory = documentFactory;
     }
-}*/
+}

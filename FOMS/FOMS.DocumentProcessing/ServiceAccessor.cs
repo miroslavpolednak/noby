@@ -4,9 +4,9 @@ namespace FOMS.DocumentProcessing;
 
 internal sealed class ServiceAccessor
 {
-    private readonly HttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public ServiceAccessor(HttpContextAccessor httpContext)
+    public ServiceAccessor(IHttpContextAccessor httpContext)
     {
         _httpContext = httpContext;
     }

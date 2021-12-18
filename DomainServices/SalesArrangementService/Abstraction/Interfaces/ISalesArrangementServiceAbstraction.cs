@@ -24,7 +24,7 @@ public interface ISalesArrangementServiceAbstraction
     /// Vraci JSON data pro dany Sales Arrangement
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[string] - OK;
+    /// SuccessfulServiceCallResult[GetSalesArrangementDataResponse] - OK;
     /// </returns>
     Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId);
 
@@ -32,7 +32,7 @@ public interface ISalesArrangementServiceAbstraction
     /// Napojeni OfferInstance na SA
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[string] - OK;
+    /// SuccessfulServiceCallResult - OK;
     /// </returns>
     Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId);
 
@@ -42,11 +42,17 @@ public interface ISalesArrangementServiceAbstraction
     /// Update stavu SA
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[string] - OK;
+    /// SuccessfulServiceCallResult - OK;
     /// </returns>
     Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state);
     
     Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId);
-    
-    Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId);
+
+    /// <summary>
+    /// Update obsahu SA
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data);
 }

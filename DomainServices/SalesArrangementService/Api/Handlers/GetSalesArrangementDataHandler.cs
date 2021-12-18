@@ -17,6 +17,7 @@ internal class GetSalesArrangementDataHandler
         var model = new GetSalesArrangementDataResponse
         {
             SalesArrangementId = request.SalesArrangementId,
+            SalesArrangementDataId = data is null ? default(int?) : data.SalesArrangementDataId,
             Data = data is null ? "" : data.Data
         };
 

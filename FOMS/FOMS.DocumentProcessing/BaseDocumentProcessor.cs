@@ -4,25 +4,49 @@ namespace FOMS.DocumentProcessing;
 
 internal class BaseDocumentProcessor
 {
-    protected readonly int _salesArrangementId;
+    // instance aktualniho SA
+    protected readonly DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse _salesArrangement;
+    // pristup do DI
     protected readonly ServiceAccessor _serviceAccessor;
-
-    public BaseDocumentProcessor(ServiceAccessor serviceAccessor, int salesArrangementId)
+    // instance SA service
+    protected DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService
     {
-        _salesArrangementId = salesArrangementId;
+        get => _salesArrangementServiceField is null ? _serviceAccessor.GetRequiredService<DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction>() : _salesArrangementServiceField;
+    }
+    private DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction? _salesArrangementServiceField = null;
+
+    public BaseDocumentProcessor(ServiceAccessor serviceAccessor, DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse salesArrangement)
+    {
+        _salesArrangement = salesArrangement;
         _serviceAccessor = serviceAccessor;
     }
 
-    /*protected async Task<TContract> getSalesArrangementData<TContract>() where TContract : class
+    protected async Task<TContract?> getSalesArrangementData<TContract>() where TContract : class
     {
-        var service = _serviceAccessor.GetRequiredService<DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction>();
-        return resolveSalesArrangementData<TContract>(await service.GetSalesArrangementData(_salesArrangementId));
+        var result = resolveGetSalesArrangementData(await _salesArrangementService.GetSalesArrangementData(_salesArrangement.SalesArrangementId));
+        if (result.SalesArrangementDataId.HasValue && !string.IsNullOrEmpty(result.Data))
+            return System.Text.Json.JsonSerializer.Deserialize<TContract>(result.Data) ?? throw new Exception($"Deserialization of contract {typeof(TContract)} failed");
+        else
+            return null;
     }
 
-    private TContract resolveSalesArrangementData<TContract>(IServiceCallResult result) =>
+    protected async void saveSalesArrangementData(object data)
+    {
+        string convertedSaObject = System.Text.Json.JsonSerializer.Serialize(data);
+        resolveSaveSalesArrangementData(await _salesArrangementService.UpdateSalesArrangementData(_salesArrangement.SalesArrangementId, convertedSaObject));
+    }
+
+    private DomainServices.SalesArrangementService.Contracts.GetSalesArrangementDataResponse resolveGetSalesArrangementData(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementDataResponse> r => r.Model,
-            _ => throw new NotImplementedException()
-        };*/
+            _ => throw new NotImplementedException("Can't read SA data")
+        };
+
+    private bool resolveSaveSalesArrangementData(IServiceCallResult result) =>
+        result switch
+        {
+            SuccessfulServiceCallResult => true,
+            _ => throw new NotImplementedException("Can't read SA data")
+        };
 }

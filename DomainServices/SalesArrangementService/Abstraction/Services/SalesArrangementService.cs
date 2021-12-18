@@ -41,7 +41,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
                 SalesArrangementId = salesArrangementId
             })
         );
-        return new SuccessfulServiceCallResult<string>(result.Data);
+        return new SuccessfulServiceCallResult<GetSalesArrangementDataResponse>(result);
     }
 
     public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId)
@@ -62,16 +62,16 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         throw new NotImplementedException();
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId)
+    public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data)
     {
         _logger.LogDebug("Abstraction UpdateSalesArrangementData for #{salesArrangementId}", salesArrangementId);
-        /*var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
-            new LinkModelationToSalesArrangementRequest()
+        var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementDataAsync(
+            new UpdateSalesArrangementDataRequest()
             {
                 SalesArrangementId = salesArrangementId,
-                OfferInstanceId = offerInstanceId
+                Data = data
             })
-        );*/
+        );
         return new SuccessfulServiceCallResult();
     }
 

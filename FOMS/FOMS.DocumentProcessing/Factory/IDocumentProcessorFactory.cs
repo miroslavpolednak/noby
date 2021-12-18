@@ -2,5 +2,5 @@
 
 public interface IDocumentProcessorFactory
 {
-    IDocumentProcessor CreateDocumentProcessor(int salesArrangementType, int salesArrangementId);
+    Task<IDocumentProcessor> CreateDocumentProcessor(int salesArrangementId);
 }

@@ -20,5 +20,8 @@ internal static class FomsServices
 
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
+
+        // doc processor factory
+        builder.Services.AddTransient<DocumentProcessing.IDocumentProcessorFactory, DocumentProcessing.DocumentProcessorFactory>();
     }
 }

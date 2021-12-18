@@ -37,6 +37,7 @@ message GetSalesArrangementResponse {
 message GetSalesArrangementDataResponse {
 	int32 SalesArrangementId = 1;
 	string Data = 2;
+	google.protobuf.Int32Value SalesArrangementDataId = 3;
 }
 
 message GetSalesArrangementsByCaseIdRequest {
