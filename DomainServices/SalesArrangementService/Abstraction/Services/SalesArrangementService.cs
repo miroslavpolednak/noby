@@ -62,14 +62,30 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         throw new NotImplementedException();
     }
 
-    public Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId)
+    public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Abstraction UpdateSalesArrangementData for #{salesArrangementId}", salesArrangementId);
+        /*var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
+            new LinkModelationToSalesArrangementRequest()
+            {
+                SalesArrangementId = salesArrangementId,
+                OfferInstanceId = offerInstanceId
+            })
+        );*/
+        return new SuccessfulServiceCallResult();
     }
 
-    public Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state)
+    public async Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementId, int state)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Abstraction UpdateSalesArrangementState for #{salesArrangementId}", salesArrangementId);
+        var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementStateAsync(
+            new UpdateSalesArrangementStateRequest()
+            {
+                SalesArrangementId = salesArrangementId,
+                State = state
+            })
+        );
+        return new SuccessfulServiceCallResult();
     }
 
     public Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId)

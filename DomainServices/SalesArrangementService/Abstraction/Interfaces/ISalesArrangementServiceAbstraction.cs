@@ -37,7 +37,13 @@ public interface ISalesArrangementServiceAbstraction
     Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId);
 
     Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states);
-    
+
+    /// <summary>
+    /// Update stavu SA
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[string] - OK;
+    /// </returns>
     Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state);
     
     Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId);
