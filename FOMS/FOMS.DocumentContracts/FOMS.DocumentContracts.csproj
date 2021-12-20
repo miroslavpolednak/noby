@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Attributes\" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="FOMS.DocumentContracts.Generators" />
+	</ItemGroup>
+	
 </Project>
