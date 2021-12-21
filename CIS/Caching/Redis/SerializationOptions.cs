@@ -11,7 +11,7 @@ namespace CIS.Infrastructure.Caching.Redis
             {
                 PropertyNameCaseInsensitive = true,
                 AllowTrailingCommas = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Always,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault,
                 WriteIndented = false,
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };

@@ -2,12 +2,12 @@
   "CustomKestrel": {
     "Endpoints": [
       {
-        "Port": 5003,
+        "Port": 5010,
         "Protocol": 2
       }
     ],
     "Certificate": {
-      "Path": "d:\\app\\FAT\\adpra191.vsskb.cz.pfx",
+      "Path": "d:\\app\\DS-FAT\\adpra191.vsskb.cz.pfx",
       "Password": "mpss123"
     }
   }

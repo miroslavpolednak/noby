@@ -8,37 +8,37 @@ namespace CIS.Infrastructure.Caching.Redis;
 
 public class RedisGlobalCache<T> : RedisGlobalCache, IGlobalCache<T> where T : class
 {
-    public RedisGlobalCache(string connectionString, string keyPrefix)
+    public RedisGlobalCache(string connectionString, string? keyPrefix)
         : base(connectionString, keyPrefix) { }
 
-    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, string keyPrefix)
+    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, string? keyPrefix)
         : base(connectionMultiplexer, keyPrefix) { }
 
-    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, ApplicationKey applicationKey, ApplicationEnvironmentName environment)
-        : base(connectionMultiplexer, applicationKey, environment) { }
+    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, ApplicationKey applicationKey, ApplicationEnvironmentName environment, string? keyPrefix = null)
+        : base(connectionMultiplexer, applicationKey, environment, keyPrefix) { }
 }
 
 public class RedisGlobalCache : IGlobalCache
 {
     protected readonly IDatabase _database;
 
-    public RedisGlobalCache(string connectionString, string keyPrefix)
+    public RedisGlobalCache(string connectionString, string? keyPrefix)
     {
         var multiplexer = ConnectionMultiplexer.Connect(connectionString);
         _database = multiplexer.GetDatabase();
         KeyPrefix = keyPrefix;
     }
 
-    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, string keyPrefix)
+    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, string? keyPrefix)
     {
         _database = connectionMultiplexer.GetDatabase();
         KeyPrefix = keyPrefix;
     }
 
-    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, ApplicationKey applicationKey, ApplicationEnvironmentName environment)
-        : this(connectionMultiplexer, $"{environment}:{applicationKey}:") { }
+    public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, ApplicationKey applicationKey, ApplicationEnvironmentName environment, string? keyPrefix = null)
+        : this(connectionMultiplexer, $"{keyPrefix}{environment}:{applicationKey}:") { }
     
-    public string KeyPrefix { get; init; }
+    public string? KeyPrefix { get; init; }
 
     public bool Exists(string key)
     {
@@ -171,8 +171,8 @@ public class RedisGlobalCache : IGlobalCache
                 break;
 
             case SerializationTypes.Json:
-                var bytes = JsonSerializer.SerializeToUtf8Bytes(item, SerializationOptions.Flexible);
-                await _database.SetAddAsync(KeyPrefix + key, bytes);
+                var value = JsonSerializer.Serialize(item, SerializationOptions.Flexible);
+                await _database.StringSetAsync(KeyPrefix + key, value);
                 break;
 
             default:

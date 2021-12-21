@@ -13,4 +13,6 @@ public sealed class RedisGlobalCacheOptions
     public string ApplicationKey { get; init; }
 
     public string ConnectionString { get; set; } = "";
+
+    public string KeyPrefix { get; init; } = "";
 }

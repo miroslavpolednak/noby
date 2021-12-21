@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.41.0" />
     <PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="4.0.0-beta3" />
   </ItemGroup>
 

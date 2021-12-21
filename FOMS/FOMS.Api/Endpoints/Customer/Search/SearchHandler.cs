@@ -5,7 +5,6 @@ internal class SearchHandler
 {
     public async Task<Dto.SearchResponse> Handle(Dto.SearchRequest request, CancellationToken cancellationToken)
     {
-
         return new Dto.SearchResponse
         {
             Pagination = new CIS.Core.Types.PaginableResponse()
