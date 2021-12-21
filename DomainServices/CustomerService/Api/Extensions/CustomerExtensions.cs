@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Contracts;
 using static DomainServices.CustomerService.Contracts.Contact.Types;
 
 namespace DomainServices.CustomerService.Api
@@ -51,22 +50,22 @@ namespace DomainServices.CustomerService.Api
                 }));
             }
 
-            addAddress(AddressTypes.Pernament, entity.Ulice, entity.CisloDomu1, entity.CisloDomu2, entity.Misto, entity.Psc);
-            addAddress(AddressTypes.Mailing, entity.VypisyUlice, entity.VypisyCisloDomu1, entity.VypisyCisloDomu2, entity.VypisyMisto, entity.VypisyPsc);
+            addAddress(AddressTypes.Pernament, entity.Ulice, entity.CisloDomu4, entity.CisloDomu2, entity.Misto, entity.Psc);
+            addAddress(AddressTypes.Mailing, entity.VypisyUlice, entity.VypisyCisloDomu4, entity.VypisyCisloDomu2, entity.VypisyMisto, entity.VypisyPsc);
 
             return model;
 
-            void addAddress(AddressTypes type, string? street, string? nr1, string? nr2, string? city, string? zip)
+            void addAddress(AddressTypes type, string? street, string? nr4, string? nr2, string? city, string? zip)
             {
-                if (!string.IsNullOrEmpty(street) || !string.IsNullOrEmpty(nr1) || !string.IsNullOrEmpty(nr2) || !string.IsNullOrEmpty(city) || !string.IsNullOrEmpty(zip))
+                if (!string.IsNullOrEmpty(street) || !string.IsNullOrEmpty(nr4) || !string.IsNullOrEmpty(nr2) || !string.IsNullOrEmpty(city) || !string.IsNullOrEmpty(zip))
                 {
                     model.Addresses.Add(new Address
                     {
-                        BuildingIdentificationNumber = nr2 ?? "",
+                        BuildingIdentificationNumber = nr4 ?? "",
                         City = city ?? "",
                         CountryCode = "",
                         IsPrimary = type == AddressTypes.Mailing,
-                        LandRegistryNumber = nr1 ?? "",
+                        LandRegistryNumber = nr2 ?? "",
                         Postcode = zip ?? "",
                         Street = street ?? "",
                         Type = type

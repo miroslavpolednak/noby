@@ -54,4 +54,9 @@ internal sealed class MockEasClient : IEasClient
         Random random = new Random();
         return new SuccessfulServiceCallResult<long>(random.NextInt64(1, 99));
     }
+
+    public async Task<IServiceCallResult> NewKlient(S_KLIENTDATA client)
+    {
+        return await Task.FromResult(new SuccessfulServiceCallResult<S_KLIENTDATA>(new S_KLIENTDATA() { klient_id = 123 }));
+    }
 }

@@ -1,0 +1,1851 @@
+{
+	"info": {
+		"_postman_id": "2f944e7d-e2b2-47bf-bd44-da248fac4086",
+		"name": "NOBY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01-OfferService",
+			"item": [
+				{
+					"name": "Test",
+					"item": [
+						{
+							"name": "01-0050-EAS-Simulation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"\r",
+											"clientIsNaturalPerson=pm.variables.get('ClientIsNaturalPerson');\r",
+											"pm.variables.set('EASlegalEntity',(clientIsNaturalPerson==\"false\"?1:0));\r",
+											"\r",
+											"clientIsSVJ=pm.variables.get('ClientIsSVJ');\r",
+											"pm.variables.set('EASisSVJ',(clientIsSVJ==\"true\"?1:0));\r",
+											"\r",
+											"isWithLoan=pm.variables.get('IsWithLoan');\r",
+											"pm.variables.set('EASwithLoan',(isWithLoan==\"true\"?1:0));\r",
+											"\r",
+											"targetAmount=pm.variables.get('TargetAmount');\r",
+											"pm.variables.set('EASdeposit',0.005*targetAmount);\r",
+											"\r",
+											"stateSubsidy=pm.variables.get('StateSubsidy');\r",
+											"pm.variables.set('EASstateSubsidy',(stateSubsidy==\"true\"?1:0));\r",
+											"\r",
+											"var moment = require('moment');\r",
+											"let now=moment();\r",
+											"pm.variables.set('EASToday',now.format(\"YYYY-MM-DD\"));\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"//Do testu bohuzel nelze pridat kontrolu vysledku proti pevne hodnote, protoze vysledek se meni dle data simulace\r",
+											"/*\r",
+											"pm.test(\"Test TotalSaved\", function () \r",
+											"{\r",
+											"    pm.expect(libEAS.getSimulationPropperty('SS_celkem_nasporeno',res)/1 //Native str2float conversion\r",
+											"        ).to.eql(pm.variables.get(\"TotalSaved\"));\r",
+											"});\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "text/xml; charset=UTF-8"
+									},
+									{
+										"key": "SOAPAction",
+										"type": "text",
+										"value": "\"http://asseco/EAS/EAS_WS_SB_Services/Simulation\""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:eas=\"http://asseco/EAS/EAS_WS_SB_Services\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <eas:Simulation>\r\n         <eas:settings>\r\n\r\n            <eas:SS_Vklad_Den>25</eas:SS_Vklad_Den>\r\n            <eas:SS_Vklad_Vyska>{{EASdeposit}}</eas:SS_Vklad_Vyska>\r\n            <eas:SS_Vklad_Perioda>1</eas:SS_Vklad_Perioda>\r\n            <eas:SS_Vklad_ZmenaVyskyPriZmeneCC>1</eas:SS_Vklad_ZmenaVyskyPriZmeneCC>\r\n            <eas:SS_PoplatokZaVedenieDatumDen>1</eas:SS_PoplatokZaVedenieDatumDen>\r\n            <eas:SS_PoplatokZaVedenieDatumMesiac>1</eas:SS_PoplatokZaVedenieDatumMesiac>\r\n            <eas:SS_StatnaPremia_Ziadat>{{EASstateSubsidy}}</eas:SS_StatnaPremia_Ziadat>\r\n            <eas:SS_StatnaPremia_DatumDen>18</eas:SS_StatnaPremia_DatumDen>\r\n            <eas:SS_StatnaPremia_DatumMesiac>4</eas:SS_StatnaPremia_DatumMesiac>\r\n            <eas:SS_StatnaPremia_DruheKolo_DatumDen>30</eas:SS_StatnaPremia_DruheKolo_DatumDen>\r\n            <eas:SS_StatnaPremia_DruheKolo_DatumMesiac>9</eas:SS_StatnaPremia_DruheKolo_DatumMesiac>\r\n            <eas:SS_KlientFyzickaPravnicka>{{EASlegalEntity}}</eas:SS_KlientFyzickaPravnicka>\r\n            <eas:SS_KlientSVJ>{{EASisSVJ}}</eas:SS_KlientSVJ>\r\n            <eas:SS_KodProduktu>{{ProductCode}}</eas:SS_KodProduktu>\r\n            <eas:SS_DatumZalozenia>{{EASToday}}</eas:SS_DatumZalozenia> //aktuální datum\r\n            <eas:SS_CielovaSuma>{{TargetAmount}}</eas:SS_CielovaSuma>\r\n            <eas:SS_KodAkcie>{{ActionCode}}</eas:SS_KodAkcie>\r\n            <eas:SS_ZadaRocniVypis>0</eas:SS_ZadaRocniVypis>\r\n            <eas:SS_UkonceniePoUplynutiViazacejLehoty>1</eas:SS_UkonceniePoUplynutiViazacejLehoty>\r\n            <eas:SS_UkonceniePriNasporeniCC>0</eas:SS_UkonceniePriNasporeniCC>\r\n            <eas:SS_UkoncenieVZadanyDen>0</eas:SS_UkoncenieVZadanyDen>\r\n\r\n        </eas:settings>\r\n      </eas:Simulation>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://adpra136.vsskb.cz/HOME/EAS_WS_SB_Services.svc",
+									"protocol": "https",
+									"host": [
+										"adpra136",
+										"vsskb",
+										"cz"
+									],
+									"path": [
+										"HOME",
+										"EAS_WS_SB_Services.svc"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-0100-OfferSerice-SimulateBuildingSavings",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test direct vs through service call\", function () \r",
+											"{\r",
+											"    //TODO: Pridat dalsi\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalSaved)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_celkem_nasporeno')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.variables.set('OfferInstanceId',res.OfferInstanceId);\r",
+											"\r",
+											"\r",
+											"\r",
+											"//Do testu bohuzel nelze pridat kontrolu vysledku proti pevne hodnote, protoze vysledek se meni dle data simulace\r",
+											"/*\r",
+											"pm.test(\"Test TotalSaved\", function () \r",
+											"{\r",
+											"\r",
+											"    totalSaved=libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalSaved);\r",
+											"    pm.expect(totalSaved).to.eql(pm.variables.get(\"TotalSaved\"));\r",
+											"});\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"/*\r",
+											"console.log(\r",
+											"pm.collectionVariables.variables()\r",
+											");\r",
+											"\r",
+											"\r",
+											"\r",
+											"jsonT=libRequest.getResponse('0100 OfferSerice Simulate');\r",
+											"\r",
+											"console.log(jsonT);\r",
+											"\r",
+											"console.log(jsonT[\"InsertUserId\"]);\r",
+											"*/\r",
+											"\r",
+											"//console.log('DEF');\r",
+											"/*\r",
+											"jsonT=res;\r",
+											"//jsonT=getResponse('0100 OfferSerice Simulate');\r",
+											"\r",
+											"//console.log(jsonT);\r",
+											"\r",
+											"console.log(pm.collectionVariables.get('<-- 0100 OfferSerice Simulate'));\r",
+											"*/\r",
+											"\r",
+											"/*\r",
+											"\r",
+											"contractTerm=libBcl.dateTimeToDate(res['BuildingSavings']['ContractTerminationDate']);\r",
+											"console.log(contractTerm.format((\"YYYY-MM-DD\")));\r",
+											"*/\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"InputData\":\r\n    {\r\n        \"TargetAmount\":{{TargetAmount}}\r\n        ,\"ProductCode\":{{ProductCode}}\r\n        ,\"ActionCode\":{{ActionCode}}\r\n        ,\"ClientIsNaturalPerson\":{{ClientIsNaturalPerson}}\r\n        ,\"ClientIsSVJ\":{{ClientIsSVJ}}\r\n        ,\"IsWithLoan\":{{IsWithLoan}}\r\n        ,\"StateSubsidy\":{{StateSubsidy}}\r\n        ,\"LoanActionCode\":{\"value\":{{LoanActionCode}}}\r\n    },\r\n    \"ResourceProcessId\":\"e3ea8cb1-ad56-4cc6-91c9-eb99e3c6dc83\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=SimulateBuildingSavings",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "SimulateBuildingSavings"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-0300-OfferSerice-GetBuildingSavingsData",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get returns the same result as simulation itself\", function () \r",
+											"{\r",
+											"    req0100=libRequest.getRequest('01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"    res0100=libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"    delete res0100.InsertStamp.dateTime;\r",
+											"    pm.expect(libCompare.compareJson(res0100,res    ,false)).to.eql(true);\r",
+											"    \r",
+											"    if(!req0100.InputData.IsWithLoan)\r",
+											"    {\r",
+											"        delete req0100.InputData.LoanActionCode;\r",
+											"        delete     res.InputData.LoanActionCode;\r",
+											"    }\r",
+											"\r",
+											"    pm.expect(libCompare.compareJson(req0100.InputData,res.InputData,false)).to.eql(true);\r",
+											"    pm.expect(libCompare.compareJson(res.InputData,req0100.InputData,false)).to.eql(true);\r",
+											"    \r",
+											"    delete res.SimulationType;\r",
+											"    delete res.InputData;\r",
+											"    delete res.InsertStamp.dateTime;\r",
+											"    pm.expect(libCompare.compareJson(res    ,res0100,false)).to.eql(true);\r",
+											"\r",
+											"\r",
+											"\r",
+											"    /*\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
+											"    */\r",
+											"});\r",
+											"\r",
+											"postman.setNextRequest('01-0500-OfferSerice-GetBuildingSavingsDepositSchedule');\r",
+											"//postman.setNextRequest('01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule');\r",
+											"\r",
+											"//postman.setNextRequest('01-2000-OfferSerice-GetBuildingSavingsData');\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"OfferInstanceId\":{{OfferInstanceId}}\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=GetBuildingSavingsData",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "GetBuildingSavingsData"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-0400-OfferSerice-PrintBuildingSavingsOffer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"\", function () \r",
+											"{\r",
+											"\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set('OfferInstanceId',libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings').OfferInstanceId);\r",
+											"\r",
+											"//pm.request.url.query.add({key: 'test', value: '1234'});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"OfferInstanceId\":{{OfferInstanceId}},\r\n    \"Dealer\":\r\n    {\r\n        \"FirstName\":\"Kuba\",\r\n        \"LastName\":\"Kubikula\",\r\n        \"JobTitle\":\"Velký šéf\",\r\n        \"PhoneNumber\":\"777 888 991\",\r\n        \"Email\":\"kuba.kubikula@mpss.cz\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=PrintBuildingSavingsOffer",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "PrintBuildingSavingsOffer"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var moment = require('moment');\r",
+											"\r",
+											"pm.test\r",
+											"(\r",
+											"    \"Status code is 200\", function()\r",
+											"    {\r",
+											"        pm.response.to.have.status(200);\r",
+											"    }\r",
+											");\r",
+											"\r",
+											"\r",
+											"js_response=pm.response.json();\r",
+											"\r",
+											"js_response_simulate=pm.environment.get('js_response_simulate');\r",
+											"\r",
+											"//console.log(js_response);\r",
+											"//console.log(js_response_simulate);\r",
+											"\r",
+											"//Tak takto retezcove se to nerovna\r",
+											"\r",
+											"\r",
+											"for(i=0;js_response['ScheduleItems'][i];i++)\r",
+											"{\r",
+											"\r",
+											"date=moment();\r",
+											"date.set('year', 1970);\r",
+											"date.set('month', 0);  // April\r",
+											"date.set('date', 1);\r",
+											"date.set('hour', 0);\r",
+											"date.set('minute', 0);\r",
+											"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
+											"\r",
+											"\r",
+											"\r",
+											" console.log(date.format(\"YYYY-MM-DD\")+\"\\t\"+js_response['ScheduleItems'][i].Sum+\"\\t\"+js_response['ScheduleItems'][i].Balance+\"\\t\"+js_response['ScheduleItems'][i].Note+\"\\t\"+js_response['ScheduleItems'][i].Info);\r",
+											"\r",
+											"\r",
+											"}\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n    \"OfferInstanceId\":{{OfferInstanceId}}\r\n}\r\n\r\n\r\n\r\n\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=GetBuildingSavingsDepositSchedule",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "GetBuildingSavingsDepositSchedule"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var moment = require('moment');\r",
+											"\r",
+											"pm.test\r",
+											"(\r",
+											"    \"Status code is 200\", function()\r",
+											"    {\r",
+											"        pm.response.to.have.status(200);\r",
+											"    }\r",
+											");\r",
+											"\r",
+											"\r",
+											"js_response=pm.response.json();\r",
+											"\r",
+											"js_response_simulate=pm.environment.get('js_response_simulate');\r",
+											"\r",
+											"//console.log(js_response);\r",
+											"//console.log(js_response_simulate);\r",
+											"\r",
+											"//Tak takto retezcove se to nerovna\r",
+											"\r",
+											"\r",
+											"for(i=0;js_response['ScheduleItems'][i];i++)\r",
+											"{\r",
+											"\r",
+											"date=moment();\r",
+											"date.set('year', 1970);\r",
+											"date.set('month', 0);  // April\r",
+											"date.set('date', 1);\r",
+											"date.set('hour', 0);\r",
+											"date.set('minute', 0);\r",
+											"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
+											"\r",
+											"\r",
+											"\r",
+											" console.log(date.format(\"YYYY-MM-DD\")+\"\\t\"+js_response['ScheduleItems'][i].Sum+\"\\t\"+js_response['ScheduleItems'][i].Balance+\"\\t\"+js_response['ScheduleItems'][i].Note+\"\\t\"+js_response['ScheduleItems'][i].Info);\r",
+											"\r",
+											"\r",
+											"}\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n    \"OfferInstanceId\":{{OfferInstanceId}}\r\n}\r\n\r\n\r\n\r\n\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=GetBuildingSavingsPaymentSchedule",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "GetBuildingSavingsPaymentSchedule"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01-2000-OfferSerice-GetBuildingSavingsData",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get returns the same result as simulation itself\", function () \r",
+											"{\r",
+											"    //TODO: Pridat dalsi\r",
+											"    pm.expect(res.BuildingSavings.TotalSaved).to.\r",
+											"        eql(libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings').BuildingSavings.TotalSaved);\r",
+											"    pm.expect(res.BuildingSavings.TotalDeposits).to.\r",
+											"        eql(libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings').BuildingSavings.TotalDeposits);\r",
+											"\r",
+											"\r",
+											"    /*\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
+											"    */\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"OfferInstanceId\":{{OfferInstanceId}}\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=GetBuildingSavingsData",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "GetBuildingSavingsData"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "01-A-OfferService-EAS",
+			"item": [
+				{
+					"name": "0200 EAS Simulate Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									"clientIsNaturalPerson=pm.collectionVariables.get('ClientIsNaturalPerson');\r",
+									"pm.variables.set('EASlegalEntity',(clientIsNaturalPerson==\"false\"?1:0));\r",
+									"\r",
+									"clientIsSVJ=pm.collectionVariables.get('ClientIsSVJ');\r",
+									"pm.variables.set('EASisSVJ',(clientIsSVJ==\"true\"?1:0));\r",
+									"\r",
+									"isWithLoan=pm.collectionVariables.get('IsWithLoan');\r",
+									"pm.variables.set('EASwithLoan',(isWithLoan==\"true\"?1:0));\r",
+									"\r",
+									"targetAmount=pm.collectionVariables.get('TargetAmount');\r",
+									"pm.variables.set('EASdeposit',0.005*targetAmount);\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//console.log(req);\r",
+									"\r",
+									"//console.log(res['s:Envelope']['s:Body']['SimulationResponse']['SimulationResult']);\r",
+									"\r",
+									"offerServiceRes='ABC';\r",
+									"\r",
+									"offerServiceRes=libRequest.getResponse('0100 OfferSerice Simulate');\r",
+									"\r",
+									"console.log(offerServiceRes);\r",
+									"    \r",
+									"TotalDeposits=offerServiceRes['BuildingSavings']['TotalDeposits']['lo'];\r",
+									"\r",
+									"console.log(TotalDeposits);\r",
+									"\r",
+									"pm.expect(res['s:Envelope']['s:Body']['SimulationResponse']['SimulationResult']['SS_vklady_celkem']).to.eql(\"129600\");\r",
+									"\r",
+									"//108000\r",
+									"//129600\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/xml; charset=UTF-8"
+							},
+							{
+								"key": "SOAPAction",
+								"type": "text",
+								"value": "\"http://asseco/EAS/EAS_WS_SB_Services/Simulation\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:eas=\"http://asseco/EAS/EAS_WS_SB_Services\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <eas:Simulation>\r\n         <eas:settings>\r\n\r\n\r\n            <eas:simulationStart>2021-10-16</eas:simulationStart> //aktuální datum\r\n            <eas:SS_DatumZalozenia>2021-10-16</eas:SS_DatumZalozenia> //aktuální datum\r\n\r\n            <eas:simulationMaxYears>0</eas:simulationMaxYears>\r\n            <eas:includeDbHistory>1</eas:includeDbHistory>\r\n            <eas:SS_Vklad_Den>25</eas:SS_Vklad_Den>\r\n            <eas:SS_Vklad_Vyska>{{EASdeposit}}</eas:SS_Vklad_Vyska>\r\n            <eas:SS_Vklad_Perioda>1</eas:SS_Vklad_Perioda>\r\n            <eas:SS_Vklad_ZmenaVyskyPriZmeneCC>1</eas:SS_Vklad_ZmenaVyskyPriZmeneCC>\r\n            <eas:SS_PoplatokZaVedenieDatumDen>1</eas:SS_PoplatokZaVedenieDatumDen>\r\n            <eas:SS_PoplatokZaVedenieDatumMesiac>1</eas:SS_PoplatokZaVedenieDatumMesiac>\r\n            <eas:SS_StatnaPremia_Ziadat>1</eas:SS_StatnaPremia_Ziadat>\r\n            <eas:SS_StatnaPremia_DatumDen>18</eas:SS_StatnaPremia_DatumDen>\r\n            <eas:SS_StatnaPremia_DatumMesiac>4</eas:SS_StatnaPremia_DatumMesiac>\r\n            <eas:SS_StatnaPremia_DruheKolo_DatumDen>30</eas:SS_StatnaPremia_DruheKolo_DatumDen>\r\n            <eas:SS_StatnaPremia_DruheKolo_DatumMesiac>9</eas:SS_StatnaPremia_DruheKolo_DatumMesiac>\r\n            <eas:SS_ZadaRocniVypis>0</eas:SS_ZadaRocniVypis>\r\n            <eas:SS_UkonceniePoUplynutiViazacejLehoty>1</eas:SS_UkonceniePoUplynutiViazacejLehoty>\r\n            <eas:SS_UkonceniePriNasporeniCC>0</eas:SS_UkonceniePriNasporeniCC>\r\n            <eas:SS_UkoncenieVZadanyDen>0</eas:SS_UkoncenieVZadanyDen>\r\n            <eas:PU_SimulovatUver>0</eas:PU_SimulovatUver>\r\n            <eas:PU_DosporovanieDoPercentoZCC>0</eas:PU_DosporovanieDoPercentoZCC>\r\n            <eas:PU_KodAkcie>0</eas:PU_KodAkcie>\r\n            <eas:PU_KodInejAkcie>0</eas:PU_KodInejAkcie>\r\n            <eas:PU_ZadaRocniVypis>0</eas:PU_ZadaRocniVypis>\r\n            <eas:PU_PeriodaFixace>0</eas:PU_PeriodaFixace>\r\n            <eas:PU_UrokovaSadzba_Bezna>0</eas:PU_UrokovaSadzba_Bezna>\r\n            <eas:PU_UrokovaSadzba_Sankcni>0</eas:PU_UrokovaSadzba_Sankcni>\r\n            <eas:PU_UrokovaSadzba_Z_prodleni>0</eas:PU_UrokovaSadzba_Z_prodleni>\r\n            <eas:PU_Splatka_Den>0</eas:PU_Splatka_Den>\r\n            <eas:PU_TypZajisteni>0</eas:PU_TypZajisteni>\r\n            <eas:PU_Neuctovat_popl_za_uzav_smlouvy>0</eas:PU_Neuctovat_popl_za_uzav_smlouvy>\r\n            <eas:PU_Neuctovat_popl_za_zar_listiny>0</eas:PU_Neuctovat_popl_za_zar_listiny>\r\n            <eas:PU_AutoUhrazeniPoplatkuZaZpracUv_na_SS>0</eas:PU_AutoUhrazeniPoplatkuZaZpracUv_na_SS>\r\n            <eas:PU_Stejna_Splatka_PU_USS>0</eas:PU_Stejna_Splatka_PU_USS>\r\n            <eas:Variantni_Splatka_USS>0</eas:Variantni_Splatka_USS>\r\n            <eas:USS_KodAkcie>0</eas:USS_KodAkcie>\r\n            <eas:USS_KodInejAkcie>0</eas:USS_KodInejAkcie>\r\n            <eas:USS_Splatka_Den>0</eas:USS_Splatka_Den>\r\n            <eas:USS_Poplatok_Zarucne_Listiny_Neuctovat>0</eas:USS_Poplatok_Zarucne_Listiny_Neuctovat>\r\n            <eas:USS_ZadaRocniVypis>0</eas:USS_ZadaRocniVypis>\r\n\r\n\r\n\r\n            <!--Povinne argumenty konstatni-->\r\n\r\n\r\n            <!--Povinne argumnety promenne-->\r\n            <eas:SS_KodProduktu>{{ProductCode}}</eas:SS_KodProduktu>\r\n            <eas:SS_CielovaSuma>{{TargetAmount}}</eas:SS_CielovaSuma>\r\n\r\n            <!--Nepovinne argumenty konstatni-->\r\n\r\n\r\n            <!--Nepovinne argumenty promenne-->\r\n            <eas:SS_KodAkcie>{{ActionCode}}</eas:SS_KodAkcie>\r\n            <eas:SS_KlientFyzickaPravnicka>{{EASlegalEntity}}</eas:SS_KlientFyzickaPravnicka>\r\n            <eas:SS_KlientSVJ>{{EASisSVJ}}</eas:SS_KlientSVJ>\r\n            <eas:USS_SimulovatUver>{{EASwithLoan}}</eas:USS_SimulovatUver>\r\n\r\n\r\n\r\n        </eas:settings>\r\n      </eas:Simulation>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://adpra136.vsskb.cz/HOME/EAS_WS_SB_Services.svc",
+							"protocol": "https",
+							"host": [
+								"adpra136",
+								"vsskb",
+								"cz"
+							],
+							"path": [
+								"HOME",
+								"EAS_WS_SB_Services.svc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TESTS",
+			"item": [
+				{
+					"name": "01-OfferService",
+					"item": [
+						{
+							"name": "01-simulateHousingSavings",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "BACKUP",
+			"item": [
+				{
+					"name": "0200 EAS Simulate Backup",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									"clientIsNaturalPerson=pm.collectionVariables.get('ClientIsNaturalPerson');\r",
+									"pm.variables.set('EASlegalEntity',(clientIsNaturalPerson==\"false\"?1:0));\r",
+									"\r",
+									"clientIsSVJ=pm.collectionVariables.get('ClientIsSVJ');\r",
+									"pm.variables.set('EASisSVJ',(clientIsSVJ==\"true\"?1:0));\r",
+									"\r",
+									"isWithLoan=pm.collectionVariables.get('IsWithLoan');\r",
+									"pm.variables.set('EASwithLoan',(isWithLoan==\"true\"?1:0));\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"console.log(req);\r",
+									"\r",
+									"console.log(res['s:Envelope']['s:Body']['SimulationResponse']['SimulationResult']);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/xml; charset=UTF-8"
+							},
+							{
+								"key": "SOAPAction",
+								"type": "text",
+								"value": "\"http://asseco/EAS/EAS_WS_SB_Services/Simulation\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:eas=\"http://asseco/EAS/EAS_WS_SB_Services\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <eas:Simulation>\r\n         <eas:settings>\r\n          \r\n            <!--Povinne argumenty konstatni-->\r\n            <eas:SS_Vklad_Den>25</eas:SS_Vklad_Den>\r\n            <eas:SS_DatumZalozenia>2021-07-21</eas:SS_DatumZalozenia> \r\n            <eas:SS_UkonceniePoUplynutiViazacejLehoty>1</eas:SS_UkonceniePoUplynutiViazacejLehoty>\r\n\r\n            <!--Povinne argumnety promenne-->\r\n            <eas:SS_KodProduktu>{{ProductCode}}</eas:SS_KodProduktu>\r\n            <eas:SS_CielovaSuma>{{TargetAmount}}</eas:SS_CielovaSuma>\r\n\r\n            <!--Nepovinne argumenty konstatni-->\r\n\r\n\r\n            <!--Nepovinne argumenty promenne-->\r\n            <eas:SS_KodAkcie>{{ActionCode}}</eas:SS_KodAkcie>\r\n            <eas:SS_KlientFyzickaPravnicka>{{EASlegalEntity}}</eas:SS_KlientFyzickaPravnicka>\r\n            <eas:SS_KlientSVJ>{{EASisSVJ}}</eas:SS_KlientSVJ>\r\n            <eas:USS_SimulovatUver>{{}}</eas:USS_SimulovatUver>\r\n\r\n\r\n<!--\r\n\r\n,\"IsWithLoan\":true\r\n}\r\n\r\n-->\r\n\r\n\r\n\r\n        </eas:settings>\r\n      </eas:Simulation>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://adpra136.vsskb.cz/HOME/EAS_WS_SB_Services.svc",
+							"protocol": "https",
+							"host": [
+								"adpra136",
+								"vsskb",
+								"cz"
+							],
+							"path": [
+								"HOME",
+								"EAS_WS_SB_Services.svc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0200 EAS Simulate Backup 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									"clientIsNaturalPerson=pm.collectionVariables.get('ClientIsNaturalPerson');\r",
+									"pm.variables.set('EASlegalEntity',(clientIsNaturalPerson==\"false\"?1:0));\r",
+									"\r",
+									"clientIsSVJ=pm.collectionVariables.get('ClientIsSVJ');\r",
+									"pm.variables.set('EASisSVJ',(clientIsSVJ==\"true\"?1:0));\r",
+									"\r",
+									"isWithLoan=pm.collectionVariables.get('IsWithLoan');\r",
+									"pm.variables.set('EASwithLoan',(isWithLoan==\"true\"?1:0));\r",
+									"\r",
+									"targetAmount=pm.collectionVariables.get('TargetAmount');\r",
+									"pm.variables.set('EASdeposit',0.005*targetAmount);\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//console.log(req);\r",
+									"\r",
+									"//console.log(res['s:Envelope']['s:Body']['SimulationResponse']['SimulationResult']);\r",
+									"\r",
+									"offerServiceRes='ABC';\r",
+									"\r",
+									"offerServiceRes=libRequest.getResponse('0100 OfferSerice Simulate');\r",
+									"\r",
+									"console.log(offerServiceRes);\r",
+									"    \r",
+									"TotalDeposits=offerServiceRes['BuildingSavings']['TotalDeposits']['lo'];\r",
+									"\r",
+									"console.log(TotalDeposits);\r",
+									"\r",
+									"pm.expect(res['s:Envelope']['s:Body']['SimulationResponse']['SimulationResult']['SS_vklady_celkem']).to.eql(\"129600\");\r",
+									"\r",
+									"//108000\r",
+									"//129600\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/xml; charset=UTF-8"
+							},
+							{
+								"key": "SOAPAction",
+								"type": "text",
+								"value": "\"http://asseco/EAS/EAS_WS_SB_Services/Simulation\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:eas=\"http://asseco/EAS/EAS_WS_SB_Services\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <eas:Simulation>\r\n         <eas:settings>\r\n\r\n\r\n            <eas:simulationStart>2021-10-16</eas:simulationStart> //aktuální datum\r\n            <eas:SS_DatumZalozenia>2021-10-16</eas:SS_DatumZalozenia> //aktuální datum\r\n\r\n            <eas:simulationMaxYears>0</eas:simulationMaxYears>\r\n            <eas:includeDbHistory>1</eas:includeDbHistory>\r\n            <eas:SS_Vklad_Den>25</eas:SS_Vklad_Den>\r\n            <eas:SS_Vklad_Vyska>{{EASdeposit}}</eas:SS_Vklad_Vyska>\r\n            <eas:SS_Vklad_Perioda>1</eas:SS_Vklad_Perioda>\r\n            <eas:SS_Vklad_ZmenaVyskyPriZmeneCC>1</eas:SS_Vklad_ZmenaVyskyPriZmeneCC>\r\n            <eas:SS_PoplatokZaVedenieDatumDen>1</eas:SS_PoplatokZaVedenieDatumDen>\r\n            <eas:SS_PoplatokZaVedenieDatumMesiac>1</eas:SS_PoplatokZaVedenieDatumMesiac>\r\n            <eas:SS_StatnaPremia_Ziadat>1</eas:SS_StatnaPremia_Ziadat>\r\n            <eas:SS_StatnaPremia_DatumDen>18</eas:SS_StatnaPremia_DatumDen>\r\n            <eas:SS_StatnaPremia_DatumMesiac>4</eas:SS_StatnaPremia_DatumMesiac>\r\n            <eas:SS_StatnaPremia_DruheKolo_DatumDen>30</eas:SS_StatnaPremia_DruheKolo_DatumDen>\r\n            <eas:SS_StatnaPremia_DruheKolo_DatumMesiac>9</eas:SS_StatnaPremia_DruheKolo_DatumMesiac>\r\n            <eas:SS_ZadaRocniVypis>0</eas:SS_ZadaRocniVypis>\r\n            <eas:SS_UkonceniePoUplynutiViazacejLehoty>1</eas:SS_UkonceniePoUplynutiViazacejLehoty>\r\n            <eas:SS_UkonceniePriNasporeniCC>0</eas:SS_UkonceniePriNasporeniCC>\r\n            <eas:SS_UkoncenieVZadanyDen>0</eas:SS_UkoncenieVZadanyDen>\r\n            <eas:PU_SimulovatUver>0</eas:PU_SimulovatUver>\r\n            <eas:PU_DosporovanieDoPercentoZCC>0</eas:PU_DosporovanieDoPercentoZCC>\r\n            <eas:PU_KodAkcie>0</eas:PU_KodAkcie>\r\n            <eas:PU_KodInejAkcie>0</eas:PU_KodInejAkcie>\r\n            <eas:PU_ZadaRocniVypis>0</eas:PU_ZadaRocniVypis>\r\n            <eas:PU_PeriodaFixace>0</eas:PU_PeriodaFixace>\r\n            <eas:PU_UrokovaSadzba_Bezna>0</eas:PU_UrokovaSadzba_Bezna>\r\n            <eas:PU_UrokovaSadzba_Sankcni>0</eas:PU_UrokovaSadzba_Sankcni>\r\n            <eas:PU_UrokovaSadzba_Z_prodleni>0</eas:PU_UrokovaSadzba_Z_prodleni>\r\n            <eas:PU_Splatka_Den>0</eas:PU_Splatka_Den>\r\n            <eas:PU_TypZajisteni>0</eas:PU_TypZajisteni>\r\n            <eas:PU_Neuctovat_popl_za_uzav_smlouvy>0</eas:PU_Neuctovat_popl_za_uzav_smlouvy>\r\n            <eas:PU_Neuctovat_popl_za_zar_listiny>0</eas:PU_Neuctovat_popl_za_zar_listiny>\r\n            <eas:PU_AutoUhrazeniPoplatkuZaZpracUv_na_SS>0</eas:PU_AutoUhrazeniPoplatkuZaZpracUv_na_SS>\r\n            <eas:PU_Stejna_Splatka_PU_USS>0</eas:PU_Stejna_Splatka_PU_USS>\r\n            <eas:Variantni_Splatka_USS>0</eas:Variantni_Splatka_USS>\r\n            <eas:USS_KodAkcie>0</eas:USS_KodAkcie>\r\n            <eas:USS_KodInejAkcie>0</eas:USS_KodInejAkcie>\r\n            <eas:USS_Splatka_Den>0</eas:USS_Splatka_Den>\r\n            <eas:USS_Poplatok_Zarucne_Listiny_Neuctovat>0</eas:USS_Poplatok_Zarucne_Listiny_Neuctovat>\r\n            <eas:USS_ZadaRocniVypis>0</eas:USS_ZadaRocniVypis>\r\n\r\n\r\n\r\n            <!--Povinne argumenty konstatni-->\r\n\r\n\r\n            <!--Povinne argumnety promenne-->\r\n            <eas:SS_KodProduktu>{{ProductCode}}</eas:SS_KodProduktu>\r\n            <eas:SS_CielovaSuma>{{TargetAmount}}</eas:SS_CielovaSuma>\r\n\r\n            <!--Nepovinne argumenty konstatni-->\r\n\r\n\r\n            <!--Nepovinne argumenty promenne-->\r\n            <eas:SS_KodAkcie>{{ActionCode}}</eas:SS_KodAkcie>\r\n            <eas:SS_KlientFyzickaPravnicka>{{EASlegalEntity}}</eas:SS_KlientFyzickaPravnicka>\r\n            <eas:SS_KlientSVJ>{{EASisSVJ}}</eas:SS_KlientSVJ>\r\n            <eas:USS_SimulovatUver>{{EASwithLoan}}</eas:USS_SimulovatUver>\r\n\r\n\r\n\r\n        </eas:settings>\r\n      </eas:Simulation>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://adpra136.vsskb.cz/HOME/EAS_WS_SB_Services.svc",
+							"protocol": "https",
+							"host": [
+								"adpra136",
+								"vsskb",
+								"cz"
+							],
+							"path": [
+								"HOME",
+								"EAS_WS_SB_Services.svc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02-CustomerService",
+			"item": [
+				{
+					"name": "0100 Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test for real ID return.\", function () \r",
+									"{\r",
+									"    pm.expect(res.Identity).not.to.eql(123);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"seed=pm.collectionVariables.get('birthNoSeed');\r",
+									"console.log(seed);\r",
+									"\r",
+									"seed=libBirthNo.getNext(seed);\r",
+									"console.log('Po:');\r",
+									"console.log(seed);\r",
+									"pm.collectionVariables.set('birthNoSeed',seed);\r",
+									"console.log(libBirthNo.getBirthNo(seed));\r",
+									"pm.variables.set('localBirthNumber',libBirthNo.getBirthNo(seed));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"BirthNumber\": \"{{localBirthNumber}}\",\r\n  \"Ico\": \"{{Ico}}\",\r\n  \"DegreeBefore\": \"{{DegreeBefore}}\",\r\n  \"DegreeAfter\": \"{{DegreeAfter}}\",\r\n  \"FirstName\": \"{{FirstName}}\",\r\n  \"LastName\": \"{{LastName}}\",\r\n  \"DateOfBirth\": {\r\n    \"year\": {{DateOfBirthyear}},\r\n    \"month\": {{DateOfBirthmonth}},\r\n    \"day\": {{DateOfBirthday}}\r\n  },\r\n  \"PlaceOfBirth\": \"{{PlaceOfBirth}}\",\r\n  \"NameJuridicalPerson\": \"{{NameJuridicalPerson}}\",\r\n  \"Gender\": \"{{Gender}}\",\r\n  \"IdentificationDocument\": {\r\n    \"Type\": \"{{IdentificationDocumentType}}\",\r\n    \"Number\": \"{{IdentificationDocumentNumber}}\",\r\n    \"ValidTo\": {\r\n      \"year\": {{IdentificationDocumentValidToyear}},\r\n      \"month\": {{IdentificationDocumentValidTomonth}},\r\n      \"day\": {{IdentificationDocumentValidToday}}\r\n    },\r\n    \"IssuedBy\": \"{{IdentificationDocumentIssuedBy}}\",\r\n    \"IssuingCountryCode\": \"{{IdentificationDocumentIssuingCountryCode}}\",\r\n    \"IssuedOn\": {\r\n      \"year\": {{IdentificationDocumentIssuedOnyear}},\r\n      \"month\": {{IdentificationDocumentIssuedOnmonth}},\r\n      \"day\": {{IdentificationDocumentIssuedOnday}}\r\n    }\r\n  },\r\n  \"Addresses\": [\r\n    {\r\n      \"Type\": \"{{Addresses0Type}}\",\r\n      \"IsPrimary\": {{Addresses0IsPrimary}},\r\n      \"Street\": \"{{Addresses0Street}}\",\r\n      \"BuildingIdentificationNumber\": \"{{Addresses0BuildingIdentificationNumber}}\",\r\n      \"Postcode\": \"{{Addresses0Postcode}}\",\r\n      \"City\": \"{{Addresses0City}}\"\r\n      ,\"LandRegistryNumber\":\"{{Addresses0LandRegistryNumber}}\"\r\n      ,\"countryCode \":\"{{Addresses0CountryCode}}\"\r\n    },\r\n    {\r\n      \"Type\": \"{{Addresses1Type}}\",\r\n      \"IsPrimary\": {{Addresses1IsPrimary}},\r\n      \"Street\": \"{{Addresses1Street}}\",\r\n      \"BuildingIdentificationNumber\": \"{{Addresses1BuildingIdentificationNumber}}\",\r\n      \"Postcode\": \"{{Addresses1Postcode}}\",\r\n      \"City\": \"{{Addresses1City}}\"\r\n      ,\"LandRegistryNumber\":\"{{Addresses1LandRegistryNumber}}\"\r\n      ,\"countryCode \":\"{{Addresses1CountryCode}}\"\r\n    }\r\n  ]\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=Create",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "Create"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0200 GetDetail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test of return.\", function () \r",
+									"{\r",
+									"    //pm.expect(res).to.eql(libRequest.getRequest('0100 Create'));\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"createRequest=libRequest.getRequest('0100 Create');\r",
+									"\r",
+									"//delete createRequest.IdentificationDocument.IssuedBy;  //(MěÚ Brandýs nad Labem - Stará Boleslav!=CZ)\r",
+									"delete createRequest.IdentificationDocument.IssuingCountryCode //(CZ!=TODO)\r",
+									"\r",
+									"//delete createRequest.Addresses[0].BuildingIdentificationNumber;\r",
+									"//delete createRequest.Addresses[0].LandRegistryNumber;\r",
+									"\r",
+									"//delete createRequest.Addresses[1].BuildingIdentificationNumber;\r",
+									"//delete createRequest.Addresses[1].LandRegistryNumber;\r",
+									"\r",
+									"\r",
+									"\r",
+									"//console.log(libCompare.compareJson(createRequest,res));\r",
+									"\r",
+									"pm.expect(libCompare.compareJson(createRequest,res,true)).to.be.true;\r",
+									"pm.expect(libCompare.compareJson(res,createRequest,true)).to.be.true;\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"//var moment = require('moment');\r",
+									"\r",
+									"\r",
+									"\r",
+									"//date=moment();\r",
+									"\r",
+									"\r",
+									"/*\r",
+									"date.set('year', 1970);\r",
+									"date.set('month', 0);  // April\r",
+									"date.set('date', 1);\r",
+									"date.set('hour', 0);\r",
+									"date.set('minute', 0);\r",
+									"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
+									"*/\r",
+									"\r",
+									"/*\r",
+									"\r",
+									"date.set('year', date.format(\"YYYY\")-30);\r",
+									"console.log(date.format(\"YYYY-MM-DD\"));\r",
+									"\r",
+									"let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;\r",
+									"\r",
+									"console.log(birthNoBase);\r",
+									"\r",
+									"console.log(birthNoBase+(11-birthNoBase%11)%11);\r",
+									"\r",
+									"let birthNoSeed=\r",
+									"{\r",
+									"    birthNoBase: birthNoBase,\r",
+									"    count: 0\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));\r",
+									"\r",
+									"*/\r",
+									"\r",
+									"\r",
+									"//console.log(libBirthNo.getNext());\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//libBirthNo.pokus();\r",
+									"\r",
+									"//pm.collectionVariables.set('kuku2',1);\r",
+									"\r",
+									"\r",
+									"//console.log(libRequest.getRequest('0100 Create').BirthNumber);\r",
+									"\r",
+									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n\"Identity\": {{Identity}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=GetDetail",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "GetDetail"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var moment = require('moment');",
+					"",
+					"libRequest = ",
+					"{",
+					"  getRequest: function(requestName) ",
+					"  {",
+					"    if(requestName==request.name)",
+					"        return undefined;",
+					"    var req=pm.collectionVariables.get('--> '+requestName);",
+					"",
+					"    if(req[0]=='<')",
+					"        return xml2Json(req);",
+					"    else",
+					"        return JSON.parse(req);",
+					"  },",
+					"  ",
+					"  getResponse: function(requestName) ",
+					"  {",
+					"    if(requestName==request.name)",
+					"        return undefined;",
+					"    var res=pm.collectionVariables.get('<-- '+requestName);",
+					"",
+					"    if(res[0]=='<')",
+					"        return xml2Json(res);",
+					"    else",
+					"        return JSON.parse(res);",
+					"  }",
+					"",
+					"};",
+					"",
+					"",
+					"libBcl=",
+					"{",
+					"    decimalToNumber: function(bclDecimal)",
+					"    {",
+					"        if(parseInt(bclDecimal.hi)!=0)",
+					"            throw new Error('Javascript numer ocan hold only 53 bit mantisa, so HI part of BCL Decimal should be 0.');",
+					"        ",
+					"        var num=parseInt(bclDecimal.lo);",
+					"        var signScale=parseInt(bclDecimal.signScale);",
+					"",
+					"        //Sign is in lowest bit",
+					"        var sign=signScale & 1; ",
+					"        //Rest bits are scale",
+					"        var scale=signScale >> 1;",
+					"",
+					"        num = num * (10 ** (scale*(-1+2*sign)));",
+					"        return num;",
+					"    },",
+					"",
+					"    dateTimeToDate: function(bclDateTime)",
+					"    {",
+					"        if(bclDateTime.kind != \"UNSPECIFIED\")",
+					"            console.warn('Tuned just for kind=\"UNSPECIFIED\", be carefull using return value.');",
+					"",
+					"        if(bclDateTime.scale=\"DAYS\")",
+					"        {",
+					"            date=moment();",
+					"            date.set('year', 1970);",
+					"            date.set('month', 0);  // Jan",
+					"            date.set('date', 1);",
+					"            date.set('hour', 0);",
+					"            date.set('minute', 0);",
+					"            date.set('second',24*60*60*parseInt(bclDateTime.value));",
+					"",
+					"            return date;",
+					"        }",
+					"        else",
+					"            throw new Error('Just scale=\"DAYS\" supported at the moment.');",
+					"    }",
+					"}",
+					"",
+					"",
+					"libEAS = ",
+					"{",
+					"  getSimulationPropperty: function(propperty,res=undefined) ",
+					"  {",
+					"    return ((res==undefined)?libRequest.getResponse('01-0050-EAS-Simulation'):res)['s:Envelope']['s:Body']['SimulationResponse']['SimulationResult'][propperty];",
+					"  }",
+					"};",
+					"",
+					"",
+					"libCisTypes =",
+					"{",
+					"  grpcDecimalToNumber: function(decimal) ",
+					"  {",
+					"    return decimal.nanos/1000000000+decimal.units/1;",
+					"  }",
+					"};",
+					"",
+					"",
+					"",
+					"libBirthNo =",
+					"{",
+					"",
+					"    /*",
+					"  backup: function(birthNoSeed) ",
+					"  {",
+					"    var moment = require('moment');",
+					"",
+					"    let date=moment();",
+					"    date.set('year', date.format(\"YYYY\")-30);",
+					"",
+					"    let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;",
+					"    let birthNoSeed={};",
+					"",
+					"    if(pm.collectionVariables.has('birthNoSeed'))",
+					"    {",
+					"        birthNoSeed=pm.collectionVariables.get('birthNoSeed');",
+					"        console.log(birthNoSeed);",
+					"        birthNoSeed=JSON.parse(birthNoSeed);",
+					"        console.log(birthNoSeed);",
+					"    }",
+					"    else",
+					"    {",
+					"        console.log('Nenalezeno');",
+					"        birthNoSeed=",
+					"        {",
+					"            birthNoBase: birthNoBase,",
+					"            count: 0",
+					"        }",
+					"    }",
+					"",
+					"    if(birthNoSeed.birthNoBase!=birthNoBase)",
+					"    {",
+					"        birthNoSeed.birthNoBase=birthNoBase;",
+					"        birthNoSeed.count=0;",
+					"    }",
+					"",
+					"    birthNoSeed.count++;",
+					"",
+					"",
+					"    console.log(JSON.stringify(birthNoSeed));",
+					"    pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));",
+					"",
+					"    return (birthNoSeed.birthNoBase+(11-birthNoSeed.birthNoBase%11)%11)+11*birthNoSeed.count;",
+					"  },",
+					"*/",
+					"",
+					"",
+					"",
+					"  getNext: function(birthNoSeed) ",
+					"  {",
+					"    var moment = require('moment');",
+					"    console.log(birthNoSeed);",
+					"",
+					"    let date=moment();",
+					"    date.set('year', date.format(\"YYYY\")-30);",
+					"",
+					"    let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;",
+					"",
+					"    if(birthNoSeed!=undefined)",
+					"    {",
+					"        birthNoSeed=JSON.parse(birthNoSeed);",
+					"        console.log(birthNoSeed);",
+					"    }",
+					"    else",
+					"    {",
+					"        console.log('Nenalezeno');",
+					"        birthNoSeed=",
+					"        {",
+					"            birthNoBase: birthNoBase,",
+					"            count: 0",
+					"        }",
+					"    }",
+					"",
+					"    if(birthNoSeed.birthNoBase!=birthNoBase)",
+					"    {",
+					"        birthNoSeed.birthNoBase=birthNoBase;",
+					"        birthNoSeed.count=0;",
+					"    }",
+					"",
+					"    birthNoSeed.count++;",
+					"",
+					"    console.log(JSON.stringify(birthNoSeed));",
+					"    return JSON.stringify(birthNoSeed);",
+					"  }",
+					"",
+					",",
+					"",
+					"  getBirthNo: function(birthNoSeed) ",
+					"  {",
+					"    birthNoSeed=JSON.parse(birthNoSeed);",
+					"    let birthNoBaseYY=birthNoSeed.birthNoBase%10000000000;",
+					"    return (birthNoBaseYY+(11-birthNoBaseYY%11)%11)+11*birthNoSeed.count;",
+					"  }",
+					"",
+					"",
+					"",
+					",",
+					"    pokus: function()",
+					"    {",
+					"        pm.collectionVariables.set('kuku',1);",
+					"    }",
+					"",
+					"",
+					"};",
+					"",
+					"",
+					"libCompare=",
+					"{",
+					"    compareJson: function(model,json,verbose=false,path=\"\",show=true)",
+					"    {",
+					"        if(verbose) console.log(path);",
+					"        if(verbose) console.log('M:'+JSON.stringify(model));",
+					"        if(verbose) console.log(typeof(model));",
+					"        if(verbose) console.log('J:'+JSON.stringify(json));",
+					"        if(verbose) console.log(typeof(json));",
+					"        for(var key in model)",
+					"        {",
+					"            if(typeof(model[key])=='object' && model[key]!=null)",
+					"            {",
+					"                if(verbose) console.log('Comparing object:'+key);",
+					"                if(!model[key].hasOwnProperty('0'))",
+					"                {",
+					"                    if(verbose) console.log('Is not array.');",
+					"                    if(!json.hasOwnProperty(key))",
+					"                    {",
+					"                        if(show||verbose)",
+					"                            console.log('Property '+path+'.'+key+' does not exist in compared json.');",
+					"                        return false;",
+					"                    }",
+					"                    else",
+					"                    if(!libCompare.compareJson(model[key],json[key],verbose,path+'.'+key,show))",
+					"                    {",
+					"                        if(show||verbose)",
+					"                            console.log('Property '+path+'.'+key+' has different value in compared json.');",
+					"                        return false;",
+					"                    }",
+					"                }",
+					"                else",
+					"                {",
+					"                    if(verbose) console.log('Is array.');",
+					"                    //TODO: If in there are more the same items in model, this will not work. ",
+					"                    //There is need to mark found item not to use twice ... worse - as there is no exact check ",
+					"                    //(we are checking just subest of properties - that found in model - ... so it is little complicated)",
+					"                    //.. but for the first step, ... this is enoughth",
+					"                    for(var keyModel in model[key])",
+					"                    {",
+					"                        var found=false;",
+					"                        for(var keyJson in json[key])",
+					"                        {",
+					"                            if(typeof(model[key][keyModel])!='object')",
+					"                            {",
+					"                                if(model[key][keyModel]==json[key][keyJson])",
+					"                                    {found=true;break;}",
+					"                            }",
+					"                            else",
+					"                            {",
+					"                                if(libCompare.compareJson(model[key][keyModel],json[key][keyJson],verbose,path+'.'+key+'.['+keyModel+']',false))",
+					"                                    {found=true;break;}",
+					"                            }",
+					"                        }",
+					"                        if(!found)",
+					"                        {",
+					"                            if(show||verbose)",
+					"                                console.log('Property '+path+'.'+key+'['+keyModel+'] does not exist in compared json.');",
+					"                            return false;",
+					"                        }",
+					"                    }                    ",
+					"                }",
+					"            }",
+					"                ",
+					"            else",
+					"            {",
+					"                if(verbose) console.log('Comparing element:'+key);",
+					"                //console.log(key+'('+typeof(key)+')'+':'+typeof(model[key]));",
+					"                if(!json.hasOwnProperty(key))",
+					"                {",
+					"                    if(show||verbose)",
+					"                        console.log('Property '+path+'.'+key+' does not exist in compared json.');",
+					"                    return false;",
+					"                }",
+					"                if(model[key]!=json[key])",
+					"                {",
+					"                    if(show||verbose)",
+					"                        console.log('Property '+path+'.'+key+' has different value in compared json: ('+model[key]+'!='+json[key]+').');",
+					"                    return false;",
+					"                }",
+					"            }",
+					"        }",
+					"        if(verbose) console.log('Return true');",
+					"        return true;",
+					"    }",
+					"}",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test",
+					"(",
+					"    \"Status code is 200\", function()",
+					"    {",
+					"        pm.response.to.have.status(200);",
+					"    }",
+					");",
+					"",
+					"js_response=pm.response.text();",
+					"js_request=pm.request.body.raw;",
+					"",
+					"requestName=request.name",
+					"//console.log(requestName);",
+					"",
+					"pm.collectionVariables.set('<-- '+requestName+'',js_response);",
+					"pm.collectionVariables.set('--> '+requestName+'',js_request);",
+					"",
+					"//console.log('ABC');",
+					"",
+					"if(pm.request.headers.has('SOAPAction'))",
+					"{",
+					"    res=xml2Json(js_response);",
+					"    req=xml2Json(js_request);",
+					"}",
+					"else",
+					"{",
+					"    res=JSON.parse(js_response);",
+					"    req=JSON.parse(js_request);",
+					"}",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TargetAmount",
+			"value": "460000"
+		},
+		{
+			"key": "ProductCode",
+			"value": "61"
+		},
+		{
+			"key": "ActionCode",
+			"value": "30"
+		},
+		{
+			"key": "ClientIsNaturalPerson",
+			"value": "true"
+		},
+		{
+			"key": "ClientIsSVJ",
+			"value": "false"
+		},
+		{
+			"key": "IsWithLoan",
+			"value": "false"
+		},
+		{
+			"key": "StateSubsidy",
+			"value": ""
+		},
+		{
+			"key": "LoanActionCode",
+			"value": ""
+		},
+		{
+			"key": "birthNoSeed",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0050-EAS-Simulation",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0050-EAS-Simulation",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0100-OfferSerice-SimulateBuildingSavings",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0100-OfferSerice-SimulateBuildingSavings",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0300-OfferSerice-GetBuildingSavingsData",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0300-OfferSerice-GetBuildingSavingsData",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0400-OfferSerice-PrintBuildingSavingsOffer",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0400-OfferSerice-PrintBuildingSavingsOffer",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-2000-OfferSerice-GetBuildingSavingsData",
+			"value": ""
+		},
+		{
+			"key": "--> 01-2000-OfferSerice-GetBuildingSavingsData",
+			"value": ""
+		},
+		{
+			"key": "<-- 0100 Create",
+			"value": ""
+		},
+		{
+			"key": "--> 0100 Create",
+			"value": ""
+		},
+		{
+			"key": "<-- 0200 GetDetail",
+			"value": ""
+		},
+		{
+			"key": "--> 0200 GetDetail",
+			"value": ""
+		}
+	]
+}

@@ -1,7 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Api.ExternalServices.MpHome;
-using Grpc.Core;
-using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf.WellKnownTypes;
 using DomainServices.CustomerService.Dto;
 
 namespace DomainServices.CustomerService.Api.Handlers
@@ -9,9 +6,9 @@ namespace DomainServices.CustomerService.Api.Handlers
     internal class UpdateBasicDataHandler : IRequestHandler<UpdateBasicDataMediatrRequest, Empty>
     {
         private readonly ILogger<UpdateBasicDataHandler> _logger;
-        private readonly ExternalServices.MpHome.IMpHomeClient _mpHome;
+        private readonly MpHome.IMpHomeClient _mpHome;
 
-        public UpdateBasicDataHandler(ILogger<UpdateBasicDataHandler> logger, ExternalServices.MpHome.IMpHomeClient mpHome)
+        public UpdateBasicDataHandler(ILogger<UpdateBasicDataHandler> logger, MpHome.IMpHomeClient mpHome)
         {
             _logger = logger;
             _mpHome = mpHome;
@@ -21,10 +18,10 @@ namespace DomainServices.CustomerService.Api.Handlers
         {
             _logger.LogInformation("Run UpdateBasicData with {inputs}", request);
 
-            await _mpHome.UpdateBaseData(request.Request.Customer.ToMpHomePartnerBase(), request.Request.Identity);
+            (await _mpHome.UpdateBaseData(request.Request.Customer.ToMpHomePartnerBase(), request.Request.Identity)).CheckMpHomeResult();
 
             if (request.Request.Customer.IdentificationDocument != null)
-                await _mpHome.UpdateIdentificationDocument(request.Request.Customer.IdentificationDocument.ToMpHomeIdentificationDocument(), request.Request.Identity);
+                (await _mpHome.UpdateIdentificationDocument(request.Request.Customer.IdentificationDocument.ToMpHomeIdentificationDocument(), request.Request.Identity)).CheckMpHomeResult();
 
             return new Empty();
         }

@@ -1,7 +1,4 @@
-﻿using Grpc.Core;
-using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.CustomerService.Api.ExternalServices.MpHome;
+﻿using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
 
 namespace DomainServices.CustomerService.Api.Handlers
@@ -9,9 +6,9 @@ namespace DomainServices.CustomerService.Api.Handlers
     internal class CreateContactHandler : IRequestHandler<CreateContactMediatrRequest, Contracts.CreateContactResponse>
     {
         private readonly ILogger<CreateContactHandler> _logger;
-        private readonly ExternalServices.MpHome.IMpHomeClient _mpHome;
+        private readonly MpHome.IMpHomeClient _mpHome;
 
-        public CreateContactHandler(ILogger<CreateContactHandler> logger, ExternalServices.MpHome.IMpHomeClient mpHome)
+        public CreateContactHandler(ILogger<CreateContactHandler> logger, MpHome.IMpHomeClient mpHome)
         {
             _logger = logger;
             _mpHome = mpHome;
@@ -21,9 +18,11 @@ namespace DomainServices.CustomerService.Api.Handlers
         {
             _logger.LogInformation("Run CreateContact with {inputs}", request);
 
-            var response = await _mpHome.CreateContact(request.Request.Contact.ToMpHomeContactData(), request.Request.Identity);
+            var response = (await _mpHome.CreateContact(request.Request.Contact.ToMpHomeContactData(), request.Request.Identity)).ToMpHomeResult<MpHome.MpHomeWrapper.ContactIdResponse>();
 
-            return new CreateContactResponse { ContactId = response };
+            return new CreateContactResponse { ContactId = (int)response.ContactId };
         }
+
+        
     }
 }

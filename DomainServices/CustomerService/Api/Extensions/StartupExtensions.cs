@@ -1,4 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using ExternalServices.MpHome;
+using ExternalServices.Eas;
 using FluentValidation;
 using System.IO.Compression;
 
@@ -25,26 +27,10 @@ namespace DomainServices.CustomerService.Api
             services.AddDapper<Repositories.KonsDbRepository>(configuration.GetConnectionString("KonsDb"));
 
             // MpHome
-            switch (appConfiguration.MpHome.Implementation)
-            {
-                case CIS.Core.ServiceImplementationTypes.Mock:
-                    services.AddScoped<ExternalServices.MpHome.IMpHomeClient, ExternalServices.MpHome.MockMpHomeClient>();
-                    break;
-                case CIS.Core.ServiceImplementationTypes.Real:
-                    services.AddScoped<ExternalServices.MpHome.IMpHomeClient, ExternalServices.MpHome.RealMpHomeClient>();
-                    break;
-            }
+            services.AddExternalServiceMpHome(appConfiguration.MpHome);
 
             // EAS svc
-            switch (appConfiguration.EAS.Implementation)
-            {
-                case CIS.Core.ServiceImplementationTypes.Mock:
-                    services.AddScoped<ExternalServices.EAS.IEasClient, ExternalServices.EAS.MockEasClient>();
-                    break;
-                case CIS.Core.ServiceImplementationTypes.Real:
-                    services.AddScoped<ExternalServices.EAS.IEasClient, ExternalServices.EAS.RealEasClient>();
-                    break;
-            }
+            services.AddExternalServiceEas(appConfiguration.EAS);
 
             services.AddCisCurrentUser();
 

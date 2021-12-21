@@ -29,4 +29,12 @@ public interface IEasClient
     /// SuccessfulServiceCallResult[long] -> nove SporeniId (CaseId)
     /// </returns>
     Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int productInstanceType);
+
+    /// <summary>
+    /// Vytvori noveho klienta (rezervace partnerId)
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[S_KLIENTDATA]
+    /// </returns>
+    Task<IServiceCallResult> NewKlient(S_KLIENTDATA client);
 }

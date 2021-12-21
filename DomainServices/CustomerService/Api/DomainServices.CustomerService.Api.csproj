@@ -22,6 +22,8 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
     <ProjectReference Include="..\..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
   </ItemGroup>
 

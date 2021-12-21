@@ -60,6 +60,26 @@ internal sealed class RealEasClient
         });
     }
 
+    public async Task<IServiceCallResult> NewKlient(S_KLIENTDATA input)
+    {
+        _logger.LogDebug("Run inputs: {input}", System.Text.Json.JsonSerializer.Serialize(input));
+
+        return await callMethod(async () =>
+        {
+            using (EAS_WS_SB_ServicesClient client = createClient())
+            {
+                var result = await client.NewKlientAsync(input);
+
+                if (result.return_val != 0)
+                    _logger.LogInformation("Incorrect inputs to EAS NewKlient {error}: {errorText}", result.return_val, result.return_info);
+                else
+                    _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
+
+                return new SuccessfulServiceCallResult<S_KLIENTDATA>(result);
+            }
+        });
+    }
+
     public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger)
         : base(Versions.R21, configuration, logger)
     {
