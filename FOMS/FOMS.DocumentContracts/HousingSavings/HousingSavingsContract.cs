@@ -5,8 +5,11 @@ public sealed partial class HousingSavingsContract : BaseContract
     public SharedModels.CustomerDetail? Customer { get; set; }
     public SharedModels.Citizenship? Citizenship { get; set; }
     public Models.FinancesSection? Finaces { get; set; }
+    public SharedModels.SZKU? SZKU { get; set; }
+    public TaxResidency.TaxResidencyContract? TaxResidency { get; set; }
 }
 
+//TODO udelat do source generator
 public sealed partial class HousingSavingsContract
 {
     public object GetPart(int partId)
@@ -15,7 +18,9 @@ public sealed partial class HousingSavingsContract
             1 => new HousingSavingsPart1
             {
                 Citizenship = Citizenship,
-                Customer = Customer
+                Customer = Customer,
+                SZKU = SZKU,
+                TaxResidency = TaxResidency
             },
             2 => new HousingSavingsPart2
             {
@@ -45,6 +50,8 @@ public sealed partial class HousingSavingsContract
     {
         Customer = partData.Customer;
         Citizenship = partData.Citizenship;
+        SZKU = partData.SZKU;
+        TaxResidency= partData.TaxResidency;
     }
 
     private void MergePart(HousingSavingsPart2 partData)
