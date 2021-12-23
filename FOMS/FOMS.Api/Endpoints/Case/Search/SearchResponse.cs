@@ -3,5 +3,5 @@
 internal class SearchResponse
 {
     public CIS.Core.Types.PaginableResponse? Pagination { get; set; }
-    public List<SearchItem>? Rows { get; set; }
+    public List<CaseModel>? Rows { get; set; }
 }

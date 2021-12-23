@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using CIS.Infrastructure.Data;
 
 namespace DomainServices.CaseService.Api.Repositories;
 
@@ -30,8 +31,18 @@ internal class CaseServiceRepository
     public async Task<Contracts.SearchCasesResponse> GetCaseList(CIS.Infrastructure.gRPC.CisTypes.PaginationRequest pagination, int userId, int? state, string? searchTerm)
     {
         var query = _dbContext.CaseInstances.AsNoTracking().Where(t => t.UserId == userId);
+        // omezeni na state
         if (state.HasValue)
             query = query.Where(t => t.State == state.Value);
+        // hledani podle retezce
+        if (!string.IsNullOrEmpty(searchTerm))
+            query = query.Where(t => t.Name.Contains(searchTerm) || t.ContractNumber == searchTerm);
+        
+        // razeni
+        if (pagination.Sorting is not null && pagination.Sorting.Any())
+        {
+            query = query.ApplyOrderBy(new[] { Tuple.Create(pagination.Sorting.First().Field, pagination.Sorting.First().Descending) });
+        }
 
         var result = new Contracts.SearchCasesResponse()
         {

@@ -3,39 +3,34 @@
 namespace FOMS.Api.Endpoints.Case.Handlers;
 
 internal class GetByIdHandler
-    : IRequestHandler<Dto.GetByIdRequest, Dto.GetByIdResponse>
+    : IRequestHandler<Dto.GetByIdRequest, Dto.CaseModel>
 {
-    public async Task<Dto.GetByIdResponse> Handle(Dto.GetByIdRequest request, CancellationToken cancellationToken)
+    public async Task<Dto.CaseModel> Handle(Dto.GetByIdRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Get #{caseId}", request.CaseId);
 
         var result = resolveResult(await _caseService.GetCaseDetail(request.CaseId));
 
-        return new Dto.GetByIdResponse
-        {
-            CaseId = result.CaseId,
-            State = result.State,
-            ContractNumber = result.ContractNumber,
-            DateOfBirth = result.DateOfBirthNaturalPerson,
-            FirstName = result.FirstNameNaturalPerson,
-            LastName = result.Name
-        };
+        return await _converter.FromContract(result);
     }
 
-    private DomainServices.CaseService.Contracts.GetCaseDetailResponse resolveResult(IServiceCallResult result) =>
+    private DomainServices.CaseService.Contracts.CaseModel resolveResult(IServiceCallResult result) =>
        result switch
        {
-           SuccessfulServiceCallResult<DomainServices.CaseService.Contracts.GetCaseDetailResponse> r => r.Model,
+           SuccessfulServiceCallResult<DomainServices.CaseService.Contracts.CaseModel> r => r.Model,
            _ => throw new NotImplementedException()
        };
 
     private readonly ILogger<GetByIdHandler> _logger;
+    private readonly CaseModelConverter _converter;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public GetByIdHandler(
+        CaseModelConverter converter,
         ILogger<GetByIdHandler> logger,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {
+        _converter = converter;
         _logger = logger;
         _caseService = caseService;
     }

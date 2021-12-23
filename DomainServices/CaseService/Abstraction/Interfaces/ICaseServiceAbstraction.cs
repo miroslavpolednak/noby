@@ -28,7 +28,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[SearchCasesResponse] - OK;
     /// </returns>
-    Task<IServiceCallResult> SearchCases(int userId, PaginableRequest pagination, int? state = null, string? searchTerm = null);
+    Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null);
 
     /// <summary>
     /// Zmena majitele Case

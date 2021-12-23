@@ -10,7 +10,7 @@ internal class SearchCasesHandler
     /// </summary>
     public async Task<SearchCasesResponse> Handle(Dto.SearchCasesMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Search cases for #{id} in {state}", request.UserId, request.State);
+        _logger.LogInformation("Search cases {request}", request);
 
         return await _repository.GetCaseList(request.Pagination, request.UserId, request.State, request.SearchTerm);
     }

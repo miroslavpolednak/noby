@@ -1,4 +1,1 @@
-start "" /d "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api" cmd /C dotnet run
-start "" /d "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\" cmd /C dotnet run
-start "" /d "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\OfferService\Api\" cmd /C dotnet run
-start "" /d "d:\Visual Studio Projects\MPSS-FOMS\FOMS\FOMS.Api\" cmd /C dotnet run
+grpcurl -insecure -d "{\"UserId\":99,\"State\":1,\"Pagination\":{\"recordOffset\":1,\"pageSize\":2,\"sorting\":[{\"field\":\"Name\",\"descending\":false}]}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/SearchCases

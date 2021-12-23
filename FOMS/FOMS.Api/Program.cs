@@ -12,7 +12,7 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 #region register builder.Services
-builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly));
+builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly), typeof(FOMS.Api.IApiAssembly));
 
 // add CIS pipeline
 builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
