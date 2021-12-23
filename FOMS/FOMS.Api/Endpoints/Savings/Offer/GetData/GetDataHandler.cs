@@ -16,17 +16,16 @@ internal class GetDataHandler
         
         var model = new Dto.GetDataResponse
         {
-            SimulationType = result.SimulationType,
             BuildingSavings = result.BuildingSavings,
+            Loan = result.Loan,
             InputData = (Dto.BuildingSavingsInput)result.InputData,
-            InsertTime = result.InsertStamp.DateTime,
-            InsertUserId = result.InsertStamp.UserId,
             OfferInstanceId = result.OfferInstanceId,
+            CreatedTime = result.Created.DateTime,
+            CreatedUserId = result.Created.UserId,
+            CreatedUserName = result.Created.UserName,
         };
-        if (result.SimulationType == DomainServices.OfferService.Contracts.SimulationTypes.BuildingSavingsWithLoan)
-            model.Loan = result.Loan;
-
-        _logger.LogDebug("Data from {time} resolved", model.InsertTime);
+        
+        _logger.LogDebug("Data from {time} resolved", model.CreatedTime);
 
         return model;
     }

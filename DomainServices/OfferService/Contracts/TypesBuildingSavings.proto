@@ -4,30 +4,7 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "GrpcDecimal.proto";
 import "GrpcDate.proto";
-import "ModificationStamp.proto";
 import "google/protobuf/wrappers.proto";
-import "Types.proto";
-
-enum ScheduleItemTypes {
-   Unknown = 0;
-   DepositSchedule = 9;
-   PaymentSchedule = 1;
-}
-
-enum SimulationTypes {
-   Unknown2 = 0;
-   BuildingSavings = 1;
-   BuildingSavingsWithLoan = 2;
-}
-
-message ScheduleItem {
-   ScheduleItemTypes Type = 1;
-   cis.types.GrpcDate Date = 2;
-   int32 Sum = 3;
-   int32 Balance = 4;
-   string Note = 5;
-   string Info = 6;
-}
 
 message BuildingSavingsData {
    int32 SavingPeriod = 1;
@@ -67,41 +44,4 @@ message LoanData {
    int32 GrantedLoanRPSNNumberOfPaymentsForClient = 9;
    cis.types.GrpcDecimal GrantedLoanTotalInterests = 10;
    int32 GrantedLoanOverpayment = 11;
-}
-
-message GetBuildingSavingsDataResponse {
-   int32 OfferInstanceId = 1;
-   BuildingSavingsData BuildingSavings = 2;
-   LoanData Loan = 3;
-   SimulationTypes SimulationType = 4;
-   BuildingSavingsInput InputData = 5;
-   cis.types.ModificationStamp InsertStamp = 6;
-}
-
-message GetBuildingSavingsScheduleResponse {
-   int32 OfferInstanceId = 1;
-   SimulationTypes SimulationType = 2;
-   repeated ScheduleItem ScheduleItems = 3;
-   cis.types.ModificationStamp InsertStamp = 4;
-}
-
-message PrintBuildingSavingsOfferRequest {
-   int32 OfferInstanceId = 1;
-   DealerData Dealer = 2;
-}
-message PrintBuildingSavingsOfferResponse {
-   int32 OfferInstanceId = 1;
-   string ContentType = 2;
-   bytes FileData = 3;
-}
-
-message SimulateBuildingSavingsRequest {
-   BuildingSavingsInput InputData = 1;
-   string ResourceProcessId = 2;
-}
-message SimulateBuildingSavingsResponse {
-   int32 OfferInstanceId = 1;
-   BuildingSavingsData BuildingSavings = 2;
-   LoanData Loan = 3;
-   cis.types.ModificationStamp InsertStamp = 4;
 }

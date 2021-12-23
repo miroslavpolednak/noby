@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "ModificationStamp.proto";
+import "TypesBuildingSavings.proto";
+
+message GetBuildingSavingsDataResponse {
+   int32 OfferInstanceId = 1;
+   BuildingSavingsData BuildingSavings = 2;
+   LoanData Loan = 3;
+   BuildingSavingsInput InputData = 4;
+   cis.types.ModificationStamp Created = 5;
+}

@@ -42,7 +42,7 @@ internal class ExceptionInterceptor : Interceptor
         catch (RpcException ex)
         {
             _logger.LogError(ex, $"Uncought RpcException: {ex.Message}");
-            throw;
+            throw new Exception($"RPC Exception: {ex.Message}");
         }
         catch (Exception ex) when (ex is not RpcException)
         {

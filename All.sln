@@ -121,8 +121,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.gRPC.CisTypes", "CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj", "{0AE59B37-4AF6-4994-B92F-991F3E8A829A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Tests", "DomainServices\OfferService\Tests\DomainServices.OfferService.Tests.csproj", "{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProductService", "ProductService", "{5C01EE13-0EA0-47B8-95C4-9010F3ED40CB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.Api", "DomainServices\ProductService\Api\DomainServices.ProductService.Api.csproj", "{B5389800-F7B1-4C6F-944E-921ADFF9772C}"
@@ -175,11 +173,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.MpHome", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserService", "UserService", "{C8A13CA9-9250-496C-9420-CDAFAA999E43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.UserService.Contracts", "DomainServices\UserService\Contracts\DomainServices.UserService.Contracts.csproj", "{A939DEA6-D6C4-416F-9593-566E656D211C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.Contracts", "DomainServices\UserService\Contracts\DomainServices.UserService.Contracts.csproj", "{A939DEA6-D6C4-416F-9593-566E656D211C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.UserService.Api", "DomainServices\UserService\Api\DomainServices.UserService.Api.csproj", "{FBF62539-BA98-484A-9456-B6C975BC057B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.Api", "DomainServices\UserService\Api\DomainServices.UserService.Api.csproj", "{FBF62539-BA98-484A-9456-B6C975BC057B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.UserService.Abstraction", "DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj", "{24A8B4BC-9D4F-4EC3-A0B5-A3CE726A3E4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.Abstraction", "DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj", "{24A8B4BC-9D4F-4EC3-A0B5-A3CE726A3E4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -501,14 +499,6 @@ Global
 		{0AE59B37-4AF6-4994-B92F-991F3E8A829A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AE59B37-4AF6-4994-B92F-991F3E8A829A}.Release|x64.ActiveCfg = Release|Any CPU
 		{0AE59B37-4AF6-4994-B92F-991F3E8A829A}.Release|x64.Build.0 = Release|Any CPU
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Debug|x64.ActiveCfg = Debug|x64
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Debug|x64.Build.0 = Debug|x64
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Release|x64.ActiveCfg = Release|x64
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9}.Release|x64.Build.0 = Release|x64
 		{B5389800-F7B1-4C6F-944E-921ADFF9772C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5389800-F7B1-4C6F-944E-921ADFF9772C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5389800-F7B1-4C6F-944E-921ADFF9772C}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -753,7 +743,6 @@ Global
 		{1C9F9248-6999-4CEE-9F61-EB0C1B1831CB} = {05167A25-8885-4D0E-9BBB-F45E1C5BB9B4}
 		{2E40E374-7F57-4D9F-A12A-871A43055450} = {2F700A61-C2C8-4740-94CE-633E9B4806AA}
 		{0AE59B37-4AF6-4994-B92F-991F3E8A829A} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
-		{9950C2CF-4CFD-4EC6-A54D-D0F40542DDE9} = {2F700A61-C2C8-4740-94CE-633E9B4806AA}
 		{5C01EE13-0EA0-47B8-95C4-9010F3ED40CB} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{B5389800-F7B1-4C6F-944E-921ADFF9772C} = {5C01EE13-0EA0-47B8-95C4-9010F3ED40CB}
 		{4D3CFA42-4EC9-4C23-9016-DB12AEF74623} = {5C01EE13-0EA0-47B8-95C4-9010F3ED40CB}

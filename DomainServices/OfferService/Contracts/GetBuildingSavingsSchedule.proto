@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Types.proto";
+
+message GetBuildingSavingsScheduleResponse {
+   int32 OfferInstanceId = 1;
+   ScheduleItemTypes ScheduleType = 2;
+   repeated ScheduleItem ScheduleItems = 3;
+}
+

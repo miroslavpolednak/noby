@@ -2,6 +2,8 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "GrpcDate.proto";
+
 message OfferInstanceIdRequest {
 	int32 OfferInstanceId = 1;
 }
@@ -12,4 +14,19 @@ message DealerData {
    string JobTitle = 3;
    string PhoneNumber = 4;
    string Email = 5;
+}
+
+enum ScheduleItemTypes {
+   Unknown = 0;
+   DepositSchedule = 9;
+   PaymentSchedule = 1;
+}
+
+message ScheduleItem {
+   ScheduleItemTypes Type = 1;
+   cis.types.GrpcDate Date = 2;
+   int32 Sum = 3;
+   int32 Balance = 4;
+   string Note = 5;
+   string Info = 6;
 }

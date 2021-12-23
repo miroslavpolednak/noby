@@ -6,7 +6,8 @@ namespace DomainServices.OfferService.Api;
 public static class EasExtensions
 {
     public static Eas.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS ToContract(this BuildingSavingsInput request)
-        => new()
+    { 
+        var model = new Eas.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS
         {
             SS_Vklad_Den = 25,
             SS_Vklad_Vyska = Convert.ToInt32((decimal)request.TargetAmount * 0.005M),
@@ -30,6 +31,15 @@ public static class EasExtensions
             SS_UkonceniePriNasporeniCC = 0,
             SS_UkoncenieVZadanyDen = 0
         };
+
+        if (request.IsWithLoan)
+        {
+            model.USS_SimulovatUver = 1;
+            model.USS_KodAkcie = request.LoanActionCode.GetValueOrDefault(0);
+        }
+
+        return model;
+    }
 
     public static LoanData ToLoanData(this Eas.EasWrapper.ESBI_SIMULATION_RESULTS result)
         => new LoanData

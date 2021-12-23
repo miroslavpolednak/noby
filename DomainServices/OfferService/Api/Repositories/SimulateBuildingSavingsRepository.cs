@@ -14,24 +14,17 @@ internal class SimulateBuildingSavingsRepository
         _dbContext = dbContext;
     }
 
-    /// <summary>
-    /// Ulozeni housing savings s uverem
-    /// </summary>
-    public async Task<int> Save(
+    public async Task<int> SaveOffer(
         Guid resourceProcessId,
-        SimulationTypes simulationType,
-        BuildingSavingsInput inputs, 
-        BuildingSavingsData? buildingSavingsData, 
-        LoanData? loanData, 
-        List<ScheduleItem>? scheduleItems)
+        int productInstanceType,
+        BuildingSavingsInput inputs,
+        Dto.Models.BuildingSavingsDataModel outputs)
     {
         var entity = new Entities.OfferInstance
         {
             ResourceProcessId = resourceProcessId,
-            SimulationType = (byte)simulationType,
-            OutputBuildingSavings = JsonSerializer.Serialize(buildingSavingsData),
-            OutputScheduleItems = JsonSerializer.Serialize(scheduleItems),
-            OutputBuildingSavingsLoan = JsonSerializer.Serialize(loanData),
+            ProductInstanceType = productInstanceType,
+            Outputs = JsonSerializer.Serialize(outputs),
             Inputs = JsonSerializer.Serialize(inputs)
         };
 
@@ -42,60 +35,28 @@ internal class SimulateBuildingSavingsRepository
         return entity.OfferInstanceId;
     }
 
-    public async Task<GetBuildingSavingsScheduleResponse?> GetScheduleItems(int offerInstanceId)
+    public async Task SaveSchedules(int offerInstanceId, List<ScheduleItem>? scheduleItems)
     {
-        var entity = await _dbContext.OfferModelations
+        var entity = new Entities.ScheduleItems
+        {
+            OfferInstanceId = offerInstanceId,
+            Data = JsonSerializer.Serialize(scheduleItems)
+        };
+        _dbContext.ScheduleItems.Add(entity);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<string?> GetScheduleItems(int offerInstanceId)
+        => await _dbContext.ScheduleItems
             .AsNoTracking()
             .Where(t => t.OfferInstanceId == offerInstanceId)
-            .Select(t => new
-            {
-                SimulationType = t.SimulationType,
-                InsertTime = t.CreatedTime,
-                InsertUserId = t.CreatedUserId,
-                ScheduleItems = t.OutputScheduleItems
-            })
-            .FirstAsync();
+            .Select(t => t.Data)
+            .FirstOrDefaultAsync();
 
-        var model = new GetBuildingSavingsScheduleResponse
-        {
-            OfferInstanceId = offerInstanceId,
-            SimulationType = (SimulationTypes)entity.SimulationType,
-            InsertStamp = new(entity.InsertUserId, entity.InsertTime)
-            
-        };
-        if (!string.IsNullOrEmpty(entity.ScheduleItems))
-            model.ScheduleItems.AddRange(JsonSerializer.Deserialize<List<ScheduleItem>>(entity.ScheduleItems));
-
-        return model;
-    }
-
-    /// <summary>
-    /// Get pro housing savings
-    /// </summary>
-    public async Task<GetBuildingSavingsDataResponse?> Get(int offerInstanceId)
-    {
-        var entity = await _dbContext.OfferModelations
+    public async Task<Entities.OfferInstance> Get(int offerInstanceId)
+        => await _dbContext.OfferModelations
            .AsNoTracking()
            .Where(t => t.OfferInstanceId == offerInstanceId)
-           .Select(t => new
-           {
-               SimulationType = t.SimulationType,
-               InsertTime = t.CreatedTime,
-               InsertUserId = t.CreatedUserId,
-               Inputs = t.Inputs,
-               OutputBuildingSavings = t.OutputBuildingSavings,
-               OutputBuildingSavingsLoan = t.OutputBuildingSavingsLoan
-           })
            .FirstAsync();
-
-        return new GetBuildingSavingsDataResponse
-        {
-            OfferInstanceId = offerInstanceId,
-            SimulationType = (SimulationTypes)entity.SimulationType,
-            InsertStamp = new(entity.InsertUserId, entity.InsertTime),
-            InputData = JsonSerializer.Deserialize<BuildingSavingsInput>(entity.Inputs ?? ""),
-            BuildingSavings = JsonSerializer.Deserialize<BuildingSavingsData>(entity.OutputBuildingSavings ?? ""),
-            Loan = string.IsNullOrEmpty(entity.OutputBuildingSavingsLoan) ? null : JsonSerializer.Deserialize<LoanData>(entity.OutputBuildingSavingsLoan)
-        };
-    }
 }

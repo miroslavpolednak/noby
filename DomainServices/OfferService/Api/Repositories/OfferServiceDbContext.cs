@@ -11,9 +11,5 @@ internal sealed class OfferServiceDbContext : BaseDbContext
         : base(options, userProvider) { }
 
     public DbSet<Entities.OfferInstance> OfferModelations { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.RegisterCisTemporalTable<Entities.OfferInstance>();
-    }
+    public DbSet<Entities.ScheduleItems> ScheduleItems { get; set; }
 }

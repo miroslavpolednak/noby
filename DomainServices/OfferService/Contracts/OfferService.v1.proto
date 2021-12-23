@@ -4,7 +4,11 @@ option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 
 import "Types.proto";
 import "TypesMortgage.proto";
-import "TypesHousingSavings.proto";
+import "TypesBuildingSavings.proto";
+import "GetBuildingSavingsData.proto";
+import "GetBuildingSavingsSchedule.proto";
+import "PrintBuildingSavingsOffer.proto";
+import "SimulateBuildingSavings.proto";
 
 service OfferService {
    rpc GetBuildingSavingsData (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetBuildingSavingsDataResponse);

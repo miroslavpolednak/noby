@@ -13,35 +13,31 @@ internal class SimulateBuildingSavingsCommandHandler
         _logger.LogInformation("Run Savings simulation with {inputs}", request);
 
         var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
-        var simulationType = request.Request.InputData.IsWithLoan ? SimulationTypes.BuildingSavingsWithLoan : SimulationTypes.BuildingSavings;
         var inputs = request.Request.InputData.ToContract();
-
-        if (simulationType == SimulationTypes.BuildingSavingsWithLoan)
-        {
-            inputs.USS_SimulovatUver = 1;
-            inputs.USS_KodAkcie = request.Request.InputData.LoanActionCode.GetValueOrDefault(0);
-        }
 
         // spustit simulaci
         var result = getEasResult(await _easClient.RunSimulation(inputs));
 
         // transformovat
-        var savingsData = result.ToBuildingSavingsData();
-        var loanData = result.ToLoanData();
-        var scheduleItems = result.ToScheduleItems();
+        var data = new Dto.Models.BuildingSavingsDataModel
+        {
+            Savings = result.ToBuildingSavingsData(),
+            Loan = result.ToLoanData()
+        };
 
         // ulozit do databaze
-        int modelationId = await _repository.Save(resourceProcessId, simulationType, request.Request.InputData, savingsData, loanData, scheduleItems);
+        int offerInstanceId = await _repository.SaveOffer(resourceProcessId, _configuration.BuldingSavingsProductInstanceType, request.Request.InputData, data);
+        // ulozit splatkove kalendare
+        await _repository.SaveSchedules(offerInstanceId, result.ToScheduleItems());
 
-        _logger.LogInformation("Simulation #{id} created", modelationId);
+        _logger.LogInformation("Simulation #{id} created", offerInstanceId);
 
         // vytvorit
         return new SimulateBuildingSavingsResponse
         {
-            BuildingSavings = savingsData,
-            Loan = loanData,
-            OfferInstanceId = modelationId,
-            InsertStamp = new(_userProvider.User?.Id ?? 0, DateTime.Now)
+            BuildingSavings = data.Savings,
+            Loan = data.Loan,
+            OfferInstanceId = offerInstanceId
         };
     }
 
@@ -61,17 +57,17 @@ internal class SimulateBuildingSavingsCommandHandler
     private readonly Repositories.SimulateBuildingSavingsRepository _repository;
     private readonly ILogger<SimulateBuildingSavingsCommandHandler> _logger;
     private readonly Eas.IEasClient _easClient;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userProvider;
+    private readonly AppConfiguration _configuration;
 
     public SimulateBuildingSavingsCommandHandler(
+        AppConfiguration configuration,
         Repositories.SimulateBuildingSavingsRepository repository,
         ILogger<SimulateBuildingSavingsCommandHandler> logger,
-        Eas.IEasClient easClient, CIS.Core.Security.
-        ICurrentUserAccessor userProvider)
+        Eas.IEasClient easClient)
     {
+        _configuration = configuration;
         _repository = repository;
         _logger = logger;
         _easClient = easClient;
-        _userProvider = userProvider;
     }
 }
