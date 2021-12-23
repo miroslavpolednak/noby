@@ -4,11 +4,13 @@ internal sealed class UpdateCaseDataMediatrRequest
     : IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 {
     public long CaseId { get; init; }
-    public string ContractNumber { get; init; }
+    public string? ContractNumber { get; init; }
+    public int? TargetAmount { get; init; }
 
     public UpdateCaseDataMediatrRequest(Contracts.UpdateCaseDataRequest request)
     {
         CaseId = request.CaseId;
         ContractNumber = request.ContractNumber;
+        TargetAmount = request.TargetAmount;
     }
 }

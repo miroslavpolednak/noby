@@ -44,7 +44,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateCaseData(long caseId, string contractNumber);
+    Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null);
 
     /// <summary>
     /// Update stavu Case

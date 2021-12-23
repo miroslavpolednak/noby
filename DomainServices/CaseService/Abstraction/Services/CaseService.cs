@@ -76,14 +76,15 @@ internal class CaseService : ICaseServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseData(long caseId, string contractNumber)
+    public async Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null)
     {
         _logger.LogDebug("Abstraction UpdateCaseData for #{caseId}", caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseDataAsync(
             new UpdateCaseDataRequest()
             {
                 CaseId = caseId,
-                ContractNumber = contractNumber
+                ContractNumber = contractNumber,
+                TargetAmount = targetAmount
             })
         );
         return new SuccessfulServiceCallResult();

@@ -3,32 +3,32 @@ using DomainServices.OfferService.Abstraction;
 
 namespace FOMS.Api.Endpoints.Savings.Offer;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
-internal class BaseCaseHandlerAggregate
-{
-    public DomainServices.OfferService.Abstraction.IOfferServiceAbstraction OfferService { get; init; }
-    public DomainServices.CaseService.Abstraction.ICaseServiceAbstraction CaseService { get; init; }
-    public DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction SalesArrangementService { get; init; }
-    public Infrastructure.Configuration.AppConfiguration Configuration { get; init; }
-    public CIS.Core.Security.ICurrentUserAccessor UserAccessor { get; init; }
-
-    public BaseCaseHandlerAggregate(
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        Infrastructure.Configuration.AppConfiguration configuration,
-        DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
-        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
-    {
-        OfferService = offerService;
-        UserAccessor = userAccessor;
-        Configuration = configuration;
-        CaseService = caseService;
-        SalesArrangementService = salesArrangementService;
-    }
-}
-
 internal abstract class BaseCaseHandler
 {
+    [CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
+    internal class BaseCaseHandlerAggregate
+    {
+        public DomainServices.OfferService.Abstraction.IOfferServiceAbstraction OfferService { get; init; }
+        public DomainServices.CaseService.Abstraction.ICaseServiceAbstraction CaseService { get; init; }
+        public DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction SalesArrangementService { get; init; }
+        public Infrastructure.Configuration.AppConfiguration Configuration { get; init; }
+        public CIS.Core.Security.ICurrentUserAccessor UserAccessor { get; init; }
+
+        public BaseCaseHandlerAggregate(
+            CIS.Core.Security.ICurrentUserAccessor userAccessor,
+            Infrastructure.Configuration.AppConfiguration configuration,
+            DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
+            DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
+            DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+        {
+            OfferService = offerService;
+            UserAccessor = userAccessor;
+            Configuration = configuration;
+            CaseService = caseService;
+            SalesArrangementService = salesArrangementService;
+        }
+    }
+
     protected async Task<int> createSalesArrangement(long caseId, int offerInstanceId)
     {
         return resolveSalesArrangementResult(await _aggregate.SalesArrangementService.CreateSalesArrangement(caseId, _aggregate.Configuration.BuildingSavings.SavingsSalesArrangementType, offerInstanceId: offerInstanceId));
@@ -45,7 +45,7 @@ internal abstract class BaseCaseHandler
     protected async Task<long> createCase(int offerInstanceId, string? firstName, string? lastName, DateTime? dateOfBirth, CIS.Core.Types.CustomerIdentity? customer)
     {
         // dotahnout informace o offerInstance
-        var offerInstance = resolveOfferResult(await _aggregate.OfferService.GetBuildingSavingsData(offerInstanceId));
+        var offerInstance = await getOfferInstance(offerInstanceId);
 
         var caseModel = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
@@ -61,6 +61,9 @@ internal abstract class BaseCaseHandler
 
         return resolveCaseResult(await _aggregate.CaseService.CreateCase(caseModel));
     }
+
+    protected async Task<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> getOfferInstance(int offerInstanceId)
+        => resolveOfferResult(await _aggregate.OfferService.GetBuildingSavingsData(offerInstanceId));
 
     private DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse resolveOfferResult(IServiceCallResult result) =>
         result switch

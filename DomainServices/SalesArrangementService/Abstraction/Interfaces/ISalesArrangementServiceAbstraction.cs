@@ -10,7 +10,7 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[int (SalesArrangementId)] - OK;
     /// </returns>
-    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null, int? offerInstanceId = null);
+    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, int? offerInstanceId = null);
 
     /// <summary>
     /// Vraci detail Sales Arrangement bez JSON dat

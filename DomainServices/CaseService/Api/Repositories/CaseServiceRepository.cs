@@ -77,10 +77,15 @@ internal class CaseServiceRepository
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task UpdateCaseData(long caseId, string contractNumber)
+    public async Task UpdateCaseData(long caseId, string? contractNumber, int? targetAmount)
     {
         var entity = await getCaseEntity(caseId);
-        entity.ContractNumber = contractNumber;
+        
+        if (!string.IsNullOrEmpty(contractNumber))
+            entity.ContractNumber = contractNumber;
+        if (targetAmount.HasValue)
+            entity.TargetAmount = targetAmount.Value;
+
         await _dbContext.SaveChangesAsync();
     }
 

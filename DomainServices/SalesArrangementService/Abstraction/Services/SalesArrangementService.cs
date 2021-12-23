@@ -6,15 +6,14 @@ namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, long? productInstanceId = null, int? offerInstanceId = null)
+    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, int? offerInstanceId = null)
     {
         _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementType);
         var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
             new CreateSalesArrangementRequest() { 
                 CaseId = caseId, 
                 SalesArrangementType = salesArrangementType, 
-                OfferInstanceId = offerInstanceId,
-                UserId = _userAccessor.User.Id 
+                OfferInstanceId = offerInstanceId
             })
         );
         return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
@@ -96,15 +95,12 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     private readonly ILogger<SalesArrangementService> _logger;
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
     private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public SalesArrangementService(
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ILogger<SalesArrangementService> logger,
         Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service,
         CIS.Security.InternalServices.ICisUserContextHelpers userContext)
     {
-        _userAccessor = userAccessor;
         _userContext = userContext;
         _service = service;
         _logger = logger;

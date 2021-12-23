@@ -2,7 +2,7 @@
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list
-        grpcurl -insecure -d "{\"CaseId\":99,\"SalesArrangementType\":1,\"UserId\":99,\"OfferInstanceId\":8}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
+        grpcurl -insecure -d "{\"CaseId\":99,\"SalesArrangementType\":1,\"OfferInstanceId\":8}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementData
         grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementsByCaseId

@@ -10,7 +10,7 @@ internal class UpdateCaseDataHandler
         var caseInstance = await _repository.GetCaseDetail(request.CaseId);
         //TODO nejaka validace na case?
 
-        await _repository.UpdateCaseData(request.CaseId, request.ContractNumber);
+        await _repository.UpdateCaseData(request.CaseId, request.ContractNumber, request.TargetAmount);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

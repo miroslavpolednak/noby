@@ -18,9 +18,8 @@ message SalesArrangementListModel {
 message CreateSalesArrangementRequest {
 	int64 CaseId = 1;
 	int32 SalesArrangementType = 2;
-	int32 UserId = 3;
-	google.protobuf.Int32Value OfferInstanceId = 4;
-	google.protobuf.Int32Value State = 5;
+	google.protobuf.Int32Value OfferInstanceId = 3;
+	google.protobuf.Int32Value State = 4;
 }
 message CreateSalesArrangementResponse {
 	int32 SalesArrangementId = 1;

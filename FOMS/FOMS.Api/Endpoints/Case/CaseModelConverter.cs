@@ -32,9 +32,10 @@ internal class CaseModelConverter
 			TargetAmount = model.TargetAmount,
 			CreatedBy = model.Created.UserName,
 			CreatedTime = model.Created.DateTime,
-			CustomerDateOfBirth = model.DateOfBirthNaturalPerson,
+			DateOfBirth = model.DateOfBirthNaturalPerson,
 			ProductName = productTypes.First(x => x.Id == model.ProductInstanceType).Name,
-			CustomerName = $"{model.FirstNameNaturalPerson} {model.Name}".Trim()
+			FirstName = model.FirstNameNaturalPerson,
+			LastName = model.Name
 		};
 
 	private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
