@@ -31,7 +31,7 @@ internal class OfferApiModule
 
         // vytvoreni case z modelace - verze se zalozenim produktu
         builder
-            .MapPost(_prefix + "/{offerInstanceId}/create", async ([FromRoute] int offerInstanceId, [FromBody] Dto.CreateCase request) => await mediatr.Send(new Dto.CreateCaseRequest(offerInstanceId, request, true)))
+            .MapPost(_prefix + "/{offerInstanceId}/create", async ([FromRoute] int offerInstanceId, [FromBody] Dto.CreateCase request) => await mediatr.Send(new Dto.CreateCaseRequest(offerInstanceId, request)))
             .Produces<int>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
 

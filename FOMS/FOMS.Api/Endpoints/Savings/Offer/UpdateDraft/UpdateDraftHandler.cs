@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Results;
 using FOMS.Api.Endpoints.Savings.Offer.Dto;
 
-namespace FOMS.Api.Endpoints.Savings.Offer;
+namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class UpdateDraftHandler
     : IRequestHandler<UpdateDraftRequest, SaveDraftResponse>
@@ -27,10 +27,10 @@ internal class UpdateDraftHandler
         };
 
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly ILogger<SaveDraftHandler> _logger;
+    private readonly ILogger<UpdateDraftHandler> _logger;
 
     public UpdateDraftHandler(
-        ILogger<SaveDraftHandler> logger,
+        ILogger<UpdateDraftHandler> logger,
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _logger = logger;
