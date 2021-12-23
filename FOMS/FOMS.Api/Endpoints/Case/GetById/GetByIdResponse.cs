@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Case.Dto;
 
-internal class GetCaseResponse
+internal class GetByIdResponse
 {
     public long CaseId { get; set; }
     public int State { get; set; }

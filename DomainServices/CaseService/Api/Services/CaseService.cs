@@ -15,11 +15,11 @@ internal class CaseService : Contracts.v1.CaseService.CaseServiceBase
     public override async Task<CreateCaseResponse> CreateCase(CreateCaseRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateCaseMediatrRequest(request));
 
-    public override async Task<GetCaseDetailResponse> GetCaseDetail(GetCaseDetailRequest request, ServerCallContext context)
+    public override async Task<CaseModel> GetCaseDetail(GetCaseDetailRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetCaseDetailMediatrRequest(request));
 
-    public override async Task<GetCaseListResponse> GetCaseList(GetCaseListRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetCaseListMediatrRequest(request));
+    public override async Task<SearchCasesResponse> SearchCases(SearchCasesRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.SearchCasesMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkOwnerToCase(LinkOwnerToCaseRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.LinkOwnerToCaseMediatrRequest(request));

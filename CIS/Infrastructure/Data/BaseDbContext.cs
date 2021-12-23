@@ -9,12 +9,12 @@ public abstract class BaseDbContext : DbContext
     /// <summary>
     /// ID of current user
     /// </summary>
-    protected int? _currentUserId = null;
+    protected Core.Security.ICurrentUser? _currentUser = null;
 
     public BaseDbContext(DbContextOptions options, Core.Security.ICurrentUserAccessor userProvider)
         : base(options)
     {
-        _currentUserId = userProvider.User?.Id;
+        _currentUser = userProvider.User;
     }
 
     /// <summary>
@@ -72,22 +72,27 @@ public abstract class BaseDbContext : DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    if (entry.Entity is ICreated)
+                    if (entry.Entity is ICreated obj1 && obj1.CreatedUserId == 0)
                     {
-                        var obj = (ICreated)entry.Entity;
-                        obj.CreatedUserId = _currentUserId.GetValueOrDefault();
-                        obj.CreatedTime = DateTime.Now;
+                        if (_currentUser is not null)
+                        {
+                            obj1.CreatedUserId = _currentUser.Id;
+                            obj1.CreatedUserName = _currentUser.Name;
+                        }
+                        obj1.CreatedTime = DateTime.Now;
                     }
-                    if (entry.Entity is IModifiedUserId)
+                    if (_currentUser is not null && entry.Entity is IModifiedUser obj2)
                     {
-                        ((IModifiedUserId)entry.Entity).ModifiedUserId = _currentUserId.GetValueOrDefault();
+                        obj2.ModifiedUserId = _currentUser.Id;
+                        obj2.ModifiedUserName = _currentUser.Name;
                     }
                     break;
 
                 case EntityState.Modified:
-                    if (entry.Entity is IModifiedUserId)
+                    if (_currentUser is not null && entry.Entity is IModifiedUser obj3)
                     {
-                        ((IModifiedUserId)entry.Entity).ModifiedUserId = _currentUserId.GetValueOrDefault();
+                        obj3.ModifiedUserId = _currentUser.Id;
+                        obj3.ModifiedUserName = _currentUser.Name;
                     }
                     break;
             }

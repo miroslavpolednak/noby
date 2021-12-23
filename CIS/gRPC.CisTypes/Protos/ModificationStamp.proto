@@ -8,4 +8,6 @@ message ModificationStamp {
   int32 userId = 1;
 
   cis.types.GrpcDateTime dateTime = 2;
+
+  string userName = 3;
 }

@@ -27,5 +27,7 @@ internal class CaseInstance : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     public string? ContractNumber { get; set; }
 
+    public int? TargetAmount { get; set; }
+
     public bool IsActionRequired { get; set; }
 }

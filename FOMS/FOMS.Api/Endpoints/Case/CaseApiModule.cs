@@ -10,8 +10,14 @@ internal class CaseApiModule : IApiEndpointModule
     {
         var mediatr = builder.ServiceProvider.GetRequiredService<IMediator>();
 
+        // detail case
         builder
-            .MapGet(_prefix + "/{caseId}", async (long caseId) => await mediatr.Send(new Dto.GetCaseRequest(caseId)))
-            .Produces<Dto.GetCaseResponse>(StatusCodes.Status200OK);
+            .MapGet(_prefix + "/{caseId}", async (long caseId) => await mediatr.Send(new Dto.GetByIdRequest(caseId)))
+            .Produces<Dto.GetByIdResponse>(StatusCodes.Status200OK);
+
+        // dashboard
+        builder
+            .MapPost(_prefix + "/search", async (Dto.SearchRequest request) => await mediatr.Send(request))
+            .Produces<Dto.SearchResponse>(StatusCodes.Status200OK);
     }
 }

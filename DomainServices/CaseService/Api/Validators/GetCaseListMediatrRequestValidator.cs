@@ -2,7 +2,7 @@
 
 namespace DomainServices.CaseService.Api.Validators;
 
-internal class GetCaseListMediatrRequest : AbstractValidator<Dto.GetCaseListMediatrRequest>
+internal class GetCaseListMediatrRequest : AbstractValidator<Dto.SearchCasesMediatrRequest>
 {
     public GetCaseListMediatrRequest()
     {

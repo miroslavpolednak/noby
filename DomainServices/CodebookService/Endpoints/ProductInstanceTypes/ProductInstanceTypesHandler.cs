@@ -13,7 +13,7 @@ public class ProductInstanceTypesHandler
         {
             new ProductInstanceTypeItem() { Id = 1, Name = "Stavební spoření", ProductCategory = ProductInstanceTypeCategory.BuildingSavings },
             new ProductInstanceTypeItem() { Id = 2, Name = "Překlenovací úvěr", ProductCategory = ProductInstanceTypeCategory.BuildingSavingsLoan },
-            new ProductInstanceTypeItem() { Id = 3, Name = "Hypotéka", ProductCategory = ProductInstanceTypeCategory.Mortgage },
+            new ProductInstanceTypeItem() { Id = 3, Name = "Americka Hypotéka", ProductCategory = ProductInstanceTypeCategory.Mortgage },
         };
     }
 }

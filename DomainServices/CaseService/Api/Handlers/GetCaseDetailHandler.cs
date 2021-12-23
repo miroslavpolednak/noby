@@ -3,15 +3,18 @@
 namespace DomainServices.CaseService.Api.Handlers;
 
 internal class GetCaseDetailHandler
-    : IRequestHandler<Dto.GetCaseDetailMediatrRequest, GetCaseDetailResponse>
+    : IRequestHandler<Dto.GetCaseDetailMediatrRequest, CaseModel>
 {
-    public async Task<GetCaseDetailResponse> Handle(Dto.GetCaseDetailMediatrRequest request, CancellationToken cancellation)
+    /// <summary>
+    /// Detail Case
+    /// </summary>
+    public async Task<CaseModel> Handle(Dto.GetCaseDetailMediatrRequest request, CancellationToken cancellation)
     {
         _logger.LogInformation("Get detail for #{id}", request.CaseId);
 
         var entity = await _repository.GetCaseDetail(request.CaseId);
 
-        var model =  new GetCaseDetailResponse
+        var model =  new CaseModel
         {
             State = entity.State,
             ActionRequired = entity.IsActionRequired,
@@ -21,7 +24,9 @@ internal class GetCaseDetailHandler
             UserId = entity.UserId,
             DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
             FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
-            Name = entity.Name
+            Name = entity.Name,
+            TargetAmount = entity.TargetAmount,
+            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity)
         };
         if (entity.CustomerIdentityId.HasValue)
             model.Customer = new CIS.Core.Types.CustomerIdentity(entity.CustomerIdentityId.Value, entity.CustomerIdentityScheme.GetValueOrDefault());

@@ -38,7 +38,9 @@ internal class CreateCaseHandler
                 State = defaultCaseState,
                 UserId = request.Request.UserId,
                 ProductInstanceType = request.Request.ProductInstanceType,
-                DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson
+                DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson,
+                TargetAmount = request.Request.TargetAmount,
+                ContractNumber = request.Request.ContractNumber
             };
             // pokud je zadany customer
             if (request.Request.Customer is not null)

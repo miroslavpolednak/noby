@@ -33,21 +33,22 @@ internal class CaseService : ICaseServiceAbstraction
                 CaseId = caseId
             })
         );
-        return new SuccessfulServiceCallResult<GetCaseDetailResponse>(result);
+        return new SuccessfulServiceCallResult<CaseModel>(result);
     }
 
-    public async Task<IServiceCallResult> GetCaseList(int userId, int? state, PaginableRequest pagination)
+    public async Task<IServiceCallResult> SearchCases(int userId, PaginableRequest pagination, int? state = null, string? searchTerm = null)
     {
-        _logger.LogDebug("Abstraction GetCaseList for #{userId}", userId);
-        var result = await _userContext.AddUserContext(async () => await _service.GetCaseListAsync(
-            new GetCaseListRequest()
+        _logger.LogDebug("Abstraction SearchCases for #{userId}", userId);
+        var result = await _userContext.AddUserContext(async () => await _service.SearchCasesAsync(
+            new SearchCasesRequest()
             {
                 State = state,
                 UserId = userId,
+                SearchTerm = searchTerm ?? "",
                 Pagination = pagination
             })
         );
-        return new SuccessfulServiceCallResult<GetCaseListResponse>(result);
+        return new SuccessfulServiceCallResult<SearchCasesResponse>(result);
     }
 
     public async Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId)

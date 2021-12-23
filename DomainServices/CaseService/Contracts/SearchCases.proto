@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "PaginationRequest.proto";
+import "PaginationResponse.proto";
+import "google/protobuf/wrappers.proto";
+import "CaseModel.proto";
+
+message SearchCasesRequest {
+	int32 UserId = 1;
+	google.protobuf.Int32Value State = 2;
+	string SearchTerm = 3;
+	cis.types.PaginationRequest Pagination = 4;
+}
+
+message SearchCasesResponse {
+	repeated CaseModel CaseInstances = 1;
+	cis.types.PaginationResponse Pagination = 2;
+}

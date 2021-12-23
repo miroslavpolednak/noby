@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Abstraction;
@@ -17,7 +18,7 @@ public interface ICaseServiceAbstraction
     /// Vraci detail Case
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[GetCaseDetailResponse] - OK;
+    /// SuccessfulServiceCallResult[CaseModel] - OK;
     /// </returns>
     Task<IServiceCallResult> GetCaseDetail(long caseId);
 
@@ -25,9 +26,9 @@ public interface ICaseServiceAbstraction
     /// Seznam Case pro uzivatele
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[GetCaseListResponse] - OK;
+    /// SuccessfulServiceCallResult[SearchCasesResponse] - OK;
     /// </returns>
-    Task<IServiceCallResult> GetCaseList(int userId, int? state, CIS.Core.Types.PaginableRequest pagination);
+    Task<IServiceCallResult> SearchCases(int userId, PaginableRequest pagination, int? state = null, string? searchTerm = null);
 
     /// <summary>
     /// Zmena majitele Case

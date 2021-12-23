@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "NullableGrpcDate.proto";
+import "Identity.proto";
+import "google/protobuf/wrappers.proto";
+
+message CreateCaseRequest {
+	cis.types.Identity Customer = 1;
+	int32 UserId = 2;
+	string FirstNameNaturalPerson = 3;
+	string Name = 4;
+	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
+	int32 ProductInstanceType = 6;
+	google.protobuf.Int32Value TargetAmount = 7;
+	string ContractNumber = 8;
+}
+
+message CreateCaseResponse {
+	int64 CaseId = 1;
+}

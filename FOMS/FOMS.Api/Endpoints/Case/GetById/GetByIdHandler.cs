@@ -2,16 +2,16 @@
 
 namespace FOMS.Api.Endpoints.Case.Handlers;
 
-internal class GetCaseHandler
-    : IRequestHandler<Dto.GetCaseRequest, Dto.GetCaseResponse>
+internal class GetByIdHandler
+    : IRequestHandler<Dto.GetByIdRequest, Dto.GetByIdResponse>
 {
-    public async Task<Dto.GetCaseResponse> Handle(Dto.GetCaseRequest request, CancellationToken cancellationToken)
+    public async Task<Dto.GetByIdResponse> Handle(Dto.GetByIdRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Get #{caseId}", request.CaseId);
 
         var result = resolveResult(await _caseService.GetCaseDetail(request.CaseId));
 
-        return new Dto.GetCaseResponse
+        return new Dto.GetByIdResponse
         {
             CaseId = result.CaseId,
             State = result.State,
@@ -29,11 +29,11 @@ internal class GetCaseHandler
            _ => throw new NotImplementedException()
        };
 
-    private readonly ILogger<GetCaseHandler> _logger;
+    private readonly ILogger<GetByIdHandler> _logger;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
-    public GetCaseHandler(
-        ILogger<GetCaseHandler> logger,
+    public GetByIdHandler(
+        ILogger<GetByIdHandler> logger,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {
         _logger = logger;

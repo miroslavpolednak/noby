@@ -27,20 +27,20 @@ internal class CaseServiceRepository
     public async Task<Entities.CaseInstance> GetCaseDetail(long caseId)
         => await getCaseEntity(caseId);
 
-    public async Task<Contracts.GetCaseListResponse> GetCaseList(int userId, int? state, CIS.Infrastructure.gRPC.CisTypes.PaginationRequest pagination)
+    public async Task<Contracts.SearchCasesResponse> GetCaseList(CIS.Infrastructure.gRPC.CisTypes.PaginationRequest pagination, int userId, int? state, string? searchTerm)
     {
         var query = _dbContext.CaseInstances.AsNoTracking().Where(t => t.UserId == userId);
         if (state.HasValue)
             query = query.Where(t => t.State == state.Value);
 
-        var result = new Contracts.GetCaseListResponse()
+        var result = new Contracts.SearchCasesResponse()
         {
             Pagination = pagination.CreateResponse(await query.CountAsync())
         };
         result.CaseInstances.AddRange(await query
             .Take(pagination.PageSize)
             .Skip(pagination.PageSize * (pagination.RecordOffset - 1))
-            .Select(t => new Contracts.CaseListModel
+            .Select(t => new Contracts.CaseModel
             {
                 CaseId = t.CaseId,
                 State = t.State,
@@ -48,7 +48,12 @@ internal class CaseServiceRepository
                 ContractNumber = t.ContractNumber ?? "",
                 DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
                 FirstNameNaturalPerson = t.FirstNameNaturalPerson,
-                Name = t.Name
+                Name = t.Name,
+                Customer = !t.CustomerIdentityId.HasValue ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(t.CustomerIdentityId, t.CustomerIdentityScheme),
+                ProductInstanceType = t.ProductInstanceType,
+                TargetAmount = t.TargetAmount,
+                UserId = t.UserId,
+                Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
             }).ToListAsync()
         );
 
