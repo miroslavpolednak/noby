@@ -1,4 +1,6 @@
-﻿namespace CIS.Core.Types
+﻿using System.Text.Json.Serialization;
+
+namespace CIS.Core.Types
 {
     public record CustomerIdentity
     {
@@ -11,6 +13,7 @@
             Scheme = scheme;
         }
 
+        [JsonConstructor]
         public CustomerIdentity(int id, string scheme)
         {
             Id = id;

@@ -1,7 +1,7 @@
 ﻿namespace FOMS.Api.Endpoints.Savings.Offer.Dto;
 
 internal class UpdateDraftRequest
-    : IRequest<SaveDraftResponse>
+    : IRequest<SaveCaseResponse>
 {
     public int OfferInstanceId { get; set; }
 

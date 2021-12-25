@@ -4,9 +4,9 @@ using FOMS.Api.Endpoints.Savings.Offer.Dto;
 namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class UpdateDraftHandler
-    : BaseCaseHandler, IRequestHandler<UpdateDraftRequest, SaveDraftResponse>
+    : BaseCaseHandler, IRequestHandler<UpdateDraftRequest, SaveCaseResponse>
 {
-    public async Task<SaveDraftResponse> Handle(UpdateDraftRequest request, CancellationToken cancellationToken)
+    public async Task<SaveCaseResponse> Handle(UpdateDraftRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Update SA #{salesArrangementId} for {offerInstanceId}", request.SalesArrangementId, request.OfferInstanceId);
 
@@ -22,7 +22,7 @@ internal class UpdateDraftHandler
         await _aggregate.CaseService.UpdateCaseData(saInstance.CaseId, targetAmount: offerInstance.InputData.TargetAmount);
         //TODO update data klienta na Case?
 
-        return new SaveDraftResponse
+        return new SaveCaseResponse
         {
             CaseId = saInstance.CaseId,
             SalesArrangementId = request.SalesArrangementId

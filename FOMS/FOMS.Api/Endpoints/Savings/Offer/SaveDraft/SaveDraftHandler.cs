@@ -3,9 +3,9 @@
 namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class SaveDraftHandler
-    : BaseCaseHandler, IRequestHandler<SaveDraftRequest, SaveDraftResponse>
+    : BaseCaseHandler, IRequestHandler<SaveDraftRequest, SaveCaseResponse>
 {
-    public async Task<SaveDraftResponse> Handle(SaveDraftRequest request, CancellationToken cancellationToken)
+    public async Task<SaveCaseResponse> Handle(SaveDraftRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Create case for {offerInstanceId}", request.OfferInstanceId);
 
@@ -17,7 +17,7 @@ internal class SaveDraftHandler
         int salesArrangementId = await createSalesArrangement(caseId, request.OfferInstanceId);
         _logger.LogDebug("Sales arrangement #{salesArrangementId} created", salesArrangementId);
 
-        return new SaveDraftResponse
+        return new SaveCaseResponse
         {
             CaseId = caseId,
             SalesArrangementId = salesArrangementId

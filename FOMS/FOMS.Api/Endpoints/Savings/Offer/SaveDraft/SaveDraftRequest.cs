@@ -3,7 +3,7 @@
 namespace FOMS.Api.Endpoints.Savings.Offer.Dto;
 
 internal class SaveDraftRequest
-    : IRequest<SaveDraftResponse>, IValidatableRequest
+    : IRequest<SaveCaseResponse>, IValidatableRequest
 {
     public string? CustomerIdentity { get; set; }
 
