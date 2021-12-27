@@ -2,10 +2,10 @@
 
 namespace FOMS.Api.Endpoints.Savings.Offer.Validators;
 
-internal class SaveDraftValidator
-    : AbstractValidator<Dto.SaveDraftRequest>
+internal class CreateDraftValidator
+    : AbstractValidator<Dto.CreateDraftRequest>
 {
-    public SaveDraftValidator()
+    public CreateDraftValidator()
     {
         RuleFor(t => t.OfferInstanceId)
             .GreaterThan(0).WithMessage("Případ nebylo možné napárovat na simulaci");

@@ -4,20 +4,20 @@ using FOMS.Api.Endpoints.Savings.Offer.Dto;
 namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class UpdateDraftHandler
-    : BaseCaseHandler, IRequestHandler<UpdateDraftRequest, SaveCaseResponse>
+    : IRequestHandler<UpdateDraftRequest, SaveCaseResponse>
 {
     public async Task<SaveCaseResponse> Handle(UpdateDraftRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Update SA #{salesArrangementId} for {offerInstanceId}", request.SalesArrangementId, request.OfferInstanceId);
 
         // get SA instance
-        var saInstance = resolveGetSalesArrangementResult(await _aggregate.SalesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // dotahnout informace o offerInstance
-        var offerInstance = await getOfferInstance(request.OfferInstanceId, cancellationToken);
+        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
 
         // nalinkovat novou simulaci na SA
-        resolveSalesArrangementResult(await _aggregate.SalesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferInstanceId, cancellationToken));
+        ServiceCallResult.Resolve(await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferInstanceId, cancellationToken));
 
         // update case data
         await _mediator.Publish(new Notifications.Requests.CaseDataUpdatedRequest
@@ -25,6 +25,7 @@ internal class UpdateDraftHandler
             CaseId = saInstance.CaseId,
             TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
+
         // update dat klienta na Case
         await _mediator.Publish(new Notifications.Requests.CaseCustomerUpdatedRequest
         {
@@ -41,26 +42,19 @@ internal class UpdateDraftHandler
         };
     }
 
-    private DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse resolveGetSalesArrangementResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse> r => r.Model,
-            _ => throw new NotImplementedException()
-        };
-
-    private bool resolveSalesArrangementResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult => true,
-            _ => throw new NotImplementedException()
-        };
-
     private readonly IMediator _mediator;
     private readonly ILogger<UpdateDraftHandler> _logger;
+    private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
+    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
 
-    public UpdateDraftHandler(ILogger<UpdateDraftHandler> logger, BaseCaseHandlerAggregate aggregate, IMediator mediator)
-        : base(aggregate)
+    public UpdateDraftHandler(
+        ILogger<UpdateDraftHandler> logger, 
+        IMediator mediator, 
+        DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService, 
+        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _salesArrangementService = salesArrangementService;
+        _offerService = offerService;
         _mediator = mediator;
         _logger = logger;
     }

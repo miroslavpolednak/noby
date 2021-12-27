@@ -20,7 +20,7 @@ internal class OfferApiModule
 
         // vytvoreni case z modelace - verze Ulozit a zavrit
         builder
-            .MapPost(_prefix + "/draft", async ([FromBody] Dto.SaveDraftRequest request) => await mediatr.Send(request))
+            .MapPost(_prefix + "/draft", async ([FromBody] Dto.CreateDraftRequest request) => await mediatr.Send(request))
             .Produces<Dto.SaveCaseResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
         // editace case z modelace - verze Ulozit a zavrit

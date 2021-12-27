@@ -1,32 +1,50 @@
 ﻿using CIS.Core.Results;
-using DomainServices.OfferService.Abstraction;
 using FOMS.Api.Endpoints.Savings.Offer.Dto;
 
 namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
 internal class CreateCaseHandler
-    : BaseCaseHandler, IRequestHandler<CreateCaseRequest, SaveCaseResponse>
+    : IRequestHandler<CreateCaseRequest, SaveCaseResponse>
 {
     public async Task<SaveCaseResponse> Handle(CreateCaseRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Create case for {offerInstanceId}", request.OfferInstanceId);
+        _logger.LogDebug("Create building savings case for {offerInstanceId}", request.OfferInstanceId);
 
         // ziskat data o klientovi
         //TODO asi neexistuje metoda, ktera by vracela jen zakladni potrebne udaje?
-        var customer = resolveCustomerResult(await _customerService.GetDetail(new DomainServices.CustomerService.Contracts.GetDetailRequest {  Identity = request.Customer?.Id ?? 0 }));
+        var customerRequest = new DomainServices.CustomerService.Contracts.GetDetailRequest { Identity = request.Customer?.Id ?? 0 };
+        var customer = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.GetDetailResponse>(await _customerService.GetDetail(customerRequest));
         _logger.LogDebug("Customer {customer} found", request.Customer);
 
+        // detail simulace
+        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
+
         // vytvorit case
-        long caseId = await createCase(request.OfferInstanceId, customer.FirstName, customer.LastName, customer.DateOfBirth, request.Customer, cancellationToken);
-        _logger.LogDebug("Case #{caseId} created", caseId);
+        long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
+        {
+            OfferInstanceId = request.OfferInstanceId,
+            DateOfBirth = customer.DateOfBirth,
+            FirstName = customer.FirstName,
+            LastName = customer.LastName,
+            Customer = request.Customer,
+            ProductInstanceType = _configuration.BuildingSavings.SavingsProductInstanceType,
+            TargetAmount = offerInstance.InputData.TargetAmount
+        }, cancellationToken);
 
         // vytvorit zadost
-        int salesArrangementId = await createSalesArrangement(caseId, request.OfferInstanceId, cancellationToken);
-        _logger.LogDebug("Sales arrangement #{salesArrangementId} created", salesArrangementId);
+        int salesArrangementId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateSalesArrangementRequest
+        {
+            CaseId = caseId,
+            OfferInstanceId = request.OfferInstanceId,
+            ProductInstanceType = _configuration.BuildingSavings.SavingsSalesArrangementType
+        }, cancellationToken);
 
         // vytvorit produkt
-        var productId = resolveProductResult(await _productService.CreateProductInstance(caseId, _aggregate.Configuration.BuildingSavings?.SavingsProductInstanceType ?? 0, cancellationToken));
-        _logger.LogDebug("Product #{productInstanceId} created", productId);
+        long productId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateProductInstanceRequest()
+        {
+            CaseId = caseId,
+            ProductInstanceType = _configuration.BuildingSavings?.SavingsProductInstanceType ?? 0
+        }, cancellationToken);
     
         return new SaveCaseResponse
         {
@@ -35,34 +53,26 @@ internal class CreateCaseHandler
         };
     }
 
-    private DomainServices.CustomerService.Contracts.GetDetailResponse resolveCustomerResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<DomainServices.CustomerService.Contracts.GetDetailResponse> r => r.Model,
-            _ => throw new NotImplementedException()
-        };
-
-    private long resolveProductResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<long> r => r.Model,
-            SimulationServiceErrorResult e1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors),
-            _ => throw new NotImplementedException()
-        };
-
-    private DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
+    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
     private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
     private readonly ILogger<CreateCaseHandler> _logger;
+    private readonly Mediator _mediator;
+    private readonly Infrastructure.Configuration.AppConfiguration _configuration;
 
     public CreateCaseHandler(
         ILogger<CreateCaseHandler> logger,
+        Mediator mediator,
+        Infrastructure.Configuration.AppConfiguration configuration,
+        DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
-        DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
-        BaseCaseHandlerAggregate aggregate)
-        : base(aggregate)
+        DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService)
     {
+        _offerService = offerService;
+        _configuration = configuration;
         _customerService = customerService;
         _productService = productService;
         _logger = logger;
+        _mediator = mediator;
     }
 }
