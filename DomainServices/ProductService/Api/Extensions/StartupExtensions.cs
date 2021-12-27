@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Abstraction;
 using ExternalServices.Eas;
-
+using ExternalServices.MpHome;
 namespace DomainServices.ProductService.Api;
 
 internal static class StartupExtensions
@@ -37,7 +37,7 @@ internal static class StartupExtensions
         // EAS svc
         services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
-        //registerMpHome(appConfiguration.EAS?.Implementation, services);
+        services.AddExternalServiceMpHome(appConfiguration.MpHome);
         
         // dbcontext
         services.AddDapper<Repositories.NobyDbRepository>(configuration.GetConnectionString("noby"));
@@ -53,13 +53,4 @@ internal static class StartupExtensions
             
         return services;
     }
-
-    private static IServiceCollection registerMpHome(CIS.Core.ServiceImplementationTypes? implementation, IServiceCollection services)
-        => implementation switch
-        {
-            CIS.Core.ServiceImplementationTypes.Mock => services.AddScoped<MpHome.IMpHomeClient, MpHome.MockMpHomeClient>(),
-            CIS.Core.ServiceImplementationTypes.Real => services.AddScoped<MpHome.IMpHomeClient, MpHome.RealMpHomeClient>(),
-            _ => throw new NotImplementedException("MpHome Implementation type is not set")
-        };
-
 }

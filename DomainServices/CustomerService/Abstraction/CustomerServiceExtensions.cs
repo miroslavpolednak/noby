@@ -42,11 +42,11 @@ public static class CustomerServiceExtensions
             services.AddSingleton(provider =>
             {
                 string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("DS:OfferService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
+                    .GetService(new("DS:CustomerService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "OfferService URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "CustomerService URL can not be determined"), isInvalidCertificateAllowed);
             });
         }
         return services;

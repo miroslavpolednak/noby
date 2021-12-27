@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, int? offerInstanceId = null)
+    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementType);
         var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
@@ -14,36 +14,36 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
                 CaseId = caseId, 
                 SalesArrangementType = salesArrangementType, 
                 OfferInstanceId = offerInstanceId
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
     }
 
-    public async Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId)
+    public async Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetSalesArrangement for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementAsync(
             new SalesArrangementIdRequest()
             {
                 SalesArrangementId = salesArrangementId
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<GetSalesArrangementResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId)
+    public async Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetSalesArrangementData for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementDataAsync(
             new SalesArrangementIdRequest()
             {
                 SalesArrangementId = salesArrangementId
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<GetSalesArrangementDataResponse>(result);
     }
 
-    public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId)
+    public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction LinkModelationToSalesArrangement for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
@@ -51,17 +51,17 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             {
                 SalesArrangementId = salesArrangementId,
                 OfferInstanceId = offerInstanceId
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }
 
-    public Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states)
+    public Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken))
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data)
+    public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction UpdateSalesArrangementData for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementDataAsync(
@@ -69,12 +69,12 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             {
                 SalesArrangementId = salesArrangementId,
                 Data = data
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementId, int state)
+    public async Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction UpdateSalesArrangementState for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementStateAsync(
@@ -82,12 +82,12 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             {
                 SalesArrangementId = salesArrangementId,
                 State = state
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }
 
-    public Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId)
+    public Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         throw new NotImplementedException();
     }

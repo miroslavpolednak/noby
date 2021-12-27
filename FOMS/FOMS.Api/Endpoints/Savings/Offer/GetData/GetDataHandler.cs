@@ -6,13 +6,11 @@ namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 internal class GetDataHandler
     : IRequestHandler<Dto.GetDataRequest, Dto.GetDataResponse>
 {
-    
-
     public async Task<Dto.GetDataResponse> Handle(Dto.GetDataRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Get data for ${id}", request.OfferInstanceId);
 
-        var result = resolveResult(await _offerService.GetBuildingSavingsData(request.OfferInstanceId));
+        var result = resolveResult(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
         
         var model = new Dto.GetDataResponse
         {

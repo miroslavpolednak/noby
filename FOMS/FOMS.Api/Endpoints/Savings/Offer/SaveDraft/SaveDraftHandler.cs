@@ -10,11 +10,11 @@ internal class SaveDraftHandler
         _logger.LogDebug("Create case for {offerInstanceId}", request.OfferInstanceId);
 
         // vytvorit case
-        long caseId = await createCase(request.OfferInstanceId, request.FirstName, request.LastName, request.DateOfBirth, request.Customer);
+        long caseId = await createCase(request.OfferInstanceId, request.FirstName, request.LastName, request.DateOfBirth, request.Customer, cancellationToken);
         _logger.LogDebug("Case #{caseId} created", caseId);
 
         // vytvorit zadost
-        int salesArrangementId = await createSalesArrangement(caseId, request.OfferInstanceId);
+        int salesArrangementId = await createSalesArrangement(caseId, request.OfferInstanceId, cancellationToken);
         _logger.LogDebug("Sales arrangement #{salesArrangementId} created", salesArrangementId);
 
         return new SaveCaseResponse

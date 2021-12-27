@@ -9,7 +9,7 @@ internal class GetDetailHandler
     {
         _logger.LogDebug("Get #{salesArrangementId}", request.SalesArrangementId);
 
-        return resolveResult(await _saService.GetSalesArrangement(request.SalesArrangementId));
+        return resolveResult(await _saService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
     }
 
     private DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse resolveResult(IServiceCallResult result) =>

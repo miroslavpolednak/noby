@@ -17,15 +17,15 @@ internal class CreateCaseHandler
         _logger.LogDebug("Customer {customer} found", request.Customer);
 
         // vytvorit case
-        long caseId = await createCase(request.OfferInstanceId, customer.FirstName, customer.LastName, customer.DateOfBirth, request.Customer);
+        long caseId = await createCase(request.OfferInstanceId, customer.FirstName, customer.LastName, customer.DateOfBirth, request.Customer, cancellationToken);
         _logger.LogDebug("Case #{caseId} created", caseId);
 
         // vytvorit zadost
-        int salesArrangementId = await createSalesArrangement(caseId, request.OfferInstanceId);
+        int salesArrangementId = await createSalesArrangement(caseId, request.OfferInstanceId, cancellationToken);
         _logger.LogDebug("Sales arrangement #{salesArrangementId} created", salesArrangementId);
 
         // vytvorit produkt
-        var productId = resolveProductResult(await _productService.CreateProductInstance(caseId, _aggregate.Configuration.BuildingSavings?.SavingsProductInstanceType ?? 0));
+        var productId = resolveProductResult(await _productService.CreateProductInstance(caseId, _aggregate.Configuration.BuildingSavings?.SavingsProductInstanceType ?? 0, cancellationToken));
         _logger.LogDebug("Product #{productInstanceId} created", productId);
     
         return new SaveCaseResponse
@@ -42,10 +42,10 @@ internal class CreateCaseHandler
             _ => throw new NotImplementedException()
         };
 
-    private int resolveProductResult(IServiceCallResult result) =>
+    private long resolveProductResult(IServiceCallResult result) =>
         result switch
         {
-            SuccessfulServiceCallResult<int> r => r.Model,
+            SuccessfulServiceCallResult<long> r => r.Model,
             SimulationServiceErrorResult e1 => throw new CIS.Core.Exceptions.CisValidationException(e1.Errors),
             _ => throw new NotImplementedException()
         };

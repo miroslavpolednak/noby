@@ -11,16 +11,28 @@ internal class UpdateDraftHandler
         _logger.LogDebug("Update SA #{salesArrangementId} for {offerInstanceId}", request.SalesArrangementId, request.OfferInstanceId);
 
         // get SA instance
-        var saInstance = resolveGetSalesArrangementResult(await _aggregate.SalesArrangementService.GetSalesArrangement(request.SalesArrangementId));
+        var saInstance = resolveGetSalesArrangementResult(await _aggregate.SalesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // dotahnout informace o offerInstance
-        var offerInstance = await getOfferInstance(request.OfferInstanceId);
+        var offerInstance = await getOfferInstance(request.OfferInstanceId, cancellationToken);
 
         // nalinkovat novou simulaci na SA
-        resolveSalesArrangementResult(await _aggregate.SalesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferInstanceId));
+        resolveSalesArrangementResult(await _aggregate.SalesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferInstanceId, cancellationToken));
 
-        await _aggregate.CaseService.UpdateCaseData(saInstance.CaseId, targetAmount: offerInstance.InputData.TargetAmount);
-        //TODO update data klienta na Case?
+        // update case data
+        await _mediator.Publish(new Notifications.Requests.CaseDataUpdatedRequest
+        {
+            CaseId = saInstance.CaseId,
+            TargetAmount = offerInstance.InputData.TargetAmount
+        }, cancellationToken);
+        // update dat klienta na Case
+        await _mediator.Publish(new Notifications.Requests.CaseCustomerUpdatedRequest
+        {
+            CaseId = saInstance.CaseId,
+            DateOfBirthNaturalPerson = request.DateOfBirth,
+            FirstNameNaturalPerson = request.FirstName,
+            Name = request.LastName
+        });
 
         return new SaveCaseResponse
         {
@@ -43,11 +55,13 @@ internal class UpdateDraftHandler
             _ => throw new NotImplementedException()
         };
 
+    private readonly IMediator _mediator;
     private readonly ILogger<UpdateDraftHandler> _logger;
 
-    public UpdateDraftHandler(ILogger<UpdateDraftHandler> logger, BaseCaseHandlerAggregate aggregate)
+    public UpdateDraftHandler(ILogger<UpdateDraftHandler> logger, BaseCaseHandlerAggregate aggregate, IMediator mediator)
         : base(aggregate)
     {
+        _mediator = mediator;
         _logger = logger;
     }
 }

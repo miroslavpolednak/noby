@@ -12,7 +12,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[long (CaseId)] - OK;
     /// </returns>
-    Task<IServiceCallResult> CreateCase(CreateCaseRequest model);
+    Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci detail Case
@@ -20,7 +20,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[CaseModel] - OK;
     /// </returns>
-    Task<IServiceCallResult> GetCaseDetail(long caseId);
+    Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Seznam Case pro uzivatele
@@ -28,7 +28,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[SearchCasesResponse] - OK;
     /// </returns>
-    Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null);
+    Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Zmena majitele Case
@@ -36,7 +36,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId);
+    Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update zakladnich udaju Case - cislo smlouvy
@@ -44,7 +44,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null);
+    Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update stavu Case
@@ -52,7 +52,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateCaseState(long caseId, int state);
+    Task<IServiceCallResult> UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update infa o klientovi na case
@@ -60,5 +60,5 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model);
+    Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model, CancellationToken cancellationToken = default(CancellationToken));
 }

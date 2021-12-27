@@ -13,8 +13,10 @@ namespace CIS.Core.Types
             Scheme = scheme;
         }
 
-        [JsonConstructor]
-        public CustomerIdentity(int id, string scheme)
+        public CustomerIdentity(int? id, string? scheme) 
+            : this(id.GetValueOrDefault(), scheme) { }
+
+        public CustomerIdentity(int id, string? scheme)
         {
             Id = id;
             if (!Enum.TryParse<IdentitySchemes>(scheme, out IdentitySchemes parsedScheme))

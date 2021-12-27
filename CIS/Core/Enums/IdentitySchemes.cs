@@ -4,7 +4,7 @@ public enum IdentitySchemes : byte
 {
     Unknown = 0,
 
-    MP = 1,
+    Mp = 1,
 
-    KB = 2
+    Kb = 2
 }

@@ -17,7 +17,7 @@ internal class SimulateHandler
             ResourceProcessId = request.ResourceProcessId,
             InputData = request
         };
-        var result = resolveResult(await _offerService.SimulateBuildingSavings(model));
+        var result = resolveResult(await _offerService.SimulateBuildingSavings(model, cancellationToken));
 
         _logger.LogDebug("OfferInstanceId #{id} created", result.OfferInstanceId);
 

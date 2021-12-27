@@ -8,7 +8,7 @@ public interface IUserServiceAbstraction
     /// Vraci detail uzivatele
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[int (SalesArrangementId)] - OK;
+    /// SuccessfulServiceCallResult[int (Contracts.User)] - OK;
     /// </returns>
-    Task<IServiceCallResult> GetUserByLogin(string login);
+    Task<IServiceCallResult> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken));
 }

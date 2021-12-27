@@ -14,9 +14,9 @@ internal class GetScheduleHandler
         DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse result;
 
         if (request.ScheduleType == DomainServices.OfferService.Contracts.ScheduleItemTypes.DepositSchedule)
-            result = resolveResult(await _offerService.GetBuildingSavingsDepositSchedule(request.OfferInstanceId));
+            result = resolveResult(await _offerService.GetBuildingSavingsDepositSchedule(request.OfferInstanceId, cancellationToken));
         else
-            result = resolveResult(await _offerService.GetBuildingSavingsPaymentSchedule(request.OfferInstanceId));
+            result = resolveResult(await _offerService.GetBuildingSavingsPaymentSchedule(request.OfferInstanceId, cancellationToken));
 
         _logger.LogDebug("Resolved {count} schedule items", result.ScheduleItems.Count());
 

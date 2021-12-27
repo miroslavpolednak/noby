@@ -15,7 +15,7 @@ internal class SearchHandler
             new ("CustomerName", "Name")
         });
 
-        var result = resolveResult(await _caseService.SearchCases(request.Pagination ?? CIS.Core.Types.PaginableRequest.Default, _userAccessor.User.Id, request.State, request.Term));
+        var result = resolveResult(await _caseService.SearchCases(request.Pagination ?? CIS.Core.Types.PaginableRequest.Default, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
 
         _logger.LogDebug("Found {records} records", result.Pagination.RecordsTotalSize);
 

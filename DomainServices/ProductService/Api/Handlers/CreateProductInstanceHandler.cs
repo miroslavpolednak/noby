@@ -12,6 +12,11 @@ internal class CreateProductInstanceHandler
     {
         _logger.LogInformation("Create product with Case ID #{id}", request.CaseId);
 
+        return new CreateProductInstanceResponse()
+        {
+            ProductInstanceId = 1
+        };
+
         // ID noveho produktu se vetsinou rovna ID Case
         var productId = request.CaseId;
 
@@ -48,9 +53,9 @@ internal class CreateProductInstanceHandler
     private async Task<IServiceCallResult> createProduct(CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory category, long productId) =>
         category switch
         {
-            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings => await _mpHomeClient.CreateSavingsInstance(productId),
+            /*CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings => await _mpHomeClient.Create(productId),
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan => await _mpHomeClient.CreateSavingsLoanInstance(productId),
-            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage => await _mpHomeClient.CreateMorgageInstance(productId),
+            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage => await _mpHomeClient.CreateMorgageInstance(productId),*/
             _ => throw new NotImplementedException()
         };
 
@@ -74,13 +79,13 @@ internal class CreateProductInstanceHandler
     private readonly Repositories.NobyDbRepository _repository;
     private readonly ILogger<CreateProductInstanceHandler> _logger;
     private readonly Eas.IEasClient _easClient;
-    private readonly MpHome.IMpHomeClient _mpHomeClient;
+    private readonly ExternalServices.MpHome.V1.IMpHomeClient _mpHomeClient;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 
     public CreateProductInstanceHandler(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Eas.IEasClient easClient,
-        MpHome.IMpHomeClient mpHomeClient,
+        ExternalServices.MpHome.V1.IMpHomeClient mpHomeClient,
         Repositories.NobyDbRepository repository,
         ILogger<CreateProductInstanceHandler> logger)
     {

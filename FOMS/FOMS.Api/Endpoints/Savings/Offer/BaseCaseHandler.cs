@@ -29,9 +29,9 @@ internal abstract class BaseCaseHandler
         }
     }
 
-    protected async Task<int> createSalesArrangement(long caseId, int offerInstanceId)
+    protected async Task<int> createSalesArrangement(long caseId, int offerInstanceId, CancellationToken cancellationToken)
     {
-        return resolveSalesArrangementResult(await _aggregate.SalesArrangementService.CreateSalesArrangement(caseId, _aggregate.Configuration.BuildingSavings.SavingsSalesArrangementType, offerInstanceId: offerInstanceId));
+        return resolveSalesArrangementResult(await _aggregate.SalesArrangementService.CreateSalesArrangement(caseId, _aggregate.Configuration.BuildingSavings.SavingsSalesArrangementType, offerInstanceId, cancellationToken));
     }
 
     private int resolveSalesArrangementResult(IServiceCallResult result) =>
@@ -42,10 +42,10 @@ internal abstract class BaseCaseHandler
             _ => throw new NotImplementedException()
         };
 
-    protected async Task<long> createCase(int offerInstanceId, string? firstName, string? lastName, DateTime? dateOfBirth, CIS.Core.Types.CustomerIdentity? customer)
+    protected async Task<long> createCase(int offerInstanceId, string? firstName, string? lastName, DateTime? dateOfBirth, CIS.Core.Types.CustomerIdentity? customer, CancellationToken cancellationToken)
     {
         // dotahnout informace o offerInstance
-        var offerInstance = await getOfferInstance(offerInstanceId);
+        var offerInstance = await getOfferInstance(offerInstanceId, cancellationToken);
 
         var caseModel = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
@@ -59,11 +59,11 @@ internal abstract class BaseCaseHandler
         if (customer is not null)
             caseModel.Customer = new CIS.Infrastructure.gRPC.CisTypes.Identity(customer);
 
-        return resolveCaseResult(await _aggregate.CaseService.CreateCase(caseModel));
+        return resolveCaseResult(await _aggregate.CaseService.CreateCase(caseModel, cancellationToken));
     }
 
-    protected async Task<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> getOfferInstance(int offerInstanceId)
-        => resolveOfferResult(await _aggregate.OfferService.GetBuildingSavingsData(offerInstanceId));
+    protected async Task<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> getOfferInstance(int offerInstanceId, CancellationToken cancellationToken)
+        => resolveOfferResult(await _aggregate.OfferService.GetBuildingSavingsData(offerInstanceId, cancellationToken));
 
     private DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse resolveOfferResult(IServiceCallResult result) =>
         result switch

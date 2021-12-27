@@ -6,7 +6,7 @@ namespace DomainServices.CaseService.Abstraction.Services;
 
 internal class CaseService : ICaseServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateCase(CreateCaseRequest model)
+    public async Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction CreateCase");
         var result = await _userContext.AddUserContext(async () => await _service.CreateCaseAsync(
@@ -18,24 +18,24 @@ internal class CaseService : ICaseServiceAbstraction
                 ProductInstanceType = model.ProductInstanceType,
                 UserId = _userAccessor.User.Id,
                 Customer = model.Customer
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<long>(result.CaseId);
     }
 
-    public async Task<IServiceCallResult> GetCaseDetail(long caseId)
+    public async Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetCaseDetail for #{caseId}", caseId);
         var result = await _userContext.AddUserContext(async () => await _service.GetCaseDetailAsync(
             new GetCaseDetailRequest()
             {
                 CaseId = caseId
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<CaseModel>(result);
     }
 
-    public async Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null)
+    public async Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction SearchCases for #{userId}", userId);
         var result = await _userContext.AddUserContext(async () => await _service.SearchCasesAsync(new SearchCasesRequest
@@ -44,11 +44,11 @@ internal class CaseService : ICaseServiceAbstraction
             State = state,
             Pagination = pagination,
             UserId = userId,
-        }));
+        }, cancellationToken: cancellationToken));
         return new SuccessfulServiceCallResult<SearchCasesResponse>(result);
     }
 
-    public async Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId)
+    public async Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction LinkOwnerToCase for #{caseId}", caseId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkOwnerToCaseAsync(
@@ -56,12 +56,12 @@ internal class CaseService : ICaseServiceAbstraction
             {
                 CaseId = caseId,
                 UserId = userId
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model)
+    public async Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction UpdateCaseCustomer");
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseCustomerAsync(
@@ -71,12 +71,12 @@ internal class CaseService : ICaseServiceAbstraction
                 FirstNameNaturalPerson = model.FirstNameNaturalPerson,
                 Name = model.Name,
                 Customer = model.Customer
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null)
+    public async Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction UpdateCaseData for #{caseId}", caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseDataAsync(
@@ -85,12 +85,12 @@ internal class CaseService : ICaseServiceAbstraction
                 CaseId = caseId,
                 ContractNumber = contractNumber,
                 TargetAmount = targetAmount
-            })
+            }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseState(long caseId, int state)
+    public async Task<IServiceCallResult> UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction UpdateCaseState for #{caseId}", caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseStateAsync(
@@ -98,7 +98,7 @@ internal class CaseService : ICaseServiceAbstraction
             {
                 CaseId = caseId,
                 State = state
-            })
+            },  cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
     }

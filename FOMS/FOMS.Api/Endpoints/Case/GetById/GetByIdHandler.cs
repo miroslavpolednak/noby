@@ -9,7 +9,7 @@ internal class GetByIdHandler
     {
         _logger.LogDebug("Get #{caseId}", request.CaseId);
 
-        var result = resolveResult(await _caseService.GetCaseDetail(request.CaseId));
+        var result = resolveResult(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
 
         return await _converter.FromContract(result);
     }

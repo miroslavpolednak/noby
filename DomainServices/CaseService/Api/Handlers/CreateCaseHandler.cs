@@ -25,7 +25,7 @@ internal class CreateCaseHandler
 
         // ziskat caseId
         //TODO proc se tady dava schema?
-        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.MP, request.Request.ProductInstanceType));
+        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.Mp, request.Request.ProductInstanceType));
 
         // zalozit case v NOBY
         try

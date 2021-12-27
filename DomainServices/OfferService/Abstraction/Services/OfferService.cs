@@ -8,27 +8,13 @@ namespace DomainServices.OfferService.Abstraction;
 
 internal class OfferService : IOfferServiceAbstraction
 {
-    private readonly ILogger<OfferService> _logger;
-    private readonly Contracts.v1.OfferService.OfferServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
-
-    public OfferService(
-        ILogger<OfferService> logger,
-        Contracts.v1.OfferService.OfferServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
-    {
-        _userContext = userContext;
-        _service = service;
-        _logger = logger;
-    }
-
-    public async Task<IServiceCallResult> SimulateBuildingSavings(SimulateBuildingSavingsRequest request)
+    public async Task<IServiceCallResult> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction SimulateBuildingSavings call with {request}", request);
 
         try
         {
-            var result = await _userContext.AddUserContext(async () => await _service.SimulateBuildingSavingsAsync(request));
+            var result = await _userContext.AddUserContext(async () => await _service.SimulateBuildingSavingsAsync(request, cancellationToken: cancellationToken));
 
             _logger.LogDebug("Abstraction SimulateBuildingSavings saved as #{id}", result.OfferInstanceId);
 
@@ -60,39 +46,53 @@ internal class OfferService : IOfferServiceAbstraction
         }
     }
 
-    public async Task<IServiceCallResult> GetBuildingSavingsData(int offerInstanceId)
+    public async Task<IServiceCallResult> GetBuildingSavingsData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetBuildingSavingsData call with #ID {offerInstanceId}", offerInstanceId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetBuildingSavingsDataAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }));
+        var result = await _userContext.AddUserContext(async () => await _service.GetBuildingSavingsDataAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }, cancellationToken: cancellationToken));
 
         return new SuccessfulServiceCallResult<GetBuildingSavingsDataResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetBuildingSavingsDepositSchedule(int offerInstanceId)
+    public async Task<IServiceCallResult> GetBuildingSavingsDepositSchedule(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetBuildingSavingsDepositSchedule call with #ID {offerInstanceId}", offerInstanceId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetBuildingSavingsDepositScheduleAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }));
+        var result = await _userContext.AddUserContext(async () => await _service.GetBuildingSavingsDepositScheduleAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }, cancellationToken: cancellationToken));
 
         return new SuccessfulServiceCallResult<GetBuildingSavingsScheduleResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetBuildingSavingsPaymentSchedule(int offerInstanceId)
+    public async Task<IServiceCallResult> GetBuildingSavingsPaymentSchedule(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetBuildingSavingsPaymentSchedule call with #ID {offerInstanceId}", offerInstanceId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetBuildingSavingsPaymentScheduleAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }));
+        var result = await _userContext.AddUserContext(async () => await _service.GetBuildingSavingsPaymentScheduleAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }, cancellationToken: cancellationToken));
 
         return new SuccessfulServiceCallResult<GetBuildingSavingsScheduleResponse>(result);
     }
 
-    public async Task<IServiceCallResult> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request)
+    public async Task<IServiceCallResult> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction PrintBuildingSavingsOffer call with #ID {offerInstanceId}", request.OfferInstanceId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.PrintBuildingSavingsOfferAsync(request));
+        var result = await _userContext.AddUserContext(async () => await _service.PrintBuildingSavingsOfferAsync(request, cancellationToken: cancellationToken));
 
         return new SuccessfulServiceCallResult<PrintBuildingSavingsOfferResponse>(result);
+    }
+
+    private readonly ILogger<OfferService> _logger;
+    private readonly Contracts.v1.OfferService.OfferServiceClient _service;
+    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+
+    public OfferService(
+        ILogger<OfferService> logger,
+        Contracts.v1.OfferService.OfferServiceClient service,
+        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+    {
+        _userContext = userContext;
+        _service = service;
+        _logger = logger;
     }
 }
