@@ -1,0 +1,32 @@
+{
+    "servers":
+    {
+        "fomsDiscoveryService":
+        {
+            "ssl":1
+            ,"address":"172.30.35.51:5002"
+            ,"rejectUnauthorized":0
+        },
+        "fomsOfferService":
+        {
+            "ssl":1
+            ,"address":"172.30.35.51:5003"
+            ,"rejectUnauthorized":0
+            ,"login":"a"
+        },
+        "fomsCustomerService":
+        {
+            "ssl":1
+            ,"address":"172.30.35.51:5005"
+            ,"rejectUnauthorized":0
+            ,"login":"a"
+        },
+        "localhost":
+        {
+            "ssl":0
+            ,"address":"127.0.0.1:50051"
+            ,"rejectUnauthorized":0
+        }
+
+    }
+}

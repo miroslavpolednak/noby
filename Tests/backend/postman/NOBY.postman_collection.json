@@ -120,6 +120,9 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
+											"\r",
+											"\r",
+											"pm.collectionVariables.set('Pokus','Toto je pokus');\r",
 											""
 										],
 										"type": "text/javascript"
@@ -404,6 +407,9 @@
 									"script": {
 										"exec": [
 											"pm.variables.set('OfferInstanceId',libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings').OfferInstanceId);\r",
+											"\r",
+											"\r",
+											"\r",
 											"\r",
 											"//pm.request.url.query.add({key: 'test', value: '1234'});\r",
 											""
@@ -819,6 +825,161 @@
 			]
 		},
 		{
+			"name": "01-OfferServicePokus",
+			"item": [
+				{
+					"name": "Test",
+					"item": [
+						{
+							"name": "01-0100-OfferSerice-SimulateBuildingSavings",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											"console.log('****************************************************************************************************************************');\r",
+											"console.log(pm.collectionVariables.get('Pokus'));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test direct vs through service call\", function () \r",
+											"{\r",
+											"    //TODO: Pridat dalsi\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalSaved)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_celkem_nasporeno')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
+											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
+											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.variables.set('OfferInstanceId',res.OfferInstanceId);\r",
+											"\r",
+											"\r",
+											"\r",
+											"//Do testu bohuzel nelze pridat kontrolu vysledku proti pevne hodnote, protoze vysledek se meni dle data simulace\r",
+											"/*\r",
+											"pm.test(\"Test TotalSaved\", function () \r",
+											"{\r",
+											"\r",
+											"    totalSaved=libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalSaved);\r",
+											"    pm.expect(totalSaved).to.eql(pm.variables.get(\"TotalSaved\"));\r",
+											"});\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"/*\r",
+											"console.log(\r",
+											"pm.collectionVariables.variables()\r",
+											");\r",
+											"\r",
+											"\r",
+											"\r",
+											"jsonT=libRequest.getResponse('0100 OfferSerice Simulate');\r",
+											"\r",
+											"console.log(jsonT);\r",
+											"\r",
+											"console.log(jsonT[\"InsertUserId\"]);\r",
+											"*/\r",
+											"\r",
+											"//console.log('DEF');\r",
+											"/*\r",
+											"jsonT=res;\r",
+											"//jsonT=getResponse('0100 OfferSerice Simulate');\r",
+											"\r",
+											"//console.log(jsonT);\r",
+											"\r",
+											"console.log(pm.collectionVariables.get('<-- 0100 OfferSerice Simulate'));\r",
+											"*/\r",
+											"\r",
+											"/*\r",
+											"\r",
+											"contractTerm=libBcl.dateTimeToDate(res['BuildingSavings']['ContractTerminationDate']);\r",
+											"console.log(contractTerm.format((\"YYYY-MM-DD\")));\r",
+											"*/\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"InputData\":\r\n    {\r\n        \"TargetAmount\":{{TargetAmount}}\r\n        ,\"ProductCode\":{{ProductCode}}\r\n        ,\"ActionCode\":{{ActionCode}}\r\n        ,\"ClientIsNaturalPerson\":{{ClientIsNaturalPerson}}\r\n        ,\"ClientIsSVJ\":{{ClientIsSVJ}}\r\n        ,\"IsWithLoan\":{{IsWithLoan}}\r\n        ,\"StateSubsidy\":{{StateSubsidy}}\r\n        ,\"LoanActionCode\":{\"value\":{{LoanActionCode}}}\r\n    },\r\n    \"ResourceProcessId\":\"e3ea8cb1-ad56-4cc6-91c9-eb99e3c6dc83\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=SimulateBuildingSavings",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"gRPCcall"
+									],
+									"query": [
+										{
+											"key": "server",
+											"value": "fomsOfferService"
+										},
+										{
+											"key": "proto",
+											"value": "OfferService.v1"
+										},
+										{
+											"key": "package",
+											"value": "DomainServices.OfferService.v1"
+										},
+										{
+											"key": "service",
+											"value": "OfferService"
+										},
+										{
+											"key": "method",
+											"value": "SimulateBuildingSavings"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "01-A-OfferService-EAS",
 			"item": [
 				{
@@ -916,6 +1077,647 @@
 							"path": [
 								"HOME",
 								"EAS_WS_SB_Services.svc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02-CustomerService",
+			"item": [
+				{
+					"name": "0100 Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test for real ID return.\", function () \r",
+									"{\r",
+									"    pm.expect(res.Identity).not.to.eql(123);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"seed=pm.collectionVariables.get('birthNoSeed');\r",
+									"console.log(seed);\r",
+									"\r",
+									"seed=libBirthNo.getNext(seed);\r",
+									"console.log('Po:');\r",
+									"console.log(seed);\r",
+									"pm.collectionVariables.set('birthNoSeed',seed);\r",
+									"console.log(libBirthNo.getBirthNo(seed));\r",
+									"pm.variables.set('localBirthNumber',libBirthNo.getBirthNo(seed));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"BirthNumber\": \"{{localBirthNumber}}\",\r\n  \"Ico\": \"{{Ico}}\",\r\n  \"DegreeBefore\": \"{{DegreeBefore}}\",\r\n  \"DegreeAfter\": \"{{DegreeAfter}}\",\r\n  \"FirstName\": \"{{FirstName}}\",\r\n  \"LastName\": \"{{LastName}}\",\r\n  \"DateOfBirth\": {\r\n    \"year\": {{DateOfBirthyear}},\r\n    \"month\": {{DateOfBirthmonth}},\r\n    \"day\": {{DateOfBirthday}}\r\n  },\r\n  \"PlaceOfBirth\": \"{{PlaceOfBirth}}\",\r\n  \"NameJuridicalPerson\": \"{{NameJuridicalPerson}}\",\r\n  \"Gender\": \"{{Gender}}\",\r\n  \"IdentificationDocument\": {\r\n    \"Type\": \"{{IdentificationDocumentType}}\",\r\n    \"Number\": \"{{IdentificationDocumentNumber}}\",\r\n    \"ValidTo\": {\r\n      \"year\": {{IdentificationDocumentValidToyear}},\r\n      \"month\": {{IdentificationDocumentValidTomonth}},\r\n      \"day\": {{IdentificationDocumentValidToday}}\r\n    },\r\n    \"IssuedBy\": \"{{IdentificationDocumentIssuedBy}}\",\r\n    \"IssuingCountryCode\": \"{{IdentificationDocumentIssuingCountryCode}}\",\r\n    \"IssuedOn\": {\r\n      \"year\": {{IdentificationDocumentIssuedOnyear}},\r\n      \"month\": {{IdentificationDocumentIssuedOnmonth}},\r\n      \"day\": {{IdentificationDocumentIssuedOnday}}\r\n    }\r\n  },\r\n  \"Addresses\": [\r\n    {\r\n      \"Type\": \"{{Addresses0Type}}\",\r\n      \"IsPrimary\": {{Addresses0IsPrimary}},\r\n      \"Street\": \"{{Addresses0Street}}\",\r\n      \"BuildingIdentificationNumber\": \"{{Addresses0BuildingIdentificationNumber}}\",\r\n      \"Postcode\": \"{{Addresses0Postcode}}\",\r\n      \"City\": \"{{Addresses0City}}\"\r\n      ,\"LandRegistryNumber\":\"{{Addresses0LandRegistryNumber}}\"\r\n      ,\"CountryCode\":\"{{Addresses0CountryCode}}\"\r\n    },\r\n    {\r\n      \"Type\": \"{{Addresses1Type}}\",\r\n      \"IsPrimary\": {{Addresses1IsPrimary}},\r\n      \"Street\": \"{{Addresses1Street}}\",\r\n      \"BuildingIdentificationNumber\": \"{{Addresses1BuildingIdentificationNumber}}\",\r\n      \"Postcode\": \"{{Addresses1Postcode}}\",\r\n      \"City\": \"{{Addresses1City}}\"\r\n      ,\"LandRegistryNumber\":\"{{Addresses1LandRegistryNumber}}\"\r\n      ,\"CountryCode\":\"{{Addresses1CountryCode}}\"\r\n    }\r\n  ]\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=Create",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "Create"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0200 GetDetail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test of return.\", function () \r",
+									"{\r",
+									"    //pm.expect(res).to.eql(libRequest.getRequest('0100 Create'));\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"createRequest=libRequest.getRequest('0100 Create');\r",
+									"\r",
+									"//delete createRequest.IdentificationDocument.IssuedBy;  //(MěÚ Brandýs nad Labem - Stará Boleslav!=CZ)\r",
+									"\r",
+									"//console.log(createRequest.IdentificationDocument);\r",
+									"//console.log(res.IdentificationDocument);\r",
+									"\r",
+									"delete createRequest.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
+									"delete res.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
+									"\r",
+									"//console.log(createRequest.IdentificationDocument);\r",
+									"//console.log(res.IdentificationDocument);\r",
+									"\r",
+									"\r",
+									"//return;\r",
+									"\r",
+									"//delete createRequest.Addresses[0].BuildingIdentificationNumber;\r",
+									"//delete createRequest.Addresses[0].LandRegistryNumber;\r",
+									"\r",
+									"//delete createRequest.Addresses[1].BuildingIdentificationNumber;\r",
+									"//delete createRequest.Addresses[1].LandRegistryNumber;\r",
+									"\r",
+									"/*\r",
+									"console.log(createRequest.Addresses[0]);\r",
+									"console.log(createRequest.Addresses[0]['CountryCode'] );\r",
+									"console.log(createRequest.Addresses[0]);\r",
+									"*/\r",
+									"\r",
+									"delete createRequest.Addresses[0].CountryCode;\r",
+									"delete createRequest.Addresses[1].CountryCode;\r",
+									"delete res.Addresses[0].CountryCode;\r",
+									"delete res.Addresses[1].CountryCode;\r",
+									"\r",
+									"\r",
+									"//console.log(libCompare.compareJson(createRequest,res));\r",
+									"pm.expect(libCompare.compareJson(createRequest,res,true)).to.be.true;\r",
+									"\r",
+									"delete res.Contacts;\r",
+									"delete res.Updatable;\r",
+									"\r",
+									"pm.expect(libCompare.compareJson(res,createRequest,true)).to.be.true;\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"//var moment = require('moment');\r",
+									"\r",
+									"\r",
+									"\r",
+									"//date=moment();\r",
+									"\r",
+									"\r",
+									"/*\r",
+									"date.set('year', 1970);\r",
+									"date.set('month', 0);  // April\r",
+									"date.set('date', 1);\r",
+									"date.set('hour', 0);\r",
+									"date.set('minute', 0);\r",
+									"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
+									"*/\r",
+									"\r",
+									"/*\r",
+									"\r",
+									"date.set('year', date.format(\"YYYY\")-30);\r",
+									"console.log(date.format(\"YYYY-MM-DD\"));\r",
+									"\r",
+									"let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;\r",
+									"\r",
+									"console.log(birthNoBase);\r",
+									"\r",
+									"console.log(birthNoBase+(11-birthNoBase%11)%11);\r",
+									"\r",
+									"let birthNoSeed=\r",
+									"{\r",
+									"    birthNoBase: birthNoBase,\r",
+									"    count: 0\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));\r",
+									"\r",
+									"*/\r",
+									"\r",
+									"\r",
+									"//console.log(libBirthNo.getNext());\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//libBirthNo.pokus();\r",
+									"\r",
+									"//pm.collectionVariables.set('kuku2',1);\r",
+									"\r",
+									"\r",
+									"//console.log(libRequest.getRequest('0100 Create').BirthNumber);\r",
+									"\r",
+									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n\"Identity\": {{Identity}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=GetDetail",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "GetDetail"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0300 UpdateBasicData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//There is nothing to test, no response from call. \r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
+									"\r",
+									"customerDetail=libRequest.getResponse('0200 GetDetail');\r",
+									"\r",
+									"//TODO Smazat tento workaround pouzity kvuli reportovane chybe Customer Service\r",
+									"customerDetail.IdentificationDocument.IssuingCountryCode=\"CZ\";\r",
+									"\r",
+									"FirstName=customerDetail.FirstName;\r",
+									"LastName=customerDetail.LastName;\r",
+									"\r",
+									"customerDetail.FirstName=LastName;\r",
+									"customerDetail.LastName=FirstName;\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.variables.set('CustomerData',JSON.stringify(customerDetail));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n    \"Identity\": {{Identity}},\r\n    \"Customer\": {{CustomerData}}\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=UpdateBasicData",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "UpdateBasicData"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0400 GetDetail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test of return.\", function () \r",
+									"{\r",
+									"    //pm.expect(res).to.eql(libRequest.getRequest('0100 Create'));\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"updateRequest=libRequest.getRequest('0300 UpdateBasicData');\r",
+									"\r",
+									"//delete createRequest.IdentificationDocument.IssuedBy;  //(MěÚ Brandýs nad Labem - Stará Boleslav!=CZ)\r",
+									"\r",
+									"//console.log(createRequest.IdentificationDocument);\r",
+									"//console.log(res.IdentificationDocument);\r",
+									"\r",
+									"delete updateRequest.Customer.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
+									"delete res.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
+									"\r",
+									"//console.log(createRequest.IdentificationDocument);\r",
+									"//console.log(res.IdentificationDocument);\r",
+									"\r",
+									"\r",
+									"//return;\r",
+									"\r",
+									"//delete createRequest.Addresses[0].BuildingIdentificationNumber;\r",
+									"//delete createRequest.Addresses[0].LandRegistryNumber;\r",
+									"\r",
+									"//delete createRequest.Addresses[1].BuildingIdentificationNumber;\r",
+									"//delete createRequest.Addresses[1].LandRegistryNumber;\r",
+									"\r",
+									"/*\r",
+									"console.log(createRequest.Addresses[0]);\r",
+									"console.log(createRequest.Addresses[0]['CountryCode'] );\r",
+									"console.log(createRequest.Addresses[0]);\r",
+									"*/\r",
+									"\r",
+									"//delete createRequest.Addresses[0].CountryCode;\r",
+									"//delete createRequest.Addresses[1].CountryCode;\r",
+									"//delete res.Addresses[0].CountryCode;\r",
+									"//delete res.Addresses[1].CountryCode;\r",
+									"\r",
+									"\r",
+									"//console.log(libCompare.compareJson(createRequest,res));\r",
+									"pm.expect(libCompare.compareJson(updateRequest.Customer,res,true)).to.be.true;\r",
+									"\r",
+									"delete res.Contacts;\r",
+									"delete res.Updatable;\r",
+									"\r",
+									"pm.expect(libCompare.compareJson(res,updateRequest.Customer,true)).to.be.true;\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"//var moment = require('moment');\r",
+									"\r",
+									"\r",
+									"\r",
+									"//date=moment();\r",
+									"\r",
+									"\r",
+									"/*\r",
+									"date.set('year', 1970);\r",
+									"date.set('month', 0);  // April\r",
+									"date.set('date', 1);\r",
+									"date.set('hour', 0);\r",
+									"date.set('minute', 0);\r",
+									"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
+									"*/\r",
+									"\r",
+									"/*\r",
+									"\r",
+									"date.set('year', date.format(\"YYYY\")-30);\r",
+									"console.log(date.format(\"YYYY-MM-DD\"));\r",
+									"\r",
+									"let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;\r",
+									"\r",
+									"console.log(birthNoBase);\r",
+									"\r",
+									"console.log(birthNoBase+(11-birthNoBase%11)%11);\r",
+									"\r",
+									"let birthNoSeed=\r",
+									"{\r",
+									"    birthNoBase: birthNoBase,\r",
+									"    count: 0\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));\r",
+									"\r",
+									"*/\r",
+									"\r",
+									"\r",
+									"//console.log(libBirthNo.getNext());\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"//libBirthNo.pokus();\r",
+									"\r",
+									"//pm.collectionVariables.set('kuku2',1);\r",
+									"\r",
+									"\r",
+									"//console.log(libRequest.getRequest('0100 Create').BirthNumber);\r",
+									"\r",
+									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n\"Identity\": {{Identity}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=GetDetail",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "GetDetail"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0500 CreateContact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test for real ID return.\", function () \r",
+									"{\r",
+									"    pm.expect(res.Identity).not.to.eql(123);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"seed=pm.collectionVariables.get('birthNoSeed');\r",
+									"console.log(seed);\r",
+									"\r",
+									"seed=libBirthNo.getNext(seed);\r",
+									"console.log('Po:');\r",
+									"console.log(seed);\r",
+									"pm.collectionVariables.set('birthNoSeed',seed);\r",
+									"console.log(libBirthNo.getBirthNo(seed));\r",
+									"pm.variables.set('localBirthNumber',libBirthNo.getBirthNo(seed));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n    \"Identity\": {{Identity}},\r\n    \"Contact\": \r\n    {\r\n   bool IsPrimary = 1;\r\n   enum ContactTypes {\r\n\tUnknown = 0;\r\n\tMobilePrivate = 1;\r\n\tMobileWork = 2;\r\n\tLandlineHome = 3;\r\n\tEmail = 4;\r\n   }\r\n   ContactTypes Type = 2;\r\n   string Value = 3;\r\n    }\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=CreateContact",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"gRPCcall"
+							],
+							"query": [
+								{
+									"key": "server",
+									"value": "fomsCustomerService"
+								},
+								{
+									"key": "proto",
+									"value": "CustomerService"
+								},
+								{
+									"key": "package",
+									"value": "DomainServices"
+								},
+								{
+									"key": "service",
+									"value": "CustomerService"
+								},
+								{
+									"key": "method",
+									"value": "CreateContact"
+								}
 							]
 						}
 					},
@@ -1129,258 +1931,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "02-CustomerService",
-			"item": [
-				{
-					"name": "0100 Create",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Test for real ID return.\", function () \r",
-									"{\r",
-									"    pm.expect(res.Identity).not.to.eql(123);\r",
-									"});\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"seed=pm.collectionVariables.get('birthNoSeed');\r",
-									"console.log(seed);\r",
-									"\r",
-									"seed=libBirthNo.getNext(seed);\r",
-									"console.log('Po:');\r",
-									"console.log(seed);\r",
-									"pm.collectionVariables.set('birthNoSeed',seed);\r",
-									"console.log(libBirthNo.getBirthNo(seed));\r",
-									"pm.variables.set('localBirthNumber',libBirthNo.getBirthNo(seed));\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"BirthNumber\": \"{{localBirthNumber}}\",\r\n  \"Ico\": \"{{Ico}}\",\r\n  \"DegreeBefore\": \"{{DegreeBefore}}\",\r\n  \"DegreeAfter\": \"{{DegreeAfter}}\",\r\n  \"FirstName\": \"{{FirstName}}\",\r\n  \"LastName\": \"{{LastName}}\",\r\n  \"DateOfBirth\": {\r\n    \"year\": {{DateOfBirthyear}},\r\n    \"month\": {{DateOfBirthmonth}},\r\n    \"day\": {{DateOfBirthday}}\r\n  },\r\n  \"PlaceOfBirth\": \"{{PlaceOfBirth}}\",\r\n  \"NameJuridicalPerson\": \"{{NameJuridicalPerson}}\",\r\n  \"Gender\": \"{{Gender}}\",\r\n  \"IdentificationDocument\": {\r\n    \"Type\": \"{{IdentificationDocumentType}}\",\r\n    \"Number\": \"{{IdentificationDocumentNumber}}\",\r\n    \"ValidTo\": {\r\n      \"year\": {{IdentificationDocumentValidToyear}},\r\n      \"month\": {{IdentificationDocumentValidTomonth}},\r\n      \"day\": {{IdentificationDocumentValidToday}}\r\n    },\r\n    \"IssuedBy\": \"{{IdentificationDocumentIssuedBy}}\",\r\n    \"IssuingCountryCode\": \"{{IdentificationDocumentIssuingCountryCode}}\",\r\n    \"IssuedOn\": {\r\n      \"year\": {{IdentificationDocumentIssuedOnyear}},\r\n      \"month\": {{IdentificationDocumentIssuedOnmonth}},\r\n      \"day\": {{IdentificationDocumentIssuedOnday}}\r\n    }\r\n  },\r\n  \"Addresses\": [\r\n    {\r\n      \"Type\": \"{{Addresses0Type}}\",\r\n      \"IsPrimary\": {{Addresses0IsPrimary}},\r\n      \"Street\": \"{{Addresses0Street}}\",\r\n      \"BuildingIdentificationNumber\": \"{{Addresses0BuildingIdentificationNumber}}\",\r\n      \"Postcode\": \"{{Addresses0Postcode}}\",\r\n      \"City\": \"{{Addresses0City}}\"\r\n      ,\"LandRegistryNumber\":\"{{Addresses0LandRegistryNumber}}\"\r\n      ,\"countryCode \":\"{{Addresses0CountryCode}}\"\r\n    },\r\n    {\r\n      \"Type\": \"{{Addresses1Type}}\",\r\n      \"IsPrimary\": {{Addresses1IsPrimary}},\r\n      \"Street\": \"{{Addresses1Street}}\",\r\n      \"BuildingIdentificationNumber\": \"{{Addresses1BuildingIdentificationNumber}}\",\r\n      \"Postcode\": \"{{Addresses1Postcode}}\",\r\n      \"City\": \"{{Addresses1City}}\"\r\n      ,\"LandRegistryNumber\":\"{{Addresses1LandRegistryNumber}}\"\r\n      ,\"countryCode \":\"{{Addresses1CountryCode}}\"\r\n    }\r\n  ]\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n ",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=Create",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3000",
-							"path": [
-								"gRPCcall"
-							],
-							"query": [
-								{
-									"key": "server",
-									"value": "fomsCustomerService"
-								},
-								{
-									"key": "proto",
-									"value": "CustomerService"
-								},
-								{
-									"key": "package",
-									"value": "DomainServices"
-								},
-								{
-									"key": "service",
-									"value": "CustomerService"
-								},
-								{
-									"key": "method",
-									"value": "Create"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "0200 GetDetail",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Test of return.\", function () \r",
-									"{\r",
-									"    //pm.expect(res).to.eql(libRequest.getRequest('0100 Create'));\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"createRequest=libRequest.getRequest('0100 Create');\r",
-									"\r",
-									"//delete createRequest.IdentificationDocument.IssuedBy;  //(MěÚ Brandýs nad Labem - Stará Boleslav!=CZ)\r",
-									"delete createRequest.IdentificationDocument.IssuingCountryCode //(CZ!=TODO)\r",
-									"\r",
-									"//delete createRequest.Addresses[0].BuildingIdentificationNumber;\r",
-									"//delete createRequest.Addresses[0].LandRegistryNumber;\r",
-									"\r",
-									"//delete createRequest.Addresses[1].BuildingIdentificationNumber;\r",
-									"//delete createRequest.Addresses[1].LandRegistryNumber;\r",
-									"\r",
-									"\r",
-									"\r",
-									"//console.log(libCompare.compareJson(createRequest,res));\r",
-									"\r",
-									"pm.expect(libCompare.compareJson(createRequest,res,true)).to.be.true;\r",
-									"pm.expect(libCompare.compareJson(res,createRequest,true)).to.be.true;\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"//var moment = require('moment');\r",
-									"\r",
-									"\r",
-									"\r",
-									"//date=moment();\r",
-									"\r",
-									"\r",
-									"/*\r",
-									"date.set('year', 1970);\r",
-									"date.set('month', 0);  // April\r",
-									"date.set('date', 1);\r",
-									"date.set('hour', 0);\r",
-									"date.set('minute', 0);\r",
-									"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
-									"*/\r",
-									"\r",
-									"/*\r",
-									"\r",
-									"date.set('year', date.format(\"YYYY\")-30);\r",
-									"console.log(date.format(\"YYYY-MM-DD\"));\r",
-									"\r",
-									"let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;\r",
-									"\r",
-									"console.log(birthNoBase);\r",
-									"\r",
-									"console.log(birthNoBase+(11-birthNoBase%11)%11);\r",
-									"\r",
-									"let birthNoSeed=\r",
-									"{\r",
-									"    birthNoBase: birthNoBase,\r",
-									"    count: 0\r",
-									"}\r",
-									"\r",
-									"pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));\r",
-									"\r",
-									"*/\r",
-									"\r",
-									"\r",
-									"//console.log(libBirthNo.getNext());\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"\r",
-									"\r",
-									"//libBirthNo.pokus();\r",
-									"\r",
-									"//pm.collectionVariables.set('kuku2',1);\r",
-									"\r",
-									"\r",
-									"//console.log(libRequest.getRequest('0100 Create').BirthNumber);\r",
-									"\r",
-									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{  \r\n\"Identity\": {{Identity}}\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsCustomerService&proto=CustomerService&package=DomainServices&service=CustomerService&method=GetDetail",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3000",
-							"path": [
-								"gRPCcall"
-							],
-							"query": [
-								{
-									"key": "server",
-									"value": "fomsCustomerService"
-								},
-								{
-									"key": "proto",
-									"value": "CustomerService"
-								},
-								{
-									"key": "package",
-									"value": "DomainServices"
-								},
-								{
-									"key": "service",
-									"value": "CustomerService"
-								},
-								{
-									"key": "method",
-									"value": "GetDetail"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
 		}
 	],
 	"event": [
@@ -1415,7 +1965,26 @@
 					"        return xml2Json(res);",
 					"    else",
 					"        return JSON.parse(res);",
+					"  },",
+					"  ",
+					"  getRequestString: function(requestName) ",
+					"  {",
+					"    if(requestName==request.name)",
+					"        return undefined;",
+					"    var req=pm.collectionVariables.get('--> '+requestName);",
+					"    return req;",
+					"  },",
+					"  ",
+					"  getResponseString: function(requestName) ",
+					"  {",
+					"    if(requestName==request.name)",
+					"        return undefined;",
+					"    var res=pm.collectionVariables.get('<-- '+requestName);",
+					"    return res; ",
 					"  }",
+					"",
+					"",
+					"",
 					"",
 					"};",
 					"",
@@ -1736,116 +2305,6 @@
 					""
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "TargetAmount",
-			"value": "460000"
-		},
-		{
-			"key": "ProductCode",
-			"value": "61"
-		},
-		{
-			"key": "ActionCode",
-			"value": "30"
-		},
-		{
-			"key": "ClientIsNaturalPerson",
-			"value": "true"
-		},
-		{
-			"key": "ClientIsSVJ",
-			"value": "false"
-		},
-		{
-			"key": "IsWithLoan",
-			"value": "false"
-		},
-		{
-			"key": "StateSubsidy",
-			"value": ""
-		},
-		{
-			"key": "LoanActionCode",
-			"value": ""
-		},
-		{
-			"key": "birthNoSeed",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-0050-EAS-Simulation",
-			"value": ""
-		},
-		{
-			"key": "--> 01-0050-EAS-Simulation",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-0100-OfferSerice-SimulateBuildingSavings",
-			"value": ""
-		},
-		{
-			"key": "--> 01-0100-OfferSerice-SimulateBuildingSavings",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-0300-OfferSerice-GetBuildingSavingsData",
-			"value": ""
-		},
-		{
-			"key": "--> 01-0300-OfferSerice-GetBuildingSavingsData",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-0400-OfferSerice-PrintBuildingSavingsOffer",
-			"value": ""
-		},
-		{
-			"key": "--> 01-0400-OfferSerice-PrintBuildingSavingsOffer",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
-			"value": ""
-		},
-		{
-			"key": "--> 01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
-			"value": ""
-		},
-		{
-			"key": "--> 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
-			"value": ""
-		},
-		{
-			"key": "<-- 01-2000-OfferSerice-GetBuildingSavingsData",
-			"value": ""
-		},
-		{
-			"key": "--> 01-2000-OfferSerice-GetBuildingSavingsData",
-			"value": ""
-		},
-		{
-			"key": "<-- 0100 Create",
-			"value": ""
-		},
-		{
-			"key": "--> 0100 Create",
-			"value": ""
-		},
-		{
-			"key": "<-- 0200 GetDetail",
-			"value": ""
-		},
-		{
-			"key": "--> 0200 GetDetail",
-			"value": ""
 		}
 	]
 }
