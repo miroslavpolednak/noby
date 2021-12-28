@@ -8,67 +8,44 @@ internal class UpdateCaseHandler
 {
     public async Task<SaveCaseResponse> Handle(UpdateCaseRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Create building savings case for {offerInstanceId}", request.OfferInstanceId);
+        _logger.LogDebug("Update building savings case for {request}", request);
 
-        // ziskat data o klientovi
-        //TODO asi neexistuje metoda, ktera by vracela jen zakladni potrebne udaje?
-        var customerRequest = new DomainServices.CustomerService.Contracts.GetDetailRequest { Identity = request.Customer?.Id ?? 0 };
-        var customer = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.GetDetailResponse>(await _customerService.GetDetail(customerRequest));
-        _logger.LogDebug("Customer {customer} found", request.Customer);
+        // get SA instance
+        var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // detail simulace
         var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
 
-        // vytvorit case
-        long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
+        // nalinkovat novou simulaci na SA
+        ServiceCallResult.Resolve(await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferInstanceId, cancellationToken));
+
+        // update case data
+        await _mediator.Publish(new Notifications.Requests.CaseDataUpdatedRequest
         {
-            OfferInstanceId = request.OfferInstanceId,
-            DateOfBirth = customer.DateOfBirth,
-            FirstName = customer.FirstName,
-            LastName = customer.LastName,
-            Customer = request.Customer,
-            ProductInstanceType = _configuration.BuildingSavings.SavingsProductInstanceType,
+            CaseId = saInstance.CaseId,
             TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
 
-        // vytvorit zadost
-        int salesArrangementId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateSalesArrangementRequest
-        {
-            CaseId = caseId,
-            OfferInstanceId = request.OfferInstanceId,
-            ProductInstanceType = _configuration.BuildingSavings.SavingsSalesArrangementType
-        }, cancellationToken);
-
-        // vytvorit produkt
-        long productId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateProductInstanceRequest()
-        {
-            CaseId = caseId,
-            ProductInstanceType = _configuration.BuildingSavings?.SavingsProductInstanceType ?? 0
-        }, cancellationToken);
-    
         return new SaveCaseResponse
         {
-            SalesArrangementId = salesArrangementId,
-            CaseId = caseId
+            SalesArrangementId = request.SalesArrangementId,
+            CaseId = saInstance.CaseId
         };
     }
 
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ILogger<UpdateCaseHandler> _logger;
     private readonly IMediator _mediator;
-    private readonly Infrastructure.Configuration.AppConfiguration _configuration;
 
     public UpdateCaseHandler(
         ILogger<UpdateCaseHandler> logger,
         IMediator mediator,
-        Infrastructure.Configuration.AppConfiguration configuration,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService)
+        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _salesArrangementService = salesArrangementService;
         _offerService = offerService;
-        _configuration = configuration;
-        _customerService = customerService;
         _logger = logger;
         _mediator = mediator;
     }
