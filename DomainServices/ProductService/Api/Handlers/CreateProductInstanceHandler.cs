@@ -33,7 +33,7 @@ internal class CreateProductInstanceHandler
             productId = resolveSavingsLoanIdResult(await _easClient.GetSavingsLoanId(request.CaseId));
 
         // vytvoreni produktu v MpHome
-        resolveCreateProductResult(await createProduct(productInstanceTypeCategory, productId));
+        resolveCreateProductResult(await createProduct(productInstanceTypeCategory, request.CaseId, productId));
 
         return new CreateProductInstanceResponse() 
         { 
@@ -50,10 +50,10 @@ internal class CreateProductInstanceHandler
         return item.ProductCategory;
     }
 
-    private async Task<IServiceCallResult> createProduct(CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory category, long productId) =>
+    private async Task<IServiceCallResult> createProduct(CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory category, long caseId, long productId) =>
         category switch
         {
-            /*CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings => await _mpHomeClient.Create(productId),
+            /*CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings => await _mpHomeClient.UpdateSavings(caseId),
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan => await _mpHomeClient.CreateSavingsLoanInstance(productId),
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage => await _mpHomeClient.CreateMorgageInstance(productId),*/
             _ => throw new NotImplementedException()

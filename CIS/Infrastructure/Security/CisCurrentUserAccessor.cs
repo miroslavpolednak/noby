@@ -15,7 +15,7 @@ namespace CIS.Infrastructure.Security
         {
             get
             {
-                return new CisUser(2, "John Doe");
+                return new CisUser(2, "John Doe", "990614w");
             }
         }
     }

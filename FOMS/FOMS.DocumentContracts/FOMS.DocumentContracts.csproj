@@ -9,9 +9,5 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="FOMS.DocumentContracts.Generators" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
-	</ItemGroup>
 	
 </Project>
