@@ -7,7 +7,7 @@ internal class GetSalesArrangementHandler
 {
     public async Task<GetSalesArrangementResponse> Handle(Dto.GetSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get detail for #{id}", request.SalesArrangementId);
+        _logger.LogDebug("Get detail for #{id}", request.SalesArrangementId);
 
         var sa = await _repository.GetSalesArrangement(request.SalesArrangementId);
         
@@ -19,6 +19,8 @@ internal class GetSalesArrangementHandler
             CaseId = sa.CaseId,
             OfferInstanceId = sa.OfferInstanceId
         };
+
+        _logger.LogDebug("Found {sa}", sa);
 
         return model;
     }

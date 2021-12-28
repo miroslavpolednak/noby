@@ -16,6 +16,7 @@ internal class CaseService : ICaseServiceAbstraction
                 FirstNameNaturalPerson = model.FirstNameNaturalPerson,
                 Name = model.Name,
                 ProductInstanceType = model.ProductInstanceType,
+                TargetAmount = model.TargetAmount,
                 UserId = _userAccessor.User.Id,
                 Customer = model.Customer
             }, cancellationToken: cancellationToken)
@@ -67,6 +68,7 @@ internal class CaseService : ICaseServiceAbstraction
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseCustomerAsync(
             new UpdateCaseCustomerRequest()
             {
+                CaseId = model.CaseId,
                 DateOfBirthNaturalPerson = model.DateOfBirthNaturalPerson,
                 FirstNameNaturalPerson = model.FirstNameNaturalPerson,
                 Name = model.Name,
@@ -83,7 +85,7 @@ internal class CaseService : ICaseServiceAbstraction
             new UpdateCaseDataRequest()
             {
                 CaseId = caseId,
-                ContractNumber = contractNumber,
+                ContractNumber = contractNumber ?? "",
                 TargetAmount = targetAmount
             }, cancellationToken: cancellationToken)
         );

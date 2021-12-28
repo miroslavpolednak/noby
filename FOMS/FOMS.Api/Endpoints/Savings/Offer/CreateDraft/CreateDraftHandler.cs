@@ -42,12 +42,12 @@ internal class CreateDraftHandler
 
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly ILogger<CreateDraftHandler> _logger;
-    private readonly Mediator _mediator;
+    private readonly IMediator _mediator;
     private readonly Infrastructure.Configuration.AppConfiguration _configuration;
 
     public CreateDraftHandler(
-        ILogger<CreateDraftHandler> logger, 
-        Mediator mediator,
+        ILogger<CreateDraftHandler> logger,
+        IMediator mediator,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         Infrastructure.Configuration.AppConfiguration configuration)
     {

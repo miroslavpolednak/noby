@@ -3,10 +3,10 @@ using FOMS.Api.Endpoints.Savings.Offer.Dto;
 
 namespace FOMS.Api.Endpoints.Savings.Offer.Handlers;
 
-internal class CreateCaseHandler
-    : IRequestHandler<CreateCaseRequest, SaveCaseResponse>
+internal class UpdateCaseHandler
+    : IRequestHandler<UpdateCaseRequest, SaveCaseResponse>
 {
-    public async Task<SaveCaseResponse> Handle(CreateCaseRequest request, CancellationToken cancellationToken)
+    public async Task<SaveCaseResponse> Handle(UpdateCaseRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Create building savings case for {offerInstanceId}", request.OfferInstanceId);
 
@@ -55,12 +55,12 @@ internal class CreateCaseHandler
 
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
-    private readonly ILogger<CreateCaseHandler> _logger;
+    private readonly ILogger<UpdateCaseHandler> _logger;
     private readonly IMediator _mediator;
     private readonly Infrastructure.Configuration.AppConfiguration _configuration;
 
-    public CreateCaseHandler(
-        ILogger<CreateCaseHandler> logger,
+    public UpdateCaseHandler(
+        ILogger<UpdateCaseHandler> logger,
         IMediator mediator,
         Infrastructure.Configuration.AppConfiguration configuration,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,

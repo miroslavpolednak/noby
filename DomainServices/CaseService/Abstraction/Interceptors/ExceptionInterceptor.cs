@@ -37,6 +37,7 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
+            _logger.LogError("Error: {message}: {code}", ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
             throw new CisArgumentException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
         }
         catch (RpcException ex)

@@ -9,24 +9,20 @@ internal sealed class CaseCustomerUpdated
     {
         _logger.LogDebug("Updating case customer {data}", notification);
 
-        resolveResult(await _caseService.UpdateCaseCustomer(new DomainServices.CaseService.Contracts.UpdateCaseCustomerRequest
+        var model = new DomainServices.CaseService.Contracts.UpdateCaseCustomerRequest
         {
             CaseId = notification.CaseId,
             FirstNameNaturalPerson = notification.FirstNameNaturalPerson,
             Name = notification.Name,
-            DateOfBirthNaturalPerson = notification.DateOfBirthNaturalPerson,
-            Customer = notification.Customer
-        }));
+            DateOfBirthNaturalPerson = notification.DateOfBirthNaturalPerson
+        };
+        if (notification.Customer is not null)
+            model.Customer = notification.Customer;
+
+        ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(model));
 
         _logger.LogDebug("Case customer updated");
     }
-
-    private bool resolveResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult => true,
-            _ => throw new NotImplementedException()
-        };
 
     private ILogger<CaseCustomerUpdated> _logger;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;

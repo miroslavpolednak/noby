@@ -34,6 +34,11 @@ internal class OfferApiModule
             .MapPost(_prefix + "/create", async ([FromBody] Dto.CreateCaseRequest request) => await mediatr.Send(request))
             .Produces<Dto.SaveCaseResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
+        // update case/SA - verze s jiz existujicim produktem nebo zalozenim noveho produktu
+        builder
+            .MapPut(_prefix + "/update", async ([FromBody] Dto.UpdateCaseRequest request) => await mediatr.Send(request))
+            .Produces<Dto.SaveCaseResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest);
 
         // instance nabidky
         builder
