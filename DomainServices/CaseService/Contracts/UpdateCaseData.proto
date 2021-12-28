@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message UpdateCaseDataRequest {
+	int64 CaseId = 1;
+	google.protobuf.StringValue ContractNumber = 2;
+	google.protobuf.Int32Value TargetAmount = 3;
+}

@@ -1,21 +1,64 @@
 ﻿using CIS.Core.Results;
+using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Abstraction;
 
 public interface ICaseServiceAbstraction
 {
-    Task<IServiceCallResult> CreateCase(CreateCaseRequest model);
-    
-    Task<IServiceCallResult> GetCaseDetail(long caseId);
-    
-    Task<IServiceCallResult> GetCaseList(int? partyId, int? state, CIS.Core.Types.PaginableRequest pagination);
-    
-    Task<IServiceCallResult> LinkOwnerToCase(long caseId, int partyId);
-    
-    Task<IServiceCallResult> UpdateCaseData(long caseId, string contractNumber);
-    
-    Task<IServiceCallResult> UpdateCaseState(long caseId, int state);
-    
-    Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model);
+    /// <summary>
+    /// Vytvoreni CaseInstance
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[long (CaseId)] - OK;
+    /// </returns>
+    Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Vraci detail Case
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[CaseModel] - OK;
+    /// </returns>
+    Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Seznam Case pro uzivatele
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[SearchCasesResponse] - OK;
+    /// </returns>
+    Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Zmena majitele Case
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update zakladnich udaju Case - cislo smlouvy
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update stavu Case
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    Task<IServiceCallResult> UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update infa o klientovi na case
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model, CancellationToken cancellationToken = default(CancellationToken));
 }

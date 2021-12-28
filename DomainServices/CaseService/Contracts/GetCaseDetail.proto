@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+message GetCaseDetailRequest {
+	int64 CaseId = 1;
+}

@@ -16,12 +16,12 @@ internal class UpdateHousingSavingsInstanceHandler
     }
 
     private readonly ILogger<UpdateHousingSavingsInstanceHandler> _logger;
-    private readonly MpHome.IMpHomeClient _mpHomeClient;
+    private readonly ExternalServices.MpHome.V1.IMpHomeClient _mpHomeClient;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 
     public UpdateHousingSavingsInstanceHandler(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        MpHome.IMpHomeClient mpHomeClient,
+        ExternalServices.MpHome.V1.IMpHomeClient mpHomeClient,
         ILogger<UpdateHousingSavingsInstanceHandler> logger)
     {
         _mpHomeClient = mpHomeClient;

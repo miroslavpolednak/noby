@@ -12,13 +12,11 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.0.123" />
-		<PackageReference Include="Dapper.Contrib" Version="2.0.78" />
 		<PackageReference Include="MediatR" Version="9.0.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.40.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.41.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.41.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.9.0" />
 	</ItemGroup>
 
@@ -30,10 +28,6 @@
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CaseService.Contracts.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Code\" />
 	</ItemGroup>
 
 </Project>

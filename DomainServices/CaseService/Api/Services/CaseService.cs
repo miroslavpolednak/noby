@@ -13,21 +13,24 @@ internal class CaseService : Contracts.v1.CaseService.CaseServiceBase
         => _mediator = mediator;
 
     public override async Task<CreateCaseResponse> CreateCase(CreateCaseRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CaseService.CreateCaseMediatrRequest(request));
+        => await _mediator.Send(new Dto.CreateCaseMediatrRequest(request));
 
-    public override async Task<GetCaseDetailResponse> GetCaseDetail(GetCaseDetailRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CaseService.GetCaseDetailMediatrRequest(request));
+    public override async Task<CaseModel> GetCaseDetail(GetCaseDetailRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetCaseDetailMediatrRequest(request));
 
-    public override async Task<GetCaseListResponse> GetCaseList(GetCaseListRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CaseService.GetCaseListMediatrRequest(request));
+    public override async Task<SearchCasesResponse> SearchCases(SearchCasesRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.SearchCasesMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkOwnerToCase(LinkOwnerToCaseRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CaseService.LinkOwnerToCaseMediatrRequest(request));
+        => await _mediator.Send(new Dto.LinkOwnerToCaseMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseData(UpdateCaseDataRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CaseService.UpdateCaseDataMediatrRequest(request));
+        => await _mediator.Send(new Dto.UpdateCaseDataMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseState(UpdateCaseStateRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CaseService.UpdateCaseStateMediatrRequest(request));
+        => await _mediator.Send(new Dto.UpdateCaseStateMediatrRequest(request));
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCaseCustomer(UpdateCaseCustomerRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateCaseCustomerMediatrRequest(request));
 }
 

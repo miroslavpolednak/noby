@@ -6,7 +6,7 @@ try
 {
     var host = Host
         .CreateDefaultBuilder(args)
-        .UseAppLogging()
+        .AddCisLogging()
         .ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder
@@ -18,5 +18,5 @@ try
 }
 finally
 {
-    AppLogging.CloseAndFlushLog();
+    CisLogging.CloseAndFlushLog();
 }

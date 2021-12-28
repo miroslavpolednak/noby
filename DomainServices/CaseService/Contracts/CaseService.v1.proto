@@ -3,14 +3,27 @@ package DomainServices.CaseService.v1;
 option csharp_namespace = "DomainServices.CaseService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "CaseServiceTypes.proto";
+import "SearchCases.proto";
+import "CreateCase.proto";
+import "CaseModel.proto";
+import "LinkOwnerToCase.proto";
+import "UpdateCaseData.proto";
+import "UpdateCaseState.proto";
+import "UpdateCaseCustomer.proto";
+import "GetCaseDetail.proto";
 
 service CaseService {
    rpc CreateCase (DomainServices.CaseService.CreateCaseRequest) returns (DomainServices.CaseService.CreateCaseResponse);
-   rpc GetCaseDetail (DomainServices.CaseService.GetCaseDetailRequest) returns (DomainServices.CaseService.GetCaseDetailResponse);
-   rpc GetCaseList (DomainServices.CaseService.GetCaseListRequest) returns (DomainServices.CaseService.GetCaseListResponse);
+   
+   rpc GetCaseDetail (DomainServices.CaseService.GetCaseDetailRequest) returns (DomainServices.CaseService.CaseModel);
+   
+   rpc SearchCases (DomainServices.CaseService.SearchCasesRequest) returns (DomainServices.CaseService.SearchCasesResponse);
+   
    rpc LinkOwnerToCase (DomainServices.CaseService.LinkOwnerToCaseRequest) returns (google.protobuf.Empty);
+   
    rpc UpdateCaseData (DomainServices.CaseService.UpdateCaseDataRequest) returns (google.protobuf.Empty);
+   
    rpc UpdateCaseState (DomainServices.CaseService.UpdateCaseStateRequest) returns (google.protobuf.Empty);
+   
    rpc UpdateCaseCustomer (DomainServices.CaseService.UpdateCaseCustomerRequest) returns (google.protobuf.Empty);
 }

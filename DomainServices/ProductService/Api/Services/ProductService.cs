@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.ProductService.Api.Services;
 
 [Authorize]
-public class ProductService : Contracts.v1.ProductService.ProductServiceBase
+internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
 {
     private readonly IMediator _mediator;
 

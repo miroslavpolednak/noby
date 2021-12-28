@@ -2,7 +2,7 @@
 
 public interface IGlobalCache
 {
-    string KeyPrefix { get; }
+    string? KeyPrefix { get; }
 
     bool Exists(string key);
 

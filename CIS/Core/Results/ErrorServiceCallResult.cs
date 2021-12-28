@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace CIS.Core.Results
+﻿namespace CIS.Core.Results
 {
     public class ErrorServiceCallResult : IServiceCallResult
     {

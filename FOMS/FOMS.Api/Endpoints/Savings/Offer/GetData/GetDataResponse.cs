@@ -8,11 +8,11 @@ internal sealed class GetDataResponse
     
     public LoanData? Loan { get; set; }
 
-    public DateTime InsertTime { get; set; }
+    public DateTime CreatedTime { get; set; }
 
-    public int? InsertUserId { get; set; }
+    public int CreatedUserId { get; set; }
 
-    public DomainServices.OfferService.Contracts.SimulationTypes SimulationType { get; set; }
+    public string? CreatedUserName { get; set; }
 
     public BuildingSavingsInput? InputData { get; set; }
 }

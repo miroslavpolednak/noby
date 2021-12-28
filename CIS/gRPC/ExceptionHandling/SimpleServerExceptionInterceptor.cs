@@ -23,6 +23,13 @@ public class SimpleServerExceptionInterceptor : Interceptor
         {
             return await continuation(request, context);
         }
+        catch (Core.Exceptions.CisNotFoundException e)
+        {
+            var httpContext = context.GetHttpContext();
+            httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+
+            throw GrpcExceptionHelpers.CreateRpcException(e);
+        }
         catch (Core.Exceptions.BaseCisException e)
         {
             var httpContext = context.GetHttpContext();

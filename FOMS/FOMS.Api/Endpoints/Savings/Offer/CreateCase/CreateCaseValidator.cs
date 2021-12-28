@@ -10,12 +10,8 @@ internal class CreateCaseValidator
         RuleFor(t => t.OfferInstanceId)
             .GreaterThan(0).WithMessage("Případ nebylo možné napárovat na simulaci");
 
-        RuleFor(t => t.CreateProduct)
-            .Must((data, createProduct) => !createProduct || data.Customer is not null)
+        RuleFor(t => t.Customer)
+            .NotNull()
             .WithMessage("Klient nebyl zadán");
-
-        RuleFor(t => t.CreateProduct)
-            .Must((data, createProduct) => createProduct || data.Customer is not null || (!string.IsNullOrEmpty(data.Request.FirstName) && !string.IsNullOrEmpty(data.Request.LastName)))
-            .WithMessage("Pro uložení modelace je potřeba zadat nacionále klienta");
     }
 }

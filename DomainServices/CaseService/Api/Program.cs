@@ -2,6 +2,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.CaseService.Api;
+using DomainServices.CodebookService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
@@ -28,7 +29,7 @@ builder.Services.AddSingleton(appConfiguration);
 builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 
 // logging 
-builder.Host.UseAppLogging();
+builder.Host.AddCisLogging();
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);
@@ -40,6 +41,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.Services.AddCisServiceAuthentication(builder.Configuration);
 
 // add services
+builder.Services.AddCodebookService(true);
 builder.Services.AddCaseService(appConfiguration, builder.Configuration);
 builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS a mphome
 
@@ -67,7 +69,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapCisHealthChecks();
 
     endpoints.MapGrpcService<DomainServices.CaseService.Api.Services.CaseService>();
-    endpoints.MapGrpcService<DomainServices.CaseService.Api.Services.SalesArrangementService>();
 
     endpoints.MapGrpcReflectionService();
 });

@@ -11,9 +11,9 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
         {
             return new List<SalesArrangementTypeItem>
             {
-                new SalesArrangementTypeItem() { Id = "1001001", Name = "Stavební spoření", VersionNumber = "1001A" },
-                new SalesArrangementTypeItem() { Id = "1002001", Name = "Stavební spoření", VersionNumber = "1002A" },
-                new SalesArrangementTypeItem() { Id = "1003001", Name = "Stavební spoření", VersionNumber = "1003A" },
+                new SalesArrangementTypeItem() { Id = "1001001", Name = "Stavební spoření" },
+                new SalesArrangementTypeItem() { Id = "1002001", Name = "Servisni form" },
+                new SalesArrangementTypeItem() { Id = "3301001", Name = "Uver" },
             };
         }
     }

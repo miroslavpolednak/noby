@@ -13,7 +13,7 @@ public interface IOfferServiceAbstraction
     /// SimulationServiceErrorResult - chyba z EAS;
     /// ErrorServiceCallResult - chyba pri request kontrole;
     /// </returns>
-    Task<IServiceCallResult> SimulateBuildingSavings(SimulateBuildingSavingsRequest request);
+    Task<IServiceCallResult> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Detail simulace stavebniho sporeni
@@ -21,7 +21,7 @@ public interface IOfferServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[GetBuildingSavingsDataResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetBuildingSavingsData(int offerInstanceId);
+    Task<IServiceCallResult> GetBuildingSavingsData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Stavebni sporeni - splatkovy kalendar sporeni
@@ -29,7 +29,7 @@ public interface IOfferServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[GetBuildingSavingsScheduleResponse] - OK;
     /// </returns>
-    Task<IServiceCallResult> GetBuildingSavingsDepositSchedule(int offerInstanceId);
+    Task<IServiceCallResult> GetBuildingSavingsDepositSchedule(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Stavebni sporeni - splatkovy kalendar uveru
@@ -37,7 +37,7 @@ public interface IOfferServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[GetBuildingSavingsScheduleResponse] - OK;
     /// </returns>
-    Task<IServiceCallResult> GetBuildingSavingsPaymentSchedule(int offerInstanceId);
+    Task<IServiceCallResult> GetBuildingSavingsPaymentSchedule(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Stavebni sporeni - tisk nabidky
@@ -45,5 +45,5 @@ public interface IOfferServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[PrintBuildingSavingsOfferResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request);
+    Task<IServiceCallResult> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

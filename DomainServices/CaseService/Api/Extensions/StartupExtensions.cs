@@ -36,16 +36,13 @@ internal static class StartupExtensions
         services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
         //registerMpHome(appConfiguration.EAS?.Implementation, services);
-        
-        // dbcontext
-        services.AddDapper<Repositories.NobyDbRepository>(configuration.GetConnectionString("noby"));
 
-        // repos
-        services.AddScoped<Repositories.NobyDbRepository>();
+        // dbcontext
+        string connectionString = configuration.GetConnectionString("default");
+        services.AddDbContext<Repositories.CaseServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
 
         services.AddHttpContextAccessor();
         services.AddCisCurrentUser();
-        services.AddCodebookService(true);
             
         return services;
     }

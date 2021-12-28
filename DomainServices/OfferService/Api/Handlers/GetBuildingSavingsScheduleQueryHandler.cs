@@ -1,6 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 using CIS.Infrastructure.gRPC;
 using Grpc.Core;
+using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -10,17 +11,19 @@ internal class GetBuildingSavingsScheduleQueryHandler : IRequestHandler<Dto.GetB
     {
         _logger.LogInformation("Get {schedule} schedule for offer ID #{id}", request.ScheduleType, request.OfferInstanceId);
 
-        var model = await _repository.GetScheduleItems(request.OfferInstanceId);
-
-        if (model == null)
+        var scheduleData = await _repository.GetScheduleItems(request.OfferInstanceId);
+        if (string.IsNullOrEmpty(scheduleData))
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Offer instance #{request.OfferInstanceId} not found", 10007);
+        var scheduleItems = JsonSerializer.Deserialize<List<ScheduleItem>>(scheduleData);
 
-        if (model.ScheduleItems == null ||
-            (model.SimulationType != SimulationTypes.BuildingSavingsWithLoan && request.ScheduleType == ScheduleItemTypes.PaymentSchedule))
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Schedule Items not found for OfferInstanceId #{request.OfferInstanceId}", 10010);
+        var model = new GetBuildingSavingsScheduleResponse
+        {
+            ScheduleType = request.ScheduleType,
+            OfferInstanceId = request.OfferInstanceId
+        };
 
         // vybrat jen ty, pro ktere plati vybrany scheduled
-        model.ScheduleItems.AddRange(model.ScheduleItems.Where(t => t.Type == request.ScheduleType).ToList());
+        model.ScheduleItems.AddRange(scheduleItems?.Where(t => t.Type == request.ScheduleType));
 
         if (!model.ScheduleItems.Any())
             throw new ArgumentNullException("ScheduleItems");

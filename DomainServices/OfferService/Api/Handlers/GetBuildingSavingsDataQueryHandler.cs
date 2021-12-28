@@ -1,6 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
-using CIS.Infrastructure.gRPC;
-using Grpc.Core;
+using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -11,11 +10,17 @@ internal class GetBuildingSavingsDataQueryHandler
     {
         _logger.LogInformation("Get offer instance ID #{id}", request.OfferInstanceId);
 
-        var model = await _repository.Get(request.OfferInstanceId);
+        var entity = await _repository.Get(request.OfferInstanceId);
+        var data = JsonSerializer.Deserialize<Dto.Models.BuildingSavingsDataModel>(entity.Outputs ?? "");
 
-        if (model == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Offer instance #{request.OfferInstanceId} not found", 10007);
-
+        var model = new GetBuildingSavingsDataResponse
+        {
+            OfferInstanceId = entity.OfferInstanceId,
+            Created = new(entity),
+            InputData = JsonSerializer.Deserialize<BuildingSavingsInput>(entity.Inputs ?? ""),
+            BuildingSavings = data?.Savings,
+            Loan = data?.Loan
+        };
         return model;
     }
 

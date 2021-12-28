@@ -1,11 +1,22 @@
-﻿namespace CIS.Core.Types
+﻿using System.Text.Json.Serialization;
+
+namespace CIS.Core.Types
 {
     public record CustomerIdentity
     {
         public int Id { get; init; }
         public IdentitySchemes Scheme { get; init; }
 
-        public CustomerIdentity(int id, string scheme)
+        public CustomerIdentity(int id, IdentitySchemes scheme)
+        {
+            Id = id;
+            Scheme = scheme;
+        }
+
+        public CustomerIdentity(int? id, string? scheme) 
+            : this(id.GetValueOrDefault(), scheme) { }
+
+        public CustomerIdentity(int id, string? scheme)
         {
             Id = id;
             if (!Enum.TryParse<IdentitySchemes>(scheme, out IdentitySchemes parsedScheme))

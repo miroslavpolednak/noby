@@ -6,6 +6,7 @@ internal sealed class SimulateBuildingSavingsMediatrRequest
     : IRequest<SimulateBuildingSavingsResponse>, CIS.Core.Validation.IValidatableRequest
 {
     public SimulateBuildingSavingsRequest Request { get; init; }
+
     public SimulateBuildingSavingsMediatrRequest(SimulateBuildingSavingsRequest request)
     {
         Request = request;

@@ -27,4 +27,17 @@ public sealed partial class PaginationRequest
             RecordOffset = this.RecordOffset
         };
     }
+
+    public static implicit operator PaginationRequest(Core.Types.PaginableRequest request)
+    {
+        var model = new PaginationRequest
+        {
+            PageSize = request.PageSize,
+            RecordOffset = request.RecordOffset
+        };
+        if (request.Sort is not null && request.Sort.Any())
+            model.Sorting.AddRange(request.Sort.Select(t => new Types.SortingSettings { Descending = t.Descending, Field = t.Field }));
+
+        return model;
+    }
 }

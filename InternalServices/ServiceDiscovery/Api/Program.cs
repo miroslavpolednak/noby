@@ -32,7 +32,7 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);
-
+builder.Host.AddCisLogging();
 builder.Services.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 

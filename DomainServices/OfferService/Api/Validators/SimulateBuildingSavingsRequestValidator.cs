@@ -7,7 +7,7 @@ internal class SimulateBuildingSavingsRequestValidator : AbstractValidator<Dto.S
     public SimulateBuildingSavingsRequestValidator()
     {
         RuleFor(t => t.Request.InputData.TargetAmount)
-            .ExclusiveBetween(20000, 99999999)
+            .InclusiveBetween(20000, 99999999)
             .WithMessage(t => $"TargetAmount (={t.Request.InputData.TargetAmount}) must be between 2000 and 99999999").WithErrorCode("10001");
 
         RuleFor(t => t.Request.InputData.ProductCode)

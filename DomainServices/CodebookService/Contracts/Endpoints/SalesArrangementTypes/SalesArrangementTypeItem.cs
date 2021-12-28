@@ -10,8 +10,5 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTyp
 
         [DataMember(Order = 2)]
         public string Name { get; set; }
-
-        [DataMember(Order = 3)]
-        public string VersionNumber { get; set; }
     }
 }

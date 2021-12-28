@@ -4,27 +4,31 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.ProductService.Abstraction;
 using DomainServices.CaseService.Abstraction;
+using DomainServices.UserService.Abstraction;
+using DomainServices.SalesArrangementService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region register builder.Services
-builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly));
+builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly), typeof(FOMS.Api.IApiAssembly));
 
 // add CIS pipeline
 builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 builder.Services.AddCisCoreFeatures();
 builder.Services.AddCisCurrentUser();
 builder.Services.AddCisWebApiCors();
-builder.Host.UseAppLogging();
+builder.Host.AddCisLogging();
 
 // add domain services
 builder.Services.AddOfferService(true);
 builder.Services.AddCodebookService(true);
 builder.Services.AddCustomerService(true);
 builder.Services.AddProductService(true);
+builder.Services.AddUserService(true);
 builder.Services.AddCaseService(true);
+builder.Services.AddSalesArrangementService(true);
 
 // health checks
 builder.Services.AddCisHealthChecks(builder.Configuration);

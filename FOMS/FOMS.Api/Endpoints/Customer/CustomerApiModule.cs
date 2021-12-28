@@ -19,6 +19,6 @@ internal class CustomerApiModule : IApiEndpointModule
         // vyhledani klienta
         builder.MapPost(_prefix + "/search", async ([FromBody] Dto.SearchRequest request) => await mediatr.Send(request))
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces<Dto.GetFromTokenResponse>(StatusCodes.Status200OK);
+            .Produces<Dto.SearchResponse>(StatusCodes.Status200OK);
     }
 }

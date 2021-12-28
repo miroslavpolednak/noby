@@ -1,0 +1,72 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message SalesArrangementIdRequest {
+	int32 SalesArrangementId = 1;
+}
+message SalesArrangementListModel {
+	int32 SalesArrangementId = 1;
+	int64 CaseId = 2;
+	int32 SalesArrangementType = 3;
+	int32 State = 4;
+	google.protobuf.Int32Value OfferInstanceId = 5;
+}
+
+message CreateSalesArrangementRequest {
+	int64 CaseId = 1;
+	int32 SalesArrangementType = 2;
+	google.protobuf.Int32Value OfferInstanceId = 3;
+	google.protobuf.Int32Value State = 4;
+}
+message CreateSalesArrangementResponse {
+	int32 SalesArrangementId = 1;
+}
+
+message GetSalesArrangementResponse {
+	int32 SalesArrangementId = 1;
+	int64 CaseId = 2;
+	int32 SalesArrangementType = 3;
+	int32 State = 4;
+	google.protobuf.Int32Value OfferInstanceId = 5;
+}
+
+message GetSalesArrangementDataResponse {
+	int32 SalesArrangementId = 1;
+	string Data = 2;
+	google.protobuf.Int32Value SalesArrangementDataId = 3;
+}
+
+message GetSalesArrangementsByCaseIdRequest {
+	int64 CaseId = 1;
+	repeated int32 States = 2;
+}
+message GetSalesArrangementsByCaseIdResponse {
+	repeated SalesArrangementListModel SalesArrangements = 1;
+}
+
+message UpdateSalesArrangementStateRequest {
+	int32 SalesArrangementId = 1;
+	int32 State = 2;
+}
+
+message ValidationErrorMessage {
+	string Field = 1;
+	string Message = 2;
+}
+message ValidateSalesArrangementResponse {
+	bool IsValid = 1;
+	repeated ValidationErrorMessage Errors = 2;
+}
+
+message UpdateSalesArrangementDataRequest {
+	int32 SalesArrangementId = 1;
+	string Data = 7;
+}
+
+message LinkModelationToSalesArrangementRequest {
+	int32 OfferInstanceId = 1;
+	int32 SalesArrangementId = 2;
+}

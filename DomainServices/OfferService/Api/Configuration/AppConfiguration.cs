@@ -2,6 +2,8 @@
 
 internal sealed class AppConfiguration
 {
+    public int BuldingSavingsProductInstanceType { get; set; }
+
     /// <summary>
     /// Konfigurace EAS-SB sluzby
     /// </summary>
