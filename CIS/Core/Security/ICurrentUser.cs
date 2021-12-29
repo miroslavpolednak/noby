@@ -7,5 +7,7 @@ namespace CIS.Core.Security
         int Id { get; }
 
         string Name { get; }
+
+        string Login { get; }
     }
 }

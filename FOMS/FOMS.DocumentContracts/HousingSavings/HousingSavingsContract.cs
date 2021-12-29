@@ -7,6 +7,7 @@ public sealed partial class HousingSavingsContract : BaseContract
     public Models.FinancesSection? Finaces { get; set; }
     public SharedModels.SZKU? SZKU { get; set; }
     public TaxResidency.TaxResidencyContract? TaxResidency { get; set; }
+    public SharedModels.DealerInfo? Dealer { get; set; }
 }
 
 //TODO udelat do source generator
@@ -24,7 +25,8 @@ public sealed partial class HousingSavingsContract
             },
             2 => new HousingSavingsPart2
             {
-                Finances = Finaces
+                Finances = Finaces,
+                Dealer = Dealer
             },
 
             _ => throw new NotImplementedException($"Document Part {partId} has not been implemented")
