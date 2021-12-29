@@ -4,10 +4,10 @@
 #$postmanTemplateGitVersion="253ee9ed12f"
 #$postmanTemplateGitVersion='b064a5f59fc'
 $postmanTemplateGitVersion='9d6defbf0ae';
-$installDirectory='~/tests/be/postman'
+$installDirectory=$home+"/tests/be/postman"
 $protobufVersion='3.18'
 
-#
+
 rm ~/tmp-be-tests -r -Force
 mkdir ~/tmp-be-tests
 
@@ -93,3 +93,79 @@ cd $installDirectory/$postmanTemplateGitVersion/templateConfig
 rm runner_conf.json
 (Get-Content -path .\runner_conf.json.original).replace('database_oracledb.postman_collection.json','NOBY.postman_collection.json').replace('"__iterationData": "source_excel.xlsx"','"iterationData": "NOBY.testdata.xlsx"').replace('"reportPerSuite": true','"reportPerSuite": false') | Set-Content runner_conf.json
 Pop-Location
+
+
+#--------------------------------------------------------
+
+$me=$MyInvocation.MyCommand.Name
+
+$me=Get-Content -Path $me
+$print=$false;
+
+$componentTests=@{};
+rm $installDirectory/tests/component -r -Force
+mkdir $installDirectory/tests/component
+
+$componentTests['01-OfferService']=@{};
+    $componentTests['01-OfferService']['$expressGrpcConfigKey']='fomsOfferService';
+
+$componentTests['02-CustomerService']=@{};
+    $componentTests['02-CustomerService']['$expressGrpcConfigKey']='fomsCustomerService';
+
+foreach($service in $componentTests.Keys)
+{
+    $script=@();
+    foreach($line in $me)
+    {
+
+        if($line -eq '#---ComponentTestScriptEnd---')
+        {
+            $print=$false;
+        }
+        if($print)
+        {
+            $script = $script + $line;
+        }
+        if($line -eq '#---ComponentTestScriptStart---')
+        {
+            $print=$true;
+        }
+    }
+
+    $script=($script).replace('$installDirectory',$installDirectory).replace('$postmanTemplateGitVersion',$postmanTemplateGitVersion).replace('$service',$service)
+    foreach($maergeField in $componentTests[$service].Keys)
+    {
+        $script=($script).replace($maergeField,$componentTests[$service][$maergeField])
+    }
+    mkdir $installDirectory/tests/component/$service
+    ($script) | Set-Content ($installDirectory+"/tests/component/"+$service+"/test.ps1");
+}
+
+return;
+#Test scripts
+
+#---ComponentTestScriptStart---
+
+Push-Location
+
+if($args[0] -eq $null)
+{
+    $passwd=Read-Host -Prompt '$service password';
+}
+else 
+{
+    $passwd=$args[0];
+}
+
+cd $installDirectory/$postmanTemplateGitVersion/testRunners
+node.exe .\runTemplate.js --otherPwd.$expressGrpcConfigKey="$passwd" --folders $service
+Pop-Location
+
+
+#---ComponentTestScriptEnd---
+
+
+
+
+
+
