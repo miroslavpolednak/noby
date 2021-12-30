@@ -11,8 +11,8 @@ public class CaseStatesHandler
     {
         return new List<CaseStateItem>
         {
-            new CaseStateItem() { Id = 1, Name = "novy", IsDefaultNewState = true },
-            new CaseStateItem() { Id = 2, Name = "ve zpracovani", IsDefaultNewState = false }
+            new CaseStateItem() { Id = 1, Name = "Rozpracováno", IsDefaultNewState = true },
+            new CaseStateItem() { Id = 2, Name = "Předáno", IsDefaultNewState = false }
         };
     }
 }

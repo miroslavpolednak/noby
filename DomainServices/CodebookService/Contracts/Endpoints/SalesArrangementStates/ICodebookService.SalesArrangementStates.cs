@@ -8,6 +8,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<Endpoints.SalesArrangementStates.SalesArrangementStateItem>> SalesArrangementStates(Endpoints.SalesArrangementStates.SalesArrangementStatesRequest request, CallContext context = default);
+        Task<List<GenericCodebookItem>> SalesArrangementStates(Endpoints.SalesArrangementStates.SalesArrangementStatesRequest request, CallContext context = default);
     }
 }
