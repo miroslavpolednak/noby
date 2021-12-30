@@ -8,6 +8,7 @@ using DomainServices.UserService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using System.Reflection;
+using CIS.Infrastructure.Telemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly), typeof(FOMS.Api.IApiAssembly));
 
 // add CIS pipeline
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
-builder.Services.AddCisCoreFeatures();
-builder.Services.AddCisCurrentUser();
-builder.Services.AddCisWebApiCors();
-builder.Host.AddCisLogging();
+builder.AddCisEnvironmentConfiguration();
+builder.AddCisCoreFeatures();
+builder.AddCisCurrentUser();
+builder.AddCisWebApiCors();
+builder.AddCisLogging();
+builder.AddCisTracing();
 
 // add domain services
 builder.Services.AddOfferService(true);
@@ -31,7 +33,7 @@ builder.Services.AddCaseService(true);
 builder.Services.AddSalesArrangementService(true);
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
+builder.AddCisHealthChecks();
 
 // FOMS services
 builder.AddFomsConfig();

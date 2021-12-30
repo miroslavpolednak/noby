@@ -7,11 +7,11 @@ namespace CIS.Infrastructure.StartupExtensions
         /// <summary>
         /// Registrace sluzby pro ziskani instance uzivatele
         /// </summary>
-        public static IServiceCollection AddCisCurrentUser(this IServiceCollection services)
+        public static WebApplicationBuilder AddCisCurrentUser(this WebApplicationBuilder builder)
         {
-            services.TryAddTransient<CIS.Core.Security.ICurrentUserAccessor, Security.CisCurrentUserAccessor>();
+            builder.Services.TryAddTransient<CIS.Core.Security.ICurrentUserAccessor, Security.CisCurrentUserAccessor>();
 
-            return services;
+            return builder;
         }
     }
 }

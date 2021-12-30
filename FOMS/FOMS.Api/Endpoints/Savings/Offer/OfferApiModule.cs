@@ -42,12 +42,12 @@ internal class OfferApiModule
 
         // instance nabidky
         builder
-            .MapGet(_prefix + "/{offerInstanceId}", async (int offerInstanceId) => await mediatr.Send(new Dto.GetDataRequest(offerInstanceId)))
+            .MapGet(_prefix + "/{offerInstanceId:int}", async (int offerInstanceId) => await mediatr.Send(new Dto.GetDataRequest(offerInstanceId)))
             .Produces<Dto.GetDataResponse>(StatusCodes.Status200OK);
 
         // stavebni sporeni - splatkovy kalendar
         builder
-            .MapGet(_prefix + "/{offerInstanceId}/schedule", async ([FromRoute] int offerInstanceId, [FromQuery] int type) => await mediatr.Send(new Dto.GetScheduleRequest(offerInstanceId, type)))
+            .MapGet(_prefix + "/{offerInstanceId:int}/schedule", async ([FromRoute] int offerInstanceId, [FromQuery] int type) => await mediatr.Send(new Dto.GetScheduleRequest(offerInstanceId, type)))
             .Produces<Dto.GetScheduleResponse>(StatusCodes.Status200OK);
     }
 }

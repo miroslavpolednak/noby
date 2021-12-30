@@ -7,14 +7,14 @@ namespace CIS.Infrastructure.StartupExtensions;
 
 public static class CisCoreFeatures
 {
-    public static IServiceCollection AddCisCoreFeatures(this IServiceCollection services)
+    public static WebApplicationBuilder AddCisCoreFeatures(this WebApplicationBuilder builder)
     {
         // datetime unification
-        services.AddSingleton<IDateTime, LocalDateTime>();
+        builder.Services.AddSingleton<IDateTime, LocalDateTime>();
 
-        services.AddOptions();
+        builder.Services.AddOptions();
 
-        services.Configure<JsonOptions>(x =>
+        builder.Services.Configure<JsonOptions>(x =>
         {
             x.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
             x.JsonSerializerOptions.IncludeFields = false;
@@ -23,6 +23,6 @@ public static class CisCoreFeatures
             x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
-        return services;
+        return builder;
     }
 }

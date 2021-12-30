@@ -2,11 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using CIS.Infrastructure.StartupExtensions;
 
-try
-{
     var host = Host
         .CreateDefaultBuilder(args)
-        .AddCisLogging()
         .ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder
@@ -15,8 +12,3 @@ try
         });
 
     await host.Build().RunAsync();
-}
-finally
-{
-    CisLogging.CloseAndFlushLog();
-}

@@ -4,13 +4,13 @@ namespace FOMS.Api.Endpoints.Test;
 
 internal class TestApiModule : IApiEndpointModule
 {
-    const string _prefix = "/test";
+    const string _prefix = "/api/test";
 
     public void Register(IEndpointRouteBuilder builder)
     {
         var mediatr = builder.ServiceProvider.GetRequiredService<IMediator>();
 
-        // test string
+        // test string 200
         builder.MapGet(_prefix, () => mediatr.Send(new Dto.SimpleStringRequest()))
             .WithDisplayName("moje_divny_jmeno")
             .WithName("endpointJmeno")

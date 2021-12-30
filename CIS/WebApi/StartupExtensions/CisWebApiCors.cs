@@ -2,9 +2,9 @@
 
 public static class CisWebApiCors
 {
-    public static IServiceCollection AddCisWebApiCors(this IServiceCollection services)
+    public static WebApplicationBuilder AddCisWebApiCors(this WebApplicationBuilder builder)
     {
-        services.AddCors(x =>
+        builder.Services.AddCors(x =>
         {
             x.AddPolicy("allowany",
                 policyBuilder => policyBuilder
@@ -13,6 +13,6 @@ public static class CisWebApiCors
                     .AllowAnyHeader());
         });
 
-        return services;
+        return builder;
     }
 }
