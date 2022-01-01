@@ -43,14 +43,18 @@ internal class CaseServiceRepository
         {
             query = query.ApplyOrderBy(new[] { Tuple.Create(pagination.Sorting.First().Field, pagination.Sorting.First().Descending) });
         }
+        else
+        {
+            query = query.OrderByDescending(t => t.CreatedTime);
+        }
 
         var result = new Contracts.SearchCasesResponse()
         {
             Pagination = pagination.CreateResponse(await query.CountAsync())
         };
         result.CaseInstances.AddRange(await query
-            .Take(pagination.PageSize)
             .Skip(pagination.PageSize * (pagination.RecordOffset - 1))
+            .Take(pagination.PageSize)
             .Select(t => new Contracts.CaseModel
             {
                 CaseId = t.CaseId,

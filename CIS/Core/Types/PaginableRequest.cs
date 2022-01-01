@@ -47,12 +47,21 @@ public class PaginableRequest
     /// <summary>
     /// Default instance of Pagination
     /// </summary>
-    public static PaginableRequest Default
-    {
-        get => new PaginableRequest
+    public static PaginableRequest Create()
+        => new PaginableRequest
         {
             PageSize = 10,
             RecordOffset = 1
         };
-    }
+
+    public static PaginableRequest Create(string field, bool descending)
+        => new PaginableRequest
+        {
+            PageSize = 10,
+            RecordOffset = 1,
+            Sort = new()
+            {
+                new(field, descending)
+            }
+        };
 }

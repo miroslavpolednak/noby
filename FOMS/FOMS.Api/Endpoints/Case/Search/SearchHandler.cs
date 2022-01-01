@@ -9,13 +9,18 @@ internal class SearchHandler
     {
         _logger.LogDebug("Search for user {userId}", _userAccessor.User.Id);
 
+        var pagination = request.Pagination ?? CIS.Core.Types.PaginableRequest.Create("createdTime", true);
+
         // upravit razeni - pole na FE nejsou shodna s field v DB
-        request.Pagination?.ChangeSortingFields(new List<(string Original, string ChangeTo)>
+        pagination.ChangeSortingFields(new List<(string Original, string ChangeTo)>
         {
+            new ("CreatedTime", "CreatedTime"),
             new ("CustomerName", "Name")
         });
 
-        var result = resolveResult(await _caseService.SearchCases(request.Pagination ?? CIS.Core.Types.PaginableRequest.Default, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
+        _logger.LogDebug("Pagination {RecordOffset}/{PageSize} - {field}/{descending}", request.Pagination?.RecordOffset, request.Pagination?.PageSize, request.Pagination?.Sort?.First().Field, request.Pagination?.Sort?.First().Descending);
+
+        var result = resolveResult(await _caseService.SearchCases(pagination, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
 
         _logger.LogDebug("Found {records} records", result.Pagination.RecordsTotalSize);
 
