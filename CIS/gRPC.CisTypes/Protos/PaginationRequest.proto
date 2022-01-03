@@ -2,13 +2,10 @@ syntax = "proto3";
 package cis.types;
 option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
 
-message PaginationRequest {
-	message SortingSettings {
-		string field = 1;
-		bool descending = 2;
-	}
+import "PaginationSortingField.proto";
 
+message PaginationRequest {
 	int32 recordOffset = 1;
 	int32 pageSize = 2;
-	repeated SortingSettings sorting = 3;
+	repeated PaginationSortingField sorting = 3;
 }

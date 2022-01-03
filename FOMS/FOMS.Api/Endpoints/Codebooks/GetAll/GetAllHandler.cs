@@ -20,6 +20,7 @@ internal class GetAllHandler
     private async Task<Dto.GetAllResponseItem> fillCodebook(string code, string original)
         => code switch
         {
+            "genders" => new(original, await _codebooks.Genders()),
             "casestates" => new(original, await _codebooks.CaseStates()),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes()),
             "persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),
