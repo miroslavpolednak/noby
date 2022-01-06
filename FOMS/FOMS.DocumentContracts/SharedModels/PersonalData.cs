@@ -2,6 +2,7 @@
 
 public class PersonalData
 {
+    public bool IsNaturalPerson { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? BirthNumber { get; set; }

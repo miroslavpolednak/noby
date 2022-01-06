@@ -15,6 +15,7 @@ public class InMemoryGlobalCache<T> : InMemoryGlobalCache, IGlobalCache<T> where
 
 public class InMemoryGlobalCache : IGlobalCache
 {
+    public CacheTypes CacheType { get => CacheTypes.InMemory; }
     public const string CisGlobalCacheName = "CisGlobalCache";
 
     protected readonly string _cacheName;

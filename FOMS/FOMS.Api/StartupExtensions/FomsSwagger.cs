@@ -4,23 +4,25 @@ namespace FOMS.Api.StartupExtensions;
 
 internal static class FomsSwagger
 {
-    public static IServiceCollection AddFomsSwagger(this IServiceCollection services)
+    public static WebApplicationBuilder AddFomsSwagger(this WebApplicationBuilder builder)
     {
-        services.AddEndpointsApiExplorer();
+        builder.Services.AddEndpointsApiExplorer();
 
         // konfigurace pro generátor JSON souboru
-        services.AddSwaggerGen(x =>
+        builder.Services.AddSwaggerGen(x =>
         {
-            x.SwaggerDoc("v1", new OpenApiInfo { Title = "FOMS API", Version = "v1" });
+            x.SwaggerDoc("v1", new OpenApiInfo { Title = "NOBY FRONTEND API", Version = "v1" });
 
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
 
             // zapojení rozšířených anotací nad controllery
-            x.EnableAnnotations();
+            //x.EnableAnnotations();
+
+            x.CustomSchemaIds(type => type.ToString());
 
             // v případě konfliktů dogeneruje unikátní ID operací
-            x.ResolveConflictingActions(descriptions =>
+            /*x.ResolveConflictingActions(descriptions =>
             {
                 var description = descriptions.First();
 
@@ -28,18 +30,7 @@ internal static class FomsSwagger
                 description.ActionDescriptor.DisplayName = description.ActionDescriptor.DisplayName + "_" + rnd;
 
                 return description;
-            });
-        });
-
-        return services;
-    }
-
-    internal static IApplicationBuilder UseFomsSwagger(this IApplicationBuilder builder)
-    {
-        builder.UseSwagger();
-        builder.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("v1/swagger.json", "FOMS API V1");
+            });*/
         });
 
         return builder;

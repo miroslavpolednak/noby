@@ -1,15 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
 	<LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
     <ProjectReference Include="..\FOMS.Core\FOMS.Core.csproj" />
   </ItemGroup>
 

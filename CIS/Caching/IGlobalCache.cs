@@ -2,6 +2,8 @@
 
 public interface IGlobalCache
 {
+    CacheTypes CacheType { get; }
+
     string? KeyPrefix { get; }
 
     bool Exists(string key);

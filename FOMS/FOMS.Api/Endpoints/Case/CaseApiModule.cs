@@ -13,11 +13,13 @@ internal class CaseApiModule : IApiEndpointModule
         // detail case
         builder
             .MapGet(_prefix + "/{caseId:long}", async (long caseId) => await mediatr.Send(new Dto.GetByIdRequest(caseId)))
+            .WithTags("Case Module")
             .Produces<Dto.CaseModel>(StatusCodes.Status200OK);
 
         // dashboard
         builder
             .MapPost(_prefix + "/search", async (Dto.SearchRequest request) => await mediatr.Send(request))
+            .WithTags("Case Module")
             .Produces<Dto.SearchResponse>(StatusCodes.Status200OK);
     }
 }

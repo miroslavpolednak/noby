@@ -6,5 +6,9 @@ public class CustomerDetail : PersonalData
 
     public Address? HomeAddress { get; set; }
 
+    public Address? ContactAddress { get; set; }
+
+    public bool IsContactAddressDifferent { get; set; }
+
     public Contacts? Contacts { get; set; }
 }

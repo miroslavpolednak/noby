@@ -12,6 +12,7 @@ internal class UserApiModule : IApiEndpointModule
 
         // instance prihlaseneho uzivatele
         builder.MapGet(_prefix + "", () => mediatr.Send(new Dto.GetCurrentUserRequest()))
+            .WithTags("User Module")
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<Dto.GetCurrentUserResponse>(StatusCodes.Status200OK);
     }

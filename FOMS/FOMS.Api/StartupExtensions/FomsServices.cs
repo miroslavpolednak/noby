@@ -4,7 +4,7 @@ namespace FOMS.Api.StartupExtensions;
 
 internal static class FomsServices
 {
-    public static void AddFomsServices(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddFomsServices(this WebApplicationBuilder builder)
     {
         // mediatr
         builder.Services
@@ -23,5 +23,7 @@ internal static class FomsServices
         
         // doc processor factory
         builder.Services.AddTransient<DocumentProcessing.IDocumentProcessorFactory, DocumentProcessing.DocumentProcessorFactory>();
+
+        return builder;
     }
 }
