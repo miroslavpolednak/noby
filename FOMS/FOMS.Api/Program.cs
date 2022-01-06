@@ -73,7 +73,7 @@ app.MapWhen(isSpaCall, appBuilder =>
     });
 });
 
-// health check - neni treba poustet celou pipeline
+// health check call - neni treba poustet celou pipeline
 app.MapWhen(isHealthCheck, appBuilder =>
 {
     appBuilder.MapCisHealthChecks();
@@ -81,17 +81,17 @@ app.MapWhen(isHealthCheck, appBuilder =>
 
 app.UseCisWebRequestLocalization();
 
-//app.UseAuthorization();
+// API call
 app.MapWhen(isApiCall, appBuilder =>
 {
     // exception handling
     appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
 
     // error middlewares
-    if (app.Environment.IsProduction())
+    /*if (app.Environment.IsProduction())
         appBuilder.UseExceptionHandler("/error");
-    else
-        appBuilder.UseDeveloperExceptionPage();
+    else*/
+    appBuilder.UseDeveloperExceptionPage();
 
     if (app.Environment.IsProduction())
         appBuilder.UseHsts();
