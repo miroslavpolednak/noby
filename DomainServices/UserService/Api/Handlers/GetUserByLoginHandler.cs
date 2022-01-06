@@ -18,7 +18,7 @@ internal class GetUserByLoginHandler
         // vytahnout info o uzivateli z DB
         var userInstance = await _repository.GetUser(request.Login);
         if (userInstance is null) // uzivatele se nepovedlo podle loginu najit
-            CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User '{request.Login}' not found", 1);
+            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User '{request.Login}' not found", 1);
 
         // vytvorit finalni model
         var model = new Contracts.User

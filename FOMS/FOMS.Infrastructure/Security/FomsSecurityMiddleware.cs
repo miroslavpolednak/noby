@@ -13,13 +13,11 @@ public class AppSecurityMiddleware
 
     public async Task Invoke(HttpContext context, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
     {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        if (context.User?.Identity is not null || !context.User.Identity.IsAuthenticated)
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
             throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
 
         // zjistit login uzivatele
-        var login = (context.User.Identity as ClaimsPrincipal)?.Claims.FirstOrDefault(t => t.Type == ClaimTypes.NameIdentifier)?.Value;
+        var login = (context.User.Identity as ClaimsIdentity)?.Claims.FirstOrDefault(t => t.Type == ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(login))
             throw new System.Security.Authentication.AuthenticationException("User login is empty");
 
@@ -36,6 +34,7 @@ public class AppSecurityMiddleware
         result switch
         {
             SuccessfulServiceCallResult<DomainServices.UserService.Contracts.User> r => r.Model,
-            _ => throw new System.Security.Authentication.AuthenticationException("User not found")
+            ErrorServiceCallResult err => throw new System.Security.Authentication.AuthenticationException(err.ToString()),
+            _ => throw new NotImplementedException()
         };
 }

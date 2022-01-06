@@ -17,5 +17,10 @@
         {
             Errors = errors.ToList().AsReadOnly();
         }
+
+        public override string ToString()
+        {
+            return Errors.Any() ? Errors.First().Message : "";
+        }
     }
 }
