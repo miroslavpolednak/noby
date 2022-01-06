@@ -2,6 +2,8 @@
 
 public static class CisHealthChecks
 {
+    public const string HealthCheckEndpoint = "/health";
+
     public static WebApplicationBuilder AddCisHealthChecks(this WebApplicationBuilder builder)
     {
         var hc = builder.Services.AddHealthChecks();
@@ -17,6 +19,16 @@ public static class CisHealthChecks
 
     public static IEndpointConventionBuilder MapCisHealthChecks(this IEndpointRouteBuilder endpoints)
     {
-        return endpoints.MapHealthChecks("/health");
+        return endpoints.MapHealthChecks(HealthCheckEndpoint);
+    }
+
+    public static IApplicationBuilder MapCisHealthChecks(this IApplicationBuilder builder)
+    {
+        builder.UseRouting();
+        builder.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHealthChecks(HealthCheckEndpoint);
+        });
+        return builder;
     }
 }

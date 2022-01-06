@@ -25,7 +25,7 @@ public sealed class MockAuthenticationHandler
     {
         var claims = new[] 
         {
-            new Claim(ClaimTypes.NameIdentifier, "990600")
+            new Claim(ClaimTypes.NameIdentifier, "990614w")
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, AuthenticationConstants.MockAuthScheme);

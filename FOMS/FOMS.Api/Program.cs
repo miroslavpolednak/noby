@@ -10,6 +10,10 @@ using FOMS.Api.StartupExtensions;
 using System.Reflection;
 using CIS.Infrastructure.Telemetry;
 
+Func<HttpContext, bool> isApiCall = (HttpContext context) => context.Request.Path.StartsWithSegments("/api");
+Func<HttpContext, bool> isHealthCheck = (HttpContext context) => context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);
+Func<HttpContext, bool> isSpaCall = (HttpContext context) => !context.Request.Path.StartsWithSegments("/api") && !context.Request.Path.StartsWithSegments("/swagger") && !context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);
+
 var builder = WebApplication.CreateBuilder(args);
 
 #region register services
@@ -59,31 +63,49 @@ builder.Services.AddSpaStaticFiles(configuration =>
 // BUILD APP
 var app = builder.Build();
 
-// error middlewares
-if (app.Environment.IsProduction())
-    app.UseExceptionHandler("/error");
-else
-    app.UseDeveloperExceptionPage();
+// jedna se o SPA call, pust jen tyhle middlewares
+app.MapWhen(isSpaCall, appBuilder =>
+{
+    appBuilder.UseSpaStaticFiles();
+    appBuilder.UseSpa(spa =>
+    {
+        spa.Options.SourcePath = "wwwroot";
+    });
+});
 
-// podpora SPA
-app
-    .UseStaticFiles()
-    .UseSpaStaticFiles();
-
-// exception handling
-app.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
-
-if (app.Environment.IsProduction())
-    app.UseHsts();
+// health check - neni treba poustet celou pipeline
+app.MapWhen(isHealthCheck, appBuilder =>
+{
+    appBuilder.MapCisHealthChecks();
+});
 
 app.UseCisWebRequestLocalization();
-app.UseCors();
-app.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
 
-// autentizace a autorizace
-app.UseAuthentication();
 //app.UseAuthorization();
-app.UseMiddleware<FOMS.Infrastructure.Security.AppSecurityMiddleware>();
+app.MapWhen(isApiCall, appBuilder =>
+{
+    // exception handling
+    appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
+
+    // error middlewares
+    if (app.Environment.IsProduction())
+        appBuilder.UseExceptionHandler("/error");
+    else
+        appBuilder.UseDeveloperExceptionPage();
+
+    if (app.Environment.IsProduction())
+        appBuilder.UseHsts();
+
+    appBuilder.UseCors();
+    appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
+
+    // autentizace a autorizace
+    appBuilder.UseAuthentication();
+    appBuilder.UseMiddleware<FOMS.Infrastructure.Security.AppSecurityMiddleware>();
+
+    // namapovani API modulu
+    appBuilder.AddEndpointsModules(typeof(FOMS.Api.IApiAssembly).GetTypeInfo().Assembly);
+});
 
 // swagger
 if (appConfiguration.EnableSwaggerUI)
@@ -95,16 +117,5 @@ if (appConfiguration.EnableSwaggerUI)
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 }
-
-// healthchecks
-app.MapCisHealthChecks();
-// namapovani API modulu
-app.AddEndpointsModules(typeof(FOMS.Api.IApiAssembly).GetTypeInfo().Assembly);
-
-// podpora SPA
-app.UseSpa(spa =>
-{
-    spa.Options.SourcePath = "wwwroot";
-});
 
 app.Run();
