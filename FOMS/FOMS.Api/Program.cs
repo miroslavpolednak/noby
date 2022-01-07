@@ -84,14 +84,14 @@ app.UseCisWebRequestLocalization();
 // API call
 app.MapWhen(isApiCall, appBuilder =>
 {
-    // exception handling
-    appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
-
     // error middlewares
     /*if (app.Environment.IsProduction())
         appBuilder.UseExceptionHandler("/error");
     else*/
     appBuilder.UseDeveloperExceptionPage();
+
+    // exception handling
+    appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
 
     if (app.Environment.IsProduction())
         appBuilder.UseHsts();
