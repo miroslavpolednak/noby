@@ -45,6 +45,7 @@ builder.Services.AddAttributedServices(typeof(Program), endpointsType);
 // add general Dapper repository
 builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
 builder.Services.AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"));
+builder.Services.AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
 
 // authentication
 builder.AddCisServiceAuthentication();

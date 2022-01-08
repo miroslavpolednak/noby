@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />

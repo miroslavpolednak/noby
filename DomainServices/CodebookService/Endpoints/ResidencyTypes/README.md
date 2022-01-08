@@ -1,0 +1,2 @@
+﻿# Residency Types
+
