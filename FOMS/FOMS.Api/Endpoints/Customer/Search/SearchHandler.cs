@@ -15,8 +15,9 @@ internal class SearchHandler
             },
             Rows = new List<Dto.SearchResponse.Customer>()
             {
-                new Dto.SearchResponse.Customer { Id = 1, FullName = "John Doe", City = "Praha", Street = "josefova 1", Phone = "999 999 999" },
-                new Dto.SearchResponse.Customer { Id = 2, FullName = "John Doe", City = "Praha", Street = "josefova 1", Phone = "999 999 999" },
+                new Dto.SearchResponse.Customer { Id = 4, FullName = "Václav  Horažďovský", City = "Praha", Street = "josefova 1", Phone = "999 999 999" },
+                new Dto.SearchResponse.Customer { Id = 5, FullName = "Roman   Tichý", City = "Praha", Street = "josefova 1", Phone = "999 999 999" },
+                new Dto.SearchResponse.Customer { Id = 8, FullName = "Jindřich    Šimůnek", City = "Praha", Street = "josefova 1", Phone = "999 999 999" }
             }
         };
     }
