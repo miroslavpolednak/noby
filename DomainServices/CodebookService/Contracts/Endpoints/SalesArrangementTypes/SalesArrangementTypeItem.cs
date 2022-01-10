@@ -6,7 +6,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTyp
     public class SalesArrangementTypeItem
     {
         [DataMember(Order = 1)]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [DataMember(Order = 2)]
         public string Name { get; set; }

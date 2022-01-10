@@ -22,12 +22,12 @@
 		<PackageReference Include="MediatR" Version="9.0.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-		<PackageReference Include="StackExchange.Redis" Version="2.2.88" />
 		<PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
+		<ProjectReference Include="..\..\..\CIS\CIS.Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj" />

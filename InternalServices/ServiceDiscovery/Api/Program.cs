@@ -1,6 +1,7 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.ServiceDiscovery.Api;
+using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -22,7 +23,7 @@ builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
 builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
+builder.AddCisEnvironmentConfiguration();
 
 // logging 
 //builder.Host.UseAppLogging();
@@ -31,9 +32,10 @@ builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
-builder.Host.AddCisLogging();
-builder.Services.AddCisCoreFeatures();
+builder.AddCisHealthChecks();
+builder.AddCisLogging();
+builder.AddCisTracing();
+builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // add general Dapper repository

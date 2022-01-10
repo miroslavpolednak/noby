@@ -7,17 +7,17 @@ namespace DomainServices.UserService.Api;
 
 internal static class StartupExtensions
 {
-    public static IServiceCollection AddUserService(this IServiceCollection services, AppConfiguration appConfiguration, IConfiguration configuration)
+    public static WebApplicationBuilder AddUserService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        services
+        builder.Services
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
 
         // db repo
-        services.AddDapper(configuration.GetConnectionString("xxvvss"));
+        builder.Services.AddDapper(builder.Configuration.GetConnectionString("xxvvss"));
 
-        services.AddHttpContextAccessor();
-        services.AddCisCurrentUser();
+        builder.Services.AddHttpContextAccessor();
+        builder.AddCisCurrentUser();
 
         // cache
         if (appConfiguration.Cache?.CacheType != CacheTypes.None)
@@ -26,7 +26,7 @@ internal static class StartupExtensions
             if (appConfiguration.Cache.UseServiceDiscovery)
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
             {
-                services.AddRedisGlobalCache(provider =>
+                builder.Services.AddRedisGlobalCache(provider =>
                 {
                     string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
                         .GetService(new("CIS:GlobalCache:Redis"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
@@ -40,10 +40,10 @@ internal static class StartupExtensions
             {
                 if (string.IsNullOrEmpty(appConfiguration.Cache.CacheConnectionString))
                     throw new ArgumentNullException("CacheConnectionString", "Redis connection string for Service Discovery Global Cache must be defined");
-                services.AddRedisGlobalCache(appConfiguration.Cache.CacheConnectionString, appConfiguration.Cache.CacheKeyPrefix);
+                builder.Services.AddRedisGlobalCache(appConfiguration.Cache.CacheConnectionString, appConfiguration.Cache.CacheKeyPrefix);
             }
         }
 
-        return services;
+        return builder;
     }
 }

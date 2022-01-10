@@ -1,6 +1,6 @@
-﻿namespace CIS.Infrastructure.Security
+﻿namespace CIS.Infrastructure.Security;
+
+public record CisUser(int Id, string Name, string Login) 
+    : CIS.Core.Security.ICurrentUser
 {
-    public record CisUser(int Id, string Name, string Login) : CIS.Core.Security.ICurrentUser
-    {
-    }
 }

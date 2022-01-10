@@ -2,6 +2,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.CustomerService.Api;
+using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -30,22 +31,23 @@ appConfiguration.CheckAppConfiguration();
 builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
+builder.AddCisEnvironmentConfiguration();
 
 // logging 
-builder.Host.AddCisLogging();
+builder.AddCisLogging();
+builder.AddCisTracing();
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
+builder.AddCisHealthChecks();
 
-builder.Services.AddCisCoreFeatures();
+builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
-builder.Services.AddCisServiceAuthentication(builder.Configuration);
+builder.AddCisServiceAuthentication();
 
 // add storage services
-builder.Services.AddCutomerService(appConfiguration, builder.Configuration);
+builder.AddCutomerService(appConfiguration);
 
 builder.Services.AddHttpContextAccessor();
 

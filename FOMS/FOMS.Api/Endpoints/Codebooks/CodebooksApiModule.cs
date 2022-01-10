@@ -14,6 +14,7 @@ internal class CodebooksApiModule : IApiEndpointModule
         // vraci vsechny vyzadane ciselniky
         // q = kody ciselniku oddelene ","
         builder.MapGet(_prefix + "/get-all", async ([FromQuery(Name = "q")] string codebookTypes) => await mediatr.Send(new Dto.GetAllRequest(codebookTypes)))
+            .WithTags("Codebooks Module")
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<Dto.GetAllResponseItem>(StatusCodes.Status200OK);
     }

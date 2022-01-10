@@ -14,7 +14,8 @@ internal class CreateCaseHandler
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
         var productInstanceTypeCategory = await getProductCategory(request.Request.ProductInstanceType);
-        
+        _logger.LogDebug("productInstanceTypeCategory={id}", productInstanceTypeCategory);
+
         // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
         //TODO je to tak i pro 4001?
         if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan)
@@ -22,10 +23,12 @@ internal class CreateCaseHandler
 
         // get default case state
         int defaultCaseState = (await _codebookService.CaseStates()).First(t => t.IsDefaultNewState).Id;
+        _logger.LogDebug("defaultCaseState={defaultCaseState}", defaultCaseState);
 
         // ziskat caseId
         //TODO proc se tady dava schema?
         long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.Mp, request.Request.ProductInstanceType));
+        _logger.LogDebug("newCaseId={newCaseId}", newCaseId);
 
         // zalozit case v NOBY
         try

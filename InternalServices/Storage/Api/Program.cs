@@ -2,6 +2,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.Storage.Api;
 using CIS.Security;
+using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -15,25 +16,26 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 
 #region register builder.Services
 // globalni nastaveni prostredi
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
+builder.AddCisEnvironmentConfiguration();
 
 // logging 
-builder.Host.AddCisLogging();
+builder.AddCisLogging();
+builder.AddCisTracing();
 
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
+builder.AddCisHealthChecks();
 
-builder.Services.AddCisCoreFeatures();
+builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // add general Dapper repository
 builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
 
 // authentication
-builder.Services.AddCisServiceAuthentication(builder.Configuration);
+builder.AddCisServiceAuthentication();
 
 // add storage services
 builder.Services.AddBlobStorage(builder.Configuration);

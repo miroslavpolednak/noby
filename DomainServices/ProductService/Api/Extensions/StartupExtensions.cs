@@ -21,36 +21,36 @@ internal static class StartupExtensions
             throw new ArgumentNullException("AppConfiguration.MPHome");
     }
 
-    public static IServiceCollection AddProductService(this IServiceCollection services, AppConfiguration appConfiguration, IConfiguration configuration)
+    public static WebApplicationBuilder AddProductService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        services
+        builder.Services
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
 
         // add validators
-        services.Scan(selector => selector
+        builder.Services.Scan(selector => selector
                 .FromAssembliesOf(typeof(Program))
                 .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
         // EAS svc
-        services.AddExternalServiceEas(appConfiguration.EAS);
+        builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
-        services.AddExternalServiceMpHome(appConfiguration.MpHome);
-        
+        builder.Services.AddExternalServiceMpHome(appConfiguration.MpHome);
+
         // dbcontext
-        services.AddDapper<Repositories.NobyDbRepository>(configuration.GetConnectionString("noby"));
-        services.AddDapper<Repositories.KonsDbRepository>(configuration.GetConnectionString("konsdb"));
+        builder.Services.AddDapper<Repositories.NobyDbRepository>(builder.Configuration.GetConnectionString("noby"));
+        builder.Services.AddDapper<Repositories.KonsDbRepository>(builder.Configuration.GetConnectionString("konsdb"));
 
         // repos
-        services.AddScoped<Repositories.KonsDbRepository>();
-        services.AddScoped<Repositories.NobyDbRepository>();
+        builder.Services.AddScoped<Repositories.KonsDbRepository>();
+        builder.Services.AddScoped<Repositories.NobyDbRepository>();
 
-        services.AddHttpContextAccessor();
-        services.AddCisCurrentUser();
-        services.AddCodebookService(true);
+        builder.Services.AddHttpContextAccessor();
+        builder.AddCisCurrentUser();
+        builder.Services.AddCodebookService(true);
             
-        return services;
+        return builder;
     }
 }

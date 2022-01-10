@@ -4,6 +4,7 @@ using CIS.Security.gRPC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using CIS.Security.InternalServices;
+using CIS.Infrastructure.Caching;
 
 namespace DomainServices.UserService.Abstraction;
 
@@ -45,6 +46,17 @@ public static class UserServiceExtensions
 
         // register storage services
         services.TryAddTransient<IUserServiceAbstraction, Services.UserService>();
+
+        // redis cache
+        /*services.AddRedisGlobalCache<IUserServiceAbstraction>(provider =>
+        {
+            string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
+                .GetService(new("CIS:GlobalCache:Redis"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
+                .GetAwaiter()
+                .GetResult()?
+                .ServiceUrl;
+            return url ?? throw new ArgumentNullException("url", "Service Discovery can not find CIS:GlobalCache:Redis Proprietary service URL");
+        }, "MPSS:");*/
 
         // exception handling
         services.TryAddSingleton<ExceptionInterceptor>();

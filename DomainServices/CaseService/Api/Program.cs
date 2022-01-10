@@ -4,6 +4,7 @@ using CIS.Security;
 using DomainServices.CaseService.Api;
 using DomainServices.CodebookService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -21,28 +22,30 @@ builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
 appConfiguration.CheckAppConfiguration();
 #endregion strongly typed configuration
 
-#region register builder.Services
+#region register builder
 // strongly-typed konfigurace aplikace
 builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
+builder.AddCisEnvironmentConfiguration();
 
 // logging 
-builder.Host.AddCisLogging();
+builder.AddCisLogging();
+builder.AddCisTracing();
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
+builder.AddCisHealthChecks();
 
-builder.Services.AddCisCoreFeatures();
+builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
-builder.Services.AddCisServiceAuthentication(builder.Configuration);
+builder.AddCisServiceAuthentication();
 
+// add this service
+builder.AddCaseService(appConfiguration);
 // add services
 builder.Services.AddCodebookService(true);
-builder.Services.AddCaseService(appConfiguration, builder.Configuration);
 builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS a mphome
 
 builder.Services.AddGrpc(options =>
@@ -50,7 +53,7 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<CIS.Infrastructure.gRPC.SimpleServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
-#endregion register builder.Services
+#endregion register builder
 
 // kestrel configuration
 builder.UseKestrelWithCustomConfiguration();

@@ -56,9 +56,15 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    public Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken))
     {
-        throw new NotImplementedException();
+        var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementsByCaseIdAsync(
+            new GetSalesArrangementsByCaseIdRequest()
+            {
+                CaseId = caseId
+            }, cancellationToken: cancellationToken)
+        );
+        return new SuccessfulServiceCallResult<GetSalesArrangementsByCaseIdResponse>(result);
     }
 
     public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data, CancellationToken cancellationToken = default(CancellationToken))

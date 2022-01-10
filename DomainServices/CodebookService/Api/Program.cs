@@ -3,6 +3,7 @@ using ProtoBuf.Grpc.Server;
 using CIS.Security;
 using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -26,29 +27,31 @@ builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
 builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
+builder.AddCisEnvironmentConfiguration();
 
 // logging 
-builder.Host.AddCisLogging();
+builder.AddCisLogging();
+builder.AddCisTracing();
 
 // add mediatr
 builder.Services.AddMediatR(assembly);
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
+builder.AddCisHealthChecks();
 
-builder.Services.AddCisCoreFeatures();
+builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
 
 // add general Dapper repository
 builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
 builder.Services.AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"));
+builder.Services.AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
 
 // authentication
-builder.Services.AddCisServiceAuthentication(builder.Configuration);
+builder.AddCisServiceAuthentication();
 
 // current project related
-builder.Services.AddCodebookService(appConfiguration);
+builder.AddCodebookService(appConfiguration);
 builder.AddCodebookServiceEndpointsStartup(assembly);
 
 builder.Services.AddHttpContextAccessor();

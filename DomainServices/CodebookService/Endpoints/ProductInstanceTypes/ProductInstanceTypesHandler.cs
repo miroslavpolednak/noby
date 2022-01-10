@@ -9,6 +9,8 @@ public class ProductInstanceTypesHandler
     public async Task<List<ProductInstanceTypeItem>> Handle(ProductInstanceTypesRequest request, CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
+        // prilepit jen stavebko
+
         return new List<ProductInstanceTypeItem>
         {
             new ProductInstanceTypeItem() { Id = 1, Name = "Stavební spoření", ProductCategory = ProductInstanceTypeCategory.BuildingSavings },

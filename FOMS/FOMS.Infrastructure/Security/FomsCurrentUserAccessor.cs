@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using CIS.Infrastructure.Security;
 using Microsoft.AspNetCore.Http;
 
 namespace FOMS.Infrastructure.Security;
@@ -17,7 +16,7 @@ public class FomsCurrentUserAccessor : ICurrentUserAccessor
     {
         get
         {
-            return new CisUser(2, "John Doe", "990614w");
+            return _httpContext.HttpContext?.User as ICurrentUser ?? throw new System.NullReferenceException("HttpContext.User not found");
         }
     }
 }

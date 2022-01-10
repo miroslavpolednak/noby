@@ -2,7 +2,7 @@
 {
     internal static class FomsDatabase
     {
-        public static void AddFomsDatabase(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder AddFomsDatabase(this WebApplicationBuilder builder)
         {
             /*var appOptions = configuration.Get<ApplicationOptions>();
 
@@ -13,6 +13,8 @@
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
 
             services.AddScoped<IUnitOfWork>(x => new UnitOfWork(dbContextOptions.Options));*/
+
+            return builder;
         }
     }
 }

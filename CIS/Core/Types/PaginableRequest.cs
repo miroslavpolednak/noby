@@ -1,12 +1,10 @@
-﻿using System.Text.Json.Serialization;
-
-namespace CIS.Core.Types;
+﻿namespace CIS.Core.Types;
 
 public class PaginableRequest
 {
     public int RecordOffset { get; init; }
     public int PageSize { get; init; }
-    public List<SortingField>? Sort { get; init; }
+    public List<PaginableSortingField>? Sort { get; init; }
 
     public PaginableRequest() { }
 
@@ -14,45 +12,43 @@ public class PaginableRequest
     {
         RecordOffset = recordOffset;
         PageSize = pageSize;
-        Sort = new List<SortingField>(1)
+        Sort = new List<PaginableSortingField>(1)
         {
-            new SortingField(sortField, sortDescending)
+            new PaginableSortingField(sortField, sortDescending)
         };
     }
 
-    public sealed class SortingField
+    public PaginableRequest WithSortFields(List<(string ClientField, string ServerField)> fields)
     {
-        public string Field { get; set; }
-        public bool Descending { get; init; } = true;
+        if (Sort is null || !Sort.Any()) return this;
 
-        [JsonConstructor]
-        public SortingField(string field, bool descending)
-        {
-            Field = field;
-            Descending = descending;
-        }
-    }
-
-    public void ChangeSortingFields(List<(string Original, string ChangeTo)> fields)
-    {
-        if (Sort is null || !Sort.Any()) return;
-        
         fields.ForEach(t =>
         {
-            var f = Sort.FirstOrDefault(x => x.Field.Equals(t.Original, StringComparison.InvariantCultureIgnoreCase));
-            if (f is not null) f.Field = t.ChangeTo;
+            var f = Sort.FirstOrDefault(x => x.Field.Equals(t.ClientField, StringComparison.InvariantCultureIgnoreCase));
+            if (f is not null) f.Field = t.ServerField;
         });
+
+        return this;
     }
 
     /// <summary>
     /// Default instance of Pagination
     /// </summary>
-    public static PaginableRequest Default
-    {
-        get => new PaginableRequest
+    public static PaginableRequest Create()
+        => new PaginableRequest
         {
             PageSize = 10,
             RecordOffset = 1
         };
-    }
+
+    public static PaginableRequest Create(string field, bool descending)
+        => new PaginableRequest
+        {
+            PageSize = 10,
+            RecordOffset = 1,
+            Sort = new()
+            {
+                new(field, descending)
+            }
+        };
 }

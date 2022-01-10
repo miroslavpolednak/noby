@@ -1,12 +1,21 @@
-﻿using CIS.Infrastructure.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Enrichers.Span;
 using Serilog.Sinks.MSSqlServer;
 using System.Reflection;
 
-namespace CIS.Infrastructure.StartupExtensions;
+namespace CIS.Infrastructure.Telemetry;
 
-public static class CisLogging
+public static class LoggingExtensions
 {
+    public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
+    {
+        builder.Host.AddCisLogging();
+        return builder;
+    }
+
     public static IHostBuilder AddCisLogging(this IHostBuilder builder)
     {
         builder.UseSerilog((hostingContext, serviceProvider, loggerConfiguration) =>
@@ -17,28 +26,35 @@ public static class CisLogging
 
             loggerConfiguration
                 .ReadFrom.Configuration(hostingContext.Configuration)
+                .Enrich.WithSpan()
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
                 .Enrich.WithProperty("Assembly", $"{assembly.Name}")
                 .Enrich.WithProperty("Version", $"{assembly.Version}");
 
             // get configuration from json file
-            var configSection = hostingContext.Configuration.GetSection("CisLogging");
-            CisLoggingConfiguration configuration = new();
+            var configSection = hostingContext.Configuration.GetSection("CisTelemetry");
+            CisTelemetryConfiguration configuration = new();
             configSection.Bind(configuration);
-            
+
+            // seq
+            if (configuration.Logging?.Seq is not null)
+            {
+                loggerConfiguration.WriteTo.Seq(configuration.Logging.Seq.ServerUrl);
+            }
+
             // logovani do souboru
-            if (configuration.File is not null)
+            if (configuration.Logging?.File is not null)
             {
                 loggerConfiguration
                     .WriteTo
-                    .Async(a => 
-                        a.File(Path.Combine(configuration.File.Path, configuration.File.Filename), buffered: true, rollingInterval: RollingInterval.Day), 
+                    .Async(a =>
+                        a.File(Path.Combine(configuration.Logging.File.Path, configuration.Logging.File.Filename), buffered: true, rollingInterval: RollingInterval.Day),
                     bufferSize: 1000);
             }
 
             // logovani do databaze
-            if (configuration.Database is not null)
+            if (configuration.Logging?.Database is not null)
             {
                 MSSqlServerSinkOptions sqlOptions = new()
                 {
@@ -51,7 +67,7 @@ public static class CisLogging
                 loggerConfiguration
                     .WriteTo
                     .MSSqlServer(
-                        connectionString: configuration.Database.ConnectionString,
+                        connectionString: configuration.Logging.Database.ConnectionString,
                         sinkOptions: sqlOptions,
                         columnOptions: sqlColumns
                     );
@@ -62,11 +78,7 @@ public static class CisLogging
                 .WriteTo.Console();
 
         });
-        return builder;
-    }
 
-    public static void CloseAndFlushLog()
-    {
-        Log.CloseAndFlush();
+        return builder;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using DomainServices.CodebookService.Abstraction;
 using ExternalServices.Eas;
 
 namespace DomainServices.CaseService.Api;
@@ -19,31 +18,31 @@ internal static class StartupExtensions
             throw new ArgumentNullException("AppConfiguration.EAS");
     }
 
-    public static IServiceCollection AddCaseService(this IServiceCollection services, AppConfiguration appConfiguration, IConfiguration configuration)
+    public static WebApplicationBuilder AddCaseService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        services
+        builder.Services
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
 
         // add validators
-        services.Scan(selector => selector
+        builder.Services.Scan(selector => selector
                 .FromAssembliesOf(typeof(Program))
                 .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
         // EAS svc
-        services.AddExternalServiceEas(appConfiguration.EAS);
+        builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
         //registerMpHome(appConfiguration.EAS?.Implementation, services);
 
         // dbcontext
-        string connectionString = configuration.GetConnectionString("default");
-        services.AddDbContext<Repositories.CaseServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        string connectionString = builder.Configuration.GetConnectionString("default");
+        builder.Services.AddDbContext<Repositories.CaseServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
 
-        services.AddHttpContextAccessor();
-        services.AddCisCurrentUser();
+        builder.Services.AddHttpContextAccessor();
+        builder.AddCisCurrentUser();
             
-        return services;
+        return builder;
     }
 }

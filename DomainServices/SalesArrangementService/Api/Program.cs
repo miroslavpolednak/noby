@@ -5,6 +5,7 @@ using DomainServices.SalesArrangementService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -27,24 +28,25 @@ appConfiguration.CheckAppConfiguration();
 builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
-builder.Services.AddCisEnvironmentConfiguration(builder.Configuration);
+builder.AddCisEnvironmentConfiguration();
 
 // logging 
-builder.Host.AddCisLogging();
+builder.AddCisLogging();
+builder.AddCisTracing();
 
 // health checks
-builder.Services.AddCisHealthChecks(builder.Configuration);
+builder.AddCisHealthChecks();
 
-builder.Services.AddCisCoreFeatures();
+builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
-builder.Services.AddCisServiceAuthentication(builder.Configuration);
+builder.AddCisServiceAuthentication();
 
 // add services
 builder.Services.AddCaseService(true);
 builder.Services.AddCodebookService(true);
-builder.Services.AddSalesArrangementService(appConfiguration, builder.Configuration);
+builder.AddSalesArrangementService(appConfiguration);
 builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS a mphome
 
 builder.Services.AddGrpc(options =>

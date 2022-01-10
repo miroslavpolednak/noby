@@ -18,29 +18,29 @@ internal static class StartupExtensions
             throw new ArgumentNullException("AppConfiguration.EAS");
     }
 
-    public static IServiceCollection AddOfferService(this IServiceCollection services, AppConfiguration appConfiguration, IConfiguration configuration)
+    public static WebApplicationBuilder AddOfferService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        services
+        builder.Services
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
 
         // add validators
-        services.Scan(selector => selector
+        builder.Services.Scan(selector => selector
                 .FromAssembliesOf(typeof(Program))
                 .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
         // EAS svc
-        services.AddExternalServiceEas(appConfiguration.EAS);
+        builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 
         // dbcontext
-        string connectionString = configuration.GetConnectionString("default");
-        services.AddDbContext<Repositories.OfferServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        string connectionString = builder.Configuration.GetConnectionString("default");
+        builder.Services.AddDbContext<Repositories.OfferServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
 
-        services.AddHttpContextAccessor();
-        services.AddCisCurrentUser();
+        builder.Services.AddHttpContextAccessor();
+        builder.AddCisCurrentUser();
             
-        return services;
+        return builder;
     }
 }

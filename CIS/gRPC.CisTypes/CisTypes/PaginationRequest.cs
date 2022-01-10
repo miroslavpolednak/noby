@@ -20,12 +20,15 @@ public sealed partial class PaginationRequest
 
     public PaginationResponse CreateResponse(int recordsTotalSize)
     {
-        return new PaginationResponse
+        var model = new PaginationResponse
         {
             RecordsTotalSize = recordsTotalSize,
             PageSize = this.PageSize,
-            RecordOffset = this.RecordOffset
+            RecordOffset = this.RecordOffset,
         };
+        if (this.Sorting.Any())
+            model.Sorting.AddRange(this.Sorting);
+        return model;
     }
 
     public static implicit operator PaginationRequest(Core.Types.PaginableRequest request)
@@ -36,8 +39,8 @@ public sealed partial class PaginationRequest
             RecordOffset = request.RecordOffset
         };
         if (request.Sort is not null && request.Sort.Any())
-            model.Sorting.AddRange(request.Sort.Select(t => new Types.SortingSettings { Descending = t.Descending, Field = t.Field }));
-
+            model.Sorting.AddRange(request.Sort.Select(t => new PaginationSortingField { Descending = t.Descending, Field = t.Field }));
+        
         return model;
     }
 }

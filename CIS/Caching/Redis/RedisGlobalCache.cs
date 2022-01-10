@@ -20,6 +20,7 @@ public class RedisGlobalCache<T> : RedisGlobalCache, IGlobalCache<T> where T : c
 
 public class RedisGlobalCache : IGlobalCache
 {
+    public CacheTypes CacheType { get => CacheTypes.Redis; }
     protected readonly IDatabase _database;
 
     public RedisGlobalCache(string connectionString, string? keyPrefix)

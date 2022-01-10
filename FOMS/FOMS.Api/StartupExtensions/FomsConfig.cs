@@ -2,7 +2,7 @@
 
 internal static class FomsConfig
 {
-    public static void AddFomsConfig(this WebApplicationBuilder builder)
+    public static Infrastructure.Configuration.AppConfiguration AddFomsConfig(this WebApplicationBuilder builder)
     {
         Infrastructure.Configuration.AppConfiguration appConfiguration = new();
 
@@ -10,5 +10,7 @@ internal static class FomsConfig
         builder.Configuration.Bind("NOBY", appConfiguration);
         // register to DI
         builder.Services.AddSingleton(appConfiguration);
+
+        return appConfiguration;
     }
 }
