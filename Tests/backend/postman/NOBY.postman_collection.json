@@ -121,8 +121,6 @@
 									"script": {
 										"exec": [
 											"\r",
-											"\r",
-											"pm.collectionVariables.set('Pokus','Toto je pokus');\r",
 											""
 										],
 										"type": "text/javascript"
@@ -134,19 +132,36 @@
 										"exec": [
 											"pm.test(\"Test direct vs through service call\", function () \r",
 											"{\r",
-											"    //TODO: Pridat dalsi\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalSaved)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_celkem_nasporeno')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
+											"    //try\r",
+											"    //{\r",
+											"        //TODO: Pridat dalsi\r",
+											"        \r",
+											"        console.log('*****************************************************************************************');\r",
+											"        console.log(res.BuildingSavings.TotalSaved);\r",
+											"        console.log(libEAS.getSimulationPropperty('SS_celkem_nasporeno'));\r",
+											"        console.log('*****************************************************************************************');\r",
+											"\r",
+											"\r",
+											"        pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalSaved)).to.\r",
+											"            eql(libEAS.getSimulationPropperty('SS_celkem_nasporeno')/1);\r",
+											"        pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
+											"            eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
+											"        pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
+											"            eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
+											"        pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
+											"            eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
+											"    //}\r",
+											"    //catch(e)\r",
+											"    //{\r",
+											"    //    console.error(e);\r",
+											"    //    throw(e);\r",
+											"    //}\r",
 											"});\r",
 											"\r",
 											"\r",
 											"pm.variables.set('OfferInstanceId',res.OfferInstanceId);\r",
+											"\r",
+											"\r",
 											"\r",
 											"\r",
 											"\r",
@@ -268,40 +283,53 @@
 										"exec": [
 											"pm.test(\"Get returns the same result as simulation itself\", function () \r",
 											"{\r",
-											"    req0100=libRequest.getRequest('01-0100-OfferSerice-SimulateBuildingSavings');\r",
-											"    res0100=libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings');\r",
-											"    delete res0100.InsertStamp.dateTime;\r",
-											"    pm.expect(libCompare.compareJson(res0100,res    ,false)).to.eql(true);\r",
-											"    \r",
-											"    if(!req0100.InputData.IsWithLoan)\r",
-											"    {\r",
-											"        delete req0100.InputData.LoanActionCode;\r",
-											"        delete     res.InputData.LoanActionCode;\r",
+											"    try\r",
+											"    {  \r",
+											"        req0100=libRequest.getRequest('01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"        res0100=libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"        \r",
+											"        console.log('*********** res0100 => res *****************');\r",
+											"        pm.expect(libCompare.compareJson(res0100,res    ,false)).to.eql(true);\r",
+											"        console.log('*********** res => res0100 *****************');\r",
+											"\r",
+											"        \r",
+											"        if(!req0100.InputData.IsWithLoan)\r",
+											"        {\r",
+											"            delete req0100.InputData.LoanActionCode;\r",
+											"            delete     res.InputData.LoanActionCode;\r",
+											"        }\r",
+											"\r",
+											"        pm.expect(libCompare.compareJson(req0100.InputData,res.InputData,false)).to.eql(true);\r",
+											"        pm.expect(libCompare.compareJson(res.InputData,req0100.InputData,false)).to.eql(true);\r",
+											"\r",
+											"        delete res.InputData;\r",
+											"        delete res.Created;\r",
+											"        pm.expect(libCompare.compareJson(res,res0100    ,false)).to.eql(true);\r",
+											"        console.log('**************** Done **********************');\r",
+											"\r",
+											"\r",
+											"/*\r",
+											"\r",
+											"        delete res.SimulationType;\r",
+											"        delete res.InputData;\r",
+											"        delete res.InsertStamp.dateTime;\r",
+											"        pm.expect(libCompare.compareJson(res    ,res0100,true)).to.eql(true);\r",
+											"*/\r",
+											"\r",
+											"\r",
 											"    }\r",
-											"\r",
-											"    pm.expect(libCompare.compareJson(req0100.InputData,res.InputData,false)).to.eql(true);\r",
-											"    pm.expect(libCompare.compareJson(res.InputData,req0100.InputData,false)).to.eql(true);\r",
-											"    \r",
-											"    delete res.SimulationType;\r",
-											"    delete res.InputData;\r",
-											"    delete res.InsertStamp.dateTime;\r",
-											"    pm.expect(libCompare.compareJson(res    ,res0100,false)).to.eql(true);\r",
-											"\r",
-											"\r",
-											"\r",
-											"    /*\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
-											"    */\r",
+											"    catch(e)\r",
+											"    {\r",
+											"        console.error(e);\r",
+											"        throw(e);\r",
+											"    }\r",
 											"});\r",
 											"\r",
 											"postman.setNextRequest('01-0500-OfferSerice-GetBuildingSavingsDepositSchedule');\r",
-											"//postman.setNextRequest('01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule');\r",
+											"postman.setNextRequest(null);\r",
 											"\r",
+											"\r",
+											"//postman.setNextRequest('01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule');\r",
 											"//postman.setNextRequest('01-2000-OfferSerice-GetBuildingSavingsData');\r",
 											"\r",
 											"\r",
@@ -322,6 +350,20 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
+											"\r",
+											"pm.test(\"Prepeare data local\", function () \r",
+											"{\r",
+											"    /*res0100=libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"\r",
+											"    console.log('Vysledek 01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"    console.log(res0100);\r",
+											"    console.log(res100['OfferInstanceId']);\r",
+											"    console.log('Konec vysledku 01-0100-OfferSerice-SimulateBuildingSavings');\r",
+											"*/\r",
+											"\r",
+											"    //pm.variables.set('OfferInstanceId',res100.OfferInstanceId);\r",
+											"});\r",
+											"\r",
 											"\r",
 											"\r",
 											""
@@ -390,6 +432,16 @@
 										"exec": [
 											"pm.test(\"\", function () \r",
 											"{\r",
+											"    try\r",
+											"    {\r",
+											"\r",
+											"    }\r",
+											"    catch(e)\r",
+											"    {\r",
+											"        console.error(e);\r",
+											"        throw(e);\r",
+											"    }\r",
+											"\r",
 											"\r",
 											"});\r",
 											"\r",
@@ -514,6 +566,10 @@
 											"\r",
 											"\r",
 											"}\r",
+											"\r",
+											"\r",
+											"postman.setNextRequest(null);\r",
+											"\r",
 											"\r",
 											"\r",
 											"\r",
@@ -711,109 +767,6 @@
 										{
 											"key": "method",
 											"value": "GetBuildingSavingsPaymentSchedule"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "01-2000-OfferSerice-GetBuildingSavingsData",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Get returns the same result as simulation itself\", function () \r",
-											"{\r",
-											"    //TODO: Pridat dalsi\r",
-											"    pm.expect(res.BuildingSavings.TotalSaved).to.\r",
-											"        eql(libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings').BuildingSavings.TotalSaved);\r",
-											"    pm.expect(res.BuildingSavings.TotalDeposits).to.\r",
-											"        eql(libRequest.getResponse('01-0100-OfferSerice-SimulateBuildingSavings').BuildingSavings.TotalDeposits);\r",
-											"\r",
-											"\r",
-											"    /*\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.InterestRate)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_urokova_sazba')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalDeposits)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_vklady_celkem')/1);\r",
-											"    pm.expect(libCisTypes.grpcDecimalToNumber(res.BuildingSavings.TotalFees)).to.\r",
-											"        eql(libEAS.getSimulationPropperty('SS_uhrady_a_poplatky_celkem')/1);\r",
-											"    */\r",
-											"});\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"OfferInstanceId\":{{OfferInstanceId}}\r\n}\r\n\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://127.0.0.1:3000/gRPCcall?server=fomsOfferService&proto=OfferService.v1&package=DomainServices.OfferService.v1&service=OfferService&method=GetBuildingSavingsData",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "3000",
-									"path": [
-										"gRPCcall"
-									],
-									"query": [
-										{
-											"key": "server",
-											"value": "fomsOfferService"
-										},
-										{
-											"key": "proto",
-											"value": "OfferService.v1"
-										},
-										{
-											"key": "package",
-											"value": "DomainServices.OfferService.v1"
-										},
-										{
-											"key": "service",
-											"value": "OfferService"
-										},
-										{
-											"key": "method",
-											"value": "GetBuildingSavingsData"
 										}
 									]
 								}
@@ -1941,6 +1894,9 @@
 				"exec": [
 					"var moment = require('moment');",
 					"",
+					"console.log('Iteration:'+pm.info.iteration);",
+					"",
+					"",
 					"libRequest = ",
 					"{",
 					"  getRequest: function(requestName) ",
@@ -2274,28 +2230,34 @@
 					"    }",
 					");",
 					"",
-					"js_response=pm.response.text();",
-					"js_request=pm.request.body.raw;",
+					"pm.test",
+					"(",
+					"    \"Prepare data\", function()",
+					"    {",
 					"",
-					"requestName=request.name",
-					"//console.log(requestName);",
+					"        js_response=pm.response.text();",
+					"        js_request=pm.request.body.raw;",
 					"",
-					"pm.collectionVariables.set('<-- '+requestName+'',js_response);",
-					"pm.collectionVariables.set('--> '+requestName+'',js_request);",
+					"        requestName=request.name",
+					"        //console.log(requestName);",
 					"",
-					"//console.log('ABC');",
+					"        pm.collectionVariables.set('<-- '+requestName+'',js_response);",
+					"        pm.collectionVariables.set('--> '+requestName+'',js_request);",
 					"",
-					"if(pm.request.headers.has('SOAPAction'))",
-					"{",
-					"    res=xml2Json(js_response);",
-					"    req=xml2Json(js_request);",
-					"}",
-					"else",
-					"{",
-					"    res=JSON.parse(js_response);",
-					"    req=JSON.parse(js_request);",
-					"}",
+					"        //console.log('ABC');",
 					"",
+					"        if(pm.request.headers.has('SOAPAction'))",
+					"        {",
+					"            res=xml2Json(js_response);",
+					"            req=xml2Json(js_request);",
+					"        }",
+					"        else",
+					"        {",
+					"            res=JSON.parse(js_response);",
+					"            req=JSON.parse(js_request);",
+					"        }",
+					"    }",
+					");",
 					"",
 					"",
 					"",
@@ -2305,6 +2267,52 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "<-- 01-0050-EAS-Simulation",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0050-EAS-Simulation",
+			"value": ""
+		},
+		{
+			"key": "Pokus",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0100-OfferSerice-SimulateBuildingSavings",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0100-OfferSerice-SimulateBuildingSavings",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0300-OfferSerice-GetBuildingSavingsData",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0300-OfferSerice-GetBuildingSavingsData",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0500-OfferSerice-GetBuildingSavingsDepositSchedule",
+			"value": ""
+		},
+		{
+			"key": "<-- 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
+			"value": ""
+		},
+		{
+			"key": "--> 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
+			"value": ""
 		}
 	]
 }
