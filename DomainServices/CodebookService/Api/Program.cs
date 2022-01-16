@@ -4,6 +4,7 @@ using CIS.Security;
 using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
+using Microsoft.OpenApi.Models;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -56,6 +57,18 @@ builder.AddCodebookServiceEndpointsStartup(assembly);
 
 builder.Services.AddHttpContextAccessor();
 
+//swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.SwaggerDoc("v1", new OpenApiInfo { Title = "Codebook Service API", Version = "v1" });
+
+    // všechny parametry budou camel case
+    x.DescribeAllParametersInCamelCase();
+
+    x.CustomSchemaIds(type => type.ToString());
+});
+
 // add grpc reflection
 builder.Services.AddCodeFirstGrpcReflection();
 #endregion register builder.Services
@@ -66,6 +79,13 @@ builder.UseKestrelWithCustomConfiguration();
 // BUILD APP
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
+
+app
+    .UseSwagger()
+    .UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Codebook Service API");
+    });
 
 app.UseRouting();
 
