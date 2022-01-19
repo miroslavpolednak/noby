@@ -2,7 +2,6 @@
 using DomainServices.DocumentService.Contracts;
 
 namespace DomainServices.DocumentService.Api.Dto;
-
 internal sealed class GetDocumentMediatrRequest : IRequest<GetDocumentResponse>, CIS.Core.Validation.IValidatableRequest
 {
     public string DocumentId { get; init; }

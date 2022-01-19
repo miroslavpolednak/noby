@@ -2,6 +2,7 @@
 package DomainServices.DocumentService;
 option csharp_namespace = "DomainServices.DocumentService.Contracts";
 
+import "Types.proto";
 import "IdentitySchemas.proto";
 
 message GetDocumentRequest {
@@ -11,5 +12,8 @@ message GetDocumentRequest {
 
 message GetDocumentResponse {
    string DocumentId = 1;
-   cis.types.IdentitySchemes Mandant = 2;
+   bytes DocumentData = 2;
+   //DocumentOrigin DocumentOrigin = 3;
+   string MimeType = 4;
+   string Filename = 5;
 }

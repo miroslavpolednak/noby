@@ -13,5 +13,10 @@ namespace DomainServices.DocumentService.Abstraction.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<IServiceCallResult> GetDocumentsListByCaseId(Int32 caseId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,0 +1,58 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentService;
+option csharp_namespace = "DomainServices.DocumentService.Contracts";
+
+import "GrpcDate.proto";
+import "IdentitySchemas.proto";
+
+enum DocumentOrigin {
+	Unknown = 0;
+	Tcp = 1;
+	Scp = 2;
+	EPodpisyMp = 3;
+	EPodpisyKb = 4;
+	Acv= 5;
+}
+
+// jak se bude tato enumerace používat (obecné stavy / stavy z ePodpisy, mapování) ?
+enum DocumentStatus {
+	// obecné stavy FOMS:
+	Draft = 0;
+	ToSign = 1;
+	DigitallySigned = 2;
+	ManuallySigned = 3;
+	Archived = 4;
+
+	// stavy ePodpisů: (bude se s nimi pracovat?)
+	// APPROVED
+	// VERIFIED
+	// SENT
+	// DELETED
+	// SIGNED
+	// NEW
+	// IN_PROGRESS
+}
+
+enum DocumentRelationType {
+	N = 0;	// nesložkový dokument (v TCP „n“, v CSP „N“)
+	S = 1;	// hlavní složkový dokument
+	P = 2;	// podřízený složkový dokument
+}
+
+message Document {
+   string DocumentId = 1;
+   string  ContractNumber = 2;
+   DocumentOrigin Origin = 3;
+   cis.types.IdentitySchemes Mandant = 4;
+   DocumentStatus Status = 5;
+   string EaCodeMainCode = 6;
+   string EaCodeMainDescription = 7;
+   cis.types.GrpcDate ReceivalDate = 8;
+   cis.types.GrpcDate ArchivationDate = 9;
+   cis.types.GrpcDate LastChangeDate = 10;
+}
+
+message RiskData {
+   string Data = 1;
+   // doplnit (neúplná dokumentace)
+}

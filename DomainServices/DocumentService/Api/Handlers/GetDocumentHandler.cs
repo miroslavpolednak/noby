@@ -22,13 +22,22 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentMediatrRequest, G
     {
         _logger.LogInformation("Get document [DocumentId: {id}, Mandant: {mandant}]", request.DocumentId, request.Mandant);
 
+        if (request.Mandant != CIS.Core.IdentitySchemes.Kb)
+        {
+            throw new NotSupportedException($"Mandant '{request.Mandant}' is not supported");
+        }
+
         var model = new GetDocumentResponse
         {
             DocumentId = request.DocumentId,
-            //Mandant = Enum.Parse< IdentitySchemes>(request.Mandant.ToString())
-            Mandant = IdentitySchemes.Unknown
+            DocumentData = null,
+            //DocumentOrigin =  null,
+            MimeType = String.Empty,
+            Filename = null
         };
 
         return model;
     }
+
+   
 }
