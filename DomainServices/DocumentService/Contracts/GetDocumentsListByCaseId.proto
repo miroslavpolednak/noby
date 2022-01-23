@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentService;
+option csharp_namespace = "DomainServices.DocumentService.Contracts";
+
+import "Types.proto";
+import "GrpcDate.proto";
+
+message GetDocumentsListByCaseIdRequest {
+   int32 CaseId = 1;
+}
+
+message GetDocumentsListByCaseIdResponse {
+   repeated Document Documents = 1;
+   RiskData RiskData = 2;
+   int32 CaseId = 3;
+   string CustomerId = 4;
+   string EmployerIco = 5;
+   cis.types.GrpcDate IncomeExportDate = 6;
+   cis.types.GrpcDate StatementFromDate = 7;
+   cis.types.GrpcDate StatementToDate = 8;
+   cis.types.GrpcDate TaxReturnFromDate = 9;
+   cis.types.GrpcDate TaxReturnToDate = 10;
+   string RelationId = 11;
+   DocumentRelationType RelationType = 12;
+}
