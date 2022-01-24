@@ -42,6 +42,13 @@ builder.Services
     .AddCaseService(true)
     .AddSalesArrangementService(true);
 
+// json
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
+});
+
 // health checks
 builder.AddCisHealthChecks();
 
