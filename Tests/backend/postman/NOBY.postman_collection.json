@@ -858,7 +858,7 @@
 			"name": "02-CustomerService",
 			"item": [
 				{
-					"name": "0100 Create",
+					"name": "02-0100-CustomerService-Create",
 					"event": [
 						{
 							"listen": "test",
@@ -866,6 +866,7 @@
 								"exec": [
 									"pm.test(\"Test for real ID return.\", function () \r",
 									"{\r",
+									"    //There was dummy value 123 in early development stage of Customer service\r",
 									"    pm.expect(res.Identity).not.to.eql(123);\r",
 									"});\r",
 									"\r",
@@ -879,17 +880,15 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"seed=pm.collectionVariables.get('birthNoSeed');\r",
-									"console.log(seed);\r",
+									"pm.test(\"Prepeare request variables\", function () \r",
+									"{\r",
+									"    seed=pm.collectionVariables.get('birthNoSeed');\r",
 									"\r",
-									"seed=libBirthNo.getNext(seed);\r",
-									"console.log('Po:');\r",
-									"console.log(seed);\r",
-									"pm.collectionVariables.set('birthNoSeed',seed);\r",
-									"console.log(libBirthNo.getBirthNo(seed));\r",
-									"pm.variables.set('localBirthNumber',libBirthNo.getBirthNo(seed));\r",
+									"    seed=libBirthNo.getNext(seed);\r",
+									"    pm.collectionVariables.set('birthNoSeed',seed);\r",
+									"    pm.variables.set('localBirthNumber',libBirthNo.getBirthNo(seed));\r",
 									"\r",
-									""
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -947,7 +946,7 @@
 					"response": []
 				},
 				{
-					"name": "0200 GetDetail",
+					"name": "02-0200-CustomerService-GetDetail",
 					"event": [
 						{
 							"listen": "test",
@@ -955,97 +954,27 @@
 								"exec": [
 									"pm.test(\"Test of return.\", function () \r",
 									"{\r",
-									"    //pm.expect(res).to.eql(libRequest.getRequest('0100 Create'));\r",
+									"    createRequest=libRequest.getRequest('02-0100-CustomerService-Create');\r",
 									"\r",
 									"\r",
+									"    //delete createRequest.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
+									"    //delete res.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
 									"\r",
+									"    //delete createRequest.Addresses[0].CountryCode;\r",
+									"    //delete createRequest.Addresses[1].CountryCode;\r",
+									"    //delete res.Addresses[0].CountryCode;\r",
+									"    //delete res.Addresses[1].CountryCode;\r",
 									"\r",
-									"createRequest=libRequest.getRequest('0100 Create');\r",
+									"    pm.expect(libCompare.compareJson(createRequest,res,true)).to.be.true;\r",
 									"\r",
-									"//delete createRequest.IdentificationDocument.IssuedBy;  //(MěÚ Brandýs nad Labem - Stará Boleslav!=CZ)\r",
+									"    delete res.Contacts;\r",
+									"    delete res.Updatable;\r",
 									"\r",
-									"//console.log(createRequest.IdentificationDocument);\r",
-									"//console.log(res.IdentificationDocument);\r",
-									"\r",
-									"delete createRequest.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
-									"delete res.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
-									"\r",
-									"//console.log(createRequest.IdentificationDocument);\r",
-									"//console.log(res.IdentificationDocument);\r",
-									"\r",
-									"\r",
-									"//return;\r",
-									"\r",
-									"//delete createRequest.Addresses[0].BuildingIdentificationNumber;\r",
-									"//delete createRequest.Addresses[0].LandRegistryNumber;\r",
-									"\r",
-									"//delete createRequest.Addresses[1].BuildingIdentificationNumber;\r",
-									"//delete createRequest.Addresses[1].LandRegistryNumber;\r",
-									"\r",
-									"/*\r",
-									"console.log(createRequest.Addresses[0]);\r",
-									"console.log(createRequest.Addresses[0]['CountryCode'] );\r",
-									"console.log(createRequest.Addresses[0]);\r",
-									"*/\r",
-									"\r",
-									"delete createRequest.Addresses[0].CountryCode;\r",
-									"delete createRequest.Addresses[1].CountryCode;\r",
-									"delete res.Addresses[0].CountryCode;\r",
-									"delete res.Addresses[1].CountryCode;\r",
-									"\r",
-									"\r",
-									"//console.log(libCompare.compareJson(createRequest,res));\r",
-									"pm.expect(libCompare.compareJson(createRequest,res,true)).to.be.true;\r",
-									"\r",
-									"delete res.Contacts;\r",
-									"delete res.Updatable;\r",
-									"\r",
-									"pm.expect(libCompare.compareJson(res,createRequest,true)).to.be.true;\r",
+									"    pm.expect(libCompare.compareJson(res,createRequest,true)).to.be.true;\r",
 									"\r",
 									"});\r",
 									"\r",
 									"\r",
-									"\r",
-									"\r",
-									"//var moment = require('moment');\r",
-									"\r",
-									"\r",
-									"\r",
-									"//date=moment();\r",
-									"\r",
-									"\r",
-									"/*\r",
-									"date.set('year', 1970);\r",
-									"date.set('month', 0);  // April\r",
-									"date.set('date', 1);\r",
-									"date.set('hour', 0);\r",
-									"date.set('minute', 0);\r",
-									"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
-									"*/\r",
-									"\r",
-									"/*\r",
-									"\r",
-									"date.set('year', date.format(\"YYYY\")-30);\r",
-									"console.log(date.format(\"YYYY-MM-DD\"));\r",
-									"\r",
-									"let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;\r",
-									"\r",
-									"console.log(birthNoBase);\r",
-									"\r",
-									"console.log(birthNoBase+(11-birthNoBase%11)%11);\r",
-									"\r",
-									"let birthNoSeed=\r",
-									"{\r",
-									"    birthNoBase: birthNoBase,\r",
-									"    count: 0\r",
-									"}\r",
-									"\r",
-									"pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));\r",
-									"\r",
-									"*/\r",
-									"\r",
-									"\r",
-									"//console.log(libBirthNo.getNext());\r",
 									"\r",
 									"\r",
 									"\r",
@@ -1060,17 +989,10 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"\r",
-									"\r",
-									"//libBirthNo.pokus();\r",
-									"\r",
-									"//pm.collectionVariables.set('kuku2',1);\r",
-									"\r",
-									"\r",
-									"//console.log(libRequest.getRequest('0100 Create').BirthNumber);\r",
-									"\r",
-									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
-									"\r",
+									"pm.test(\"Prepeare request variables\", function () \r",
+									"{\r",
+									"    pm.variables.set('Identity',libRequest.getResponse('02-0100-CustomerService-Create').Identity);\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -1129,7 +1051,7 @@
 					"response": []
 				},
 				{
-					"name": "0300 UpdateBasicData",
+					"name": "02-0300-CustomerService-UpdateBasicData",
 					"event": [
 						{
 							"listen": "test",
@@ -1147,25 +1069,24 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"pm.test(\"Prepeare request variables\", function () \r",
+									"{\r",
 									"\r",
-									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
+									"    pm.variables.set('Identity',libRequest.getResponse('02-0100-CustomerService-Create').Identity);\r",
+									"    customerDetail=libRequest.getResponse('02-0200-CustomerService-GetDetail');\r",
 									"\r",
-									"customerDetail=libRequest.getResponse('0200 GetDetail');\r",
+									"    //TODO Smazat tento workaround pouzity kvuli reportovane chybe Customer Service\r",
+									"    customerDetail.IdentificationDocument.IssuingCountryCode=\"CZ\";\r",
 									"\r",
-									"//TODO Smazat tento workaround pouzity kvuli reportovane chybe Customer Service\r",
-									"customerDetail.IdentificationDocument.IssuingCountryCode=\"CZ\";\r",
+									"    FirstName=customerDetail.FirstName;\r",
+									"    LastName=customerDetail.LastName;\r",
 									"\r",
-									"FirstName=customerDetail.FirstName;\r",
-									"LastName=customerDetail.LastName;\r",
+									"    customerDetail.FirstName=LastName;\r",
+									"    customerDetail.LastName=FirstName;\r",
 									"\r",
-									"customerDetail.FirstName=LastName;\r",
-									"customerDetail.LastName=FirstName;\r",
+									"    pm.variables.set('CustomerData',JSON.stringify(customerDetail));\r",
 									"\r",
-									"\r",
-									"\r",
-									"pm.variables.set('CustomerData',JSON.stringify(customerDetail));\r",
-									"\r",
-									""
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1223,7 +1144,7 @@
 					"response": []
 				},
 				{
-					"name": "0400 GetDetail",
+					"name": "02-0400-CustomerService-GetDetail",
 					"event": [
 						{
 							"listen": "test",
@@ -1231,98 +1152,22 @@
 								"exec": [
 									"pm.test(\"Test of return.\", function () \r",
 									"{\r",
-									"    //pm.expect(res).to.eql(libRequest.getRequest('0100 Create'));\r",
 									"\r",
+									"    updateRequest=libRequest.getRequest('02-0300-CustomerService-UpdateBasicData');\r",
 									"\r",
+									"    //delete updateRequest.Customer.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
+									"    //delete res.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
 									"\r",
+									"    pm.expect(libCompare.compareJson(updateRequest.Customer,res,false)).to.be.true;\r",
 									"\r",
-									"updateRequest=libRequest.getRequest('0300 UpdateBasicData');\r",
+									"    delete res.Contacts;\r",
+									"    delete res.Updatable;\r",
 									"\r",
-									"//delete createRequest.IdentificationDocument.IssuedBy;  //(MěÚ Brandýs nad Labem - Stará Boleslav!=CZ)\r",
-									"\r",
-									"//console.log(createRequest.IdentificationDocument);\r",
-									"//console.log(res.IdentificationDocument);\r",
-									"\r",
-									"delete updateRequest.Customer.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
-									"delete res.IdentificationDocument.IssuingCountryCode; //(CZ!=TODO)\r",
-									"\r",
-									"//console.log(createRequest.IdentificationDocument);\r",
-									"//console.log(res.IdentificationDocument);\r",
-									"\r",
-									"\r",
-									"//return;\r",
-									"\r",
-									"//delete createRequest.Addresses[0].BuildingIdentificationNumber;\r",
-									"//delete createRequest.Addresses[0].LandRegistryNumber;\r",
-									"\r",
-									"//delete createRequest.Addresses[1].BuildingIdentificationNumber;\r",
-									"//delete createRequest.Addresses[1].LandRegistryNumber;\r",
-									"\r",
-									"/*\r",
-									"console.log(createRequest.Addresses[0]);\r",
-									"console.log(createRequest.Addresses[0]['CountryCode'] );\r",
-									"console.log(createRequest.Addresses[0]);\r",
-									"*/\r",
-									"\r",
-									"//delete createRequest.Addresses[0].CountryCode;\r",
-									"//delete createRequest.Addresses[1].CountryCode;\r",
-									"//delete res.Addresses[0].CountryCode;\r",
-									"//delete res.Addresses[1].CountryCode;\r",
-									"\r",
-									"\r",
-									"//console.log(libCompare.compareJson(createRequest,res));\r",
-									"pm.expect(libCompare.compareJson(updateRequest.Customer,res,true)).to.be.true;\r",
-									"\r",
-									"delete res.Contacts;\r",
-									"delete res.Updatable;\r",
-									"\r",
-									"pm.expect(libCompare.compareJson(res,updateRequest.Customer,true)).to.be.true;\r",
+									"    pm.expect(libCompare.compareJson(res,updateRequest.Customer,false)).to.be.true;\r",
 									"\r",
 									"});\r",
 									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"//var moment = require('moment');\r",
-									"\r",
-									"\r",
-									"\r",
-									"//date=moment();\r",
-									"\r",
-									"\r",
-									"/*\r",
-									"date.set('year', 1970);\r",
-									"date.set('month', 0);  // April\r",
-									"date.set('date', 1);\r",
-									"date.set('hour', 0);\r",
-									"date.set('minute', 0);\r",
-									"date.set('second',24*60*60*(js_response['ScheduleItems'][i].Date.value));\r",
-									"*/\r",
-									"\r",
-									"/*\r",
-									"\r",
-									"date.set('year', date.format(\"YYYY\")-30);\r",
-									"console.log(date.format(\"YYYY-MM-DD\"));\r",
-									"\r",
-									"let birthNoBase=(date.format(\"YYYYMMDD\")+\"0000\")/1;\r",
-									"\r",
-									"console.log(birthNoBase);\r",
-									"\r",
-									"console.log(birthNoBase+(11-birthNoBase%11)%11);\r",
-									"\r",
-									"let birthNoSeed=\r",
-									"{\r",
-									"    birthNoBase: birthNoBase,\r",
-									"    count: 0\r",
-									"}\r",
-									"\r",
-									"pm.collectionVariables.set('birthNoSeed',JSON.stringify(birthNoSeed));\r",
-									"\r",
-									"*/\r",
-									"\r",
-									"\r",
-									"//console.log(libBirthNo.getNext());\r",
-									"\r",
+									"postman.setNextRequest(null);\r",
 									"\r",
 									"\r",
 									"\r",
@@ -1336,17 +1181,10 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"\r",
-									"\r",
-									"//libBirthNo.pokus();\r",
-									"\r",
-									"//pm.collectionVariables.set('kuku2',1);\r",
-									"\r",
-									"\r",
-									"//console.log(libRequest.getRequest('0100 Create').BirthNumber);\r",
-									"\r",
-									"pm.variables.set('Identity',libRequest.getResponse('0100 Create').Identity);\r",
-									"\r",
+									"pm.test(\"Prepeare request variables\", function () \r",
+									"{\r",
+									"    pm.variables.set('Identity',libRequest.getResponse('02-0100-CustomerService-Create').Identity);\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -1403,9 +1241,14 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "02-CustomerService-Contacts",
+			"item": [
 				{
-					"name": "0500 CreateContact",
+					"name": "02-0500-CustomerService-CreateContact",
 					"event": [
 						{
 							"listen": "test",
@@ -2146,6 +1989,90 @@
 		},
 		{
 			"key": "--> 01-0600-OfferSerice-GetBuildingSavingsPaymentSchedule",
+			"value": ""
+		},
+		{
+			"key": "birthNoSeed",
+			"value": ""
+		},
+		{
+			"key": "<-- 0100 Create",
+			"value": ""
+		},
+		{
+			"key": "--> 0100 Create",
+			"value": ""
+		},
+		{
+			"key": "<-- 0200 GetDetail",
+			"value": ""
+		},
+		{
+			"key": "--> 0200 GetDetail",
+			"value": ""
+		},
+		{
+			"key": "<-- 0300 UpdateBasicData",
+			"value": ""
+		},
+		{
+			"key": "--> 0300 UpdateBasicData",
+			"value": ""
+		},
+		{
+			"key": "<-- 0400 GetDetail",
+			"value": ""
+		},
+		{
+			"key": "--> 0400 GetDetail",
+			"value": ""
+		},
+		{
+			"key": "<-- 0500 CreateContact",
+			"value": ""
+		},
+		{
+			"key": "--> 0500 CreateContact",
+			"value": ""
+		},
+		{
+			"key": "<-- 02-0100-CustomerService-Create",
+			"value": ""
+		},
+		{
+			"key": "--> 02-0100-CustomerService-Create",
+			"value": ""
+		},
+		{
+			"key": "<-- 02-0200-CustomerService-GetDetail",
+			"value": ""
+		},
+		{
+			"key": "--> 02-0200-CustomerService-GetDetail",
+			"value": ""
+		},
+		{
+			"key": "<-- 02-0300-CustomerService-UpdateBasicData",
+			"value": ""
+		},
+		{
+			"key": "--> 02-0300-CustomerService-UpdateBasicData",
+			"value": ""
+		},
+		{
+			"key": "<-- 02-0400-CustomerService-GetDetail",
+			"value": ""
+		},
+		{
+			"key": "--> 02-0400-CustomerService-GetDetail",
+			"value": ""
+		},
+		{
+			"key": "<-- 02-0500-CustomerService-CreateContact",
+			"value": ""
+		},
+		{
+			"key": "--> 02-0500-CustomerService-CreateContact",
 			"value": ""
 		}
 	]

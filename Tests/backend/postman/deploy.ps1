@@ -3,7 +3,12 @@
 #TODO - konfiguraco vlozit do konfiguracniho souboru, ktery umistim do home
 #$postmanTemplateGitVersion="253ee9ed12f"
 #$postmanTemplateGitVersion='b064a5f59fc'
-$postmanTemplateGitVersion='9d6defbf0ae';
+#$postmanTemplateGitVersion='9d6defbf0ae';
+#$postmanTemplateGitVersion='b064a5f59fc';
+
+$postmanTemplateGitVersion='a742ddfc8ad';
+
+
 $installDirectory=$home+"/tests/be/postman"
 $protobufVersion='3.18'
 
@@ -48,6 +53,7 @@ cp grpc_config.json $installDirectory/$postmanTemplateGitVersion/templateConfig
 #Je treba rucne kvuli KB Proxy - nelze wgetem
 while(!(Test-Path -Path "~/Downloads/protobuf-$protobufVersion.x.zip"))
 {
+    [console]::beep(1000,1000)
     echo "Please download https://github.com/protocolbuffers/protobuf/archive/refs/heads/$protobufVersion.x.zip to ~/Downloads" 
     Read-Host -Prompt 'Press enter when ready'
 }
@@ -141,6 +147,7 @@ foreach($service in $componentTests.Keys)
     ($script) | Set-Content ($installDirectory+"/tests/component/"+$service+"/test.ps1");
 }
 
+[console]::beep(1000,1000)
 return;
 #Test scripts
 
@@ -158,9 +165,10 @@ else
 }
 
 cd $installDirectory/$postmanTemplateGitVersion/testRunners
-node.exe .\runTemplate.js --otherPwd.$expressGrpcConfigKey="$passwd" --folders $service
+node.exe .\runTemplate.js --otherPwd.$expressGrpcConfigKey="$passwd" --folders $service --type $service
 Pop-Location
 
+[console]::beep(3000,500)
 
 #---ComponentTestScriptEnd---
 
