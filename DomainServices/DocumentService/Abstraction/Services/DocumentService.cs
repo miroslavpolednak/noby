@@ -18,5 +18,20 @@ namespace DomainServices.DocumentService.Abstraction.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<IServiceCallResult> GetDocumentsListByContractNumber(string contractNumber, IdentitySchemes mandant, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IServiceCallResult> GetDocumentsListByCustomerId(string customerId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IServiceCallResult> GetDocumentsListByRelationId(string relationId, IdentitySchemes mandant, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

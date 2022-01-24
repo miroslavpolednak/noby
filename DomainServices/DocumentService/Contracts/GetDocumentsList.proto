@@ -3,13 +3,32 @@ package DomainServices.DocumentService;
 option csharp_namespace = "DomainServices.DocumentService.Contracts";
 
 import "Types.proto";
+import "IdentitySchemas.proto";
 import "GrpcDate.proto";
 
 message GetDocumentsListByCaseIdRequest {
    int32 CaseId = 1;
 }
 
-message GetDocumentsListByCaseIdResponse {
+message GetDocumentsListByContractNumberRequest {
+   string ContractNumber = 1;
+   cis.types.IdentitySchemes Mandant = 2;
+}
+
+message GetDocumentsListByCustomerIdRequest {
+	string CustomerId = 1;
+   //Customer Customer = 1;
+   //repeated string EaCodeMain  = 2;
+   // doplnit (neúplná dokumentace):
+   // RiskData RiskData = 3; 
+}
+
+message GetDocumentsListByRelationIdRequest {
+   string RelationId = 1;
+   cis.types.IdentitySchemes Mandant = 2;
+}
+
+message GetDocumentsListResponse {
    repeated Document Documents = 1;
    RiskData RiskData = 2;
    int32 CaseId = 3;
