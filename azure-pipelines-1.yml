@@ -23,7 +23,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
-    outputDir: '$(Build.BinariesDirectory)'
+    arguments: '--output $(Build.BinariesDirectory)'
 
 - task: ArchiveFiles@2
   inputs:
