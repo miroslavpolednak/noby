@@ -8,10 +8,10 @@ internal class UpdateCaseStateMediatrRequestValidator : AbstractValidator<Dto.Up
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13000");
+            .WithMessage("CaseId must be > 0").WithErrorCode("13016");
 
         RuleFor(t => t.State)
             .GreaterThan(0)
-            .WithMessage("State must be > 0").WithErrorCode("13000");
+            .WithMessage("Case State must be > 0").WithErrorCode("13017");
     }
 }

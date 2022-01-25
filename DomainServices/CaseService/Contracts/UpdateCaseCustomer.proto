@@ -2,13 +2,11 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "NullableGrpcDate.proto";
-import "Identity.proto";
+import "CustomerData.proto";
 
 message UpdateCaseCustomerRequest {
 	int64 CaseId = 1;
-	cis.types.Identity Customer = 2;
-	string FirstNameNaturalPerson = 3;
-	string Name = 4;
-	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
+
+	// Upravena dada o klientovi
+	CustomerData Customer = 2;
 }

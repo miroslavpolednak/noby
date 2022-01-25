@@ -2,19 +2,19 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "NullableGrpcDate.proto";
-import "Identity.proto";
+import "CustomerData.proto";
+import "CaseData.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateCaseRequest {
-	cis.types.Identity Customer = 1;
-	int32 UserId = 2;
-	string FirstNameNaturalPerson = 3;
-	string Name = 4;
-	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 5;
-	int32 ProductInstanceType = 6;
-	google.protobuf.Int32Value TargetAmount = 7;
-	string ContractNumber = 8;
+	// Hlavni klient na Case
+	CustomerData Customer = 1;
+
+	// Poradce, ktery je vlastnikem Case
+	int32 CaseOwnerUserId = 2;
+	
+	// Vlastnosti Case
+	CaseData Data = 3;
 }
 
 message CreateCaseResponse {

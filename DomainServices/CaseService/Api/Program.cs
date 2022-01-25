@@ -3,6 +3,7 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.CaseService.Api;
 using DomainServices.CodebookService.Abstraction;
+using DomainServices.UserService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 
@@ -27,16 +28,17 @@ appConfiguration.CheckAppConfiguration();
 builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
+builder
+    .AddCisEnvironmentConfiguration()
+    .AddCisCoreFeatures();
 
 // logging 
-builder.AddCisLogging();
-builder.AddCisTracing();
+builder
+    .AddCisLogging()
+    .AddCisTracing();
 
 // health checks
 builder.AddCisHealthChecks();
-
-builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
@@ -44,9 +46,12 @@ builder.AddCisServiceAuthentication();
 
 // add this service
 builder.AddCaseService(appConfiguration);
-// add services
-builder.Services.AddCodebookService(true);
-builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS a mphome
+
+// add BE services
+builder.Services
+    .AddCodebookService(true)
+    .AddUserService(true)
+    .AddCisServiceDiscovery(true);
 
 builder.Services.AddGrpc(options =>
 {

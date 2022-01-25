@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Results;
-using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Abstraction;
@@ -36,7 +35,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> LinkOwnerToCase(long caseId, int userId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update zakladnich udaju Case - cislo smlouvy
@@ -44,7 +43,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateCaseData(long caseId, string? contractNumber = null, int? targetAmount = null, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update stavu Case
@@ -60,5 +59,5 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateCaseCustomer(UpdateCaseCustomerRequest model, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -21,13 +21,13 @@ internal class HousingSavingsProcessor : BaseDocumentProcessor, IDocumentProcess
 
         // info o case
         var _caseService = _serviceAccessor.GetRequiredService<DomainServices.CaseService.Abstraction.ICaseServiceAbstraction>();
-        var caseInstance = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.CaseModel>(await _caseService.GetCaseDetail(_salesArrangement.CaseId));
+        var caseInstance = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(_salesArrangement.CaseId));
 
         // info o customerovi
         var customerService = _serviceAccessor.GetRequiredService<DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction>();
         var customer = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.GetDetailResponse>(await customerService.GetDetail(new()
         {
-            Identity = caseInstance.Customer.IdentityId
+            Identity = caseInstance.Customer.Identity.IdentityId
         }));
         var address = customer.Addresses.FirstOrDefault(t => t.Type == DomainServices.CustomerService.Contracts.AddressTypes.Pernament);
 
@@ -35,7 +35,7 @@ internal class HousingSavingsProcessor : BaseDocumentProcessor, IDocumentProcess
         {
             Customer = new()
             {
-                Id = caseInstance.Customer.IdentityId,//TODO
+                Id = caseInstance.Customer.Identity.IdentityId,//TODO
                 IsNaturalPerson = true,//TODO
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,

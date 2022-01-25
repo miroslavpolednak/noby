@@ -6,31 +6,27 @@ namespace DomainServices.CaseService.Api.Repositories;
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class CaseServiceRepository
 {
-    private readonly CaseServiceDbContext _dbContext;
-
-    public CaseServiceRepository(CaseServiceDbContext dbContext)
+    public async Task EnsureExistingCase(long caseId, CancellationToken cancellation)
     {
-        _dbContext = dbContext;
+        await getCaseEntity(caseId, cancellation);
     }
 
-    private async Task<Entities.CaseInstance> getCaseEntity(long caseId)
-        => await _dbContext.CaseInstances.FindAsync(caseId) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"Case #{caseId} not found");
-
-    public async Task<bool> IsExistingCase(long caseId)
-        => await _dbContext.CaseInstances.AnyAsync(t => t.CaseId == caseId);
-
-    public async Task CreateCase(Entities.CaseInstance entity)
+    public async Task CreateCase(Entities.CaseInstance entity, CancellationToken cancellation)
     {
         _dbContext.CaseInstances.Add(entity);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task<Entities.CaseInstance> GetCaseDetail(long caseId)
-        => await getCaseEntity(caseId);
+    public async Task<Contracts.Case> GetCaseDetail(long caseId, CancellationToken cancellation)
+        => await _dbContext.CaseInstances
+            .Where(t => t.CaseId == caseId)
+            .AsNoTracking()
+            .Select(CaseServiceRepositoryExtensions.CaseDetail())
+            .FirstOrDefaultAsync(cancellation) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"Case #{caseId} not found");
 
-    public async Task<Contracts.SearchCasesResponse> GetCaseList(CIS.Infrastructure.gRPC.CisTypes.PaginationRequest pagination, int userId, int? state, string? searchTerm)
+    public async Task<Contracts.SearchCasesResponse> GetCaseList(CIS.Infrastructure.gRPC.CisTypes.PaginationRequest pagination, int userId, int? state, string? searchTerm, CancellationToken cancellation)
     {
-        var query = _dbContext.CaseInstances.AsNoTracking().Where(t => t.UserId == userId);
+        var query = _dbContext.CaseInstances.AsNoTracking().Where(t => t.OwnerUserId == userId);
         // omezeni na state
         if (state.HasValue)
             query = query.Where(t => t.State == state.Value);
@@ -40,75 +36,77 @@ internal class CaseServiceRepository
         
         // razeni
         if (pagination.Sorting is not null && pagination.Sorting.Any())
-        {
             query = query.ApplyOrderBy(new[] { Tuple.Create(pagination.Sorting.First().Field, pagination.Sorting.First().Descending) });
-        }
         else
-        {
             query = query.OrderByDescending(t => t.CreatedTime);
-        }
 
         var result = new Contracts.SearchCasesResponse()
         {
-            Pagination = pagination.CreateResponse(await query.CountAsync())
+            Pagination = pagination.CreateResponse(await query.AsNoTracking().CountAsync(cancellation))
         };
-        result.CaseInstances.AddRange(await query
-            .Skip(pagination.PageSize * (pagination.RecordOffset - 1))
-            .Take(pagination.PageSize)
-            .Select(t => new Contracts.CaseModel
-            {
-                CaseId = t.CaseId,
-                State = t.State,
-                ActionRequired = t.IsActionRequired,
-                ContractNumber = t.ContractNumber ?? "",
-                DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
-                FirstNameNaturalPerson = t.FirstNameNaturalPerson,
-                Name = t.Name,
-                Customer = !t.CustomerIdentityId.HasValue ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(t.CustomerIdentityId, t.CustomerIdentityScheme),
-                ProductInstanceType = t.ProductInstanceType,
-                TargetAmount = t.TargetAmount,
-                UserId = t.UserId,
-                Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
-            }).ToListAsync()
+        result.CaseInstances.AddRange(
+            await query
+                .Skip(pagination.PageSize * (pagination.RecordOffset - 1))
+                .Take(pagination.PageSize)
+                .AsNoTracking()
+                .Select(CaseServiceRepositoryExtensions.CaseDetail()
+            ).ToListAsync(cancellation)
         );
 
         return result;
     }
 
-    public async Task LinkOwnerToCase(long caseId, int userId)
+    public async Task LinkOwnerToCase(long caseId, int ownerUserId, string ownerName, CancellationToken cancellation)
     {
-        (await getCaseEntity(caseId)).UserId = userId;
-        await _dbContext.SaveChangesAsync();
+        var entity = await getCaseEntity(caseId, cancellation);
+
+        entity.OwnerUserId = ownerUserId;
+        entity.OwnerUserName = ownerName;
+        
+        await _dbContext.SaveChangesAsync(cancellation);
     }
     
-    public async Task UpdateCaseData(long caseId, string? contractNumber, int? targetAmount)
+    public async Task UpdateCaseData(long caseId, Contracts.CaseData data, CancellationToken cancellation)
     {
-        var entity = await getCaseEntity(caseId);
+        var entity = await getCaseEntity(caseId, cancellation);
         
-        if (!string.IsNullOrEmpty(contractNumber))
-            entity.ContractNumber = contractNumber;
-        if (targetAmount.HasValue)
-            entity.TargetAmount = targetAmount.Value;
+        entity.ContractNumber = data.ContractNumber;
+        entity.TargetAmount = data.TargetAmount;
+        entity.ProductInstanceType = data.ProductInstanceType;
+
+        await _dbContext.SaveChangesAsync(cancellation);
+    }
+
+    public async Task UpdateCaseState(long caseId, int state, CancellationToken cancellation)
+    {
+        var entity = await getCaseEntity(caseId, cancellation);
+
+        entity.State = state;
+        entity.StateUpdateTime = DateTime.Now;
+
+        await _dbContext.SaveChangesAsync(cancellation);
+    }
+
+    public async Task UpdateCaseCustomer(long caseId, Contracts.CustomerData customer, CancellationToken cancellation)
+    {
+        var entity = await getCaseEntity(caseId, cancellation);
+        
+        entity.DateOfBirthNaturalPerson = customer.DateOfBirthNaturalPerson;
+        entity.Name = customer.Name;
+        entity.FirstNameNaturalPerson = customer.FirstNameNaturalPerson;
+        entity.CustomerIdentityId = customer.Identity?.IdentityId;
+        entity.CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(customer.Identity?.IdentityScheme);
 
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateCaseState(long caseId, int state)
-    {
-        (await getCaseEntity(caseId)).State = state;
-        await _dbContext.SaveChangesAsync();
-    }
+    private async Task<Entities.CaseInstance> getCaseEntity(long caseId, CancellationToken cancellation)
+        => await _dbContext.CaseInstances.FindAsync(new object[] { caseId }, cancellation) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"Case #{caseId} not found");
 
-    public async Task UpdateCaseCustomer(long caseId, int? identityId, CIS.Core.IdentitySchemes? scheme, string firstName, string name, DateOnly? birthDate)
-    {
-        var entity = await getCaseEntity(caseId);
-        
-        entity.DateOfBirthNaturalPerson = birthDate;
-        entity.Name = name;
-        entity.FirstNameNaturalPerson = firstName;
-        entity.CustomerIdentityId = identityId;
-        entity.CustomerIdentityScheme = scheme;
+    private readonly CaseServiceDbContext _dbContext;
 
-        await _dbContext.SaveChangesAsync();
+    public CaseServiceRepository(CaseServiceDbContext dbContext)
+    {
+        _dbContext = dbContext;
     }
 }

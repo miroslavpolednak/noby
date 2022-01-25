@@ -24,7 +24,25 @@ internal class UserService : IUserServiceAbstraction
             return new ErrorServiceCallResult(ex.ExceptionCode, ex.Message);
         }
     }
-    
+
+    public async Task<IServiceCallResult> GetUser(int userId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        try
+        {
+            var result = await _userContext.AddUserContext(async () => await _service.GetUserAsync(
+                new Contracts.GetUserRequest
+                {
+                    UserId = userId
+                }, cancellationToken: cancellationToken)
+            );
+            return new SuccessfulServiceCallResult<Contracts.User>(result);
+        }
+        catch (CIS.Core.Exceptions.CisNotFoundException ex)
+        {
+            return new ErrorServiceCallResult(ex.ExceptionCode, ex.Message);
+        }
+    }
+
     private readonly ILogger<UserService> _logger;
     private readonly Contracts.v1.UserService.UserServiceClient _service;
     private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;

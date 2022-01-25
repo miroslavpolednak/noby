@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package cis.types;
+option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
+
+// Zakladni informace o uzivateli (poradci).
+// Pouziva se hlavne jako info properta na entite kde neni moznost joinovani na tabulku uzivatelu.
+message UserInfo {
+	// v33id uzivatele
+	int32 userId = 1;
+
+	// Cele jmeno uzivatele
+	string userName = 2;
+}

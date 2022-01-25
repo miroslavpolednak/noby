@@ -14,4 +14,7 @@ internal class UserService : Contracts.v1.UserService.UserServiceBase
 
     public override async Task<User> GetUserByLogin(GetUserByLoginRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetUserByLoginMediatrRequest(request));
+
+    public override async Task<User> GetUser(GetUserRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetUserMediatrRequest(request));
 }

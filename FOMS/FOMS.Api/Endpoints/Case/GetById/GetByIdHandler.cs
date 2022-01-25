@@ -14,10 +14,10 @@ internal class GetByIdHandler
         return await _converter.FromContract(result);
     }
 
-    private DomainServices.CaseService.Contracts.CaseModel resolveResult(IServiceCallResult result) =>
+    private DomainServices.CaseService.Contracts.Case resolveResult(IServiceCallResult result) =>
        result switch
        {
-           SuccessfulServiceCallResult<DomainServices.CaseService.Contracts.CaseModel> r => r.Model,
+           SuccessfulServiceCallResult<DomainServices.CaseService.Contracts.Case> r => r.Model,
            _ => throw new NotImplementedException()
        };
 

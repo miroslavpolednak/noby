@@ -3,35 +3,19 @@
 namespace DomainServices.CaseService.Api.Handlers;
 
 internal class GetCaseDetailHandler
-    : IRequestHandler<Dto.GetCaseDetailMediatrRequest, CaseModel>
+    : IRequestHandler<Dto.GetCaseDetailMediatrRequest, Case>
 {
     /// <summary>
-    /// Detail Case
+    /// Vraci detail Case-u
     /// </summary>
-    public async Task<CaseModel> Handle(Dto.GetCaseDetailMediatrRequest request, CancellationToken cancellation)
+    public async Task<Case> Handle(Dto.GetCaseDetailMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get detail for #{id}", request.CaseId);
+        _logger.LogInformation("Get Case #{id} details", request.CaseId);
 
-        var entity = await _repository.GetCaseDetail(request.CaseId);
+        // vytahnout Case z DB
+        var caseInstance = await _repository.GetCaseDetail(request.CaseId, cancellation);
 
-        var model =  new CaseModel
-        {
-            State = entity.State,
-            ActionRequired = entity.IsActionRequired,
-            CaseId = entity.CaseId,
-            ContractNumber = entity.ContractNumber ?? "",
-            ProductInstanceType = entity.ProductInstanceType,
-            UserId = entity.UserId,
-            DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
-            FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
-            Name = entity.Name,
-            TargetAmount = entity.TargetAmount,
-            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity)
-        };
-        if (entity.CustomerIdentityId.HasValue)
-            model.Customer = new CIS.Core.Types.CustomerIdentity(entity.CustomerIdentityId.Value, entity.CustomerIdentityScheme.GetValueOrDefault());
-
-        return model;
+        return caseInstance;
     }
 
     private readonly Repositories.CaseServiceRepository _repository;

@@ -4,10 +4,14 @@ option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
 
 import "GrpcDateTime.proto";
 
+// Informace o tom kdo a kdy menil/zalozil danou entitu.
 message ModificationStamp {
-  int32 userId = 1;
+	// v33id uzivatele
+	int32 userId = 1;
 
-  cis.types.GrpcDateTime dateTime = 2;
+	// Cas zmeny
+	cis.types.GrpcDateTime dateTime = 2;
 
-  string userName = 3;
+	// Cele jmeno uzivatele
+	string userName = 3;
 }

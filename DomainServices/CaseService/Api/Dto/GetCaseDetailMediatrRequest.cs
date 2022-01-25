@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.CaseService.Api.Dto;
 
 internal sealed class GetCaseDetailMediatrRequest
-    : IRequest<Contracts.CaseModel>, CIS.Core.Validation.IValidatableRequest
+    : IRequest<Contracts.Case>, CIS.Core.Validation.IValidatableRequest
 {
     public long CaseId { get; init; }
 

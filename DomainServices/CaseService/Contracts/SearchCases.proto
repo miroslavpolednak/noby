@@ -5,16 +5,25 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 import "PaginationRequest.proto";
 import "PaginationResponse.proto";
 import "google/protobuf/wrappers.proto";
-import "CaseModel.proto";
+import "Case.proto";
 
 message SearchCasesRequest {
-	int32 UserId = 1;
+	// v33id majitele Case - povinne
+	int32 CaseOwnerUserId = 1;
+
+	// Pozadovany status Case - nepovinne
 	google.protobuf.Int32Value State = 2;
+
+	// Fulltext hledani - nepovinne
 	string SearchTerm = 3;
+	
+	// Nastaveni strankovani
 	cis.types.PaginationRequest Pagination = 4;
 }
 
 message SearchCasesResponse {
-	repeated CaseModel CaseInstances = 1;
+	// Kolekce nalezenych Case s ohledem na strankovani
+	repeated Case CaseInstances = 1;
+	
 	cis.types.PaginationResponse Pagination = 2;
 }

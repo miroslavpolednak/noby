@@ -6,6 +6,10 @@ message GetUserByLoginRequest {
    string Login = 1;
 }
 
+message GetUserRequest {
+	int32 UserId = 1;
+}
+
 message User {
 	string Login = 1;
 	string CPM = 2;

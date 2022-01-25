@@ -6,14 +6,20 @@ internal class UpdateCaseDataMediatrRequestValidator : AbstractValidator<Dto.Upd
 {
     public UpdateCaseDataMediatrRequestValidator()
     {
-        RuleFor(t => t.CaseId)
+        RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13000");
+            .WithMessage("CaseId must be > 0").WithErrorCode("13016");
 
-        /*RuleFor(t => t.ContractNumber)
-            .NotEmpty()
-            .WithMessage("ContractNumber is empty").WithErrorCode("13001")
-            .Length(10)
-            .WithMessage("ContractNumber length != 10").WithErrorCode("13001");*/
+        RuleFor(t => t.Request.Data.ProductInstanceType)
+            .GreaterThan(0)
+            .WithMessage(t => "ProductInstanceType must be > 0").WithErrorCode("13002");
+
+        RuleFor(t => t.Request.Data.ContractNumber)
+            .Length(10).When(t => !string.IsNullOrEmpty(t.Request.Data.ContractNumber))
+            .WithMessage("ContractNumber length must be 10").WithErrorCode("13010");
+
+        RuleFor(t => t.Request.Data.TargetAmount)
+            .InclusiveBetween(20_000, 99_999_999).When(t => t.Request.Data.TargetAmount.HasValue)
+            .WithMessage("Target amount must be between 20_000 and 99_999_999").WithErrorCode("13018");
     }
 }

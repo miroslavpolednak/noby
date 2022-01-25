@@ -3,12 +3,12 @@
 internal sealed class LinkOwnerToCaseMediatrRequest
     : IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 {
+    public int CaseOwnerUserId { get; init; }
     public long CaseId { get; init; }
-    public int UserId { get; init; }
 
     public LinkOwnerToCaseMediatrRequest(Contracts.LinkOwnerToCaseRequest request)
     {
         CaseId = request.CaseId;
-        UserId = request.UserId;
+        CaseOwnerUserId = request.CaseOwnerUserId;
     }
 }

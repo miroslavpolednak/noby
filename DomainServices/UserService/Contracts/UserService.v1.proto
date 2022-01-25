@@ -7,4 +7,6 @@ import "Types.proto";
 
 service UserService {
    rpc GetUserByLogin (DomainServices.UserService.GetUserByLoginRequest) returns (DomainServices.UserService.User);
+
+   rpc GetUser(GetUserRequest) returns (DomainServices.UserService.User);
 }

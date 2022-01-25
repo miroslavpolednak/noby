@@ -8,6 +8,6 @@ internal class GetCaseDetailMediatrRequestValidator : AbstractValidator<Dto.GetC
     {
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13000");
+            .WithMessage("Case Id must be > 0").WithErrorCode("13016");
     }
 }

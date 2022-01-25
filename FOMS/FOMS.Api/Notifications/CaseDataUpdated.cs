@@ -9,7 +9,14 @@ internal sealed class CaseDataUpdated
     {
         _logger.LogDebug("Updating case {data}", notification);
 
-        ServiceCallResult.Resolve(await _caseService.UpdateCaseData(notification.CaseId, notification.ContractNumber, notification.TargetAmount));
+        var model = new DomainServices.CaseService.Contracts.CaseData
+        {
+            ContractNumber = notification.ContractNumber,
+            TargetAmount = notification.TargetAmount,
+            ProductInstanceType = 1
+        };
+
+        ServiceCallResult.Resolve(await _caseService.UpdateCaseData(notification.CaseId, model, cancellationToken));
 
         _logger.LogDebug("Case updated");
     }

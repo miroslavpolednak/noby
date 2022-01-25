@@ -13,51 +13,41 @@ internal class CreateCaseHandler
         _logger.LogInformation("Create case");
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
-        var productInstanceTypeCategory = await getProductCategory(request.Request.ProductInstanceType);
-        _logger.LogDebug("productInstanceTypeCategory={id}", productInstanceTypeCategory);
-
+        var productInstanceTypeCategory = await getProductCategory(request.Request.Data.ProductInstanceType);
+        
         // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
-        //TODO je to tak i pro 4001?
         if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "productInstanceTypeCategory is not valid for this operation", 13001);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceType {request.Request.Data.ProductInstanceType} is not valid for this operation", 13013);
+
+        // overit existenci ownera
+        var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId));
+        //TODO zkontrolovat existenci klienta?
+
+        // pro jakou spolecnost
+        var mandant = productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage ? CIS.Core.IdentitySchemes.Kb : CIS.Core.IdentitySchemes.Mp;
 
         // get default case state
-        int defaultCaseState = (await _codebookService.CaseStates()).First(t => t.IsDefaultNewState).Id;
-        _logger.LogDebug("defaultCaseState={defaultCaseState}", defaultCaseState);
+        int defaultCaseState = await getDefaultState();
 
         // ziskat caseId
-        //TODO proc se tady dava schema?
-        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Core.IdentitySchemes.Mp, request.Request.ProductInstanceType));
+        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductInstanceType));
         _logger.LogDebug("newCaseId={newCaseId}", newCaseId);
 
-        // zalozit case v NOBY
+        // vytvorit entitu
+        var entity = Repositories.Entities.CaseInstance.Create(newCaseId, request.Request);
+        entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
+        entity.State = defaultCaseState;//vychozi status
+
         try
         {
-            var entity = new Repositories.Entities.CaseInstance
-            {
-                CaseId = newCaseId,
-                Name = request.Request.Name,
-                FirstNameNaturalPerson = request.Request.FirstNameNaturalPerson,
-                State = defaultCaseState,
-                UserId = request.Request.UserId,
-                ProductInstanceType = request.Request.ProductInstanceType,
-                DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson,
-                TargetAmount = request.Request.TargetAmount,
-                ContractNumber = request.Request.ContractNumber
-            };
-            // pokud je zadany customer
-            if (request.Request.Customer is not null)
-            {
-                entity.CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(request.Request.Customer?.IdentityScheme);
-                entity.CustomerIdentityId = request.Request.Customer?.IdentityId;
-            }
-
-            await _repository.CreateCase(entity);
+            // ulozit entitu
+            await _repository.CreateCase(entity, cancellation);
+            _logger.LogDebug("Case ID #{id} saved", newCaseId);
         }
         catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
             _logger.LogError("Case ID #{id} already exists", newCaseId);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Case ID #{newCaseId} already exists", 13001);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Case #{newCaseId} already exists", 13015);
         }
         catch
         {
@@ -70,35 +60,63 @@ internal class CreateCaseHandler
         };
     }
 
+    /// <summary>
+    /// Zjistit typ produktu - Hypo, SS atd.
+    /// </summary>
+    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long productInstanceType)
+    {
+        var productTypes = await _codebookService.ProductInstanceTypes();
+
+        var item = productTypes.FirstOrDefault(t => t.Id == productInstanceType);
+        if (item == null)
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceType {productInstanceType} not found", 13014);
+
+        _logger.LogDebug("ProductInstanceTypeCategory={id}", item.ProductCategory);
+
+        return item.ProductCategory;
+    }
+
+    /// <summary>
+    /// Zjistit vychozi stav CASE
+    /// </summary>
+    private async Task<int> getDefaultState()
+    {
+        int defaultCaseState = (await _codebookService.CaseStates()).First(t => t.IsDefaultNewState).Id;
+        _logger.LogDebug("defaultCaseState={defaultCaseState}", defaultCaseState);
+        return defaultCaseState;
+    }
+
     private long resolveCaseIdResult(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
-            SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "Unable to create MktItem instance in Starbuild.", 12002),
+            SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "Unable to get CaseId from SB", 13004),
             ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
             _ => throw new NotImplementedException()
         };
 
-    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long productInstanceType)
-    {
-        var productTypes = await _codebookService.ProductInstanceTypes();
-        var item = productTypes.FirstOrDefault(t => t.Id == productInstanceType);
-        if (item == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "ProductInstanceType not found", 1);
-        return item.ProductCategory;
-    }
+    private UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
+        result switch
+        {
+            SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
+            ErrorServiceCallResult err => throw new CIS.Core.Exceptions.CisNotFoundException(13017, $"User not found: {err.Errors.First().Message}"),
+            _ => throw new NotImplementedException()
+        };
 
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly Eas.IEasClient _easClient;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
 
     public CreateCaseHandler(
+        UserService.Abstraction.IUserServiceAbstraction userService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Eas.IEasClient easClient,
         Repositories.CaseServiceRepository repository,
         ILogger<CreateCaseHandler> logger)
     {
+        _userService = userService;
         _easClient = easClient;
         _repository = repository;
         _logger = logger;

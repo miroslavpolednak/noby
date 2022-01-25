@@ -9,15 +9,21 @@ internal sealed class SharedCreateCaseHandler
     {
         var model = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
-            UserId = _userAccessor.User.Id,
-            ProductInstanceType = request.ProductInstanceType,
-            DateOfBirthNaturalPerson = request.DateOfBirth,
-            FirstNameNaturalPerson = request.FirstName,
-            Name = request.LastName,
-            TargetAmount = request.TargetAmount
+            CaseOwnerUserId = _userAccessor.User.Id,
+            Customer = new DomainServices.CaseService.Contracts.CustomerData
+            {
+                DateOfBirthNaturalPerson = request.DateOfBirth,
+                FirstNameNaturalPerson = request.FirstName,
+                Name = request.LastName,
+            },
+            Data = new DomainServices.CaseService.Contracts.CaseData
+            {
+                ProductInstanceType = request.ProductInstanceType,
+                TargetAmount = request.TargetAmount
+            }
         };
         if (request.Customer is not null)
-            model.Customer = new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Customer);
+            model.Customer.Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Customer);
 
         _logger.LogDebug("Attempt to create case {data}", model);
         long caseId = resolveResult(await _caseService.CreateCase(model, cancellationToken));

@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "Identity.proto";
+import "NullableGrpcDate.proto";
+
+message CustomerData {
+	// Id klienta
+	cis.types.Identity Identity = 1;
+
+	// Jmeno fyzicke osoby
+	string FirstNameNaturalPerson = 2;
+
+	// Prijmeni fyzicke osoby nebo nazev spolecnosti
+	string Name = 3;
+
+	// Datum narozeni fyzicke osoby
+	cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 4;
+
+	// ICO spolecnosti
+	string Cin = 5;
+}

@@ -13,3 +13,5 @@ V adresáři *CisType* jsou případné partial classes doplňující tyto typy 
  - **Identity** složený typ sloužící pro identifikaci klienta/uživatele/poradce atd.
  - **PaginationRequest** společný typ pro podporu stránkování seznamu záznamů - vstupní typ.
  - **PaginationResponse** společný typ pro podporu stránkování seznamu záznamů - výstupní typ.
+ - **UserInfo** razítko uživatele (poradce) - obsahuje jméno a Id
+

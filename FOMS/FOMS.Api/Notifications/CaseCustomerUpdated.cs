@@ -9,17 +9,16 @@ internal sealed class CaseCustomerUpdated
     {
         _logger.LogDebug("Updating case customer {data}", notification);
 
-        var model = new DomainServices.CaseService.Contracts.UpdateCaseCustomerRequest
+        var model = new DomainServices.CaseService.Contracts.CustomerData
         {
-            CaseId = notification.CaseId,
             FirstNameNaturalPerson = notification.FirstNameNaturalPerson,
             Name = notification.Name,
             DateOfBirthNaturalPerson = notification.DateOfBirthNaturalPerson
         };
         if (notification.Customer is not null)
-            model.Customer = notification.Customer;
+            model.Identity = notification.Customer;
 
-        ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(model));
+        ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(notification.CaseId, model));
 
         _logger.LogDebug("Case customer updated");
     }

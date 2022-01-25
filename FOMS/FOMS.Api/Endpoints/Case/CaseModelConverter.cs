@@ -3,7 +3,7 @@
 [CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
 internal class CaseModelConverter
 {
-    public async Task<Dto.CaseModel> FromContract(DomainServices.CaseService.Contracts.CaseModel model)
+    public async Task<Dto.CaseModel> FromContract(DomainServices.CaseService.Contracts.Case model)
     {
 		var productTypes = await _codebookService.ProductInstanceTypes();
 		var caseStates = await _codebookService.CaseStates();
@@ -11,7 +11,7 @@ internal class CaseModelConverter
 		return convert(model, productTypes, caseStates);
 	}
 
-	public async Task<List<Dto.CaseModel>> FromContracts(IEnumerable<DomainServices.CaseService.Contracts.CaseModel> models)
+	public async Task<List<Dto.CaseModel>> FromContracts(IEnumerable<DomainServices.CaseService.Contracts.Case> models)
     {
 		var productTypes = await _codebookService.ProductInstanceTypes();
 		var caseStates = await _codebookService.CaseStates();
@@ -19,7 +19,7 @@ internal class CaseModelConverter
 		return models.Select(t => convert(t, productTypes, caseStates)).ToList();
 	}
 
-	private Dto.CaseModel convert(DomainServices.CaseService.Contracts.CaseModel model, 
+	private Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model, 
 		List<DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeItem> productTypes,
 		List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> caseStates)
 		=> new Dto.CaseModel
@@ -28,14 +28,14 @@ internal class CaseModelConverter
 			State = model.State,
 			StateName = caseStates.First(x => x.Id == model.State).Name,
 			ActionRequired = model.ActionRequired,
-			ContractNumber = model.ContractNumber,
-			TargetAmount = model.TargetAmount,
+			ContractNumber = model.Data.ContractNumber,
+			TargetAmount = model.Data.TargetAmount,
 			CreatedBy = model.Created.UserName,
 			CreatedTime = model.Created.DateTime,
-			DateOfBirth = model.DateOfBirthNaturalPerson,
-			ProductName = productTypes.First(x => x.Id == model.ProductInstanceType).Name,
-			FirstName = model.FirstNameNaturalPerson,
-			LastName = model.Name
+			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
+			ProductName = productTypes.First(x => x.Id == model.Data.ProductInstanceType).Name,
+			FirstName = model.Customer?.FirstNameNaturalPerson,
+			LastName = model.Customer?.Name
 		};
 
 	private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;

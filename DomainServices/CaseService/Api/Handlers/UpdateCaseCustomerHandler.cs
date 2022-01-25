@@ -5,13 +5,16 @@ internal class UpdateCaseCustomerHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateCaseCustomerMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Update case customer for #{caseId}", request.Request.CaseId);
+        _logger.LogDebug("Update Case #{caseId} Customer", request.Request.CaseId);
 
-        var caseInstance = await _repository.GetCaseDetail(request.Request.CaseId);
-        //TODO nejaka validace na case?
+        // zjistit zda existuje case
+        await _repository.EnsureExistingCase(request.Request.CaseId, cancellation);
+        //TODO zkontrolovat existenci klienta?
 
-        CIS.Core.IdentitySchemes? scheme = request.Request.Customer is null ? null : (CIS.Core.IdentitySchemes)Convert.ToInt32(request.Request.Customer?.IdentityScheme);
-        await _repository.UpdateCaseCustomer(request.Request.CaseId, request.Request.Customer?.IdentityId, scheme, request.Request.FirstNameNaturalPerson, request.Request.Name, request.Request.DateOfBirthNaturalPerson);
+        // ulozit do DB
+        await _repository.UpdateCaseCustomer(request.Request.CaseId, request.Request.Customer, cancellation);
+
+        _logger.LogDebug("Case #{caseId} Customer updated", request.Request.CaseId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

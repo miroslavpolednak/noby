@@ -42,23 +42,28 @@ internal abstract class BaseCaseHandler
             _ => throw new NotImplementedException()
         };
 
-    protected async Task<long> createCase(int offerInstanceId, string? firstName, string? lastName, DateTime? dateOfBirth, CIS.Core.Types.CustomerIdentity? customer, CancellationToken cancellationToken)
+    protected async Task<long> createCase(int offerInstanceId, string? firstName, string? lastName, DateTime? dateOfBirth, CIS.Core.Types.CustomerIdentity? customerIdentity, CancellationToken cancellationToken)
     {
         // dotahnout informace o offerInstance
         var offerInstance = await getOfferInstance(offerInstanceId, cancellationToken);
 
         var caseModel = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
-            UserId = _aggregate.UserAccessor.User.Id,
-            ProductInstanceType = _aggregate.Configuration.BuildingSavings.SavingsProductInstanceType,
-            DateOfBirthNaturalPerson = dateOfBirth,
-            FirstNameNaturalPerson = firstName,
-            Name = lastName,
-            TargetAmount = offerInstance.InputData.TargetAmount
+            CaseOwnerUserId = _aggregate.UserAccessor.User.Id,
+            Customer = new DomainServices.CaseService.Contracts.CustomerData
+            {
+                Identity = customerIdentity is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(customerIdentity),
+                DateOfBirthNaturalPerson = dateOfBirth,
+                FirstNameNaturalPerson = firstName,
+                Name = lastName,
+            },
+            Data = new DomainServices.CaseService.Contracts.CaseData
+            {
+                ProductInstanceType = _aggregate.Configuration.BuildingSavings.SavingsProductInstanceType,
+                TargetAmount = offerInstance.InputData.TargetAmount
+            }
         };
-        if (customer is not null)
-            caseModel.Customer = new CIS.Infrastructure.gRPC.CisTypes.Identity(customer);
-
+        
         return resolveCaseResult(await _aggregate.CaseService.CreateCase(caseModel, cancellationToken));
     }
 

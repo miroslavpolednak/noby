@@ -15,7 +15,7 @@ internal class CaseService : Contracts.v1.CaseService.CaseServiceBase
     public override async Task<CreateCaseResponse> CreateCase(CreateCaseRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateCaseMediatrRequest(request));
 
-    public override async Task<CaseModel> GetCaseDetail(GetCaseDetailRequest request, ServerCallContext context)
+    public override async Task<Case> GetCaseDetail(GetCaseDetailRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetCaseDetailMediatrRequest(request));
 
     public override async Task<SearchCasesResponse> SearchCases(SearchCasesRequest request, ServerCallContext context)

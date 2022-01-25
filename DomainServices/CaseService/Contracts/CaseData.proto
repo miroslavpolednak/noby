@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message CaseData {
+	// Produkt
+	int32 ProductInstanceType = 1;
+	
+	// Cilova castka / vyse hypotekyh
+	google.protobuf.Int32Value TargetAmount = 2;
+	
+	// Cislo smlouvy hypo nebo SS
+	string ContractNumber = 3;
+}

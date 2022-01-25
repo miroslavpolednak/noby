@@ -4,5 +4,7 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 message LinkOwnerToCaseRequest {
 	int64 CaseId = 1;
-	int32 UserId = 2;
+
+	// v33id noveho poradce vlastniciho Case
+	int32 CaseOwnerUserId = 2;
 }

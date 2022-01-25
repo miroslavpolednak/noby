@@ -1,0 +1,36 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "UserInfo.proto";
+import "CustomerData.proto";
+import "CaseData.proto";
+import "GrpcDateTime.proto";
+import "ModificationStamp.proto";
+import "google/protobuf/wrappers.proto";
+
+message Case {
+	int64 CaseId =  1;
+
+	// Vlastnosti Case	
+	CaseData Data = 2;
+	
+	// Stav Case
+	int32 State = 3;
+	
+	// Cas posledni zmeny stavu Case
+	cis.types.GrpcDateTime StateUpdatedOn = 4;
+	
+	// Indikace zda je na Case nejaka nevyresena udalost
+	bool ActionRequired = 5;
+
+	// Hlavni klient Case
+	CustomerData Customer = 6;
+
+	// Poradce vlastnici Case
+	cis.types.UserInfo CaseOwner = 7;
+
+	// Uzivatel, ktery Case vytvoril
+	cis.types.ModificationStamp Created = 8;
+	
+}
