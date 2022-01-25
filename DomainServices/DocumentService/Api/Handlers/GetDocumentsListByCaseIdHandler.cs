@@ -4,7 +4,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 
 namespace DomainServices.DocumentService.Api.Handlers;
 
-internal class GetDocumentsListByCaseIdHandler : IRequestHandler<GetDocumentsListByCaseIdMediatrRequest, GetDocumentsListByCaseIdResponse>
+internal class GetDocumentsListByCaseIdHandler : IRequestHandler<GetDocumentsListByCaseIdMediatrRequest, GetDocumentsListResponse>
 {
     #region Construction
 
@@ -18,11 +18,11 @@ internal class GetDocumentsListByCaseIdHandler : IRequestHandler<GetDocumentsLis
 
     #endregion
 
-    public async Task<GetDocumentsListByCaseIdResponse> Handle(GetDocumentsListByCaseIdMediatrRequest request, CancellationToken cancellationToken)
+    public async Task<GetDocumentsListResponse> Handle(GetDocumentsListByCaseIdMediatrRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Get documents list by case id [CaseId: {id}]", request.CaseId);
 
-        var model = new GetDocumentsListByCaseIdResponse
+        var model = new GetDocumentsListResponse
         {
         };
 

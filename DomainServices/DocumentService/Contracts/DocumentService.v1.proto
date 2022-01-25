@@ -4,9 +4,12 @@ option csharp_namespace = "DomainServices.DocumentService.Contracts.v1";
 
 //import "Types.proto";
 import "GetDocument.proto";
-import "GetDocumentsListByCaseId.proto";
+import "GetDocumentsList.proto";
 
 service DocumentService {
    rpc GetDocument (DomainServices.DocumentService.GetDocumentRequest) returns (DomainServices.DocumentService.GetDocumentResponse);
-   rpc GetDocumentsListByCaseId (DomainServices.DocumentService.GetDocumentsListByCaseIdRequest) returns (DomainServices.DocumentService.GetDocumentsListByCaseIdResponse);
+   rpc GetDocumentsListByCaseId (DomainServices.DocumentService.GetDocumentsListByCaseIdRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
+   rpc GetDocumentsListByContractNumber (DomainServices.DocumentService.GetDocumentsListByContractNumberRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
+   rpc GetDocumentsListByCustomerId (DomainServices.DocumentService.GetDocumentsListByCustomerIdRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
+   rpc GetDocumentsListByRelationId (DomainServices.DocumentService.GetDocumentsListByRelationIdRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
 }
