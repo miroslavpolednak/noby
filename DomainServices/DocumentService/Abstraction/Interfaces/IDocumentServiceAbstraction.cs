@@ -18,8 +18,32 @@ namespace DomainServices.DocumentService.Abstraction.Interfaces
         /// Seznamu dokumentů z ePodpisů a eArchivu podle CaseId
         /// </summary>
         /// <returns>
-        /// SuccessfulServiceCallResult[GetDocumentsListByCaseIdResponse] - OK
+        /// SuccessfulServiceCallResult[GetDocumentsListResponse] - OK
         /// </returns>
         Task<IServiceCallResult> GetDocumentsListByCaseId(Int32 caseId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Seznamu dokumentů z ePodpisů a eArchivu na základě contractNumber a typu mandanta (KB/MP).
+        /// </summary>
+        /// <returns>
+        /// SuccessfulServiceCallResult[GetDocumentsListResponse] - OK
+        /// </returns>
+        Task<IServiceCallResult> GetDocumentsListByContractNumber(string contractNumber, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Seznamu dokumentů z ePodpisů a eArchivu na základě customer id. (Metoda slouží jako obálka eArchivů (primárně pro CAS - Credit Antifraud System)) //TODO: request params?
+        /// </summary>
+        /// <returns>
+        /// SuccessfulServiceCallResult[GetDocumentsListResponse] - OK
+        /// </returns>
+        Task<IServiceCallResult> GetDocumentsListByCustomerId(string customerId, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Seznamu dokumentů z ePodpisů a eArchivu na základě relation id.
+        /// </summary>
+        /// <returns>
+        /// SuccessfulServiceCallResult[GetDocumentsListResponse] - OK
+        /// </returns>
+        Task<IServiceCallResult> GetDocumentsListByRelationId(string relationId, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

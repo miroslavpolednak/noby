@@ -56,3 +56,8 @@ message RiskData {
    string Data = 1;
    // doplnit (neúplná dokumentace)
 }
+
+message Customer {
+   string Identity = 1;
+   string Schema = 2; // enum IdentityScheme (Scheme: KB_CM, KB_INT, MP_SB, MP_EK) vs cis.types.IdentitySchemes (Mandant: KB/MP)
+}
