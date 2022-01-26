@@ -13,9 +13,12 @@ public class ProductInstanceTypesHandler
 
         return new List<ProductInstanceTypeItem>
         {
-            new ProductInstanceTypeItem() { Id = 1, Name = "Stavební spoření", ProductCategory = ProductInstanceTypeCategory.BuildingSavings },
-            new ProductInstanceTypeItem() { Id = 2, Name = "Překlenovací úvěr", ProductCategory = ProductInstanceTypeCategory.BuildingSavingsLoan },
-            new ProductInstanceTypeItem() { Id = 3, Name = "Americka Hypotéka", ProductCategory = ProductInstanceTypeCategory.Mortgage },
+            new ProductInstanceTypeItem() { Id = 1, Name = "Stavební spoření", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis libero urna, in vestibulum augue condimentum ultricies.", ProductCategory = ProductInstanceTypeCategory.BuildingSavings },
+            new ProductInstanceTypeItem() { Id = 2, Name = "Hypoúvěr", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis libero urna, in vestibulum augue condimentum ultricies.", ProductCategory = ProductInstanceTypeCategory.BuildingSavingsLoan },
+            new ProductInstanceTypeItem() { Id = 3, Name = "Rychloúvěr", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis libero urna, in vestibulum augue condimentum ultricies.", ProductCategory = ProductInstanceTypeCategory.BuildingSavingsLoan },
+            new ProductInstanceTypeItem() { Id = 4, Name = "Rychloúvěr - refix", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis libero urna, in vestibulum augue condimentum ultricies.", ProductCategory = ProductInstanceTypeCategory.BuildingSavingsLoan },
+            new ProductInstanceTypeItem() { Id = 5, Name = "Hypoteční úvěr", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis libero urna, in vestibulum augue condimentum ultricies.", ProductCategory = ProductInstanceTypeCategory.Mortgage },
+            new ProductInstanceTypeItem() { Id = 6, Name = "Americka Hypotéka", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis libero urna, in vestibulum augue condimentum ultricies.", ProductCategory = ProductInstanceTypeCategory.Mortgage },
         };
     }
 }

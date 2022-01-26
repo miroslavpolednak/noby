@@ -27,6 +27,7 @@ internal class CaseModelConverter
 			CaseId = model.CaseId,
 			State = model.State,
 			StateName = caseStates.First(x => x.Id == model.State).Name,
+			StateUpdated = model.StateUpdatedOn,
 			ActionRequired = model.ActionRequired,
 			ContractNumber = model.Data.ContractNumber,
 			TargetAmount = model.Data.TargetAmount,

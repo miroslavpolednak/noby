@@ -12,6 +12,9 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceType
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
+        public string Description { get; set; }
+
+        [DataMember(Order = 4)]
         public ProductInstanceTypeCategory ProductCategory { get; set; }
     }
 
