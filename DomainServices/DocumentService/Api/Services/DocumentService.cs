@@ -27,4 +27,7 @@ public class DocumentService : Contracts.v1.DocumentService.DocumentServiceBase
 
     public override async Task<GetDocumentsListResponse> GetDocumentsListByRelationId(GetDocumentsListByRelationIdRequest request, ServerCallContext context)
        => await _mediator.Send(new GetDocumentsListByRelationIdMediatrRequest(request));
+
+    public override async Task<GetDocumentStatusResponse> GetDocumentStatus(GetDocumentStatusRequest request, ServerCallContext context)
+       => await _mediator.Send(new GetDocumentStatusMediatrRequest(request));
 }

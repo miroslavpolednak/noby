@@ -45,5 +45,13 @@ namespace DomainServices.DocumentService.Abstraction.Interfaces
         /// SuccessfulServiceCallResult[GetDocumentsListResponse] - OK
         /// </returns>
         Task<IServiceCallResult> GetDocumentsListByRelationId(string relationId, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Stav dokumentu.
+        /// </summary>
+        /// <returns>
+        /// SuccessfulServiceCallResult[GetDocumentStatusResponse] - OK
+        /// </returns>
+        Task<IServiceCallResult> GetDocumentStatus(string documentId, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

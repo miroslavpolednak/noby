@@ -5,6 +5,7 @@ option csharp_namespace = "DomainServices.DocumentService.Contracts.v1";
 //import "Types.proto";
 import "GetDocument.proto";
 import "GetDocumentsList.proto";
+import "GetDocumentStatus.proto";
 
 service DocumentService {
    rpc GetDocument (DomainServices.DocumentService.GetDocumentRequest) returns (DomainServices.DocumentService.GetDocumentResponse);
@@ -12,4 +13,6 @@ service DocumentService {
    rpc GetDocumentsListByContractNumber (DomainServices.DocumentService.GetDocumentsListByContractNumberRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
    rpc GetDocumentsListByCustomerId (DomainServices.DocumentService.GetDocumentsListByCustomerIdRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
    rpc GetDocumentsListByRelationId (DomainServices.DocumentService.GetDocumentsListByRelationIdRequest) returns (DomainServices.DocumentService.GetDocumentsListResponse);
+
+   rpc GetDocumentStatus (DomainServices.DocumentService.GetDocumentStatusRequest) returns (DomainServices.DocumentService.GetDocumentStatusResponse);
 }

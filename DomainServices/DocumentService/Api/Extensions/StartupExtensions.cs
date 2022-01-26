@@ -1,6 +1,6 @@
-﻿using CIS.Infrastructure.StartupExtensions;
+﻿using ExternalServices.ESignatures;
+using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentService.Api;
 
@@ -11,7 +11,8 @@ internal static class StartupExtensions
     /// </summary>
     public static void CheckAppConfiguration(this AppConfiguration configuration)
     {
-        
+        if (configuration == null)
+            throw new ArgumentNullException("AppConfiguration");
     }
 
     public static WebApplicationBuilder AddDocumentService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
@@ -27,8 +28,8 @@ internal static class StartupExtensions
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-        //// EAS svc
-        //builder.Services.AddExternalServiceEas(appConfiguration.EAS);
+        // ESignatures
+        builder.Services.AddExternalServiceESignatures(appConfiguration.ESignatures);
 
         //// dbcontext
         //string connectionString = builder.Configuration.GetConnectionString("default");
