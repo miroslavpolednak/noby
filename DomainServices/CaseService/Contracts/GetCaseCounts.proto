@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+message GetCaseCountsRequest {
+	int32 CaseOwnerUserId = 1;
+}
+
+message GetCaseCountsResponse {
+	message CaseCountsItem {
+		int32 State = 1;
+		int32 Count = 2;
+	}
+
+	repeated CaseCountsItem CaseCounts = 1;
+}

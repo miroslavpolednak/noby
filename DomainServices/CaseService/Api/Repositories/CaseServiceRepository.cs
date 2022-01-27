@@ -6,6 +6,15 @@ namespace DomainServices.CaseService.Api.Repositories;
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class CaseServiceRepository
 {
+    public async Task<List<(int State, int Count)>> GetCounts(int userId, CancellationToken cancellation)
+        => (await _dbContext.CaseInstances
+            .Where(t => t.OwnerUserId == userId)
+            .GroupBy(t => t.State)
+            .AsNoTracking()
+            .Select(t => new { State = t.Key, Count = t.Count() })
+            .ToListAsync(cancellation))
+            .Select(t => (State: t.State, Count: t.Count)).ToList();
+
     public async Task EnsureExistingCase(long caseId, CancellationToken cancellation)
     {
         await getCaseEntity(caseId, cancellation);

@@ -18,6 +18,14 @@ public interface ICaseServiceAbstraction
     /// Vraci detail Case
     /// </summary>
     /// <returns>
+    /// SuccessfulServiceCallResult[GetCaseCountsResponse] - OK;
+    /// </returns>
+    Task<IServiceCallResult> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Vraci detail Case
+    /// </summary>
+    /// <returns>
     /// SuccessfulServiceCallResult[CaseModel] - OK;
     /// </returns>
     Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken));

@@ -11,6 +11,7 @@ import "UpdateCaseData.proto";
 import "UpdateCaseState.proto";
 import "UpdateCaseCustomer.proto";
 import "GetCaseDetail.proto";
+import "GetCaseCounts.proto";
 
 service CaseService {
    rpc CreateCase (DomainServices.CaseService.CreateCaseRequest) returns (DomainServices.CaseService.CreateCaseResponse);
@@ -26,4 +27,6 @@ service CaseService {
    rpc UpdateCaseState (DomainServices.CaseService.UpdateCaseStateRequest) returns (google.protobuf.Empty);
    
    rpc UpdateCaseCustomer (DomainServices.CaseService.UpdateCaseCustomerRequest) returns (google.protobuf.Empty);
+
+   rpc GetCaseCounts (GetCaseCountsRequest) returns (GetCaseCountsResponse);
 }

@@ -16,6 +16,12 @@ internal class CaseApiModule : IApiEndpointModule
             .WithTags("Case Module")
             .Produces<Dto.CaseModel>(StatusCodes.Status200OK);
 
+        // celkem cases pro kazdy status
+        builder
+            .MapGet(_prefix + "/totals-by-states", async () => await mediatr.Send(new Dto.GetTotalsByStatesRequest()))
+            .WithTags("Case Module")
+            .Produces<Dto.CaseModel>(StatusCodes.Status200OK);
+
         // dashboard
         builder
             .MapPost(_prefix + "/search", async (Dto.SearchRequest request) => await mediatr.Send(request))

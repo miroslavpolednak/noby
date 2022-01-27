@@ -16,7 +16,7 @@ internal class SearchHandler
         _logger.LogDebug("Search for user {userId} with {pagination}", _userAccessor.User.Id, paginable);
 
         // zavolat BE sluzbu
-        var result = resolveResult(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
+        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
         _logger.LogDebug("Found {records} records", result.Pagination.RecordsTotalSize);
 
         // transform
@@ -26,13 +26,6 @@ internal class SearchHandler
             Pagination = new CIS.Infrastructure.WebApi.Types.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
         };
     }
-
-    private DomainServices.CaseService.Contracts.SearchCasesResponse resolveResult(IServiceCallResult result) =>
-       result switch
-       {
-           SuccessfulServiceCallResult<DomainServices.CaseService.Contracts.SearchCasesResponse> r => r.Model,
-           _ => throw new NotImplementedException()
-       };
 
     private static List<Paginable.MapperField> sortingMapper = new()
     {

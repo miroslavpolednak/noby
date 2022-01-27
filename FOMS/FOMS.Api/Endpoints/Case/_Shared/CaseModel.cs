@@ -15,6 +15,4 @@ internal class CaseModel
 	public DateTime CreatedTime { get; set; }
 	public string? CreatedBy { get; set; }
 	public DateTime StateUpdated { get; set; }
-
-	public int? SalesArrangementId { get; set; }//TODO pouze docasne, abych mohl udelat proklik z dashboardu
 }

@@ -14,6 +14,18 @@ internal class CaseService : ICaseServiceAbstraction
         return new SuccessfulServiceCallResult<long>(result.CaseId);
     }
 
+    public async Task<IServiceCallResult> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.LogDebug("Abstraction GetCaseCounts for #{caseOwnerUserId}", caseOwnerUserId);
+        var result = await _userContext.AddUserContext(async () => await _service.GetCaseCountsAsync(
+            new GetCaseCountsRequest()
+            {
+                CaseOwnerUserId = caseOwnerUserId
+            }, cancellationToken: cancellationToken)
+        );
+        return new SuccessfulServiceCallResult<GetCaseCountsResponse>(result);
+    }
+
     public async Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction GetCaseDetail for #{caseId}", caseId);
