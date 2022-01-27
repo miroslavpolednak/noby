@@ -20,6 +20,8 @@ namespace DomainServices.CustomerService.Api.Handlers
 
             var response = (await _mpHome.CreateContact(request.Request.Contact.ToMpHomeContactData(), request.Request.Identity)).ToMpHomeResult<MpHome.MpHomeWrapper.ContactIdResponse>();
 
+            var res = await _mpHome.CreateContact(request.Request.Contact.ToMpHomeContactData(), request.Request.Identity);
+            
             return new CreateContactResponse { ContactId = (int)response.ContactId };
         }
 

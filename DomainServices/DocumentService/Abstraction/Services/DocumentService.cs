@@ -33,5 +33,10 @@ namespace DomainServices.DocumentService.Abstraction.Services
         {
             throw new NotImplementedException();
         }
+
+        Task<IServiceCallResult> IDocumentServiceAbstraction.GetDocumentStatus(string documentId, IdentitySchemes mandant, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
