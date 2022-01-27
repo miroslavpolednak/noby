@@ -16,21 +16,7 @@ internal static class FomsSwagger
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
 
-            // zapojení rozšířených anotací nad controllery
-            //x.EnableAnnotations();
-
             x.CustomSchemaIds(type => type.ToString());
-
-            // v případě konfliktů dogeneruje unikátní ID operací
-            /*x.ResolveConflictingActions(descriptions =>
-            {
-                var description = descriptions.First();
-
-                string rnd = Guid.NewGuid().ToString().Substring(0, 3);
-                description.ActionDescriptor.DisplayName = description.ActionDescriptor.DisplayName + "_" + rnd;
-
-                return description;
-            });*/
         });
 
         return builder;

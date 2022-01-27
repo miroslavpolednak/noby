@@ -4,7 +4,6 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "CustomerData.proto";
 import "CaseData.proto";
-import "google/protobuf/wrappers.proto";
 
 message CreateCaseRequest {
 	// Hlavni klient na Case

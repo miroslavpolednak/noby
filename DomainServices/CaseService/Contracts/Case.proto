@@ -7,7 +7,6 @@ import "CustomerData.proto";
 import "CaseData.proto";
 import "GrpcDateTime.proto";
 import "ModificationStamp.proto";
-import "google/protobuf/wrappers.proto";
 
 message Case {
 	int64 CaseId =  1;

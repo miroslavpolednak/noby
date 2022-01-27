@@ -20,7 +20,7 @@ internal class CaseApiModule : IApiEndpointModule
         builder
             .MapGet(_prefix + "/totals-by-states", async () => await mediatr.Send(new Dto.GetTotalsByStatesRequest()))
             .WithTags("Case Module")
-            .Produces<Dto.CaseModel>(StatusCodes.Status200OK);
+            .Produces<List<Dto.GetTotalsByStatesResponse>>(StatusCodes.Status200OK);
 
         // dashboard
         builder
