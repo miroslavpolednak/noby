@@ -23,6 +23,7 @@
     <Protobuf Include="./DocumentService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
     <Protobuf Include="./GetDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
     <Protobuf Include="./GetDocumentsList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+    <Protobuf Include="./GetDocumentStatus.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
     <Protobuf Include="Types.proto" GrpcServices="None">
       <ProtoRoot>./</ProtoRoot>
       <AdditionalImportDirs>../../../CIS/gRPC.CisTypes/Protos</AdditionalImportDirs>
