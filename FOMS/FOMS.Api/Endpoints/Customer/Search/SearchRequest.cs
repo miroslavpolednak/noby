@@ -4,7 +4,7 @@ internal sealed class SearchRequest
     : IRequest<SearchResponse>
 {
     public SearchFilter? Filter { get; set; }
-    public CIS.Core.Types.PaginableRequest? Pagination { get; set; }
+    public CIS.Infrastructure.WebApi.Types.PaginationRequest? Pagination { get; set; }
 
     public class SearchFilter
     {

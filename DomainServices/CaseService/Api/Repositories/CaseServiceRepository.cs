@@ -24,36 +24,43 @@ internal class CaseServiceRepository
             .Select(CaseServiceRepositoryExtensions.CaseDetail())
             .FirstOrDefaultAsync(cancellation) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"Case #{caseId} not found");
 
-    public async Task<Contracts.SearchCasesResponse> GetCaseList(CIS.Infrastructure.gRPC.CisTypes.PaginationRequest pagination, int userId, int? state, string? searchTerm, CancellationToken cancellation)
+    public async Task<(int RecordsTotalSize, List<Contracts.Case> CaseInstances)> GetCaseList(CIS.Core.Types.Paginable paginable, int userId, int? state, string? searchTerm, CancellationToken cancellation)
     {
+        // base query
         var query = _dbContext.CaseInstances.AsNoTracking().Where(t => t.OwnerUserId == userId);
+
         // omezeni na state
         if (state.HasValue)
             query = query.Where(t => t.State == state.Value);
         // hledani podle retezce
         if (!string.IsNullOrEmpty(searchTerm))
-            query = query.Where(t => t.Name.Contains(searchTerm) || t.ContractNumber == searchTerm);
+        {
+            if (searchTerm.Length < 8 && int.TryParse(searchTerm, out int searchCaseId))
+                query = query.Where(t => t.CaseId == searchCaseId);
+            else if ((searchTerm.Length == 10 || searchTerm.Length == 8) && decimal.TryParse(searchTerm, out _))
+                query = query.Where(t => t.ContractNumber == searchTerm);
+            else
+                query = query.Where(t => t.Name.Contains(searchTerm));
+        }
         
         // razeni
-        if (pagination.Sorting is not null && pagination.Sorting.Any())
-            query = query.ApplyOrderBy(new[] { Tuple.Create(pagination.Sorting.First().Field, pagination.Sorting.First().Descending) });
+        if (paginable.HasSorting)
+            query = query.ApplyOrderBy(new[] { Tuple.Create(paginable.Sorting!.First().Field, paginable.Sorting!.First().Descending) });
         else
-            query = query.OrderByDescending(t => t.CreatedTime);
+            query = query.OrderByDescending(t => t.StateUpdateTime);
 
-        var result = new Contracts.SearchCasesResponse()
-        {
-            Pagination = pagination.CreateResponse(await query.AsNoTracking().CountAsync(cancellation))
-        };
-        result.CaseInstances.AddRange(
-            await query
-                .Skip(pagination.PageSize * (pagination.RecordOffset - 1))
-                .Take(pagination.PageSize)
-                .AsNoTracking()
-                .Select(CaseServiceRepositoryExtensions.CaseDetail()
-            ).ToListAsync(cancellation)
-        );
+        // celkem nalezeno
+        int recordsTotalSize = await query.AsNoTracking().CountAsync(cancellation);
 
-        return result;
+        // seznam case
+        var data = await query
+            .Skip(paginable.PageSize * (paginable.RecordOffset - 1))
+            .Take(paginable.PageSize)
+            .AsNoTracking()
+            .Select(CaseServiceRepositoryExtensions.CaseDetail()
+        ).ToListAsync(cancellation);
+
+        return (recordsTotalSize, data);
     }
 
     public async Task LinkOwnerToCase(long caseId, int ownerUserId, string ownerName, CancellationToken cancellation)

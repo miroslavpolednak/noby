@@ -6,7 +6,7 @@ internal class SearchCasesMediatrRequest : AbstractValidator<Dto.SearchCasesMedi
 {
     public SearchCasesMediatrRequest()
     {
-        RuleFor(t => t.CaseOwnerUserId)
+        RuleFor(t => t.Request.CaseOwnerUserId)
             .GreaterThan(0)
             .WithMessage("CaseOwnerUserId must be > 0").WithErrorCode("13003");
     }

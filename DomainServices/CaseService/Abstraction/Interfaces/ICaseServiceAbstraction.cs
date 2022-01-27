@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Abstraction;
@@ -27,7 +28,7 @@ public interface ICaseServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[SearchCasesResponse] - OK;
     /// </returns>
-    Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Zmena majitele Case

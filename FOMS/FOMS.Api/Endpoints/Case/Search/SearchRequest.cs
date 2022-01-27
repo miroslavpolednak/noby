@@ -6,5 +6,5 @@ internal class SearchRequest
     public int? State { get; set; }
     public string? Term { get; set; }
 
-    public CIS.Core.Types.PaginableRequest? Pagination { get; set; }
+    public CIS.Infrastructure.WebApi.Types.PaginationRequest? Pagination { get; set; }
 }

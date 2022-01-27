@@ -7,7 +7,7 @@ internal class SearchHandler
     {
         return new Dto.SearchResponse
         {
-            Pagination = new CIS.Core.Types.PaginableResponse()
+            Pagination = new CIS.Infrastructure.WebApi.Types.PaginationResponse()
             {
                 PageSize = request.Pagination.PageSize,
                 RecordsTotalSize = 2,

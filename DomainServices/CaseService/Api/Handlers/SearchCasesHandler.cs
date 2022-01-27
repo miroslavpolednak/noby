@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Contracts;
+﻿using CIS.Core.Types;
+using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Handlers;
 
@@ -10,13 +11,31 @@ internal class SearchCasesHandler
     /// </summary>
     public async Task<SearchCasesResponse> Handle(Dto.SearchCasesMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Search cases {RecordOffset}/{PageSize} with custom sorting {sorting}", request.Pagination.RecordOffset, request.Pagination.PageSize, request.Pagination.Sorting.Any());
+        // vytvorit informaci o strankovani / razeni
+        var paginable = Paginable
+            .FromRequest(request.Request.Pagination)
+            .EnsureAndTranslateSortFields(sortingMapper);
 
-        if (request.Pagination.Sorting.Any())
-            _logger.LogDebug("Sorting {field}/{desc}", request.Pagination.Sorting.First().Field, request.Pagination.Sorting.First().Descending);
+        _logger.LogDebug("Search cases {paginable}", paginable);
 
-        return await _repository.GetCaseList(request.Pagination, request.CaseOwnerUserId, request.State, request.SearchTerm, cancellation);
+        // dotaz do DB
+        var model = await _repository.GetCaseList(paginable, request.Request.CaseOwnerUserId, request.Request.State, request.Request.SearchTerm, cancellation);
+        _logger.LogDebug("Found {RecordsTotalSize} cases", model.RecordsTotalSize);
+
+        var result = new SearchCasesResponse()
+        {
+            Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationResponse(request.Request.Pagination as IPaginableRequest ?? paginable, model.RecordsTotalSize)
+        };
+        result.CaseInstances.AddRange(model.CaseInstances);
+
+        return result;
     }
+
+    // povolena pole pro sortovani
+    private static List<Paginable.MapperField> sortingMapper = new()
+    { 
+        new("StateUpdatedOn", "StateUpdateTime") 
+    };
 
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<CreateCaseHandler> _logger;

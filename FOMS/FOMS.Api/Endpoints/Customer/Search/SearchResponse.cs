@@ -2,7 +2,7 @@
 
 internal sealed class SearchResponse
 {
-    public CIS.Core.Types.PaginableResponse? Pagination { get; set; }
+    public CIS.Infrastructure.WebApi.Types.PaginationResponse? Pagination { get; set; }
     public List<Customer>? Rows { get; set; }
 
     public class Customer

@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.Core.Types;
 
 namespace FOMS.Api.Endpoints.Case.Handlers;
 
@@ -7,22 +8,22 @@ internal class SearchHandler
 {
     public async Task<Dto.SearchResponse> Handle(Dto.SearchRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Search for user {userId}", _userAccessor.User.Id);
+        // vytvorit informaci o strankovani / razeni
+        var paginable = Paginable
+            .FromRequest(request.Pagination)
+            .EnsureAndTranslateSortFields(sortingMapper);
 
-        // strankovani a razeni
-        var pagination = request.Pagination?.WithSortFields(_sortingFieldsMapper) ?? CIS.Core.Types.PaginableRequest.Create("StateUpdatedOn", true);
-        _logger.LogDebug("Pagination {RecordOffset}/{PageSize} - {field}/{descending}", request.Pagination?.RecordOffset, request.Pagination?.PageSize, request.Pagination?.Sort?.First().Field, request.Pagination?.Sort?.First().Descending);
+        _logger.LogDebug("Search for user {userId} with {pagination}", _userAccessor.User.Id, paginable);
 
-        var result = resolveResult(await _caseService.SearchCases(pagination, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
+        // zavolat BE sluzbu
+        var result = resolveResult(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
         _logger.LogDebug("Found {records} records", result.Pagination.RecordsTotalSize);
-
-        var rows = await _converter.FromContracts(result.CaseInstances);
 
         // transform
         return new Dto.SearchResponse
         {
-            Rows = rows,
-            Pagination = result.Pagination.WithSortFields(_sortingFieldsMapper)
+            Rows = await _converter.FromContracts(result.CaseInstances),
+            Pagination = new CIS.Infrastructure.WebApi.Types.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
         };
     }
 
@@ -33,7 +34,7 @@ internal class SearchHandler
            _ => throw new NotImplementedException()
        };
 
-    private static List<(string Original, string ChangeTo)> _sortingFieldsMapper = new()
+    private static List<Paginable.MapperField> sortingMapper = new()
     {
         new ("stateUpdated", "StateUpdatedOn"),
         new ("customerName", "Name")

@@ -32,5 +32,4 @@ message Case {
 
 	// Uzivatel, ktery Case vytvoril
 	cis.types.ModificationStamp Created = 8;
-	
 }

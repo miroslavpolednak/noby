@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 using Microsoft.Extensions.Logging;
 
@@ -25,7 +26,7 @@ internal class CaseService : ICaseServiceAbstraction
         return new SuccessfulServiceCallResult<Case>(result);
     }
 
-    public async Task<IServiceCallResult> SearchCases(CIS.Core.Types.PaginableRequest pagination, int caseOwnerUserId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction SearchCases for #{userId}", caseOwnerUserId);
 
@@ -33,7 +34,7 @@ internal class CaseService : ICaseServiceAbstraction
         {
             SearchTerm = searchTerm ?? "",
             State = state,
-            Pagination = pagination,
+            Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationRequest(pagination),
             CaseOwnerUserId = caseOwnerUserId,
         }, cancellationToken: cancellationToken));
         return new SuccessfulServiceCallResult<SearchCasesResponse>(result);

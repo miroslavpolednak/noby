@@ -1,46 +1,17 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class PaginationRequest
+public sealed partial class PaginationRequest 
+    : Core.Types.IPaginableRequest
 {
-    public static PaginationRequest ParseOrDefault(PaginationRequest request, int defaultPageSize = 10, int defaultRecordOffset = 1)
-    {
-        if (request == null || request.PageSize <= 0 || request.RecordOffset < 0)
-            return new PaginationRequest() { PageSize = defaultPageSize, RecordOffset = defaultRecordOffset };
-        return request;
-    }
+    public bool HasSorting => Sorting is not null && Sorting.Any();
+    public Type TypeOfSortingField => typeof(PaginationSortingField);
+    public IEnumerable<Core.Types.IPaginableSortingField>? GetSorting() => Sorting;
 
-    public PaginationResponse CreateResponse()
+    public PaginationRequest(Core.Types.IPaginableRequest request)
     {
-        return new PaginationResponse
-        {
-            PageSize = this.PageSize,
-            RecordOffset = this.RecordOffset
-        };
-    }
-
-    public PaginationResponse CreateResponse(int recordsTotalSize)
-    {
-        var model = new PaginationResponse
-        {
-            RecordsTotalSize = recordsTotalSize,
-            PageSize = this.PageSize,
-            RecordOffset = this.RecordOffset,
-        };
-        if (this.Sorting.Any())
-            model.Sorting.AddRange(this.Sorting);
-        return model;
-    }
-
-    public static implicit operator PaginationRequest(Core.Types.PaginableRequest request)
-    {
-        var model = new PaginationRequest
-        {
-            PageSize = request.PageSize,
-            RecordOffset = request.RecordOffset
-        };
-        if (request.Sort is not null && request.Sort.Any())
-            model.Sorting.AddRange(request.Sort.Select(t => new PaginationSortingField { Descending = t.Descending, Field = t.Field }));
-        
-        return model;
+        this.PageSize = request.PageSize;
+        this.RecordOffset = request.RecordOffset;
+        if (request.HasSorting)
+            this.Sorting.AddRange(request.GetSorting()!.Select(t => new PaginationSortingField() { Field = t.Field, Descending = t.Descending }));
     }
 }
