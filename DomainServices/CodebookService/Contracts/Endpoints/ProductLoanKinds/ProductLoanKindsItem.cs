@@ -1,18 +1,22 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace DomainServices.CodebookService.Contracts
+namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds
 {
     [DataContract]
-    public sealed class GenericCodebookItem
+    public class ProductLoanKindsItem
     {
         [DataMember(Order = 1)]
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        public string Name {  get; set; }
+        [JsonIgnore]
+        public int ProductInstanceTypeId { get; set; }
 
         [DataMember(Order = 3)]
+        public string Name { get; set; }
+
+        [DataMember(Order = 4)]
         [JsonIgnore]
         public bool IsActual { get; set; }
     }

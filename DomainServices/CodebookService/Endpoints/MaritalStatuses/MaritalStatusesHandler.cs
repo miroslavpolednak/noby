@@ -9,7 +9,7 @@ public class MaritalStatusesHandler
     public async Task<List<MaritalStatusItem>> Handle(MaritalStatusesRequest request, CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
-        return new List<MaritalStatusItem>
+        return new()
         {
             new MaritalStatusItem() { Id = 1, Name = "Svobodný(á)", C4mStatus = "S" },
             new MaritalStatusItem() { Id = 2, Name = "Ženatý/Vdaná", C4mStatus = "M" },

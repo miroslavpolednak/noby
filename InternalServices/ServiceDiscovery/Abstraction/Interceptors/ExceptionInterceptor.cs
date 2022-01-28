@@ -32,8 +32,8 @@ internal class ExceptionInterceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, $"ServiceDiscovery service unavailable: {ex.Message}");
-            throw new ServiceUnavailableException(methodFullName, ex.Message);
+            _logger.LogError(ex, "ServiceDiscovery service unavailable");
+            throw new ServiceUnavailableException("ServiceDiscovery", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
         {

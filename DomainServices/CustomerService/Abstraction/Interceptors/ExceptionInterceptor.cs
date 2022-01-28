@@ -32,8 +32,8 @@ namespace DomainServices.CustomerService.Abstraction
             }
             catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
             {
-                _logger.LogError(ex, $"CustomerService unavailable: {ex.Message}");
-                throw new ServiceUnavailableException(methodFullName, ex.Message);
+                _logger.LogError(ex, "CustomerService unavailable");
+                throw new ServiceUnavailableException("CustomerService", methodFullName, ex.Message);
             }
             catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
             {

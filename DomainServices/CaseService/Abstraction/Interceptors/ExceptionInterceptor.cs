@@ -32,8 +32,12 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, $"CaseService unavailable: {ex.Message}");
-            throw new ServiceUnavailableException(methodFullName, ex.Message);
+            _logger.LogError(ex, "CaseService unavailable");
+            throw new ServiceUnavailableException("CaseService", methodFullName, ex.Message);
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            throw new CisNotFoundException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {

@@ -32,8 +32,8 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, $"CodebookService unavailable: {ex.Message}");
-            throw new ServiceUnavailableException(methodFullName, ex.Message);
+            _logger.LogError(ex, "CodebookService unavailable");
+            throw new ServiceUnavailableException("CodebookService", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {

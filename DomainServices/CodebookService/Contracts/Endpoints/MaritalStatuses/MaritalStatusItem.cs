@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+
 namespace DomainServices.CodebookService.Contracts.Endpoints.MaritalStatuses
 {
     [DataContract]

@@ -2,8 +2,14 @@
 {
     public sealed class ServiceUnavailableException : BaseCisException
     {
-        public ServiceUnavailableException(string serviceName, string message) 
-            : base(5, $"'{serviceName}' not available: {message}") 
-        { }
+        public string ServiceName { get; init; }
+        public string MethodName { get; init; }
+
+        public ServiceUnavailableException(string serviceName, string methodName, string message) 
+            : base(5, message) 
+        {
+            MethodName = methodName;
+            ServiceName = serviceName;
+        }
     }
 }

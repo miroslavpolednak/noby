@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Authentication;
 
 namespace CIS.Infrastructure.WebApi.Middlewares;
@@ -20,9 +21,24 @@ public class ApiExceptionMiddleware
         {
             await _next(context);
         }
+        // neprihlaseny uzivatel
         catch (AuthenticationException)
         {
             await Results.Unauthorized().ExecuteAsync(context);
+        }
+        catch (NotImplementedException ex)
+        {
+            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.NotImplemented).ExecuteAsync(context);
+        }
+        // DS neni dostupna
+        catch (Core.Exceptions.ServiceUnavailableException ex)
+        {
+            await Results.Problem(ex.MethodName, ex.ServiceName, statusCode: (int)HttpStatusCode.ServiceUnavailable).ExecuteAsync(context);
+        }
+        // object not found
+        catch (Core.Exceptions.CisNotFoundException ex)
+        {
+            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)

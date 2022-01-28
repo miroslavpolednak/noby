@@ -32,8 +32,8 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, $"UserService unavailable: {ex.Message}");
-            throw new ServiceUnavailableException(methodFullName, ex.Message);
+            _logger.LogError(ex, "UserService unavailable");
+            throw new ServiceUnavailableException("UserService", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
         {

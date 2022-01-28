@@ -28,7 +28,7 @@ public class SimpleServerExceptionInterceptor : Interceptor
             var httpContext = context.GetHttpContext();
             httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 
-            throw GrpcExceptionHelpers.CreateRpcException(e);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, e.Message, e.ExceptionCode);
         }
         catch (Core.Exceptions.BaseCisException e)
         {
