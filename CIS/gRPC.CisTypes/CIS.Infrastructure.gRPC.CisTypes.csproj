@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\Mandants.proto" />
     <None Remove="Protos\PaginationSortingField.proto" />
     <None Remove="Protos\UserInfo.proto" />
   </ItemGroup>
@@ -42,6 +43,7 @@
 		<Protobuf Include="./Protos/PaginationRequest.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/PaginationSortingField.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/UserInfo.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./Protos/Mandants.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 	</ItemGroup>
 
 </Project>

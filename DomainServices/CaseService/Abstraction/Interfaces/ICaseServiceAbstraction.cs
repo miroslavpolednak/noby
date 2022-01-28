@@ -15,7 +15,7 @@ public interface ICaseServiceAbstraction
     Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Vraci detail Case
+    /// Vraci pocet CASE pro daneho uzivatele v jednotlivych stavech
     /// </summary>
     /// <returns>
     /// SuccessfulServiceCallResult[GetCaseCountsResponse] - OK;

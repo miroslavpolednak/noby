@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes
 {
@@ -15,18 +17,16 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceType
         public string Description { get; set; }
 
         [DataMember(Order = 4)]
+        [DefaultValue(CIS.Core.Mandants.Unknown)]
+        public CIS.Core.Mandants Mandant { get; set; }
+
+        [JsonIgnore]
+        [DataMember(Order = 5)]
+        [DefaultValue(ProductInstanceTypeCategory.Unknown)]
         public ProductInstanceTypeCategory ProductCategory { get; set; }
-    }
 
-    public enum ProductInstanceTypeCategory
-    {
-        [DataMember(Order = 1)]
-        BuildingSavings = 1,
-
-        [DataMember(Order = 2)]
-        BuildingSavingsLoan = 2,
-        
-        [DataMember(Order = 3)]
-        Mortgage = 3
+        [JsonIgnore]
+        [DataMember(Order = 6)]
+        public string MpHomeLoanType { get; set; }
     }
 }

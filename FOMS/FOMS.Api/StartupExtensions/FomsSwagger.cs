@@ -15,6 +15,7 @@ internal static class FomsSwagger
 
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
+            x.UseInlineDefinitionsForEnums();
 
             x.CustomSchemaIds(type => type.ToString());
         });

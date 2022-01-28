@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CIS.Core;
 
 [DataContract]
-public enum IdentitySchemes : byte
+public enum Mandants : byte
 {
     [Description("unknown")]
     [EnumMember]
