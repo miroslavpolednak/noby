@@ -15,4 +15,11 @@ public static class ServiceCallResult
             SuccessfulServiceCallResult<TModel> r => r.Model,
             _ => throw new NotImplementedException()
         };
+
+    public static TModel? ResolveToDefault<TModel>(IServiceCallResult result) =>
+        result switch
+        {
+            SuccessfulServiceCallResult<TModel> r => r.Model,
+            _ => default(TModel)
+        };
 }

@@ -18,7 +18,16 @@ internal static class FomsServices
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
+        // json
+        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+        {
+            options.SerializerOptions.PropertyNameCaseInsensitive = true;
+            options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
+        });
+
         builder.Services.AddHttpContextAccessor();
+
+        // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
         
         // doc processor factory

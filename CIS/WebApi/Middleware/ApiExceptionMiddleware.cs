@@ -33,7 +33,7 @@ public class ApiExceptionMiddleware
         // DS neni dostupna
         catch (Core.Exceptions.ServiceUnavailableException ex)
         {
-            await Results.Problem(ex.MethodName, ex.ServiceName, statusCode: (int)HttpStatusCode.ServiceUnavailable).ExecuteAsync(context);
+            await Results.Problem(ex.MethodName, $"Service '{ex.ServiceName}' unavailable", statusCode: (int)HttpStatusCode.ServiceUnavailable).ExecuteAsync(context);
         }
         // object not found
         catch (Core.Exceptions.CisNotFoundException ex)

@@ -7,12 +7,7 @@ using DomainServices.CaseService.Abstraction;
 using DomainServices.UserService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using FOMS.Api.StartupExtensions;
-using System.Reflection;
 using CIS.Infrastructure.Telemetry;
-
-Func<HttpContext, bool> isApiCall = (HttpContext context) => context.Request.Path.StartsWithSegments("/api");
-Func<HttpContext, bool> isHealthCheck = (HttpContext context) => context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);
-Func<HttpContext, bool> isSpaCall = (HttpContext context) => !context.Request.Path.StartsWithSegments("/api") && !context.Request.Path.StartsWithSegments("/swagger") && !context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +25,8 @@ builder
     .AddCisCurrentUser()
     .AddCisWebApiCors()
     .AddCisLogging()
-    .AddCisTracing();
+    .AddCisTracing()
+    .AddCisHealthChecks();
 
 // add domain services
 builder.Services
@@ -41,16 +37,6 @@ builder.Services
     .AddUserService(true)
     .AddCaseService(true)
     .AddSalesArrangementService(true);
-
-// json
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-{
-    options.SerializerOptions.PropertyNameCaseInsensitive = true;
-    options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
-});
-
-// health checks
-builder.AddCisHealthChecks();
 
 // FOMS services
 builder
@@ -70,59 +56,18 @@ builder.Services.AddSpaStaticFiles(configuration =>
 // BUILD APP
 var app = builder.Build();
 
-// jedna se o SPA call, pust jen tyhle middlewares
-app.MapWhen(isSpaCall, appBuilder =>
-{
-    appBuilder.UseSpaStaticFiles();
-    appBuilder.UseSpa(spa =>
-    {
-        spa.Options.SourcePath = "wwwroot";
-    });
-});
-
-// health check call - neni treba poustet celou pipeline
-app.MapWhen(isHealthCheck, appBuilder =>
-{
-    appBuilder.MapCisHealthChecks();
-});
-
 app.UseCisWebRequestLocalization();
 
-// API call
-app.MapWhen(isApiCall, appBuilder =>
-{
-    // error middlewares
-    /*if (app.Environment.IsProduction())
-        appBuilder.UseExceptionHandler("/error");
-    else*/
-    appBuilder.UseDeveloperExceptionPage();
-
-    // exception handling
-    appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middlewares.ApiExceptionMiddleware>();
-
-    if (app.Environment.IsProduction())
-        appBuilder.UseHsts();
-
-    appBuilder.UseCors();
-    appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
-
-    // autentizace a autorizace
-    appBuilder.UseAuthentication();
-    appBuilder.UseMiddleware<FOMS.Infrastructure.Security.AppSecurityMiddleware>();
-
-    // namapovani API modulu
-    appBuilder.AddEndpointsModules(typeof(FOMS.Api.IApiAssembly).GetTypeInfo().Assembly);
-});
+app
+    // API call
+    .UseFomsApi()
+    // jedna se o SPA call, pust jen tyhle middlewares
+    .UseFomsSpa()
+    // health check call - neni treba poustet celou pipeline
+    .UseFomsHealthChecks();
 
 // swagger
 if (appConfiguration.EnableSwaggerUI)
-{
-    app
-        .UseSwagger()
-        .UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
-        });
-}
+    app.UseFomsSwagger();
 
 app.Run();

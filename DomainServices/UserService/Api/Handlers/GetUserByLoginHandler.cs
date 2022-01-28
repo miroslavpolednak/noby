@@ -23,9 +23,7 @@ internal class GetUserByLoginHandler
         // vytvorit finalni model
         var model = new Contracts.User
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            Id = userInstance.v33id,
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            Id = userInstance!.v33id,
             CPM = userInstance.v33cpm ?? "",
             ICP = userInstance.v33icp ?? "",
             FullName = $"{userInstance.v33jmeno} {userInstance.v33prijmeni}".Trim(),

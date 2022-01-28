@@ -15,8 +15,22 @@ public static class FomsAuthentication
             // fake authentication
             case AuthenticationConstants.MockAuthScheme:
                 builder.Services
-                    .AddAuthentication(options => options.DefaultScheme = AuthenticationConstants.MockAuthScheme)
+                    .AddAuthentication(AuthenticationConstants.MockAuthScheme)
                     .AddScheme<MockAuthSchemeOptions, MockAuthenticationHandler>(AuthenticationConstants.MockAuthScheme, options => { });
+                break;
+
+            // simple login
+            case AuthenticationConstants.SimpleLoginAuthScheme:
+                builder.Services
+                    .AddAuthentication(AuthenticationConstants.SimpleLoginAuthScheme)
+                    .AddCookie(config =>
+                    {
+                        config.Cookie.Name = "nobyauth";
+                        config.Cookie.HttpOnly = true;
+                        config.Cookie.Path = "/";
+                        config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                        config.Cookie.SameSite = SameSiteMode.Lax;
+                    });
                 break;
 
             // not existing auth scheme
