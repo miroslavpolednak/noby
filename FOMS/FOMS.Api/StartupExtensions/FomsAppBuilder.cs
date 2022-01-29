@@ -41,10 +41,10 @@ internal static class FomsAppBuilder
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
-            appBuilder.UseMiddleware<FOMS.Infrastructure.Security.AppSecurityMiddleware>();
+            appBuilder.UseMiddleware<Infrastructure.Security.AppSecurityMiddleware>();
 
             // namapovani API modulu
-            appBuilder.AddEndpointsModules(typeof(FOMS.Api.IApiAssembly).GetTypeInfo().Assembly);
+            appBuilder.AddEndpointsModules(typeof(IApiAssembly).GetTypeInfo().Assembly);
         });
 
     public static IApplicationBuilder UseFomsSwagger(this IApplicationBuilder app)

@@ -10,10 +10,10 @@ namespace FOMS.Infrastructure.Security;
 /// Fake authentication for local development - when CAAS is out of question.
 /// </summary>
 public sealed class MockAuthenticationHandler
-    : AuthenticationHandler<MockAuthSchemeOptions>
+    : AuthenticationHandler<MockAuthenticationSchemeOptions>
 {
     public MockAuthenticationHandler(
-            IOptionsMonitor<MockAuthSchemeOptions> options,
+            IOptionsMonitor<MockAuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock)

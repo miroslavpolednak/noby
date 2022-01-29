@@ -2,7 +2,7 @@
 
 namespace FOMS.Infrastructure.Security;
 
-public class MockAuthSchemeOptions
+public class MockAuthenticationSchemeOptions
     : AuthenticationSchemeOptions
 {
 }

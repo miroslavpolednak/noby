@@ -1,10 +1,11 @@
 ﻿using FOMS.Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FOMS.Api.StartupExtensions;
 
 public static class FomsAuthentication
 {
-    public static WebApplicationBuilder AddFomsAuthentication(this WebApplicationBuilder builder, Infrastructure.Configuration.AppConfiguration configuration)
+    public static AuthenticationBuilder AddFomsAuthentication(this WebApplicationBuilder builder, Infrastructure.Configuration.AppConfiguration configuration)
     {
         // its mandatory to have auth scheme
         if (string.IsNullOrEmpty(configuration.AuthenticationScheme))
@@ -12,32 +13,20 @@ public static class FomsAuthentication
 
         switch (configuration.AuthenticationScheme)
         {
+            case AuthenticationConstants.CaasAuthScheme:
+                return builder.Services.AddFomsCaasAuthentication();
+
             // fake authentication
             case AuthenticationConstants.MockAuthScheme:
-                builder.Services
-                    .AddAuthentication(AuthenticationConstants.MockAuthScheme)
-                    .AddScheme<MockAuthSchemeOptions, MockAuthenticationHandler>(AuthenticationConstants.MockAuthScheme, options => { });
-                break;
+                return builder.Services.AddFomsMockAuthentication();
 
             // simple login
             case AuthenticationConstants.SimpleLoginAuthScheme:
-                builder.Services
-                    .AddAuthentication(AuthenticationConstants.SimpleLoginAuthScheme)
-                    .AddCookie(config =>
-                    {
-                        config.Cookie.Name = "nobyauth";
-                        config.Cookie.HttpOnly = true;
-                        config.Cookie.Path = "/";
-                        config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                        config.Cookie.SameSite = SameSiteMode.Lax;
-                    });
-                break;
+                return builder.Services.AddFomsSimpleLoginAuthentication();
 
             // not existing auth scheme
             default:
                 throw new NotImplementedException($"Authentication scheme '{configuration.AuthenticationScheme}' not implemented");
         }
-        
-        return builder;
     }
 }

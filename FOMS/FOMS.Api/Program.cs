@@ -40,9 +40,11 @@ builder.Services
 
 // FOMS services
 builder
-    .AddFomsAuthentication(appConfiguration)
     .AddFomsServices()
     .AddFomsDatabase();
+// authentication
+builder.AddFomsAuthentication(appConfiguration);
+// swagger
 if (appConfiguration.EnableSwaggerUI)
     builder.AddFomsSwagger();
 

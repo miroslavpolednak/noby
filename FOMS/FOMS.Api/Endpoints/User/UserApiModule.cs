@@ -19,7 +19,7 @@ internal class UserApiModule : IApiEndpointModule
         // docasna autentizace
         builder.MapPost(_prefix + "/signin", async (Dto.SignInRequest request) => await mediatr.Send(request))
             .WithTags("User Module")
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces<Dto.GetCurrentUserResponse>(StatusCodes.Status200OK);
+            .Produces(StatusCodes.Status200OK)
+            .AllowAnonymous();
     }
 }

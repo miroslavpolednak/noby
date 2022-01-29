@@ -1,5 +1,5 @@
-﻿using FOMS.Infrastructure.Security;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 
 namespace FOMS.Api.Endpoints.User.Handlers;
@@ -20,9 +20,9 @@ internal sealed class SignInHandler
             new Claim(ClaimTypes.Sid, userInstance.Id.ToString()),
             new Claim(ClaimTypes.Spn, userInstance.CPM),
         };
-        var claimsIdentity = new ClaimsIdentity(claims, AuthenticationConstants.SimpleLoginAuthScheme);
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        await _httpContext.HttpContext!.SignInAsync(AuthenticationConstants.SimpleLoginAuthScheme, new ClaimsPrincipal(claimsIdentity));
+        await _httpContext.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
     }
 
     private readonly IHttpContextAccessor _httpContext;
