@@ -7,7 +7,7 @@ internal class GetSalesArrangementDataHandler
 {
     public async Task<GetSalesArrangementDataResponse> Handle(Dto.GetSalesArrangementDataMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get data for #{id}", request.SalesArrangementId);
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementDataHandler), request.SalesArrangementId);
 
         var saInstance = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
         // zkontrolovat jestli ma pravo?

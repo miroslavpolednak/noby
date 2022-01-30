@@ -8,6 +8,8 @@ namespace CIS.Core.Exceptions
     {
         public int ExceptionCode { get; init; }
 
+        private CisArgumentNullException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
         public CisArgumentNullException(int exceptionCode, string message, string paramName)
             : base(message, paramName)
         {

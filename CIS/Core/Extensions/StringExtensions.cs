@@ -1,13 +1,11 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace CIS.Core
+namespace CIS.Core;
+
+public static class StringExtensions
 {
-    public static class StringExtensions
-    {
-        private static Regex _castCamelCaseToDashDelimitedRegex = new Regex(@"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", RegexOptions.Compiled);
+    private static Regex _castCamelCaseToDashDelimitedRegex = new Regex(@"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", RegexOptions.Compiled);
 
-        public static string CastCamelCaseToDashDelimited(this string source)
-            =>  _castCamelCaseToDashDelimitedRegex.Replace(source, "-$1").ToLower();
-    }
+    public static string CastCamelCaseToDashDelimited(this string source)
+        =>  _castCamelCaseToDashDelimitedRegex.Replace(source, "-$1").ToLower(System.Globalization.CultureInfo.InvariantCulture);
 }

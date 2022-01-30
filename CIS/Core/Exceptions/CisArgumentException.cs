@@ -7,6 +7,8 @@ public sealed class CisArgumentException : ArgumentException
 {
     public int ExceptionCode { get; init; }
 
+    private CisArgumentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
     public CisArgumentException(int exceptionCode, string? message, string? paramName)
         : base(message, paramName)
     {

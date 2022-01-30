@@ -2,14 +2,14 @@
 {
     public sealed class CisInvalidApplicationKeyException : BaseCisArgumentException
     {
-        public const int _exceptionCode = 3;
+        public new const int ExceptionCode = 3;
 
         public CisInvalidApplicationKeyException(string key) 
-            : base(_exceptionCode, $"Application key '{key}' is invalid", "key")
+            : base(ExceptionCode, $"Application key '{key}' is invalid", nameof(key))
         { }
 
         public CisInvalidApplicationKeyException(string key, string paramName)
-            : base(_exceptionCode, $"Application key '{key}' is invalid", paramName)
+            : base(ExceptionCode, $"Application key '{key}' is invalid", paramName)
         { }
     }
 }

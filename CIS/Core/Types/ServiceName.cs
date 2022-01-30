@@ -7,7 +7,7 @@ public record ServiceName
     public ServiceName(string name)
     {
         if (!name.All(t => Char.IsLetterOrDigit(t) || t == ':'))
-            throw new Exceptions.CisArgumentException(101, $"'{name}' is not valid Service Name", "name");
+            throw new Exceptions.CisArgumentException(101, $"'{name}' is not valid Service Name", nameof(name));
 
         this.Name = name;
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace CIS.Core.Exceptions
 {
@@ -9,6 +8,8 @@ namespace CIS.Core.Exceptions
         public const int UnknownExceptionCode = 0;
 
         public int ExceptionCode { get; protected set; }
+
+        protected BaseCisException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         public BaseCisException(int exceptionCode, string? message)
             : base(message)

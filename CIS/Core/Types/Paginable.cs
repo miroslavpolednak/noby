@@ -4,7 +4,7 @@ public sealed class Paginable : IPaginableRequest
 {
     public int RecordOffset { get; init; }
     public int PageSize { get; init; }
-    public List<SortField>? Sorting { get; private set; } = null;
+    public List<SortField>? Sorting { get; private set; }
 
     public bool HasSorting => Sorting is not null && Sorting.Any();
     public Type TypeOfSortingField => typeof(SortField);
@@ -43,7 +43,9 @@ public sealed class Paginable : IPaginableRequest
         {
             Sorting!.ForEach(t =>
             {
-                var field = mapper.FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.InvariantCultureIgnoreCase)) ?? throw new Exceptions.CisArgumentException(13, "Sort Field not allowed", "Field");
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+                var field = mapper.FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.OrdinalIgnoreCase)) ?? throw new Exceptions.CisArgumentException(13, "Sort Field not allowed", "Field");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
                 t.Field = field.TranslateTo;
             });
         }

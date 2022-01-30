@@ -7,7 +7,7 @@ internal class GetSalesArrangementsByCaseIdHandler
 {
     public async Task<GetSalesArrangementsByCaseIdResponse> Handle(Dto.GetSalesArrangementsByCaseIdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get list for CaseId #{id}", request.CaseId);
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsByCaseIdHandler), request.CaseId);
 
         var listData = await _repository.GetSalesArrangementsByCaseId(request.CaseId);
         var finalData = listData.Select(t => new SalesArrangementListModel

@@ -28,7 +28,7 @@ public class CisValidationException : BaseCisException
     public CisValidationException(IEnumerable<(int Key, string Message)> errors, string message = "")
         : base(BaseCisException.UnknownExceptionCode, message)
     {
-        Errors = errors.Select(t => (t.Key.ToString(), t.Message)).ToList().AsReadOnly();
+        Errors = errors.Select(t => (t.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), t.Message)).ToList().AsReadOnly();
     }
 
     public override void GetObjectData(SerializationInfo info, StreamingContext context)

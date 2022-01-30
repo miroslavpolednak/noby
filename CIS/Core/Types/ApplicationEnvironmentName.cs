@@ -7,9 +7,9 @@ public record ApplicationEnvironmentName
     public ApplicationEnvironmentName(string? environment)
     {
         if (string.IsNullOrEmpty(environment))
-            throw new Exceptions.CisInvalidEnvironmentNameException($"Environment name is empty", "environment");
+            throw new Exceptions.CisInvalidEnvironmentNameException($"Environment name is empty", nameof(environment));
         if (!environment.All(Char.IsLetterOrDigit))
-            throw new Exceptions.CisInvalidEnvironmentNameException($"Environment name '{environment}' is not valid", "environment");
+            throw new Exceptions.CisInvalidEnvironmentNameException($"Environment name '{environment}' is not valid", nameof(environment));
         Name = environment;
     }
 

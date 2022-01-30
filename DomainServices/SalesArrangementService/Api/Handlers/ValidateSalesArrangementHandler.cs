@@ -5,11 +5,6 @@ internal class ValidateSalesArrangementHandler
 {
     public async Task<Contracts.ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Validate #{id}", request.SalesArrangementId);
-
-        //var arrangement = await _repository.GetSalesArrangementDetail(request.SalesArrangementId);
-
-
         return null;
     }
 
