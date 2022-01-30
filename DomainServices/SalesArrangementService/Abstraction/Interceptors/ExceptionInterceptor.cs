@@ -35,6 +35,10 @@ internal class ExceptionInterceptor : Interceptor
             _logger.LogError(ex, "CaseService unavailable");
             throw new ServiceUnavailableException("CaseService", methodFullName, ex.Message);
         }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            throw new CisNotFoundException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
+        }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
             throw new CisArgumentException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());

@@ -10,6 +10,10 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[int (SalesArrangementId)] - OK;
     /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16002; Case ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16005; SalesArrangementType #{} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
@@ -18,6 +22,8 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[Contracts.SalesArrangement] - OK;
     /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
@@ -34,6 +40,9 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken));
@@ -44,9 +53,13 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16006; SalesArrangementState #{} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16007; SalesArrangement {} is already in state {}</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state, CancellationToken cancellationToken = default(CancellationToken));
     
-    Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    //Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update obsahu SA
