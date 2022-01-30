@@ -47,7 +47,7 @@ internal class CreateCaseHandler
         catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
             _logger.LogError("Case ID #{id} already exists", newCaseId);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Case #{newCaseId} already exists", 13015);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, $"Case #{newCaseId} already exists", 13015);
         }
         catch
         {
@@ -90,8 +90,8 @@ internal class CreateCaseHandler
         result switch
         {
             SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
-            SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, "Unable to get CaseId from SB", 13004),
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
+            SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "Unable to get CaseId from SB", 13004),
+            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors.First().Message, err.Errors.First().Key),
             _ => throw new NotImplementedException()
         };
 

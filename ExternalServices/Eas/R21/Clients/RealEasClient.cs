@@ -28,14 +28,17 @@ internal sealed class RealEasClient
         {
             using (EAS_WS_SB_ServicesClient client = createClient())
             {
-                //TODO jak ma vypadat chyba vracena z EAS
                 var result = await client.Get_CaseIdAsync(new CaseIdRequest
                 {
                     mandant = (int)mandant,
                     productCode = ProductInstanceTypeId
                 });
 
-                return new SuccessfulServiceCallResult<long>(result.caseId);
+                //TODO jak ma vypadat chyba vracena z EAS?
+                if (result.commonResult?.return_val != 0)
+                    return new ErrorServiceCallResult(0, result.commonResult?.return_text ?? "Unknown error");
+                else
+                    return new SuccessfulServiceCallResult<long>(result.caseId);
             }
         });
     }

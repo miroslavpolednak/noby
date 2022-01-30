@@ -27,7 +27,10 @@ public interface IEasClient
     /// </summary>
     /// <returns>
     /// SuccessfulServiceCallResult[long] -> nove SporeniId (CaseId)
+    /// ErrorServiceCallResult(10009, $"EAS Endpoint '{}' unavailable")
+    /// ErrorServiceCallResult(10008, $"EAS Endpoint '{}' not found)
     /// </returns>
+    /// <exception cref="System.Exception">Jakakoliv interni chyba EAS</exception>
     Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int ProductInstanceTypeId);
 
     /// <summary>
