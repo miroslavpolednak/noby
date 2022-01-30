@@ -8,6 +8,7 @@ public static class LoggerExtensions
     private static readonly Action<ILogger, string, long, Exception> _entityAlreadyExist;
     private static readonly Action<ILogger, int, Exception> _foundItems;
     private static readonly Action<ILogger, string, long, Exception> _entityCreated;
+    private static readonly Action<ILogger, string, Exception> _dapperQueryException;
 
     static LoggerExtensions()
     {
@@ -40,6 +41,11 @@ public static class LoggerExtensions
             LogLevel.Error,
             new EventId(506, nameof(EntityCreated)),
             "{EntityName} created with #{Id}");
+
+        _dapperQueryException = LoggerMessage.Define<string>(
+            LogLevel.Error,
+            new EventId(507, nameof(DapperQueryException)),
+            "Dapper: {Message}");
     }
 
     public static void RequestHandlerStarted(this ILogger logger, string handlerName)
@@ -59,4 +65,7 @@ public static class LoggerExtensions
 
     public static void EntityCreated(this ILogger logger, string entityName, long entityId)
         => _entityCreated(logger, entityName, entityId, null!);
+
+    public static void DapperQueryException(this ILogger logger, string message, Exception ex)
+        => _dapperQueryException(logger, message, ex);
 }

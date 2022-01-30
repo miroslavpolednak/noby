@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using CIS.Core.Data;
+using CIS.Infrastructure.Logging;
 
 namespace CIS.Infrastructure.Data;
 
@@ -27,7 +28,7 @@ public abstract class DapperBaseRepository<TLogger>
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex, ex.Message);
+            _logger?.DapperQueryException(ex.Message, ex);
             throw;
         }
     }
@@ -45,7 +46,7 @@ public abstract class DapperBaseRepository<TLogger>
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex, ex.Message);
+            _logger?.DapperQueryException(ex.Message, ex);
             throw;
         }
     }
@@ -64,7 +65,7 @@ public abstract class DapperBaseRepository<TLogger>
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex, ex.Message);
+            _logger?.DapperQueryException(ex.Message, ex);
             throw;
         }
     }

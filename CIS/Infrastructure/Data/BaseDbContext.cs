@@ -9,7 +9,9 @@ public abstract class BaseDbContext : DbContext
     /// <summary>
     /// ID of current user
     /// </summary>
-    protected Core.Security.ICurrentUser? _currentUser = null;
+#pragma warning disable CA1707 // Identifiers should not contain underscores
+    protected Core.Security.ICurrentUser? _currentUser { get; init; }
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 
     public BaseDbContext(DbContextOptions options, Core.Security.ICurrentUserAccessor userProvider)
         : base(options)
@@ -33,13 +35,13 @@ public abstract class BaseDbContext : DbContext
     }
 
     #region DateOnly conversions
-    protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        builder.Properties<DateOnly>()
+        configurationBuilder.Properties<DateOnly>()
             .HaveConversion<DateOnlyConverter>()
             .HaveColumnType("date");
 
-        builder.Properties<DateOnly?>()
+        configurationBuilder.Properties<DateOnly?>()
             .HaveConversion<NullableDateOnlyConverter>()
             .HaveColumnType("date");
     }
