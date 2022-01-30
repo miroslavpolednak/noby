@@ -7,13 +7,13 @@ internal class LinkOwnerToCaseHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkOwnerToCaseMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Link owner #{userId} to case #{caseId}", request.CaseOwnerUserId, request.CaseId);
+        _logger.LinkCaseToOwnerStart(request.CaseOwnerUserId, request.CaseId);
 
         // zjistit zda existuje case
         await _repository.EnsureExistingCase(request.CaseId, cancellation);
 
         // overit ze existuje uzivatel
-        var userInstance = resolveUserResult(await _userService.GetUser(request.CaseOwnerUserId));
+        var userInstance = resolveUserResult(await _userService.GetUser(request.CaseOwnerUserId, cancellation));
 
         // update majitele v databazi
         await _repository.LinkOwnerToCase(request.CaseId, request.CaseOwnerUserId, userInstance.FullName, cancellation);
@@ -21,7 +21,7 @@ internal class LinkOwnerToCaseHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
+    private static UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,

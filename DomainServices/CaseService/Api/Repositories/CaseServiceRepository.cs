@@ -111,9 +111,9 @@ internal class CaseServiceRepository
         entity.Name = customer.Name;
         entity.FirstNameNaturalPerson = customer.FirstNameNaturalPerson;
         entity.CustomerIdentityId = customer.Identity?.IdentityId;
-        entity.CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(customer.Identity?.IdentityScheme);
+        entity.CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(customer.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellation);
     }
 
     private async Task<Entities.CaseInstance> getCaseEntity(long caseId, CancellationToken cancellation)

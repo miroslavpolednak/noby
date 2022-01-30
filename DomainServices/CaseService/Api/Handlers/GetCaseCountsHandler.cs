@@ -7,15 +7,15 @@ internal class GetCaseCountsHandler
 {
     public async Task<GetCaseCountsResponse> Handle(Dto.GetCaseCountsMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Get counts for {userId}", request.CaseOwnerUserId);
+        _logger.RequestHandlerStartedWithId(nameof(GetCaseCountsHandler), request.CaseOwnerUserId);
 
         // vytahnout data z DB
         var model = await _repository.GetCounts(request.CaseOwnerUserId, cancellation);
 
         var result = new GetCaseCountsResponse();
         result.CaseCounts.AddRange(model.Select(t => new GetCaseCountsResponse.Types.CaseCountsItem { Count = t.Count, State = t.State }).ToList());
-        
-        _logger.LogDebug("Found {states} states", result.CaseCounts.Count);
+
+        _logger.FoundItems(result.CaseCounts.Count);
 
         return result;
     }

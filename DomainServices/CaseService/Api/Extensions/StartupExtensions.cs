@@ -12,10 +12,8 @@ internal static class StartupExtensions
     /// </summary>
     public static void CheckAppConfiguration(this AppConfiguration configuration)
     {
-        if (configuration == null)
-            throw new ArgumentNullException("AppConfiguration");
-        if (configuration.EAS == null)
-            throw new ArgumentNullException("AppConfiguration.EAS");
+        if (configuration?.EAS == null)
+            throw new ArgumentNullException(nameof(configuration));
     }
 
     public static WebApplicationBuilder AddCaseService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)

@@ -5,7 +5,7 @@ internal class UpdateCaseCustomerHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateCaseCustomerMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Update Case #{caseId} Customer", request.Request.CaseId);
+        _logger.RequestHandlerStartedWithId(nameof(UpdateCaseCustomerHandler), request.Request.CaseId);
 
         // zjistit zda existuje case
         await _repository.EnsureExistingCase(request.Request.CaseId, cancellation);
@@ -14,7 +14,7 @@ internal class UpdateCaseCustomerHandler
         // ulozit do DB
         await _repository.UpdateCaseCustomer(request.Request.CaseId, request.Request.Customer, cancellation);
 
-        _logger.LogDebug("Case #{caseId} Customer updated", request.Request.CaseId);
+        _logger.RequestHandlerFinished(nameof(UpdateCaseCustomerHandler));
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

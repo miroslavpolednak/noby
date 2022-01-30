@@ -16,11 +16,11 @@ internal class SearchCasesHandler
             .FromRequest(request.Request.Pagination)
             .EnsureAndTranslateSortFields(sortingMapper);
 
-        _logger.LogDebug("Search cases {paginable}", paginable);
+        _logger.SearchCasesStart(paginable);
 
         // dotaz do DB
         var model = await _repository.GetCaseList(paginable, request.Request.CaseOwnerUserId, request.Request.State, request.Request.SearchTerm, cancellation);
-        _logger.LogDebug("Found {RecordsTotalSize} cases", model.RecordsTotalSize);
+        _logger.FoundItems(model.RecordsTotalSize);
 
         var result = new SearchCasesResponse()
         {

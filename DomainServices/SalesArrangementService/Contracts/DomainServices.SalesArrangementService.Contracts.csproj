@@ -11,6 +11,10 @@
 	  <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+	
   <ItemGroup>
     <None Remove="CreateSalesArrangement.proto" />
     <None Remove="GetSalesArrangement.proto" />

@@ -10,7 +10,7 @@ internal class CreateCaseHandler
 {
     public async Task<CreateCaseResponse> Handle(Dto.CreateCaseMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Create case");
+        _logger.RequestHandlerStarted(nameof(CreateCaseHandler));
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
         var productInstanceTypeCategory = await getProductCategory(request.Request.Data.ProductInstanceTypeId);
@@ -20,7 +20,7 @@ internal class CreateCaseHandler
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceTypeId {request.Request.Data.ProductInstanceTypeId} is not valid for this operation", 13013);
 
         // overit existenci ownera
-        var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId));
+        var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId, cancellation));
         //TODO zkontrolovat existenci klienta?
 
         // pro jakou spolecnost
@@ -31,7 +31,7 @@ internal class CreateCaseHandler
 
         // ziskat caseId
         long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductInstanceTypeId));
-        _logger.LogDebug("newCaseId={newCaseId}", newCaseId);
+        _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
         var entity = Repositories.Entities.CaseInstance.Create(newCaseId, request.Request);
@@ -42,12 +42,11 @@ internal class CreateCaseHandler
         {
             // ulozit entitu
             await _repository.CreateCase(entity, cancellation);
-            _logger.LogDebug("Case ID #{id} saved", newCaseId);
+            _logger.EntityCreated(nameof(Repositories.Entities.CaseInstance), newCaseId);
         }
         catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
-            _logger.LogError("Case ID #{id} already exists", newCaseId);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, $"Case #{newCaseId} already exists", 13015);
+            throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.CaseInstance), newCaseId);
         }
         catch
         {
@@ -66,13 +65,7 @@ internal class CreateCaseHandler
     private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long ProductInstanceTypeId)
     {
         var productTypes = await _codebookService.ProductInstanceTypes();
-
-        var item = productTypes.FirstOrDefault(t => t.Id == ProductInstanceTypeId);
-        if (item == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceTypeId {ProductInstanceTypeId} not found", 13014);
-
-        _logger.LogDebug("ProductInstanceTypeCategory={id}", item.ProductCategory);
-
+        var item = productTypes.FirstOrDefault(t => t.Id == ProductInstanceTypeId) ?? throw new CisNotFoundException(13014, nameof(ProductInstanceTypeId), ProductInstanceTypeId);
         return item.ProductCategory;
     }
 
@@ -80,13 +73,9 @@ internal class CreateCaseHandler
     /// Zjistit vychozi stav CASE
     /// </summary>
     private async Task<int> getDefaultState()
-    {
-        int defaultCaseState = (await _codebookService.CaseStates()).First(t => t.IsDefaultNewState).Id;
-        _logger.LogDebug("defaultCaseState={defaultCaseState}", defaultCaseState);
-        return defaultCaseState;
-    }
+        => (await _codebookService.CaseStates()).FirstOrDefault(t => t.IsDefaultNewState)?.Id ?? throw new CisNotFoundException(13019, "Unable to determine default Case State");
 
-    private long resolveCaseIdResult(IServiceCallResult result) =>
+    private static long resolveCaseIdResult(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
@@ -95,7 +84,7 @@ internal class CreateCaseHandler
             _ => throw new NotImplementedException()
         };
 
-    private UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
+    private static UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,

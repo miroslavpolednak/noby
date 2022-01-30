@@ -5,19 +5,19 @@ internal class UpdateCaseStateHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateCaseStateMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Update Case #{caseId} state to {state}", request.CaseId, request.State);
+        _logger.UpdateCaseStateStart(request.CaseId, request.State);
 
         // zjistit zda existuje case
         await _repository.EnsureExistingCase(request.CaseId, cancellation);
 
         // overit ze case state existuje
         if (!(await _codebookService.CaseStates()).Any(t => t.Id == request.State))
-            throw new CisNotFoundException(13011, $"Case State {request.State} does not exists");
+            throw new CisNotFoundException(13011, nameof(request.State), request.State);
 
         // update v DB
         await _repository.UpdateCaseState(request.CaseId, request.State, cancellation);
 
-        _logger.LogDebug("Case #{caseId} State updated", request.CaseId);
+        _logger.RequestHandlerFinished(nameof(UpdateCaseStateHandler));
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

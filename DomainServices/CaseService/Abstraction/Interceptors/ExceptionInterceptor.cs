@@ -32,12 +32,12 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, "CaseService unavailable");
+            _logger.ServiceUnavailable(ex);
             throw new ServiceUnavailableException("CaseService", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition) // nedostupna sluzba EAS atd.
         {
-            _logger.LogError(ex, "Some of underlying services are not available or failed to call");
+            _logger.ExtServiceUnavailable(ex);
             throw new ServiceUnavailableException("CaseService/dependant_service", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
@@ -50,17 +50,16 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            _logger.LogError("Error: {message}: {code}", ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
-            throw new CisArgumentException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
+            int code = ex.GetExceptionCodeFromTrailers();
+            string arg = ex.GetArgumentFromTrailers() ?? "";
+            string message = ex.GetErrorMessageFromRpcException();
+
+            _logger.InvalidArgument(code, arg, message, ex);
+            throw new CisArgumentException(code, message, arg);
         }
-        catch (RpcException ex)
+        catch (Exception ex)
         {
-            _logger.LogError(ex, $"Uncought RpcException: {ex.Message}");
-            throw new Exception($"RPC Exception: {ex.Message}");
-        }
-        catch (Exception ex) when (ex is not RpcException)
-        {
-            _logger.LogError(ex, $"[{methodFullName}] {ex.Message}");
+            _logger.GeneralException(methodFullName, ex.Message, ex);
             throw;
         }
     }

@@ -9,14 +9,14 @@ internal class CaseService : ICaseServiceAbstraction
 {
     public async Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction CreateCase");
+        _logger.RequestHandlerStarted(nameof(CreateCase));
         var result = await _userContext.AddUserContext(async () => await _service.CreateCaseAsync(model, cancellationToken: cancellationToken));
         return new SuccessfulServiceCallResult<long>(result.CaseId);
     }
 
     public async Task<IServiceCallResult> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetCaseCounts for #{caseOwnerUserId}", caseOwnerUserId);
+        _logger.RequestHandlerStartedWithId(nameof(GetCaseCounts), caseOwnerUserId);
         var result = await _userContext.AddUserContext(async () => await _service.GetCaseCountsAsync(
             new GetCaseCountsRequest()
             {
@@ -28,7 +28,7 @@ internal class CaseService : ICaseServiceAbstraction
 
     public async Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetCaseDetail for #{caseId}", caseId);
+        _logger.RequestHandlerStartedWithId(nameof(GetCaseDetail), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.GetCaseDetailAsync(
             new GetCaseDetailRequest()
             {
@@ -40,8 +40,7 @@ internal class CaseService : ICaseServiceAbstraction
 
     public async Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction SearchCases for #{userId}", caseOwnerUserId);
-
+        _logger.RequestHandlerStartedWithId(nameof(SearchCases), caseOwnerUserId);
         var result = await _userContext.AddUserContext(async () => await _service.SearchCasesAsync(new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
@@ -54,7 +53,7 @@ internal class CaseService : ICaseServiceAbstraction
 
     public async Task<IServiceCallResult> LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction LinkOwnerToCase for #{caseId}", caseId);
+        _logger.RequestHandlerStartedWithId(nameof(LinkOwnerToCase), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkOwnerToCaseAsync(
             new LinkOwnerToCaseRequest()
             {
@@ -67,7 +66,7 @@ internal class CaseService : ICaseServiceAbstraction
 
     public async Task<IServiceCallResult> UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction UpdateCaseCustomer");
+        _logger.RequestHandlerStarted(nameof(UpdateCaseCustomer));
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseCustomerAsync(
             new UpdateCaseCustomerRequest()
             {
@@ -80,7 +79,7 @@ internal class CaseService : ICaseServiceAbstraction
 
     public async Task<IServiceCallResult> UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction UpdateCaseData for #{caseId}", caseId);
+        _logger.RequestHandlerStartedWithId(nameof(UpdateCaseData), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseDataAsync(
             new UpdateCaseDataRequest()
             {
@@ -93,7 +92,7 @@ internal class CaseService : ICaseServiceAbstraction
 
     public async Task<IServiceCallResult> UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction UpdateCaseState for #{caseId}", caseId);
+        _logger.RequestHandlerStartedWithId(nameof(UpdateCaseState), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseStateAsync(
             new UpdateCaseStateRequest()
             {

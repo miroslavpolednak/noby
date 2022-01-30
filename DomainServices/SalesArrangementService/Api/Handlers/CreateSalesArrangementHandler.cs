@@ -7,7 +7,7 @@ internal class CreateSalesArrangementHandler
 {
     public async Task<CreateSalesArrangementResponse> Handle(Dto.CreateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Create SA {type} for #{caseId}/#{offerInstanceId}", request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferInstanceId);
+        _logger.CreateSalesArrangementStarted(request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferInstanceId);
 
         // validace product instance type
         var salesArrangementType = (await _codebookService.SalesArrangementTypes()).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
@@ -35,7 +35,7 @@ internal class CreateSalesArrangementHandler
         };
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
 
-        _logger.LogDebug("SalesArrangement ID #{id} saved", salesArrangementId);
+        _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);
 
         return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };
     }

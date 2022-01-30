@@ -23,12 +23,20 @@ public class SimpleServerExceptionInterceptor : Interceptor
         {
             return await continuation(request, context);
         }
-        catch (Core.Exceptions.CisNotFoundException e)
+        catch (Core.Exceptions.CisNotFoundException e) // entity neexistuje
         {
             var httpContext = context.GetHttpContext();
             httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 
+            _logger.LogError(e.Message);
+
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, e.Message, e.ExceptionCode);
+        }
+        catch (Core.Exceptions.CisAlreadyExistsException e) // entrita jiz existuje
+        {
+            _logger.LogError(e.Message);
+
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, e.Message, e.ExceptionCode);
         }
         catch (Core.Exceptions.BaseCisException e)
         {
