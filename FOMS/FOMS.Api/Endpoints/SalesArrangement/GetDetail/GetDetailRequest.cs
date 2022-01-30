@@ -1,7 +1,7 @@
 ﻿namespace FOMS.Api.Endpoints.SalesArrangement.Dto;
 
 internal class GetDetailRequest
-    : IRequest<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>
+    : IRequest<DomainServices.SalesArrangementService.Contracts.SalesArrangement>
 {
     public int SalesArrangementId { get; set; }
 

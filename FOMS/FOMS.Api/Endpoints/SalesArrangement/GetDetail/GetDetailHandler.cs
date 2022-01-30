@@ -3,19 +3,19 @@
 namespace FOMS.Api.Endpoints.SalesArrangement.Handlers;
 
 internal class GetDetailHandler
-    : IRequestHandler<Dto.GetDetailRequest, DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>
+    : IRequestHandler<Dto.GetDetailRequest, DomainServices.SalesArrangementService.Contracts.SalesArrangement>
 {
-    public async Task<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse> Handle(Dto.GetDetailRequest request, CancellationToken cancellationToken)
+    public async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement> Handle(Dto.GetDetailRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Get #{salesArrangementId}", request.SalesArrangementId);
 
         return resolveResult(await _saService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
     }
 
-    private DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse resolveResult(IServiceCallResult result) =>
+    private DomainServices.SalesArrangementService.Contracts.SalesArrangement resolveResult(IServiceCallResult result) =>
        result switch
        {
-           SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse> r => r.Model,
+           SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.SalesArrangement> r => r.Model,
            _ => throw new NotImplementedException()
        };
 

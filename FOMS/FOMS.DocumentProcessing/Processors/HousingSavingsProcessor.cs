@@ -6,7 +6,7 @@ internal class HousingSavingsProcessor : BaseDocumentProcessor, IDocumentProcess
 {
     public HousingSavingsProcessor(
         ServiceAccessor serviceAccessor, 
-        DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse salesArrangement)
+        DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement)
         : base(serviceAccessor, salesArrangement) 
     { }
 

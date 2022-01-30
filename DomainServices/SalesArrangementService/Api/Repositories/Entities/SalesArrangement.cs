@@ -13,7 +13,9 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     public int? OfferInstanceId { get; set; }
 
-    public int SalesArrangementType { get; set; }
+    public int SalesArrangementTypeId { get; set; }
 
     public int State { get; set; }
+
+    public DateTime StateUpdateTime { get; set; }
 }

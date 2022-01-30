@@ -15,7 +15,7 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateSalesArrangementMediatrRequest(request));
 
-    public override async Task<GetSalesArrangementResponse> GetSalesArrangement(SalesArrangementIdRequest request, ServerCallContext context)
+    public override async Task<SalesArrangement> GetSalesArrangement(GetSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(request));
 
     public override async Task<GetSalesArrangementDataResponse> GetSalesArrangementData(SalesArrangementIdRequest request, ServerCallContext context)

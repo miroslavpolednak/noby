@@ -10,7 +10,7 @@ internal class CaseInstance : CIS.Core.Data.BaseCreatedWithModifiedUserId
     [Key]
     public long CaseId { get; set; }
 
-    public int ProductInstanceType { get; set; }
+    public int ProductInstanceTypeId { get; set; }
     public int State { get; set; }
     public DateTime StateUpdateTime { get; set; }
 
@@ -41,7 +41,7 @@ internal class CaseInstance : CIS.Core.Data.BaseCreatedWithModifiedUserId
             CaseId = caseId,
 
             StateUpdateTime = DateTime.Now,
-            ProductInstanceType = request.Data.ProductInstanceType,
+            ProductInstanceTypeId = request.Data.ProductInstanceTypeId,
 
             Name = request.Customer.Name,
             FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,

@@ -18,7 +18,7 @@ internal class GetProductInstanceListHandler
         var caseInstance = await _nobyRepository.GetCase(request.CaseId) ?? throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Case ID #{request.CaseId} does not exist", 12000);
         
         var model = new GetProductInstanceListResponse();
-        switch (productTypes.First(t => t.Id == caseInstance.ProductInstanceType).ProductCategory)
+        switch (productTypes.First(t => t.Id == caseInstance.ProductInstanceTypeId).ProductCategory)
         {
             // nemusi tu byt kontrola na existenci, protoze SS tam vzdy je
             case ProdTypes.ProductInstanceTypeCategory.BuildingSavings:
@@ -36,7 +36,7 @@ internal class GetProductInstanceListHandler
                 throw new NotImplementedException();
         }
         
-        model.Instances.Add(new ProductInstanceListItem { ProductInstanceId = 1, ProductInstanceState = 1, ProductInstanceType = 1 });
+        model.Instances.Add(new ProductInstanceListItem { ProductInstanceId = 1, ProductInstanceState = 1, ProductInstanceTypeId = 1 });
 
         return model;
     }

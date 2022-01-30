@@ -5,7 +5,7 @@ namespace FOMS.DocumentProcessing;
 internal abstract class BaseDocumentProcessor
 {
     // instance aktualniho SA
-    protected readonly DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse _salesArrangement;
+    protected readonly DomainServices.SalesArrangementService.Contracts.SalesArrangement _salesArrangement;
     // pristup do DI
     protected readonly ServiceAccessor _serviceAccessor;
 
@@ -51,7 +51,7 @@ internal abstract class BaseDocumentProcessor
         ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangementData(_salesArrangement.SalesArrangementId, convertedSaObject));
     }
 
-    public BaseDocumentProcessor(ServiceAccessor serviceAccessor, DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse salesArrangement)
+    public BaseDocumentProcessor(ServiceAccessor serviceAccessor, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement)
     {
         _salesArrangement = salesArrangement;
         _serviceAccessor = serviceAccessor;

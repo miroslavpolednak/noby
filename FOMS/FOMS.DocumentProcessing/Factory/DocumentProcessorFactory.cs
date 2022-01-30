@@ -10,20 +10,20 @@ public sealed class DocumentProcessorFactory : IDocumentProcessorFactory
         var salesArrangement = resolveResult(await _salesArrangementService.GetSalesArrangement(salesArrangementId));
 
         // zatim switchem, az budu vedet jakym zpusobem se s SA pracuje, tak udelame nejakou automatiku
-        switch (salesArrangement.SalesArrangementType)
+        switch (salesArrangement.SalesArrangementTypeId)
         {
             case 1:
                 return new HousingSavingsProcessor(_serviceAccessor, salesArrangement);
             default:
-                throw new NotImplementedException($"Document Processor for {salesArrangement.SalesArrangementType} not found");
+                throw new NotImplementedException($"Document Processor for {salesArrangement.SalesArrangementTypeId} not found");
         }
         
     }
 
-    private DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse resolveResult(IServiceCallResult result) =>
+    private DomainServices.SalesArrangementService.Contracts.SalesArrangement resolveResult(IServiceCallResult result) =>
         result switch
         {
-            SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse> r => r.Model,
+            SuccessfulServiceCallResult<DomainServices.SalesArrangementService.Contracts.SalesArrangement> r => r.Model,
             _ => throw new NotImplementedException()
         };
 

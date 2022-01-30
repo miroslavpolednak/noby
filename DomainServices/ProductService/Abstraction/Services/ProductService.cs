@@ -5,14 +5,14 @@ namespace DomainServices.ProductService.Abstraction.Services;
 
 internal class ProductService : IProductServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateProductInstance(long caseId, int productInstanceType, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> CreateProductInstance(long caseId, int ProductInstanceTypeId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction CreateProductInstance");
         var result = await _userContext.AddUserContext(async () => await _service.CreateProductInstanceAsync(
             new Contracts.CreateProductInstanceRequest
             {
                 CaseId = caseId,
-                ProductInstanceType = productInstanceType
+                ProductInstanceTypeId = ProductInstanceTypeId
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<long>(result.ProductInstanceId);

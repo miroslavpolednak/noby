@@ -8,7 +8,7 @@ internal sealed class SharedCreateProductInstanceHandler
     public async Task<long> Handle(Requests.SharedCreateProductInstanceRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Attempt to create product instance {data}", request);
-        long productId = ServiceCallResult.Resolve<long>(await _productService.CreateProductInstance(request.CaseId, request.ProductInstanceType));
+        long productId = ServiceCallResult.Resolve<long>(await _productService.CreateProductInstance(request.CaseId, request.ProductInstanceTypeId));
         _logger.LogDebug("Product instance #{productId} created", productId);
 
         return productId;

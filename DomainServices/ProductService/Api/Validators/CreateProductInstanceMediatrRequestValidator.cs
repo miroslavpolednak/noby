@@ -11,9 +11,9 @@ internal class CreateProductInstanceMediatrRequestValidator : AbstractValidator<
             .GreaterThan(0)
             .WithMessage(t => "CaseId must be greater than 0").WithErrorCode("10001");
 
-        RuleFor(t => t.ProductInstanceType)
+        RuleFor(t => t.ProductInstanceTypeId)
             .GreaterThan(0)
-            .WithMessage(t => "ProductInstanceType must be greater than 0").WithErrorCode("10001");
+            .WithMessage(t => "ProductInstanceTypeId must be greater than 0").WithErrorCode("10001");
 
     }
 }

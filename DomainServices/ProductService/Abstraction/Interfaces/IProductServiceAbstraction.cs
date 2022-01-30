@@ -4,7 +4,7 @@ namespace DomainServices.ProductService.Abstraction;
 
 public interface IProductServiceAbstraction
 {
-    Task<IServiceCallResult> CreateProductInstance(long caseId, int productInstanceType, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> CreateProductInstance(long caseId, int ProductInstanceTypeId, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<IServiceCallResult> GetHousingSavingsInstance(long productInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 

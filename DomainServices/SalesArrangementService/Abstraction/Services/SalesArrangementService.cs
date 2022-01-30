@@ -6,13 +6,13 @@ namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementType);
+        _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementTypeId);
         var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
             new CreateSalesArrangementRequest() { 
                 CaseId = caseId, 
-                SalesArrangementType = salesArrangementType, 
+                SalesArrangementTypeId = salesArrangementTypeId, 
                 OfferInstanceId = offerInstanceId
             }, cancellationToken: cancellationToken)
         );
@@ -23,12 +23,12 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     {
         _logger.LogDebug("Abstraction GetSalesArrangement for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementAsync(
-            new SalesArrangementIdRequest()
+            new GetSalesArrangementRequest()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken)
         );
-        return new SuccessfulServiceCallResult<GetSalesArrangementResponse>(result);
+        return new SuccessfulServiceCallResult<SalesArrangement>(result);
     }
 
     public async Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))

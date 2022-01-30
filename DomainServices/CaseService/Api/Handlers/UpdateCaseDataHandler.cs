@@ -14,8 +14,8 @@ internal class UpdateCaseDataHandler
         await _repository.EnsureExistingCase(request.Request.CaseId, cancellation);
 
         // zkontrolovat ProdInstType
-        if (!(await _codebookService.ProductInstanceTypes()).Any(t => t.Id == request.Request.Data.ProductInstanceType))
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceType {request.Request.Data.ProductInstanceType} not found", 13014);
+        if (!(await _codebookService.ProductInstanceTypes()).Any(t => t.Id == request.Request.Data.ProductInstanceTypeId))
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceTypeId {request.Request.Data.ProductInstanceTypeId} not found", 13014);
 
         // ulozit do DB
         await _repository.UpdateCaseData(request.Request.CaseId, request.Request.Data, cancellation);

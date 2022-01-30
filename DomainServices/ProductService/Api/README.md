@@ -2,7 +2,7 @@
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list
-        grpcurl -insecure -d "{\"CaseId\":1,\"ProductInstanceType\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5070 DomainServices.ProductService.ProductService/CreateProductInstance
+        grpcurl -insecure -d "{\"CaseId\":1,\"ProductInstanceTypeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5070 DomainServices.ProductService.ProductService/CreateProductInstance
         grpcurl -insecure -d "{\"ProductInstanceId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5070 DomainServices.ProductService.ProductService/GetHousingSavingsInstanceBasicDetail
         grpcurl -insecure -d "{\"ProductInstanceId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5070 DomainServices.ProductService.ProductService/GetHousingSavingsInstance
         grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5070 DomainServices.ProductService.ProductService/GetProductInstanceList

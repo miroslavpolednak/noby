@@ -13,7 +13,7 @@ internal sealed class CaseDataUpdated
         {
             ContractNumber = notification.ContractNumber,
             TargetAmount = notification.TargetAmount,
-            ProductInstanceType = 1
+            ProductInstanceTypeId = 1
         };
 
         ServiceCallResult.Resolve(await _caseService.UpdateCaseData(notification.CaseId, model, cancellationToken));

@@ -34,7 +34,7 @@ internal class CaseModelConverter
 			CreatedBy = model.Created.UserName,
 			CreatedTime = model.Created.DateTime,
 			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
-			ProductName = productTypes.First(x => x.Id == model.Data.ProductInstanceType).Name,
+			ProductName = productTypes.First(x => x.Id == model.Data.ProductInstanceTypeId).Name,
 			FirstName = model.Customer?.FirstNameNaturalPerson,
 			LastName = model.Customer?.Name
 		};

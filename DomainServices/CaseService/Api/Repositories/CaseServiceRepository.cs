@@ -30,8 +30,8 @@ internal class CaseServiceRepository
         => await _dbContext.CaseInstances
             .Where(t => t.CaseId == caseId)
             .AsNoTracking()
-            .Select(CaseServiceRepositoryExtensions.CaseDetail())
-            .FirstOrDefaultAsync(cancellation) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"Case #{caseId} not found");
+            .Select(CaseServiceRepositoryExpressions.CaseDetail())
+            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
 
     public async Task<(int RecordsTotalSize, List<Contracts.Case> CaseInstances)> GetCaseList(CIS.Core.Types.Paginable paginable, int userId, int? state, string? searchTerm, CancellationToken cancellation)
     {
@@ -66,7 +66,7 @@ internal class CaseServiceRepository
             .Skip(paginable.PageSize * (paginable.RecordOffset - 1))
             .Take(paginable.PageSize)
             .AsNoTracking()
-            .Select(CaseServiceRepositoryExtensions.CaseDetail()
+            .Select(CaseServiceRepositoryExpressions.CaseDetail()
         ).ToListAsync(cancellation);
 
         return (recordsTotalSize, data);
@@ -88,7 +88,7 @@ internal class CaseServiceRepository
         
         entity.ContractNumber = data.ContractNumber;
         entity.TargetAmount = data.TargetAmount;
-        entity.ProductInstanceType = data.ProductInstanceType;
+        entity.ProductInstanceTypeId = data.ProductInstanceTypeId;
 
         await _dbContext.SaveChangesAsync(cancellation);
     }
@@ -117,7 +117,7 @@ internal class CaseServiceRepository
     }
 
     private async Task<Entities.CaseInstance> getCaseEntity(long caseId, CancellationToken cancellation)
-        => await _dbContext.CaseInstances.FindAsync(new object[] { caseId }, cancellation) ?? throw new CIS.Core.Exceptions.CisNotFoundException(13000, $"Case #{caseId} not found");
+        => await _dbContext.CaseInstances.FindAsync(new object[] { caseId }, cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
 
     private readonly CaseServiceDbContext _dbContext;
 

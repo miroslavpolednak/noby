@@ -16,14 +16,14 @@ internal class SimulateBuildingSavingsRepository
 
     public async Task<int> SaveOffer(
         Guid resourceProcessId,
-        int productInstanceType,
+        int ProductInstanceTypeId,
         BuildingSavingsInput inputs,
         Dto.Models.BuildingSavingsDataModel outputs)
     {
         var entity = new Entities.OfferInstance
         {
             ResourceProcessId = resourceProcessId,
-            ProductInstanceType = productInstanceType,
+            ProductInstanceTypeId = ProductInstanceTypeId,
             Outputs = JsonSerializer.Serialize(outputs),
             Inputs = JsonSerializer.Serialize(inputs)
         };

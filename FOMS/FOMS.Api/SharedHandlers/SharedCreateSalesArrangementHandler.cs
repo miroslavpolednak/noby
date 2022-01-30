@@ -9,7 +9,7 @@ internal sealed class SharedCreateSalesArrangementHandler
     public async Task<int> Handle(Requests.SharedCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Attempt to create sales arrangement {data}", request);
-        int saId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.ProductInstanceType, request.OfferInstanceId, cancellationToken));
+        int saId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.ProductInstanceTypeId, request.OfferInstanceId, cancellationToken));
         _logger.LogDebug("Sales arrangement #{saId} created", saId);
 
         return saId;

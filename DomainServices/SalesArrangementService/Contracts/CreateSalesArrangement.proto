@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message CreateSalesArrangementRequest {
+	// ID Case v ramci ktereho ma byt SA zalozen
+	int64 CaseId = 1;
+
+	// Druh SA
+	int32 SalesArrangementTypeId = 2;
+
+	// ID modelace, ktera je spojena s timto SA - neni povinne
+	google.protobuf.Int32Value OfferInstanceId = 3;
+}
+
+message CreateSalesArrangementResponse {
+	// ID nove zalozeneho SA
+	int32 SalesArrangementId = 1;
+}

@@ -9,7 +9,7 @@ internal class GetSalesArrangementDataHandler
     {
         _logger.LogInformation("Get data for #{id}", request.SalesArrangementId);
 
-        var saInstance = await _repository.GetSalesArrangement(request.SalesArrangementId);
+        var saInstance = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
         // zkontrolovat jestli ma pravo?
 
         var data = await _repository.GetSalesArrangementData(request.SalesArrangementId);

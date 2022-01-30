@@ -25,9 +25,9 @@ internal class CreateProductInstanceHandler
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Case ID #{request.CaseId} does not exist", 12000);
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
-        var productInstanceTypeCategory = await getProductCategory(request.ProductInstanceType);
+        var productInstanceTypeCategory = await getProductCategory(request.ProductInstanceTypeId);
 
-        // Pokud typ produktu (productInstanceType = HS_LOAN) jedná se o úvěr navazující na existující stavební spoření
+        // Pokud typ produktu (ProductInstanceTypeId = HS_LOAN) jedná se o úvěr navazující na existující stavební spoření
         // Rezervace ID produktu v EAS (uver_id)
         if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings)
             productId = resolveSavingsLoanIdResult(await _easClient.GetSavingsLoanId(request.CaseId));
@@ -41,12 +41,12 @@ internal class CreateProductInstanceHandler
         };
     }
 
-    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long productInstanceType)
+    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long ProductInstanceTypeId)
     {
         var productTypes = await _codebookService.ProductInstanceTypes();
-        var item = productTypes.FirstOrDefault(t => t.Id == productInstanceType);
+        var item = productTypes.FirstOrDefault(t => t.Id == ProductInstanceTypeId);
         if (item == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "ProductInstanceType not found", 1);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "ProductInstanceTypeId not found", 1);
         return item.ProductCategory;
     }
 

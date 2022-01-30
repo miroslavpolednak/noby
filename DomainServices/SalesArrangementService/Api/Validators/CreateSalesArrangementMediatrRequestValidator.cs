@@ -6,13 +6,13 @@ internal class CreateSalesArrangementMediatrRequestValidator : AbstractValidator
 {
     public CreateSalesArrangementMediatrRequestValidator()
     {
-        RuleFor(t => t.CaseId)
+        RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13000");
+            .WithMessage("Case ID does not exist.").WithErrorCode("16002");
 
-        RuleFor(t => t.SalesArrangementType)
+        RuleFor(t => t.Request.SalesArrangementTypeId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementType must be > 0").WithErrorCode("13000");
+            .WithMessage("OfferInstance ID does not exist.").WithErrorCode("16001");
     }
 }
 

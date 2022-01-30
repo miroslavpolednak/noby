@@ -11,7 +11,7 @@ internal class UpdateCaseHandler
         _logger.LogDebug("Update building savings case for {request}", request);
 
         // get SA instance
-        var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // detail simulace
         var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));

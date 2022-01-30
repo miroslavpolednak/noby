@@ -9,6 +9,10 @@ internal class UpdateSalesArrangementStateMediatrRequestValidator
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("13000");
+            .WithMessage("Sales arrangement ID does not exist.").WithErrorCode("16000");
+
+        RuleFor(t => t.State)
+            .GreaterThan(0)
+            .WithMessage("SalesArrangement State does not exist.").WithErrorCode("16006");
     }
 }

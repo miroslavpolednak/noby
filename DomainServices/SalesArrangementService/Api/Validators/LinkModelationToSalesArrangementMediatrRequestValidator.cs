@@ -8,10 +8,10 @@ internal class LinkModelationToSalesArrangementMediatrRequestValidator : Abstrac
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("13000");
+            .WithMessage("Sales arrangement ID does not exist.").WithErrorCode("16000");
 
         RuleFor(t => t.OfferInstanceId)
             .GreaterThan(0)
-            .WithMessage("OfferInstanceId must be > 0").WithErrorCode("13000");
+            .WithMessage("OfferInstance ID does not exist.").WithErrorCode("16001");
     }
 }

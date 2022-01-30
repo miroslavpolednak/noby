@@ -11,7 +11,7 @@ internal class UpdateDraftHandler
         _logger.LogDebug("Update SA #{salesArrangementId} for {offerInstanceId}", request.SalesArrangementId, request.OfferInstanceId);
 
         // get SA instance
-        var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // dotahnout informace o offerInstance
         var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));

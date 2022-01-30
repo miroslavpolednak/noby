@@ -3,26 +3,15 @@
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class GetSalesArrangementHandler
-    : IRequestHandler<Dto.GetSalesArrangementMediatrRequest, GetSalesArrangementResponse>
+    : IRequestHandler<Dto.GetSalesArrangementMediatrRequest, SalesArrangement>
 {
-    public async Task<GetSalesArrangementResponse> Handle(Dto.GetSalesArrangementMediatrRequest request, CancellationToken cancellation)
+    public async Task<SalesArrangement> Handle(Dto.GetSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Get detail for #{id}", request.SalesArrangementId);
+        _logger.LogDebug("Get SA #{id}", request.SalesArrangementId);
 
-        var sa = await _repository.GetSalesArrangement(request.SalesArrangementId);
+        var saInstance = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
         
-        var model = new GetSalesArrangementResponse
-        {
-            SalesArrangementId = sa.SalesArrangementId,
-            SalesArrangementType = sa.SalesArrangementType,
-            State = sa.State,
-            CaseId = sa.CaseId,
-            OfferInstanceId = sa.OfferInstanceId
-        };
-
-        _logger.LogDebug("Found {sa}", sa);
-
-        return model;
+        return saInstance;
     }
 
     private readonly Repositories.SalesArrangementServiceRepository _repository;

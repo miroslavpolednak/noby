@@ -2,16 +2,18 @@
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list
-        grpcurl -insecure -d "{\"CaseId\":99,\"SalesArrangementType\":1,\"OfferInstanceId\":8}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
+        grpcurl -insecure -d "{\"CaseId\":99,\"SalesArrangementTypeId\":1,\"OfferInstanceId\":8}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementData
         grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementsByCaseId
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"State\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementState
+        grpcurl -insecure -d "{\"SalesArrangementId\":2,\"OfferInstanceId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/LinkModelationToSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"Data\":\"{xxx:xxx}\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementData
 
 ## run batch
-        dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\CIS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
+        dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"
+        dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CaseService\Api\DomainServices.CaseService.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\SalesArrangementService\Api\DomainServices.SalesArrangementService.Api.csproj"
 
 

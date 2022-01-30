@@ -11,7 +11,7 @@ internal class OfferInstance : CIS.Core.Data.BaseCreated
 
     public Guid ResourceProcessId { get; set; }
 
-    public int ProductInstanceType { get; set; }
+    public int ProductInstanceTypeId { get; set; }
 
     public string? Inputs { get; set; }
 

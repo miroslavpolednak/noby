@@ -13,7 +13,7 @@ internal class GetSalesArrangementsByCaseIdHandler
         var finalData = listData.Select(t => new SalesArrangementListModel
         {
             SalesArrangementId = t.SalesArrangementId,
-            SalesArrangementType = t.SalesArrangementType,
+            SalesArrangementType = t.SalesArrangementTypeId,
             State = t.State,
             CaseId = t.CaseId,
             OfferInstanceId = t.OfferInstanceId

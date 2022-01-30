@@ -22,4 +22,11 @@ public static class ServiceCallResult
             SuccessfulServiceCallResult<TModel> r => r.Model,
             _ => default(TModel)
         };
+
+    public static bool IsSuccessResult(IServiceCallResult result) =>
+        result switch
+        {
+            SuccessfulServiceCallResult => true,
+            _ => false
+        };
 }

@@ -26,12 +26,12 @@ internal sealed class KonsDbRepository
 
     public async Task<Dto.ProductInstanceListModel?> GetSavingsListItem(long caseId)
     {
-        return await WithConnection(async c => await c.QueryFirstOrDefaultAsync<Dto.ProductInstanceListModel>("SELECT TOP 1 ProductInstanceId, ProductInstanceType, State FROM dbo.Sporeni WHERE Id=@id", new { id = caseId }));
+        return await WithConnection(async c => await c.QueryFirstOrDefaultAsync<Dto.ProductInstanceListModel>("SELECT TOP 1 ProductInstanceId, ProductInstanceTypeId 'ProductInstanceTypeId', State FROM dbo.Sporeni WHERE Id=@id", new { id = caseId }));
     }
 
     //TODO jak najit uvery k SS podle CaseId?
     public async Task<List<Dto.ProductInstanceListModel>> GetSavingsLoanListItems(long caseId)
     {
-        return await WithConnection(async c => (await c.QueryAsync<Dto.ProductInstanceListModel>("SELECT ProductInstanceId, ProductInstanceType, State FROM dbo.Sporeni WHERE SporeniId=@id", new { id = caseId })).ToList());
+        return await WithConnection(async c => (await c.QueryAsync<Dto.ProductInstanceListModel>("SELECT ProductInstanceId, ProductInstanceTypeId 'ProductInstanceTypeId', State FROM dbo.Sporeni WHERE SporeniId=@id", new { id = caseId })).ToList());
     }
 }

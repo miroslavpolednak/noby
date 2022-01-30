@@ -13,11 +13,11 @@ internal class CreateCaseHandler
         _logger.LogInformation("Create case");
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
-        var productInstanceTypeCategory = await getProductCategory(request.Request.Data.ProductInstanceType);
+        var productInstanceTypeCategory = await getProductCategory(request.Request.Data.ProductInstanceTypeId);
         
         // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
         if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceType {request.Request.Data.ProductInstanceType} is not valid for this operation", 13013);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceTypeId {request.Request.Data.ProductInstanceTypeId} is not valid for this operation", 13013);
 
         // overit existenci ownera
         var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId));
@@ -30,7 +30,7 @@ internal class CreateCaseHandler
         int defaultCaseState = await getDefaultState();
 
         // ziskat caseId
-        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductInstanceType));
+        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductInstanceTypeId));
         _logger.LogDebug("newCaseId={newCaseId}", newCaseId);
 
         // vytvorit entitu
@@ -63,13 +63,13 @@ internal class CreateCaseHandler
     /// <summary>
     /// Zjistit typ produktu - Hypo, SS atd.
     /// </summary>
-    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long productInstanceType)
+    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long ProductInstanceTypeId)
     {
         var productTypes = await _codebookService.ProductInstanceTypes();
 
-        var item = productTypes.FirstOrDefault(t => t.Id == productInstanceType);
+        var item = productTypes.FirstOrDefault(t => t.Id == ProductInstanceTypeId);
         if (item == null)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceType {productInstanceType} not found", 13014);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceTypeId {ProductInstanceTypeId} not found", 13014);
 
         _logger.LogDebug("ProductInstanceTypeCategory={id}", item.ProductCategory);
 
@@ -99,7 +99,7 @@ internal class CreateCaseHandler
         result switch
         {
             SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new CIS.Core.Exceptions.CisNotFoundException(13017, $"User not found: {err.Errors.First().Message}"),
+            ErrorServiceCallResult err => throw new CisNotFoundException(13017, $"User not found: {err.Errors.First().Message}"),
             _ => throw new NotImplementedException()
         };
 

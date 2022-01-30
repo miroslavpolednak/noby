@@ -59,7 +59,7 @@ internal abstract class BaseCaseHandler
             },
             Data = new DomainServices.CaseService.Contracts.CaseData
             {
-                ProductInstanceType = _aggregate.Configuration.BuildingSavings.SavingsProductInstanceType,
+                ProductInstanceTypeId = _aggregate.Configuration.BuildingSavings.SavingsProductInstanceType,
                 TargetAmount = offerInstance.InputData.TargetAmount
             }
         };

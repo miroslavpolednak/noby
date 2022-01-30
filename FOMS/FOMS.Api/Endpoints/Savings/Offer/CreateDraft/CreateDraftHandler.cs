@@ -21,7 +21,7 @@ internal class CreateDraftHandler
             FirstName = request.FirstName,
             LastName = request.LastName,
             Customer = request.Customer,
-            ProductInstanceType = _configuration.BuildingSavings.SavingsProductInstanceType,
+            ProductInstanceTypeId = _configuration.BuildingSavings.SavingsProductInstanceType,
             TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
 
@@ -30,7 +30,7 @@ internal class CreateDraftHandler
         {
             CaseId = caseId,
             OfferInstanceId = request.OfferInstanceId,
-            ProductInstanceType = _configuration.BuildingSavings.SavingsSalesArrangementType
+            ProductInstanceTypeId = _configuration.BuildingSavings.SavingsSalesArrangementType
         }, cancellationToken);
         
         return new SaveCaseResponse

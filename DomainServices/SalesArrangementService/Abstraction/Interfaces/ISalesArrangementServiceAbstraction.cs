@@ -10,13 +10,13 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[int (SalesArrangementId)] - OK;
     /// </returns>
-    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementType, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci detail Sales Arrangement bez JSON dat
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[Contracts.GetSalesArrangementResponse] - OK;
+    /// SuccessfulServiceCallResult[Contracts.SalesArrangement] - OK;
     /// </returns>
     Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 

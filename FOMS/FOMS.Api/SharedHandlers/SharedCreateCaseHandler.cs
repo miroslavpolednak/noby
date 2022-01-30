@@ -18,7 +18,7 @@ internal sealed class SharedCreateCaseHandler
             },
             Data = new DomainServices.CaseService.Contracts.CaseData
             {
-                ProductInstanceType = request.ProductInstanceType,
+                ProductInstanceTypeId = request.ProductInstanceTypeId,
                 TargetAmount = request.TargetAmount
             }
         };

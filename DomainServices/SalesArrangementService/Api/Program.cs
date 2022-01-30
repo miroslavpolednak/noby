@@ -4,6 +4,7 @@ using CIS.Security;
 using DomainServices.SalesArrangementService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
+using DomainServices.OfferService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 
@@ -27,27 +28,29 @@ appConfiguration.CheckAppConfiguration();
 // strongly-typed konfigurace aplikace
 builder.Services.AddSingleton(appConfiguration);
 
+builder.Services.AddAttributedServices(typeof(Program));
+
 // globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
+builder
+    .AddCisEnvironmentConfiguration()
+    .AddCisCoreFeatures()
+    .AddCisHealthChecks();
 
 // logging 
-builder.AddCisLogging();
-builder.AddCisTracing();
-
-// health checks
-builder.AddCisHealthChecks();
-
-builder.AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program));
+builder
+    .AddCisLogging()
+    .AddCisTracing();
 
 // authentication
 builder.AddCisServiceAuthentication();
 
 // add services
-builder.Services.AddCaseService(true);
-builder.Services.AddCodebookService(true);
+builder.Services
+    .AddCisServiceDiscovery(true)
+    .AddCaseService(true)
+    .AddCodebookService(true)
+    .AddOfferService(true);
 builder.AddSalesArrangementService(appConfiguration);
-builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS a mphome
 
 builder.Services.AddGrpc(options =>
 {

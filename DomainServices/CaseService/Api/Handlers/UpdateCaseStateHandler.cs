@@ -12,7 +12,7 @@ internal class UpdateCaseStateHandler
 
         // overit ze case state existuje
         if (!(await _codebookService.CaseStates()).Any(t => t.Id == request.State))
-            throw new CIS.Core.Exceptions.CisNotFoundException(13011, $"Case State {request.State} does not exists");
+            throw new CisNotFoundException(13011, $"Case State {request.State} does not exists");
 
         // update v DB
         await _repository.UpdateCaseState(request.CaseId, request.State, cancellation);

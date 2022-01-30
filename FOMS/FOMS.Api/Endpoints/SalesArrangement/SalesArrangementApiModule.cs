@@ -27,7 +27,7 @@ internal class SalesArrangementApiModule : IApiEndpointModule
         builder
             .MapGet(_prefix + "/{salesArrangementId:int}", async (int salesArrangementId) => await mediatr.Send(new Dto.GetDetailRequest(salesArrangementId)))
             .WithTags("Sales Arrangement Module")
-            .Produces<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementResponse>(StatusCodes.Status200OK);
+            .Produces<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(StatusCodes.Status200OK);
 
         // GET /forms/{caseid}/{formid}/structure - vrati strukturu formu do wizarda
         // GET /forms/{said}/{formid}/{partid} - vrati template dane casti formu
