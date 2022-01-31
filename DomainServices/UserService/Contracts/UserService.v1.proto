@@ -2,7 +2,6 @@
 package DomainServices.UserService.v1;
 option csharp_namespace = "DomainServices.UserService.Contracts.v1";
 
-import "google/protobuf/empty.proto";
 import "Types.proto";
 
 service UserService {

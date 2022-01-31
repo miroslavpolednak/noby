@@ -31,7 +31,7 @@ internal class SalesArrangementServiceRepository
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.OfferInstanceId = offerInstanceId;
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellation);
     }
 
     public async Task UpdateSalesArrangementData(int salesArrangementId, string data)
@@ -55,7 +55,7 @@ internal class SalesArrangementServiceRepository
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.State = state;
         entity.StateUpdateTime = DateTime.Now;
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellation);
     }
 
     public async Task<List<Entities.SalesArrangement>> GetSalesArrangementsByCaseId(long caseId)

@@ -8,7 +8,7 @@ using DomainServices.OfferService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
+bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
 //TODO workaround until .NET6 UseWindowsService() will work with WebApplication
 var webAppOptions = runAsWinSvc
@@ -82,7 +82,9 @@ app.UseEndpoints(endpoints =>
 
 app.Run();
 
+#pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
+#pragma warning restore CA1050 // Declare types in namespaces
 {
     // Expose the Program class for use with WebApplicationFactory<T>
 }
