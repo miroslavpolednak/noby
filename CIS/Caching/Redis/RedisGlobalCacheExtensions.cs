@@ -32,7 +32,9 @@ public static class RedisGlobalCacheExtensions
 
             // bez korektniho connection stringu vyhod chybu
             if (string.IsNullOrEmpty(defaultOptions.ConnectionString))
-                throw new CisArgumentNullException(11, "Redis connection string is empty", "ConnectionString");
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+                throw new CisArgumentNullException(11, "Redis connection string is empty", nameof(defaultOptions.ConnectionString));
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
 
             return createMultiplexer(defaultOptions.ConnectionString, defaultOptions.ApplicationKey, defaultOptions.EnvironmentName, defaultOptions.KeyPrefix);
         });

@@ -41,7 +41,7 @@ public static class ServiceDiscoveryExtensions
             {
                 string url = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
                 var logger = provider.GetService<ILoggerFactory>();
-                if (logger != null) logger.CreateLogger<GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>().LogInformation("DiscoveryServiceClient={url}", url);
+                if (logger != null) logger.CreateLogger<GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>().DiscoveryServiceUrlFound(url);
                 return new GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url, isInvalidCertificateAllowed);
             });
         }

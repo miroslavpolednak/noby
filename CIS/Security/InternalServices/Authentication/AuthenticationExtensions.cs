@@ -18,7 +18,7 @@ public static class AuthenticationExtensions
         var c = new Configuration.CisServiceAuthenticationConfiguration();
         builder.Configuration.GetSection("CisSecurity:ServiceAuthentication").Bind(c);
         if (c == null || (string.IsNullOrEmpty(c.AdHost) && c.Validator == Configuration.CisServiceAuthenticationConfiguration.LoginValidators.ActiveDirectory))
-            throw new System.ArgumentNullException("CisSecurity:ServiceAuthentication not configured in appsettings.json");
+            throw new Core.Exceptions.CisConfigurationNotFound("CisSecurity:ServiceAuthentication");
 
         // header parser
         builder.Services.TryAddSingleton<IAuthHeaderParser, AuthHeaderParser>();
@@ -33,7 +33,7 @@ public static class AuthenticationExtensions
                 builder.Services.TryAddSingleton<ILoginValidator, AdLoginValidator>();
                 break;
             default:
-                throw new System.Exception($"Unknown LoginValidator {c.Validator}");
+                throw new System.Security.Authentication.AuthenticationException($"Unknown LoginValidator {c.Validator}");
         }
 
         builder.Services

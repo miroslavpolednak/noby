@@ -2,12 +2,13 @@
 using Grpc.Core.Interceptors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
 namespace CIS.Infrastructure.gRPC;
 
 public class SimpleServerExceptionInterceptor : Interceptor
 {
-    protected readonly ILogger<SimpleServerExceptionInterceptor> _logger;
+    private readonly ILogger<SimpleServerExceptionInterceptor> _logger;
 
     public SimpleServerExceptionInterceptor(ILogger<SimpleServerExceptionInterceptor> logger)
     {
@@ -28,14 +29,12 @@ public class SimpleServerExceptionInterceptor : Interceptor
             var httpContext = context.GetHttpContext();
             httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 
-            _logger.LogError(e.Message);
-
+            _logger.EntityNotFound(e);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, e.Message, e.ExceptionCode);
         }
         catch (Core.Exceptions.CisAlreadyExistsException e) // entrita jiz existuje
         {
-            _logger.LogError(e.Message);
-
+            _logger.EntityAlreadyExist(e);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, e.Message, e.ExceptionCode);
         }
         catch (Core.Exceptions.BaseCisException e)
@@ -57,7 +56,7 @@ public class SimpleServerExceptionInterceptor : Interceptor
             var httpContext = context.GetHttpContext();
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            _logger.LogError(e, e.Message);
+            _logger.GeneralException(e);
             throw new RpcException(new Status(StatusCode.Internal, e.Message, e), e.Message);
         }
     }

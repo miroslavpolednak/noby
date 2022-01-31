@@ -20,7 +20,7 @@ public static class GrpcHelpers
 
     public static int GetIntValueFromTrailers(this RpcException exception, string key)
     {
-        int.TryParse(exception.Trailers?.Get(key)?.Value, out int i);
+        _ = int.TryParse(exception.Trailers?.Get(key)?.Value, out int i);
         return i;
     }
 

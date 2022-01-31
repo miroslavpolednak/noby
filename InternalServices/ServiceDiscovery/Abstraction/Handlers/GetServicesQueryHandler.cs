@@ -1,35 +1,35 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace CIS.InternalServices.ServiceDiscovery.Abstraction.Handlers
+namespace CIS.InternalServices.ServiceDiscovery.Abstraction.Handlers;
+
+internal class GetServicesQueryHandler : IRequestHandler<Dto.GetServicesRequest, List<Contracts.DiscoverableService>>
 {
-    internal class GetServicesQueryHandler : IRequestHandler<Dto.GetServicesRequest, List<Contracts.DiscoverableService>>
+    public async Task<List<Contracts.DiscoverableService>> Handle(Dto.GetServicesRequest request, CancellationToken cancellation)
     {
-        private readonly ILogger<GetServiceQueryHandler> _logger;
-        private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;
-        private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
+        _logger.RequestHandlerStarted(nameof(GetServicesQueryHandler));
 
-        public GetServicesQueryHandler(
-            Contracts.v1.DiscoveryService.DiscoveryServiceClient service, 
-            ILogger<GetServiceQueryHandler> logger, 
-            Security.InternalServices.ICisUserContextHelpers userContext)
+        var model = new Contracts.GetServicesRequest
         {
-            _userContext = userContext;
-            _logger = logger;
-            _service = service;
-        }
+            Environment = request.EnvironmentName
+        };
 
-        public async Task<List<Contracts.DiscoverableService>> Handle(Dto.GetServicesRequest request, CancellationToken cancellation)
-        {
-            _logger.LogDebug("Get list from {environment}", request.EnvironmentName.Name);
+        var result = await _userContext.AddUserContext(async () => (await _service.GetServicesAsync(model)));
 
-            var model = new Contracts.GetServicesRequest
-            {
-                Environment = request.EnvironmentName
-            };
+        return result.Services.ToList();
+    }
 
-            var result = await _userContext.AddUserContext(async () => (await _service.GetServicesAsync(model)));
+    private readonly ILogger<GetServiceQueryHandler> _logger;
+    private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;
+    private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
 
-            return result.Services.ToList();
-        }
+    public GetServicesQueryHandler(
+        Contracts.v1.DiscoveryService.DiscoveryServiceClient service, 
+        ILogger<GetServiceQueryHandler> logger, 
+        Security.InternalServices.ICisUserContextHelpers userContext)
+    {
+        _userContext = userContext;
+        _logger = logger;
+        _service = service;
     }
 }
+

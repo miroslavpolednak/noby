@@ -16,13 +16,13 @@ public sealed partial class Identity
 
     public static implicit operator Core.Types.CustomerIdentity(Identity identity)
     {
-        if (identity is null) throw new ArgumentNullException("identity", "CustomerIdentity is null");
+        if (identity is null) throw new ArgumentNullException(nameof(identity), "CustomerIdentity is null");
         return new Core.Types.CustomerIdentity(identity.IdentityId, identity.IdentityScheme.ToString());
     }
 
     public static implicit operator Identity(Core.Types.CustomerIdentity identity)
     {
-        if (identity is null) throw new ArgumentNullException("identity", "CustomerIdentity is null");
+        if (identity is null) throw new ArgumentNullException(nameof(identity), "CustomerIdentity is null");
         return new Identity()
         {
             IdentityId = identity.Id,

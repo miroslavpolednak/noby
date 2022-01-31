@@ -12,7 +12,7 @@ public sealed class GrpcServiceUriSettings<TService>
     public GrpcServiceUriSettings(string serviceUrl, bool isInvalidCertificateAllowed)
     {
         if (string.IsNullOrEmpty(serviceUrl))
-            throw new CIS.Core.Exceptions.CisArgumentNullException(12, "Service URL is empty or null", "serviceUrl");
+            throw new Core.Exceptions.CisArgumentNullException(12, "Service URL is empty or null", nameof(serviceUrl));
 
         ServiceType = typeof(TService);
         IsInvalidCertificateAllowed = isInvalidCertificateAllowed;

@@ -7,7 +7,7 @@ internal class GetServiceQueryHandler
 {
     public async Task<Contracts.DiscoverableService> Handle(Dto.GetServiceRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Get {serviceName}:{serviceType} from {environment}", request.ServiceName, request.EnvironmentName.Name, request.ServiceType);
+        _logger.GetServiceStarted(request.ServiceName, request.ServiceType, request.EnvironmentName.Name);
 
         string? cachedServiceUrl = null;
         var cacheKey = new ServiceNameCacheKey(request.ServiceType, request.ServiceName);
@@ -15,7 +15,7 @@ internal class GetServiceQueryHandler
 
         if (!foundInCache) // neni v kesi
         {
-            _logger.LogDebug("Service {serviceName}:{serviceType} from {environment} not found in cache", request.ServiceName, request.EnvironmentName.Name, request.ServiceType);
+            _logger.ServiceNotFoundInCache(request.ServiceName, request.ServiceType, request.EnvironmentName.Name);
 
             var model = new Contracts.GetServiceRequest
             {
@@ -26,14 +26,14 @@ internal class GetServiceQueryHandler
 
             var result = await _userContext.AddUserContext(async () => (await _service.GetServiceAsync(model)));
 
-            _logger.LogDebug("Service {serviceName}:{serviceType} from {environment} obtained", request.ServiceName, request.EnvironmentName.Name, request.ServiceType);
+            _logger.ServiceFoundInDb(request.ServiceName, request.ServiceType, request.EnvironmentName.Name);
 
             _cache?.Set(request.EnvironmentName, new Infrastructure.Caching.HashItem(cacheKey, result.Service.ServiceUrl));
             return new Contracts.DiscoverableService { ServiceName = result.Service.ServiceName, ServiceUrl = result.Service.ServiceUrl };
         }
         else
         {
-            _logger.LogDebug("Service {serviceName}:{serviceType} from {environment} FOUND in cache", request.ServiceName, request.EnvironmentName.Name, request.ServiceType);
+            _logger.ServiceFoundInCache(request.ServiceName, request.ServiceType, request.EnvironmentName.Name);
             return new Contracts.DiscoverableService { ServiceName = request.ServiceName, ServiceType = request.ServiceType, ServiceUrl = cachedServiceUrl };
         }
     }

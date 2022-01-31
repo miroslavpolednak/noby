@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
 namespace DomainServices.CaseService.Abstraction;
 
@@ -32,12 +33,12 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.ServiceUnavailable(ex);
+            _logger.ServiceUnavailable("CaseService", ex);
             throw new ServiceUnavailableException("CaseService", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition) // nedostupna sluzba EAS atd.
         {
-            _logger.ExtServiceUnavailable(ex);
+            _logger.ExtServiceUnavailable("CaseService", ex);
             throw new ServiceUnavailableException("CaseService/dependant_service", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)

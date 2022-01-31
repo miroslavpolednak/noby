@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CIS.Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
   </ItemGroup>
 

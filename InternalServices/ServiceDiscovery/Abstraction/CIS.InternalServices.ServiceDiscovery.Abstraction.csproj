@@ -11,6 +11,10 @@
 	<ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<InternalsVisibleTo Include="CIS.InternalServices.ServiceDiscovery.Tests" />
 	</ItemGroup>

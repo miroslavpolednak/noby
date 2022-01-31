@@ -28,7 +28,7 @@ public abstract class DapperBaseRepository<TLogger>
         }
         catch (Exception ex)
         {
-            _logger?.DapperQueryException(ex.Message, ex);
+            _logger?.DapperQueryException(ex);
             throw;
         }
     }
@@ -46,7 +46,7 @@ public abstract class DapperBaseRepository<TLogger>
         }
         catch (Exception ex)
         {
-            _logger?.DapperQueryException(ex.Message, ex);
+            _logger?.DapperQueryException(ex);
             throw;
         }
     }
@@ -65,7 +65,7 @@ public abstract class DapperBaseRepository<TLogger>
         }
         catch (Exception ex)
         {
-            _logger?.DapperQueryException(ex.Message, ex);
+            _logger?.DapperQueryException(ex);
             throw;
         }
     }

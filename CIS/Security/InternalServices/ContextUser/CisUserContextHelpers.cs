@@ -14,7 +14,7 @@ namespace CIS.Security.InternalServices
         public CisUserContextHelpers(IHttpContextAccessor context)
         {
             if (context is null)
-                throw new ArgumentNullException("IHttpContextAccessor is not registered in DI container, use services.AddHttpContextAccessor()");
+                throw new ArgumentNullException(nameof(context), "IHttpContextAccessor is not registered in DI container, use services.AddHttpContextAccessor()");
 
             _context = context;
         }

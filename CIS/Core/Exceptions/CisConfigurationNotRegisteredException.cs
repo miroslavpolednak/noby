@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CIS.Core.Exceptions
+﻿namespace CIS.Core.Exceptions
 {
     public sealed class CisConfigurationNotRegisteredException : BaseCisException
     {

@@ -19,7 +19,7 @@ internal class GetServicesQueryHandler
         if (foundServices == null || !foundServices.Any())
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Services not found for environment '{request.Environment}'", 103);
 
-        _logger.LogDebug($"Cache: found {foundServices.Count} services in '{request.Environment}'");
+        _logger.FoundServices(foundServices.Count, request.Environment);
 
         var result = new Contracts.GetServicesResponse { EnvironmentName = request.Environment };
 

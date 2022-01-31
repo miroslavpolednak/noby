@@ -18,11 +18,17 @@ public interface IGlobalCache
 
     bool TryGetHashset(string key, string hashField, out string? value);
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
     void Set(string key, string value, TimeSpan? expiry = null);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
     void Set(string key, List<HashItem> hashset);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
     void Set(string key, HashItem item);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
     Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf);
 

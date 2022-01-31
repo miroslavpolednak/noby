@@ -23,5 +23,7 @@
             EntityName = entityName;
             EntityIdLong = entityId;
         }
+
+        public long GetId() => EntityIdLong ?? EntityIdInt ?? 0;
     }
 }

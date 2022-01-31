@@ -14,11 +14,11 @@ internal class GetServiceQueryHandler
 
         if (!_cache.TryGetHashset(request.Environment, new ServiceNameCacheKey(request.ServiceType, request.ServiceName), out string? url))
         {
-            _logger.LogWarning("Service '{serviceName}' not found for environment '{environment}'", request.ServiceName, request.Environment);
+            _logger.ServiceNotFound(request.ServiceName, request.ServiceType, request.Environment);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Service '{request.ServiceName}' not found for environment '{request.Environment}'", 103);
         }
         
-        _logger.LogDebug("Cache: found service '{serviceName}' for '{environment}'", request.ServiceName, request.Environment);
+        _logger.ServiceFoundInCache(request.ServiceName, request.ServiceType, request.Environment);
 
         return new Contracts.GetServiceResponse
         {

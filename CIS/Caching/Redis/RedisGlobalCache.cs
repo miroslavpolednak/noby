@@ -21,18 +21,18 @@ public class RedisGlobalCache<T> : RedisGlobalCache, IGlobalCache<T> where T : c
 public class RedisGlobalCache : IGlobalCache
 {
     public CacheTypes CacheType { get => CacheTypes.Redis; }
-    protected readonly IDatabase _database;
+    protected IDatabase Database { get; init; }
 
     public RedisGlobalCache(string connectionString, string? keyPrefix)
     {
         var multiplexer = ConnectionMultiplexer.Connect(connectionString);
-        _database = multiplexer.GetDatabase();
+        Database = multiplexer.GetDatabase();
         KeyPrefix = keyPrefix;
     }
 
     public RedisGlobalCache(IConnectionMultiplexer connectionMultiplexer, string? keyPrefix)
     {
-        _database = connectionMultiplexer.GetDatabase();
+        Database = connectionMultiplexer.GetDatabase();
         KeyPrefix = keyPrefix;
     }
 
@@ -43,30 +43,30 @@ public class RedisGlobalCache : IGlobalCache
 
     public bool Exists(string key)
     {
-        return _database.KeyExists(KeyPrefix + key);
+        return Database.KeyExists(KeyPrefix + key);
     }
 
     public void Remove(string key)
     {
-        _database.KeyDelete(KeyPrefix + key);
+        Database.KeyDelete(KeyPrefix + key);
     }
 
     public string GetString(string key)
     {
-        return _database.StringGet(KeyPrefix + key);
+        return Database.StringGet(KeyPrefix + key);
     }
 
     public List<HashItem> GetHashset(string key)
     {
-        if (!Exists(key)) throw new CisArgumentNullException(7, $"Key '{key}' does not exists in Global Cache", "key");
-        return _database.HashGetAll(KeyPrefix + key).Select(t => (HashItem)t).ToList();
+        if (!Exists(key)) throw new CisArgumentNullException(7, $"Key '{key}' does not exists in Global Cache", nameof(key));
+        return Database.HashGetAll(KeyPrefix + key).Select(t => (HashItem)t).ToList();
     }
 
     public string GetHashset(string key, string hashField)
     {
-        if (!Exists(key)) throw new CisArgumentNullException(7, $"Key '{key}' does not exists in Global Cache", "key");
-        var item = _database.HashGet(KeyPrefix + key, hashField);
-        if (!item.HasValue) throw new CisArgumentNullException(8, $"HashField '{hashField}' does not exists in Global Cache with key '{key}'", "hashField");
+        if (!Exists(key)) throw new CisArgumentNullException(7, $"Key '{key}' does not exists in Global Cache", nameof(key));
+        var item = Database.HashGet(KeyPrefix + key, hashField);
+        if (!item.HasValue) throw new CisArgumentNullException(8, $"HashField '{hashField}' does not exists in Global Cache with key '{key}'", nameof(hashField));
         return item;
     }
 
@@ -74,7 +74,7 @@ public class RedisGlobalCache : IGlobalCache
     {
         if (Exists(key))
         {
-            var item = _database.HashGet(KeyPrefix + key, hashField);
+            var item = Database.HashGet(KeyPrefix + key, hashField);
             if (item.HasValue)
             {
                 value = item;
@@ -88,21 +88,23 @@ public class RedisGlobalCache : IGlobalCache
     public void Set(string key, string value, TimeSpan? expiry = null)
     {
         if (value is null)
-            throw new CisArgumentNullException(0, "Value cannot be null", "value");
-        _database.StringSet(KeyPrefix + key, value, expiry);
+            throw new CisArgumentNullException(0, "Value cannot be null", nameof(value));
+        Database.StringSet(KeyPrefix + key, value, expiry);
     }
 
     public void Set(string key, List<HashItem> hashset)
     {
         var x = hashset.Select(t => (HashEntry)t).ToArray();
-        _database.HashSet(KeyPrefix + key, hashset.Select(t => (HashEntry)t).ToArray());
+        Database.HashSet(KeyPrefix + key, hashset.Select(t => (HashEntry)t).ToArray());
     }
 
     public void Set(string key, HashItem item)
     {
         if (string.IsNullOrWhiteSpace(item.Name))
-            throw new CisArgumentNullException(9, "HashItem.Name can not be empty", "Name");
-        _database.HashSet(KeyPrefix + key, item.Name, item.Value);
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+            throw new CisArgumentNullException(9, "HashItem.Name can not be empty", nameof(item.Name));
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+        Database.HashSet(KeyPrefix + key, item.Name, item.Value);
     }
 
     public async Task SetAllAsync(string key, IEnumerable<object> items, SerializationTypes serializationType = SerializationTypes.Protobuf)
@@ -129,12 +131,12 @@ public class RedisGlobalCache : IGlobalCache
                 throw new NotImplementedException("SerializationType has not been specified");
         }
 
-        await _database.SetAddAsync(KeyPrefix + key, serializedObjects.ToArray());
+        await Database.SetAddAsync(KeyPrefix + key, serializedObjects.ToArray());
     }
 
     public async Task<List<T>> GetAllAsync<T>(string key, SerializationTypes serializationType = SerializationTypes.Protobuf)
     {
-        var members = await _database.SetMembersAsync(KeyPrefix + key);
+        var members = await Database.SetMembersAsync(KeyPrefix + key);
         List<T> newList = new();
 
         switch (serializationType)
@@ -149,7 +151,7 @@ public class RedisGlobalCache : IGlobalCache
 
             case SerializationTypes.Json:
                 for (int i = 0; i < members.Length; i++)
-                    newList.Add(JsonSerializer.Deserialize<T>(members[i], SerializationOptions.Flexible) ?? throw new Exception("Could not deserialize RedisValue to JSON"));
+                    newList.Add(JsonSerializer.Deserialize<T>(members[i], SerializationOptions.Flexible) ?? throw new FormatException("Could not deserialize RedisValue to JSON"));
                 break;
 
             default:
@@ -167,13 +169,13 @@ public class RedisGlobalCache : IGlobalCache
                 using (var ms = new MemoryStream())
                 {
                     Serializer.Serialize(ms, item);
-                    await _database.SetAddAsync(KeyPrefix + key, ms.ToArray());
+                    await Database.SetAddAsync(KeyPrefix + key, ms.ToArray());
                 }
                 break;
 
             case SerializationTypes.Json:
                 var value = JsonSerializer.Serialize(item, SerializationOptions.Flexible);
-                await _database.StringSetAsync(KeyPrefix + key, value);
+                await Database.StringSetAsync(KeyPrefix + key, value);
                 break;
 
             default:
@@ -186,12 +188,12 @@ public class RedisGlobalCache : IGlobalCache
         switch (serializationType)
         {
             case SerializationTypes.Protobuf:
-                var serializedObject = await _database.StringGetAsync(KeyPrefix + key);
+                var serializedObject = await Database.StringGetAsync(KeyPrefix + key);
                 using (var ms = new MemoryStream(serializedObject))
                     return Serializer.Deserialize<T>(ms);
 
             case SerializationTypes.Json:
-                var serializedObject2 = await _database.StringGetAsync(KeyPrefix + key);
+                var serializedObject2 = await Database.StringGetAsync(KeyPrefix + key);
                 return JsonSerializer.Deserialize<T>(serializedObject2, SerializationOptions.Flexible);
 
             default:

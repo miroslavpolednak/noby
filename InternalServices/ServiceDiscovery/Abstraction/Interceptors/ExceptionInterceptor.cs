@@ -32,17 +32,17 @@ internal class ExceptionInterceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, "ServiceDiscovery service unavailable");
+            _logger.ServiceUnavailable("ServiceDiscovery", ex);
             throw new ServiceUnavailableException("ServiceDiscovery", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
         {
-            _logger.LogError(ex, $"ServiceDiscovery service not found: {ex.Message}");
+            _logger.EntityNotFound("Service", 0, ex);
             throw new CisNotFoundException(101, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.InvalidArgument)
         {
-            int.TryParse(ex.Trailers?.Get(ExceptionHandlingConstants.GrpcTrailerCisCodeKey)?.Value, out int code);
+            _ = int.TryParse(ex.Trailers?.Get(ExceptionHandlingConstants.GrpcTrailerCisCodeKey)?.Value, out int code);
             throw new CisArgumentException(code, ex.Message, ex.Trailers?.Get(ExceptionHandlingConstants.GrpcTrailerCisArgumentKey)?.Value);
         }
         catch (RpcException ex) when (ex.Trailers != null)
@@ -51,13 +51,13 @@ internal class ExceptionInterceptor
                 throw new CisException(code, ex.Message);
             else
             {
-                _logger.LogError(ex, $"Uncought RpcException: {ex.Message}");
+                _logger.GeneralException(ex);
                 throw;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $" [{methodFullName}] {ex.Message}");
+            _logger.GeneralException(ex);
             throw;
         }
     }

@@ -35,7 +35,9 @@ var serviceProvider = new ServiceCollection()
 var service = serviceProvider.GetService<DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction>();
 //var service = serviceProvider.GetService<DomainServices.CustomerService.Contracts.ICustomerService>();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 var result = await service.GetBasicDataByIdentifier(new () { Identifier = "123456" });
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 //var result = await service.GetDetail(new() { Identity = 1 });
 //var result = await service.GetList(new() { Identity = new() { 1 } });
 //var result = await service.Create(new() { LastName = "Kojot" });

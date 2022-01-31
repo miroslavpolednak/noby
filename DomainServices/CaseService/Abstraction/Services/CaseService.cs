@@ -2,6 +2,7 @@
 using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
 namespace DomainServices.CaseService.Abstraction.Services;
 

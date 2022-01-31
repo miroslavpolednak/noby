@@ -23,11 +23,11 @@ internal abstract class BaseGetQueryHandler
         var model = await _repository.GetList(environment);
         if (!model.Any())
         {
-            _logger.LogWarning("No services exists for environment '{environment}'", environment);
+            _logger.NoServicesForEnvironment(environment);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"No services exists for environment '{environment}'", 102);
         }
 
-        _logger.LogDebug("Database: found {count} services in {environment}", model.Count(), environment);
+        _logger.FoundServices(model.Count, environment);
 
         return model;
     }

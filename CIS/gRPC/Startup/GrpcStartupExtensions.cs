@@ -16,7 +16,7 @@ public static class GrpcStartupExtensions
     {
         string devFilename = Path.GetFileNameWithoutExtension(configurationFilename) + ".development.json";
 
-        CIS.Core.Configuration.KestrelConfiguration kestrelConfiguration = new();
+        Core.Configuration.KestrelConfiguration kestrelConfiguration = new();
         builder.Configuration.AddJsonFile(configurationFilename, false);
         builder.Configuration.AddJsonFile(devFilename, true);
         builder.Configuration.GetSection("CustomKestrel").Bind(kestrelConfiguration);
@@ -29,7 +29,7 @@ public static class GrpcStartupExtensions
             serverOptions.ConfigureEndpointDefaults(opts =>
             {
                 if (kestrelConfiguration.Certificate != null)
-                    opts.UseHttps(kestrelConfiguration.Certificate?.Path ?? throw new ArgumentNullException("CustomKestrel.Certificate.Path"), kestrelConfiguration.Certificate.Password);
+                    opts.UseHttps(kestrelConfiguration.Certificate?.Path ?? throw new Core.Exceptions.CisConfigurationNotFound("CustomKestrel.Certificate.Path"), kestrelConfiguration.Certificate.Password);
             });
 
             kestrelConfiguration.Endpoints?.ForEach(endpoint =>

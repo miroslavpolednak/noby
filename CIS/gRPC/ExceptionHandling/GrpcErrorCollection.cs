@@ -18,7 +18,7 @@ public sealed class GrpcErrorCollection : List<GrpcErrorCollection.GrpcErrorColl
         trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, string.Join(",", this.Select(t => t.Code)));
 
         // add exc messages
-        for (int i = 0; i < this.Count(); i++)
+        for (int i = 0; i < this.Count; i++)
             trailersCollection.Add(this[i].CreateTrailerEntry(i));
 
         return trailersCollection;

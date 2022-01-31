@@ -5,33 +5,32 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CIS.Security.InternalServices
+namespace CIS.Security.InternalServices;
+
+public sealed class CisUserContextMiddleware
 {
-    public sealed class CisUserContextMiddleware
+    private readonly ILogger<CisUserContextMiddleware> _logger;
+    private readonly RequestDelegate _next;
+
+    public CisUserContextMiddleware(RequestDelegate next, ILoggerFactory logFactory)
     {
-        private readonly ILogger<CisUserContextMiddleware> _logger;
-        private readonly RequestDelegate _next;
+        _logger = logFactory.CreateLogger<CisUserContextMiddleware>();
+        _next = next;
+    }
 
-        public CisUserContextMiddleware(RequestDelegate next, ILoggerFactory logFactory)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        var partyId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == "MpPartyId").Value;
+        if (!string.IsNullOrEmpty(partyId))
         {
-            _logger = logFactory.CreateLogger<CisUserContextMiddleware>();
-            _next = next;
+            _logger.ContextUserAdded(partyId);
+
+            // vytvorit identity
+            var identity = new CisUserContextIdentity(partyId);
+            if (httpContext.User != null)
+                httpContext.User.AddIdentity(identity);
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
-        {
-            var partyId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == "MpPartyId").Value;
-            if (!string.IsNullOrEmpty(partyId))
-            {
-                _logger.LogDebug("Context user identity {PartyId} added", partyId);
-
-                // vytvorit identity
-                var identity = new CisUserContextIdentity(partyId);
-                if (httpContext.User != null)
-                    httpContext.User.AddIdentity(identity);
-            }
-
-            await _next(httpContext);
-        }
+        await _next(httpContext);
     }
 }

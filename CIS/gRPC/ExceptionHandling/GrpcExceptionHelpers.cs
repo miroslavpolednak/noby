@@ -12,10 +12,10 @@ public static class GrpcExceptionHelpers
     public static RpcException CreateRpcException(StatusCode statusCode, string message, int exceptionCode, List<(string Key, string Value)>? trailers, Exception? baseException = null)
     {
         if (exceptionCode <= 0)
-            throw new ArgumentOutOfRangeException("exceptionCode", "exceptionCode <= 0");
+            throw new ArgumentOutOfRangeException(nameof(exceptionCode), "exceptionCode <= 0");
 
         Metadata trailersCollection = new();
-        trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exceptionCode.ToString());
+        trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exceptionCode.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
         if (trailers != null)
         {
@@ -53,7 +53,7 @@ public static class GrpcExceptionHelpers
     public static RpcException CreateArgumentRpcException(string message, int exceptionCode, string paramName)
     {
         if (string.IsNullOrEmpty(paramName))
-            throw new ArgumentOutOfRangeException("paramName", "paramName is empty");
+            throw new ArgumentOutOfRangeException(nameof(paramName), "paramName is empty");
 
         return CreateRpcException(StatusCode.InvalidArgument, message, exceptionCode, new()
         {

@@ -47,7 +47,9 @@ public class ApiExceptionMiddleware
             // osetrena validace v pripade, ze se vraci vice validacnich hlasek
             if (ex.ContainErrorsList)
             {
-                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new ArgumentNullException("errors");
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(0, "Errors collection is empty", "errors");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
                 result = Results.ValidationProblem(errors);
             }
             else if (!string.IsNullOrEmpty(ex.Message))
