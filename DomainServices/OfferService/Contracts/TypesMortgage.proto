@@ -2,14 +2,68 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
-message SimulateMortgageRequest {
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
 
+message SimulateMortgageRequest {
+   MortgageInput InputData = 1;
+   string ResourceProcessId = 2;
 }
 
 message SimulateMortgageResponse {
-
+   int32 OfferInstanceId = 1;
+   cis.types.GrpcDate CreatedOn = 2;
+   string ResourceProcessId = 3;
+   MortgageInput SimulationInput = 4;
+   MortgageData Mortgage = 5;
 }
 
 message GetMortgageDataResponse {
 
+}
+
+
+message MortgageInput {
+	// ProductInstanceType ???
+   int32 LoanKindId = 1;
+   cis.types.GrpcDecimal LoanAmount = 2;  // input/results
+   int32 LoanDuration = 3;
+   cis.types.GrpcDecimal LoanPaymentAmount = 4;
+   bool FixationPeriod = 5;						// enum | codebook | int32 ???
+   int32 EmployeeBonusLoanId = 6;				// codebook ´EmployeeBonusLoan´ (code/id) ?
+   cis.types.GrpcDecimal CollateralAmount = 7;
+   cis.types.GrpcDecimal LoanToValue = 8;
+	// LoanToCost ???
+   int32 PaymentDayOfTheMonth = 9;
+   bool EmployeeBonusRequested = 10;
+   // UserActionsPreference ???
+   //bool MarketingActions = 11;
+   repeated LoanPurpose LoanPurpose = 12;  // input/results
+}
+
+// bude se tytéž atributy v results lišit od input ( LoanAmount, LoanDuration, atd.), proč se v ´results´ opakují, když jsou v ´input´ ?
+
+message LoanPurpose {
+	int32 ProductLoanPurposeId = 1;				// codebook ´ProductLoanPurpose´
+	cis.types.GrpcDecimal Sum = 2;
+}
+
+message MortgageData {
+/*
+   int32 LoanKindId = 1;
+   cis.types.GrpcDecimal LoanAmount = 2;
+   int32 LoanDuration = 3;
+   cis.types.GrpcDecimal LoanPaymentAmount = 4;
+   bool FixationPeriod = 5;						// enum | codebook | int32 ???
+   int32 EmployeeBonusLoanId = 6;				// codebook ´EmployeeBonusLoan´ (code/id) ?
+   cis.types.GrpcDecimal CollateralAmount = 7;
+   cis.types.GrpcDecimal LoanToValue = 8;
+   int32 PaymentDayOfTheMonth = 9;
+   bool EmployeeBonusRequested = 10;
+   //bool MarketingActions = 11;
+   repeated LoanPurpose LoanPurpose = 12;
+*/
+	cis.types.GrpcDecimal Ltv = 1;
+	cis.types.GrpcDecimal Aprc = 2;
+	string StatementTypeCode = 3;
 }
