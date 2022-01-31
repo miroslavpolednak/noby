@@ -5,7 +5,7 @@ internal class LinkModelationToSalesArrangementHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkModelationToSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Link OfferInstance {offerInstanceId} to {salesArrangementId}", request.OfferInstanceId, request.SalesArrangementId);
+        _logger.LinkToModelationStarted(request.OfferInstanceId, request.SalesArrangementId);
 
         // overit existenci SA
         await _repository.EnsureExistingSalesArrangement(request.SalesArrangementId, cancellation);

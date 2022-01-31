@@ -5,7 +5,7 @@ internal class UpdateSalesArrangementStateHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementStateMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogDebug("Update SA #{id} State to {state}", request.SalesArrangementId, request.State);
+        _logger.UpdateStateStarted(request.SalesArrangementId, request.State);
 
         // kontrola existence noveho stavu
         var stateInstance = (await _codebookService.SalesArrangementStates()).FirstOrDefault(t => t.Id == request.State)

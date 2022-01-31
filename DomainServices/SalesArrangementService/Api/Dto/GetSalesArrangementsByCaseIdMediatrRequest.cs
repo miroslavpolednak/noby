@@ -9,6 +9,6 @@ internal sealed class GetSalesArrangementsByCaseIdMediatrRequest
     public GetSalesArrangementsByCaseIdMediatrRequest(Contracts.GetSalesArrangementsByCaseIdRequest request)
     {
         this.CaseId = request.CaseId;
-        this.States = request.States != null && request.States.Any() ? request.States.ToArray() : new int[0];
+        this.States = request.States != null && request.States.Any() ? request.States.ToArray() : Array.Empty<int>();
     }
 }
