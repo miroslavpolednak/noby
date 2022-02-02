@@ -21,9 +21,9 @@ internal class CodebooksApiModule : IApiEndpointModule
         // fixace uveru
         builder.MapGet(_prefix + "/fixationperiodlength", 
             async ([FromQuery] int productInstanceTypeId, [FromServices] ICodebookServiceAbstraction svc) => 
-                (await svc.FixationPeriodLengths())
+                (await svc.FixedLengthPeriods())
                     .Where(t => t.ProductInstanceTypeId == productInstanceTypeId)
-                    .Select(t => t.FixationMonths)
+                    .Select(t => t.FixedLengthPeriod)
                     .OrderBy(t => t)
             )
             .WithTags("Codebooks Module")

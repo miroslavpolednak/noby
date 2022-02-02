@@ -23,7 +23,7 @@ internal class GetAllHandler
         {
             "productloanpurposes" => new(original, await _codebooks.ProductLoanPurposes()),
             "productloankinds" => new(original, await _codebooks.ProductLoanKinds()),
-            "fixationperiodlengths" => new(original, await _codebooks.FixationPeriodLengths()),
+            "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods()),
             "residencytypes" => new(original, await _codebooks.ResidencyTypes()),
             "countries" => new(original, await _codebooks.Countries()),
             "nationalities" => new(original, await _codebooks.Nationalities()),
