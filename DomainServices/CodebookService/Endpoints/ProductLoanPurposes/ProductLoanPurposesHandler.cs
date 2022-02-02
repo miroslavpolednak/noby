@@ -1,12 +1,12 @@
 ﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds;
+using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes;
 
 namespace DomainServices.CodebookService.Endpoints.ProductLoanPurposes;
 
 public class ProductLoanPurposesHandler
-    : IRequestHandler<Contracts.Endpoints.ProductLoanPurposes.ProductLoanPurposesRequest, List<Contracts.GenericCodebookItem>>
+    : IRequestHandler<ProductLoanPurposesRequest, List<ProductLoanPurposesItem>>
 {
-    public async Task<List<Contracts.GenericCodebookItem>> Handle(Contracts.Endpoints.ProductLoanPurposes.ProductLoanPurposesRequest request, CancellationToken cancellationToken)
+    public async Task<List<ProductLoanPurposesItem>> Handle(ProductLoanPurposesRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -14,7 +14,7 @@ public class ProductLoanPurposesHandler
             {
                 _logger.LogDebug("Found ProductLoanPurposes in cache");
 
-                return await _cache.GetAllAsync<Contracts.GenericCodebookItem>(_cacheKey);
+                return await _cache.GetAllAsync<ProductLoanPurposesItem>(_cacheKey);
             }
             else
             {
@@ -23,7 +23,7 @@ public class ProductLoanPurposesHandler
                 await using (var connection = _connectionProvider.Create())
                 {
                     await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<Contracts.GenericCodebookItem>("SELECT ID_UCEL_UVERU 'Id', NAZEV_UCEL_UVERU 'Name', CAST(CASE WHEN DATUM_PLATNOSTI_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsActual' FROM [SBR].[UCEL_UVERU]")).ToList();
+                    var result = (await connection.QueryAsync<ProductLoanPurposesItem>(_sqlQuery)).ToList();
 
                     await _cache.SetAllAsync(_cacheKey, result);
 
@@ -37,6 +37,11 @@ public class ProductLoanPurposesHandler
             throw;
         }
     }
+
+    const string _sqlQuery = @"
+SELECT KOD 'Id', TEXT 'Name', 1 'Mandant', CAST(CASE WHEN DATUM_PLATNOSTI_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsValid' 
+FROM SBR.CIS_UCEL_UVERU_INT1
+";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<ProductLoanPurposesHandler> _logger;

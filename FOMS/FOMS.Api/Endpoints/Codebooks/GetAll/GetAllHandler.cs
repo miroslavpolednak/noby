@@ -34,9 +34,9 @@ internal class GetAllHandler
             "persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),
             "productinstancetypes" => new(original, await _codebooks.ProductInstanceTypes()),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes()),
-            "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings()).Where(t => t.IsActual)),
+            "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings()).Where(t => t.IsValid)),
             "mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),
-            "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan()).Where(t => t.IsActual)),
+            "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan()).Where(t => t.IsValid)),
 
             _ => throw new NotImplementedException($"Codebook code '{original}' is not implemented")
         };

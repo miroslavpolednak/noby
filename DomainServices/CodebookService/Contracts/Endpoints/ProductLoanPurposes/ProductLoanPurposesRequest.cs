@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes
 {
     [DataContract]
-    public class ProductLoanPurposesRequest : IRequest<List<GenericCodebookItem>>
+    public class ProductLoanPurposesRequest : IRequest<List<ProductLoanPurposesItem>>
     {
     }
 }

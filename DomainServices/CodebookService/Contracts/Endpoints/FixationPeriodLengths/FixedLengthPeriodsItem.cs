@@ -3,12 +3,12 @@
 namespace DomainServices.CodebookService.Contracts.Endpoints.FixationPeriodLengths
 {
     [DataContract]
-    public class FixationPeriodLengthsItem
+    public class FixedLengthPeriodsItem
     {
         [DataMember(Order = 1)]
         public int ProductInstanceTypeId { get; set; }
 
         [DataMember(Order = 2)]
-        public int FixationMonths { get; set; }
+        public int FixedLengthPeriod { get; set; }
     }
 }

@@ -3,27 +3,27 @@ using DomainServices.CodebookService.Contracts.Endpoints.FixationPeriodLengths;
 
 namespace DomainServices.CodebookService.Endpoints.FixationPeriodLengths;
 
-public class FixationPeriodLengthsHandler
-    : IRequestHandler<FixationPeriodLengthsRequest, List<FixationPeriodLengthsItem>>
+public class FixedLengthPeriodsHandler
+    : IRequestHandler<FixedLengthPeriodsRequest, List<FixedLengthPeriodsItem>>
 {
-    public async Task<List<FixationPeriodLengthsItem>> Handle(FixationPeriodLengthsRequest request, CancellationToken cancellationToken)
+    public async Task<List<FixedLengthPeriodsItem>> Handle(FixedLengthPeriodsRequest request, CancellationToken cancellationToken)
     {
         try
         {
             if (_cache.Exists(_cacheKey))
             {
-                _logger.LogDebug("Found FixationPeriodLengths in cache");
+                _logger.LogDebug("Found FixedLengthPeriods in cache");
 
-                return await _cache.GetAllAsync<FixationPeriodLengthsItem>(_cacheKey);
+                return await _cache.GetAllAsync<FixedLengthPeriodsItem>(_cacheKey);
             }
             else
             {
-                _logger.LogDebug("Reading FixationPeriodLengths from database");
+                _logger.LogDebug("Reading FixedLengthPeriods from database");
 
                 await using (var connection = _connectionProvider.Create())
                 {
                     await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<FixationPeriodLengthsItem>("SELECT PERIODA_FIXACE 'FixationMonths', 1 'ProductInstanceTypeId' FROM [SBR].[CIS_PERIODY_FIXACE] WHERE PLATNOST_OD<GETDATE() AND PLATNOST_DO IS NULL")).ToList();
+                    var result = (await connection.QueryAsync<FixedLengthPeriodsItem>(_sqlQuery)).ToList();
 
                     await _cache.SetAllAsync(_cacheKey, result);
 
@@ -38,14 +38,19 @@ public class FixationPeriodLengthsHandler
         }
     }
 
+    const string _sqlQuery = @"
+SELECT PERIODA_FIXACE 'FixedLengthPeriod', 1 'ProductInstanceTypeId' 
+FROM SBR.CIS_PERIODY_FIXACE 
+WHERE PLATNOST_OD<GETDATE() AND PLATNOST_DO IS NULL";
+
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
-    private readonly ILogger<FixationPeriodLengthsHandler> _logger;
+    private readonly ILogger<FixedLengthPeriodsHandler> _logger;
     private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
-    public FixationPeriodLengthsHandler(
+    public FixedLengthPeriodsHandler(
         CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
-        ILogger<FixationPeriodLengthsHandler> logger)
+        ILogger<FixedLengthPeriodsHandler> logger)
     {
         _cache = cache;
         _logger = logger;
