@@ -31,6 +31,8 @@
     <ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+    <ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>
+
 </Project>

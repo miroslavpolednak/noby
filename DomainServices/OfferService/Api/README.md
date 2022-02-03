@@ -8,6 +8,10 @@
         grpcurl -insecure -d "{\"OfferInstanceId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetBuildingSavingsData
         grpcurl -insecure -d "{\"InputData\":{\"TargetAmount\":500000,\"ProductCode\":61,\"ActionCode\":30,\"IsWithLoan\":false},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3726\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateBuildingSavings
 
+        grpcurl -insecure -d "{\"OfferInstanceId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetMortgageData
+        grpcurl -insecure -d "{\"InputData\":{\"ProductInstanceTypeId\":1},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
+        grpcurl -insecure -d "{\"InputData\":{\"ProductInstanceTypeId\":1,\"LoanKindId\":1,\"LoanAmount\":1000000,\"LoanDuration\":5},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
+
 ## run batch
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"

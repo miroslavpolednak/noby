@@ -27,4 +27,10 @@ public class OfferService : Contracts.v1.OfferService.OfferServiceBase
 
     public override async Task<PrintBuildingSavingsOfferResponse> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request, ServerCallContext context)
         => await _mediator.Send(new PrintBuildingSavingsOfferMediatrRequest(request));
+
+    public override async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, ServerCallContext context)
+        => await _mediator.Send(new SimulateMortgageMediatrRequest(request));
+
+    public override async Task<GetMortgageDataResponse> GetMortgageData(OfferInstanceIdRequest request, ServerCallContext context)
+       => await _mediator.Send(new GetMortgageDataMediatrRequest(request));
 }

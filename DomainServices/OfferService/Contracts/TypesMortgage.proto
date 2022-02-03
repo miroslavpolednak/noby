@@ -2,6 +2,8 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+import "ModificationStamp.proto";
 import "GrpcDecimal.proto";
 import "GrpcDate.proto";
 
@@ -12,58 +14,49 @@ message SimulateMortgageRequest {
 
 message SimulateMortgageResponse {
    int32 OfferInstanceId = 1;
-   cis.types.GrpcDate CreatedOn = 2;
-   string ResourceProcessId = 3;
-   MortgageInput SimulationInput = 4;
-   MortgageData Mortgage = 5;
+   MortgageData Mortgage = 2;
+   //cis.types.GrpcDate CreatedOn = 3;
+   //string ResourceProcessId = 4;
+   //MortgageInput SimulationInput = 5;
 }
 
 message GetMortgageDataResponse {
-
+   int32 OfferInstanceId = 1;
+   MortgageData Mortgage = 2;
+   MortgageInput InputData = 3;
+   cis.types.ModificationStamp Created = 4;
 }
-
 
 message MortgageInput {
-	// ProductInstanceType ???
-   int32 LoanKindId = 1;
-   cis.types.GrpcDecimal LoanAmount = 2;  // input/results
-   int32 LoanDuration = 3;
-   cis.types.GrpcDecimal LoanPaymentAmount = 4;
-   bool FixationPeriod = 5;						// enum | codebook | int32 ???
-   int32 EmployeeBonusLoanId = 6;				// codebook ´EmployeeBonusLoan´ (code/id) ?
-   cis.types.GrpcDecimal CollateralAmount = 7;
-   cis.types.GrpcDecimal LoanToValue = 8;
-	// LoanToCost ???
-   int32 PaymentDayOfTheMonth = 9;
-   bool EmployeeBonusRequested = 10;
-   // UserActionsPreference ???
-   //bool MarketingActions = 11;
-   repeated LoanPurpose LoanPurpose = 12;  // input/results
+   int32 ProductInstanceTypeId = 1;
+   int32 LoanKindId = 2;
+   cis.types.GrpcDecimal LoanAmount = 3;
+   google.protobuf.Int32Value LoanDuration = 4;
+   cis.types.GrpcDecimal LoanPaymentAmount = 5;
+   int32 FixedLengthPeriodId = 6;					
+   google.protobuf.Int32Value EmployeeBonusLoanCode = 7;
+   cis.types.GrpcDecimal CollateralAmount = 8;
+   cis.types.GrpcDecimal LoanToValue = 9;
+   cis.types.GrpcDecimal LoanToCost = 10;  // chybí v https://wiki.kb.cz/confluence/display/HT/simulateMortgage
+   google.protobuf.Int32Value PaymentDayOfTheMonth = 11;
+   google.protobuf.BoolValue EmployeeBonusRequested = 12;
+   // UserActionsPreference					// má být v input datech?
+   // repeated LoanPurpose LoanPurpose = 13;  // input/results/obojí?   
 }
 
-// bude se tytéž atributy v results lišit od input ( LoanAmount, LoanDuration, atd.), proč se v ´results´ opakují, když jsou v ´input´ ?
-
 message LoanPurpose {
-	int32 ProductLoanPurposeId = 1;				// codebook ´ProductLoanPurpose´
+	int32 ProductLoanPurposeId = 1;
 	cis.types.GrpcDecimal Sum = 2;
 }
 
 message MortgageData {
-/*
-   int32 LoanKindId = 1;
-   cis.types.GrpcDecimal LoanAmount = 2;
-   int32 LoanDuration = 3;
-   cis.types.GrpcDecimal LoanPaymentAmount = 4;
-   bool FixationPeriod = 5;						// enum | codebook | int32 ???
-   int32 EmployeeBonusLoanId = 6;				// codebook ´EmployeeBonusLoan´ (code/id) ?
-   cis.types.GrpcDecimal CollateralAmount = 7;
-   cis.types.GrpcDecimal LoanToValue = 8;
-   int32 PaymentDayOfTheMonth = 9;
-   bool EmployeeBonusRequested = 10;
-   //bool MarketingActions = 11;
-   repeated LoanPurpose LoanPurpose = 12;
-*/
-	cis.types.GrpcDecimal Ltv = 1;
-	cis.types.GrpcDecimal Aprc = 2;
-	string StatementTypeCode = 3;
+	cis.types.GrpcDecimal InterestRate = 1;
+	cis.types.GrpcDecimal LoanAmount = 2;
+    int32 LoanDuration = 3;
+    cis.types.GrpcDecimal LoanPaymentAmount = 4;
+	int32 EmployeeBonusLoanCode = 5;
+	cis.types.GrpcDecimal Ltv = 6;
+	cis.types.GrpcDecimal Aprc = 7;
+	repeated LoanPurpose LoanPurpose = 8;
+	int32 StatementTypeId = 9;
 }

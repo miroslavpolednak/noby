@@ -6,7 +6,7 @@ GO
 
 CREATE TABLE [dbo].[OfferInstance](
 	[OfferInstanceId] [int] IDENTITY(1,1) NOT NULL,
-	[ProductInstanceType] [int] NULL,
+	[ProductInstanceTypeId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NOT NULL,
 	[Inputs] [nvarchar](max) NOT NULL,
 	[Outputs] [nvarchar](max) NOT NULL,

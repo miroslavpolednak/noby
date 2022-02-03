@@ -46,4 +46,22 @@ public interface IOfferServiceAbstraction
     /// SuccessfulServiceCallResult[PrintBuildingSavingsOfferResponse] - OK
     /// </returns>
     Task<IServiceCallResult> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Simulace KB Hypotéky
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[Contracts.SimulateMortgageResponse] - OK;
+    /// SimulationServiceErrorResult - chyba z EAS;
+    /// ErrorServiceCallResult - chyba pri request kontrole;
+    /// </returns>
+    Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Detail simulace KB Hypotéky
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[GetMortgageDataResponse] - OK
+    /// </returns>
+    Task<IServiceCallResult> GetMortgageData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 }
