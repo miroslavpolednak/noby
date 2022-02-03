@@ -21,6 +21,7 @@ message BuildingSavingsData {
    cis.types.GrpcDecimal BenefitInterests = 12;
    cis.types.GrpcDecimal TaxFromBenefitInterests = 13;
 }
+
 message BuildingSavingsInput {
    int32 TargetAmount = 1;
    int32 ProductCode = 2;
