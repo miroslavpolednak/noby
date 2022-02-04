@@ -8,6 +8,25 @@ namespace DomainServices.OfferService.Abstraction;
 
 internal class OfferService : IOfferServiceAbstraction
 {
+
+    #region Construction
+
+    private readonly ILogger<OfferService> _logger;
+    private readonly Contracts.v1.OfferService.OfferServiceClient _service;
+    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+
+    public OfferService(
+        ILogger<OfferService> logger,
+        Contracts.v1.OfferService.OfferServiceClient service,
+        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+    {
+        _userContext = userContext;
+        _service = service;
+        _logger = logger;
+    }
+
+    #endregion
+
     public async Task<IServiceCallResult> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction SimulateBuildingSavings call with {request}", request);
@@ -129,17 +148,13 @@ internal class OfferService : IOfferServiceAbstraction
         return new SuccessfulServiceCallResult<GetMortgageDataResponse>(result);
     }
 
-    private readonly ILogger<OfferService> _logger;
-    private readonly Contracts.v1.OfferService.OfferServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
-
-    public OfferService(
-        ILogger<OfferService> logger,
-        Contracts.v1.OfferService.OfferServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+    public async Task<IServiceCallResult> GetOfferInstance(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _userContext = userContext;
-        _service = service;
-        _logger = logger;
+        _logger.LogDebug("Abstraction GetOfferInstance call with #ID {offerInstanceId}", offerInstanceId);
+
+        var result = await _userContext.AddUserContext(async () => await _service.GetOfferInstanceAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }, cancellationToken: cancellationToken));
+
+        return new SuccessfulServiceCallResult<GetOfferInstanceResponse>(result);
     }
+
 }

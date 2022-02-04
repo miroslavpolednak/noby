@@ -6,6 +6,8 @@ import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
 import "GrpcDecimal.proto";
 import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+import "Types.proto";
 
 message SimulateMortgageRequest {
    MortgageInput InputData = 1;
@@ -13,18 +15,21 @@ message SimulateMortgageRequest {
 }
 
 message SimulateMortgageResponse {
-   int32 OfferInstanceId = 1;
-   MortgageData Mortgage = 2;
-   //cis.types.GrpcDate CreatedOn = 3;
-   //string ResourceProcessId = 4;
-   //MortgageInput SimulationInput = 5;
+  int32 OfferInstanceId = 1;
+  int32 ProductInstanceTypeId = 2;
+  string ResourceProcessId = 3;
+  OfferInstanceCreated Created = 4;
+  MortgageInput InputData = 5;
+  MortgageData Mortgage = 6;
 }
 
 message GetMortgageDataResponse {
-   int32 OfferInstanceId = 1;
-   MortgageData Mortgage = 2;
-   MortgageInput InputData = 3;
-   cis.types.ModificationStamp Created = 4;
+  int32 OfferInstanceId = 1;
+  int32 ProductInstanceTypeId = 2;
+  string ResourceProcessId = 3;
+  OfferInstanceCreated Created = 4;
+  MortgageInput InputData = 5;
+  MortgageData Mortgage = 6;
 }
 
 message MortgageInput {
@@ -37,11 +42,10 @@ message MortgageInput {
    google.protobuf.Int32Value EmployeeBonusLoanCode = 7;
    cis.types.GrpcDecimal CollateralAmount = 8;
    cis.types.GrpcDecimal LoanToValue = 9;
-   cis.types.GrpcDecimal LoanToCost = 10;  // chybí v https://wiki.kb.cz/confluence/display/HT/simulateMortgage
-   google.protobuf.Int32Value PaymentDayOfTheMonth = 11;
-   google.protobuf.BoolValue EmployeeBonusRequested = 12;
-   // UserActionsPreference					// má být v input datech?
-   // repeated LoanPurpose LoanPurpose = 13;  // input/results/obojí?   
+   google.protobuf.Int32Value PaymentDayOfTheMonth = 10;
+   google.protobuf.BoolValue EmployeeBonusRequested = 11;
+   repeated LoanPurpose LoanPurpose = 12;
+   cis.types.NullableGrpcDate ExpectedDateOfDrawing = 13;
 }
 
 message LoanPurpose {
@@ -51,12 +55,15 @@ message LoanPurpose {
 
 message MortgageData {
 	cis.types.GrpcDecimal InterestRate = 1;
-	cis.types.GrpcDecimal LoanAmount = 2;
-    int32 LoanDuration = 3;
-    cis.types.GrpcDecimal LoanPaymentAmount = 4;
-	int32 EmployeeBonusLoanCode = 5;
-	cis.types.GrpcDecimal Ltv = 6;
-	cis.types.GrpcDecimal Aprc = 7;
-	repeated LoanPurpose LoanPurpose = 8;
-	int32 StatementTypeId = 9;
+	cis.types.GrpcDecimal InterestRateAnnounced = 2;
+	cis.types.GrpcDecimal LoanAmount = 3;
+    int32 LoanDuration = 4;
+    cis.types.GrpcDecimal LoanPaymentAmount = 5;
+	int32 EmployeeBonusLoanCode = 6;
+	cis.types.GrpcDecimal LoanToValue = 7;
+	cis.types.GrpcDecimal LoanToCost = 8;
+	cis.types.GrpcDecimal Aprc = 9;
+	cis.types.GrpcDecimal LoanTotalAmount = 10;
+	repeated LoanPurpose LoanPurpose = 11;
+	int32 StatementTypeId = 12;
 }

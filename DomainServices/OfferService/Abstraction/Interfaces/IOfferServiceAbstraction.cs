@@ -64,4 +64,13 @@ public interface IOfferServiceAbstraction
     /// SuccessfulServiceCallResult[GetMortgageDataResponse] - OK
     /// </returns>
     Task<IServiceCallResult> GetMortgageData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Základní data simulace (bez inputs a outputs) 
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[GetOfferInstanceResponse] - OK
+    /// </returns>
+    Task<IServiceCallResult> GetOfferInstance(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
+
 }

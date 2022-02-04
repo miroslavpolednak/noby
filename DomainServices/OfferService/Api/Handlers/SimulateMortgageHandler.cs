@@ -1,5 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Abstraction;
+using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -34,45 +35,61 @@ internal class SimulateMortgageHandler
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage
         );
 
-        var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
+        var resourceProcessId = await CheckResourceProcessId(request.Request.ResourceProcessId);
         //var inputs = request.Request.InputData.ToContract();
 
         // spustit simulaci
         //var result = getEasResult(await _easClient.RunSimulation(inputs));
 
         // transformovat
-        var data = new Dto.Models.MortgageDataModel
+        var outputs = new Dto.Models.MortgageDataModel
         {
             Mortgage = this.GenerateFakeSimulationData(request.Request.InputData)
         };
 
         // ulozit do databaze
-        int offerInstanceId = await _repository.SaveOffer(resourceProcessId, request.Request.InputData.ProductInstanceTypeId, request.Request.InputData, data);
+        int offerInstanceId = await _repository.SaveOffer(resourceProcessId, request.Request.InputData.ProductInstanceTypeId, request.Request.InputData, outputs);
 
         _logger.LogInformation("Simulation #{id} created", offerInstanceId);
+
+        var entity = await _repository.Get(offerInstanceId);
 
         // vytvorit
         return new SimulateMortgageResponse
         {
-            OfferInstanceId = offerInstanceId,
-            Mortgage = data.Mortgage,
+            OfferInstanceId = entity.OfferInstanceId,
+            ProductInstanceTypeId = entity.ProductInstanceTypeId,
+            ResourceProcessId = entity.ResourceProcessId.ToString(),
+            Created = ToCreated(entity),
+            InputData = JsonSerializer.Deserialize<MortgageInput>(entity.Inputs ?? String.Empty),
+            Mortgage = outputs.Mortgage,
         };
+
     }
 
     // TODO: redirect to EAS
     private MortgageData GenerateFakeSimulationData(MortgageInput input) {
-        return new MortgageData
+
+        input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
+        input.PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15;
+
+        var output = new MortgageData
         {
-            InterestRate = 0,
-            LoanAmount = 0,
-            LoanDuration = 0,
-            LoanPaymentAmount = 0,
-            EmployeeBonusLoanCode = 0,
-            Ltv = 0,
-            Aprc = 0,
-            //LoanPurpose = new Google.Protobuf.Collections.RepeatedField<LoanPurpose>(),
-            StatementTypeId = 0,
+            InterestRate = 0.02,                            //mock: 0.02
+            LoanAmount = input.LoanAmount,                  //mock: ze vstupu
+            LoanDuration = input.LoanDuration ?? 0,         //mock: 0 (pokud na vstupu nezadáno)?
+            LoanPaymentAmount =                             //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
+                input.LoanPaymentAmount / (input.LoanDuration ?? 1),
+            LoanToValue = input.LoanToValue,                //mock: ze vstupu
+            LoanToCost = 0.0,                               //mock: (celková výše investice / celková výše vlastních zdrojů) ... neznáme vlastní zdroje
+            Aprc = 0.25,                                    //mock: 0.25
+            LoanTotalAmount = (input.LoanAmount + 1000000), //mock: (vstupní hodnota výše úvěru + 1 000 000)
+            StatementTypeId = 1,                            //mock: 1
         };
+
+        output.LoanPurpose.AddRange(input.LoanPurpose);     //mock: ze vstupu
+
+        return output;
     }
 
 }

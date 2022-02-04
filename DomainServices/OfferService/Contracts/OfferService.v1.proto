@@ -19,4 +19,5 @@ service OfferService {
 
    rpc SimulateMortgage (DomainServices.OfferService.SimulateMortgageRequest) returns (DomainServices.OfferService.SimulateMortgageResponse);
    rpc GetMortgageData (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetMortgageDataResponse);
+   rpc GetOfferInstance (DomainServices.OfferService.OfferInstanceIdRequest) returns (DomainServices.OfferService.GetOfferInstanceResponse);
 }

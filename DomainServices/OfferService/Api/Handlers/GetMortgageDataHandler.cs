@@ -25,7 +25,7 @@ internal class GetMortgageDataHandler
     {
         _logger.LogInformation("Get offer instance ID #{id}", request.OfferInstanceId);
 
-        var entity = await _repository.Get(request.OfferInstanceId);
+        var entity = await LoadOfferInstance(request.OfferInstanceId);
 
         // kontrola ProductInstanceTypeId (zda je typu Mortgage)
         await checkProductInstanceTypeCategory(
@@ -38,13 +38,14 @@ internal class GetMortgageDataHandler
         var model = new GetMortgageDataResponse
         {
             OfferInstanceId = entity.OfferInstanceId,
-            Created = new(entity),
-            InputData = JsonSerializer.Deserialize<MortgageInput>(entity.Inputs ?? ""),
-            Mortgage = data.Mortgage,
+            ProductInstanceTypeId = entity.ProductInstanceTypeId,
+            ResourceProcessId = entity.ResourceProcessId.ToString(),
+            Created = ToCreated(entity),
+            InputData = JsonSerializer.Deserialize<MortgageInput>(entity.Inputs ?? String.Empty),
+            Mortgage = data.Mortgage,            
         };
 
         return model;
     }
-
-   
+  
 }

@@ -36,4 +36,11 @@ internal class OfferInstanceRepository
            .AsNoTracking()
            .Where(t => t.OfferInstanceId == offerInstanceId)
            .FirstAsync();
+
+    public async Task<bool> AnyOfResourceProcessId(Guid resourceProcessId)
+       => await _dbContext.OfferModelations
+          .AsNoTracking()
+          .Where(t => t.ResourceProcessId == resourceProcessId)
+          .AnyAsync();
+          
 }
