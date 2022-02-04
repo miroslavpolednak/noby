@@ -33,4 +33,7 @@ public class OfferService : Contracts.v1.OfferService.OfferServiceBase
 
     public override async Task<GetMortgageDataResponse> GetMortgageData(OfferInstanceIdRequest request, ServerCallContext context)
        => await _mediator.Send(new GetMortgageDataMediatrRequest(request));
+
+    public override async Task<GetOfferInstanceResponse> GetOfferInstance(OfferInstanceIdRequest request, ServerCallContext context)
+     => await _mediator.Send(new GetOfferInstanceMediatrRequest(request));
 }

@@ -30,3 +30,16 @@ message ScheduleItem {
    string Note = 5;
    string Info = 6;
 }
+
+message OfferInstanceCreated {
+	int32 UserId = 1;
+	string Name = 2;
+	cis.types.GrpcDate CreatedOn = 3;
+}
+
+message GetOfferInstanceResponse {
+	int32 OfferInstanceId = 1;
+	int32 ProductInstanceTypeId = 2;
+	string ResourceProcessId = 3;
+	OfferInstanceCreated Created = 4; 
+}
