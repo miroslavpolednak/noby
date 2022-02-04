@@ -24,7 +24,7 @@ internal class GetOfferInstanceHandler
     {
         _logger.LogInformation("Get offer instance ID #{id}", request.OfferInstanceId);
 
-        var entity = await LoadOfferInstance(request.OfferInstanceId);
+        var entity = await _repository.Get(request.OfferInstanceId);
 
         var model = new GetOfferInstanceResponse
         {
