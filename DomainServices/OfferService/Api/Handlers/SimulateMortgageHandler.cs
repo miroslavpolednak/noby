@@ -75,14 +75,14 @@ internal class SimulateMortgageHandler
 
         var output = new MortgageData
         {
-            InterestRate = 0.02,                            //mock: 0.02
+            InterestRate = 0.02m,                            //mock: 0.02
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu
             LoanDuration = input.LoanDuration ?? 0,         //mock: 0 (pokud na vstupu nezadáno)?
             LoanPaymentAmount =                             //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
                 input.LoanPaymentAmount / (input.LoanDuration ?? 1),
             LoanToValue = input.LoanToValue,                //mock: ze vstupu
-            LoanToCost = 0.0,                               //mock: (celková výše investice / celková výše vlastních zdrojů) ... neznáme vlastní zdroje
-            Aprc = 0.25,                                    //mock: 0.25
+            LoanToCost = 0.0m,                               //mock: (celková výše investice / celková výše vlastních zdrojů) ... neznáme vlastní zdroje
+            Aprc = 0.25m,                                    //mock: 0.25
             LoanTotalAmount = (input.LoanAmount + 1000000), //mock: (vstupní hodnota výše úvěru + 1 000 000)
             StatementTypeId = 1,                            //mock: 1
         };

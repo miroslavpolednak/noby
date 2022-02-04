@@ -24,24 +24,6 @@ internal class BaseHandler
     }
 
     #endregion
-
-
-    /// <summary>
-    /// Loads OfferInstance entity. 
-    /// Throws exception if not found and param throwExceptionIfNotFound = true
-    /// </summary>
-    protected async Task<OfferInstance> LoadOfferInstance(int offerInstanceId, bool throwExceptionIfNotFound = true)
-    {
-        var entity = await _repository.Get(offerInstanceId);
-
-        if (entity == null && throwExceptionIfNotFound)
-        {
-            throw new CisNotFoundException(0, $"OfferInstance #{offerInstanceId} not found");
-        }
-
-        return entity;
-    }
-        
         
     /// <summary>
     /// Checks if ProductInstanceTypeId matches ProductInstanceTypeCategory (Hypo, SS, ...)

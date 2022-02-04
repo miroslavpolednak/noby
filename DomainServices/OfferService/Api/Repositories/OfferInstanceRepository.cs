@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -35,12 +35,12 @@ internal class OfferInstanceRepository
         => await _dbContext.OfferModelations
            .AsNoTracking()
            .Where(t => t.OfferInstanceId == offerInstanceId)
-           .FirstAsync();
+           .FirstOrDefaultAsync() ?? throw new CisNotFoundException(13000, $"OfferInstance #{offerInstanceId} not found");
 
     public async Task<bool> AnyOfResourceProcessId(Guid resourceProcessId)
        => await _dbContext.OfferModelations
           .AsNoTracking()
           .Where(t => t.ResourceProcessId == resourceProcessId)
           .AnyAsync();
-          
 }
+
