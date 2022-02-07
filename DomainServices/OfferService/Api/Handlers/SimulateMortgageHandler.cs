@@ -1,6 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Abstraction;
-using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -61,7 +60,7 @@ internal class SimulateMortgageHandler
             ProductInstanceTypeId = entity.ProductInstanceTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = ToCreated(entity),
-            InputData = JsonSerializer.Deserialize<MortgageInput>(entity.Inputs ?? String.Empty),
+            InputData = entity.Inputs.ToMortgageInput(),
             Mortgage = outputs.Mortgage,
         };
 
@@ -70,8 +69,9 @@ internal class SimulateMortgageHandler
     // TODO: redirect to EAS
     private MortgageData GenerateFakeSimulationData(MortgageInput input) {
 
-        input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
-        input.PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15;
+        // neměnit vstup uživatele!
+        // input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
+        // input.PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15;
 
         var output = new MortgageData
         {
@@ -79,7 +79,7 @@ internal class SimulateMortgageHandler
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu
             LoanDuration = input.LoanDuration ?? 0,         //mock: 0 (pokud na vstupu nezadáno)?
             LoanPaymentAmount =                             //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
-                input.LoanPaymentAmount / (input.LoanDuration ?? 1),
+                input.LoanAmount / (input.LoanDuration ?? 1),
             LoanToValue = input.LoanToValue,                //mock: ze vstupu
             LoanToCost = 0.0m,                               //mock: (celková výše investice / celková výše vlastních zdrojů) ... neznáme vlastní zdroje
             Aprc = 0.25m,                                    //mock: 0.25

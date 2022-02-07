@@ -41,7 +41,7 @@ internal class GetMortgageDataHandler
             ProductInstanceTypeId = entity.ProductInstanceTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = ToCreated(entity),
-            InputData = JsonSerializer.Deserialize<MortgageInput>(entity.Inputs ?? String.Empty),
+            InputData = entity.Inputs.ToMortgageInput(),
             Mortgage = data.Mortgage,            
         };
 
