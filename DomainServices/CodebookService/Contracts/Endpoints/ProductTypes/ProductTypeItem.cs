@@ -2,10 +2,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes
+namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
 {
     [DataContract]
-    public class ProductInstanceTypeItem
+    public class ProductTypeItem
     {
         [DataMember(Order = 1)]
         public int Id { get; set; }
@@ -22,8 +22,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceType
 
         [JsonIgnore]
         [DataMember(Order = 5)]
-        [DefaultValue(ProductInstanceTypeCategory.Unknown)]
-        public ProductInstanceTypeCategory ProductCategory { get; set; }
+        [DefaultValue(ProductTypeCategory.Unknown)]
+        public ProductTypeCategory ProductCategory { get; set; }
 
         [JsonIgnore]
         [DataMember(Order = 6)]

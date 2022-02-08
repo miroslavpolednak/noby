@@ -1,7 +1,7 @@
 ﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.FixationPeriodLengths;
+using DomainServices.CodebookService.Contracts.Endpoints.FixedPeriodLengths;
 
-namespace DomainServices.CodebookService.Endpoints.FixationPeriodLengths;
+namespace DomainServices.CodebookService.Endpoints.FixedPeriodLengths;
 
 public class FixedLengthPeriodsHandler
     : IRequestHandler<FixedLengthPeriodsRequest, List<FixedLengthPeriodsItem>>

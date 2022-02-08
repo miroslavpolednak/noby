@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace DomainServices.CodebookService.Contracts.Endpoints.Countries
 {
     [DataContract]
-    public class CountriesRequest : IRequest<List<GenericCodebookItem>>
+    public class CountriesRequest : IRequest<List<CountriesItem>>
     {
     }
 }

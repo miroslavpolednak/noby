@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[CaseInstance](
 	[ContractNumber] [varchar](10) NULL,
 	[TargetAmount] [int] NULL,
 	[IsActionRequired] [bit] NOT NULL,
-	[ProductInstanceTypeId] [int] NOT NULL,
+	[ProductTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,
 	[StateUpdateTime] [datetime] NOT NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,

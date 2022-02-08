@@ -8,6 +8,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<Endpoints.FixationPeriodLengths.FixedLengthPeriodsItem>> FixedLengthPeriods(Endpoints.FixationPeriodLengths.FixedLengthPeriodsRequest request, CallContext context = default);
+        Task<List<Endpoints.ProductTypes.ProductTypeItem>> ProductTypes(Endpoints.ProductTypes.ProductTypesRequest request, CallContext context = default);
     }
 }

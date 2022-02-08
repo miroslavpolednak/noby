@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes
+namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
 {
     [DataContract]
-    public enum ProductInstanceTypeCategory
+    public enum ProductTypeCategory
     {
         [DataMember(Order = 1)]
         [EnumMember]

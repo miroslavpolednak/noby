@@ -88,7 +88,7 @@ internal class CaseServiceRepository
         
         entity.ContractNumber = data.ContractNumber;
         entity.TargetAmount = data.TargetAmount;
-        entity.ProductInstanceTypeId = data.ProductInstanceTypeId;
+        entity.ProductTypeId = data.ProductTypeId;
 
         await _dbContext.SaveChangesAsync(cancellation);
     }

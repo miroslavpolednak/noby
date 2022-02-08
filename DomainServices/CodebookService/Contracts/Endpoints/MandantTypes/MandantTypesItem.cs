@@ -1,17 +1,17 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes
+namespace DomainServices.CodebookService.Contracts.Endpoints.MandantTypes
 {
     [DataContract]
-    public class SalesArrangementTypeItem
+    public class MandantTypesItem
     {
         [DataMember(Order = 1)]
-        public int Id { get; set; }
+        public string Code { get; set; }
 
         [DataMember(Order = 2)]
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
-        public int? ProductTypeId { get; set; }
+        public int StarbuildId { get; set; }
     }
 }

@@ -15,7 +15,7 @@ internal static class CaseServiceRepositoryExpressions
             CaseOwner = new CIS.Infrastructure.gRPC.CisTypes.UserInfo(t.OwnerUserId, t.OwnerUserName),
             Data = new Contracts.CaseData
             {
-                ProductInstanceTypeId = t.ProductInstanceTypeId,
+                ProductTypeId = t.ProductTypeId,
                 TargetAmount = t.TargetAmount,
                 ContractNumber = t.ContractNumber ?? ""
             },

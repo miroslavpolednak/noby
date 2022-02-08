@@ -20,7 +20,7 @@ internal class CaseModelConverter
 	}
 
 	private Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model, 
-		List<DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeItem> productTypes,
+		List<DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductTypeItem> productTypes,
 		List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> caseStates)
 		=> new Dto.CaseModel
         {
