@@ -34,7 +34,7 @@ internal class CreateCaseHandler
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
-        var entity = Repositories.Entities.CaseInstance.Create(newCaseId, request.Request);
+        var entity = Repositories.Entities.Case.Create(newCaseId, request.Request);
         entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
 
@@ -42,11 +42,11 @@ internal class CreateCaseHandler
         {
             // ulozit entitu
             await _repository.CreateCase(entity, cancellation);
-            _logger.EntityCreated(nameof(Repositories.Entities.CaseInstance), newCaseId);
+            _logger.EntityCreated(nameof(Repositories.Entities.Case), newCaseId);
         }
         catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.CaseInstance), newCaseId);
+            throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.Case), newCaseId);
         }
         catch
         {

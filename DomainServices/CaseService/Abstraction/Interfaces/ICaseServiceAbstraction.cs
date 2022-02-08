@@ -7,7 +7,7 @@ namespace DomainServices.CaseService.Abstraction;
 public interface ICaseServiceAbstraction
 {
     /// <summary>
-    /// Vytvoreni CaseInstance
+    /// Vytvoreni Case
     /// </summary>
     /// <returns>
     /// SuccessfulServiceCallResult[long] - OK; returns CaseId;

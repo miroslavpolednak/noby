@@ -7,7 +7,7 @@ namespace DomainServices.CaseService.Api.Repositories;
 internal class CaseServiceRepository
 {
     public async Task<List<(int State, int Count)>> GetCounts(int userId, CancellationToken cancellation)
-        => (await _dbContext.CaseInstances
+        => (await _dbContext.Cases
             .Where(t => t.OwnerUserId == userId)
             .GroupBy(t => t.State)
             .AsNoTracking()
@@ -20,14 +20,14 @@ internal class CaseServiceRepository
         await getCaseEntity(caseId, cancellation);
     }
 
-    public async Task CreateCase(Entities.CaseInstance entity, CancellationToken cancellation)
+    public async Task CreateCase(Entities.Case entity, CancellationToken cancellation)
     {
-        _dbContext.CaseInstances.Add(entity);
+        _dbContext.Cases.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
     public async Task<Contracts.Case> GetCaseDetail(long caseId, CancellationToken cancellation)
-        => await _dbContext.CaseInstances
+        => await _dbContext.Cases
             .Where(t => t.CaseId == caseId)
             .AsNoTracking()
             .Select(CaseServiceRepositoryExpressions.CaseDetail())
@@ -36,7 +36,7 @@ internal class CaseServiceRepository
     public async Task<(int RecordsTotalSize, List<Contracts.Case> CaseInstances)> GetCaseList(CIS.Core.Types.Paginable paginable, int userId, int? state, string? searchTerm, CancellationToken cancellation)
     {
         // base query
-        var query = _dbContext.CaseInstances.AsNoTracking().Where(t => t.OwnerUserId == userId);
+        var query = _dbContext.Cases.AsNoTracking().Where(t => t.OwnerUserId == userId);
 
         // omezeni na state
         if (state.HasValue)
@@ -116,8 +116,8 @@ internal class CaseServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    private async Task<Entities.CaseInstance> getCaseEntity(long caseId, CancellationToken cancellation)
-        => await _dbContext.CaseInstances.FindAsync(new object[] { caseId }, cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
+    private async Task<Entities.Case> getCaseEntity(long caseId, CancellationToken cancellation)
+        => await _dbContext.Cases.FindAsync(new object[] { caseId }, cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
 
     private readonly CaseServiceDbContext _dbContext;
 

@@ -26,7 +26,7 @@ internal class SearchCasesHandler
         {
             Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationResponse(request.Request.Pagination as IPaginableRequest ?? paginable, model.RecordsTotalSize)
         };
-        result.CaseInstances.AddRange(model.CaseInstances);
+        result.Cases.AddRange(model.CaseInstances);
 
         return result;
     }
