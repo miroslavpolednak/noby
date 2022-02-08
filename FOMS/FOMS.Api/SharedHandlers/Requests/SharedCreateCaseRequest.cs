@@ -4,7 +4,7 @@
         : IRequest<long>
     {
         public int OfferInstanceId { get; set; }
-        public int ProductInstanceTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }

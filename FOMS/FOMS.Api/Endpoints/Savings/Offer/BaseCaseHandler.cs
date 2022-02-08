@@ -31,7 +31,7 @@ internal abstract class BaseCaseHandler
 
     protected async Task<int> createSalesArrangement(long caseId, int offerInstanceId, CancellationToken cancellationToken)
     {
-        return resolveSalesArrangementResult(await _aggregate.SalesArrangementService.CreateSalesArrangement(caseId, _aggregate.Configuration.BuildingSavings.SavingsSalesArrangementType, offerInstanceId, cancellationToken));
+        return resolveSalesArrangementResult(await _aggregate.SalesArrangementService.CreateSalesArrangement(caseId, _aggregate.Configuration.BuildingSavings.SavingsSalesArrangementTypeId, offerInstanceId, cancellationToken));
     }
 
     private int resolveSalesArrangementResult(IServiceCallResult result) =>
@@ -59,7 +59,7 @@ internal abstract class BaseCaseHandler
             },
             Data = new DomainServices.CaseService.Contracts.CaseData
             {
-                ProductInstanceTypeId = _aggregate.Configuration.BuildingSavings.SavingsProductInstanceType,
+                ProductTypeId = _aggregate.Configuration.BuildingSavings.SavingsProductTypeId,
                 TargetAmount = offerInstance.InputData.TargetAmount
             }
         };

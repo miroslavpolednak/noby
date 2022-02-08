@@ -17,7 +17,7 @@ internal class GetAllHandler
         return model;
     }
 
-    //TODO nejak automatizovat? Zase to nechci zpomalovat reflexi....
+    //TODO nejak automatizovat? Zase to nechci zpomalovat reflexi.... code generators?
     private async Task<Dto.GetAllResponseItem> fillCodebook(string code, string original)
         => code switch
         {
@@ -28,15 +28,15 @@ internal class GetAllHandler
             "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods()),
             "genders" => new(original, await _codebooks.Genders()),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes()),
-            "nationalities" => new(original, await _codebooks.Nationalities()),//!!!
-            "persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),//!!!
-            "persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),//!!!
-            "productinstancetypes" => new(original, await _codebooks.ProductInstanceTypes()),
+            //"nationalities" => new(original, await _codebooks.Nationalities()),//!!!
+            //"persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),//!!!
+            //"persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),//!!!
+            "producttypes" => new(original, await _codebooks.ProductTypes()),
             "productloanpurposes" => new(original, await _codebooks.ProductLoanPurposes()),
             "productloankinds" => new(original, await _codebooks.ProductLoanKinds()),
-            "residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
+            //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes()),
-            "mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
+            //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
 
             _ => throw new NotImplementedException($"Codebook code '{original}' is not implemented")
         };

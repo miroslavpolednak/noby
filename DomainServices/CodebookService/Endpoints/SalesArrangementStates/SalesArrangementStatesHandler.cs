@@ -2,7 +2,7 @@
 
 namespace DomainServices.CodebookService.Endpoints.SalesArrangementStates
 {
-    public class ProductInstanceStatesHandler
+    public class SalesArrangementStatesHandler
         : IRequestHandler<SalesArrangementStatesRequest, List<SalesArrangementStateItem>>
     {
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

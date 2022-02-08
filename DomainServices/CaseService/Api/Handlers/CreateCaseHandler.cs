@@ -63,9 +63,9 @@ internal class CreateCaseHandler
     /// Zjistit typ produktu - Hypo, SS atd.
     /// </summary>
     private async Task<CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory> getProductCategory(long ProductTypeId)
-    {
-        var productTypes = await _codebookService.ProductTypes();
-        var item = productTypes.FirstOrDefault(t => t.Id == ProductTypeId) ?? throw new CisNotFoundException(13014, nameof(ProductTypeId), ProductTypeId);
+    {  
+        var item = (await _codebookService.ProductTypes())
+            .FirstOrDefault(t => t.Id == ProductTypeId) ?? throw new CisNotFoundException(13014, nameof(ProductTypeId), ProductTypeId);
         return item.ProductCategory;
     }
 
@@ -73,7 +73,8 @@ internal class CreateCaseHandler
     /// Zjistit vychozi stav CASE
     /// </summary>
     private async Task<int> getDefaultState()
-        => (await _codebookService.CaseStates()).FirstOrDefault(t => t.IsDefaultNewState)?.Id ?? throw new CisNotFoundException(13019, "Unable to determine default Case State");
+        => (await _codebookService.CaseStates())
+        .FirstOrDefault(t => t.IsDefaultNewState)?.Id ?? throw new CisNotFoundException(13019, "Unable to determine default Case State");
 
     private static long resolveCaseIdResult(IServiceCallResult result) =>
         result switch

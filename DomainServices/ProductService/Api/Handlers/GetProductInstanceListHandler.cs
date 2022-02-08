@@ -1,8 +1,7 @@
 ﻿using CIS.Infrastructure.gRPC;
 using DomainServices.ProductService.Contracts;
 using Grpc.Core;
-using System.Linq;
-using ProdTypes = DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes;
+using ProdTypes = DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -12,7 +11,7 @@ internal class GetProductInstanceListHandler
     public async Task<GetProductInstanceListResponse> Handle(Dto.GetProductInstanceListMediatrRequest request, CancellationToken cancellation)
     {
         _logger.LogInformation("Get list for Case ID #{id}", request.CaseId);
-        List<ProdTypes.ProductTypeItem> productTypes = await _codebookService.ProductInstanceTypes();
+        List<ProdTypes.ProductTypeItem> productTypes = await _codebookService.ProductTypes();
 
         // ziskat instanci CASE
         var caseInstance = await _nobyRepository.GetCase(request.CaseId) ?? throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Case ID #{request.CaseId} does not exist", 12000);

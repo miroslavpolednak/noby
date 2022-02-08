@@ -10,7 +10,7 @@ public interface IEasClient
     /// Vytvori nove UverId pro dane ID sporeni
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[long] -> nove UverId (ProductInstanceId)
+    /// SuccessfulServiceCallResult[long] -> nove UverId (ProductId)
     /// </returns>
     Task<IServiceCallResult> GetSavingsLoanId(long caseId);
 
@@ -31,7 +31,7 @@ public interface IEasClient
     /// ErrorServiceCallResult(10008, $"EAS Endpoint '{}' not found)
     /// </returns>
     /// <exception cref="System.Exception">Jakakoliv interni chyba EAS</exception>
-    Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int ProductInstanceTypeId);
+    Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int productTypeId);
 
     /// <summary>
     /// Vytvori noveho klienta (rezervace partnerId)

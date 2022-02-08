@@ -38,7 +38,7 @@ public class ProductLoanKindsHandler
         }
     }
 
-    const string _sql = @"SELECT ID_DRUH_UVERU 'Id', NAZEV_DRUH_UVERU 'Name', 1 'ProductInstanceTypeId', CAST(CASE WHEN DATUM_DO_ES IS NULL THEN 1 ELSE 0 END as bit) 'IsActual' FROM [SBR].[DRUH_UVERU]";
+    const string _sql = @"SELECT ID_DRUH_UVERU 'Id', NAZEV_DRUH_UVERU 'Name', 1 'ProductTypeId', CAST(CASE WHEN DATUM_DO_ES IS NULL THEN 1 ELSE 0 END as bit) 'IsActual' FROM [SBR].[DRUH_UVERU]";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<ProductLoanKindsHandler> _logger;

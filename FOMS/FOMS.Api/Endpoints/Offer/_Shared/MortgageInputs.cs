@@ -2,7 +2,7 @@
 
 internal class MortgageInputs
 {
-    public int ProductInstanceTypeId { get; set; }
+    public int ProductTypeId { get; set; }
     public int LoanKindId { get; set; }
     public int LoanAmount { get; set; }
     public int LoanDuration { get; set; }

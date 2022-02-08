@@ -6,7 +6,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.FixedPeriodLengths
     public class FixedLengthPeriodsItem
     {
         [DataMember(Order = 1)]
-        public int ProductInstanceTypeId { get; set; }
+        public int ProductTypeId { get; set; }
 
         [DataMember(Order = 2)]
         public int FixedLengthPeriod { get; set; }

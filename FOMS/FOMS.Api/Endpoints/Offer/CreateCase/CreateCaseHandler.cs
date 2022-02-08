@@ -19,7 +19,7 @@ internal class CreateCaseHandler
             FirstName = request.FirstName,
             LastName = request.LastName,
             Customer = request.Customer,
-            ProductInstanceTypeId = offerInstance,
+            //ProductTypeId = offerInstance,
             TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
 
@@ -28,7 +28,7 @@ internal class CreateCaseHandler
         {
             CaseId = caseId,
             OfferInstanceId = request.OfferInstanceId,
-            ProductInstanceTypeId = _configuration.BuildingSavings.SavingsSalesArrangementType
+            //ProductInstanceTypeId = _configuration.BuildingSavings.SavingsSalesArrangementType
         }, cancellationToken);
 
         return new Dto.CreateCaseResponse

@@ -11,7 +11,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds
 
         [DataMember(Order = 2)]
         [JsonIgnore]
-        public int ProductInstanceTypeId { get; set; }
+        public int ProductTypeId { get; set; }
 
         [DataMember(Order = 3)]
         public string Name { get; set; }
