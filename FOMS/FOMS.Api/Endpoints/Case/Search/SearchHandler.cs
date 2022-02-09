@@ -22,7 +22,7 @@ internal class SearchHandler
         // transform
         return new Dto.SearchResponse
         {
-            Rows = await _converter.FromContracts(result.CaseInstances),
+            Rows = await _converter.FromContracts(result.Cases),
             Pagination = new CIS.Infrastructure.WebApi.Types.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
         };
     }

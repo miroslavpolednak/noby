@@ -23,7 +23,7 @@ message SearchCasesRequest {
 
 message SearchCasesResponse {
 	// Kolekce nalezenych Case s ohledem na strankovani
-	repeated Case CaseInstances = 1;
+	repeated Case Cases = 1;
 	
 	cis.types.PaginationResponse Pagination = 2;
 }

@@ -31,7 +31,7 @@ internal class SimulateMortgageHandler
         // kontrola ProductTypeId (zda je typu Mortgage)
         await CheckProductTypeCategory(
             request.Request.Inputs.ProductTypeId,
-            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage
+            CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage
         );
 
         var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);

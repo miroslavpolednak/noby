@@ -27,7 +27,7 @@ internal class CreateCaseHandler
             FirstName = customer.FirstName,
             LastName = customer.LastName,
             Customer = request.Customer,
-            ProductInstanceTypeId = _configuration.BuildingSavings.SavingsProductInstanceType,
+            //ProductInstanceTypeId = _configuration.BuildingSavings.SavingsProductInstanceType,
             //TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
 
@@ -36,14 +36,14 @@ internal class CreateCaseHandler
         {
             CaseId = caseId,
             OfferInstanceId = request.OfferInstanceId,
-            ProductInstanceTypeId = _configuration.BuildingSavings.SavingsSalesArrangementType
+            ProductTypeId = _configuration.BuildingSavings.SavingsSalesArrangementTypeId
         }, cancellationToken);
 
         // vytvorit produkt
-        long productId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateProductInstanceRequest()
+        long productId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateProductRequest()
         {
             CaseId = caseId,
-            ProductInstanceTypeId = _configuration.BuildingSavings?.SavingsProductInstanceType ?? 0
+            ProductTypeId = _configuration.BuildingSavings?.SavingsProductTypeId ?? 0
         }, cancellationToken);
     
         return new SaveCaseResponse

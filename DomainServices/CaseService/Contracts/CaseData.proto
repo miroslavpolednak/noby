@@ -6,7 +6,7 @@ import "google/protobuf/wrappers.proto";
 
 message CaseData {
 	// Produkt
-	int32 ProductInstanceTypeId = 1;
+	int32 ProductTypeId = 1;
 	
 	// Cilova castka / vyse hypotekyh
 	google.protobuf.Int32Value TargetAmount = 2;

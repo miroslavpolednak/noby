@@ -7,7 +7,7 @@ internal class GetSalesArrangementsByCaseIdMediatrRequestValidator
 {
     public GetSalesArrangementsByCaseIdMediatrRequestValidator()
     {
-        RuleFor(t => t.CaseId)
+        RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)
             .WithMessage("CaseId must be > 0").WithErrorCode("13000");
     }

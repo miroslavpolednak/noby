@@ -10,10 +10,10 @@ internal sealed class CaseServiceDbContext : BaseDbContext
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         : base(options, userProvider) { }
 
-    public DbSet<Entities.CaseInstance> CaseInstances { get; set; }
+    public DbSet<Entities.Case> Cases { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.RegisterCisTemporalTable<Entities.CaseInstance>();
+        modelBuilder.RegisterCisTemporalTable<Entities.Case>();
     }
 }

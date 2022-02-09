@@ -6,11 +6,11 @@ internal class LinkModelationToSalesArrangementMediatrRequest
     : IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 {
     public int SalesArrangementId { get; init; }
-    public int OfferInstanceId { get; init; }
+    public int OfferId { get; init; }
 
     public LinkModelationToSalesArrangementMediatrRequest(LinkModelationToSalesArrangementRequest model)
     {
         SalesArrangementId = model.SalesArrangementId;
-        OfferInstanceId = model.OfferInstanceId;
+        OfferId = model.OfferId;
     }
 }

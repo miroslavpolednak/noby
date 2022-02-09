@@ -11,12 +11,12 @@ internal static class LoggerExtensions
         _createSalesArrangementStarted = LoggerMessage.Define<int, long, int?>(
             LogLevel.Debug,
             new EventId(16501, nameof(CreateSalesArrangementStarted)),
-            "Create SA {SalesArrangementTypeId} for #{CaseId}/#{OfferInstanceId}");
+            "Create SA {SalesArrangementTypeId} for #{CaseId}/#{OfferId}");
 
         _linkToModelationStarted = LoggerMessage.Define<int, int>(
             LogLevel.Debug,
             new EventId(16502, nameof(LinkToModelationStarted)),
-            "Link OfferInstance {OfferInstanceId} to {SalesArrangementId}");
+            "Link Offer {OfferId} to {SalesArrangementId}");
 
         _updateStateStarted = LoggerMessage.Define<int, int>(
             LogLevel.Debug,
@@ -24,11 +24,11 @@ internal static class LoggerExtensions
             "Update SA #{SalesArrangementId} State to {State}");
     }
 
-    public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerInstanceId)
-        => _createSalesArrangementStarted(logger, salesArrangementTypeId, caseId, offerInstanceId, null!);
+    public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerId)
+        => _createSalesArrangementStarted(logger, salesArrangementTypeId, caseId, offerId, null!);
 
-    public static void LinkToModelationStarted(this ILogger logger, int offerInstanceId, int salesArrangementId)
-        => _linkToModelationStarted(logger, offerInstanceId, salesArrangementId, null!);
+    public static void LinkToModelationStarted(this ILogger logger, int offerId, int salesArrangementId)
+        => _linkToModelationStarted(logger, offerId, salesArrangementId, null!);
 
     public static void UpdateStateStarted(this ILogger logger, int salesArrangementId, int state)
         => _updateStateStarted(logger, salesArrangementId, state, null!);

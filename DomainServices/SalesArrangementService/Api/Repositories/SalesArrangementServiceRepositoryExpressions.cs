@@ -11,7 +11,7 @@ internal static class SalesArrangementServiceRepositoryExpressions
             SalesArrangementId = t.SalesArrangementId,
             CaseId = t.CaseId,
             State = t.State,
-            OfferInstanceId = t.OfferInstanceId,
+            OfferId = t.OfferId,
             SalesArrangementTypeId = t.SalesArrangementTypeId,
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
         };

@@ -7,7 +7,7 @@ namespace DomainServices.CaseService.Abstraction;
 public interface ICaseServiceAbstraction
 {
     /// <summary>
-    /// Vytvoreni CaseInstance
+    /// Vytvoreni Case
     /// </summary>
     /// <returns>
     /// SuccessfulServiceCallResult[long] - OK; returns CaseId;
@@ -17,8 +17,8 @@ public interface ICaseServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13010; ContractNumber length must be 10</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13018; Target amount must be between 20_000 and 99_999_999</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13012; Customer Name must not be empty</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13013; ProductInstanceTypeId {} is not valid for this operation</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13014; ProductInstanceTypeId {} not found</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13013; ProductTypeId {} is not valid for this operation</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13014; ProductTypeId {} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">Code: 13015; Case #{} already exists</exception>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13017; User not found: {}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: {SB error key}; {SB error message}</exception>
@@ -77,10 +77,10 @@ public interface ICaseServiceAbstraction
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13002; ProductInstanceTypeId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13002; ProductTypeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13010; ContractNumber length must be 10</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13018; Target amount must be between 20_000 and 99_999_999</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13014; ProductInstanceTypeId {} not found</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13014; ProductTypeId {} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">Some of underlying services are not available or failed to call</exception>

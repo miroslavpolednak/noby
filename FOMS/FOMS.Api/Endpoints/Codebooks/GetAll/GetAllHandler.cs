@@ -17,26 +17,26 @@ internal class GetAllHandler
         return model;
     }
 
-    //TODO nejak automatizovat? Zase to nechci zpomalovat reflexi....
+    //TODO nejak automatizovat? Zase to nechci zpomalovat reflexi.... code generators?
     private async Task<Dto.GetAllResponseItem> fillCodebook(string code, string original)
         => code switch
         {
+            "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings()).Where(t => t.IsValid)),
+            "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan()).Where(t => t.IsValid)),
+            "casestates" => new(original, await _codebooks.CaseStates()),
+            "countries" => new(original, await _codebooks.Countries()),
+            "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods()),
+            "genders" => new(original, await _codebooks.Genders()),
+            "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes()),
+            //"nationalities" => new(original, await _codebooks.Nationalities()),//!!!
+            //"persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),//!!!
+            //"persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),//!!!
+            "producttypes" => new(original, await _codebooks.ProductTypes()),
             "productloanpurposes" => new(original, await _codebooks.ProductLoanPurposes()),
             "productloankinds" => new(original, await _codebooks.ProductLoanKinds()),
-            "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods()),
-            "residencytypes" => new(original, await _codebooks.ResidencyTypes()),
-            "countries" => new(original, await _codebooks.Countries()),
-            "nationalities" => new(original, await _codebooks.Nationalities()),
-            "genders" => new(original, await _codebooks.Genders()),
-            "casestates" => new(original, await _codebooks.CaseStates()),
-            "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes()),
-            "persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),
-            "persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),
-            "productinstancetypes" => new(original, await _codebooks.ProductInstanceTypes()),
+            //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes()),
-            "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings()).Where(t => t.IsValid)),
-            "mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),
-            "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan()).Where(t => t.IsValid)),
+            //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
 
             _ => throw new NotImplementedException($"Codebook code '{original}' is not implemented")
         };

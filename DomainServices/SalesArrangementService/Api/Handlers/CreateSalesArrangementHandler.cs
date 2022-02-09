@@ -7,21 +7,23 @@ internal class CreateSalesArrangementHandler
 {
     public async Task<CreateSalesArrangementResponse> Handle(Dto.CreateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.CreateSalesArrangementStarted(request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferInstanceId);
+        _logger.CreateSalesArrangementStarted(request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferId);
 
         // validace product instance type
         var salesArrangementType = (await _codebookService.SalesArrangementTypes()).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
-            ?? throw new CisNotFoundException(16005, $"SalesArrangementType #{request.Request.SalesArrangementTypeId} does not exist.");
+            ?? throw new CisNotFoundException(16005, $"SalesArrangementTypeId #{request.Request.SalesArrangementTypeId} does not exist.");
 
         // validace na existenci case
         var caseInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
             ?? throw new CisNotFoundException(16002, $"Case ID #{request.Request.CaseId} does not exist.");
 
-        // validace na existenci offerInstance
-        /*var offerInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<OfferService.Contracts>(await _offerService.(request.Request.OfferInstanceId, cancellation))
-            ?? throw new CisNotFoundException(16001, $"OfferInstance ID #{request.Request.OfferInstanceId} does not exist.");*/
+        // validace na existenci offer
+        /*if (request.Request.OfferId.HasValue)
+            var offerInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<OfferService.Contracts>(await _offerService.(request.Request.OfferId, cancellation))
+                ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");*/
 
         // get default case state
+        //TODO bude nejaky default state?
         int defaultSaState = (await _codebookService.SalesArrangementStates()).First(t => t.IsDefaultNewState).Id;
 
         // ulozit do DB
@@ -31,7 +33,7 @@ internal class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             State = defaultSaState,
             StateUpdateTime = DateTime.Now,
-            OfferInstanceId = request.Request.OfferInstanceId
+            OfferId = request.Request.OfferId
         };
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
 

@@ -22,7 +22,7 @@ internal sealed class RealEasClient
         });
     }
 
-    public async Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int ProductInstanceTypeId)
+    public async Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int productTypeId)
     {
         return await callMethod(async () =>
         {
@@ -31,7 +31,7 @@ internal sealed class RealEasClient
                 var result = await client.Get_CaseIdAsync(new CaseIdRequest
                 {
                     mandant = (int)mandant,
-                    productCode = ProductInstanceTypeId
+                    productCode = productTypeId
                 });
 
                 //TODO jak ma vypadat chyba vracena z EAS?

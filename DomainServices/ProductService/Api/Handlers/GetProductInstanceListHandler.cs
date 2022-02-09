@@ -1,8 +1,7 @@
 ﻿using CIS.Infrastructure.gRPC;
 using DomainServices.ProductService.Contracts;
 using Grpc.Core;
-using System.Linq;
-using ProdTypes = DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes;
+using ProdTypes = DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -12,7 +11,7 @@ internal class GetProductInstanceListHandler
     public async Task<GetProductInstanceListResponse> Handle(Dto.GetProductInstanceListMediatrRequest request, CancellationToken cancellation)
     {
         _logger.LogInformation("Get list for Case ID #{id}", request.CaseId);
-        List<ProdTypes.ProductInstanceTypeItem> productTypes = await _codebookService.ProductInstanceTypes();
+        List<ProdTypes.ProductTypeItem> productTypes = await _codebookService.ProductTypes();
 
         // ziskat instanci CASE
         var caseInstance = await _nobyRepository.GetCase(request.CaseId) ?? throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Case ID #{request.CaseId} does not exist", 12000);
@@ -21,11 +20,11 @@ internal class GetProductInstanceListHandler
         switch (productTypes.First(t => t.Id == caseInstance.ProductInstanceTypeId).ProductCategory)
         {
             // nemusi tu byt kontrola na existenci, protoze SS tam vzdy je
-            case ProdTypes.ProductInstanceTypeCategory.BuildingSavings:
+            case ProdTypes.ProductTypeCategory.BuildingSavings:
                 model.Instances.Add(await getSavingsListItem(caseInstance.CaseId, productTypes));
                 break;
 
-            case ProdTypes.ProductInstanceTypeCategory.BuildingSavingsLoan:
+            case ProdTypes.ProductTypeCategory.BuildingSavingsLoan:
                 // SS
                 model.Instances.Add(await getSavingsListItem(caseInstance.CaseId, productTypes));
                 // uvery
@@ -41,13 +40,13 @@ internal class GetProductInstanceListHandler
         return model;
     }
 
-    private async Task<ProductInstanceListItem> getSavingsListItem(long caseId, List<ProdTypes.ProductInstanceTypeItem> productTypes)
+    private async Task<ProductInstanceListItem> getSavingsListItem(long caseId, List<ProdTypes.ProductTypeItem> productTypes)
     {
         var instance = (await _konsRepository.GetSavingsListItem(caseId)) ?? throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Product ID #{caseId} does not exist", 12000);
         return instance.CreateContractItem(productTypes);
     }
 
-    private async Task<List<ProductInstanceListItem>> getSavingsLoanListItems(long caseId, List<ProdTypes.ProductInstanceTypeItem> productTypes)
+    private async Task<List<ProductInstanceListItem>> getSavingsLoanListItems(long caseId, List<ProdTypes.ProductTypeItem> productTypes)
     {
         //TODO musi tady byt vzdy aspon jeden?
         var instances = await _konsRepository.GetSavingsLoanListItems(caseId);

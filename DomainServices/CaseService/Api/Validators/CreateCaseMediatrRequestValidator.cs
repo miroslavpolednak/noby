@@ -6,9 +6,9 @@ internal class CreateCaseMediatrRequestValidator : AbstractValidator<Dto.CreateC
 {
     public CreateCaseMediatrRequestValidator()
     {
-        RuleFor(t => t.Request.Data.ProductInstanceTypeId)
+        RuleFor(t => t.Request.Data.ProductTypeId)
             .GreaterThan(0)
-            .WithMessage(t => "ProductInstanceTypeId must be > 0").WithErrorCode("13002");
+            .WithMessage(t => "ProductTypeId must be > 0").WithErrorCode("13002");
 
         RuleFor(t => t.Request.Data.ContractNumber)
             .Length(10).When(t => !string.IsNullOrEmpty(t.Request.Data.ContractNumber))

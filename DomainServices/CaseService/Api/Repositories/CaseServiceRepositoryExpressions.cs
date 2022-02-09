@@ -4,7 +4,7 @@ namespace DomainServices.CaseService.Api.Repositories;
 
 internal static class CaseServiceRepositoryExpressions
 {
-    public static Expression<Func<Entities.CaseInstance, Contracts.Case>> CaseDetail()
+    public static Expression<Func<Entities.Case, Contracts.Case>> CaseDetail()
     {
         return t => new Contracts.Case
         {
@@ -15,7 +15,7 @@ internal static class CaseServiceRepositoryExpressions
             CaseOwner = new CIS.Infrastructure.gRPC.CisTypes.UserInfo(t.OwnerUserId, t.OwnerUserName),
             Data = new Contracts.CaseData
             {
-                ProductInstanceTypeId = t.ProductInstanceTypeId,
+                ProductTypeId = t.ProductTypeId,
                 TargetAmount = t.TargetAmount,
                 ContractNumber = t.ContractNumber ?? ""
             },

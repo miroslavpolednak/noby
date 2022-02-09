@@ -6,7 +6,7 @@ internal sealed class ProductInstanceListModel
     public int ProductInstanceTypeId { get; set; }
     public int State { get; set; }
 
-    public Contracts.ProductInstanceListItem CreateContractItem(List<DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeItem> productTypes)
+    public Contracts.ProductInstanceListItem CreateContractItem(List<DomainServices.CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeItem> productTypes)
     {
         return new Contracts.ProductInstanceListItem
         {

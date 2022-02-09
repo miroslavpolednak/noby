@@ -5,17 +5,21 @@ internal class LinkModelationToSalesArrangementHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkModelationToSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LinkToModelationStarted(request.OfferInstanceId, request.SalesArrangementId);
+        _logger.LinkToModelationStarted(request.OfferId, request.SalesArrangementId);
 
         // overit existenci SA
-        await _repository.EnsureExistingSalesArrangement(request.SalesArrangementId, cancellation);
+        var salesArrangementInstance = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
 
-        // validace na existenci offerInstance
-        /*var offerInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<OfferService.Contracts>(await _offerService.(request.OfferInstanceId, cancellation))
-            ?? throw new CisNotFoundException(16001, $"OfferInstance ID #{request.Request.OfferInstanceId} does not exist.");*/
+        // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
+        if (salesArrangementInstance.OfferId == request.OfferId)
+            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}", 16012);
+
+        // validace na existenci offer
+        /*var offerInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<OfferService.Contracts>(await _offerService.(request.OfferId, cancellation))
+            ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");*/
 
         // update linku v DB
-        await _repository.UpdateOfferInstanceId(request.SalesArrangementId, request.OfferInstanceId, cancellation);
+        await _repository.UpdateOfferId(request.SalesArrangementId, request.OfferId, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

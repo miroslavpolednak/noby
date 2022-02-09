@@ -20,7 +20,7 @@ var serviceProvider = new ServiceCollection()
 var service = serviceProvider.GetService<DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction>() ?? throw new Exception();
 
 Console.WriteLine("RUN 1");
-var result = await service.ProductInstanceTypes();
+var result = await service.ProductTypes();
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));
 
 Console.WriteLine("RUN 2");

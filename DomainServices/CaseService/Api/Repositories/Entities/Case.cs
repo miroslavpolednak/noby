@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.CaseService.Api.Repositories.Entities;
 
-[Table("CaseInstance", Schema = "dbo")]
-internal class CaseInstance : CIS.Core.Data.BaseCreatedWithModifiedUserId
+[Table("Case", Schema = "dbo")]
+internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key]
     public long CaseId { get; set; }
 
-    public int ProductInstanceTypeId { get; set; }
+    public int ProductTypeId { get; set; }
     public int State { get; set; }
     public DateTime StateUpdateTime { get; set; }
 
@@ -34,14 +34,14 @@ internal class CaseInstance : CIS.Core.Data.BaseCreatedWithModifiedUserId
     /// <summary>
     /// Vytvoreni entity z Create Requestu
     /// </summary>
-    public static CaseInstance Create(long caseId, CreateCaseRequest request)
+    public static Case Create(long caseId, CreateCaseRequest request)
     {
-        var entity = new CaseInstance
+        var entity = new Case
         {
             CaseId = caseId,
 
             StateUpdateTime = DateTime.Now,
-            ProductInstanceTypeId = request.Data.ProductInstanceTypeId,
+            ProductTypeId = request.Data.ProductTypeId,
 
             Name = request.Customer.Name,
             FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,

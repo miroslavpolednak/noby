@@ -30,7 +30,7 @@ internal class GetMortgageDataHandler
         // kontrola ProductTypeId (zda je typu Mortgage)
         await CheckProductTypeCategory(
             entity.ProductTypeId,
-            CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage
+            CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage
         );
 
         var model = new GetMortgageDataResponse

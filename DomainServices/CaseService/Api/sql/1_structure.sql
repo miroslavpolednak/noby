@@ -4,7 +4,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[CaseInstance](
+CREATE TABLE [dbo].[Case](
 	[CaseId] [bigint] NOT NULL,
 	[OwnerUserId] [int] NOT NULL,
 	[OwnerUserName] [nvarchar](100) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[CaseInstance](
 	[ContractNumber] [varchar](10) NULL,
 	[TargetAmount] [int] NULL,
 	[IsActionRequired] [bit] NOT NULL,
-	[ProductInstanceTypeId] [int] NOT NULL,
+	[ProductTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,
 	[StateUpdateTime] [datetime] NOT NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,
@@ -35,9 +35,11 @@ CREATE TABLE [dbo].[CaseInstance](
 ) ON [PRIMARY]
 WITH
 (
-SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[CaseInstanceHistory] )
+SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[CaseHistory] )
 )
 GO
 
-ALTER TABLE [dbo].[CaseInstance] ADD  CONSTRAINT [DF_CaseInstance_ActionRequired]  DEFAULT ((0)) FOR [IsActionRequired]
+ALTER TABLE [dbo].[Case] ADD  CONSTRAINT [DF_Case_ActionRequired]  DEFAULT ((0)) FOR [IsActionRequired]
 GO
+
+

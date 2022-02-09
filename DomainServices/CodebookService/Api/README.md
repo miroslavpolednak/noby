@@ -55,4 +55,4 @@ Konfigurace služby je možná souborem appsettings.json.
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list
 
-        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/ProductInstanceTypes
+        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/ProductTypes

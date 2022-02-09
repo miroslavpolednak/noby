@@ -29,7 +29,7 @@ internal class CreateProductInstanceHandler
 
         // Pokud typ produktu (ProductInstanceTypeId = HS_LOAN) jedná se o úvěr navazující na existující stavební spoření
         // Rezervace ID produktu v EAS (uver_id)
-        if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings)
+        if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.BuildingSavings)
             productId = resolveSavingsLoanIdResult(await _easClient.GetSavingsLoanId(request.CaseId));
 
         // vytvoreni produktu v MpHome
@@ -41,16 +41,16 @@ internal class CreateProductInstanceHandler
         };
     }
 
-    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long ProductInstanceTypeId)
+    private async Task<CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory> getProductCategory(long ProductInstanceTypeId)
     {
-        var productTypes = await _codebookService.ProductInstanceTypes();
+        var productTypes = await _codebookService.ProductTypes();
         var item = productTypes.FirstOrDefault(t => t.Id == ProductInstanceTypeId);
         if (item == null)
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "ProductInstanceTypeId not found", 1);
         return item.ProductCategory;
     }
 
-    private async Task<IServiceCallResult> createProduct(CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory category, long caseId, long productId) =>
+    private async Task<IServiceCallResult> createProduct(CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory category, long caseId, long productId) =>
         category switch
         {
             /*CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavings => await _mpHomeClient.UpdateSavings(caseId),

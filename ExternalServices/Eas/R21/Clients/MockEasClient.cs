@@ -48,7 +48,7 @@ internal sealed class MockEasClient : IEasClient
     }
 
 #pragma warning disable CS1998
-    public async Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int ProductInstanceTypeId)
+    public async Task<IServiceCallResult> GetCaseId(CIS.Core.IdentitySchemes mandant, int productTypeId)
 #pragma warning restore CS1998
     {
         Random random = new Random();

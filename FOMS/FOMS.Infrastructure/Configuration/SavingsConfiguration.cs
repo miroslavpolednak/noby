@@ -2,7 +2,7 @@
 
 public sealed class SavingsConfiguration
 {
-    public int SavingsProductInstanceType { get; set; }
+    public int SavingsProductTypeId { get; set; }
 
-    public int SavingsSalesArrangementType { get; set; }
+    public int SavingsSalesArrangementTypeId { get; set; }
 }

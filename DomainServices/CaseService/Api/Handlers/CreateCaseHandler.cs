@@ -13,28 +13,28 @@ internal class CreateCaseHandler
         _logger.RequestHandlerStarted(nameof(CreateCaseHandler));
 
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
-        var productInstanceTypeCategory = await getProductCategory(request.Request.Data.ProductInstanceTypeId);
+        var ProductTypeCategory = await getProductCategory(request.Request.Data.ProductTypeId);
         
         // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
-        if (productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.BuildingSavingsLoan)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductInstanceTypeId {request.Request.Data.ProductInstanceTypeId} is not valid for this operation", 13013);
+        if (ProductTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.BuildingSavingsLoan)
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductTypeId {request.Request.Data.ProductTypeId} is not valid for this operation", 13013);
 
         // overit existenci ownera
         var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId, cancellation));
         //TODO zkontrolovat existenci klienta?
 
         // pro jakou spolecnost
-        var mandant = productInstanceTypeCategory == CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage ? CIS.Core.IdentitySchemes.Kb : CIS.Core.IdentitySchemes.Mp;
+        var mandant = ProductTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage ? CIS.Core.IdentitySchemes.Kb : CIS.Core.IdentitySchemes.Mp;
 
         // get default case state
         int defaultCaseState = await getDefaultState();
 
         // ziskat caseId
-        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductInstanceTypeId));
+        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductTypeId));
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
-        var entity = Repositories.Entities.CaseInstance.Create(newCaseId, request.Request);
+        var entity = Repositories.Entities.Case.Create(newCaseId, request.Request);
         entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
 
@@ -42,11 +42,11 @@ internal class CreateCaseHandler
         {
             // ulozit entitu
             await _repository.CreateCase(entity, cancellation);
-            _logger.EntityCreated(nameof(Repositories.Entities.CaseInstance), newCaseId);
+            _logger.EntityCreated(nameof(Repositories.Entities.Case), newCaseId);
         }
         catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.CaseInstance), newCaseId);
+            throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.Case), newCaseId);
         }
         catch
         {
@@ -62,10 +62,10 @@ internal class CreateCaseHandler
     /// <summary>
     /// Zjistit typ produktu - Hypo, SS atd.
     /// </summary>
-    private async Task<CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory> getProductCategory(long ProductInstanceTypeId)
-    {
-        var productTypes = await _codebookService.ProductInstanceTypes();
-        var item = productTypes.FirstOrDefault(t => t.Id == ProductInstanceTypeId) ?? throw new CisNotFoundException(13014, nameof(ProductInstanceTypeId), ProductInstanceTypeId);
+    private async Task<CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory> getProductCategory(long ProductTypeId)
+    {  
+        var item = (await _codebookService.ProductTypes())
+            .FirstOrDefault(t => t.Id == ProductTypeId) ?? throw new CisNotFoundException(13014, nameof(ProductTypeId), ProductTypeId);
         return item.ProductCategory;
     }
 
@@ -73,7 +73,8 @@ internal class CreateCaseHandler
     /// Zjistit vychozi stav CASE
     /// </summary>
     private async Task<int> getDefaultState()
-        => (await _codebookService.CaseStates()).FirstOrDefault(t => t.IsDefaultNewState)?.Id ?? throw new CisNotFoundException(13019, "Unable to determine default Case State");
+        => (await _codebookService.CaseStates())
+        .FirstOrDefault(t => t.IsDefaultNewState)?.Id ?? throw new CisNotFoundException(13019, "Unable to determine default Case State");
 
     private static long resolveCaseIdResult(IServiceCallResult result) =>
         result switch
