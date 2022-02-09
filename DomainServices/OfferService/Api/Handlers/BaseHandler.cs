@@ -69,17 +69,17 @@ internal class BaseHandler
     }
 
 
-    /// <summary>
-    /// Converts entity created data to contract DTO.
-    /// </summary>
-    protected OfferInstanceCreated ToCreated(OfferInstance entity)
-    {
-        return new OfferInstanceCreated
-        {
-            UserId = entity.CreatedUserId,
-            Name = entity.CreatedUserName,
-            CreatedOn = entity.CreatedTime
-        };
-    }
+    ///// <summary>
+    ///// Converts entity created data to contract DTO.
+    ///// </summary>
+    //protected OfferInstanceCreated ToCreated(OfferInstance entity)
+    //{
+    //    return new OfferInstanceCreated
+    //    {
+    //        UserId = entity.CreatedUserId,
+    //        Name = entity.CreatedUserName,
+    //        CreatedOn = entity.CreatedTime
+    //    };
+    //}
 
 }

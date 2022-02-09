@@ -2,44 +2,15 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
-import "GrpcDate.proto";
+import "ModificationStamp.proto";
 
 message OfferInstanceIdRequest {
 	int32 OfferInstanceId = 1;
-}
-
-message DealerData {
-   string FirstName = 1;
-   string LastName = 2;
-   string JobTitle = 3;
-   string PhoneNumber = 4;
-   string Email = 5;
-}
-
-enum ScheduleItemTypes {
-   Unknown = 0;
-   DepositSchedule = 9;
-   PaymentSchedule = 1;
-}
-
-message ScheduleItem {
-   ScheduleItemTypes Type = 1;
-   cis.types.GrpcDate Date = 2;
-   int32 Sum = 3;
-   int32 Balance = 4;
-   string Note = 5;
-   string Info = 6;
-}
-
-message OfferInstanceCreated {
-	int32 UserId = 1;
-	string Name = 2;
-	cis.types.GrpcDate CreatedOn = 3;
 }
 
 message GetOfferInstanceResponse {
 	int32 OfferInstanceId = 1;
 	int32 ProductInstanceTypeId = 2;
 	string ResourceProcessId = 3;
-	OfferInstanceCreated Created = 4; 
+	cis.types.ModificationStamp Created = 4;
 }

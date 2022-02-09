@@ -39,29 +39,29 @@ internal class BuildingSavingsInput
     /// </summary>
     public bool ClientIsSVJ { get; set; }
 
-    public static explicit operator BuildingSavingsInput(DomainServices.OfferService.Contracts.BuildingSavingsInput data)
-        => new()
-        {
-            ClientIsSVJ = data.ClientIsSVJ,
-            ActionCode = data.ActionCode,
-            TargetAmount = data.TargetAmount,
-            ClientIsNaturalPerson = data.ClientIsNaturalPerson,
-            ProductCode = data.ProductCode,
-            LoanActionCode = data.LoanActionCode,
-            StateSubsidy = data.StateSubsidy,
-            IsWithLoan = data.IsWithLoan
-        };
+    //public static explicit operator BuildingSavingsInput(DomainServices.OfferService.Contracts.BuildingSavingsInput data)
+    //    => new()
+    //    {
+    //        ClientIsSVJ = data.ClientIsSVJ,
+    //        ActionCode = data.ActionCode,
+    //        TargetAmount = data.TargetAmount,
+    //        ClientIsNaturalPerson = data.ClientIsNaturalPerson,
+    //        ProductCode = data.ProductCode,
+    //        LoanActionCode = data.LoanActionCode,
+    //        StateSubsidy = data.StateSubsidy,
+    //        IsWithLoan = data.IsWithLoan
+    //    };
 
-    public static implicit operator DomainServices.OfferService.Contracts.BuildingSavingsInput(BuildingSavingsInput data)
-        => new()
-        {
-            ClientIsSVJ = data.ClientIsSVJ,
-            ActionCode = data.ActionCode.GetValueOrDefault(),
-            TargetAmount = data.TargetAmount.GetValueOrDefault(),
-            ClientIsNaturalPerson = data.ClientIsNaturalPerson,
-            ProductCode = data.ProductCode.GetValueOrDefault(),
-            LoanActionCode = data.LoanActionCode,
-            StateSubsidy = data.StateSubsidy,
-            IsWithLoan = data.IsWithLoan
-        };
+    //public static implicit operator DomainServices.OfferService.Contracts.BuildingSavingsInput(BuildingSavingsInput data)
+    //    => new()
+    //    {
+    //        ClientIsSVJ = data.ClientIsSVJ,
+    //        ActionCode = data.ActionCode.GetValueOrDefault(),
+    //        TargetAmount = data.TargetAmount.GetValueOrDefault(),
+    //        ClientIsNaturalPerson = data.ClientIsNaturalPerson,
+    //        ProductCode = data.ProductCode.GetValueOrDefault(),
+    //        LoanActionCode = data.LoanActionCode,
+    //        StateSubsidy = data.StateSubsidy,
+    //        IsWithLoan = data.IsWithLoan
+    //    };
 }

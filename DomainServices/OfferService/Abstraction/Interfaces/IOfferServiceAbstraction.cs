@@ -5,57 +5,14 @@ namespace DomainServices.OfferService.Abstraction;
 
 public interface IOfferServiceAbstraction
 {
-    /// <summary>
-    /// Simulace stavebniho sporeni
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[Contracts.SimulateHousingsSavingsResponse] - OK;
-    /// SimulationServiceErrorResult - chyba z EAS;
-    /// ErrorServiceCallResult - chyba pri request kontrole;
-    /// </returns>
-    Task<IServiceCallResult> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Detail simulace stavebniho sporeni
+    /// Základní data simulace (bez inputs a outputs) 
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[GetBuildingSavingsDataResponse] - OK
+    /// SuccessfulServiceCallResult[GetOfferInstanceResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetBuildingSavingsData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
-
-    /// <summary>
-    /// Stavebni sporeni - splatkovy kalendar sporeni
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetBuildingSavingsScheduleResponse] - OK;
-    /// </returns>
-    Task<IServiceCallResult> GetBuildingSavingsDepositSchedule(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
-
-    /// <summary>
-    /// Stavebni sporeni - splatkovy kalendar uveru
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetBuildingSavingsScheduleResponse] - OK;
-    /// </returns>
-    Task<IServiceCallResult> GetBuildingSavingsPaymentSchedule(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
-
-    /// <summary>
-    /// Stavebni sporeni - tisk nabidky
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[PrintBuildingSavingsOfferResponse] - OK
-    /// </returns>
-    Task<IServiceCallResult> PrintBuildingSavingsOffer(PrintBuildingSavingsOfferRequest request, CancellationToken cancellationToken = default(CancellationToken));
-
-    /// <summary>
-    /// Simulace KB Hypotéky
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[Contracts.SimulateMortgageResponse] - OK;
-    /// SimulationServiceErrorResult - chyba z EAS;
-    /// ErrorServiceCallResult - chyba pri request kontrole;
-    /// </returns>
-    Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetOfferInstance(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Detail simulace KB Hypotéky
@@ -66,11 +23,13 @@ public interface IOfferServiceAbstraction
     Task<IServiceCallResult> GetMortgageData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Základní data simulace (bez inputs a outputs) 
+    /// Simulace KB Hypotéky
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[GetOfferInstanceResponse] - OK
+    /// SuccessfulServiceCallResult[Contracts.SimulateMortgageResponse] - OK;
+    /// SimulationServiceErrorResult - chyba z EAS;
+    /// ErrorServiceCallResult - chyba pri request kontrole;
     /// </returns>
-    Task<IServiceCallResult> GetOfferInstance(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
 }

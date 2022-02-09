@@ -11,24 +11,25 @@ internal class GetScheduleHandler
     {
         _logger.LogDebug("Get schedule for {id}", request.OfferInstanceId);
 
-        DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse result;
+        //DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse result;
 
-        if (request.ScheduleType == DomainServices.OfferService.Contracts.ScheduleItemTypes.DepositSchedule)
-            result = resolveResult(await _offerService.GetBuildingSavingsDepositSchedule(request.OfferInstanceId, cancellationToken));
-        else
-            result = resolveResult(await _offerService.GetBuildingSavingsPaymentSchedule(request.OfferInstanceId, cancellationToken));
+        //if (request.ScheduleType == DomainServices.OfferService.Contracts.ScheduleItemTypes.DepositSchedule)
+        //    result = resolveResult(await _offerService.GetBuildingSavingsDepositSchedule(request.OfferInstanceId, cancellationToken));
+        //else
+        //    result = resolveResult(await _offerService.GetBuildingSavingsPaymentSchedule(request.OfferInstanceId, cancellationToken));
 
-        _logger.LogDebug("Resolved {count} schedule items", result.ScheduleItems.Count());
+        //_logger.LogDebug("Resolved {count} schedule items", result.ScheduleItems.Count());
 
-        return new GetScheduleResponse(result.ScheduleItems.Select(t => (ScheduleItem)t));
+        //return new GetScheduleResponse(result.ScheduleItems.Select(t => (ScheduleItem)t));
+        return new GetScheduleResponse(null);
     }
 
-    private DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse resolveResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse> r => r.Model,
-            _ => throw new NotImplementedException()
-        };
+    //private DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse resolveResult(IServiceCallResult result) =>
+    //    result switch
+    //    {
+    //        SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.GetBuildingSavingsScheduleResponse> r => r.Model,
+    //        _ => throw new NotImplementedException()
+    //    };
 
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ILogger<GetScheduleHandler> _logger;

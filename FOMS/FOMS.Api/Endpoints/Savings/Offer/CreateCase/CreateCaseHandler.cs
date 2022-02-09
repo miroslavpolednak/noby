@@ -17,7 +17,7 @@ internal class CreateCaseHandler
         _logger.LogDebug("Customer {customer} found", request.Customer);
 
         // detail simulace
-        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
+        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferInstanceId, cancellationToken));
 
         // vytvorit case
         long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
@@ -28,7 +28,7 @@ internal class CreateCaseHandler
             LastName = customer.LastName,
             Customer = request.Customer,
             ProductInstanceTypeId = _configuration.BuildingSavings.SavingsProductInstanceType,
-            TargetAmount = offerInstance.InputData.TargetAmount
+            //TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
 
         // vytvorit zadost

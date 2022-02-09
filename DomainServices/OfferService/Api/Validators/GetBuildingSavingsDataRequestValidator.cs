@@ -1,13 +1,13 @@
-﻿using FluentValidation;
+﻿//using FluentValidation;
 
-namespace DomainServices.OfferService.Api.Validators;
+//namespace DomainServices.OfferService.Api.Validators;
 
-internal class GetBuildingSavingsDataRequestValidator : AbstractValidator<Dto.GetBuildingSavingsDataMediatrRequest>
-{
-    public GetBuildingSavingsDataRequestValidator()
-    {
-        RuleFor(t => t.OfferInstanceId)
-            .GreaterThan(0)
-            .WithMessage("OfferInstanceId is not specified").WithErrorCode("10005");
-    }
-}
+//internal class GetBuildingSavingsDataRequestValidator : AbstractValidator<Dto.GetBuildingSavingsDataMediatrRequest>
+//{
+//    public GetBuildingSavingsDataRequestValidator()
+//    {
+//        RuleFor(t => t.OfferInstanceId)
+//            .GreaterThan(0)
+//            .WithMessage("OfferInstanceId is not specified").WithErrorCode("10005");
+//    }
+//}

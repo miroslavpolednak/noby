@@ -24,7 +24,7 @@ internal class OfferInstanceRepository
             Inputs = JsonSerializer.Serialize(inputs)
         };
 
-        _dbContext.OfferModelations.Add(entity);
+        _dbContext.Offers.Add(entity);
 
         await _dbContext.SaveChangesAsync();
 
@@ -32,13 +32,13 @@ internal class OfferInstanceRepository
     }
 
     public async Task<Entities.OfferInstance> Get(int offerInstanceId)
-        => await _dbContext.OfferModelations
+        => await _dbContext.Offers
            .AsNoTracking()
            .Where(t => t.OfferInstanceId == offerInstanceId)
            .FirstOrDefaultAsync() ?? throw new CisNotFoundException(13000, $"OfferInstance #{offerInstanceId} not found");
 
     public async Task<bool> AnyOfResourceProcessId(Guid resourceProcessId)
-       => await _dbContext.OfferModelations
+       => await _dbContext.Offers
           .AsNoTracking()
           .Where(t => t.ResourceProcessId == resourceProcessId)
           .AnyAsync();

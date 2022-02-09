@@ -31,7 +31,8 @@ internal class GetOfferInstanceHandler
             OfferInstanceId = entity.OfferInstanceId,
             ProductInstanceTypeId = entity.ProductInstanceTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            Created = ToCreated(entity),          
+            //Created = ToCreated(entity),
+            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
         };
 
         return model;

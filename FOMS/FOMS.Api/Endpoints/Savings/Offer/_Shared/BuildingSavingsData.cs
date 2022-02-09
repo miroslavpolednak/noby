@@ -37,21 +37,21 @@ internal class BuildingSavingsData
     public decimal BenefitInterests { get; set; }
     public decimal TaxFromBenefitInterests { get; set; }
     
-    public static implicit operator BuildingSavingsData(DomainServices.OfferService.Contracts.BuildingSavingsData data)
-        => new BuildingSavingsData
-        {
-            SavingPeriod = data.SavingPeriod,
-            ContractTerminationDate = data.ContractTerminationDate,
-            InterestRate = data.InterestRate,
-            TotalSaved = data.TotalSaved,
-            TotalDeposits = data.TotalDeposits,
-            TotalInterests = data.TotalInterests,
-            TotalFees = data.TotalFees,
-            InterestsAdvantage = data.InterestsAdvantage,
-            TotalGovernmentIncentives = data.TotalGovernmentIncentives,
-            ExpectedGrantedLoanDate = data.ExpectedGrantedLoanDate,
-            DepositBalance = data.DepositBalance,
-            BenefitInterests = data.BenefitInterests,
-            TaxFromBenefitInterests = data.TaxFromBenefitInterests
-        };
+    //public static implicit operator BuildingSavingsData(DomainServices.OfferService.Contracts.BuildingSavingsData data)
+    //    => new BuildingSavingsData
+    //    {
+    //        SavingPeriod = data.SavingPeriod,
+    //        ContractTerminationDate = data.ContractTerminationDate,
+    //        InterestRate = data.InterestRate,
+    //        TotalSaved = data.TotalSaved,
+    //        TotalDeposits = data.TotalDeposits,
+    //        TotalInterests = data.TotalInterests,
+    //        TotalFees = data.TotalFees,
+    //        InterestsAdvantage = data.InterestsAdvantage,
+    //        TotalGovernmentIncentives = data.TotalGovernmentIncentives,
+    //        ExpectedGrantedLoanDate = data.ExpectedGrantedLoanDate,
+    //        DepositBalance = data.DepositBalance,
+    //        BenefitInterests = data.BenefitInterests,
+    //        TaxFromBenefitInterests = data.TaxFromBenefitInterests
+    //    };
 }

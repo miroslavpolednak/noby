@@ -59,7 +59,8 @@ internal class SimulateMortgageHandler
             OfferInstanceId = entity.OfferInstanceId,
             ProductInstanceTypeId = entity.ProductInstanceTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            Created = ToCreated(entity),
+            //Created = ToCreated(entity),
+            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
             InputData = entity.Inputs.ToMortgageInput(),
             Mortgage = outputs.Mortgage,
         };
