@@ -14,7 +14,7 @@ internal class UpdateDraftHandler
         var saInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // dotahnout informace o offerInstance
-        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
+        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferInstanceId, cancellationToken));
 
         // nalinkovat novou simulaci na SA
         ServiceCallResult.Resolve(await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferInstanceId, cancellationToken));
@@ -23,7 +23,7 @@ internal class UpdateDraftHandler
         await _mediator.Publish(new Notifications.Requests.CaseDataUpdatedRequest
         {
             CaseId = saInstance.CaseId,
-            TargetAmount = offerInstance.InputData.TargetAmount
+            //TargetAmount = offerInstance.InputData.TargetAmount
         }, cancellationToken);
 
         // update dat klienta na Case

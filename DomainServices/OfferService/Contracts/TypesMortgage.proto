@@ -2,14 +2,68 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
-message SimulateMortgageRequest {
+import "google/protobuf/wrappers.proto";
+import "ModificationStamp.proto";
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+import "Types.proto";
 
+message SimulateMortgageRequest {
+   MortgageInput Inputs = 1;
+   string ResourceProcessId = 2;
 }
 
 message SimulateMortgageResponse {
-
+  int32 OfferId = 1;
+  int32 ProductTypeId = 2;
+  string ResourceProcessId = 3;
+  cis.types.ModificationStamp Created = 4;
+  MortgageInput Inputs = 5;
+  MortgageOutput Outputs = 6;
 }
 
 message GetMortgageDataResponse {
+  int32 OfferId = 1;
+  int32 ProductTypeId = 2;
+  string ResourceProcessId = 3;
+  cis.types.ModificationStamp Created = 4;
+  MortgageInput Inputs = 5;
+  MortgageOutput Outputs = 6;
+}
 
+message MortgageInput {
+   int32 ProductTypeId = 1;
+   int32 LoanKindId = 2;
+   cis.types.GrpcDecimal LoanAmount = 3;
+   google.protobuf.Int32Value LoanDuration = 4;
+   cis.types.GrpcDecimal LoanPaymentAmount = 5;
+   int32 FixedLengthPeriodId = 6;					
+   google.protobuf.Int32Value EmployeeBonusLoanCode = 7;
+   cis.types.GrpcDecimal CollateralAmount = 8;
+   cis.types.GrpcDecimal LoanToValue = 9;
+   google.protobuf.Int32Value PaymentDayOfTheMonth = 10;
+   bool EmployeeBonusRequested = 11;
+   repeated LoanPurpose LoanPurpose = 12;
+   cis.types.NullableGrpcDate ExpectedDateOfDrawing = 13;
+}
+
+message MortgageOutput {
+	cis.types.GrpcDecimal InterestRate = 1;
+	cis.types.GrpcDecimal InterestRateAnnounced = 2;
+	cis.types.GrpcDecimal LoanAmount = 3;
+    int32 LoanDuration = 4;
+    cis.types.GrpcDecimal LoanPaymentAmount = 5;
+	int32 EmployeeBonusLoanCode = 6;
+	cis.types.GrpcDecimal LoanToValue = 7;
+	cis.types.GrpcDecimal LoanToCost = 8;
+	cis.types.GrpcDecimal Aprc = 9;
+	cis.types.GrpcDecimal LoanTotalAmount = 10;
+	repeated LoanPurpose LoanPurpose = 11;
+	int32 StatementTypeId = 12;
+}
+
+message LoanPurpose {
+	int32 ProductLoanPurposeId = 1;
+	cis.types.GrpcDecimal Sum = 2;
 }

@@ -9,11 +9,10 @@ internal class SimulateMortgageHandler
     {
         _logger.SimulateMortgageStarted(request);
 
-        var model = new DomainServices.OfferService.Contracts.SimulateBuildingSavingsRequest
-        {
+        var model = new DomainServices.OfferService.Contracts.SimulateMortgageRequest        {
             ResourceProcessId = request.ResourceProcessId,
         };
-        var result = CIS.Core.Results.ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.SimulateMortgageResponse>(await _offerService.SimulateBuildingSavings(model, cancellationToken));
+        var result = CIS.Core.Results.ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
 
         //_logger.LogDebug("OfferInstanceId #{id} created", result.OfferInstanceId);
 

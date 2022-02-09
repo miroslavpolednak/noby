@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "DomainServices.OfferModelationService.API": {
+    "DomainServices.OfferService.API": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

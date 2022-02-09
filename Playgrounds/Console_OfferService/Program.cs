@@ -83,23 +83,17 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetService<DomainServices.OfferService.Abstraction.IOfferServiceAbstraction>();
 
-var inputData = new SimulateBuildingSavingsRequest
+var inputData = new SimulateMortgageRequest
 {
-    InputData = new BuildingSavingsInput
+    Inputs = new MortgageInput
     {
-        TargetAmount = 460000,
-        ProductCode = 61,
-        ActionCode = 30,
-        ClientIsNaturalPerson = true,
-        ClientIsSVJ = false,
-        IsWithLoan = false,
-        StateSubsidy = true
+     
     }
 };
-var result = await service.SimulateBuildingSavings(inputData);
+var result = await service.SimulateMortgage(inputData);
 //var result = await service.PrintBuildingSavingsOffer(new() { OfferInstanceId = 1, Dealer = new() { FirstName = "Filip" } });
 
 Console.WriteLine($"{result.Success}");
-Console.WriteLine(((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.SimulateBuildingSavingsResponse>)result).Model.OfferInstanceId);
-//var filedata = ((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.PrintBuildingSavingsOfferResponse>)result).Model.FileData;
+Console.WriteLine(((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.SimulateMortgageResponse>)result).Model.OfferId);
+
 //System.IO.File.WriteAllBytes("d:/test.pdf", filedata.ToByteArray());

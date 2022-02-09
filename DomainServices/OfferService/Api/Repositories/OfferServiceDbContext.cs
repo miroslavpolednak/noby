@@ -10,6 +10,5 @@ internal sealed class OfferServiceDbContext : BaseDbContext
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         : base(options, userProvider) { }
 
-    public DbSet<Entities.OfferInstance> OfferModelations { get; set; }
-    public DbSet<Entities.ScheduleItems> ScheduleItems { get; set; }
+    public DbSet<Entities.Offer> Offers { get; set; }
 }

@@ -2,6 +2,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.OfferService.Api;
+using DomainServices.CodebookService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 
@@ -42,6 +43,8 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS
 
+builder.Services.AddCodebookService(true);
+
 // add my services
 builder.AddOfferService(appConfiguration);
 
@@ -49,7 +52,11 @@ builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<CIS.Infrastructure.gRPC.SimpleServerExceptionInterceptor>();
 });
-builder.Services.AddGrpcReflection();
+
+// add BE services
+builder.Services
+    .AddGrpcReflection();
+    
 #endregion register builder.Services
 
 // kestrel configuration
@@ -57,6 +64,7 @@ builder.UseKestrelWithCustomConfiguration();
 
 // BUILD APP
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
+
 var app = builder.Build();
 
 app.UseRouting();

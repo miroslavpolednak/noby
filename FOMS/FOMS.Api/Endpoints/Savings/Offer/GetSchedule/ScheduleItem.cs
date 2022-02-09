@@ -12,13 +12,13 @@ internal class ScheduleItem
 
     public string? Info { get; set; } = null;
 
-    public static implicit operator ScheduleItem(DomainServices.OfferService.Contracts.ScheduleItem data)
-        => new ScheduleItem
-        {
-            Sum = data.Sum,
-            Balance = data.Balance,
-            Date = data.Date,
-            Info = data.Info,
-            Note = data.Note
-        };
+    //public static implicit operator ScheduleItem(DomainServices.OfferService.Contracts.ScheduleItem data)
+    //    => new ScheduleItem
+    //    {
+    //        Sum = data.Sum,
+    //        Balance = data.Balance,
+    //        Date = data.Date,
+    //        Info = data.Info,
+    //        Note = data.Note
+    //    };
 }

@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
 namespace DomainServices.OfferService.Abstraction;
 
@@ -32,32 +33,34 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, "OfferService unavailable");
+            _logger.ServiceUnavailable("OfferService", ex);
             throw new ServiceUnavailableException("OfferService", methodFullName, ex.Message);
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition) // nedostupna sluzba EAS atd.
+        {
+            _logger.ExtServiceUnavailable("OfferService", ex);
+            throw new ServiceUnavailableException("OfferService/dependant_service", methodFullName, ex.Message);
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            throw new CisNotFoundException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.AlreadyExists)
+        {
+            throw new CisAlreadyExistsException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            var excode = ex.GetExceptionCodeFromTrailers();
-            var exmessage = ex.GetErrorMessageFromRpcException();
-            _logger.LogError("EAS error {code} || {message}", excode, exmessage);
+            int code = ex.GetExceptionCodeFromTrailers();
+            string arg = ex.GetArgumentFromTrailers() ?? "";
+            string message = ex.GetErrorMessageFromRpcException();
 
-            throw new CisValidationException(ex.GetErrorMessagesFromRpcException(), exmessage);
+            _logger.InvalidArgument(code, arg, message, ex);
+            throw new CisArgumentException(code, message, arg);
         }
-        catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.Aborted) // EAS/sim nebylo mozne zavolat
+        catch (Exception ex)
         {
-            var excode = ex.GetExceptionCodeFromTrailers();
-            var exmessage = ex.GetErrorMessageFromRpcException();
-            _logger.LogError("EAS unavailable {code} || {message}", excode, exmessage);
-            throw new Exceptions.SimulationServiceFatalException(excode, exmessage);
-        }
-        catch (RpcException ex)
-        {
-            _logger.LogError(ex, $"Uncought RpcException: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex) when (ex is not RpcException)
-        {
-            _logger.LogError(ex, $"[{methodFullName}] {ex.Message}");
+            _logger.GeneralException(methodFullName, ex.Message, ex);
             throw;
         }
     }

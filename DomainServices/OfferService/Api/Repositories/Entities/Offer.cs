@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.OfferService.Api.Repositories.Entities;
 
-[Table("OfferInstance", Schema = "dbo")]
-internal class OfferInstance : CIS.Core.Data.BaseCreated
+[Table("Offer", Schema = "dbo")]
+internal class Offer : CIS.Core.Data.BaseCreated
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int OfferInstanceId { get; set; }
+    public int OfferId { get; set; }
 
     public Guid ResourceProcessId { get; set; }
 
-    public int ProductInstanceTypeId { get; set; }
+    public int ProductTypeId { get; set; }
 
     public string? Inputs { get; set; }
 

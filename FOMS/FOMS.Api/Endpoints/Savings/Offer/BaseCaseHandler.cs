@@ -45,7 +45,7 @@ internal abstract class BaseCaseHandler
     protected async Task<long> createCase(int offerInstanceId, string? firstName, string? lastName, DateTime? dateOfBirth, CIS.Core.Types.CustomerIdentity? customerIdentity, CancellationToken cancellationToken)
     {
         // dotahnout informace o offerInstance
-        var offerInstance = await getOfferInstance(offerInstanceId, cancellationToken);
+        //var offerInstance = await getOfferInstance(offerInstanceId, cancellationToken);
 
         var caseModel = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
@@ -59,23 +59,23 @@ internal abstract class BaseCaseHandler
             },
             Data = new DomainServices.CaseService.Contracts.CaseData
             {
-                ProductTypeId = _aggregate.Configuration.BuildingSavings.SavingsProductTypeId,
-                TargetAmount = offerInstance.InputData.TargetAmount
+               //ProductTypeId = _aggregate.Configuration.BuildingSavings.SavingsProductType,
+               // TargetAmount = offerInstance.InputData.TargetAmount
             }
         };
         
         return resolveCaseResult(await _aggregate.CaseService.CreateCase(caseModel, cancellationToken));
     }
 
-    protected async Task<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> getOfferInstance(int offerInstanceId, CancellationToken cancellationToken)
-        => resolveOfferResult(await _aggregate.OfferService.GetBuildingSavingsData(offerInstanceId, cancellationToken));
+    //protected async Task<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> getOfferInstance(int offerInstanceId, CancellationToken cancellationToken)
+    //    => resolveOfferResult(await _aggregate.OfferService.GetBuildingSavingsData(offerInstanceId, cancellationToken));
 
-    private DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse resolveOfferResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> r => r.Model,
-            _ => throw new NotImplementedException()
-        };
+    //private DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse resolveOfferResult(IServiceCallResult result) =>
+    //    result switch
+    //    {
+    //        SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse> r => r.Model,
+    //        _ => throw new NotImplementedException()
+    //    };
 
     private long resolveCaseResult(IServiceCallResult result) =>
         result switch
