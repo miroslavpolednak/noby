@@ -7,13 +7,20 @@ internal class GetMortgageHandler
 {
     public async Task<Dto.GetMortgageResponse> Handle(Dto.GetMortgageRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetMortgageHandler), request.OfferInstanceId);
+        _logger.RequestHandlerStartedWithId(nameof(GetMortgageHandler), request.OfferId);
 
-        //var result = CIS.Core.Results.ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.SimulateMortgageResponse>(await _offerService.SimulateBuildingSavings(model, cancellationToken));
+        var result = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.SimulateMortgageResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
-        //_logger.LogDebug("OfferInstanceId #{id} created", result.OfferInstanceId);
+        _logger.RequestHandlerFinished(nameof(GetMortgageHandler));
 
-        return new Dto.GetMortgageResponse();
+        // predelat z DS na FE Dto
+        return new()
+        {
+            OfferId = result.OfferId,
+            ResourceProcessId = result.ResourceProcessId,
+            Inputs = result.Inputs.ToResponseDto(),
+            Outputs = result.Outputs.ToResponseDto()
+        };
     }
 
     private readonly IOfferServiceAbstraction _offerService;

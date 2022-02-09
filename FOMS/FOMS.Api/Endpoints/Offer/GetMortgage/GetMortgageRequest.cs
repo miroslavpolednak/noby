@@ -1,5 +1,7 @@
-﻿namespace FOMS.Api.Endpoints.Offer.Dto;
+﻿using CIS.Core.Validation;
 
-internal record GetMortgageRequest(int OfferInstanceId)
-    : IRequest<GetMortgageResponse>
+namespace FOMS.Api.Endpoints.Offer.Dto;
+
+internal record GetMortgageRequest(int OfferId)
+    : IRequest<GetMortgageResponse>, IValidatableRequest
 { }

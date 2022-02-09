@@ -15,6 +15,7 @@ internal class OfferApiModule : IApiEndpointModule
             .MapPost(_prefix + "/mortgage", async (Dto.SimulateMortgageRequest request) => await mediatr.Send(request))
             .WithTags("Offer Module")
             .Produces<Dto.SimulateMortgageResponse>(StatusCodes.Status200OK);
+        
         // hypoteka - get
         builder
             .MapGet(_prefix + "/mortgage/{offerInstanceId:int}", async (int offerInstanceId) => await mediatr.Send(new Dto.GetMortgageRequest(offerInstanceId)))

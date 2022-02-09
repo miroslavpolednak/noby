@@ -1,7 +1,8 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
 internal sealed class SimulateMortgageResponse
-    : OfferInstance
 {
-    public MortgageResults Results { get; set; }
+    public int OfferId { get; set; }
+    public string? ResourceProcessId { get; set; }
+    public MortgageOutputs? Outputs { get; set; }
 }
