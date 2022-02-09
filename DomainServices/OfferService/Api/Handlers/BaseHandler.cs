@@ -11,12 +11,12 @@ internal class BaseHandler
 
     #region Construction
 
-    protected readonly Repositories.OfferInstanceRepository _repository;
+    protected readonly Repositories.OfferRepository _repository;
 
     private readonly ICodebookServiceAbstraction _codebookService;
 
     public BaseHandler(
-        Repositories.OfferInstanceRepository repository,
+        Repositories.OfferRepository repository,
         ICodebookServiceAbstraction codebookService)
     {
         _repository = repository;
@@ -72,9 +72,9 @@ internal class BaseHandler
     ///// <summary>
     ///// Converts entity created data to contract DTO.
     ///// </summary>
-    //protected OfferInstanceCreated ToCreated(OfferInstance entity)
+    //protected OfferCreated ToCreated(Offer entity)
     //{
-    //    return new OfferInstanceCreated
+    //    return new OfferCreated
     //    {
     //        UserId = entity.CreatedUserId,
     //        Name = entity.CreatedUserName,

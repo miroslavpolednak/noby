@@ -6,8 +6,8 @@
 //{
 //    public GetBuildingSavingsDataRequestValidator()
 //    {
-//        RuleFor(t => t.OfferInstanceId)
+//        RuleFor(t => t.OfferId)
 //            .GreaterThan(0)
-//            .WithMessage("OfferInstanceId is not specified").WithErrorCode("10005");
+//            .WithMessage("OfferId is not specified").WithErrorCode("10005");
 //    }
 //}

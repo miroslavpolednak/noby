@@ -12,7 +12,7 @@ internal class GetMortgageDataHandler
     private readonly ILogger<GetMortgageDataHandler> _logger;
 
     public GetMortgageDataHandler(
-        Repositories.OfferInstanceRepository repository,
+        Repositories.OfferRepository repository,
         ILogger<GetMortgageDataHandler> logger,
         ICodebookServiceAbstraction codebookService) : base(repository, codebookService)
     {
@@ -23,9 +23,9 @@ internal class GetMortgageDataHandler
 
     public async Task<GetMortgageDataResponse> Handle(Dto.GetMortgageDataMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get offer instance ID #{id}", request.OfferInstanceId);
+        _logger.LogInformation("Get offer instance ID #{id}", request.OfferId);
 
-        var entity = await _repository.Get(request.OfferInstanceId);
+        var entity = await _repository.Get(request.OfferId);
 
         // kontrola ProductInstanceTypeId (zda je typu Mortgage)
         await checkProductInstanceTypeCategory(
@@ -37,7 +37,7 @@ internal class GetMortgageDataHandler
 
         var model = new GetMortgageDataResponse
         {
-            OfferInstanceId = entity.OfferInstanceId,
+            OfferId = entity.OfferId,
             ProductInstanceTypeId = entity.ProductInstanceTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             //Created = ToCreated(entity),

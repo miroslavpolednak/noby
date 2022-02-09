@@ -13,10 +13,10 @@ public class OfferService : Contracts.v1.OfferService.OfferServiceBase
     public OfferService(IMediator mediator)
         => _mediator = mediator;
 
-    public override async Task<GetOfferInstanceResponse> GetOfferInstance(OfferInstanceIdRequest request, ServerCallContext context)
-    => await _mediator.Send(new GetOfferInstanceMediatrRequest(request));
+    public override async Task<GetOfferResponse> GetOffer(OfferIdRequest request, ServerCallContext context)
+    => await _mediator.Send(new GetOfferMediatrRequest(request));
 
-    public override async Task<GetMortgageDataResponse> GetMortgageData(OfferInstanceIdRequest request, ServerCallContext context)
+    public override async Task<GetMortgageDataResponse> GetMortgageData(OfferIdRequest request, ServerCallContext context)
        => await _mediator.Send(new GetMortgageDataMediatrRequest(request));
 
     public override async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, ServerCallContext context)

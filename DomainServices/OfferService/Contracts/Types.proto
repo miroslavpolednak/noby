@@ -4,12 +4,12 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "ModificationStamp.proto";
 
-message OfferInstanceIdRequest {
-	int32 OfferInstanceId = 1;
+message OfferIdRequest {
+	int32 OfferId = 1;
 }
 
-message GetOfferInstanceResponse {
-	int32 OfferInstanceId = 1;
+message GetOfferResponse {
+	int32 OfferId = 1;
 	int32 ProductInstanceTypeId = 2;
 	string ResourceProcessId = 3;
 	cis.types.ModificationStamp Created = 4;

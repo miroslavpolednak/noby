@@ -94,6 +94,6 @@ var result = await service.SimulateMortgage(inputData);
 //var result = await service.PrintBuildingSavingsOffer(new() { OfferInstanceId = 1, Dealer = new() { FirstName = "Filip" } });
 
 Console.WriteLine($"{result.Success}");
-Console.WriteLine(((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.SimulateMortgageResponse>)result).Model.OfferInstanceId);
+Console.WriteLine(((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.SimulateMortgageResponse>)result).Model.OfferId);
 
 //System.IO.File.WriteAllBytes("d:/test.pdf", filedata.ToByteArray());

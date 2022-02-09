@@ -5,18 +5,18 @@ using System.Text.Json;
 namespace DomainServices.OfferService.Api.Repositories;
 
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
-internal class OfferInstanceRepository
+internal class OfferRepository
 {
     private readonly OfferServiceDbContext _dbContext;
 
-    public OfferInstanceRepository(OfferServiceDbContext dbContext)
+    public OfferRepository(OfferServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
     public async Task<int> SaveOffer(Guid resourceProcessId, int ProductInstanceTypeId, object inputs, object outputs)
     {
-        var entity = new Entities.OfferInstance
+        var entity = new Entities.Offer
         {
             ResourceProcessId = resourceProcessId,
             ProductInstanceTypeId = ProductInstanceTypeId,
@@ -28,14 +28,14 @@ internal class OfferInstanceRepository
 
         await _dbContext.SaveChangesAsync();
 
-        return entity.OfferInstanceId;
+        return entity.OfferId;
     }
 
-    public async Task<Entities.OfferInstance> Get(int offerInstanceId)
+    public async Task<Entities.Offer> Get(int offerId)
         => await _dbContext.Offers
            .AsNoTracking()
-           .Where(t => t.OfferInstanceId == offerInstanceId)
-           .FirstOrDefaultAsync() ?? throw new CisNotFoundException(13000, $"OfferInstance #{offerInstanceId} not found");
+           .Where(t => t.OfferId == offerId)
+           .FirstOrDefaultAsync() ?? throw new CisNotFoundException(13000, $"Offer #{offerId} not found");
 
     public async Task<bool> AnyOfResourceProcessId(Guid resourceProcessId)
        => await _dbContext.Offers

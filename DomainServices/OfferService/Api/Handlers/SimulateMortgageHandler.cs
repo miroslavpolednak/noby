@@ -12,7 +12,7 @@ internal class SimulateMortgageHandler
     private readonly Eas.IEasClient _easClient;
 
     public SimulateMortgageHandler(
-        Repositories.OfferInstanceRepository repository,
+        Repositories.OfferRepository repository,
         ILogger<SimulateMortgageHandler> logger,
         ICodebookServiceAbstraction codebookService,
         Eas.IEasClient easClient
@@ -47,16 +47,16 @@ internal class SimulateMortgageHandler
         };
 
         // ulozit do databaze
-        int offerInstanceId = await _repository.SaveOffer(resourceProcessId, request.Request.InputData.ProductInstanceTypeId, request.Request.InputData, outputs);
+        int offerId = await _repository.SaveOffer(resourceProcessId, request.Request.InputData.ProductInstanceTypeId, request.Request.InputData, outputs);
 
-        _logger.LogInformation("Simulation #{id} created", offerInstanceId);
+        _logger.LogInformation("Simulation #{id} created", offerId);
 
-        var entity = await _repository.Get(offerInstanceId);
+        var entity = await _repository.Get(offerId);
 
         // vytvorit
         return new SimulateMortgageResponse
         {
-            OfferInstanceId = entity.OfferInstanceId,
+            OfferId = entity.OfferId,
             ProductInstanceTypeId = entity.ProductInstanceTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             //Created = ToCreated(entity),

@@ -10,9 +10,9 @@ public interface IOfferServiceAbstraction
     /// Základní data simulace (bez inputs a outputs) 
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[GetOfferInstanceResponse] - OK
+    /// SuccessfulServiceCallResult[GetOfferResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetOfferInstance(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Detail simulace KB Hypotéky
@@ -20,7 +20,7 @@ public interface IOfferServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[GetMortgageDataResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetMortgageData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetMortgageData(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Simulace KB Hypotéky

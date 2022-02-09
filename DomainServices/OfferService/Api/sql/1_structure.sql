@@ -4,8 +4,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[OfferInstance](
-	[OfferInstanceId] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[Offer](
+	[OfferId] [int] IDENTITY(1,1) NOT NULL,
 	[ProductInstanceTypeId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NOT NULL,
 	[Inputs] [nvarchar](max) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[OfferInstance](
 	[CreatedTime] [datetime] NOT NULL,
  CONSTRAINT [PK_OfferModelation] PRIMARY KEY CLUSTERED 
 (
-	[OfferInstanceId] ASC
+	[OfferId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO

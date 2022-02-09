@@ -15,20 +15,20 @@ message SimulateMortgageRequest {
 }
 
 message SimulateMortgageResponse {
-  int32 OfferInstanceId = 1;
+  int32 OfferId = 1;
   int32 ProductInstanceTypeId = 2;
   string ResourceProcessId = 3;
-  //OfferInstanceCreated Created = 4;
+  //OfferCreated Created = 4;
   cis.types.ModificationStamp Created = 4;
   MortgageInput InputData = 5;
   MortgageData Mortgage = 6;
 }
 
 message GetMortgageDataResponse {
-  int32 OfferInstanceId = 1;
+  int32 OfferId = 1;
   int32 ProductInstanceTypeId = 2;
   string ResourceProcessId = 3;
-  //OfferInstanceCreated Created = 4;
+  //OfferCreated Created = 4;
   cis.types.ModificationStamp Created = 4;
   MortgageInput InputData = 5;
   MortgageData Mortgage = 6;

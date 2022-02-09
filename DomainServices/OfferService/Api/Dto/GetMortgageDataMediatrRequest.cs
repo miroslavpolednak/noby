@@ -5,10 +5,10 @@ namespace DomainServices.OfferService.Api.Dto;
 internal partial class GetMortgageDataMediatrRequest 
     : IRequest<GetMortgageDataResponse>, CIS.Core.Validation.IValidatableRequest
 {
-    public int OfferInstanceId { get; init; }
+    public int OfferId { get; init; }
 
-    public GetMortgageDataMediatrRequest(OfferInstanceIdRequest request)
+    public GetMortgageDataMediatrRequest(OfferIdRequest request)
     {
-        OfferInstanceId = request.OfferInstanceId;
+        OfferId = request.OfferId;
     }
 }

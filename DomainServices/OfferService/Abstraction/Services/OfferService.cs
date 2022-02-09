@@ -27,20 +27,20 @@ internal class OfferService : IOfferServiceAbstraction
 
     #endregion
 
-    public async Task<IServiceCallResult> GetOfferInstance(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetOfferInstance call with #ID {offerInstanceId}", offerInstanceId);
+        _logger.LogDebug("Abstraction GetOffer call with #ID {offerId}", offerId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetOfferInstanceAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }, cancellationToken: cancellationToken));
+        var result = await _userContext.AddUserContext(async () => await _service.GetOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
 
-        return new SuccessfulServiceCallResult<GetOfferInstanceResponse>(result);
+        return new SuccessfulServiceCallResult<GetOfferResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetMortgageData(int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> GetMortgageData(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetMortgageData call with #ID {offerInstanceId}", offerInstanceId);
+        _logger.LogDebug("Abstraction GetMortgageData call with #ID {offerId}", offerId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageDataAsync(new OfferInstanceIdRequest() { OfferInstanceId = offerInstanceId }, cancellationToken: cancellationToken));
+        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageDataAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
 
         return new SuccessfulServiceCallResult<GetMortgageDataResponse>(result);
     }
@@ -53,7 +53,7 @@ internal class OfferService : IOfferServiceAbstraction
         {
             var result = await _userContext.AddUserContext(async () => await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken));
 
-            _logger.LogDebug("Abstraction SimulateMortgage saved as #{id}", result.OfferInstanceId);
+            _logger.LogDebug("Abstraction SimulateMortgage saved as #{id}", result.OfferId);
 
             return new SuccessfulServiceCallResult<SimulateMortgageResponse>(result);
         }
