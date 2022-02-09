@@ -7,31 +7,38 @@ internal class GetSalesArrangementsByCaseIdHandler
 {
     public async Task<GetSalesArrangementsByCaseIdResponse> Handle(Dto.GetSalesArrangementsByCaseIdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsByCaseIdHandler), request.CaseId);
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsByCaseIdHandler), request.Request.CaseId);
 
-        var listData = await _repository.GetSalesArrangementsByCaseId(request.CaseId);
-        var finalData = listData.Select(t => new SalesArrangementListModel
-        {
-            SalesArrangementId = t.SalesArrangementId,
-            SalesArrangementType = t.SalesArrangementTypeId,
-            State = t.State,
-            CaseId = t.CaseId,
-            OfferInstanceId = t.OfferInstanceId
-        }).ToList();
+        // vsechny SA states
+        var availableStates = await _codebookService.SalesArrangementStates();
 
-        var model = new GetSalesArrangementsByCaseIdResponse();
-        model.SalesArrangements.AddRange(finalData);
+        // pokud je pozadavek na konkretni stavy
+        if (request.Request.States.Any(t => !availableStates.Any(x => x.Id == t)))
+            throw new CisNotFoundException(16006, $"SalesArrangementState does not exist.");
 
+        // kontrola existence noveho stavu
+        int[] requiredStates = (request.Request.States.Any() ? request.Request.States.Select(t => t) : availableStates.Where(t => t.Id != _canceledSaState).Select(t => t.Id)).ToArray();
+
+        var listData = await _repository.GetSalesArrangements(request.Request.CaseId, requiredStates, cancellation);
+
+        GetSalesArrangementsByCaseIdResponse model = new();
+        model.SalesArrangements.AddRange(listData);
         return model;
     }
 
+    //TODO jak poznam ID stavu ZRUSENO?
+    const int _canceledSaState = 3;
+
+    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<GetSalesArrangementsByCaseIdHandler> _logger;
 
     public GetSalesArrangementsByCaseIdHandler(
+        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Repositories.SalesArrangementServiceRepository repository,
         ILogger<GetSalesArrangementsByCaseIdHandler> logger)
     {
+        _codebookService = codebookService;
         _repository = repository;
         _logger = logger;
     }

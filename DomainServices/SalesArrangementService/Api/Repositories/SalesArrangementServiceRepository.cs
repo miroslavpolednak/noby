@@ -5,11 +5,6 @@ namespace DomainServices.SalesArrangementService.Api.Repositories;
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class SalesArrangementServiceRepository
 {
-    public async Task EnsureExistingSalesArrangement(int salesArrangementId, CancellationToken cancellation)
-    {
-        await GetSalesArrangementEntity(salesArrangementId, cancellation);
-    }
-
     public async Task<int> CreateSalesArrangement(Entities.SalesArrangement entity, CancellationToken cancellation)
     {
         _dbContext.SalesArrangements.Add(entity);
@@ -27,16 +22,18 @@ internal class SalesArrangementServiceRepository
     public async Task<Entities.SalesArrangementData?> GetSalesArrangementData(int salesArrangementId)
         => await _dbContext.SalesArrangementsData.AsNoTracking().FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
     
-    public async Task UpdateOfferInstanceId(int salesArrangementId, int offerInstanceId, CancellationToken cancellation)
+    public async Task UpdateOfferId(int salesArrangementId, int offerId, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
-        entity.OfferInstanceId = offerInstanceId;
+        entity.OfferId = offerId;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
     public async Task UpdateSalesArrangementData(int salesArrangementId, string data)
     {
-        var entity = await _dbContext.SalesArrangementsData.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
+        var entity = await _dbContext.SalesArrangementsData
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
         
         if (entity is null)
             _dbContext.SalesArrangementsData.Add(new Entities.SalesArrangementData
@@ -58,11 +55,13 @@ internal class SalesArrangementServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task<List<Entities.SalesArrangement>> GetSalesArrangementsByCaseId(long caseId)
+    public async Task<List<Contracts.SalesArrangement>> GetSalesArrangements(long caseId, int[] states, CancellationToken cancellation)
     {
-        return await _dbContext.SalesArrangements.AsNoTracking()
-            .Where(t => t.CaseId == caseId)
-            .ToListAsync();
+        return await _dbContext.SalesArrangements
+            .AsNoTracking()
+            .Where(t => t.CaseId == caseId && states.Contains(t.State))
+            .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
+            .ToListAsync(cancellation);
     }
 
     public async Task<Entities.SalesArrangement> GetSalesArrangementEntity(int salesArrangementId, CancellationToken cancellation)

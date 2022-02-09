@@ -14,7 +14,7 @@ internal class HousingSavingsProcessor : BaseDocumentProcessor, IDocumentProcess
     {
         // data ze simulace
         var offerService = _serviceAccessor.GetRequiredService<DomainServices.OfferService.Abstraction.IOfferServiceAbstraction>();
-        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await offerService.GetBuildingSavingsData(_salesArrangement.OfferInstanceId.GetValueOrDefault()));
+        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await offerService.GetBuildingSavingsData(_salesArrangement.OfferId.GetValueOrDefault()));
 
         // info o dealerovi
         var dealer = await getCurrentUserInfo();

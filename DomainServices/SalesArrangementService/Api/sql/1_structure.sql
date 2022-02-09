@@ -7,7 +7,7 @@ GO
 CREATE TABLE [dbo].[SalesArrangement](
 	[SalesArrangementId] [int] IDENTITY(1,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
-	[OfferInstanceId] [int] NULL,
+	[OfferId] [int] NULL,
 	[SalesArrangementTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,
 	[StateUpdateTime] [datetime] NOT NULL,

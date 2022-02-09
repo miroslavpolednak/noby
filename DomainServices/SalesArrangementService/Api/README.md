@@ -2,12 +2,12 @@
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list
-        grpcurl -insecure -d "{\"CaseId\":99,\"SalesArrangementTypeId\":1,\"OfferInstanceId\":8}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
+        grpcurl -insecure -d "{\"CaseId\":99,\"SalesArrangementTypeId\":1,\"OfferId\":8}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/CreateSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementData
         grpcurl -insecure -d "{\"CaseId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetSalesArrangementsByCaseId
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"State\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementState
-        grpcurl -insecure -d "{\"SalesArrangementId\":2,\"OfferInstanceId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/LinkModelationToSalesArrangement
+        grpcurl -insecure -d "{\"SalesArrangementId\":2,\"OfferId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/LinkModelationToSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"Data\":\"{xxx:xxx}\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementData
 
 ## run batch

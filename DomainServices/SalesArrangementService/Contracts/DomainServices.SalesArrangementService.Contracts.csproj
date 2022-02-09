@@ -18,6 +18,7 @@
   <ItemGroup>
     <None Remove="CreateSalesArrangement.proto" />
     <None Remove="GetSalesArrangement.proto" />
+    <None Remove="GetSalesArrangementByCaseId.proto" />
     <None Remove="LinkModelationToSalesArrangement.proto" />
     <None Remove="SalesArrangement.proto" />
     <None Remove="UpdateSalesArrangementState.proto" />
@@ -42,6 +43,7 @@
 		<Protobuf Include="LinkModelationToSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="GetSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="GetSalesArrangementByCaseId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangementServiceTypes.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>

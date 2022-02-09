@@ -2,16 +2,17 @@
 
 namespace DomainServices.SalesArrangementService.Api.Validators;
 
-internal class LinkModelationToSalesArrangementMediatrRequestValidator : AbstractValidator<Dto.LinkModelationToSalesArrangementMediatrRequest>
+internal class LinkModelationToSalesArrangementMediatrRequestValidator 
+    : AbstractValidator<Dto.LinkModelationToSalesArrangementMediatrRequest>
 {
     public LinkModelationToSalesArrangementMediatrRequestValidator()
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("Sales arrangement ID does not exist.").WithErrorCode("16000");
+            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("16010");
 
-        RuleFor(t => t.OfferInstanceId)
+        RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferInstance ID does not exist.").WithErrorCode("16001");
+            .WithMessage("OfferId Id must be > 0").WithErrorCode("16011");
     }
 }

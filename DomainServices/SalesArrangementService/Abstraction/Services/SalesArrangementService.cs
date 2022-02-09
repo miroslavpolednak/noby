@@ -6,14 +6,14 @@ namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementTypeId);
         var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
             new CreateSalesArrangementRequest() { 
                 CaseId = caseId, 
                 SalesArrangementTypeId = salesArrangementTypeId, 
-                OfferInstanceId = offerInstanceId
+                OfferId = offerId
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
@@ -43,14 +43,14 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult<GetSalesArrangementDataResponse>(result);
     }
 
-    public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerInstanceId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.LogDebug("Abstraction LinkModelationToSalesArrangement for #{salesArrangementId}", salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
             new LinkModelationToSalesArrangementRequest()
             {
                 SalesArrangementId = salesArrangementId,
-                OfferInstanceId = offerInstanceId
+                OfferId = offerId
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();

@@ -12,7 +12,7 @@ message CreateSalesArrangementRequest {
 	int32 SalesArrangementTypeId = 2;
 
 	// ID modelace, ktera je spojena s timto SA - neni povinne
-	google.protobuf.Int32Value OfferInstanceId = 3;
+	google.protobuf.Int32Value OfferId = 3;
 }
 
 message CreateSalesArrangementResponse {

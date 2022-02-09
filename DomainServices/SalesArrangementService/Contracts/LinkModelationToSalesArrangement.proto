@@ -7,5 +7,5 @@ message LinkModelationToSalesArrangementRequest {
 	int32 SalesArrangementId = 1;
 
 	// Id nove modelace
-	int32 OfferInstanceId = 2;
+	int32 OfferId = 2;
 }

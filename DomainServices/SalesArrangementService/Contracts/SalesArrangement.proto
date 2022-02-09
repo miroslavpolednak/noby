@@ -18,7 +18,7 @@ message SalesArrangement {
 	int32 State = 4;
 
 	// ID modelace, ktera je spojena s timto SA - neni povinne
-	google.protobuf.Int32Value OfferInstanceId = 5;
+	google.protobuf.Int32Value OfferId = 5;
 
 	// Uzivatel, ktery SA vytvoril
 	cis.types.ModificationStamp Created = 6;
