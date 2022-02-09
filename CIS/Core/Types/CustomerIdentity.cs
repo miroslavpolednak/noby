@@ -2,10 +2,10 @@
 
 public record CustomerIdentity
 {
-    public int Id { get; init; }
-    public IdentitySchemes Scheme { get; init; }
+    public int Id { get; }
+    public Enums.IdentitySchemes Scheme { get; }
 
-    public CustomerIdentity(int id, IdentitySchemes scheme)
+    public CustomerIdentity(int id, Enums.IdentitySchemes scheme)
     {
         Id = id;
         Scheme = scheme;
@@ -17,7 +17,7 @@ public record CustomerIdentity
     public CustomerIdentity(int id, string? scheme)
     {
         Id = id;
-        if (!Enum.TryParse<IdentitySchemes>(scheme, out IdentitySchemes parsedScheme))
+        if (!Enum.TryParse(scheme, out Enums.IdentitySchemes parsedScheme))
             throw new Exceptions.CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(scheme));
         Scheme = parsedScheme;
     }
@@ -32,7 +32,7 @@ public record CustomerIdentity
             throw new Exceptions.CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
         if (!int.TryParse(token.AsSpan(idx + 1), out int id))
             throw new Exceptions.CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
-        if (!Enum.TryParse<IdentitySchemes>(token.Substring(0, idx), out IdentitySchemes parsedScheme))
+        if (!Enum.TryParse(token.Substring(0, idx), out Enums.IdentitySchemes parsedScheme))
             throw new Exceptions.CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(token));
 
         Id = id;

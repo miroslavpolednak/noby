@@ -24,7 +24,7 @@ public class IdentificationDocumentTypesHandler
                 {
                     await connection.OpenAsync();
                     var result = (await connection.QueryAsync<IdentificationDocumentTypesItem>(_sql)).ToList();
-                        
+                    
                     await _cache.SetAllAsync(_cacheKey, result);
 
                     return result;

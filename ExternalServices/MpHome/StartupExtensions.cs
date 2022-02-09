@@ -12,7 +12,7 @@ public static class StartupExtensions
             throw new ArgumentNullException(nameof(mpHomeConfiguration), "MpHome configuration not set");
         if (!mpHomeConfiguration.UseServiceDiscovery && string.IsNullOrEmpty(mpHomeConfiguration.ServiceUrl))
             throw new ArgumentNullException("ServiceUrl", "MpHome Service URL must be defined");
-        if (mpHomeConfiguration.ImplementationType == CIS.Core.ServiceImplementationTypes.Unknown)
+        if (mpHomeConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Unknown)
             throw new ArgumentException("ImplementationType", "MpHome Service client Implementation type is not set");
 
         services.AddSingleton(provider =>
@@ -33,7 +33,7 @@ public static class StartupExtensions
         switch (mpHomeConfiguration.Version)
         {
             case Versions.V1:
-                if (mpHomeConfiguration.ImplementationType == CIS.Core.ServiceImplementationTypes.Mock)
+                if (mpHomeConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Mock)
                     services.AddScoped<V1.IMpHomeClient, V1.MockMpHomeClient>();
                 else
                     services.AddHttpClient<V1.IMpHomeClient, V1.RealMpHomeClient>(c =>

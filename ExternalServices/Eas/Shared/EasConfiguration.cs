@@ -1,4 +1,4 @@
-﻿using CIS.Core;
+﻿using CIS.Core.Enums;
 
 namespace ExternalServices.Eas;
 

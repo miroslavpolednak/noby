@@ -2,10 +2,10 @@
 
 namespace DomainServices.SalesArrangementService.Api.Validators;
 
-internal class GetSalesArrangementsByCaseIdMediatrRequestValidator
-    : AbstractValidator<Dto.GetSalesArrangementsByCaseIdMediatrRequest>
+internal class GetSalesArrangementListMediatrRequestValidator
+    : AbstractValidator<Dto.GetSalesArrangementListMediatrRequest>
 {
-    public GetSalesArrangementsByCaseIdMediatrRequestValidator()
+    public GetSalesArrangementListMediatrRequestValidator()
     {
         RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)

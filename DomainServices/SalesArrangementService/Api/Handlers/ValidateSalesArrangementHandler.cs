@@ -1,11 +1,13 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
+﻿using DomainServices.SalesArrangementService.Contracts;
+
+namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class ValidateSalesArrangementHandler
     : IRequestHandler<Dto.ValidateSalesArrangementMediatrRequest, Contracts.ValidateSalesArrangementResponse>
 {
-    public async Task<Contracts.ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
+    public Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        return null;
+        return Task.FromResult(new ValidateSalesArrangementResponse());
     }
 
     private readonly Repositories.SalesArrangementServiceRepository _repository;

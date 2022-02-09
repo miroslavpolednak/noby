@@ -22,8 +22,8 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
 
                     await using (var connection = _connectionProvider.Create())
                     {
-                        await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<SalesArrangementTypeItem>("SELECT Id, Name, ProductTypeId FROM [dbo].[SalesArrangementType] ORDER BY Name ASC")).ToList();
+                        await connection.OpenAsync(cancellationToken);
+                        var result = (await connection.QueryAsync<SalesArrangementTypeItem>("SELECT Id, Name, ProductTypeId, IsDefault FROM [dbo].[SalesArrangementType] ORDER BY Name ASC", cancellationToken)).ToList();
 
                         await _cache.SetAllAsync(_cacheKey, result);
 
@@ -52,6 +52,6 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
             _connectionProvider = connectionProvider;
         }
 
-        private const string _cacheKey = "SalesArrangementTypes";
+        const string _cacheKey = "SalesArrangementTypes";
     }
 }

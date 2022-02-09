@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.MandantTypes
+namespace DomainServices.CodebookService.Contracts.Endpoints.Mandants
 {
     [DataContract]
-    public class MandantTypesItem
+    public class MandantsItem
     {
         [DataMember(Order = 1)]
         public string Code { get; set; }

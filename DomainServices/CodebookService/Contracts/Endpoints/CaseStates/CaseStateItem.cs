@@ -10,10 +10,14 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.CaseStates
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
+        [JsonIgnore]
+        public CIS.Core.Enums.CaseStates Value { get; set; }
+        
+        [DataMember(Order = 3)]
         public string Name { get; set; }
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 4)]
         [JsonIgnore]
-        public bool IsDefaultNewState { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

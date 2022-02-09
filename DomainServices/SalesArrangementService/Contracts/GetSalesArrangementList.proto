@@ -4,12 +4,12 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "SalesArrangement.proto";
 
-message GetSalesArrangementsByCaseIdRequest {
+message GetSalesArrangementListRequest {
 	int64 CaseId = 1;
 	repeated int32 States = 2;
 }
 
-message GetSalesArrangementsByCaseIdResponse {
+message GetSalesArrangementListResponse {
 	repeated SalesArrangement SalesArrangements = 1;
 }
 

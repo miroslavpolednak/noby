@@ -1,4 +1,4 @@
-﻿using CIS.Core;
+﻿using CIS.Core.Enums;
 using ExternalServices.ESignatures.V1.ESignaturesWrapper;
 
 namespace ExternalServices.ESignatures.V1

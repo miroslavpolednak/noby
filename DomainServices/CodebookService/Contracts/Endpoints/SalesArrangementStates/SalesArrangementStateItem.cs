@@ -8,12 +8,15 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementSta
     {
         [DataMember(Order = 1)]
         public int Id { get; set; }
-
+        
         [DataMember(Order = 2)]
+        public CIS.Core.Enums.SalesArrangementStates Value { get; set; }
+        
+        [DataMember(Order = 3)]
         public string Name { get; set; }
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 4)]
         [JsonIgnore]
-        public bool IsDefaultNewState { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

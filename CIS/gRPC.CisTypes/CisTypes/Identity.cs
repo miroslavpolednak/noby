@@ -8,10 +8,10 @@ public sealed partial class Identity
         IdentityScheme = Enum.Parse<IdentitySchemes>(identity.Scheme.ToString());
     }
 
-    public Identity(int? identityId, Core.IdentitySchemes? scheme)
+    public Identity(int? identityId, Core.Enums.IdentitySchemes? scheme)
     {
         IdentityId = identityId ?? 0;
-        IdentityScheme = Enum.Parse<IdentitySchemes>((scheme ?? Core.IdentitySchemes.Unknown).ToString());
+        IdentityScheme = Enum.Parse<IdentitySchemes>((scheme ?? Core.Enums.IdentitySchemes.Unknown).ToString());
     }
 
     public static implicit operator Core.Types.CustomerIdentity(Identity identity)

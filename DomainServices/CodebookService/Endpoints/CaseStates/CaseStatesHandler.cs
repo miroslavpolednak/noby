@@ -5,14 +5,19 @@ namespace DomainServices.CodebookService.Endpoints.CaseStates;
 public class CaseStatesHandler
     : IRequestHandler<CaseStatesRequest, List<CaseStateItem>>
 {
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<List<CaseStateItem>> Handle(CaseStatesRequest request, CancellationToken cancellationToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public Task<List<CaseStateItem>> Handle(CaseStatesRequest request, CancellationToken cancellationToken)
     {
-        return new List<CaseStateItem>
-        {
-            new CaseStateItem() { Id = 1, Name = "Rozpracováno", IsDefaultNewState = true },
-            new CaseStateItem() { Id = 2, Name = "Předáno", IsDefaultNewState = false }
-        };
+        //TODO nakesovat?
+        var values = Enum.GetValues<CIS.Core.Enums.CaseStates>()
+            .Select(t => new CaseStateItem
+            {
+                Id = (int)t,
+                Value = t,
+                Name = t.GetAttribute<System.ComponentModel.DescriptionAttribute>().Description,
+                IsDefault = t == CIS.Core.Enums.CaseStates.InProcess
+            })
+            .ToList();
+
+        return Task.FromResult(values);
     }
 }

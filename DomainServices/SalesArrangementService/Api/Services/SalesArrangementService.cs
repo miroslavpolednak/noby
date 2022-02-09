@@ -21,8 +21,8 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
     public override async Task<GetSalesArrangementDataResponse> GetSalesArrangementData(SalesArrangementIdRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetSalesArrangementDataMediatrRequest(request));
 
-    public override async Task<GetSalesArrangementsByCaseIdResponse> GetSalesArrangementsByCaseId(GetSalesArrangementsByCaseIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetSalesArrangementsByCaseIdMediatrRequest(request));
+    public override async Task<GetSalesArrangementListResponse> GetSalesArrangementList(GetSalesArrangementListRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetSalesArrangementListMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangementState(UpdateSalesArrangementStateRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateSalesArrangementStateMediatrRequest(request));

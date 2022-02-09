@@ -9,7 +9,7 @@ import "SalesArrangement.proto";
 import "GetSalesArrangement.proto";
 import "LinkModelationToSalesArrangement.proto";
 import "UpdateSalesArrangementState.proto";
-import "GetSalesArrangementByCaseId.proto";
+import "GetSalesArrangementList.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -27,7 +27,7 @@ service SalesArrangementService {
 	rpc GetSalesArrangementData (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementDataResponse);
    
 	// vraci vsechny SA pro dane CaseId
-	rpc GetSalesArrangementsByCaseId (DomainServices.SalesArrangementService.GetSalesArrangementsByCaseIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementsByCaseIdResponse);
+	rpc GetSalesArrangementList (DomainServices.SalesArrangementService.GetSalesArrangementListRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementListResponse);
    
 	rpc ValidateSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.ValidateSalesArrangementResponse);
    

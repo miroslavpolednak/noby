@@ -24,12 +24,12 @@ internal class UpdateCaseStateHandler
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly ILogger<CreateCaseHandler> _logger;
+    private readonly ILogger<UpdateCaseStateHandler> _logger;
 
     public UpdateCaseStateHandler(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Repositories.CaseServiceRepository repository,
-        ILogger<CreateCaseHandler> logger)
+        ILogger<UpdateCaseStateHandler> logger)
     {
         _codebookService = codebookService;
         _repository = repository;

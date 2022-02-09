@@ -21,11 +21,11 @@ internal class GetCaseCountsHandler
     }
 
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly ILogger<CreateCaseHandler> _logger;
+    private readonly ILogger<GetCaseCountsHandler> _logger;
 
     public GetCaseCountsHandler(
         Repositories.CaseServiceRepository repository,
-        ILogger<CreateCaseHandler> logger)
+        ILogger<GetCaseCountsHandler> logger)
     {
         _repository = repository;
         _logger = logger;

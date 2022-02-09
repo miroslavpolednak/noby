@@ -22,7 +22,7 @@ internal class GetDocumentsListByContractNumberHandler : IRequestHandler<GetDocu
     {
         _logger.LogInformation("Get documents list by contract number [ContractNumber: {id}, Mandant: {mandant}]", request.ContractNumber, request.Mandant);
 
-        if (request.Mandant != CIS.Core.IdentitySchemes.Kb)
+        if (request.Mandant != CIS.Core.Enums.IdentitySchemes.Kb)
         {
             throw new NotSupportedException($"Mandant '{request.Mandant}' is not supported");
         }

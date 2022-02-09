@@ -8,6 +8,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<Endpoints.MandantTypes.MandantTypesItem>> MandantTypes(Endpoints.MandantTypes.MandantTypesRequest request, CallContext context = default);
+        Task<List<Endpoints.Mandants.MandantsItem>> MandantTypes(Endpoints.Mandants.MandantsRequest request, CallContext context = default);
     }
 }

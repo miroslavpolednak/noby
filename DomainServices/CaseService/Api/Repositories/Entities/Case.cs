@@ -19,7 +19,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public string? OwnerUserName { get; set; }
 
     // informace o klientovi
-    public CIS.Core.IdentitySchemes? CustomerIdentityScheme { get; set; }
+    public CIS.Core.Enums.IdentitySchemes? CustomerIdentityScheme { get; set; }
     public int? CustomerIdentityId { get; set; }
     public string? FirstNameNaturalPerson { get; set; }
     public string Name { get; set; } = "";
@@ -56,7 +56,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
         // pokud je zadany customer
         if (request.Customer is not null)
         {
-            entity.CustomerIdentityScheme = (CIS.Core.IdentitySchemes)Convert.ToInt32(request.Customer?.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
+            entity.CustomerIdentityScheme = (CIS.Core.Enums.IdentitySchemes)Convert.ToInt32(request.Customer?.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
             entity.CustomerIdentityId = request.Customer?.Identity?.IdentityId;
         }
 

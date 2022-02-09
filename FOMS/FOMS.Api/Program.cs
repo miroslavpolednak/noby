@@ -45,7 +45,7 @@ builder
 // authentication
 builder.AddFomsAuthentication(appConfiguration);
 // swagger
-if (appConfiguration.EnableSwaggerUI)
+if (appConfiguration.EnableSwaggerUi)
     builder.AddFomsSwagger();
 
 // podpora SPA
@@ -69,7 +69,7 @@ app
     .UseFomsHealthChecks();
 
 // swagger
-if (appConfiguration.EnableSwaggerUI)
+if (appConfiguration.EnableSwaggerUi)
     app.UseFomsSwagger();
 
 app.Run();

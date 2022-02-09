@@ -15,8 +15,8 @@ internal class LinkModelationToSalesArrangementHandler
             throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}", 16012);
 
         // validace na existenci offer
-        /*var offerInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<OfferService.Contracts>(await _offerService.(request.OfferId, cancellation))
-            ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");*/
+        _ = ServiceCallResult.ResolveToDefault<DomainServices.OfferService.Contracts.GetOfferResponse>(await _offerService.GetOffer(request.OfferId, cancellation))
+            ?? throw new CisNotFoundException(16001, $"Offer ID #{request.OfferId} does not exist.");
 
         // update linku v DB
         await _repository.UpdateOfferId(request.SalesArrangementId, request.OfferId, cancellation);

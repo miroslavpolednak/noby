@@ -1,4 +1,4 @@
-﻿namespace CIS.Core;
+﻿namespace CIS.Core.Enums;
 
 public enum ServiceImplementationTypes
 {

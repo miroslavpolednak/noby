@@ -10,21 +10,21 @@ internal class CreateSalesArrangementHandler
         _logger.CreateSalesArrangementStarted(request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferId);
 
         // validace product instance type
-        var salesArrangementType = (await _codebookService.SalesArrangementTypes()).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
+        _ = (await _codebookService.SalesArrangementTypes()).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
             ?? throw new CisNotFoundException(16005, $"SalesArrangementTypeId #{request.Request.SalesArrangementTypeId} does not exist.");
 
         // validace na existenci case
-        var caseInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
+        //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
+        _ = ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
             ?? throw new CisNotFoundException(16002, $"Case ID #{request.Request.CaseId} does not exist.");
 
         // validace na existenci offer
-        /*if (request.Request.OfferId.HasValue)
-            var offerInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<OfferService.Contracts>(await _offerService.(request.Request.OfferId, cancellation))
-                ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");*/
+        if (request.Request.OfferId.HasValue)
+            _ = ServiceCallResult.ResolveToDefault<DomainServices.OfferService.Contracts.GetOfferResponse>(await _offerService.GetOffer(request.Request.OfferId.Value, cancellation))
+                ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");
 
-        // get default case state
-        //TODO bude nejaky default state?
-        int defaultSaState = (await _codebookService.SalesArrangementStates()).First(t => t.IsDefaultNewState).Id;
+        // get default SA state
+        int defaultSaState = (await _codebookService.SalesArrangementStates()).First(t => t.IsDefault).Id;
 
         // ulozit do DB
         var saEntity = new Repositories.Entities.SalesArrangement()

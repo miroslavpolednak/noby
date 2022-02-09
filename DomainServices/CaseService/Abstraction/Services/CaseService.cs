@@ -19,7 +19,7 @@ internal class CaseService : ICaseServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetCaseCounts), caseOwnerUserId);
         var result = await _userContext.AddUserContext(async () => await _service.GetCaseCountsAsync(
-            new GetCaseCountsRequest()
+            new()
             {
                 CaseOwnerUserId = caseOwnerUserId
             }, cancellationToken: cancellationToken)
@@ -31,7 +31,7 @@ internal class CaseService : ICaseServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetCaseDetail), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.GetCaseDetailAsync(
-            new GetCaseDetailRequest()
+            new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken)
@@ -56,7 +56,7 @@ internal class CaseService : ICaseServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(LinkOwnerToCase), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkOwnerToCaseAsync(
-            new LinkOwnerToCaseRequest()
+            new()
             {
                 CaseId = caseId,
                 CaseOwnerUserId = ownerUserId
@@ -69,7 +69,7 @@ internal class CaseService : ICaseServiceAbstraction
     {
         _logger.RequestHandlerStarted(nameof(UpdateCaseCustomer));
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseCustomerAsync(
-            new UpdateCaseCustomerRequest()
+            new()
             {
                 CaseId = caseId,
                 Customer = customer
@@ -82,7 +82,7 @@ internal class CaseService : ICaseServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateCaseData), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseDataAsync(
-            new UpdateCaseDataRequest()
+            new()
             {
                 CaseId = caseId,
                 Data = data
@@ -95,7 +95,7 @@ internal class CaseService : ICaseServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateCaseState), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCaseStateAsync(
-            new UpdateCaseStateRequest()
+            new()
             {
                 CaseId = caseId,
                 State = state
@@ -107,15 +107,12 @@ internal class CaseService : ICaseServiceAbstraction
     private readonly ILogger<CaseService> _logger;
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
     private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public CaseService(
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ILogger<CaseService> logger,
         Contracts.v1.CaseService.CaseServiceClient service,
         CIS.Security.InternalServices.ICisUserContextHelpers userContext)
     {
-        _userAccessor = userAccessor;
         _userContext = userContext;
         _service = service;
         _logger = logger;

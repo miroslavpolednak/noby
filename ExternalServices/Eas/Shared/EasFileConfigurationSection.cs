@@ -10,7 +10,7 @@ public sealed class EasConfigurationFileSection
     /// <summary>
     /// Druh implementace sluzby
     /// </summary>
-    public CIS.Core.ServiceImplementationTypes Implementation { get; set; }
+    public CIS.Core.Enums.ServiceImplementationTypes Implementation { get; set; }
 
     /// <summary>
     /// URL endpointu

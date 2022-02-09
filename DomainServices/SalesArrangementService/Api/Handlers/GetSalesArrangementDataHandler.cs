@@ -9,27 +9,27 @@ internal class GetSalesArrangementDataHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementDataHandler), request.SalesArrangementId);
 
-        var saInstance = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
-        // zkontrolovat jestli ma pravo?
+        _ = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
+        //TODO zkontrolovat jestli ma pravo?
 
         var data = await _repository.GetSalesArrangementData(request.SalesArrangementId);
         
         var model = new GetSalesArrangementDataResponse
         {
             SalesArrangementId = request.SalesArrangementId,
-            SalesArrangementDataId = data is null ? default(int?) : data.SalesArrangementDataId,
-            Data = data is null ? "" : data.Data
+            SalesArrangementDataId = data?.SalesArrangementDataId ?? default(int?),
+            Data = data?.Data ?? ""
         };
 
         return model;
     }
 
     private readonly Repositories.SalesArrangementServiceRepository _repository;
-    private readonly ILogger<GetSalesArrangementHandler> _logger;
+    private readonly ILogger<GetSalesArrangementDataHandler> _logger;
 
     public GetSalesArrangementDataHandler(
         Repositories.SalesArrangementServiceRepository repository,
-        ILogger<GetSalesArrangementHandler> logger)
+        ILogger<GetSalesArrangementDataHandler> logger)
     {
         _repository = repository;
         _logger = logger;

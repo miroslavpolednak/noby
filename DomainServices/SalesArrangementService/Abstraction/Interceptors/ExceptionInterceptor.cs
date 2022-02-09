@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Logging;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
@@ -32,8 +33,8 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
-            _logger.LogError(ex, "CaseService unavailable");
-            throw new ServiceUnavailableException("CaseService", methodFullName, ex.Message);
+            _logger.ServiceUnavailable("SalesArrangementService", ex);
+            throw new ServiceUnavailableException("SalesArrangementService", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
         {
@@ -41,16 +42,16 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            throw new CisArgumentException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
-        }
-        catch (RpcException ex)
-        {
-            _logger.LogError(ex, $"Uncought RpcException: {ex.Message}");
-            throw;
+            int code = ex.GetExceptionCodeFromTrailers();
+            string arg = ex.GetArgumentFromTrailers() ?? "";
+            string message = ex.GetErrorMessageFromRpcException();
+
+            _logger.InvalidArgument(code, arg, message, ex);
+            throw new CisArgumentException(code, message, arg);
         }
         catch (Exception ex) when (ex is not RpcException)
         {
-            _logger.LogError(ex, $"[{methodFullName}] {ex.Message}");
+            _logger.GeneralException(methodFullName, ex.Message, ex);
             throw;
         }
     }

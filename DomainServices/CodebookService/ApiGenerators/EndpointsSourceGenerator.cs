@@ -10,8 +10,7 @@ namespace DomainServices.CodebookService.ApiGenerators
     [Generator]
     public class EndpointsSourceGenerator : ISourceGenerator
     {
-        private static Regex _castCamelCaseToDashDelimitedRegex = new Regex(@"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", RegexOptions.Compiled);
-        private int i = 0;
+        private static readonly Regex _castCamelCaseToDashDelimitedRegex = new Regex(@"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", RegexOptions.Compiled);
         public void Initialize(GeneratorInitializationContext context)
         {
             /*if (!Debugger.IsAttached)

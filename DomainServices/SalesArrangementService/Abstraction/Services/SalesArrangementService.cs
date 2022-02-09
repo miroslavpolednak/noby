@@ -11,7 +11,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateSalesArrangement), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
-            new CreateSalesArrangementRequest() { 
+            new() { 
                 CaseId = caseId, 
                 SalesArrangementTypeId = salesArrangementTypeId, 
                 OfferId = offerId
@@ -24,7 +24,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangement), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementAsync(
-            new GetSalesArrangementRequest()
+            new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken)
@@ -36,7 +36,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementData), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementDataAsync(
-            new SalesArrangementIdRequest()
+            new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken)
@@ -48,7 +48,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(LinkModelationToSalesArrangement), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
-            new LinkModelationToSalesArrangementRequest()
+            new()
             {
                 SalesArrangementId = salesArrangementId,
                 OfferId = offerId
@@ -57,23 +57,23 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> GetSalesArrangementList(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsByCaseId), caseId);
-        var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementsByCaseIdAsync(
-            new GetSalesArrangementsByCaseIdRequest()
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementList), caseId);
+        var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementListAsync(
+            new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken)
         );
-        return new SuccessfulServiceCallResult<GetSalesArrangementsByCaseIdResponse>(result);
+        return new SuccessfulServiceCallResult<GetSalesArrangementListResponse>(result);
     }
 
     public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementData), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementDataAsync(
-            new UpdateSalesArrangementDataRequest()
+            new()
             {
                 SalesArrangementId = salesArrangementId,
                 Data = data
@@ -86,7 +86,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementState), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementStateAsync(
-            new UpdateSalesArrangementStateRequest()
+            new()
             {
                 SalesArrangementId = salesArrangementId,
                 State = state

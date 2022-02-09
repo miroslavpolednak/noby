@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using DomainServices.CodebookService.Contracts.Endpoints.CaseStates;
 
-namespace DomainServices.CodebookService.Contracts
+namespace DomainServices.CodebookService.Contracts;
+
+public partial interface ICodebookService
 {
-    public partial interface ICodebookService
-    {
-        [OperationContract]
-        Task<List<Endpoints.CaseStates.CaseStateItem>> CaseStates(Endpoints.CaseStates.CaseStatesRequest request, CallContext context = default);
-    }
+    [OperationContract]
+    Task<List<CaseStateItem>> CaseStates(CaseStatesRequest request, CallContext context = default);
 }

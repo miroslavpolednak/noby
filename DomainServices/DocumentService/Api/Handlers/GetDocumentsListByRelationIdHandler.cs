@@ -22,7 +22,7 @@ internal class GetDocumentsListByRelationIdHandler : IRequestHandler<GetDocument
     {
         _logger.LogInformation("Get documents list by relation id [RelationId: {id}, Mandant: {mandant}]", request.RelationId, request.Mandant);
 
-        if (request.Mandant != CIS.Core.IdentitySchemes.Kb)
+        if (request.Mandant != CIS.Core.Enums.IdentitySchemes.Kb)
         {
             throw new NotSupportedException($"Mandant '{request.Mandant}' is not supported");
         }

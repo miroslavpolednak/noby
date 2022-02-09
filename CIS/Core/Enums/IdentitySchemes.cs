@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace CIS.Core;
+namespace CIS.Core.Enums;
 
 [DataContract]
 public enum IdentitySchemes : byte

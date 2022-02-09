@@ -1,6 +1,5 @@
-﻿using CIS.Core;
+﻿using CIS.Core.Enums;
 using CIS.Core.Results;
-
 
 namespace DomainServices.DocumentService.Abstraction.Interfaces
 {

@@ -38,11 +38,11 @@ internal class SearchCasesHandler
     };
 
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly ILogger<CreateCaseHandler> _logger;
+    private readonly ILogger<SearchCasesHandler> _logger;
     
     public SearchCasesHandler(
         Repositories.CaseServiceRepository repository,
-        ILogger<CreateCaseHandler> logger)
+        ILogger<SearchCasesHandler> logger)
     {
         _repository = repository;
         _logger = logger;

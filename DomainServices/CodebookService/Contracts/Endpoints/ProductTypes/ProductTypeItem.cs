@@ -17,8 +17,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         public string Description { get; set; }
 
         [DataMember(Order = 4)]
-        [DefaultValue(CIS.Core.Mandants.Unknown)]
-        public CIS.Core.Mandants Mandant { get; set; }
+        [DefaultValue(CIS.Core.Enums.Mandants.Unknown)]
+        public CIS.Core.Enums.Mandants Mandant { get; set; }
 
         [JsonIgnore]
         [DataMember(Order = 5)]

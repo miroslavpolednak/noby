@@ -1,9 +1,6 @@
-﻿using CIS.Core;
+﻿using CIS.Core.Enums;
 using CIS.Core.Results;
-using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentService.Abstraction.Interfaces;
-using Grpc.Core;
-using Microsoft.Extensions.Logging;
 
 namespace DomainServices.DocumentService.Abstraction.Services
 {
