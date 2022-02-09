@@ -5,14 +5,24 @@ option csharp_namespace = "DomainServices.ProductService.Contracts.v1";
 import "google/protobuf/empty.proto";
 import "Types.proto";
 
+import "TypesMortgage.proto";
+
 service ProductService {
+   
+   // BuildingSavings (out of scope)
    rpc CreateProductInstance (DomainServices.ProductService.CreateProductInstanceRequest) returns (DomainServices.ProductService.CreateProductInstanceResponse);
-   
    rpc GetHousingSavingsInstance (DomainServices.ProductService.ProductInstanceIdRequest) returns (DomainServices.ProductService.GetHousingSavingsInstanceResponse);
-   
    rpc GetHousingSavingsInstanceBasicDetail (DomainServices.ProductService.ProductInstanceIdRequest) returns (DomainServices.ProductService.GetHousingSavingsInstanceBasicDetailResponse);
-   
    rpc GetProductInstanceList (DomainServices.ProductService.GetProductInstanceListRequest) returns (DomainServices.ProductService.GetProductInstanceListResponse);
-   
    rpc UpdateHousingSavingsInstance (DomainServices.ProductService.ProductInstanceIdRequest) returns (google.protobuf.Empty);
+   
+   // Mortgage
+   rpc GetMorgage (DomainServices.ProductService.ProductIdReqRes) returns (DomainServices.ProductService.GetMortgageResponse);
+   rpc CreateMorgage (DomainServices.ProductService.CreateMortgageRequest) returns (DomainServices.ProductService.ProductIdReqRes);
+   rpc UpdateMorgage (DomainServices.ProductService.UpdateMortgageRequest) returns (google.protobuf.Empty);
+
+
+
+
+
 }
