@@ -19,7 +19,7 @@ internal class CodebooksApiModule : IApiEndpointModule
             .Produces<Dto.GetAllResponseItem>(StatusCodes.Status200OK);
 
         // fixace uveru
-        builder.MapGet(_prefix + "/fixationperiodlength", 
+        builder.MapGet(_prefix + "/fixation-period-length", 
             async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc) => 
                 (await svc.FixedLengthPeriods())
                     .Where(t => t.ProductTypeId == productTypeId)
@@ -30,7 +30,7 @@ internal class CodebooksApiModule : IApiEndpointModule
             .Produces<List<int>>(StatusCodes.Status200OK);
 
         // druhy uveru
-        builder.MapGet(_prefix + "/productloankinds",
+        builder.MapGet(_prefix + "/product-loan-kinds",
             async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc) =>
                 (await svc.ProductLoanKinds())
                     .Where(t => t.IsActual && t.ProductTypeId == productTypeId)

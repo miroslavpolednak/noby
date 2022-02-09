@@ -16,4 +16,8 @@ internal class GetCurrentUserResponse
     /// Login
     /// </summary>
     public string? Username { get; set; }
+
+    public string? CPM { get; set; }
+
+    public string? ICP { get; set; }
 }

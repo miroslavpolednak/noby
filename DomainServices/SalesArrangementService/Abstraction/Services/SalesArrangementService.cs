@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Results;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
 namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
@@ -8,7 +9,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
     public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction CreateSalesArrangement for #{caseId} of type {salesArrangementType}", caseId, salesArrangementTypeId);
+        _logger.RequestHandlerStartedWithId(nameof(CreateSalesArrangement), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.CreateSalesArrangementAsync(
             new CreateSalesArrangementRequest() { 
                 CaseId = caseId, 
@@ -21,7 +22,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     public async Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetSalesArrangement for #{salesArrangementId}", salesArrangementId);
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangement), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementAsync(
             new GetSalesArrangementRequest()
             {
@@ -33,7 +34,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     public async Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetSalesArrangementData for #{salesArrangementId}", salesArrangementId);
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementData), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementDataAsync(
             new SalesArrangementIdRequest()
             {
@@ -45,7 +46,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction LinkModelationToSalesArrangement for #{salesArrangementId}", salesArrangementId);
+        _logger.RequestHandlerStartedWithId(nameof(LinkModelationToSalesArrangement), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.LinkModelationToSalesArrangementAsync(
             new LinkModelationToSalesArrangementRequest()
             {
@@ -58,6 +59,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     public async Task<IServiceCallResult> GetSalesArrangementsByCaseId(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken))
     {
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsByCaseId), caseId);
         var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementsByCaseIdAsync(
             new GetSalesArrangementsByCaseIdRequest()
             {
@@ -69,7 +71,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     public async Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction UpdateSalesArrangementData for #{salesArrangementId}", salesArrangementId);
+        _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementData), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementDataAsync(
             new UpdateSalesArrangementDataRequest()
             {
@@ -82,7 +84,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     public async Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction UpdateSalesArrangementState for #{salesArrangementId}", salesArrangementId);
+        _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementState), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementStateAsync(
             new UpdateSalesArrangementStateRequest()
             {
