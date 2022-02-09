@@ -35,4 +35,8 @@
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto\Models\" />
+  </ItemGroup>
+
 </Project>

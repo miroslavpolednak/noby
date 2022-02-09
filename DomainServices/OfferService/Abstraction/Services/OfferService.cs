@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC;
 using DomainServices.OfferService.Contracts;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
 namespace DomainServices.OfferService.Abstraction;
 
@@ -29,7 +30,7 @@ internal class OfferService : IOfferServiceAbstraction
 
     public async Task<IServiceCallResult> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetOffer call with #ID {offerId}", offerId);
+        _logger.RequestHandlerStartedWithId(nameof(GetOffer), offerId);
 
         var result = await _userContext.AddUserContext(async () => await _service.GetOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
 
@@ -38,7 +39,7 @@ internal class OfferService : IOfferServiceAbstraction
 
     public async Task<IServiceCallResult> GetMortgageData(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetMortgageData call with #ID {offerId}", offerId);
+        _logger.RequestHandlerStartedWithId(nameof(GetMortgageData), offerId);
 
         var result = await _userContext.AddUserContext(async () => await _service.GetMortgageDataAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
 
@@ -47,7 +48,7 @@ internal class OfferService : IOfferServiceAbstraction
 
     public async Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction SimulateMortgage call with {request}", request);
+        _logger.RequestHandlerStarted(nameof(SimulateMortgage));
 
         try
         {

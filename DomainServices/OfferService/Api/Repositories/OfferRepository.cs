@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Repositories;
@@ -14,33 +13,27 @@ internal class OfferRepository
         _dbContext = dbContext;
     }
 
-    public async Task<int> SaveOffer(Guid resourceProcessId, int ProductInstanceTypeId, object inputs, object outputs)
+    public async Task<Entities.Offer> SaveOffer(Guid resourceProcessId, int productTypeId, object inputs, object outputs, CancellationToken cancellation)
     {
         var entity = new Entities.Offer
         {
             ResourceProcessId = resourceProcessId,
-            ProductInstanceTypeId = ProductInstanceTypeId,
+            ProductTypeId = productTypeId,
             Outputs = JsonSerializer.Serialize(outputs),
             Inputs = JsonSerializer.Serialize(inputs)
         };
 
         _dbContext.Offers.Add(entity);
 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellation);
 
-        return entity.OfferId;
+        return entity;
     }
 
-    public async Task<Entities.Offer> Get(int offerId)
+    public async Task<Entities.Offer> Get(int offerId, CancellationToken cancellation)
         => await _dbContext.Offers
            .AsNoTracking()
            .Where(t => t.OfferId == offerId)
-           .FirstOrDefaultAsync() ?? throw new CisNotFoundException(13000, $"Offer #{offerId} not found");
+           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Offer #{offerId} not found");
 
-    public async Task<bool> AnyOfResourceProcessId(Guid resourceProcessId)
-       => await _dbContext.Offers
-          .AsNoTracking()
-          .Where(t => t.ResourceProcessId == resourceProcessId)
-          .AnyAsync();
 }
-

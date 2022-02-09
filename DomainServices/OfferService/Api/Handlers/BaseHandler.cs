@@ -1,8 +1,5 @@
-﻿using CIS.Core.Exceptions;
-using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductInstanceTypes;
-using DomainServices.OfferService.Api.Repositories.Entities;
-using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -26,9 +23,9 @@ internal class BaseHandler
     #endregion
         
     /// <summary>
-    /// Checks if ProductInstanceTypeId matches ProductInstanceTypeCategory (Hypo, SS, ...)
+    /// Checks if ProductTypeId matches ProductTypeCategory (Hypo, SS, ...)
     /// </summary>
-    protected async Task checkProductInstanceTypeCategory(long id, ProductInstanceTypeCategory category)
+    protected async Task CheckProductTypeCategory(long id, ProductInstanceTypeCategory category)
     {
         var list = await _codebookService.ProductInstanceTypes();
         var item = list.FirstOrDefault(t => t.Id == id);
@@ -40,46 +37,8 @@ internal class BaseHandler
 
         if (item.ProductCategory != category)
         {
-            throw new CisArgumentException(1, $"ProductInstanceTypeId '{id}' doesn't match ProductInstanceTypeCategory '{category}'.", "ProductInstanceTypeId");
+            throw new CisArgumentException(1, $"ProductTypeId '{id}' doesn't match ProductTypeCategory '{category}'.", "ProductTypeId");
         }
     }
-
-
-    /// <summary>
-    /// Checks if ResourceProcessId exists or generates new one.
-    /// </summary>
-    protected async Task<Guid> CheckResourceProcessId(string resourceProcessId)
-    {
-        if (String.IsNullOrWhiteSpace(resourceProcessId))
-        {
-            return Guid.NewGuid();
-        }
-
-        // check if provided ResourceProcessId already exists
-        var id = Guid.Parse(resourceProcessId);
-
-        var exists = await _repository.AnyOfResourceProcessId(id);
-
-        if (!exists)
-        {
-            throw new CisArgumentException(1, $"ResourceProcessId '{resourceProcessId}' not found.", "ResourceProcessId");
-        }
-
-        return id;
-    }
-
-
-    ///// <summary>
-    ///// Converts entity created data to contract DTO.
-    ///// </summary>
-    //protected OfferCreated ToCreated(Offer entity)
-    //{
-    //    return new OfferCreated
-    //    {
-    //        UserId = entity.CreatedUserId,
-    //        Name = entity.CreatedUserName,
-    //        CreatedOn = entity.CreatedTime
-    //    };
-    //}
 
 }

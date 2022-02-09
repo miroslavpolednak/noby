@@ -26,55 +26,53 @@ internal class SimulateMortgageHandler
 
     public async Task<SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Run Mortgage simulation with {inputs}", request);
+        _logger.RequestHandlerStarted(nameof(SimulateMortgageHandler));
 
-        // kontrola ProductInstanceTypeId (zda je typu Mortgage)
-        await checkProductInstanceTypeCategory(
-            request.Request.InputData.ProductInstanceTypeId,
+        // kontrola ProductTypeId (zda je typu Mortgage)
+        await CheckProductTypeCategory(
+            request.Request.Inputs.ProductTypeId,
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage
         );
 
-        var resourceProcessId = await CheckResourceProcessId(request.Request.ResourceProcessId);
-        //var inputs = request.Request.InputData.ToContract();
+        var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
 
-        // spustit simulaci
+        // setup input default values
+        var inputs = SetUpInputDefaults(request.Request.Inputs);
+
+        // get simulation outputs
         //var result = getEasResult(await _easClient.RunSimulation(inputs));
+        var outputs = this.GenerateFakeSimulationData(inputs);
 
-        // transformovat
-        var outputs = new Dto.Models.MortgageDataModel
-        {
-            Mortgage = this.GenerateFakeSimulationData(request.Request.InputData)
-        };
+        // save to DB
+        var entity = await _repository.SaveOffer(resourceProcessId, inputs.ProductTypeId, inputs, outputs, cancellation);
 
-        // ulozit do databaze
-        int offerId = await _repository.SaveOffer(resourceProcessId, request.Request.InputData.ProductInstanceTypeId, request.Request.InputData, outputs);
+        _logger.EntityCreated(nameof(Repositories.Entities.Offer), entity.OfferId);
 
-        _logger.LogInformation("Simulation #{id} created", offerId);
-
-        var entity = await _repository.Get(offerId);
-
-        // vytvorit
+        // create response
         return new SimulateMortgageResponse
         {
             OfferId = entity.OfferId,
-            ProductInstanceTypeId = entity.ProductInstanceTypeId,
+            ProductTypeId = entity.ProductTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            //Created = ToCreated(entity),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            InputData = entity.Inputs.ToMortgageInput(),
-            Mortgage = outputs.Mortgage,
+            Inputs = inputs,
+            Outputs = outputs,
         };
 
     }
 
+    private MortgageInput SetUpInputDefaults(MortgageInput input) 
+    {
+        input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
+        input.PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15;
+
+        return input;
+    }
+
     // TODO: redirect to EAS
-    private MortgageData GenerateFakeSimulationData(MortgageInput input) {
+    private MortgageOutput GenerateFakeSimulationData(MortgageInput input) {
 
-        // neměnit vstup uživatele!
-        // input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
-        // input.PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15;
-
-        var output = new MortgageData
+        var output = new MortgageOutput
         {
             InterestRate = 0.02m,                            //mock: 0.02
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu

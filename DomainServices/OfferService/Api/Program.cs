@@ -43,6 +43,8 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS
 
+builder.Services.AddCodebookService(true);
+
 // add my services
 builder.AddOfferService(appConfiguration);
 
@@ -53,8 +55,7 @@ builder.Services.AddGrpc(options =>
 
 // add BE services
 builder.Services
-    .AddGrpcReflection()
-    .AddCodebookService(true);
+    .AddGrpcReflection();
     
 #endregion register builder.Services
 

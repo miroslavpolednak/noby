@@ -85,7 +85,7 @@ var service = serviceProvider.GetService<DomainServices.OfferService.Abstraction
 
 var inputData = new SimulateMortgageRequest
 {
-    InputData = new MortgageInput
+    Inputs = new MortgageInput
     {
      
     }

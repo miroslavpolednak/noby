@@ -10,32 +10,30 @@ import "NullableGrpcDate.proto";
 import "Types.proto";
 
 message SimulateMortgageRequest {
-   MortgageInput InputData = 1;
+   MortgageInput Inputs = 1;
    string ResourceProcessId = 2;
 }
 
 message SimulateMortgageResponse {
   int32 OfferId = 1;
-  int32 ProductInstanceTypeId = 2;
+  int32 ProductTypeId = 2;
   string ResourceProcessId = 3;
-  //OfferCreated Created = 4;
   cis.types.ModificationStamp Created = 4;
-  MortgageInput InputData = 5;
-  MortgageData Mortgage = 6;
+  MortgageInput Inputs = 5;
+  MortgageOutput Outputs = 6;
 }
 
 message GetMortgageDataResponse {
   int32 OfferId = 1;
-  int32 ProductInstanceTypeId = 2;
+  int32 ProductTypeId = 2;
   string ResourceProcessId = 3;
-  //OfferCreated Created = 4;
   cis.types.ModificationStamp Created = 4;
-  MortgageInput InputData = 5;
-  MortgageData Mortgage = 6;
+  MortgageInput Inputs = 5;
+  MortgageOutput Outputs = 6;
 }
 
 message MortgageInput {
-   int32 ProductInstanceTypeId = 1;
+   int32 ProductTypeId = 1;
    int32 LoanKindId = 2;
    cis.types.GrpcDecimal LoanAmount = 3;
    google.protobuf.Int32Value LoanDuration = 4;
@@ -45,17 +43,12 @@ message MortgageInput {
    cis.types.GrpcDecimal CollateralAmount = 8;
    cis.types.GrpcDecimal LoanToValue = 9;
    google.protobuf.Int32Value PaymentDayOfTheMonth = 10;
-   google.protobuf.BoolValue EmployeeBonusRequested = 11;
+   bool EmployeeBonusRequested = 11;
    repeated LoanPurpose LoanPurpose = 12;
    cis.types.NullableGrpcDate ExpectedDateOfDrawing = 13;
 }
 
-message LoanPurpose {
-	int32 ProductLoanPurposeId = 1;
-	cis.types.GrpcDecimal Sum = 2;
-}
-
-message MortgageData {
+message MortgageOutput {
 	cis.types.GrpcDecimal InterestRate = 1;
 	cis.types.GrpcDecimal InterestRateAnnounced = 2;
 	cis.types.GrpcDecimal LoanAmount = 3;
@@ -68,4 +61,9 @@ message MortgageData {
 	cis.types.GrpcDecimal LoanTotalAmount = 10;
 	repeated LoanPurpose LoanPurpose = 11;
 	int32 StatementTypeId = 12;
+}
+
+message LoanPurpose {
+	int32 ProductLoanPurposeId = 1;
+	cis.types.GrpcDecimal Sum = 2;
 }

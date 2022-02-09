@@ -23,27 +23,24 @@ internal class GetMortgageDataHandler
 
     public async Task<GetMortgageDataResponse> Handle(Dto.GetMortgageDataMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get offer instance ID #{id}", request.OfferId);
+        _logger.RequestHandlerStarted(nameof(GetMortgageDataHandler));
 
-        var entity = await _repository.Get(request.OfferId);
+        var entity = await _repository.Get(request.OfferId, cancellation);
 
-        // kontrola ProductInstanceTypeId (zda je typu Mortgage)
-        await checkProductInstanceTypeCategory(
-            entity.ProductInstanceTypeId,
+        // kontrola ProductTypeId (zda je typu Mortgage)
+        await CheckProductTypeCategory(
+            entity.ProductTypeId,
             CodebookService.Contracts.Endpoints.ProductInstanceTypes.ProductInstanceTypeCategory.Mortgage
         );
-
-        var data = JsonSerializer.Deserialize<Dto.Models.MortgageDataModel>(entity.Outputs ?? String.Empty);
 
         var model = new GetMortgageDataResponse
         {
             OfferId = entity.OfferId,
-            ProductInstanceTypeId = entity.ProductInstanceTypeId,
+            ProductTypeId = entity.ProductTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            //Created = ToCreated(entity),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            InputData = entity.Inputs.ToMortgageInput(),
-            Mortgage = data.Mortgage,            
+            Inputs = entity.Inputs.ToMortgageInput(),
+            Outputs = entity.Outputs.ToMortgageOutput(),            
         };
 
         return model;
