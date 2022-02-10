@@ -11,7 +11,7 @@ internal class UpdateCaseDataHandler
         await _repository.EnsureExistingCase(request.Request.CaseId, cancellation);
 
         // zkontrolovat ProdInstType
-        if (!(await _codebookService.ProductTypes()).Any(t => t.Id == request.Request.Data.ProductTypeId))
+        if (!(await _codebookService.ProductTypes(cancellation)).Any(t => t.Id == request.Request.Data.ProductTypeId))
             throw new CisNotFoundException(13014, nameof(request.Request.Data.ProductTypeId), request.Request.Data.ProductTypeId);
 
         // ulozit do DB

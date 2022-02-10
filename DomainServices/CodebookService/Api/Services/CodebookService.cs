@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using ProtoBuf.Grpc;
 
 namespace DomainServices.CodebookService.Api.Services;
 

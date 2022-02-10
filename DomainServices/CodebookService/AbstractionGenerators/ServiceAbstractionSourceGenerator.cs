@@ -39,11 +39,11 @@ namespace DomainServices.CodebookService.AbstractionGenerators
             endpoints.ForEach(m =>
             {
                 // implementation
-                sbImpl.AppendLine($"public async {m.ReturnType} {m.MethodName}()");
-                sbImpl.AppendLine($"=> await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _userContext.AddUserContext(async () => (await _codebookService.{m.MethodName}(new {m.RequestDtoType}()))));");
+                sbImpl.AppendLine($"public async {m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
+                sbImpl.AppendLine($"=> await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _userContext.AddUserContext(async () => (await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken))));");
 
                 // interface
-                sbInterface.AppendLine($"{m.ReturnType} {m.MethodName}();");
+                sbInterface.AppendLine($"{m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken));");
             });
 
             sbImpl.Append("}");

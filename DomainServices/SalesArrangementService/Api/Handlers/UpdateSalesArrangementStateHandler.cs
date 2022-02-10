@@ -8,7 +8,7 @@ internal class UpdateSalesArrangementStateHandler
         _logger.UpdateStateStarted(request.SalesArrangementId, request.State);
 
         // kontrola existence noveho stavu
-        _ = (await _codebookService.SalesArrangementStates()).FirstOrDefault(t => t.Id == request.State)
+        _ = (await _codebookService.SalesArrangementStates(cancellation)).FirstOrDefault(t => t.Id == request.State)
             ?? throw new CisNotFoundException(16006, $"SalesArrangementState #{request.State} does not exist.");
 
         // kontrola existence SA

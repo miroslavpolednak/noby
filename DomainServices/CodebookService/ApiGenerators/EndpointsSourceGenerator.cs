@@ -43,7 +43,7 @@ namespace DomainServices.CodebookService.Api.Services;
 public partial class CodebookService : DomainServices.CodebookService.Contracts.ICodebookService
 {
 ");
-            endpoints.ForEach(t => sbGrpc.AppendLine($"public {t.ReturnType} {t.MethodName}({t.RequestDtoType} request, CallContext context = default) => _mediator.Send(request);"));
+            endpoints.ForEach(t => sbGrpc.AppendLine($"public {t.ReturnType} {t.MethodName}({t.RequestDtoType} request, CallContext context = default) => _mediator.Send(request, context.CancellationToken);"));
             sbGrpc.Append("}");
 
             context.AddSource("CodebookService_Generated.cs", sbGrpc.ToString());
@@ -63,10 +63,10 @@ partial void RegisterInner()
                 string name = _castCamelCaseToDashDelimitedRegex.Replace(t.MethodName, "-$1");
                 int idx = t.ReturnType.IndexOf("<");
                 string ret = t.ReturnType.Substring(idx + 1, t.ReturnType.Length - idx - 2);
-                sbRest.AppendLine($"_builder.MapGet(\"/codebooks/{name.ToLower()}\", () => _mediatr.Send(new {t.RequestDtoType}())).Produces<{ret}>(StatusCodes.Status200OK).RequireAuthorization();");
+                sbRest.AppendLine($"_builder.MapGet(\"/codebooks/{name.ToLower()}\", async (CancellationToken cancellationToken) => await _mediatr.Send(new {t.RequestDtoType}(), cancellationToken)).Produces<{ret}>(StatusCodes.Status200OK).RequireAuthorization();");
             });
             sbRest.Append("}}");
-
+            
             context.AddSource("CodebookServiceJson_Generated.cs", sbRest.ToString());
         }
     }

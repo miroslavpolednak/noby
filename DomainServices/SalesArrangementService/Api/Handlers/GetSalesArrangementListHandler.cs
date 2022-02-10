@@ -10,7 +10,7 @@ internal class GetSalesArrangementsListHandler
         _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsListHandler), request.Request.CaseId);
 
         // vsechny SA states
-        var availableStates = await _codebookService.SalesArrangementStates();
+        var availableStates = await _codebookService.SalesArrangementStates(cancellation);
 
         // pokud je pozadavek na konkretni stavy
         if (!request.Request.States.All(t => availableStates.Any(x => x.Id == t)))

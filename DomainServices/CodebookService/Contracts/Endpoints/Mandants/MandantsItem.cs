@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.Mandants
 {
@@ -12,6 +13,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.Mandants
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
+        [JsonIgnore]
         public int StarbuildId { get; set; }
     }
 }

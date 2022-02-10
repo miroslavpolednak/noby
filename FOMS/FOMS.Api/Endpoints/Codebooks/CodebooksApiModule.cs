@@ -14,14 +14,14 @@ internal class CodebooksApiModule : IApiEndpointModule
 
         // vraci vsechny vyzadane ciselniky
         // q = kody ciselniku oddelene ","
-        builder.MapGet(_prefix + "/get-all", async ([FromQuery(Name = "q")] string codebookTypes) => await mediatr.Send(new Dto.GetAllRequest(codebookTypes)))
+        builder.MapGet(_prefix + "/get-all", async ([FromQuery(Name = "q")] string codebookTypes, CancellationToken cancellationToken) => await mediatr.Send(new Dto.GetAllRequest(codebookTypes), cancellationToken))
             .WithTags("Codebooks Module")
             .Produces<Dto.GetAllResponseItem>(StatusCodes.Status200OK);
 
         // fixace uveru
         builder.MapGet(_prefix + "/fixation-period-length", 
-            async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc) => 
-                (await svc.FixedLengthPeriods())
+            async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken) => 
+                (await svc.FixedLengthPeriods(cancellationToken))
                     .Where(t => t.ProductTypeId == productTypeId)
                     .Select(t => t.FixedLengthPeriod)
                     .OrderBy(t => t)
@@ -31,10 +31,11 @@ internal class CodebooksApiModule : IApiEndpointModule
 
         // druhy uveru
         builder.MapGet(_prefix + "/product-loan-kinds",
-            async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc) =>
-                (await svc.ProductLoanKinds())
-                    .Where(t => t.IsValid && t.ProductTypeId == productTypeId)
-                    .OrderBy(t => t.Name)
+            async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken) =>
+                (await svc.ProductTypes(cancellationToken))
+                    .FirstOrDefault(t => t.Id == productTypeId)?
+                    .ProductLoanKinds
+                    .Where(t => t.IsValid)
             )
             .WithTags("Codebooks Module")
             .Produces<List<DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds.ProductLoanKindsItem>>(StatusCodes.Status200OK);

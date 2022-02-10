@@ -27,7 +27,7 @@ internal class CreateCaseHandler
         var mandant = productTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage ? CIS.Core.Enums.IdentitySchemes.Kb : CIS.Core.Enums.IdentitySchemes.Mp;
 
         // get default case state
-        int defaultCaseState = (await _codebookService.CaseStates()).First(t => t.IsDefault).Id;
+        int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ziskat caseId
         long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductTypeId));

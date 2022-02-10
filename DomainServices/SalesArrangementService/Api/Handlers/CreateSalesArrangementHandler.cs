@@ -10,7 +10,7 @@ internal class CreateSalesArrangementHandler
         _logger.CreateSalesArrangementStarted(request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferId);
 
         // validace product instance type
-        _ = (await _codebookService.SalesArrangementTypes()).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
+        _ = (await _codebookService.SalesArrangementTypes(cancellation)).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
             ?? throw new CisNotFoundException(16005, $"SalesArrangementTypeId #{request.Request.SalesArrangementTypeId} does not exist.");
 
         // validace na existenci case
@@ -24,7 +24,7 @@ internal class CreateSalesArrangementHandler
                 ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");
 
         // get default SA state
-        int defaultSaState = (await _codebookService.SalesArrangementStates()).First(t => t.IsDefault).Id;
+        int defaultSaState = (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ulozit do DB
         var saEntity = new Repositories.Entities.SalesArrangement()

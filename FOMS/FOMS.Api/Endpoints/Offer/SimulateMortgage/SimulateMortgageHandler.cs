@@ -14,7 +14,7 @@ internal class SimulateMortgageHandler
         var model = request.ToDomainServiceRequest();
         
         // zavolat DS
-        var result = ServiceCallResult.Resolve<SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
+        var result = ServiceCallResult.Resolve<SimulateMortgageResponse>(await callOfferService(model, cancellationToken));
 
         // predelat z DS na FE Dto
         Dto.SimulateMortgageResponse responseModel = new()
@@ -27,6 +27,19 @@ internal class SimulateMortgageHandler
         _logger.SimulateMortgageResult(responseModel);
 
         return responseModel;
+    }
+
+    private async Task<IServiceCallResult> callOfferService(SimulateMortgageRequest model, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _offerService.SimulateMortgage(model, cancellationToken);
+        }
+        catch (CisArgumentException ex)
+        {
+            // rethrow to be catched by validation middleware
+            throw new CisValidationException(ex.ExceptionCode, ex.Message);
+        }
     }
 
     private readonly IOfferServiceAbstraction _offerService;

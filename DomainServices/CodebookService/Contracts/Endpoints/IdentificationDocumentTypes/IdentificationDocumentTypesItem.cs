@@ -1,5 +1,6 @@
 ﻿
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes
 {
@@ -16,6 +17,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocum
         public string ShortName { get; set; }
 
         [DataMember(Order = 4)]
+        [JsonIgnore]
         public string KbCode { get; set; }
 
         [DataMember(Order = 5)]
