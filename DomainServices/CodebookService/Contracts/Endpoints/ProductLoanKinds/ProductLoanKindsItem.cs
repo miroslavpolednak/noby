@@ -10,14 +10,13 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        [JsonIgnore]
-        public int ProductTypeId { get; set; }
-
-        [DataMember(Order = 3)]
         public string Name { get; set; }
 
+        [DataMember(Order = 3)]
+        public bool IsDefault { get; set; }
+        
         [DataMember(Order = 4)]
         [JsonIgnore]
-        public bool IsActual { get; set; }
+        public bool IsValid { get; set; }
     }
 }

@@ -13,8 +13,8 @@ public class CaseStatesHandler
             {
                 Id = (int)t,
                 Value = t,
-                Name = t.GetAttribute<System.ComponentModel.DescriptionAttribute>().Description,
-                IsDefault = t == CIS.Core.Enums.CaseStates.InProcess
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                IsDefault = t.HasAttribute<CIS.Core.Enums.Attributes.CisDefaultValueAttribute>()
             })
             .ToList();
 

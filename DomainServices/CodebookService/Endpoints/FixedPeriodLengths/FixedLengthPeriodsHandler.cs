@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.FixedPeriodLengths;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.FixedPeriodLengths;
 
 namespace DomainServices.CodebookService.Endpoints.FixedPeriodLengths;
 
@@ -12,23 +11,16 @@ public class FixedLengthPeriodsHandler
         {
             if (_cache.Exists(_cacheKey))
             {
-                _logger.LogDebug("Found FixedLengthPeriods in cache");
-
+                _logger.ItemFoundInCache(_cacheKey);
                 return await _cache.GetAllAsync<FixedLengthPeriodsItem>(_cacheKey);
             }
             else
             {
-                _logger.LogDebug("Reading FixedLengthPeriods from database");
+                _logger.TryAddItemToCache(_cacheKey);
 
-                await using (var connection = _connectionProvider.Create())
-                {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<FixedLengthPeriodsItem>(_sqlQuery)).ToList();
-
-                    await _cache.SetAllAsync(_cacheKey, result);
-
-                    return result;
-                }
+                var result = await _connectionProvider.ExecuteDapperRawSqlToList<FixedLengthPeriodsItem>(_sqlQuery, cancellationToken);
+                await _cache.SetAllAsync(_cacheKey, result);
+                return result;
             }
         }
         catch (Exception ex)

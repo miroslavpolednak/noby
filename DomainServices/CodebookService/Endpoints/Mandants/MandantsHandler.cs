@@ -14,7 +14,7 @@ public class MandantTypesHandler
             {
                 Code = t.ToString(),
                 StarbuildId = (int)t,
-                Name = t.GetAttribute<System.ComponentModel.DescriptionAttribute>().Description
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
             })
             .ToList();
 

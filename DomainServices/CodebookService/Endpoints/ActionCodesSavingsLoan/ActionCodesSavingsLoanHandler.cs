@@ -13,32 +13,28 @@ namespace DomainServices.CodebookService.Endpoints.ActionCodesSavings
             {
                 if (_cache.Exists(_cacheKey))
                 {
-                    _logger.LogDebug("Found ActionCodesSavings in cache");
-
+                    _logger.ItemFoundInCache(_cacheKey);
                     return await _cache.GetAllAsync<GenericCodebookItem>(_cacheKey);
                 }
                 else
                 {
-                    _logger.LogDebug("Reading ActionCodesSavings from database");
+                    _logger.TryAddItemToCache(_cacheKey);
 
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<GenericCodebookItem>("SELECT ID_AKCE_SPO 'Id', NAZEV_AKCE_SPO 'Name', CAST(CASE WHEN PLATNOST_DO_ES IS NULL THEN 1 ELSE 0 END as bit) 'IsActual' FROM SBR.AKCE_SPORENI ORDER BY NAZEV_AKCE_SPO ASC")).ToList();
-                        
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
-                    }
+                    var result = await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken);
+                    await _cache.SetAllAsync(_cacheKey, result);
+                    return result;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.GeneralException(ex);
                 throw;
             }
         }
 
+        private const string _sqlQuery =
+            "SELECT ID_AKCE_SPO 'Id', NAZEV_AKCE_SPO 'Name', CAST(CASE WHEN PLATNOST_DO_ES IS NULL THEN 1 ELSE 0 END as bit) 'IsActual' FROM SBR.AKCE_SPORENI ORDER BY NAZEV_AKCE_SPO ASC";
+        
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<ActionCodesSavingsHandler> _logger;
         private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;

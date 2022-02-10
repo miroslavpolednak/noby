@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes;
 
 namespace DomainServices.CodebookService.Endpoints.ProductLoanPurposes;
 
@@ -12,28 +11,21 @@ public class ProductLoanPurposesHandler
         {
             if (_cache.Exists(_cacheKey))
             {
-                _logger.LogDebug("Found ProductLoanPurposes in cache");
-
+                _logger.ItemFoundInCache(_cacheKey);
                 return await _cache.GetAllAsync<ProductLoanPurposesItem>(_cacheKey);
             }
             else
             {
-                _logger.LogDebug("Reading ProductLoanPurposes from database");
+                _logger.TryAddItemToCache(_cacheKey);
 
-                await using (var connection = _connectionProvider.Create())
-                {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<ProductLoanPurposesItem>(_sqlQuery)).ToList();
-
-                    await _cache.SetAllAsync(_cacheKey, result);
-
-                    return result;
-                }
+                var result = await _connectionProvider.ExecuteDapperRawSqlToList<ProductLoanPurposesItem>(_sqlQuery, cancellationToken);
+                await _cache.SetAllAsync(_cacheKey, result);
+                return result;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.GeneralException(ex);
             throw;
         }
     }

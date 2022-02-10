@@ -28,6 +28,7 @@ internal class GetAllHandler
             "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods()),
             "genders" => new(original, await _codebooks.Genders()),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes()),
+            "mandants" => new(original, await _codebooks.Mandants()),
             //"nationalities" => new(original, await _codebooks.Nationalities()),//!!!
             //"persondegreeafter" => new(original, await _codebooks.PersonDegreeAfter()),//!!!
             //"persondegreebefore" => new(original, await _codebooks.PersonDegreeBefore()),//!!!
@@ -36,6 +37,7 @@ internal class GetAllHandler
             "productloankinds" => new(original, await _codebooks.ProductLoanKinds()),
             //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes()),
+            "signaturetypes" => new(original, await _codebooks.SignatureTypes()),
             //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
 
             _ => throw new NotImplementedException($"Codebook code '{original}' is not implemented")

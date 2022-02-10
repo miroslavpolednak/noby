@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds;
 
 namespace DomainServices.CodebookService.Endpoints.ProductLoanKinds;
 
@@ -12,33 +11,26 @@ public class ProductLoanKindsHandler
         {
             if (_cache.Exists(_cacheKey))
             {
-                _logger.LogDebug("Found ProductLoanKinds in cache");
-
+                _logger.ItemFoundInCache(_cacheKey);
                 return await _cache.GetAllAsync<ProductLoanKindsItem>(_cacheKey);
             }
             else
             {
-                _logger.LogDebug("Reading ProductLoanKinds from database");
+                _logger.TryAddItemToCache(_cacheKey);
 
-                await using (var connection = _connectionProvider.Create())
-                {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<ProductLoanKindsItem>(_sql)).ToList();
-
-                    await _cache.SetAllAsync(_cacheKey, result);
-
-                    return result;
-                }
+                var result = await _connectionProvider.ExecuteDapperRawSqlToList<ProductLoanKindsItem>(_sqlQuery, cancellationToken);
+                await _cache.SetAllAsync(_cacheKey, result);
+                return result;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.GeneralException(ex);
             throw;
         }
     }
 
-    const string _sql = @"SELECT ID_DRUH_UVERU 'Id', NAZEV_DRUH_UVERU 'Name', 1 'ProductTypeId', CAST(CASE WHEN DATUM_DO_ES IS NULL THEN 1 ELSE 0 END as bit) 'IsActual' FROM [SBR].[DRUH_UVERU]";
+    const string _sqlQuery = @"SELECT KOD 'Id', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CAST(CASE WHEN DATUM_DO_ES IS NULL THEN 1 ELSE 0 END as bit) 'IsValid' FROM [SBR].[CIS_DRUH_UVERU]";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<ProductLoanKindsHandler> _logger;

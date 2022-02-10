@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace CIS.Core.Enums;
@@ -6,19 +6,20 @@ namespace CIS.Core.Enums;
 [DataContract]
 public enum CaseStates : byte
 {
-    [Description("unknown")]
+    [Display(Name = "unknown")]
     [EnumMember]
     Unknown = 0,
     
     [EnumMember]
-    [Description("Rozpracováno")]
+    [Display(Name = "Rozpracováno")]
+    [Attributes.CisDefaultValue]
     InProcess = 1,
         
     [EnumMember]
-    [Description("Předáno")]
+    [Display(Name = "Předáno")]
     HandedToSb = 2,
         
     [EnumMember]
-    [Description("Stornováno")]
+    [Display(Name = "Stornováno")]
     Cancelled = 3
 }

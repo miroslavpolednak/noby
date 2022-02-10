@@ -12,31 +12,28 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
             {
                 if (_cache.Exists(_cacheKey))
                 {
-                    _logger.LogDebug("Found SalesArrangementTypes in cache");
+                    _logger.ItemFoundInCache(_cacheKey);
 
                     return await _cache.GetAllAsync<SalesArrangementTypeItem>(_cacheKey);
                 }
                 else
                 {
-                    _logger.LogDebug("Reading SalesArrangementTypes from database");
+                    _logger.TryAddItemToCache(_cacheKey);
 
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync(cancellationToken);
-                        var result = (await connection.QueryAsync<SalesArrangementTypeItem>("SELECT Id, Name, ProductTypeId, IsDefault FROM [dbo].[SalesArrangementType] ORDER BY Name ASC", cancellationToken)).ToList();
-
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
-                    }
+                    var result = await _connectionProvider.ExecuteDapperRawSqlToList<SalesArrangementTypeItem>(_sqlQuery, cancellationToken);
+                    await _cache.SetAllAsync(_cacheKey, result);
+                    return result;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.GeneralException(ex);
                 throw;
             }
         }
+
+        private const string _sqlQuery =
+            "SELECT Id, Name, ProductTypeId, IsDefault FROM [dbo].[SalesArrangementType] ORDER BY Name ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider _connectionProvider;
         private readonly ILogger<SalesArrangementTypesHandler> _logger;

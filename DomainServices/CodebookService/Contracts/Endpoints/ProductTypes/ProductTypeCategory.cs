@@ -1,9 +1,7 @@
-﻿using System.Runtime.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
 {
     [DataContract]
-    public enum ProductTypeCategory
+    public enum ProductTypeCategory : byte
     {
         [DataMember(Order = 1)]
         [EnumMember]

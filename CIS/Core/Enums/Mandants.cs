@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace CIS.Core.Enums;
@@ -6,15 +6,15 @@ namespace CIS.Core.Enums;
 [DataContract]
 public enum Mandants : byte
 {
-    [Description("unknown")]
+    [Display(Name = "unknown")]
     [EnumMember]
     Unknown = 0,
 
-    [Description("Modrá pyramida")]
+    [Display(Name = "Modrá pyramida")]
     [EnumMember]
     Mp = 1,
 
-    [Description("Komerční banka")]
+    [Display(Name = "Komerční banka")]
     [EnumMember]
     Kb = 2
 }

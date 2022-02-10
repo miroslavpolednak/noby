@@ -51,8 +51,11 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         [DataMember(Order = 13)]
         public string MpHomeApiLoanType { get; set; }
 
-        [JsonIgnore]
         [DataMember(Order = 14)]
+        public List<Contracts.Endpoints.ProductLoanKinds.ProductLoanKindsItem> ProductLoanKinds { get; set; }
+        
+        [JsonIgnore]
+        [DataMember(Order = 15)]
         public bool IsValid { get; set; }
     }
 }

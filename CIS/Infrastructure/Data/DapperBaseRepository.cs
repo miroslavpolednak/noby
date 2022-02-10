@@ -16,15 +16,11 @@ public abstract class DapperBaseRepository<TLogger>
     }
 
     // use for buffered queries that return a type
-    protected async Task<T> WithConnection<T>(Func<IDbConnection, Task<T>> getData)
+    protected async Task<T> WithConnection<T>(Func<IDbConnection, Task<T>> getData, CancellationToken cancellationToken = default(CancellationToken))
     {
         try
         {
-            await using (var connection = _connectionProvider.Create())
-            {
-                await connection.OpenAsync();
-                return await getData(connection);
-            }
+            return await _connectionProvider.ExecuteDapperQuery(getData, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -38,11 +34,7 @@ public abstract class DapperBaseRepository<TLogger>
     {
         try
         {
-            await using (var connection = _connectionProvider.Create())
-            {
-                await connection.OpenAsync();
-                await getData(connection);
-            }
+            await _connectionProvider.ExecuteDapperQuery(getData);
         }
         catch (Exception ex)
         {
@@ -52,16 +44,11 @@ public abstract class DapperBaseRepository<TLogger>
     }
 
     //use for non-buffered queries that return a type
-    protected async Task<TResult> WithConnection<TRead, TResult>(Func<IDbConnection, Task<TRead>> getData, Func<TRead, Task<TResult>> process)
+    protected async Task<TResult> WithConnection<TRead, TResult>(Func<IDbConnection, Task<TRead>> getData, Func<TRead, Task<TResult>> process, CancellationToken cancellationToken = default(CancellationToken))
     {
         try
         {
-            await using (var connection = _connectionProvider.Create())
-            {
-                await connection.OpenAsync();
-                var data = await getData(connection);
-                return await process(data);
-            }
+            return await _connectionProvider.ExecuteDapperQuery<TRead, TResult>(getData, process, cancellationToken);
         }
         catch (Exception ex)
         {

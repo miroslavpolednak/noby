@@ -4,22 +4,21 @@ using System.Runtime.Serialization;
 namespace CIS.Core.Enums;
 
 [DataContract]
-public enum SalesArrangementStates : byte
+public enum SignatureTypes : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]
     Unknown = 0,
     
     [EnumMember]
-    [Display(Name = "Rozpracováno")]
-    [Attributes.CisDefaultValue]
-    InProcess = 1,
+    [Display(Name = "Papírově")]
+    Paper = 1,
         
     [EnumMember]
-    [Display(Name = "Předáno")]
-    HandedToSb = 2,
+    [Display(Name = "Biometricky")]
+    Biometric = 2,
         
     [EnumMember]
-    [Display(Name = "Stornováno")]
-    Cancelled = 3
+    [Display(Name = "Elektronicky")]
+    Electronic = 3
 }

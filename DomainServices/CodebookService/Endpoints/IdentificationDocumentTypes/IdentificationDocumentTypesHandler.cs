@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes;
 
 namespace DomainServices.CodebookService.Endpoints.IdentificationDocumentTypes;
 
@@ -12,33 +11,27 @@ public class IdentificationDocumentTypesHandler
         {
             if (_cache.Exists(_cacheKey))
             {
-                _logger.LogDebug("Found IdentificationDocumentTypes in cache");
+                _logger.ItemFoundInCache(_cacheKey);
 
                 return await _cache.GetAllAsync<IdentificationDocumentTypesItem>(_cacheKey);
             }
             else
             {
-                _logger.LogDebug("Reading IdentificationDocumentTypes from database");
+                _logger.TryAddItemToCache(_cacheKey);
 
-                await using (var connection = _connectionProvider.Create())
-                {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<IdentificationDocumentTypesItem>(_sql)).ToList();
-                    
-                    await _cache.SetAllAsync(_cacheKey, result);
-
-                    return result;
-                }
+                var result = await _connectionProvider.ExecuteDapperRawSqlToList<IdentificationDocumentTypesItem>(_sqlQuery, cancellationToken);
+                await _cache.SetAllAsync(_cacheKey, result);
+                return result;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.GeneralException(ex);
             throw;
         }
     }
 
-    const string _sql = "SELECT KOD 'Id', TEXT 'Name', TEXT_SKRATKA 'ShortName', CAST(DEF as bit) 'IsDefault' FROM [SBR].[CIS_TYPY_DOKLADOV] ORDER BY TEXT ASC";
+    const string _sqlQuery = "SELECT KOD 'Id', TEXT 'Name', TEXT_SKRATKA 'ShortName', CAST(DEF as bit) 'IsDefault' FROM [SBR].[CIS_TYPY_DOKLADOV] ORDER BY TEXT ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<IdentificationDocumentTypesHandler> _logger;

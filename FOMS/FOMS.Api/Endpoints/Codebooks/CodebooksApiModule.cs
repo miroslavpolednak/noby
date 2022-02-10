@@ -33,7 +33,7 @@ internal class CodebooksApiModule : IApiEndpointModule
         builder.MapGet(_prefix + "/product-loan-kinds",
             async ([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc) =>
                 (await svc.ProductLoanKinds())
-                    .Where(t => t.IsActual && t.ProductTypeId == productTypeId)
+                    .Where(t => t.IsValid && t.ProductTypeId == productTypeId)
                     .OrderBy(t => t.Name)
             )
             .WithTags("Codebooks Module")
