@@ -5,32 +5,22 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 
 internal class SalesArrangementApiModule : IApiEndpointModule
 {
-    const string _prefix = "/api/sales-arrangements";
+    const string _prefix = "/api/sales-arrangement";
 
     public void Register(IEndpointRouteBuilder builder)
     {
         var mediatr = builder.ServiceProvider.GetRequiredService<IMediator>();
 
-        // vraci cast SA pro zobrazeni formulare na UI
+        // vraci seznam SA pro dany case
         builder
-            .MapGet(_prefix + "/{salesArrangementId:int}/part/{partId:int}", async (int salesArrangementId, int partId) => await mediatr.Send(new Dto.GetPartRequest(salesArrangementId, partId)))
+            .MapGet(_prefix + "/list/{caseId:long}", async (long caseId) => await mediatr.Send(new Dto.GetListRequest(caseId)))
             .WithTags("Sales Arrangement Module")
-            .Produces<object>(StatusCodes.Status200OK);
-
-        // ulozi cast SA z UI
+            .Produces<List<Dto.SalesArrangementListItem>>(StatusCodes.Status200OK);
+        
+        // vraci seznam customers pro dany SA
         builder
-            .MapPut(_prefix + "/{salesArrangementId:int}/part/{partId:int}", async ([FromRoute] int salesArrangementId, [FromRoute] int partId, [FromBody] object data) => await mediatr.Send(new Dto.SavePartRequest(salesArrangementId, partId, data)))
+            .MapGet(_prefix + "/{salesArrangementId:int}/customers", async (int salesArrangementId) => await mediatr.Send(new Dto.GetCustomersRequest(salesArrangementId)))
             .WithTags("Sales Arrangement Module")
-            .Produces(StatusCodes.Status200OK);
-
-        // vraci detail SA bez dat
-        builder
-            .MapGet(_prefix + "/{salesArrangementId:int}", async (int salesArrangementId) => await mediatr.Send(new Dto.GetDetailRequest(salesArrangementId)))
-            .WithTags("Sales Arrangement Module")
-            .Produces<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(StatusCodes.Status200OK);
-
-        // GET /forms/{caseid}/{formid}/structure - vrati strukturu formu do wizarda
-        // GET /forms/{said}/{formid}/{partid} - vrati template dane casti formu
-        // PUT /forms/{said}/{formid}/{partid} - ulozi cast formu
+            .Produces<Dto.CustomerListItem>(StatusCodes.Status200OK);
     }
 }

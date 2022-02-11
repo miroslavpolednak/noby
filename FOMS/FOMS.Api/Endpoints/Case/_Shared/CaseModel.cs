@@ -6,7 +6,7 @@ internal class CaseModel
 	public string? FirstName { get; set; }
 	public string? LastName { get; set; }
 	public DateTime? DateOfBirth { get; set; }
-	public int State { get; set; }
+	public CIS.Core.Enums.CaseStates State { get; set; }
 	public string? StateName { get; set; }
 	public bool ActionRequired { get; set; }
 	public string? ContractNumber { get; set; }

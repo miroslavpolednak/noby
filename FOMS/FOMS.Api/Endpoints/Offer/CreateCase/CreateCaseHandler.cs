@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using CIS.Core.Results;
+﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.OfferService.Abstraction;
+using DomainServices.SalesArrangementService.Abstraction;
 
 namespace FOMS.Api.Endpoints.Offer.Handlers;
 
@@ -48,13 +48,13 @@ internal class CreateCaseHandler
         };
     }
 
-    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly IMediator _mediator;
     private readonly ILogger<CreateCaseHandler> _logger;
 
-    public CreateCaseHandler(DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService, DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService, IOfferServiceAbstraction offerService, ILogger<CreateCaseHandler> logger, IMediator mediator)
+    public CreateCaseHandler(ISalesArrangementServiceAbstraction salesArrangementService, ICodebookServiceAbstraction codebookService, IOfferServiceAbstraction offerService, ILogger<CreateCaseHandler> logger, IMediator mediator)
     {
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;

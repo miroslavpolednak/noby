@@ -62,7 +62,7 @@ public interface ISalesArrangementServiceAbstraction
     /// SuccessfulServiceCallResult[GetSalesArrangementListResponse] - OK;
     /// </returns>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task<IServiceCallResult> GetSalesArrangementList(long caseId, IEnumerable<int>? states, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetSalesArrangementList(long caseId, IEnumerable<int>? states = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update stavu SA
