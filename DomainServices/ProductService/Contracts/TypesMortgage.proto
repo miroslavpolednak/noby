@@ -35,7 +35,7 @@ message UpdateMortgageRequest {
 
 message CreateContractRelationshipRequest {
   int64 ProductId = 1;
-  Relationship Relationships = 2;
+  Relationship Relationship = 2;
 }
 
 message DeleteContractRelationshipRequest {
@@ -62,7 +62,7 @@ message MortgageData {
 
 message Relationship {
 	int32 PartnerId = 1;
-	int32 ContractRelationshipType = 2;
+	int32 ContractRelationshipTypeId = 2;
 }
 
 message Product {
