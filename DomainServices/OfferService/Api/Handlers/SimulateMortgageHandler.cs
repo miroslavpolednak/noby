@@ -72,13 +72,15 @@ internal class SimulateMortgageHandler
     // TODO: redirect to EAS
     private MortgageOutput GenerateFakeSimulationData(MortgageInput input) {
 
+        int loanDuration = (input.LoanDuration ?? 0);
+
         var output = new MortgageOutput
         {
-            InterestRate = 0.02m,                            //mock: 0.02
+            InterestRate = 0.02m,                           //mock: 0.02
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu
-            LoanDuration = input.LoanDuration ?? 0,         //mock: 0 (pokud na vstupu nezadáno)?
-            LoanPaymentAmount =                             //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
-                input.LoanAmount / (input.LoanDuration ?? 1),
+            LoanDuration = loanDuration,                    //mock: 0 (pokud na vstupu nezadáno)
+                                                            //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
+            LoanPaymentAmount = loanDuration == 0 ? 0 : input.LoanAmount / loanDuration,
             LoanToValue = input.LoanToValue,                //mock: ze vstupu
             LoanToCost = 0.0m,                               //mock: (celková výše investice / celková výše vlastních zdrojů) ... neznáme vlastní zdroje
             Aprc = 0.25m,                                    //mock: 0.25
