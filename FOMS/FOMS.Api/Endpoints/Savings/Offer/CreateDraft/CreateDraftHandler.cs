@@ -16,7 +16,7 @@ internal class CreateDraftHandler
         // vytvorit case
         long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
         {
-            OfferInstanceId = request.OfferInstanceId,
+            OfferId = request.OfferInstanceId,
             DateOfBirth = request.DateOfBirth,
             FirstName = request.FirstName,
             LastName = request.LastName,
@@ -29,7 +29,7 @@ internal class CreateDraftHandler
         int salesArrangementId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateSalesArrangementRequest
         {
             CaseId = caseId,
-            OfferInstanceId = request.OfferInstanceId,
+            OfferId = request.OfferInstanceId,
             ProductTypeId = _configuration.BuildingSavings.SavingsSalesArrangementTypeId
         }, cancellationToken);
         

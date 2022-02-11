@@ -9,39 +9,40 @@ internal class CreateCaseHandler
     public async Task<Dto.CreateCaseResponse> Handle(Dto.CreateCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
-        //var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetBuildingSavingsDataResponse>(await _offerService.GetBuildingSavingsData(request.OfferInstanceId, cancellationToken));
+        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
         // vytvorit case
         long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
         {
-            //OfferInstanceId = offerInstance.OfferInstanceId,
+            OfferId = offerInstance.OfferId,
             DateOfBirth = request.DateOfBirth,
             FirstName = request.FirstName,
             LastName = request.LastName,
             Customer = request.Customer,
-            //ProductTypeId = offerInstance,
-            //TargetAmount = offerInstance.InputData.TargetAmount
+            ProductTypeId = offerInstance.ProductTypeId,
+            TargetAmount = offerInstance.Inputs.LoanAmount
         }, cancellationToken);
 
         // vytvorit zadost
         int salesArrangementId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateSalesArrangementRequest
         {
             CaseId = caseId,
-            OfferInstanceId = request.OfferInstanceId,
-            //ProductInstanceTypeId = _configuration.BuildingSavings.SavingsSalesArrangementType
+            OfferId = request.OfferId,
+            ProductTypeId = offerInstance.ProductTypeId
         }, cancellationToken);
 
         return new Dto.CreateCaseResponse
         {
-            SalesArrangementId = 1
+            SalesArrangementId = salesArrangementId,
+            CaseId = caseId
         };
     }
 
     private readonly IOfferServiceAbstraction _offerService;
     private readonly IMediator _mediator;
-    private readonly ILogger<SimulateMortgageHandler> _logger;
+    private readonly ILogger<CreateCaseHandler> _logger;
 
-    public CreateCaseHandler(IOfferServiceAbstraction offerService, ILogger<SimulateMortgageHandler> logger, IMediator mediator)
+    public CreateCaseHandler(IOfferServiceAbstraction offerService, ILogger<CreateCaseHandler> logger, IMediator mediator)
     {
         _mediator = mediator;
         _logger = logger;

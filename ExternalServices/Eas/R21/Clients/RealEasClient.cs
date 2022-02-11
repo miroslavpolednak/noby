@@ -11,14 +11,13 @@ internal sealed class RealEasClient
 
         return await callMethod(async () =>
         {
-            using (EAS_WS_SB_ServicesClient client = createClient())
-            {
-                //TODO az bude metoda, tak zavolat 
-                /*if (result.SIM_error != 0)
-                    _logger.LogInformation("Unable to create MktItem instance in Starbuild: {error}: {errorText}", result.SIM_error, result.SIM_error_text);*/
+            using EAS_WS_SB_ServicesClient client = createClient();
+            
+            //TODO az bude metoda, tak zavolat 
+            /*if (result.SIM_error != 0)
+                _logger.LogInformation("Unable to create MktItem instance in Starbuild: {error}: {errorText}", result.SIM_error, result.SIM_error_text);*/
 
-                return new SuccessfulServiceCallResult<long>(caseId);
-            }
+            return new SuccessfulServiceCallResult<long>(caseId);
         });
     }
 
@@ -26,20 +25,19 @@ internal sealed class RealEasClient
     {
         return await callMethod(async () =>
         {
-            using (EAS_WS_SB_ServicesClient client = createClient())
-            {
-                var result = await client.Get_CaseIdAsync(new CaseIdRequest
-                {
-                    mandant = (int)mandant,
-                    productCode = productTypeId
-                });
+            using EAS_WS_SB_ServicesClient client = createClient();
 
-                //TODO jak ma vypadat chyba vracena z EAS?
-                if (result.commonResult?.return_val != 0)
-                    return new ErrorServiceCallResult(0, result.commonResult?.return_text ?? "Unknown error");
-                else
-                    return new SuccessfulServiceCallResult<long>(result.caseId);
-            }
+            var result = await client.Get_CaseIdAsync(new CaseIdRequest
+            {
+                mandant = (int)mandant,
+                productCode = productTypeId
+            });
+
+            //TODO jak ma vypadat chyba vracena z EAS?
+            if (result.commonResult?.return_val != 0)
+                return new ErrorServiceCallResult(0, result.commonResult?.return_text ?? "Unknown error");
+            else
+                return new SuccessfulServiceCallResult<long>(result.caseId);
         });
     }
 
@@ -49,17 +47,16 @@ internal sealed class RealEasClient
 
         return await callMethod(async () =>
         {
-            using (EAS_WS_SB_ServicesClient client = createClient())
-            {
-                var result = await client.SimulationAsync(input);
+            using EAS_WS_SB_ServicesClient client = createClient();
+        
+            var result = await client.SimulationAsync(input);
 
-                if (result.SIM_error != 0)
-                    _logger.LogInformation("Incorrect inputs to EAS Simulation {error}: {errorText}", result.SIM_error, result.SIM_error_text);
-                else
-                    _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
+            if (result.SIM_error != 0)
+                _logger.LogInformation("Incorrect inputs to EAS Simulation {error}: {errorText}", result.SIM_error, result.SIM_error_text);
+            else
+                _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
 
-                return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
-            }
+            return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
         });
     }
 
@@ -69,17 +66,16 @@ internal sealed class RealEasClient
 
         return await callMethod(async () =>
         {
-            using (EAS_WS_SB_ServicesClient client = createClient())
-            {
-                var result = await client.NewKlientAsync(input);
+            using EAS_WS_SB_ServicesClient client = createClient();
 
-                if (result.return_val != 0)
-                    _logger.LogInformation("Incorrect inputs to EAS NewKlient {error}: {errorText}", result.return_val, result.return_info);
-                else
-                    _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
+            var result = await client.NewKlientAsync(input);
 
-                return new SuccessfulServiceCallResult<S_KLIENTDATA>(result);
-            }
+            if (result.return_val != 0)
+                _logger.LogInformation("Incorrect inputs to EAS NewKlient {error}: {errorText}", result.return_val, result.return_info);
+            else
+                _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
+
+            return new SuccessfulServiceCallResult<S_KLIENTDATA>(result);
         });
     }
 

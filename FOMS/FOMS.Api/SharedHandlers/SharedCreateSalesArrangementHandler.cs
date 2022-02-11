@@ -8,15 +8,17 @@ internal sealed class SharedCreateSalesArrangementHandler
 {
     public async Task<int> Handle(Requests.SharedCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Attempt to create sales arrangement {data}", request);
-        int saId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.ProductTypeId, request.OfferInstanceId, cancellationToken));
-        _logger.LogDebug("Sales arrangement #{saId} created", saId);
+        _logger.SharedCreateSalesArrangementStarted(request);
+        
+        int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.ProductTypeId, request.OfferId, cancellationToken));
+        
+        _logger.EntityCreated("SalesArrangement", salesArrangementId);
 
-        return saId;
+        return salesArrangementId;
     }
 
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private ILogger<SharedCreateSalesArrangementHandler> _logger;
+    private readonly ILogger<SharedCreateSalesArrangementHandler> _logger;
 
     public SharedCreateSalesArrangementHandler(
         ILogger<SharedCreateSalesArrangementHandler> logger,

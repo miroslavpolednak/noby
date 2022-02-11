@@ -5,5 +5,5 @@ internal sealed class SharedCreateSalesArrangementRequest
 {
     public long CaseId { get; set; }
     public int ProductTypeId { get; set; }
-    public int? OfferInstanceId { get; set; }
+    public int? OfferId { get; set; }
 }

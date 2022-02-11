@@ -13,7 +13,7 @@ internal static class OfferApiModuleDtoExtensions
                 LoanAmount = request.LoanAmount,
                 LoanDuration = request.LoanDuration,
                 LoanPaymentAmount = request.LoanPaymentAmount,
-                FixedLengthPeriodId = request.FixationPeriod,
+                FixedLengthPeriod = request.FixationPeriod,
                 EmployeeBonusLoanCode = request.EmployeeBonusLoanCode,
                 CollateralAmount = request.CollateralAmount,
                 LoanToValue = request.LoanToValue,
