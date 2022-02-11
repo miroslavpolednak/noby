@@ -62,7 +62,7 @@ internal class SalesArrangementServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task<List<Contracts.SalesArrangement>> GetSalesArrangements(long caseId, int[] states, CancellationToken cancellation)
+    public async Task<List<Contracts.SalesArrangement>> GetSalesArrangements(long caseId, IEnumerable<int> states, CancellationToken cancellation)
     {
         return await _dbContext.SalesArrangements
             .AsNoTracking()
