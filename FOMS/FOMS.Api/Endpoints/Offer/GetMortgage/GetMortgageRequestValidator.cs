@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.Offer.GetMortgage;
+namespace FOMS.Api.Endpoints.Offer.Validators;
 
 internal class GetMortgageRequestValidator
     : AbstractValidator<Dto.GetMortgageRequest>
@@ -9,6 +9,6 @@ internal class GetMortgageRequestValidator
     {
         RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferId is empty");
+            .WithMessage("OfferId must be > 0");
     }
 }
