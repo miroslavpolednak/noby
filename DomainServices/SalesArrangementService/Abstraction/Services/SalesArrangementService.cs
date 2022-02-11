@@ -31,6 +31,18 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         );
         return new SuccessfulServiceCallResult<SalesArrangement>(result);
     }
+    
+    public async Task<IServiceCallResult> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementByOfferId), offerId);
+        var result = await _userContext.AddUserContext(async () => await _service.GetSalesArrangementByOfferIdAsync(
+            new()
+            {
+                OfferId = offerId
+            }, cancellationToken: cancellationToken)
+        );
+        return result.IsExisting ? new SuccessfulServiceCallResult<SalesArrangement>(result.Instance) : new EmptyServiceCallResult();
+    }
 
     public async Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {

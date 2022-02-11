@@ -24,21 +24,19 @@ internal sealed class SharedCreateCaseHandler
             }
         };
 
-        long caseId = resolveResult(await _caseService.CreateCase(model, cancellationToken));
-        
-        _logger.EntityCreated("Case", caseId);
-
-        return caseId;
-    }
-
-    private long resolveResult(IServiceCallResult result) =>
-        result switch
+        try
         {
-            SuccessfulServiceCallResult<long> r => r.Model,
-            ErrorServiceCallResult e2 => throw new CisValidationException(e2.Errors),
-            _ => throw new NotImplementedException()
-        };
-
+            long caseId = ServiceCallResult.Resolve<long>(await _caseService.CreateCase(model, cancellationToken));
+            _logger.EntityCreated("Case", caseId);
+            return caseId;
+        }
+        catch (CisArgumentException ex)
+        {
+            // rethrow to be catched by validation middleware
+            throw new CisValidationException(ex);
+        }
+    }
+    
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly ILogger<SharedCreateCaseHandler> _logger;

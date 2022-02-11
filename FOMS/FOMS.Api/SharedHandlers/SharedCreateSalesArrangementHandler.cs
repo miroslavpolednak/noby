@@ -1,7 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.OfferService.Abstraction;
-
-namespace FOMS.Api.SharedHandlers;
+﻿namespace FOMS.Api.SharedHandlers;
 
 internal sealed class SharedCreateSalesArrangementHandler
     : IRequestHandler<Requests.SharedCreateSalesArrangementRequest, int>
@@ -9,12 +6,18 @@ internal sealed class SharedCreateSalesArrangementHandler
     public async Task<int> Handle(Requests.SharedCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         _logger.SharedCreateSalesArrangementStarted(request);
-        
-        int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.ProductTypeId, request.OfferId, cancellationToken));
-        
-        _logger.EntityCreated("SalesArrangement", salesArrangementId);
 
-        return salesArrangementId;
+        try
+        {
+            int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.SalesArrangementTypeId, request.OfferId, cancellationToken));
+            _logger.EntityCreated("SalesArrangement", salesArrangementId);
+            return salesArrangementId;
+        }
+        catch (CisArgumentException ex)
+        {
+            // rethrow to be catched by validation middleware
+            throw new CisValidationException(ex);
+        }
     }
 
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;

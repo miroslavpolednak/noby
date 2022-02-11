@@ -18,6 +18,13 @@ internal class SalesArrangementServiceRepository
             .AsNoTracking()
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16000, $"Sales arrangement ID {salesArrangementId} does not exist.");
+    
+    public async Task<Contracts.SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellation)
+        => await _dbContext.SalesArrangements
+            .Where(t => t.OfferId == offerId)
+            .AsNoTracking()
+            .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
+            .FirstOrDefaultAsync(cancellation);
 
     public async Task<Entities.SalesArrangementData?> GetSalesArrangementData(int salesArrangementId)
         => await _dbContext.SalesArrangementsData.AsNoTracking().FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);

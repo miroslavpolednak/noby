@@ -14,7 +14,7 @@ internal class GetMortgageBySalesArrangementHandler
         
         // kontrola, zda ma SA OfferId
         if (!salesArrangementInstance.OfferId.HasValue)
-            throw new ArgumentNullException(nameof(request.SalesArrangementId), "SalesArrangement is not linked to any Offer");
+            throw new CisArgumentNullException(ErrorCodes.SalesArrangementNotLinkedToOffer, "SalesArrangement is not linked to any Offer", nameof(request.SalesArrangementId));
         
         return await _mediator.Send(new Dto.GetMortgageRequest(salesArrangementInstance.OfferId.Value));
     }

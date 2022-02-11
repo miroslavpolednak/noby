@@ -25,6 +25,16 @@ public interface ISalesArrangementServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    
+    /// <summary>
+    /// Vraci detail nalinkovaneho Sales Arrangement na zaklade OfferId
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[Contracts.SalesArrangement] - nalinkovani SA;
+    /// EmptyServiceCallResult - neexistuje zadny nalinkovany SA pro toto OfferId 
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
+    Task<IServiceCallResult> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci JSON data pro dany Sales Arrangement

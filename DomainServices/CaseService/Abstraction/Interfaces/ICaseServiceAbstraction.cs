@@ -15,7 +15,7 @@ public interface ICaseServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13004; Unable to get CaseId from SB</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; Case Owner Id not must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13010; ContractNumber length must be 10</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13018; Target amount must be between 20_000 and 99_999_999</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13018; Target amount must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13012; Customer Name must not be empty</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13013; ProductTypeId {} is not valid for this operation</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13014; ProductTypeId {} not found</exception>

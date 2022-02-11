@@ -11,7 +11,7 @@ internal class CreateSalesArrangementHandler
 
         // validace product instance type
         _ = (await _codebookService.SalesArrangementTypes(cancellation)).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
-            ?? throw new CisNotFoundException(16005, $"SalesArrangementTypeId #{request.Request.SalesArrangementTypeId} does not exist.");
+            ?? throw new CisNotFoundException(16005, $"SalesArrangementTypeId {request.Request.SalesArrangementTypeId} does not exist.");
 
         // validace na existenci case
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?

@@ -8,13 +8,13 @@ internal class SimulateMortgageHandler
 {
     public async Task<Dto.SimulateMortgageResponse> Handle(Dto.SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
-        _logger.SimulateMortgageStarted(request);
+        _logger.OfferSimulateMortgageStarted(request);
 
         // predelat na DS request
         var model = request.ToDomainServiceRequest();
         
         // zavolat DS
-        var result = ServiceCallResult.Resolve<SimulateMortgageResponse>(await callOfferService(model, cancellationToken));
+        var result = await callOfferService(model, cancellationToken);
 
         // predelat z DS na FE Dto
         Dto.SimulateMortgageResponse responseModel = new()
@@ -24,21 +24,21 @@ internal class SimulateMortgageHandler
             Outputs = result.Outputs.ToResponseDto()
         };
         
-        _logger.SimulateMortgageResult(responseModel);
+        _logger.OfferSimulateMortgageResult(responseModel);
 
         return responseModel;
     }
 
-    private async Task<IServiceCallResult> callOfferService(SimulateMortgageRequest model, CancellationToken cancellationToken)
+    private async Task<SimulateMortgageResponse> callOfferService(SimulateMortgageRequest model, CancellationToken cancellationToken)
     {
         try
         {
-            return await _offerService.SimulateMortgage(model, cancellationToken);
+            return ServiceCallResult.Resolve<SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
         }
         catch (CisArgumentException ex)
         {
             // rethrow to be catched by validation middleware
-            throw new CisValidationException(ex.ExceptionCode, ex.Message);
+            throw new CisValidationException(ex);
         }
     }
 

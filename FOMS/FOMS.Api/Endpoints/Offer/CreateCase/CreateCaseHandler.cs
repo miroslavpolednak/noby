@@ -1,4 +1,5 @@
-﻿using CIS.Core.Results;
+﻿using System.Diagnostics;
+using CIS.Core.Results;
 using DomainServices.OfferService.Abstraction;
 
 namespace FOMS.Api.Endpoints.Offer.Handlers;
@@ -11,6 +12,14 @@ internal class CreateCaseHandler
         // detail simulace
         var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
+        if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId)))
+            throw new CisValidationException(ErrorCodes.OfferIdAlreadyLinkedToSalesArrangement, $"OfferId {request.OfferId} has been already linked to another contract");
+        
+        // get default saTypeId from productTypeId
+        int salesArrangementTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
+            .FirstOrDefault(t => t.ProductTypeId == offerInstance.ProductTypeId && t.IsDefault)
+            ?.Id ?? throw new CisNotFoundException(ErrorCodes.OfferDefaultSalesArrangementTypeIdNotFound, $"Default SalesArrangementTypeId for ProductTypeId {offerInstance.ProductTypeId} not found");
+        
         // vytvorit case
         long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
         {
@@ -28,22 +37,27 @@ internal class CreateCaseHandler
         {
             CaseId = caseId,
             OfferId = request.OfferId,
-            ProductTypeId = offerInstance.ProductTypeId
+            SalesArrangementTypeId = salesArrangementTypeId
         }, cancellationToken);
 
         return new Dto.CreateCaseResponse
         {
             SalesArrangementId = salesArrangementId,
-            CaseId = caseId
+            CaseId = caseId,
+            OfferId = offerInstance.OfferId
         };
     }
 
+    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly IMediator _mediator;
     private readonly ILogger<CreateCaseHandler> _logger;
 
-    public CreateCaseHandler(IOfferServiceAbstraction offerService, ILogger<CreateCaseHandler> logger, IMediator mediator)
+    public CreateCaseHandler(DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService, DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService, IOfferServiceAbstraction offerService, ILogger<CreateCaseHandler> logger, IMediator mediator)
     {
+        _salesArrangementService = salesArrangementService;
+        _codebookService = codebookService;
         _mediator = mediator;
         _logger = logger;
         _offerService = offerService;

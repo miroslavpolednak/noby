@@ -42,7 +42,7 @@ public static class GrpcExceptionHelpers
     public static RpcException CreateRpcException(BaseCisArgumentException exception)
     {
         if (string.IsNullOrEmpty(exception.ParamName))
-            throw new ArgumentOutOfRangeException("paramName", "paramName is empty");
+            throw new ArgumentOutOfRangeException(nameof(exception.ParamName), "paramName is empty");
 
         return CreateRpcException(StatusCode.InvalidArgument, exception.Message, exception.ExceptionCode, new()
         {

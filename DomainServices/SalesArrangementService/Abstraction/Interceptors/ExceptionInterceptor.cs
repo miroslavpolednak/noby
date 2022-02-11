@@ -42,12 +42,22 @@ internal class ExceptionInterceptor : Interceptor
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            int code = ex.GetExceptionCodeFromTrailers();
-            string arg = ex.GetArgumentFromTrailers() ?? "";
-            string message = ex.GetErrorMessageFromRpcException();
-
-            _logger.InvalidArgument(code, arg, message, ex);
-            throw new CisArgumentException(code, message, arg);
+            // try list of errors first
+            var messages = ex.GetErrorMessagesFromRpcException();
+            if (messages.Any()) // most likely its validation exception
+            {
+                _logger.ValidationException(messages);
+                throw new CisValidationException(messages);
+            }
+            else // its single argument exception
+            {
+                int code = ex.GetExceptionCodeFromTrailers();
+                string arg = ex.GetArgumentFromTrailers() ?? "";
+                string message = ex.GetErrorMessageFromRpcException();
+                
+                _logger.InvalidArgument(code, arg, message, ex);
+                throw new CisArgumentException(code, message, arg);    
+            }
         }
         catch (Exception ex) when (ex is not RpcException)
         {

@@ -2,7 +2,6 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "google/protobuf/wrappers.proto";
 import "GrpcDecimal.proto";
 
 message CaseData {

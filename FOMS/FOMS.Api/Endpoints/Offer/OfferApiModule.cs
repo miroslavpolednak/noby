@@ -27,5 +27,11 @@ internal class OfferApiModule : IApiEndpointModule
             .MapGet(_prefix + "/mortgage/sales-arrangement/{salesArrangementId:int}", async (int salesArrangementId) => await mediatr.Send(new Dto.GetMortgageBySalesArrangementRequest(salesArrangementId)))
             .WithTags("Offer Module")
             .Produces<Dto.GetMortgageResponse>(StatusCodes.Status200OK);
+        
+        // hypoteka - zalozeni case
+        builder
+            .MapPost(_prefix + "/mortgage/create-case", async (Dto.CreateCaseRequest request) => await mediatr.Send(request))
+            .WithTags("Offer Module")
+            .Produces<Dto.CreateCaseResponse>(StatusCodes.Status200OK);
     }
 }

@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "SalesArrangement.proto";
+
+message GetSalesArrangementByOfferIdRequest {
+	int32 OfferId = 1;
+}
+
+message GetSalesArrangementByOfferIdResponse {
+    bool IsExisting = 1;
+    
+    DomainServices.SalesArrangementService.SalesArrangement Instance = 2;
+}

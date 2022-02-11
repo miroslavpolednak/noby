@@ -10,6 +10,7 @@ import "GetSalesArrangement.proto";
 import "LinkModelationToSalesArrangement.proto";
 import "UpdateSalesArrangementState.proto";
 import "GetSalesArrangementList.proto";
+import "GetSalesArrangementByOfferId.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -17,6 +18,9 @@ service SalesArrangementService {
    
 	// zakladni informace o SA
 	rpc GetSalesArrangement (DomainServices.SalesArrangementService.GetSalesArrangementRequest) returns (DomainServices.SalesArrangementService.SalesArrangement);
+	
+	// vrait SA pro danou modelaci
+    rpc GetSalesArrangementByOfferId (DomainServices.SalesArrangementService.GetSalesArrangementByOfferIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementByOfferIdResponse);
 
 	// update stavu SA
 	rpc UpdateSalesArrangementState (DomainServices.SalesArrangementService.UpdateSalesArrangementStateRequest) returns (google.protobuf.Empty);
