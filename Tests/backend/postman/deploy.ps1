@@ -25,7 +25,7 @@ if (!(Test-Path -Path $installDirectory/$postmanTemplateGitVersion))
 {
     Push-Location
     cd ~/tmp-be-tests
-    git clone https://git.kb.cz/scm/tcoe/project-template-postman.git
+    git clone https://$env:UserName@git.kb.cz/scm/tcoe/project-template-postman.git
     Push-Location
     cd project-template-postman
     git checkout $postmanTemplateGitVersion
