@@ -22,4 +22,6 @@ message SalesArrangement {
 
 	// Uzivatel, ktery SA vytvoril
 	cis.types.ModificationStamp Created = 6;
+	
+	string ContractNumber = 7;
 }

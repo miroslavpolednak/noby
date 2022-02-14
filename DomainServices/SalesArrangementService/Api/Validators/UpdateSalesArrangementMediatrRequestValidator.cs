@@ -2,10 +2,10 @@
 
 namespace DomainServices.SalesArrangementService.Api.Validators;
 
-internal class UpdateSalesArrangementDataMediatrRequestValidator
-    : AbstractValidator<Dto.UpdateSalesArrangementDataMediatrRequest>
+internal class UpdateSalesArrangementMediatrRequestValidator
+    : AbstractValidator<Dto.UpdateSalesArrangementMediatrRequest>
 {
-    public UpdateSalesArrangementDataMediatrRequestValidator()
+    public UpdateSalesArrangementMediatrRequestValidator()
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)

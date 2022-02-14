@@ -37,14 +37,6 @@ public interface ISalesArrangementServiceAbstraction
     Task<IServiceCallResult> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Vraci JSON data pro dany Sales Arrangement
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetSalesArrangementDataResponse] - OK;
-    /// </returns>
-    Task<IServiceCallResult> GetSalesArrangementData(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
-
-    /// <summary>
     /// Napojeni OfferInstance na SA
     /// </summary>
     /// <returns>
@@ -75,8 +67,6 @@ public interface ISalesArrangementServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16007; SalesArrangement {} is already in state {}</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementType, int state, CancellationToken cancellationToken = default(CancellationToken));
-    
-    //Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update obsahu SA
@@ -84,5 +74,5 @@ public interface ISalesArrangementServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
-    Task<IServiceCallResult> UpdateSalesArrangementData(int salesArrangementId, string data, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, CancellationToken cancellationToken = default(CancellationToken));
 }

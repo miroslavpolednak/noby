@@ -13,6 +13,8 @@ message CreateSalesArrangementRequest {
 
 	// ID modelace, ktera je spojena s timto SA - neni povinne
 	google.protobuf.Int32Value OfferId = 3;
+	
+	string ContractNumber = 4;
 }
 
 message CreateSalesArrangementResponse {

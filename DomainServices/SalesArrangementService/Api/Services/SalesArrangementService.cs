@@ -21,20 +21,14 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
     public override async Task<GetSalesArrangementByOfferIdResponse> GetSalesArrangementByOfferId(GetSalesArrangementByOfferIdRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetSalesArrangementByOfferIdMediatrRequest(request));
 
-    public override async Task<GetSalesArrangementDataResponse> GetSalesArrangementData(SalesArrangementIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetSalesArrangementDataMediatrRequest(request));
-
     public override async Task<GetSalesArrangementListResponse> GetSalesArrangementList(GetSalesArrangementListRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetSalesArrangementListMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangementState(UpdateSalesArrangementStateRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateSalesArrangementStateMediatrRequest(request));
 
-    public override async Task<ValidateSalesArrangementResponse> ValidateSalesArrangement(SalesArrangementIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.ValidateSalesArrangementMediatrRequest(request));
-
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangementData(UpdateSalesArrangementDataRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.UpdateSalesArrangementDataMediatrRequest(request));
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangement(UpdateSalesArrangementRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkModelationToSalesArrangement(LinkModelationToSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(request));

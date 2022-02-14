@@ -26,9 +26,6 @@ internal class SalesArrangementServiceRepository
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
             .FirstOrDefaultAsync(cancellation);
 
-    public async Task<Entities.SalesArrangementData?> GetSalesArrangementData(int salesArrangementId)
-        => await _dbContext.SalesArrangementsData.AsNoTracking().FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
-    
     public async Task UpdateOfferId(int salesArrangementId, int offerId, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
@@ -36,22 +33,11 @@ internal class SalesArrangementServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task UpdateSalesArrangementData(int salesArrangementId, string data)
+    public async Task UpdateSalesArrangement(int salesArrangementId, string contractNumber, CancellationToken cancellation)
     {
-        var entity = await _dbContext.SalesArrangementsData
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementId);
-        
-        if (entity is null)
-            _dbContext.SalesArrangementsData.Add(new Entities.SalesArrangementData
-            {
-                SalesArrangementId = salesArrangementId,
-                Data = data
-            });
-        else
-            entity.Data = data;
-
-        await _dbContext.SaveChangesAsync();
+        var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
+        entity.ContractNumber = contractNumber;
+        await _dbContext.SaveChangesAsync(cancellation);
     }
 
     public async Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellation)

@@ -1,13 +1,13 @@
 ﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class UpdateSalesArrangementDataHandler
-    : IRequestHandler<Dto.UpdateSalesArrangementDataMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<Dto.UpdateSalesArrangementMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementDataMediatrRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementDataHandler), request.Request.SalesArrangementId);
 
-        await _repository.UpdateSalesArrangementData(request.Request.SalesArrangementId, request.Request.Data);
+        await _repository.UpdateSalesArrangement(request.Request.SalesArrangementId, request.Request.ContractNumber, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

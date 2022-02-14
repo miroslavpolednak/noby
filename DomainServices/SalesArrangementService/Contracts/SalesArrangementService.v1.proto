@@ -3,7 +3,6 @@ package DomainServices.SalesArrangementService.v1;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "SalesArrangementServiceTypes.proto";
 import "CreateSalesArrangement.proto";
 import "SalesArrangement.proto";
 import "GetSalesArrangement.proto";
@@ -11,6 +10,7 @@ import "LinkModelationToSalesArrangement.proto";
 import "UpdateSalesArrangementState.proto";
 import "GetSalesArrangementList.proto";
 import "GetSalesArrangementByOfferId.proto";
+import "UpdateSalesArrangement.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -28,12 +28,9 @@ service SalesArrangementService {
 	// nalinkovani nove modelace na existujici SA
 	rpc LinkModelationToSalesArrangement (LinkModelationToSalesArrangementRequest) returns (google.protobuf.Empty);
 
-	rpc GetSalesArrangementData (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementDataResponse);
-   
 	// vraci vsechny SA pro dane CaseId
 	rpc GetSalesArrangementList (DomainServices.SalesArrangementService.GetSalesArrangementListRequest) returns (DomainServices.SalesArrangementService.GetSalesArrangementListResponse);
    
-	rpc ValidateSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (DomainServices.SalesArrangementService.ValidateSalesArrangementResponse);
-   
-	rpc UpdateSalesArrangementData (DomainServices.SalesArrangementService.UpdateSalesArrangementDataRequest) returns (google.protobuf.Empty);
+    // updatuje SA - cislo smlouvy
+	rpc UpdateSalesArrangement (DomainServices.SalesArrangementService.UpdateSalesArrangementRequest) returns (google.protobuf.Empty);
 }

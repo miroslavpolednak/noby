@@ -33,6 +33,7 @@ internal class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             State = defaultSaState,
             StateUpdateTime = DateTime.Now,
+            ContractNumber = request.Request.ContractNumber,
             OfferId = request.Request.OfferId
         };
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
