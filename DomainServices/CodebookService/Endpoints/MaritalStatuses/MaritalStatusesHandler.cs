@@ -5,17 +5,18 @@ namespace DomainServices.CodebookService.Endpoints.MaritalStatuses;
 public class MaritalStatusesHandler
     : IRequestHandler<MaritalStatusesRequest, List<MaritalStatusItem>>
 {
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<List<MaritalStatusItem>> Handle(MaritalStatusesRequest request, CancellationToken cancellationToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public Task<List<MaritalStatusItem>> Handle(MaritalStatusesRequest request, CancellationToken cancellationToken)
     {
-        return new()
+        var model = new List<MaritalStatusItem>()
         {
-            new MaritalStatusItem() { Id = 1, Name = "Svobodný(á)", C4mStatus = "S" },
-            new MaritalStatusItem() { Id = 2, Name = "Ženatý/Vdaná", C4mStatus = "M" },
-            new MaritalStatusItem() { Id = 3, Name = "Rozvedený(á)", C4mStatus = "D" },
-            new MaritalStatusItem() { Id = 4, Name = "Vdoved/vdova", C4mStatus = "W" },
-            new MaritalStatusItem() { Id = 5, Name = "Registrovaný/á partner/ka", C4mStatus = "R" }
+            new MaritalStatusItem() { Id = 0, Name = "neuveden", IsValid = true },
+            new MaritalStatusItem() { Id = 1, Name = "svobodný(á)", RdmMaritalStatusCode = "S", IsValid = true },
+            new MaritalStatusItem() { Id = 2, Name = "ženatý/Vdaná", RdmMaritalStatusCode = "M", IsValid = true },
+            new MaritalStatusItem() { Id = 3, Name = "rozvedený(á)", RdmMaritalStatusCode = "D", IsValid = true },
+            new MaritalStatusItem() { Id = 4, Name = "vdoved/vdova", RdmMaritalStatusCode = "W", IsValid = true },
+            new MaritalStatusItem() { Id = 4, Name = "druh/družka", RdmMaritalStatusCode = "S", IsValid = true },
+            new MaritalStatusItem() { Id = 5, Name = "registrovaný/á partner/ka", RdmMaritalStatusCode = "R", IsValid = true }
         };
+        return Task.FromResult(model);
     }
 }
