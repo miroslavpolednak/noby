@@ -32,7 +32,7 @@ internal class CreateSalesArrangementHandler
             CaseId = request.Request.CaseId,
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             State = defaultSaState,
-            StateUpdateTime = DateTime.Now,
+            StateUpdateTime = _dateTime.Now,
             ContractNumber = request.Request.ContractNumber,
             OfferId = request.Request.OfferId
         };
@@ -48,14 +48,17 @@ internal class CreateSalesArrangementHandler
     private readonly CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
-
+    private readonly CIS.Core.IDateTime _dateTime;
+    
     public CreateSalesArrangementHandler(
+        CIS.Core.IDateTime dateTime,
         OfferService.Abstraction.IOfferServiceAbstraction offerService,
         CaseService.Abstraction.ICaseServiceAbstraction caseService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Repositories.SalesArrangementServiceRepository repository,
         ILogger<CreateSalesArrangementHandler> logger)
     {
+        _dateTime = dateTime;
         _offerService = offerService;
         _caseService = caseService;
         _codebookService = codebookService;

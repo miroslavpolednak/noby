@@ -6,9 +6,9 @@ namespace DomainServices.CaseService.Api.Repositories;
 internal sealed class CaseServiceDbContext : BaseDbContext
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public CaseServiceDbContext(DbContextOptions<CaseServiceDbContext> options, CIS.Core.Security.ICurrentUserAccessor userProvider)
+    public CaseServiceDbContext(DbContextOptions<CaseServiceDbContext> options, CIS.Core.Security.ICurrentUserAccessor userProvider, CIS.Core.IDateTime dateTime)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        : base(options, userProvider) { }
+        : base(options, userProvider, dateTime) { }
 
     public DbSet<Entities.Case> Cases { get; set; }
 

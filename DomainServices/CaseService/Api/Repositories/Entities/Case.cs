@@ -34,13 +34,13 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     /// <summary>
     /// Vytvoreni entity z Create Requestu
     /// </summary>
-    public static Case Create(long caseId, CreateCaseRequest request)
+    public static Case Create(long caseId, CreateCaseRequest request, DateTime now)
     {
         var entity = new Case
         {
             CaseId = caseId,
 
-            StateUpdateTime = DateTime.Now,
+            StateUpdateTime = now,
             ProductTypeId = request.Data.ProductTypeId,
 
             Name = request.Customer.Name,

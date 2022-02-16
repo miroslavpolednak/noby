@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CIS.Infrastructure.Data;
+using Microsoft.VisualBasic;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
 
 internal sealed class SalesArrangementServiceDbContext : BaseDbContext
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public SalesArrangementServiceDbContext(DbContextOptions<SalesArrangementServiceDbContext> options, CIS.Core.Security.ICurrentUserAccessor userProvider)
+    public SalesArrangementServiceDbContext(DbContextOptions<SalesArrangementServiceDbContext> options, CIS.Core.Security.ICurrentUserAccessor userProvider, CIS.Core.IDateTime dateTime)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        : base(options, userProvider) { }
+        : base(options, userProvider, dateTime) { }
 
     public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }
     public DbSet<Entities.SalesArrangementData> SalesArrangementsData { get; set; }

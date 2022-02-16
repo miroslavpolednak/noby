@@ -34,7 +34,7 @@ internal class CreateCaseHandler
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
-        var entity = Repositories.Entities.Case.Create(newCaseId, request.Request);
+        var entity = Repositories.Entities.Case.Create(newCaseId, request.Request, _dateTime.Now);
         entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
 
@@ -82,6 +82,7 @@ internal class CreateCaseHandler
             _ => throw new NotImplementedException()
         };
 
+    private readonly CIS.Core.IDateTime _dateTime;
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly Eas.IEasClient _easClient;
@@ -89,12 +90,14 @@ internal class CreateCaseHandler
     private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
 
     public CreateCaseHandler(
+        CIS.Core.IDateTime dateTime,
         UserService.Abstraction.IUserServiceAbstraction userService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Eas.IEasClient easClient,
         Repositories.CaseServiceRepository repository,
         ILogger<CreateCaseHandler> logger)
     {
+        _dateTime = dateTime;
         _userService = userService;
         _easClient = easClient;
         _repository = repository;

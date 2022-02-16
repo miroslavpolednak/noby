@@ -44,7 +44,7 @@ internal class SalesArrangementServiceRepository
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.State = state;
-        entity.StateUpdateTime = DateTime.Now;
+        entity.StateUpdateTime = _dateTime.Now;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
@@ -61,9 +61,11 @@ internal class SalesArrangementServiceRepository
         => await _dbContext.SalesArrangements.FindAsync(new object[] { salesArrangementId }, cancellation) ?? throw new CisNotFoundException(16000, $"Sales arrangement ID {salesArrangementId} does not exist.");
 
     private readonly SalesArrangementServiceDbContext _dbContext;
+    private readonly CIS.Core.IDateTime _dateTime;
 
-    public SalesArrangementServiceRepository(SalesArrangementServiceDbContext dbContext)
+    public SalesArrangementServiceRepository(SalesArrangementServiceDbContext dbContext, CIS.Core.IDateTime datetime)
     {
+        _dateTime = datetime;
         _dbContext = dbContext;
     }
 }
