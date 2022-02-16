@@ -8,11 +8,14 @@ internal class GetMortgageHandler
     #region Construction
 
     private readonly ILogger<GetMortgageHandler> _logger;
+    protected readonly Repositories.LoanRepository _repository;
 
     public GetMortgageHandler(
-        ILogger<GetMortgageHandler> logger)
+        ILogger<GetMortgageHandler> logger,
+         Repositories.LoanRepository repository)
     {
         _logger = logger;
+        _repository = repository;
     }
 
     #endregion
@@ -21,10 +24,12 @@ internal class GetMortgageHandler
     {
         _logger.RequestHandlerStarted(nameof(GetMortgageHandler));
 
+        var entity = await _repository.GetLoan(request.Request.ProductId, cancellation);
+
         // TODO:
         var model = new GetMortgageResponse
-        {
-            
+        { 
+            Mortgage = entity.ToMortgage()
         };
 
         return model;

@@ -44,6 +44,18 @@ public static class StartupExtensions
                     });
                 break;
 
+            case Versions.V1_1:
+                if (mpHomeConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Mock)
+                    services.AddScoped<V1._1.IMpHomeClient, V1._1.MockMpHomeClient>();
+                else
+                    services.AddHttpClient<V1._1.IMpHomeClient, V1._1.RealMpHomeClient>(c =>
+                    {
+                        c.BaseAddress = new Uri(mpHomeConfiguration.ServiceUrl);
+                        var byteArray = Encoding.ASCII.GetBytes($"{mpHomeConfiguration.Username}:{mpHomeConfiguration.Password}");
+                        c.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                    });
+                break;
+
             default:
                 throw new NotImplementedException($"MpHome version {mpHomeConfiguration.Version} client not implemented");
         }

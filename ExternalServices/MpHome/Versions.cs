@@ -3,6 +3,7 @@
     public enum Versions
     {
         Unknown,
-        V1
+        V1,
+        V1_1,
     }
 }

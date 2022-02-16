@@ -43,6 +43,11 @@ internal static class StartupExtensions
         builder.Services.AddDapper<Repositories.NobyDbRepository>(builder.Configuration.GetConnectionString("noby"));
         builder.Services.AddDapper<Repositories.KonsDbRepository>(builder.Configuration.GetConnectionString("konsdb"));
 
+        // dbcontext
+        string connectionString = builder.Configuration.GetConnectionString("konsdb");
+        builder.Services.AddDbContext<Repositories.ProductServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+
+
         // repos
         builder.Services.AddScoped<Repositories.KonsDbRepository>();
         builder.Services.AddScoped<Repositories.NobyDbRepository>();
