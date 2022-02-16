@@ -7,5 +7,5 @@ internal sealed class CaseCustomerUpdatedRequest
     public DateTime? DateOfBirthNaturalPerson { get; set; }
     public string? FirstNameNaturalPerson { get; set; }
     public string? Name { get; set; }
-    public CIS.Core.Types.CustomerIdentity? Customer { get; set; }
+    public CIS.Foms.Types.CustomerIdentity? Customer { get; set; }
 }

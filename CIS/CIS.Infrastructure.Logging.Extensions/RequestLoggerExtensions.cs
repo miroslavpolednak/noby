@@ -12,17 +12,17 @@ public static class RequestLoggerExtensions
     {
         _requestHandlerStarted = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(501, nameof(RequestHandlerStarted)),
+            new EventId(EventIdCodes.RequestHandlerStarted, nameof(RequestHandlerStarted)),
             "Request in {HandlerName} started");
 
         _requestHandlerStartedWithId = LoggerMessage.Define<string, long>(
             LogLevel.Debug,
-            new EventId(502, nameof(RequestHandlerStartedWithId)),
+            new EventId(EventIdCodes.RequestHandlerStartedWithId, nameof(RequestHandlerStartedWithId)),
             "Request in {HandlerName} started with ID {Id}");
 
         _requestHandlerFinished = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(503, nameof(RequestHandlerFinished)),
+            new EventId(EventIdCodes.RequestHandlerFinished, nameof(RequestHandlerFinished)),
             "Request in {HandlerName} finished");
     }
 

@@ -13,7 +13,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
-        public CIS.Core.Enums.Mandants Mandant { get; set; }
+        public CIS.Foms.Enums.Mandants Mandant { get; set; }
 
         [DataMember(Order = 4)]
         [JsonIgnore]

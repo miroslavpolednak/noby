@@ -1,4 +1,6 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -17,7 +19,7 @@ internal class GetSalesArrangementsListHandler
             throw new CisNotFoundException(16006, $"SalesArrangementState does not exist.");
 
         // kontrola existence noveho stavu
-        int[] requiredStates = request.Request.States.Any() ? request.Request.States.Select(t => t).ToArray() : new[] { (int)CIS.Core.Enums.SalesArrangementStates.Cancelled };
+        var requiredStates = getRequiredStates(request.Request.States, availableStates);
 
         var listData = await _repository.GetSalesArrangements(request.Request.CaseId, requiredStates, cancellation);
 
@@ -26,12 +28,23 @@ internal class GetSalesArrangementsListHandler
         return model;
     }
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private static IEnumerable<int> getRequiredStates(IEnumerable<int> states, List<SalesArrangementStateItem> availableStates)
+    {
+        if (states.Any()) 
+            return states;
+        else if (_defaultStatesToQuery is null)
+            _defaultStatesToQuery = availableStates.Where(t => t.Id != (int)CIS.Foms.Enums.SalesArrangementStates.Cancelled).Select(t => t.Id).ToArray();
+        return _defaultStatesToQuery;
+    }
+
+    private readonly ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<GetSalesArrangementsListHandler> _logger;
 
+    private static int[]? _defaultStatesToQuery;
+
     public GetSalesArrangementsListHandler(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        ICodebookServiceAbstraction codebookService,
         Repositories.SalesArrangementServiceRepository repository,
         ILogger<GetSalesArrangementsListHandler> logger)
     {

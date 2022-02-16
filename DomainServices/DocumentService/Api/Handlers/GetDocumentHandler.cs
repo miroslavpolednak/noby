@@ -22,7 +22,7 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentMediatrRequest, G
     {
         _logger.LogInformation("Get document [DocumentId: {id}, Mandant: {mandant}]", request.DocumentId, request.Mandant);
 
-        if (request.Mandant != CIS.Core.Enums.IdentitySchemes.Kb)
+        if (request.Mandant != CIS.Foms.Enums.IdentitySchemes.Kb)
         {
             throw new NotSupportedException($"Mandant '{request.Mandant}' is not supported");
         }

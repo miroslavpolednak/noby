@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-
-namespace FOMS.Api.Notifications;
+﻿namespace FOMS.Api.Notifications;
 
 internal sealed class CaseCustomerUpdated
     : INotificationHandler<Requests.CaseCustomerUpdatedRequest>

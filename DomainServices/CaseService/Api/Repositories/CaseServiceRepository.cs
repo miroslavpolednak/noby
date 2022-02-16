@@ -98,7 +98,7 @@ internal class CaseServiceRepository
         var entity = await getCaseEntity(caseId, cancellation);
 
         entity.State = state;
-        entity.StateUpdateTime = DateTime.Now;
+        entity.StateUpdateTime = _dateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellation);
     }
@@ -111,7 +111,7 @@ internal class CaseServiceRepository
         entity.Name = customer.Name;
         entity.FirstNameNaturalPerson = customer.FirstNameNaturalPerson;
         entity.CustomerIdentityId = customer.Identity?.IdentityId;
-        entity.CustomerIdentityScheme = (CIS.Core.Enums.IdentitySchemes)Convert.ToInt32(customer.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
+        entity.CustomerIdentityScheme = (CIS.Foms.Enums.IdentitySchemes)Convert.ToInt32(customer.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
 
         await _dbContext.SaveChangesAsync(cancellation);
     }
@@ -120,9 +120,11 @@ internal class CaseServiceRepository
         => await _dbContext.Cases.FindAsync(new object[] { caseId }, cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
 
     private readonly CaseServiceDbContext _dbContext;
+    private readonly CIS.Core.IDateTime _dateTime;
 
-    public CaseServiceRepository(CaseServiceDbContext dbContext)
+    public CaseServiceRepository(CaseServiceDbContext dbContext, CIS.Core.IDateTime dateTime)
     {
+        _dateTime = dateTime;
         _dbContext = dbContext;
     }
 }

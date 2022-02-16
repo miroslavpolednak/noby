@@ -5,9 +5,9 @@ namespace FOMS.Api.Endpoints.Offer.Dto;
 internal sealed class CreateCaseRequest
     : IRequest<CreateCaseResponse>, IValidatableRequest
 {
-    public int OfferInstanceId { get; set; }
+    public int OfferId { get; set; }
 
-    public CIS.Core.Types.CustomerIdentity? Customer { get; set; }
+    public CIS.Foms.Types.CustomerIdentity? Customer { get; set; }
 
     public string? FirstName { get; set; }
 

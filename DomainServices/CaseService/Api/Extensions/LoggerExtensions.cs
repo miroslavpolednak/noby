@@ -11,22 +11,22 @@ internal static class LoggerExtensions
     {
         _newCaseIdCreated = LoggerMessage.Define<long>(
             LogLevel.Debug,
-            new EventId(13501, nameof(NewCaseIdCreated)),
+            new EventId(LoggerEventIdCodes.NewCaseIdCreated, nameof(NewCaseIdCreated)),
             "Case {CaseId} created");
 
         _linkCaseToOwnerStart = LoggerMessage.Define<int, long>(
             LogLevel.Debug,
-            new EventId(13502, nameof(LinkCaseToOwnerStart)),
+            new EventId(LoggerEventIdCodes.LinkCaseToOwnerStart, nameof(LinkCaseToOwnerStart)),
             "Link Owner #{UserId} to Case #{CaseId}");
 
         _searchCasesStart = LoggerMessage.Define<CIS.Core.Types.Paginable>(
             LogLevel.Debug,
-            new EventId(13503, nameof(SearchCasesStart)),
+            new EventId(LoggerEventIdCodes.SearchCasesStart, nameof(SearchCasesStart)),
             "Request in SearchCases started with {Pagination}");
 
         _updateCaseStateStart = LoggerMessage.Define<long, int>(
             LogLevel.Debug,
-            new EventId(13504, nameof(UpdateCaseStateStart)),
+            new EventId(LoggerEventIdCodes.UpdateCaseStateStart, nameof(UpdateCaseStateStart)),
             "Update Case #{CaseId} state to {State}");
     }
 

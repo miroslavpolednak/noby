@@ -9,18 +9,18 @@ internal static class OfferApiModuleLoggerExtensions
     {
         _simulateMortgageStarted = LoggerMessage.Define<Dto.SimulateMortgageRequest>(
             LogLevel.Debug,
-            new EventId(90101, nameof(SimulateMortgageStarted)),
+            new EventId(LoggerEventIdCodes.OfferSimulateMortgageStarted, nameof(OfferSimulateMortgageStarted)),
             "Case {CaseId} created");
         
         _simulateMortgageResult = LoggerMessage.Define<Dto.SimulateMortgageResponse>(
             LogLevel.Debug,
-            new EventId(90102, nameof(SimulateMortgageResult)),
+            new EventId(LoggerEventIdCodes.OfferSimulateMortgageResult, nameof(OfferSimulateMortgageResult)),
             "Mortgage simulate results: {Results}");
     }
 
-    public static void SimulateMortgageStarted(this ILogger logger, Dto.SimulateMortgageRequest request)
+    public static void OfferSimulateMortgageStarted(this ILogger logger, Dto.SimulateMortgageRequest request)
         => _simulateMortgageStarted(logger, request, null!);
     
-    public static void SimulateMortgageResult(this ILogger logger, Dto.SimulateMortgageResponse result)
+    public static void OfferSimulateMortgageResult(this ILogger logger, Dto.SimulateMortgageResponse result)
         => _simulateMortgageResult(logger, result, null!);
 }

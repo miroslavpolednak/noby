@@ -9,7 +9,7 @@ internal class GetMortgageHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgageHandler), request.OfferId);
 
-        var result = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.SimulateMortgageResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
+        var result = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
         _logger.RequestHandlerFinished(nameof(GetMortgageHandler));
 

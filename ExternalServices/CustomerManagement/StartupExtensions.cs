@@ -11,7 +11,7 @@ public static class StartupExtensions
             throw new ArgumentNullException(nameof(configuration), "CustomerManagement configuration not set");
         if (!configuration.UseServiceDiscovery && string.IsNullOrEmpty(configuration.ServiceUrl))
             throw new ArgumentNullException("ServiceUrl", "CustomerManagement Service URL must be defined");
-        if (configuration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Unknown)
+        if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new ArgumentException("ImplementationType", "CustomerManagement Service client Implementation type is not set");
 
         services.AddSingleton(provider =>
@@ -32,7 +32,7 @@ public static class StartupExtensions
         switch (configuration.Version)
         {
             case Versions.V1:
-                if (configuration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Mock)
+                if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
                     services.AddScoped<V1.ICMClient, V1.MockCMClient>();
                 else
                     services.AddHttpClient<V1.ICMClient, V1.RealCMClient>(c =>

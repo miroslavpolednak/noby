@@ -4,6 +4,6 @@ internal sealed class SharedCreateSalesArrangementRequest
     : IRequest<int>
 {
     public long CaseId { get; set; }
-    public int ProductTypeId { get; set; }
-    public int? OfferInstanceId { get; set; }
+    public int SalesArrangementTypeId { get; set; }
+    public int? OfferId { get; set; }
 }

@@ -8,13 +8,13 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementStates
         public Task<List<SalesArrangementStateItem>> Handle(SalesArrangementStatesRequest request, CancellationToken cancellationToken)
         {
             //TODO nakesovat?
-            var values = Enum.GetValues<CIS.Core.Enums.SalesArrangementStates>()
+            var values = Enum.GetValues<CIS.Foms.Enums.SalesArrangementStates>()
                 .Select(t => new SalesArrangementStateItem
                 {
                     Id = (int)t,
                     Value = t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
-                    IsDefault = t.HasAttribute<CIS.Core.Enums.Attributes.CisDefaultValueAttribute>()
+                    IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
                 })
                 .ToList();
     

@@ -38,17 +38,17 @@ internal abstract class BaseDocumentProcessor
 
     protected async Task<TContract?> getSalesArrangementData<TContract>() where TContract : class
     {
-        var result = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementDataResponse>(await _salesArrangementService.GetSalesArrangementData(_salesArrangement.SalesArrangementId));
+        /*var result = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementDataResponse>(await _salesArrangementService.GetSalesArrangementData(_salesArrangement.SalesArrangementId));
         if (result.SalesArrangementDataId.HasValue && !string.IsNullOrEmpty(result.Data))
             return System.Text.Json.JsonSerializer.Deserialize<TContract>(result.Data) ?? throw new Exception($"Deserialization of contract {typeof(TContract)} failed");
-        else
+        else*/
             return null;
     }
 
     protected async void saveSalesArrangementData(object data)
     {
         string convertedSaObject = System.Text.Json.JsonSerializer.Serialize(data);
-        ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangementData(_salesArrangement.SalesArrangementId, convertedSaObject));
+        //ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangementData(_salesArrangement.SalesArrangementId, convertedSaObject));
     }
 
     public BaseDocumentProcessor(ServiceAccessor serviceAccessor, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement)

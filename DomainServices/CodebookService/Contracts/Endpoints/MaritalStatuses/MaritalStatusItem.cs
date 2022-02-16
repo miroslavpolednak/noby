@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.MaritalStatuses
 {
@@ -12,6 +13,11 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.MaritalStatuses
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
-        public string C4mStatus { get; set; }
+        [JsonIgnore]
+        public string RdmMaritalStatusCode { get; set; }
+        
+        [DataMember(Order = 4)]
+        [JsonIgnore]
+        public bool IsValid { get; set; }
     }
 }

@@ -2,7 +2,8 @@
 
 namespace DomainServices.SalesArrangementService.Api.Validators;
 
-internal class CreateSalesArrangementMediatrRequestValidator : AbstractValidator<Dto.CreateSalesArrangementMediatrRequest>
+internal class CreateSalesArrangementMediatrRequestValidator 
+    : AbstractValidator<Dto.CreateSalesArrangementMediatrRequest>
 {
     public CreateSalesArrangementMediatrRequestValidator()
     {

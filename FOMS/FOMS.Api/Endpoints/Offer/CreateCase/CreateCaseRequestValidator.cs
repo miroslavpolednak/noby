@@ -7,9 +7,9 @@ internal class CreateCaseRequestValidator
 {
     public CreateCaseRequestValidator()
     {
-        RuleFor(t => t.OfferInstanceId)
+        RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferInstanceId is not set");
+            .WithMessage("OfferId is not set");
 
         RuleFor(t => t.FirstName)
             .NotEmpty()

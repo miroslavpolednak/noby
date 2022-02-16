@@ -1,12 +1,12 @@
-﻿using CIS.Core.Results;
-
-namespace FOMS.Api.SharedHandlers;
+﻿namespace FOMS.Api.SharedHandlers;
 
 internal sealed class SharedCreateCaseHandler
     : IRequestHandler<Requests.SharedCreateCaseRequest, long>
 {
     public async Task<long> Handle(Requests.SharedCreateCaseRequest request, CancellationToken cancellationToken)
     {
+        _logger.SharedCreateCaseStarted(request);
+        
         var model = new DomainServices.CaseService.Contracts.CreateCaseRequest()
         {
             CaseOwnerUserId = _userAccessor.User.Id,
@@ -15,6 +15,7 @@ internal sealed class SharedCreateCaseHandler
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName,
                 Name = request.LastName,
+                Identity = request.Customer is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Customer)
             },
             Data = new DomainServices.CaseService.Contracts.CaseData
             {
@@ -22,27 +23,23 @@ internal sealed class SharedCreateCaseHandler
                 TargetAmount = request.TargetAmount
             }
         };
-        if (request.Customer is not null)
-            model.Customer.Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Customer);
 
-        _logger.LogDebug("Attempt to create case {data}", model);
-        long caseId = resolveResult(await _caseService.CreateCase(model, cancellationToken));
-        _logger.LogDebug("Case #{caseId} created", caseId);
-
-        return caseId;
-    }
-
-    private long resolveResult(IServiceCallResult result) =>
-        result switch
+        try
         {
-            SuccessfulServiceCallResult<long> r => r.Model,
-            ErrorServiceCallResult e2 => throw new CIS.Core.Exceptions.CisValidationException(e2.Errors),
-            _ => throw new NotImplementedException()
-        };
-
+            long caseId = ServiceCallResult.Resolve<long>(await _caseService.CreateCase(model, cancellationToken));
+            _logger.EntityCreated("Case", caseId);
+            return caseId;
+        }
+        catch (CisArgumentException ex)
+        {
+            // rethrow to be catched by validation middleware
+            throw new CisValidationException(ex);
+        }
+    }
+    
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private ILogger<SharedCreateCaseHandler> _logger;
+    private readonly ILogger<SharedCreateCaseHandler> _logger;
 
     public SharedCreateCaseHandler(
         ILogger<SharedCreateCaseHandler> logger,

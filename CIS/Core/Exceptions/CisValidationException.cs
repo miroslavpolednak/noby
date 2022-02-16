@@ -19,6 +19,11 @@ public class CisValidationException : BaseCisException
     {
     }
 
+    public CisValidationException(CisArgumentException exception) 
+        : base(exception.ExceptionCode, exception.Message)
+    {
+    }
+    
     public CisValidationException(IEnumerable<(string Key, string Message)> errors, string message = "") 
         : base(BaseCisException.UnknownExceptionCode, message)
     {

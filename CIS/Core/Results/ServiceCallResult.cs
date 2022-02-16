@@ -23,10 +23,18 @@ public static class ServiceCallResult
             _ => default(TModel)
         };
 
+    public static bool IsEmptyResult(IServiceCallResult result) =>
+        result switch
+        {
+            EmptyServiceCallResult => true,
+            _ => false
+        };
+    
     public static bool IsSuccessResult(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult => true,
+            EmptyServiceCallResult => true,
             _ => false
         };
 }

@@ -1,18 +1,17 @@
-﻿namespace CIS.Core.Results
-{
-    public class SuccessfulServiceCallResult : IServiceCallResult
-    {
-        public bool Success => true;
-    }
+﻿namespace CIS.Core.Results;
 
-    public sealed class SuccessfulServiceCallResult<TModel> 
-        : SuccessfulServiceCallResult
+public class SuccessfulServiceCallResult : IServiceCallResult
+{
+    public bool Success => true;
+}
+
+public sealed class SuccessfulServiceCallResult<TModel> 
+    : SuccessfulServiceCallResult
+{
+    public TModel Model { get; init; }
+    
+    public SuccessfulServiceCallResult(TModel model)
     {
-        public TModel Model { get; init; }
-        
-        public SuccessfulServiceCallResult(TModel model)
-        {
-            Model = model;
-        }
+        Model = model;
     }
 }

@@ -32,8 +32,7 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
             }
         }
 
-        private const string _sqlQuery =
-            "SELECT Id, Name, ProductTypeId, IsDefault FROM [dbo].[SalesArrangementType] ORDER BY Name ASC";
+        private const string _sqlQuery = "SELECT Id, Name, ProductTypeId, IsDefault FROM [dbo].[SalesArrangementType]";
 
         private readonly CIS.Core.Data.IConnectionProvider _connectionProvider;
         private readonly ILogger<SalesArrangementTypesHandler> _logger;

@@ -11,12 +11,12 @@ public static class CacheLoggerExtensions
     {
         _itemFoundInCache = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(520, nameof(ItemFoundInCache)),
+            new EventId(EventIdCodes.ItemFoundInCache, nameof(ItemFoundInCache)),
             "Item with key '{Key}' found in cache");
 
         _tryAddItemToCache = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(521, nameof(TryAddItemToCache)),
+            new EventId(EventIdCodes.TryAddItemToCache, nameof(TryAddItemToCache)),
             "Try to add key '{Key}' to cache");
     }
 

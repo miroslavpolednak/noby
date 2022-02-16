@@ -31,7 +31,7 @@ public class FixedLengthPeriodsHandler
     }
 
     const string _sqlQuery = @"
-SELECT PERIODA_FIXACE 'FixedLengthPeriod', 1 'ProductTypeId' 
+SELECT PERIODA_FIXACE 'FixedLengthPeriod', 20001 'ProductTypeId' 
 FROM SBR.CIS_PERIODY_FIXACE 
 WHERE PLATNOST_OD<GETDATE() AND PLATNOST_DO IS NULL";
 

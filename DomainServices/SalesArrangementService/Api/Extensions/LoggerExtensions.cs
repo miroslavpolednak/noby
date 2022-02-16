@@ -10,17 +10,17 @@ internal static class LoggerExtensions
     {
         _createSalesArrangementStarted = LoggerMessage.Define<int, long, int?>(
             LogLevel.Debug,
-            new EventId(16501, nameof(CreateSalesArrangementStarted)),
+            new EventId(LoggerEventIdCodes.CreateSalesArrangementStarted, nameof(CreateSalesArrangementStarted)),
             "Create SA {SalesArrangementTypeId} for #{CaseId}/#{OfferId}");
 
         _linkToModelationStarted = LoggerMessage.Define<int, int>(
             LogLevel.Debug,
-            new EventId(16502, nameof(LinkToModelationStarted)),
+            new EventId(LoggerEventIdCodes.LinkToModelationStarted, nameof(LinkToModelationStarted)),
             "Link Offer {OfferId} to {SalesArrangementId}");
 
         _updateStateStarted = LoggerMessage.Define<int, int>(
             LogLevel.Debug,
-            new EventId(16502, nameof(UpdateStateStarted)),
+            new EventId(LoggerEventIdCodes.UpdateStateStarted, nameof(UpdateStateStarted)),
             "Update SA #{SalesArrangementId} State to {State}");
     }
 

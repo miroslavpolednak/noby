@@ -12,7 +12,7 @@ public static class StartupExtensions
             throw new ArgumentNullException(nameof(eSignaturesConfiguration), "ESignatures configuration not set");
         if (!eSignaturesConfiguration.UseServiceDiscovery && string.IsNullOrEmpty(eSignaturesConfiguration.ServiceUrl))
             throw new ArgumentNullException("ServiceUrl", "ESignatures Service URL must be defined");
-        if (eSignaturesConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Unknown)
+        if (eSignaturesConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new ArgumentException("ImplementationType", "ESignatures Service client Implementation type is not set");
 
         services.AddSingleton(provider =>
@@ -33,7 +33,7 @@ public static class StartupExtensions
         switch (eSignaturesConfiguration.Version)
         {
             case Versions.V1:
-                if (eSignaturesConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Mock)
+                if (eSignaturesConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
                     services.AddScoped<V1.IESignaturesClient, V1.MockESignaturesClient>();
                 else
                     services.AddHttpClient<V1.IESignaturesClient, V1.RealESignaturesClient>(c =>

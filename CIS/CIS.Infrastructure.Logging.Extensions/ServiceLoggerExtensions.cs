@@ -11,12 +11,12 @@ public static class ServiceLoggerExtensions
     {
         _serviceUnavailable = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(512, nameof(ServiceUnavailable)),
+            new EventId(EventIdCodes.ServiceUnavailable, nameof(ServiceUnavailable)),
             "{ServiceName} unavailable");
 
         _extServiceUnavailable = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(513, nameof(ExtServiceUnavailable)),
+            new EventId(EventIdCodes.ExtServiceUnavailable, nameof(ExtServiceUnavailable)),
             "Some of underlying services for '{ParentServiceName}' are not available or failed to call");
     }
 

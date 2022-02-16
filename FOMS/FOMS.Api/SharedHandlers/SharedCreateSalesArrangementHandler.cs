@@ -1,22 +1,27 @@
-﻿using CIS.Core.Results;
-using DomainServices.OfferService.Abstraction;
-
-namespace FOMS.Api.SharedHandlers;
+﻿namespace FOMS.Api.SharedHandlers;
 
 internal sealed class SharedCreateSalesArrangementHandler
     : IRequestHandler<Requests.SharedCreateSalesArrangementRequest, int>
 {
     public async Task<int> Handle(Requests.SharedCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Attempt to create sales arrangement {data}", request);
-        int saId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.ProductTypeId, request.OfferInstanceId, cancellationToken));
-        _logger.LogDebug("Sales arrangement #{saId} created", saId);
+        _logger.SharedCreateSalesArrangementStarted(request);
 
-        return saId;
+        try
+        {
+            int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.SalesArrangementTypeId, request.OfferId, cancellationToken));
+            _logger.EntityCreated("SalesArrangement", salesArrangementId);
+            return salesArrangementId;
+        }
+        catch (CisArgumentException ex)
+        {
+            // rethrow to be catched by validation middleware
+            throw new CisValidationException(ex);
+        }
     }
 
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private ILogger<SharedCreateSalesArrangementHandler> _logger;
+    private readonly ILogger<SharedCreateSalesArrangementHandler> _logger;
 
     public SharedCreateSalesArrangementHandler(
         ILogger<SharedCreateSalesArrangementHandler> logger,

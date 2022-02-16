@@ -10,7 +10,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementSta
         public int Id { get; set; }
         
         [DataMember(Order = 2)]
-        public CIS.Core.Enums.SalesArrangementStates Value { get; set; }
+        public CIS.Foms.Enums.SalesArrangementStates Value { get; set; }
         
         [DataMember(Order = 3)]
         public string Name { get; set; }

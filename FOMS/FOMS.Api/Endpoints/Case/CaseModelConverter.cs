@@ -25,7 +25,7 @@ internal class CaseModelConverter
 		=> new Dto.CaseModel
         {
 			CaseId = model.CaseId,
-			State = model.State,
+			State = (CIS.Foms.Enums.CaseStates)model.State,
 			StateName = caseStates.First(x => x.Id == model.State).Name,
 			StateUpdated = model.StateUpdatedOn,
 			ActionRequired = model.ActionRequired,

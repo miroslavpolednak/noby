@@ -1,4 +1,6 @@
-﻿using CIS.Core.Data;
+﻿using CIS.Core.Attributes;
+using CIS.Core.Data;
+using CIS.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -9,14 +11,14 @@ public abstract class BaseDbContext : DbContext
     /// <summary>
     /// ID of current user
     /// </summary>
-#pragma warning disable CA1707 // Identifiers should not contain underscores
-    protected Core.Security.ICurrentUser? _currentUser { get; init; }
-#pragma warning restore CA1707 // Identifiers should not contain underscores
+    protected Core.Security.ICurrentUser? CurrentUser { get; init; }
+    private readonly CIS.Core.IDateTime _dateTime;
 
-    public BaseDbContext(DbContextOptions options, Core.Security.ICurrentUserAccessor userProvider)
+    public BaseDbContext(DbContextOptions options, Core.Security.ICurrentUserAccessor userProvider, CIS.Core.IDateTime dateTime)
         : base(options)
     {
-        _currentUser = userProvider.User;
+        _dateTime = dateTime;
+        CurrentUser = userProvider.User;
     }
 
     /// <summary>
@@ -76,25 +78,25 @@ public abstract class BaseDbContext : DbContext
                 case EntityState.Added:
                     if (entry.Entity is ICreated obj1 && obj1.CreatedUserId == 0)
                     {
-                        if (_currentUser is not null)
+                        if (CurrentUser is not null)
                         {
-                            obj1.CreatedUserId = _currentUser.Id;
-                            obj1.CreatedUserName = _currentUser.Name;
+                            obj1.CreatedUserId = CurrentUser.Id;
+                            obj1.CreatedUserName = CurrentUser.Name;
                         }
-                        obj1.CreatedTime = DateTime.Now;
+                        obj1.CreatedTime = _dateTime.Now;
                     }
-                    if (_currentUser is not null && entry.Entity is IModifiedUser obj2)
+                    if (CurrentUser is not null && entry.Entity is IModifiedUser obj2)
                     {
-                        obj2.ModifiedUserId = _currentUser.Id;
-                        obj2.ModifiedUserName = _currentUser.Name;
+                        obj2.ModifiedUserId = CurrentUser.Id;
+                        obj2.ModifiedUserName = CurrentUser.Name;
                     }
                     break;
 
                 case EntityState.Modified:
-                    if (_currentUser is not null && entry.Entity is IModifiedUser obj3)
+                    if (CurrentUser is not null && entry.Entity is IModifiedUser obj3)
                     {
-                        obj3.ModifiedUserId = _currentUser.Id;
-                        obj3.ModifiedUserName = _currentUser.Name;
+                        obj3.ModifiedUserId = CurrentUser.Id;
+                        obj3.ModifiedUserName = CurrentUser.Name;
                     }
                     break;
             }
