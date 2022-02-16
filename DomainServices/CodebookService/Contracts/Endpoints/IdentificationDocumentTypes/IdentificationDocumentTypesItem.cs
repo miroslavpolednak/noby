@@ -18,7 +18,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocum
 
         [DataMember(Order = 4)]
         [JsonIgnore]
-        public string KbCode { get; set; }
+        public string RDMCode { get; set; }
 
         [DataMember(Order = 5)]
         public bool IsDefault { get; set; }
