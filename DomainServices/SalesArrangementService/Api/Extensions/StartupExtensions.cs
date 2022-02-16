@@ -33,8 +33,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 
         // dbcontext
-        string connectionString = builder.Configuration.GetConnectionString("default");
-        builder.Services.AddDbContext<Repositories.SalesArrangementServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();
 
         builder.Services.AddHttpContextAccessor();
         builder.AddCisCurrentUser();

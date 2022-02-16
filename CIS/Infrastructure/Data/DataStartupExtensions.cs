@@ -1,4 +1,6 @@
 ﻿using CIS.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Infrastructure.StartupExtensions;
 
@@ -16,5 +18,20 @@ public static class DataStartupExtensions
         services.AddSingleton<CIS.Core.Data.IConnectionProvider<TConnectionProvider>>(new SqlConnectionProvider<TConnectionProvider>(connectionString));
 
         return services;
+    }
+
+    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, string connectionStringKey = "default", CisEntityFrameworkOptions? cisOptions = null)
+        where TDbContext : DbContext
+    {
+        // add custom CIS options
+        builder.Services.TryAddSingleton(cisOptions ?? new CisEntityFrameworkOptions());
+
+        builder.Services.TryAddScoped<BaseDbContextAggregate>();
+        
+        // add DbContext
+        string connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
+        builder.Services.AddDbContext<TDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        
+        return builder;
     }
 }

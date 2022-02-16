@@ -35,8 +35,7 @@ internal static class StartupExtensions
         //registerMpHome(appConfiguration.EAS?.Implementation, services);
 
         // dbcontext
-        string connectionString = builder.Configuration.GetConnectionString("default");
-        builder.Services.AddDbContext<Repositories.CaseServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        builder.AddEntityFramework<Repositories.CaseServiceDbContext>();
 
         builder.Services.AddHttpContextAccessor();
         builder.AddCisCurrentUser();
