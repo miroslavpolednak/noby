@@ -23,8 +23,8 @@ internal class GetListHandler
         {
             SalesArrangementTypeId = t.SalesArrangementTypeId,
             SalesArrangementTypeText = saTypeList.First(x => x.Id == t.SalesArrangementTypeId).Name,
-            State = (CIS.Core.Enums.SalesArrangementStates)t.State,
-            StateText = ((CIS.Core.Enums.SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
+            State = (CIS.Foms.Enums.SalesArrangementStates)t.State,
+            StateText = ((CIS.Foms.Enums.SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
             OfferId = t.OfferId,
             CreatedBy = t.Created.UserName,
             CreatedTime = t.Created.DateTime

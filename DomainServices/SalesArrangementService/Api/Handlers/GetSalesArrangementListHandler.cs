@@ -33,7 +33,7 @@ internal class GetSalesArrangementsListHandler
         if (states.Any()) 
             return states;
         else if (_defaultStatesToQuery is null)
-            _defaultStatesToQuery = availableStates.Where(t => t.Id != (int)CIS.Core.Enums.SalesArrangementStates.Cancelled).Select(t => t.Id).ToArray();
+            _defaultStatesToQuery = availableStates.Where(t => t.Id != (int)CIS.Foms.Enums.SalesArrangementStates.Cancelled).Select(t => t.Id).ToArray();
         return _defaultStatesToQuery;
     }
 

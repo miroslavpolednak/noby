@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace CIS.Core.Enums;
+namespace CIS.Foms.Enums;
 
 [DataContract]
-public enum IdentitySchemes : byte
+public enum Mandants : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace CIS.Core.Enums;
+namespace CIS.Foms.Enums;
 
 [DataContract]
 public enum SignatureTypes : byte

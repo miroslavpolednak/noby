@@ -10,7 +10,7 @@ public class SignatureTypeItem
 
     [DataMember(Order = 2)]
     [JsonIgnore]
-    public CIS.Core.Enums.SignatureTypes Value { get; set; }
+    public CIS.Foms.Enums.SignatureTypes Value { get; set; }
     
     [DataMember(Order = 3)]
     public string Name { get; set; }

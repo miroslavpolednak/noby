@@ -1,11 +1,14 @@
-﻿namespace CIS.Core.Types;
+﻿using CIS.Core.Exceptions;
+using CIS.Foms.Enums;
+
+namespace CIS.Foms.Types;
 
 public record CustomerIdentity
 {
     public int Id { get; }
-    public Enums.IdentitySchemes Scheme { get; }
+    public IdentitySchemes Scheme { get; }
 
-    public CustomerIdentity(int id, Enums.IdentitySchemes scheme)
+    public CustomerIdentity(int id, IdentitySchemes scheme)
     {
         Id = id;
         Scheme = scheme;
@@ -18,22 +21,22 @@ public record CustomerIdentity
     {
         Id = id;
         if (!Enum.TryParse(scheme, out Enums.IdentitySchemes parsedScheme))
-            throw new Exceptions.CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(scheme));
+            throw new CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(scheme));
         Scheme = parsedScheme;
     }
 
     public CustomerIdentity(string token)
     {
         if (string.IsNullOrEmpty(token))
-            throw new Exceptions.CisArgumentNullException(1, "CustomerIdentity token is null or empty", nameof(token));
+            throw new CisArgumentNullException(1, "CustomerIdentity token is null or empty", nameof(token));
 
         int idx = token.IndexOf(':');
         if (idx < 1)
-            throw new Exceptions.CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
+            throw new CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
         if (!int.TryParse(token.AsSpan(idx + 1), out int id))
-            throw new Exceptions.CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
+            throw new CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
         if (!Enum.TryParse(token.Substring(0, idx), out Enums.IdentitySchemes parsedScheme))
-            throw new Exceptions.CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(token));
+            throw new CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(token));
 
         Id = id;
         Scheme = parsedScheme;

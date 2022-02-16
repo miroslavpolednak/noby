@@ -11,13 +11,13 @@ public static class StartupExtensions
             throw new ArgumentNullException(nameof(easConfiguration), "EAS configuration not set");
         if (!easConfiguration.UseServiceDiscovery && string.IsNullOrEmpty(easConfiguration.ServiceUrl))
             throw new ArgumentNullException("ServiceUrl", "EAS Service URL must be defined");
-        if (easConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Unknown)
+        if (easConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new ArgumentException("ImplementationType", "Service client Implementation type is not set");
 
         switch (easConfiguration.Version)
         {
             case Versions.R21:
-                if (easConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Mock)
+                if (easConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
                     services.AddScoped<R21.IEasClient, R21.MockEasClient>();
                 else
                     services.AddScoped<R21.IEasClient, R21.RealEasClient>();

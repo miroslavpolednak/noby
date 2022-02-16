@@ -21,7 +21,7 @@ internal sealed class RealEasClient
         });
     }
 
-    public async Task<IServiceCallResult> GetCaseId(CIS.Core.Enums.IdentitySchemes mandant, int productTypeId)
+    public async Task<IServiceCallResult> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId)
     {
         return await callMethod(async () =>
         {

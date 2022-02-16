@@ -31,7 +31,7 @@ public interface IEasClient
     /// ErrorServiceCallResult(10008, $"EAS Endpoint '{}' not found)
     /// </returns>
     /// <exception cref="System.Exception">Jakakoliv interni chyba EAS</exception>
-    Task<IServiceCallResult> GetCaseId(CIS.Core.Enums.IdentitySchemes mandant, int productTypeId);
+    Task<IServiceCallResult> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId);
 
     /// <summary>
     /// Vytvori noveho klienta (rezervace partnerId)

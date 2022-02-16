@@ -8,7 +8,7 @@ public class MandantTypesHandler
     public Task<List<MandantsItem>> Handle(MandantsRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Core.Enums.Mandants>()
+        var values = Enum.GetValues<CIS.Foms.Enums.Mandants>()
             .Where(t => t > 0)
             .Select(t => new MandantsItem
             {

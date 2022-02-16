@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using CIS.Core.Attributes;
 
-namespace CIS.Core.Enums;
+namespace CIS.Foms.Enums;
 
 [DataContract]
 public enum SalesArrangementStates : byte
@@ -12,7 +13,7 @@ public enum SalesArrangementStates : byte
     
     [EnumMember]
     [Display(Name = "Rozpracováno")]
-    [Attributes.CisDefaultValue]
+    [CisDefaultValue]
     InProcess = 1,
         
     [EnumMember]

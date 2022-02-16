@@ -1,4 +1,4 @@
-﻿using CIS.Core.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.DocumentService.Contracts;
 
 namespace DomainServices.DocumentService.Api.Dto;

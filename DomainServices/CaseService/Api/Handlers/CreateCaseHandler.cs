@@ -24,7 +24,7 @@ internal class CreateCaseHandler
         //TODO zkontrolovat existenci klienta?
 
         // pro jakou spolecnost
-        var mandant = productTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage ? CIS.Core.Enums.IdentitySchemes.Kb : CIS.Core.Enums.IdentitySchemes.Mp;
+        var mandant = productTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage ? CIS.Foms.Enums.IdentitySchemes.Kb : CIS.Foms.Enums.IdentitySchemes.Mp;
 
         // get default case state
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;

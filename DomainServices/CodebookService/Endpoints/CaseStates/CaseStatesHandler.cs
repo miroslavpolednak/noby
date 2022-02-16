@@ -8,13 +8,13 @@ public class CaseStatesHandler
     public Task<List<CaseStateItem>> Handle(CaseStatesRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Core.Enums.CaseStates>()
+        var values = Enum.GetValues<CIS.Foms.Enums.CaseStates>()
             .Select(t => new CaseStateItem
             {
                 Id = (int)t,
                 Value = t,
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
-                IsDefault = t.HasAttribute<CIS.Core.Enums.Attributes.CisDefaultValueAttribute>()
+                IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
             })
             .ToList();
 

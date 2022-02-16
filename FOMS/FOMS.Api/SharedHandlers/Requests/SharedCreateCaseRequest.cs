@@ -9,6 +9,6 @@
         public string? LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public decimal TargetAmount { get; set; }
-        public CIS.Core.Types.CustomerIdentity? Customer { get; set; }
+        public CIS.Foms.Types.CustomerIdentity? Customer { get; set; }
     }
 }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
+    <ProjectReference Include="..\..\..\CIS\CIS.Foms.Types\CIS.Foms.Types.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
   </ItemGroup>

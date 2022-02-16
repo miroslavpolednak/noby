@@ -1,4 +1,4 @@
-﻿using CIS.Core.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.Core.Results;
 using DomainServices.DocumentService.Abstraction.Interfaces;
 

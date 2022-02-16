@@ -7,7 +7,7 @@ internal sealed class CreateCaseRequest
 {
     public int OfferId { get; set; }
 
-    public CIS.Core.Types.CustomerIdentity? Customer { get; set; }
+    public CIS.Foms.Types.CustomerIdentity? Customer { get; set; }
 
     public string? FirstName { get; set; }
 
