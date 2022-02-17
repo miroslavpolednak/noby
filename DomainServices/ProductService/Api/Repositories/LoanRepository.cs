@@ -41,7 +41,15 @@ internal class LoanRepository
     {
         return await _dbContext.Relationships
             .AsNoTracking()
-            .Where(t => t.Id == loanId && t.PartnerId == partnerId)
+            .Where(t => t.UverId == loanId && t.PartnerId == partnerId)
+            .AnyAsync(cancellation);
+    }
+
+    public async Task<bool> ExistsPartner(long partnerId, CancellationToken cancellation)
+    {
+        return await _dbContext.Partners
+            .AsNoTracking()
+            .Where(t => t.Id == partnerId)
             .AnyAsync(cancellation);
     }
 }

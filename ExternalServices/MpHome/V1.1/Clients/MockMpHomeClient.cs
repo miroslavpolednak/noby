@@ -10,5 +10,15 @@ namespace ExternalServices.MpHome.V1._1
             return await Task.FromResult(new SuccessfulServiceCallResult());
         }
 
+        public async Task<IServiceCallResult> UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest)
+        {
+            return await Task.FromResult(new SuccessfulServiceCallResult());
+        }
+
+        public async Task<IServiceCallResult> DeletePartnerLoanLink(long loanId, long partnerId)
+        {
+            return await Task.FromResult(new SuccessfulServiceCallResult());
+        }
+
     }
 }

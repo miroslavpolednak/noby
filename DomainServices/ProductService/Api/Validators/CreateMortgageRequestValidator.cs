@@ -13,6 +13,10 @@ internal class CreateMortgageRequestValidator : AbstractValidator<Dto.CreateMort
         RuleFor(t => t.Request.Mortgage.ProductTypeId)
             .GreaterThan(0)
             .WithMessage("ProductTypeId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
+        RuleFor(t => t.Request.Mortgage.PartnerId)
+            .GreaterThan(0)
+            .WithMessage("PartnerId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
     }
 }
 

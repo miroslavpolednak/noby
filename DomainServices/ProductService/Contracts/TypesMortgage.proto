@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.ProductService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 
 
@@ -45,21 +46,19 @@ message DeleteContractRelationshipRequest {
 
 
 message MortgageData {
-	google.protobuf.Int64Value PartnerId = 1;
+	int32 PartnerId = 1;
 	string ContractNumber = 2;
-	cis.types.GrpcDecimal LoanAmount = 3; // to nullable
-	cis.types.GrpcDecimal LoanInterestRate = 4; // to nullable
+	cis.types.NullableGrpcDecimal LoanAmount = 3;
+	cis.types.NullableGrpcDecimal LoanInterestRate = 4;
 	google.protobuf.Int32Value FixedRatePeriod = 5;
 	int32 ProductTypeId = 6;
-	cis.types.GrpcDecimal LoanPaymentAmount = 7; // to nullable
+	cis.types.NullableGrpcDecimal LoanPaymentAmount = 7;
 	google.protobuf.Int32Value LoanActionCode = 8;
 	cis.types.GrpcDecimal CurrentAmount = 9;
 	cis.types.NullableGrpcDate DrawingMaxOn = 10;
 	cis.types.NullableGrpcDate VUP = 11;
 	google.protobuf.BoolValue Statement = 12;
 	repeated Relationship Relationships = 13;
-
-	google.protobuf.Int64Value CaseId = 20; //???
 }
 
 message Relationship {

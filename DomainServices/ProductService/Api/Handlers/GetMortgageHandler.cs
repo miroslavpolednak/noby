@@ -24,12 +24,12 @@ internal class GetMortgageHandler
     {
         _logger.RequestHandlerStarted(nameof(GetMortgageHandler));
 
-        var entity = await _repository.GetLoan(request.Request.ProductId, cancellation);
+        var loan = await _repository.GetLoan(request.Request.ProductId, cancellation);
+        var relationships = await _repository.GetRelationships(request.Request.ProductId, cancellation);
 
-        // TODO:
         var model = new GetMortgageResponse
         { 
-            Mortgage = entity.ToMortgage()
+            Mortgage = loan.ToMortgage(relationships)
         };
 
         return model;

@@ -1,19 +1,20 @@
-﻿using DomainServices.ProductService.Contracts;
+﻿using ExternalServices.MpHome.V1._1;
+using ExternalServices.MpHome.V1._1.MpHomeWrapper;
+using DomainServices.CodebookService.Abstraction;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
 internal class DeleteContractRelationshipHandler
-    : IRequestHandler<Dto.DeleteContractRelationshipMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : BaseMortgageHandler, IRequestHandler<Dto.DeleteContractRelationshipMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     #region Construction
 
-    private readonly ILogger<DeleteContractRelationshipHandler> _logger;
-
     public DeleteContractRelationshipHandler(
-        ILogger<DeleteContractRelationshipHandler> logger)
-    {
-        _logger = logger;
-    }
+        ICodebookServiceAbstraction codebookService,
+        Repositories.LoanRepository repository,
+        IMpHomeClient mpHomeClient,
+        ILogger<DeleteContractRelationshipHandler> logger) : base(codebookService, repository, mpHomeClient, logger)
+    { }
 
     #endregion
 
@@ -21,7 +22,15 @@ internal class DeleteContractRelationshipHandler
     {
         _logger.RequestHandlerStarted(nameof(DeleteContractRelationshipHandler));
 
-        // TODO:
+        // check if relationship exists
+        var relationshipExists = await _repository.ExistsRelationship(request.Request.ProductId, request.Request.PartnerId, cancellation);
+        if (!relationshipExists)
+        {
+            throw new CisNotFoundException(13014, nameof(Repositories.Entities.Relationship)); //TODO: error code
+        }
+
+        // call endpoint
+        var result = await _mpHomeClient.DeletePartnerLoanLink(request.Request.ProductId, request.Request.PartnerId); // TODO: check result
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

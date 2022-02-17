@@ -23,6 +23,40 @@ namespace ExternalServices.MpHome.V1._1
             });
         }
 
+        
+        public async Task<IServiceCallResult> UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest)
+        {
+            _logger.LogDebug("Run inputs: MpHome UpdateLoanPartnerLink with loanId {loanId}, partnerId {partnerId}, LoanLinkRequest {loanLinkRequest}", loanId, partnerId, System.Text.Json.JsonSerializer.Serialize(loanLinkRequest));
+
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsUpdateLoanPartnerLinkAsync( loanId, partnerId, loanLinkRequest);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
+        }
+
+        public async Task<IServiceCallResult> DeletePartnerLoanLink(long loanId, long partnerId)
+        {
+            _logger.LogDebug("Run inputs: MpHome DeletePartnerLoanLink with loanId {loanId}, partnerId {partnerId}", loanId, partnerId);
+
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    await c.FomsDeletePartnerLoanLinkAsync(loanId, partnerId);
+
+                    return new SuccessfulServiceCallResult();
+                });
+
+            });
+        }
+
+
         private Client CreateClient()
             => new(_httpClient?.BaseAddress?.ToString(), _httpClient);
 

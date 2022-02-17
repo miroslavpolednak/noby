@@ -8,11 +8,14 @@ internal class GetProductListHandler
     #region Construction
 
     private readonly ILogger<GetProductListHandler> _logger;
+    protected readonly Repositories.LoanRepository _repository;
 
     public GetProductListHandler(
-        ILogger<GetProductListHandler> logger)
+        ILogger<GetProductListHandler> logger,
+        Repositories.LoanRepository repository)
     {
         _logger = logger;
+        _repository = repository;
     }
 
     #endregion
@@ -21,11 +24,22 @@ internal class GetProductListHandler
     {
         _logger.RequestHandlerStarted(nameof(GetProductListHandler));
 
-        // TODO:
-        var model = new GetProductListResponse
+        // create response
+        var model = new GetProductListResponse();
+
+        // add mortgage product if exists
+        var loanExists = await _repository.ExistsLoan(request.Request.CaseId, cancellation);
+
+        if (loanExists)
         {
-            
-        };
+            var product = new Product
+            {
+                ProductId = request.Request.CaseId,
+                ProductTypeId = 99999, //TODO: find out ProductTypeId by ProductTypeCategory Mortgage
+            };
+
+            model.Products.Add(product);
+        }
 
         return model;
     }

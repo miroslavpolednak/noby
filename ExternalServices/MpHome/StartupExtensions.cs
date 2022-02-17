@@ -45,7 +45,7 @@ public static class StartupExtensions
                 break;
 
             case Versions.V1_1:
-                if (mpHomeConfiguration.ImplementationType == CIS.Core.Enums.ServiceImplementationTypes.Mock)
+                if (mpHomeConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
                     services.AddScoped<V1._1.IMpHomeClient, V1._1.MockMpHomeClient>();
                 else
                     services.AddHttpClient<V1._1.IMpHomeClient, V1._1.RealMpHomeClient>(c =>
