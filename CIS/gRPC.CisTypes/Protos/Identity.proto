@@ -2,13 +2,17 @@
 package cis.types;
 option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
 
-import "IdentitySchemas.proto";
-
 // Jednoznacna identifikace klienta s ohledem na ruzne mandanty.
 message Identity {
 	// Id klienta - bud ID_PARTNER nebo KBID
 	int32 identityId = 1;
 
+	enum IdentitySchemas {
+		Unknown = 0;
+		Mp = 1;
+		Kb = 2;
+	}
+
 	// Mandant - KB nebo MP
-	IdentitySchemes identityScheme = 2;
+	IdentitySchemas identityScheme = 2;
 }

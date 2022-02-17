@@ -30,7 +30,7 @@ namespace DomainServices.CodebookService.Endpoints.Countries
             }
         }
 
-        const string _sqlQuery = "SELECT KOD 'Id', TEXT 'Name', TEXT_CELY 'FullName', MENA 'CurrencyCode', CAST(POVOLENO_PRO_MENU_PRIJMU as bit) 'IsAllowedForIncomeChange', CAST(POVOLENO_PRO_MENU_BYDLISTE as bit) 'IsAllowedForResidenceChange' FROM SBR.CIS_STATY ORDER BY TEXT ASC";
+        const string _sqlQuery = "SELECT KOD 'Id', SKRATKA 'Code', TEXT 'Name', TEXT_CELY 'FullName', MENA 'CurrencyCode', CAST(POVOLENO_PRO_MENU_PRIJMU as bit) 'IsAllowedForIncomeChange', CAST(POVOLENO_PRO_MENU_BYDLISTE as bit) 'IsAllowedForResidenceChange' FROM SBR.CIS_STATY ORDER BY TEXT ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<CountriesHandler> _logger;

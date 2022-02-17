@@ -10,20 +10,24 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.Countries
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        public string Name { get; set; }
+        [JsonIgnore]
+        public string Code { get; set; }
 
         [DataMember(Order = 3)]
-        public string FullName { get; set; }
+        public string Name { get; set; }
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
-        public string CurrencyCode { get; set; }
+        public string FullName { get; set; }
 
         [DataMember(Order = 5)]
         [JsonIgnore]
-        public bool IsAllowedForIncomeChange { get; set; }
+        public string CurrencyCode { get; set; }
 
         [DataMember(Order = 6)]
+        [JsonIgnore]
+        public bool IsAllowedForIncomeChange { get; set; }
+
+        [DataMember(Order = 7)]
         [JsonIgnore]
         public bool IsAllowedForResidenceChange { get; set; }
     }
