@@ -1,9 +1,0 @@
-﻿syntax = "proto3";
-package cis.types;
-option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
-
-enum IdentitySchemes {
-	Unknown = 0;
-	Mp = 1;
-	Kb = 2;
-}

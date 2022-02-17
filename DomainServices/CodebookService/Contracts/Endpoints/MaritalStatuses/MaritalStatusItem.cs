@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.MaritalStatuses
 
         [DataMember(Order = 3)]
         [JsonIgnore]
-        public string RdmMaritalStatusCode { get; set; }
+        public string RDMCode { get; set; }
         
         [DataMember(Order = 4)]
         [JsonIgnore]

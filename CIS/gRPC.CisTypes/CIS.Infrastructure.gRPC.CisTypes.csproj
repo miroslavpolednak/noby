@@ -35,7 +35,6 @@
 		<Protobuf Include="./Protos/GrpcDecimal.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
 		<Protobuf Include="./Protos/ModificationStamp.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
 		<Protobuf Include="./Protos/GrpcDateTime.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
-		<Protobuf Include="./Protos/IdentitySchemas.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
 		<Protobuf Include="./Protos/Identity.proto" GrpcServices="None" ProtoRoot="./Protos" Access="Public" />
 		<Protobuf Include="./Protos/NullableGrpcDate.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/PaginationResponse.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
