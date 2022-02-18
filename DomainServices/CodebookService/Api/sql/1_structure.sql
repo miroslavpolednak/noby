@@ -26,3 +26,37 @@ CREATE TABLE [dbo].[ProductTypeExtension](
      )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+
+CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
+    [RelationshipCustomerProductTypeId] [int] NOT NULL,
+    [MpHomeApiContractRelationshipType] [varchar](50) NOT NULL,
+    CONSTRAINT [PK_RelationshipCustomerProductTypeExtension] PRIMARY KEY CLUSTERED
+    (
+    [RelationshipCustomerProductTypeId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+/*
+TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
+GO
+
+INSERT INTO [dbo].[RelationshipCustomerProductTypeExtension]
+           ([RelationshipCustomerProductTypeId],[MpHomeApiContractRelationshipType])
+     VALUES
+           (0,'NotSpecified'),
+		   (1,'Owner'),
+		   (2,'CoDebtor'),
+		   (3,'Accessor'),
+		   (4,'HusbandOrWife'),
+		   (5,'LegalRepresentative'),
+		   (6,'CollisionGuardian'),
+		   (7,'Guardian'),
+		   (8,'Guarantor'),
+		   (9,'GuarantorHusbandOrWife'),
+		   (11,'Intermediary'),
+		   (12,'ManagingDirector'),
+		   (13,'Child');
+GO
+*/
