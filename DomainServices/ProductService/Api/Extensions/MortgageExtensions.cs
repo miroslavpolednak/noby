@@ -40,7 +40,7 @@ internal static class MortgageExtensions
     {
         var mortgage = new MortgageData
         {
-            PartnerId = (int)eLoan.PartnerId,
+            PartnerId = (int)(eLoan.PartnerId ?? default),
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
