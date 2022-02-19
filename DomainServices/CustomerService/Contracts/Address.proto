@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message Address {
+	
+   int32 AddressTypeId = 1;
+   
+   bool IsPrimary = 2;
+   
+   string Street = 3;
+   
+   string BuildingIdentificationNumber = 4;
+   
+   string LandRegistryNumber = 5;
+   
+   string Postcode = 6;
+
+   string City = 7;
+
+   google.protobuf.Int32Value CountryId = 8;
+
+}

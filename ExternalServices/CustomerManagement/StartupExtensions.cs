@@ -5,7 +5,7 @@ namespace ExternalServices.CustomerManagement;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddExternalServiceMpHome(this IServiceCollection services, CMConfiguration? configuration)
+    public static IServiceCollection AddExternalServiceCustomerManagement(this IServiceCollection services, CMConfiguration? configuration)
     {
         if (configuration == null)
             throw new ArgumentNullException(nameof(configuration), "CustomerManagement configuration not set");

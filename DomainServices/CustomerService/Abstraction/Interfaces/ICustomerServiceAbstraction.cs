@@ -5,13 +5,11 @@ namespace DomainServices.CustomerService.Abstraction
 {
     public interface ICustomerServiceAbstraction
     {
-        Task<IServiceCallResult> GetBasicDataByIdentifier(GetBasicDataByIdentifierRequest request);
+        Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request);
 
-        Task<IServiceCallResult> GetBasicDataByFullIdentification(GetBasicDataByFullIdentificationRequest request);
+        Task<IServiceCallResult> GetCustomerList(CustomerListRequest request);
 
-        Task<IServiceCallResult> GetDetail(GetDetailRequest request);
-
-        Task<IServiceCallResult> GetList(GetListRequest request);
+        Task<IServiceCallResult> GetCustomerDetail(CustomerRequest request);
 
         Task<IServiceCallResult> Create(CreateRequest request);
 

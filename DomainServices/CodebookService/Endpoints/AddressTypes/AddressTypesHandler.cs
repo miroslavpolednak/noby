@@ -5,12 +5,19 @@ namespace DomainServices.CodebookService.Endpoints.AddressTypes;
 public class AddressTypesHandler : IRequestHandler<AddressTypesRequest, List<AddressTypeItem>>
 {
     public Task<List<AddressTypeItem>> Handle(AddressTypesRequest request, CancellationToken cancellationToken)
-    => Task.FromResult(new List<AddressTypeItem>() 
-    { 
-        new AddressTypeItem { Id = 1, Code = "PERMANENT", Name = "Trvalá adresa" },
-        new AddressTypeItem { Id = 2, Code = "MAILING", Name = "Korespondenční" },
-        new AddressTypeItem { Id = 3, Code = "ABROAD", Name = "Adresa v zahraničí pro daňové nerezidenty" }
-    });
+    {
+        var values = Enum.GetValues<CIS.Foms.Enums.AddressTypes>()
+                .Where(t => t > 0)
+                .Select(t => new AddressTypeItem
+                {
+                    Id = (int)t,
+                    Code = t.ToString(),
+                    Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
+                })
+                .ToList();
+
+        return Task.FromResult(values);
+    }
 }
 
 

@@ -1,6 +1,7 @@
 ﻿
 using ExternalServices.Eas;
 using ExternalServices.MpHome;
+using ExternalServices.CustomerManagement;
 
 namespace DomainServices.CustomerService.Api;
 
@@ -20,4 +21,9 @@ internal sealed class AppConfiguration
     /// Konfigurace MpHome sluzby
     /// </summary>
     public MpHomeConfiguration MpHome { get; set; } = new MpHomeConfiguration();
+
+    /// <summary>
+    /// Konfigurace CustomerManagement sluzby
+    /// </summary>
+    public CMConfiguration CustomerManagement { get; set; } = new CMConfiguration();
 }

@@ -1,7 +1,7 @@
-﻿
-using CIS.Core.Results;
+﻿using CIS.Core.Results;
 using CIS.Infrastructure.gRPC;
 using Grpc.Core;
+using CIS.Foms.Enums;
 
 namespace DomainServices.CustomerService.Api;
 
@@ -33,29 +33,29 @@ internal static class MpHomeExtensions
         };
 
         // pridat doklad
-        if (model.IdentificationDocument != null)
-            partner.IdentificationDocuments.Add(model.IdentificationDocument.ToMpHomeIdentificationDocument());
+        //if (model.IdentificationDocument != null)
+        //    partner.IdentificationDocuments.Add(model.IdentificationDocument.ToMpHomeIdentificationDocument());
 
         // pridat adresy
         if (model.Addresses != null && model.Addresses.Any())
             model.Addresses.ToList().ForEach(address => partner.Addresses.Add(address.ToMpHomeAddress()));
 
         // pridat kontakty
-        if (model.Contacts != null && model.Contacts.Any())
-            model.Contacts.ToList().ForEach(contact => partner.Contacts.Add(new MpHome.MpHomeWrapper.ContactRequest
-            {
-                Primary = contact.IsPrimary,
-                Value = contact.Value,
-                RequestedAction = MpHome.MpHomeWrapper.ActionType.Create,
-                Type = contact.Type switch
-                {
-                    Contracts.Contact.Types.ContactTypes.Email => MpHome.MpHomeWrapper.ContactType.Email,
-                    Contracts.Contact.Types.ContactTypes.MobilePrivate => MpHome.MpHomeWrapper.ContactType.Mobile,
-                    Contracts.Contact.Types.ContactTypes.MobileWork => MpHome.MpHomeWrapper.ContactType.BusinessMobile,
-                    Contracts.Contact.Types.ContactTypes.LandlineHome => MpHome.MpHomeWrapper.ContactType.FixedHomeLine,
-                    _ => MpHome.MpHomeWrapper.ContactType.Unknown
-                }
-            }));
+        //if (model.Contacts != null && model.Contacts.Any())
+        //    model.Contacts.ToList().ForEach(contact => partner.Contacts.Add(new MpHome.MpHomeWrapper.ContactRequest
+        //    {
+        //        Primary = contact.IsPrimary,
+        //        Value = contact.Value,
+        //        RequestedAction = MpHome.MpHomeWrapper.ActionType.Create,
+        //        Type = contact.Type switch
+        //        {
+        //            Contracts.Contact.Types.ContactTypes.Email => MpHome.MpHomeWrapper.ContactType.Email,
+        //            Contracts.Contact.Types.ContactTypes.MobilePrivate => MpHome.MpHomeWrapper.ContactType.Mobile,
+        //            Contracts.Contact.Types.ContactTypes.MobileWork => MpHome.MpHomeWrapper.ContactType.BusinessMobile,
+        //            Contracts.Contact.Types.ContactTypes.LandlineHome => MpHome.MpHomeWrapper.ContactType.FixedHomeLine,
+        //            _ => MpHome.MpHomeWrapper.ContactType.Unknown
+        //        }
+        //    }));
 
         return partner;
     }
@@ -81,19 +81,19 @@ internal static class MpHomeExtensions
         };
 
     public static MpHome.MpHomeWrapper.IdentificationDocument ToMpHomeIdentificationDocument(this Contracts.IdentificationDocument model)
-        => new ()
+        => new()
         {
-            Type = model.Type switch
-            {
-                    //TODO IdentificationDocumentTypes na MpHome IdentificationCardType
-                    Contracts.IdentificationDocumentTypes.A => MpHome.MpHomeWrapper.IdentificationCardType.IDCard,
-                Contracts.IdentificationDocumentTypes.B => MpHome.MpHomeWrapper.IdentificationCardType.Passport,
-                _ => MpHome.MpHomeWrapper.IdentificationCardType.Undefined
-            },
+            //Type = model.Type switch
+            //{
+            //    //TODO IdentificationDocumentTypes na MpHome IdentificationCardType
+            //    Contracts.IdentificationDocumentTypes.A => MpHome.MpHomeWrapper.IdentificationCardType.IDCard,
+            //    Contracts.IdentificationDocumentTypes.B => MpHome.MpHomeWrapper.IdentificationCardType.Passport,
+            //    _ => MpHome.MpHomeWrapper.IdentificationCardType.Undefined
+            //},
             IssuedBy = model.IssuedBy,
-            IssuedOn = model.IssuedOn,
-            IssuingCountry = model.IssuingCountryCode,
-            ValidTo = model.ValidTo,
+            //IssuedOn = model.IssuedOn,
+            //IssuingCountry = model.IssuingCountryCode,
+            //ValidTo = model.ValidTo,
             Number = model.Number
         };
 
@@ -105,27 +105,27 @@ internal static class MpHomeExtensions
             LandRegistryNumber = model.LandRegistryNumber,
             PostCode = model.Postcode,
             Street = model.Street,
-            Type = model.Type switch
+            Type = (AddressTypes)model.AddressTypeId switch
             {
-                Contracts.AddressTypes.Pernament => MpHome.MpHomeWrapper.AddressType.Permanent,
-                Contracts.AddressTypes.Mailing => MpHome.MpHomeWrapper.AddressType.Mailing,
+                AddressTypes.PERMANENT => MpHome.MpHomeWrapper.AddressType.Permanent,
+                AddressTypes.MAILING => MpHome.MpHomeWrapper.AddressType.Mailing,
                 _ => MpHome.MpHomeWrapper.AddressType.Unknown,
             }
         };
 
     public static MpHome.MpHomeWrapper.ContactData ToMpHomeContactData(this Contracts.Contact model)
-        => new ()
+        => new()
         {
             Primary = model.IsPrimary,
             Value = model.Value,
-            Type = model.Type switch
-            {
-                Contracts.Contact.Types.ContactTypes.Email => MpHome.MpHomeWrapper.ContactType.Email,
-                Contracts.Contact.Types.ContactTypes.MobilePrivate => MpHome.MpHomeWrapper.ContactType.Mobile,
-                Contracts.Contact.Types.ContactTypes.MobileWork => MpHome.MpHomeWrapper.ContactType.BusinessMobile,
-                Contracts.Contact.Types.ContactTypes.LandlineHome => MpHome.MpHomeWrapper.ContactType.FixedHomeLine,
-                _ => MpHome.MpHomeWrapper.ContactType.Unknown
-            }
+            //Type = model.Type switch
+            //{
+            //    Contracts.Contact.Types.ContactTypes.Email => MpHome.MpHomeWrapper.ContactType.Email,
+            //    Contracts.Contact.Types.ContactTypes.MobilePrivate => MpHome.MpHomeWrapper.ContactType.Mobile,
+            //    Contracts.Contact.Types.ContactTypes.MobileWork => MpHome.MpHomeWrapper.ContactType.BusinessMobile,
+            //    Contracts.Contact.Types.ContactTypes.LandlineHome => MpHome.MpHomeWrapper.ContactType.FixedHomeLine,
+            //    _ => MpHome.MpHomeWrapper.ContactType.Unknown
+            //}
         };
 
     // TODO: jinak, jinam + status, code, text ...

@@ -1,7 +1,9 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.MpHome;
 using ExternalServices.Eas;
+using ExternalServices.CustomerManagement;
 using FluentValidation;
+using DomainServices.CodebookService.Abstraction;
 
 namespace DomainServices.CustomerService.Api;
 
@@ -30,6 +32,12 @@ internal static class StartupExtensions
 
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
+
+        // CustomerManagement
+        builder.Services.AddExternalServiceCustomerManagement(appConfiguration.CustomerManagement);
+
+        // CodebookService
+        builder.Services.AddCodebookService(true);
 
         builder.AddCisCurrentUser();
 

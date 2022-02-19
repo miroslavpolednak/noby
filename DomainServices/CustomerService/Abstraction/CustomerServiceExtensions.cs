@@ -15,7 +15,7 @@ public static class CustomerServiceExtensions
     internal static IServiceCollection AddCustomerServiceTest(this IServiceCollection services, Action<IServiceProvider, Grpc.Net.ClientFactory.GrpcClientFactoryOptions> customConfiguration)
     {
         services
-           .AddGrpcClient<Contracts.CustomerService.CustomerServiceClient>(customConfiguration)
+           .AddGrpcClient<Contracts.V1.CustomerService.CustomerServiceClient>(customConfiguration)
            .AddInterceptor<ExceptionInterceptor>()
            .AddInterceptor<AuthenticationInterceptor>();
 
@@ -31,13 +31,13 @@ public static class CustomerServiceExtensions
 
     public static IServiceCollection AddCustomerService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
         => services
-            .AddGrpcServiceUriSettings<Contracts.CustomerService.CustomerServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(serviceUrl, isInvalidCertificateAllowed)
             .registerServices()
             .registerGrpcServices();
 
     private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
     {
-        if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.CustomerService.CustomerServiceClient>)))
+        if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>)))
         {
             services.AddSingleton(provider =>
             {
@@ -46,7 +46,7 @@ public static class CustomerServiceExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "CustomerService URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "CustomerService URL can not be determined"), isInvalidCertificateAllowed);
             });
         }
         return services;
@@ -68,11 +68,11 @@ public static class CustomerServiceExtensions
 
     private static IServiceCollection registerGrpcServices(this IServiceCollection services)
     {
-        if (!services.Any(t => t.ServiceType == typeof(Contracts.CustomerService.CustomerServiceClient)))
+        if (!services.Any(t => t.ServiceType == typeof(Contracts.V1.CustomerService.CustomerServiceClient)))
         {
             services
-            .AddGrpcClientFromCisEnvironment<Contracts.CustomerService.CustomerServiceClient>()
-            .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.CustomerService.CustomerServiceClient>()
+            .AddGrpcClientFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
+            .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
             .AddInterceptor<ExceptionInterceptor>()
             .AddInterceptor<AuthenticationInterceptor>();
         }
