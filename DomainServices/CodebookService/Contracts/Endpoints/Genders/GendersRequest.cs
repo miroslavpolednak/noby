@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace DomainServices.CodebookService.Contracts.Endpoints.Genders
 {
     [DataContract]
-    public class GendersRequest : IRequest<List<GenericCodebookItem>>
+    public class GendersRequest : IRequest<List<GenderItem>>
     {
     }
 }
