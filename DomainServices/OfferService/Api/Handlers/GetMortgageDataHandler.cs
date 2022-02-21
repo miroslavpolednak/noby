@@ -39,8 +39,8 @@ internal class GetMortgageDataHandler
             ProductTypeId = entity.ProductTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            Inputs = entity.Inputs.ToMortgageInput(),
-            Outputs = entity.Outputs.ToMortgageOutput(),            
+            Inputs = entity.Inputs?.ToMortgageInput(),
+            Outputs = entity.Outputs?.ToMortgageOutput(),            
         };
 
         return model;

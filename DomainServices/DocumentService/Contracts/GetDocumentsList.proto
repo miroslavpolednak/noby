@@ -3,7 +3,7 @@ package DomainServices.DocumentService;
 option csharp_namespace = "DomainServices.DocumentService.Contracts";
 
 import "Types.proto";
-import "IdentitySchemas.proto";
+import "Identity.proto";
 import "GrpcDate.proto";
 
 message GetDocumentsListByCaseIdRequest {
@@ -12,7 +12,7 @@ message GetDocumentsListByCaseIdRequest {
 
 message GetDocumentsListByContractNumberRequest {
    string ContractNumber = 1;
-   cis.types.IdentitySchemes Mandant = 2;
+   cis.types.Identity Mandant = 2;
 }
 
 message GetDocumentsListByCustomerIdRequest {
@@ -25,7 +25,7 @@ message GetDocumentsListByCustomerIdRequest {
 
 message GetDocumentsListByRelationIdRequest {
    string RelationId = 1;
-   cis.types.IdentitySchemes Mandant = 2;
+   cis.types.Identity Mandant = 2;
 }
 
 message GetDocumentsListResponse {
