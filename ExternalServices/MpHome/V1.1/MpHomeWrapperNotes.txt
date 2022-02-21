@@ -1,0 +1,23 @@
+﻿
+Poznámka: u následujících vlastností třídy MortgageRequest ručně změněn typ double -> decimal   //TODO: vyzkoušet alternativu k NSwag?
+
+        /// <summary>
+        /// Výše mesicicni splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallment")]
+        public decimal? MonthlyInstallment { get; set; }
+
+        /// <summary>
+        /// VyseUveru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public decimal? LoanAmount { get; set; }
+
+        /// <summary>
+        /// Řádná sazba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
+        public decimal? InterestRate { get; set; }

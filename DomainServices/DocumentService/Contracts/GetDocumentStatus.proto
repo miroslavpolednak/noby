@@ -3,11 +3,11 @@ package DomainServices.DocumentService;
 option csharp_namespace = "DomainServices.DocumentService.Contracts";
 
 import "Types.proto";
-import "IdentitySchemas.proto";
+import "Identity.proto";
 
 message GetDocumentStatusRequest {
    string DocumentId = 1;
-   cis.types.IdentitySchemes Mandant = 2;
+   cis.types.Identity Mandant = 2;
 }
 
 message GetDocumentStatusResponse {
