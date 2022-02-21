@@ -1,0 +1,83 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "Identity.proto";
+import "Mandants.proto";
+import "NaturalPerson.proto";
+import "IdentificationDocument.proto";
+import "Address.proto";
+import "Contact.proto";
+
+message SearchCustomersRequest {
+
+    cis.types.Identity Identity = 1;
+
+    cis.types.Mandants Mandant = 2;
+
+    SearchNaturalPerson NaturalPerson = 3;
+
+    SearchIdentificationDocument IdentificationDocument = 4;
+
+    SearchContact Contact = 5;
+}
+
+message SearchCustomerResult {
+    
+    repeated cis.types.Identity Identities = 1;
+
+    NaturalPersonBaseData NaturalPerson = 2;
+
+    IdentificationDocument IdentificationDocument = 3;
+
+    repeated Address Addresses = 4;
+}
+
+message SearchCustomersResponse {
+
+    repeated SearchCustomerResult Customers = 1;
+
+}
+
+message CustomerListRequest {
+
+    repeated cis.types.Identity Identities = 1;
+
+}
+
+message CustomerListResult {
+    
+    repeated cis.types.Identity Identities = 1;
+
+    NaturalPersonBaseData NaturalPerson = 2;
+
+    IdentificationDocument IdentificationDocument = 3;
+
+}
+
+message CustomerListResponse {
+
+    repeated CustomerListResult Customers = 1;
+
+}
+
+message CustomerRequest {
+
+    cis.types.Identity Identity = 1;
+
+}
+
+message CustomerResponse {
+
+    repeated cis.types.Identity Identities = 1;
+
+    NaturalPerson NaturalPerson = 2;
+
+    IdentificationDocument IdentificationDocument = 3;
+
+    repeated Address Addresses = 4;
+
+    repeated Contact Contacts = 5;
+
+}
+

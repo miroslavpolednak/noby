@@ -1,0 +1,32 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
+
+message SearchIdentificationDocument {
+   
+   int32 IdentificationDocumentTypeId = 1;
+	
+   int32 IssuingCountryId = 2;
+   
+   string Number = 3;
+}
+
+message IdentificationDocument {
+   
+   int32 IdentificationDocumentTypeId = 1;
+	
+   google.protobuf.Int32Value IssuingCountryId = 2;
+   
+   string Number = 3;
+   
+   cis.types.NullableGrpcDate ValidTo = 4;
+
+   cis.types.NullableGrpcDate IssuedOn = 5;
+
+   string IssuedBy = 6;
+
+   string RegisterPlace = 7;
+}
