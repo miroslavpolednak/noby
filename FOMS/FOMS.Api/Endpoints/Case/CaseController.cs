@@ -51,7 +51,7 @@ public class CaseController : ControllerBase
     /// </remarks>
     /// <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
     /// <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
-    [HttpGet("search")]
+    [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Dashboard" })]

@@ -4,12 +4,12 @@
         <name>FOMS.Api</name>
     </assembly>
     <members>
-        <member name="M:FOMS.Api.Endpoints.Case.CaseController.GetCaseDetail(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Case.CaseController.GetById(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail Case-u.
             </summary>
             <remarks>
-            DS:
+            DS: CaseService/GetCaseDetail
             </remarks>
             <param name="caseId">ID Case-u</param>
             <returns>Zakladni informace o Case-u.</returns>
@@ -19,7 +19,7 @@
             Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
             </summary>
             <remarks>
-            DS: 
+            DS: CseService/GetCaseCounts
             </remarks>
             <returns>Kolekce ID stavu s poctem Cases.</returns>
         </member>
@@ -33,10 +33,20 @@
             - zobrazit pouze Cases v pozadovanem stavu
             - nastavit strankovani
             - nastavit razeni [stateUpdated]
-            DS: 
+            DS: CaseService/SearchCases
             </remarks>
             <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
             <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.GetTotalsByStates.GetTotalsByStatesResponse.State">
+            <summary>
+            Stav Case-u. Ciselnik 'CaseStates'.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.GetTotalsByStates.GetTotalsByStatesResponse.Count">
+            <summary>
+            Pocet Cases v danem stavu.
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.State">
             <summary>
@@ -129,32 +139,12 @@
             ID simulace pro kterou Case vznikl
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.OfferId">
-            <summary>
-            ID simulace.
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.ResourceProcessId">
-            <summary>
-            Unikatni identifikator pro session simulace.
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.Inputs">
-            <summary>
-            Zadani simulace.
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.Outputs">
-            <summary>
-            Vysledky simulace.
-            </summary>
-        </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.SimulateMortgage(FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
             <summary>
             Simulace KB hypoteky.
             </summary>
             <remarks>
-            DS: 
+            DS: OfferService/SimulateMortgage
             </remarks>
             <param name="request">Nastaveni simulace.</param>
             <returns>ID vytvorene simulace a jejich vysledky.</returns>
@@ -164,7 +154,7 @@
             Detail provedene simulace dle ID simulace.
             </summary>
             <remarks>
-            DS:
+            DS: OfferService/GetMortgageData
             </remarks>
             <returns>Vstupy a vystupy ulozene simulace.</returns>
         </member>
@@ -174,7 +164,8 @@
             </summary>
             <remarks>
             Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.
-            DS:
+            DS: SalesArrangementService/GetSalesArrangement (to get OfferId)
+            DS: OfferService/GetMortgageData
             </remarks>
             <returns>Vstupy a vystupy ulozene simulace.</returns>
         </member>
@@ -209,6 +200,53 @@
             <summary>
             Vysledky simulace.
             </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.OfferId">
+            <summary>
+            ID simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.ResourceProcessId">
+            <summary>
+            Unikatni identifikator pro session simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.Inputs">
+            <summary>
+            Zadani simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.Outputs">
+            <summary>
+            Vysledky simulace.
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Seznam Sales Arrangements pro Case.
+            </summary>
+            <remarks>
+            DS: SalesArrangementService/GetSalesArrangementList
+            </remarks>
+            <param name="caseId">ID Case-u</param>
+            <returns>Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCustomers(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Seznam klientu navazanych na Sales Arrangement.
+            </summary>
+            <param name="salesArrangementId">ID Sales Arrangement</param>
+            <returns>Seznam klientu - aktualne je namockovany pouze jeden staticky klient.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetDetail(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail Sales Arrangement-u.
+            </summary>
+            <remarks>
+            Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
+            </remarks>
+            <param name="salesArrangementId">ID Sales Arrangement</param>
+            <returns></returns>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>

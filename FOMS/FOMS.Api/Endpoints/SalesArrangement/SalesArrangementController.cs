@@ -35,4 +35,19 @@ public class SalesArrangementController : ControllerBase
     [ProducesResponseType(typeof(List<Dto.CustomerListItem>), StatusCodes.Status200OK)]
     public async Task<List<Dto.CustomerListItem>> GetCustomers([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(salesArrangementId), cancellationToken);
+    
+    /// <summary>
+    /// Detail Sales Arrangement-u.
+    /// </summary>
+    /// <remarks>
+    /// Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
+    /// </remarks>
+    /// <param name="salesArrangementId">ID Sales Arrangement</param>
+    /// <returns></returns>
+    [HttpGet("{salesArrangementId:int}")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
+    [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
+    public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
 }
