@@ -2,17 +2,18 @@
 using DomainServices.SalesArrangementService.Abstraction;
 using CIS.Core;
 using DomainServices.CodebookService.Abstraction;
+using DSContracts = DomainServices.SalesArrangementService.Contracts;
 
-namespace FOMS.Api.Endpoints.SalesArrangement.Handlers;
+namespace FOMS.Api.Endpoints.SalesArrangement.GetList;
 
 internal class GetListHandler
-    : IRequestHandler<Dto.GetListRequest, List<Dto.SalesArrangementListItem>>
+    : IRequestHandler<GetListRequest, List<Dto.SalesArrangementListItem>>
 {
-    public async Task<List<Dto.SalesArrangementListItem>> Handle(Dto.GetListRequest request, CancellationToken cancellationToken)
+    public async Task<List<Dto.SalesArrangementListItem>> Handle(GetListRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetListHandler), request.CaseId);
 
-        var result = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
+        var result = ServiceCallResult.Resolve<DSContracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
 
         _logger.FoundItems(result.SalesArrangements.Count);
 
@@ -35,7 +36,10 @@ internal class GetListHandler
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ILogger<GetListHandler> _logger;
 
-    public GetListHandler(ISalesArrangementServiceAbstraction salesArrangementService, ICodebookServiceAbstraction codebookService, ILogger<GetListHandler> logger)
+    public GetListHandler(
+        ISalesArrangementServiceAbstraction salesArrangementService, 
+        ICodebookServiceAbstraction codebookService, 
+        ILogger<GetListHandler> logger)
     {
         _logger = logger;
         _codebookService = codebookService;

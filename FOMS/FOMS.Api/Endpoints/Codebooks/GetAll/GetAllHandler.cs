@@ -1,13 +1,13 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 
-namespace FOMS.Api.Endpoints.Codebooks.Handlers;
+namespace FOMS.Api.Endpoints.Codebooks.GetAll;
 
 internal class GetAllHandler
-    : IRequestHandler<Dto.GetAllRequest, List<Dto.GetAllResponseItem>>
+    : IRequestHandler<GetAllRequest, List<GetAllResponseItem>>
 {
-    public async Task<List<Dto.GetAllResponseItem>> Handle(Dto.GetAllRequest request, CancellationToken cancellationToken)
+    public async Task<List<GetAllResponseItem>> Handle(GetAllRequest request, CancellationToken cancellationToken)
     {
-        List<Dto.GetAllResponseItem> model = new();
+        List<GetAllResponseItem> model = new();
 
         _logger.CodebooksGetAllStarted(request.CodebookCodes);
 
@@ -18,7 +18,7 @@ internal class GetAllHandler
     }
 
     //TODO nejak automatizovat? Zase to nechci zpomalovat reflexi.... code generators?
-    private async Task<Dto.GetAllResponseItem> fillCodebook(string code, string original, CancellationToken cancellationToken)
+    private async Task<GetAllResponseItem> fillCodebook(string code, string original, CancellationToken cancellationToken)
         => code switch
         {
             "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings(cancellationToken)).Where(t => t.IsValid)),

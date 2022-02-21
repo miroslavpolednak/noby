@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.Offer.Validators;
+namespace FOMS.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
 internal class GetMortgageBySalesArrangementRequestValidator
-    : AbstractValidator<Dto.GetMortgageBySalesArrangementRequest>
+    : AbstractValidator<GetMortgageBySalesArrangementRequest>
 {
     public GetMortgageBySalesArrangementRequestValidator()
     {

@@ -1,11 +1,9 @@
-﻿using CIS.Core.Results;
-
-namespace FOMS.Api.Endpoints.Case.Handlers;
+﻿namespace FOMS.Api.Endpoints.Case.GetById;
 
 internal class GetByIdHandler
-    : IRequestHandler<Dto.GetByIdRequest, Dto.CaseModel>
+    : IRequestHandler<GetByIdRequest, Dto.CaseModel>
 {
-    public async Task<Dto.CaseModel> Handle(Dto.GetByIdRequest request, CancellationToken cancellationToken)
+    public async Task<Dto.CaseModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Get #{caseId}", request.CaseId);
 

@@ -1,8 +1,8 @@
 ﻿using CIS.Core.Validation;
 
-namespace FOMS.Api.Endpoints.Offer.Dto;
+namespace FOMS.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
 internal record GetMortgageBySalesArrangementRequest(int SalesArrangementId)
-    : IRequest<GetMortgageResponse>, IValidatableRequest
+    : IRequest<Dto.GetMortgageResponse>, IValidatableRequest
 {
 }

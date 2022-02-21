@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.SalesArrangement.Validators;
+namespace FOMS.Api.Endpoints.SalesArrangement.GetCustomers;
 
 internal class GetCustomersValidator
-    : AbstractValidator<Dto.GetCustomersRequest>
+    : AbstractValidator<GetCustomersRequest>
 {
     public GetCustomersValidator()
     {

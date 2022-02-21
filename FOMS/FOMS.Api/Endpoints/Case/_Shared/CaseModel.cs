@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Case.Dto;
 
-internal class CaseModel
+public class CaseModel
 {
 	public long CaseId { get; set; }
 	public string? FirstName { get; set; }

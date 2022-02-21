@@ -1,7 +1,7 @@
-﻿namespace FOMS.Api.Endpoints.Case.Dto;
+﻿namespace FOMS.Api.Endpoints.Case.Search;
 
-internal sealed class SearchResponse
+public sealed class SearchResponse
 {
     public CIS.Infrastructure.WebApi.Types.PaginationResponse? Pagination { get; set; }
-    public List<CaseModel>? Rows { get; set; }
+    public List<Dto.CaseModel>? Rows { get; set; }
 }

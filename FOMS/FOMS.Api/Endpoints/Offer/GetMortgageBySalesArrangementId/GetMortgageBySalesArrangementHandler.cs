@@ -1,29 +1,33 @@
-﻿using CIS.Infrastructure.gRPC;
+﻿using Abstraction = DomainServices.SalesArrangementService.Abstraction;
+using DSContracts = DomainServices.SalesArrangementService.Contracts;
 
-namespace FOMS.Api.Endpoints.Offer.Handlers;
+namespace FOMS.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
 internal class GetMortgageBySalesArrangementHandler
-    : IRequestHandler<Dto.GetMortgageBySalesArrangementRequest, Dto.GetMortgageResponse>
+    : IRequestHandler<GetMortgageBySalesArrangementRequest, Dto.GetMortgageResponse>
 {
-    public async Task<Dto.GetMortgageResponse> Handle(Dto.GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<Dto.GetMortgageResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgageBySalesArrangementHandler), request.SalesArrangementId);
 
         // ziskat offerId z SA
-        var salesArrangementInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var salesArrangementInstance = ServiceCallResult.Resolve<DSContracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         
         // kontrola, zda ma SA OfferId
         if (!salesArrangementInstance.OfferId.HasValue)
             throw new CisArgumentNullException(ErrorCodes.SalesArrangementNotLinkedToOffer, "SalesArrangement is not linked to any Offer", nameof(request.SalesArrangementId));
         
-        return await _mediator.Send(new Dto.GetMortgageRequest(salesArrangementInstance.OfferId.Value));
+        return await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(salesArrangementInstance.OfferId.Value));
     }
 
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IMediator _mediator;
     private readonly ILogger<GetMortgageBySalesArrangementHandler> _logger;
     
-    public GetMortgageBySalesArrangementHandler(IMediator mediator, ILogger<GetMortgageBySalesArrangementHandler> logger, DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+    public GetMortgageBySalesArrangementHandler(
+        IMediator mediator, 
+        ILogger<GetMortgageBySalesArrangementHandler> logger, 
+        Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
         _logger = logger;

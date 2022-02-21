@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.SalesArrangement.Validators;
+namespace FOMS.Api.Endpoints.SalesArrangement.GetList;
 
 internal class GetListRequestValidator
-    : AbstractValidator<Dto.GetListRequest>
+    : AbstractValidator<GetListRequest>
 {
     public GetListRequestValidator()
     {

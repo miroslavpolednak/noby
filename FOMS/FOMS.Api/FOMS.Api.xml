@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FOMS.Api</name>
+    </assembly>
+    <members>
+        <member name="M:FOMS.Api.Endpoints.Case.CaseController.GetCaseDetail(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Detail Case-u.
+            </summary>
+            <remarks>
+            DS:
+            </remarks>
+            <param name="caseId">ID Case-u</param>
+            <returns>Zakladni informace o Case-u.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Case.CaseController.GetTotalsByStates(System.Threading.CancellationToken)">
+            <summary>
+            Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
+            </summary>
+            <remarks>
+            DS: 
+            </remarks>
+            <returns>Kolekce ID stavu s poctem Cases.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Case.CaseController.Search(FOMS.Api.Endpoints.Case.Search.SearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Seznam Cases pro prihlaseneho uzivatele.
+            </summary>
+            <remarks>
+            Endpoint umoznuje:
+            - vyhledat Case podle retezce
+            - zobrazit pouze Cases v pozadovanem stavu
+            - nastavit strankovani
+            - nastavit razeni [stateUpdated]
+            DS: 
+            </remarks>
+            <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
+            <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.State">
+            <summary>
+            ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Term">
+            <summary>
+            Klicove slovo pro vyhledavani nad Cases.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Pagination">
+            <summary>
+            Nastaveni strankovani a razeni kolekce Cases.
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
+            <summary>Kolekce vyzadanych ciselniku.</summary>
+            <remarks>
+            Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.
+            Aktualne implementovane ciselniky jsou:
+            - ActionCodesSavings
+            - ActionCodesSavingsLoan
+            - CaseStates
+            - Countries
+            - FixedLengthPeriods
+            - Genders
+            - IdentificationDocumentTypes
+            - Mandants
+            - MaritalStatuses
+            - ProductTypes
+            - ProductLoanPurposes
+            - ProductLoanKinds
+            - SalesArrangementTypes
+            - SignatureTypes
+            </remarks>
+            <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
+            <returns>Kolekce vyzadanych ciselniku.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
+            <summary>
+            Ciselnik fixace uveru.
+            </summary>
+            <returns>Kolekce dob fixaci v mesicich.</returns>
+            <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
+            <summary>
+            Ciselnik druhu uveru.
+            </summary>
+            <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">
+            <summary>
+            ID simulace ze ktere se ma vytvorit Case.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.Customer">
+            <summary>
+            Identifikovany klient.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.FirstName">
+            <summary>
+            Jmeno klienta, pokud neni identifikovan.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.LastName">
+            <summary>
+            Prijmeni klienta, pokud neni identifikovan.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.DateOfBirth">
+            <summary>
+            Datum narozeni klienta, pokud neni identifikovan.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.CaseId">
+            <summary>
+            ID noveho Case
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.SalesArrangementId">
+            <summary>
+            ID noveho Sales Arrangement
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.OfferId">
+            <summary>
+            ID simulace pro kterou Case vznikl
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.OfferId">
+            <summary>
+            ID simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.ResourceProcessId">
+            <summary>
+            Unikatni identifikator pro session simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.Inputs">
+            <summary>
+            Zadani simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.GetMortgage.GetMortgageResponse.Outputs">
+            <summary>
+            Vysledky simulace.
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.SimulateMortgage(FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
+            <summary>
+            Simulace KB hypoteky.
+            </summary>
+            <remarks>
+            DS: 
+            </remarks>
+            <param name="request">Nastaveni simulace.</param>
+            <returns>ID vytvorene simulace a jejich vysledky.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.GetMortgageByOfferId(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail provedene simulace dle ID simulace.
+            </summary>
+            <remarks>
+            DS:
+            </remarks>
+            <returns>Vstupy a vystupy ulozene simulace.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.GetMortgageBySalesArrangementId(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail provedene simulace dle ID Sales Arrangement.
+            </summary>
+            <remarks>
+            Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.
+            DS:
+            </remarks>
+            <returns>Vstupy a vystupy ulozene simulace.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.CreateMortgageCase(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni noveho pripadu (hypoteky) ze simulace.
+            </summary>
+            <remarks>
+            Vytvori novy Case a Sales Arrangement.
+            DS:
+            </remarks>
+            <param name="request">Identifikace klienta a ID simulace.</param>
+            <returns>ID nove vytvoreneho Case</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.ResourceProcessId">
+            <summary>
+            Unikatni identifikator pro session simulace.
+            Musi byt parsovatelny na .NET Guid type.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferId">
+            <summary>
+            ID vytvorene simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.ResourceProcessId">
+            <summary>
+            Unikatni identifikator pro session simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.Outputs">
+            <summary>
+            Vysledky simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
+            <summary>
+            ID uzivatele - xxvvss.v33id
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Name">
+            <summary>
+            Cele jmeno uzivatele
+            </summary>
+            <example>John Doe</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Username">
+            <summary>
+            Login
+            </summary>
+            <example>990614w</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.CPM">
+            <summary>
+            CPM uzivatele
+            </summary>
+            <example>99800001</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.ICP">
+            <summary>
+            ICP uzivatele
+            </summary>
+            <example>999999999</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Users.SignIn.SignInRequest.Login">
+            <summary>
+            Login uzivatel z xxvvss databaze.
+            </summary>
+            <example>990614w</example>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
+            <summary>
+            Informace o prihlasenem uzivateli.
+            </summary>
+            <remarks>
+            Pokud je uzivatel prihlasen (existuje platna auth cookie), vraci zakladni informace o uzivateli.
+            </remarks>
+            <returns>Instance prihlaseneho uzivatele.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Users.UsersController.SignIn(FOMS.Api.Endpoints.Users.SignIn.SignInRequest,System.Threading.CancellationToken)">
+            <summary>
+            Endpoint pro Simple Authentication provider.
+            </summary>
+            <remarks>
+            Slouzi pro vytvoreni auth cookie v pripade, ze aplikace neni napojena na CAAS.
+            </remarks>
+        </member>
+    </members>
+</doc>

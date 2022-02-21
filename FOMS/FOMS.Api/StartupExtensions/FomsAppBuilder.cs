@@ -44,7 +44,11 @@ internal static class FomsAppBuilder
             appBuilder.UseMiddleware<Infrastructure.Security.AppSecurityMiddleware>();
 
             // namapovani API modulu
-            appBuilder.AddEndpointsModules(typeof(IApiAssembly).GetTypeInfo().Assembly);
+            appBuilder.UseRouting();
+            appBuilder.UseEndpoints(t =>
+            {
+                t.MapControllers();
+            });
         });
 
     public static IApplicationBuilder UseFomsSwagger(this IApplicationBuilder app)
@@ -55,12 +59,12 @@ internal static class FomsAppBuilder
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 
-    private static Func<HttpContext, bool> _isApiCall = (HttpContext context) 
+    private static readonly Func<HttpContext, bool> _isApiCall = (HttpContext context) 
         => context.Request.Path.StartsWithSegments("/api");
 
-    private static Func<HttpContext, bool> _isHealthCheck = (HttpContext context) 
+    private static readonly Func<HttpContext, bool> _isHealthCheck = (HttpContext context) 
         => context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);
 
-    private static Func<HttpContext, bool> _isSpaCall = (HttpContext context) 
+    private static readonly Func<HttpContext, bool> _isSpaCall = (HttpContext context) 
         => !context.Request.Path.StartsWithSegments("/api") && !context.Request.Path.StartsWithSegments("/swagger") && !context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);       
 }

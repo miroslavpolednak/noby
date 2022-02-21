@@ -1,6 +1,6 @@
-﻿namespace FOMS.Api.Endpoints.Codebooks.Dto;
+﻿namespace FOMS.Api.Endpoints.Codebooks.GetAll;
 
-internal sealed class GetAllRequest : IRequest<List<Dto.GetAllResponseItem>>
+internal sealed class GetAllRequest : IRequest<List<GetAllResponseItem>>
 {
     public List<(string Original, string Key)> CodebookCodes { get; init; }
 

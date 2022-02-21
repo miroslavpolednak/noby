@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-internal class MortgageInputs
+public class MortgageInputs
 {
     public int ProductTypeId { get; set; }
     public int LoanKindId { get; set; }

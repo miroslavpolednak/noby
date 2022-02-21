@@ -1,12 +1,12 @@
 ﻿using DomainServices.OfferService.Abstraction;
-using DomainServices.OfferService.Contracts;
+using DSContract = DomainServices.OfferService.Contracts;
 
-namespace FOMS.Api.Endpoints.Offer.Handlers;
+namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
 internal class SimulateMortgageHandler
-    : IRequestHandler<Dto.SimulateMortgageRequest, Dto.SimulateMortgageResponse>
+    : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
 {
-    public async Task<Dto.SimulateMortgageResponse> Handle(Dto.SimulateMortgageRequest request, CancellationToken cancellationToken)
+    public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
         _logger.OfferSimulateMortgageStarted(request);
 
@@ -17,7 +17,7 @@ internal class SimulateMortgageHandler
         var result = await callOfferService(model, cancellationToken);
 
         // predelat z DS na FE Dto
-        Dto.SimulateMortgageResponse responseModel = new()
+        SimulateMortgageResponse responseModel = new()
         {
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
@@ -29,11 +29,11 @@ internal class SimulateMortgageHandler
         return responseModel;
     }
 
-    private async Task<SimulateMortgageResponse> callOfferService(SimulateMortgageRequest model, CancellationToken cancellationToken)
+    private async Task<DSContract.SimulateMortgageResponse> callOfferService(DSContract.SimulateMortgageRequest model, CancellationToken cancellationToken)
     {
         try
         {
-            return ServiceCallResult.Resolve<SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
+            return ServiceCallResult.Resolve<DSContract.SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
         }
         catch (CisArgumentException ex)
         {

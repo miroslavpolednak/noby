@@ -2,26 +2,6 @@
 
 internal static class OfferApiModuleDtoExtensions
 {
-    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this Dto.SimulateMortgageRequest request)
-        => new()
-        {
-            ResourceProcessId = request.ResourceProcessId,
-            Inputs = new()
-            {
-                ProductTypeId = request.ProductTypeId,
-                LoanKindId = request.LoanKindId,
-                LoanAmount = request.LoanAmount,
-                LoanDuration = request.LoanDuration,
-                LoanPaymentAmount = request.LoanPaymentAmount,
-                FixedLengthPeriod = request.FixationPeriod,
-                EmployeeBonusLoanCode = request.EmployeeBonusLoanCode,
-                CollateralAmount = request.CollateralAmount,
-                LoanToValue = request.LoanToValue,
-                PaymentDayOfTheMonth = request.PaymentDayOfTheMonth,
-                EmployeeBonusRequested = request.EmployeeBonusRequested
-            }
-        };
-
     public static Dto.MortgageInputs ToResponseDto(this DomainServices.OfferService.Contracts.MortgageInput result)
         => new()
         {

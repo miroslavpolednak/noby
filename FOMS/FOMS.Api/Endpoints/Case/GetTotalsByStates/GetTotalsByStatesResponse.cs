@@ -1,6 +1,6 @@
-﻿namespace FOMS.Api.Endpoints.Case.Dto;
+﻿namespace FOMS.Api.Endpoints.Case.GetTotalsByStates;
 
-internal sealed class GetTotalsByStatesResponse
+public sealed class GetTotalsByStatesResponse
 {
     public int State { get; set; }
     public int Count { get; set; }

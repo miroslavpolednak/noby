@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.Offer.Validators;
+namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
 internal class SimulateMortgageRequestValidator
-     : AbstractValidator<Dto.SimulateMortgageRequest>
+     : AbstractValidator<SimulateMortgageRequest>
 {
     public SimulateMortgageRequestValidator()
     {
