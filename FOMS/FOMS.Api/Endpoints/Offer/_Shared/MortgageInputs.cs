@@ -3,7 +3,7 @@
 public class MortgageInputs
 {
     public int ProductTypeId { get; set; }
-    public int LoanKindId { get; set; }
+    public int ProductLoanKindId { get; set; }
     public decimal LoanAmount { get; set; }
     public int? LoanDuration { get; set; }
     public decimal LoanPaymentAmount { get; set; }
@@ -14,5 +14,11 @@ public class MortgageInputs
     public int? PaymentDayOfTheMonth { get; set; }
     public bool EmployeeBonusRequested { get; set; }
     public DateTime? ExpectedDateOfDrawing { get; set; }
-    public List<int>? LoanPurpose { get; set; }
+    public List<MortgageInputsLoanPurpose>? LoanPurpose { get; set; }
+    
+    public class MortgageInputsLoanPurpose
+    {
+        public int Id { get; set; }
+        public decimal Sum { get; set; }
+    }
 }

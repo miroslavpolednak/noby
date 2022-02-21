@@ -3,13 +3,14 @@
 internal static class Extensions
 {
     public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this SimulateMortgageRequest request)
-        => new()
+    {
+        var model = new DomainServices.OfferService.Contracts.SimulateMortgageRequest()
         {
             ResourceProcessId = request.ResourceProcessId,
             Inputs = new()
             {
                 ProductTypeId = request.ProductTypeId,
-                LoanKindId = request.LoanKindId,
+                LoanKindId = request.ProductLoanKindId,
                 LoanAmount = request.LoanAmount,
                 LoanDuration = request.LoanDuration,
                 LoanPaymentAmount = request.LoanPaymentAmount,
@@ -21,4 +22,12 @@ internal static class Extensions
                 EmployeeBonusRequested = request.EmployeeBonusRequested
             }
         };
+        
+        if (request.LoanPurpose is not null && request.LoanPurpose.Any())
+            model.Inputs.LoanPurpose.AddRange(
+                request.LoanPurpose.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { ProductLoanPurposeId = t.Id, Sum = t.Sum })
+                );
+
+        return model;
+    }
 }

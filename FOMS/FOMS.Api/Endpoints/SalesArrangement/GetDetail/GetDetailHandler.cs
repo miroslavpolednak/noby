@@ -16,6 +16,7 @@ internal class GetDetailHandler
         // instance SA
         var saInstance = ServiceCallResult.Resolve<DSContracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         
+        
         return new GetDetailResponse()
         {
             SalesArrangementId = saInstance.SalesArrangementId,

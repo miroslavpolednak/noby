@@ -6,7 +6,7 @@ internal static class OfferApiModuleDtoExtensions
         => new()
         {
             ProductTypeId = result.ProductTypeId,
-            LoanKindId = result.LoanKindId,
+            ProductLoanKindId = result.LoanKindId,
             LoanAmount = result.LoanAmount,
             LoanDuration = result.LoanDuration,
             LoanPaymentAmount = result.LoanPaymentAmount,
