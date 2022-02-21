@@ -36,7 +36,7 @@ var service = serviceProvider.GetService<DomainServices.CustomerService.Abstract
 //var service = serviceProvider.GetService<DomainServices.CustomerService.Contracts.ICustomerService>();
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-var result = await service.GetBasicDataByIdentifier(new () { Identifier = "123456" });
+//var result = await service.GetBasicDataByIdentifier(new () { Identifier = "123456" });
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 //var result = await service.GetDetail(new() { Identity = 1 });
 //var result = await service.GetList(new() { Identity = new() { 1 } });
@@ -50,4 +50,4 @@ var result = await service.GetBasicDataByIdentifier(new () { Identifier = "12345
 //var o = ((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.CustomerService.Contracts.CreateResponse>)result).Model;
 
 //Console.WriteLine($"{result.LastName}");
-Console.WriteLine($"{result.Success}");
+//Console.WriteLine($"{result.Success}");
