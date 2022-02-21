@@ -3,7 +3,7 @@ package DomainServices.DocumentService;
 option csharp_namespace = "DomainServices.DocumentService.Contracts";
 
 import "GrpcDate.proto";
-import "IdentitySchemas.proto";
+import "Identity.proto";
 
 enum DocumentOrigin {
 	Unknown = 0;
@@ -43,7 +43,7 @@ message Document {
    string DocumentId = 1;
    string  ContractNumber = 2;
    DocumentOrigin Origin = 3;
-   cis.types.IdentitySchemes Mandant = 4;
+   cis.types.Identity Mandant = 4;
    DocumentStatus Status = 5;
    string EaCodeMainCode = 6;
    string EaCodeMainDescription = 7;

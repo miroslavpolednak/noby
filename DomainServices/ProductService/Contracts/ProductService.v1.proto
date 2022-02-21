@@ -4,7 +4,6 @@ option csharp_namespace = "DomainServices.ProductService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
 import "Types.proto";
-
 import "TypesMortgage.proto";
 
 service ProductService {
