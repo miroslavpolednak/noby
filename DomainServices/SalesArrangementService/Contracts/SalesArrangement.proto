@@ -24,4 +24,7 @@ message SalesArrangement {
 	cis.types.ModificationStamp Created = 6;
 	
 	string ContractNumber = 7;
+	
+	// ID kanalu uzivatele, ktery SA vytvoril
+	int32 ChannelId = 8;
 }

@@ -26,7 +26,7 @@ public sealed class Paginable : IPaginableRequest
             Sorting = sorting.Select(t => new SortField(t)).ToList();
     }
 
-    public static Paginable FromRequest(IPaginableRequest? request, int defaultPageSize = 10, int defaultRecordOffset = 1)
+    public static Paginable FromRequest(IPaginableRequest? request, int defaultPageSize = 10, int defaultRecordOffset = 0)
     {
         if (request is null || request.PageSize <= 0)
             return new Paginable(defaultRecordOffset, defaultPageSize);
@@ -44,7 +44,9 @@ public sealed class Paginable : IPaginableRequest
             Sorting!.ForEach(t =>
             {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                var field = mapper.FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.OrdinalIgnoreCase)) ?? throw new Exceptions.CisArgumentException(13, "Sort Field not allowed", "Field");
+                var field = mapper
+                    .FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.OrdinalIgnoreCase)) 
+                            ?? throw new Exceptions.CisArgumentException(13, "Sort Field not allowed", "Field");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
                 t.Field = field.TranslateTo;
             });

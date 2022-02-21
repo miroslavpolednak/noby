@@ -34,7 +34,8 @@ internal class CreateSalesArrangementHandler
             State = defaultSaState,
             StateUpdateTime = _dateTime.Now,
             ContractNumber = request.Request.ContractNumber,
-            OfferId = request.Request.OfferId
+            OfferId = request.Request.OfferId,
+            ChannelId = 1 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss...
         };
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
 

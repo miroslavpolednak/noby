@@ -19,6 +19,7 @@ CREATE TABLE [dbo].[SalesArrangement](
      [SalesArrangementTypeId] [int] NOT NULL,
      [State] [int] NOT NULL,
      [StateUpdateTime] [datetime] NOT NULL,
+     [ChannelId] int not null,
      [CreatedUserName] [nvarchar](100) NOT NULL,
      [CreatedUserId] [int] NOT NULL,
      [CreatedTime] [datetime] NOT NULL,

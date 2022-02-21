@@ -33,7 +33,12 @@ internal class CaseServiceRepository
             .Select(CaseServiceRepositoryExpressions.CaseDetail())
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
 
-    public async Task<(int RecordsTotalSize, List<Contracts.Case> CaseInstances)> GetCaseList(CIS.Core.Types.Paginable paginable, int userId, int? state, string? searchTerm, CancellationToken cancellation)
+    public async Task<(int RecordsTotalSize, List<Contracts.Case> CaseInstances)> GetCaseList(
+        CIS.Core.Types.Paginable paginable, 
+        int userId, 
+        int? state, 
+        string? searchTerm, 
+        CancellationToken cancellation)
     {
         // base query
         var query = _dbContext.Cases.AsNoTracking().Where(t => t.OwnerUserId == userId);
@@ -63,7 +68,7 @@ internal class CaseServiceRepository
 
         // seznam case
         var data = await query
-            .Skip(paginable.PageSize * (paginable.RecordOffset - 1))
+            .Skip(paginable.RecordOffset * (paginable.PageSize - 1))
             .Take(paginable.PageSize)
             .AsNoTracking()
             .Select(CaseServiceRepositoryExpressions.CaseDetail()

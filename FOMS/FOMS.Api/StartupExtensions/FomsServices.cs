@@ -30,9 +30,6 @@ internal static class FomsServices
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
         
-        // doc processor factory
-        builder.Services.AddTransient<DocumentProcessing.IDocumentProcessorFactory, DocumentProcessing.DocumentProcessorFactory>();
-
         return builder;
     }
 }

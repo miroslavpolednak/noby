@@ -20,4 +20,6 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public DateTime StateUpdateTime { get; set; }
     
     public string? ContractNumber { get; set; }
+    
+    public int ChannelId { get; set; }
 }

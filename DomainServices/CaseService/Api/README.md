@@ -4,6 +4,7 @@
         grpcurl -insecure 172.30.35.51:5003 list
         grpcurl -insecure -d "{\"CaseOwnerUserId\":267,\"Customer\":{\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"},\"Data\":{\"TargetAmount\":{\"units\":300000},\"ProductTypeId\":20001}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/CreateCase
         grpcurl -insecure -d "{\"CaseOwnerUserId\":267}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/SearchCases
+        grpcurl -insecure -d "{\"CaseOwnerUserId\":267,\"Pagination\":{\"recordOffset\":1,\"pageSize\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/SearchCases
         grpcurl -insecure -d "{\"CaseId\":49}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/GetCaseDetail
         grpcurl -insecure -d "{\"CaseId\":49,\"CaseOwnerUserId\":9557}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/LinkOwnerToCase
         grpcurl -insecure -d "{\"CaseId\":2,\"Data\":{\"ProductTypeId\":1,\"ContractNumber\":\"1000000001\",\"TargetAmount\":200000}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/UpdateCaseData
