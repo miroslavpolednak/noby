@@ -3,7 +3,6 @@ package DomainServices.UserService.v1;
 option csharp_namespace = "DomainServices.UserService.Contracts.v1";
 
 import "Types.proto";
-import "NullableGrpcDecimal.proto";
 
 service UserService {
    rpc GetUserByLogin (DomainServices.UserService.GetUserByLoginRequest) returns (DomainServices.UserService.User);

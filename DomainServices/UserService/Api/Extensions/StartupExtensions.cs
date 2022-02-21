@@ -20,27 +20,35 @@ internal static class StartupExtensions
         builder.AddCisCurrentUser();
 
         // cache
-        if (appConfiguration.Cache?.CacheType != CacheTypes.None)
+        if (appConfiguration.Cache is not null)
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            if (appConfiguration.Cache.UseServiceDiscovery)
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            switch (appConfiguration.Cache.CacheType)
             {
-                builder.Services.AddRedisGlobalCache(provider =>
-                {
-                    string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                        .GetService(new("CIS:GlobalCache:Redis"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
-                        .GetAwaiter()
-                        .GetResult()?
-                        .ServiceUrl;
-                    return url ?? throw new ArgumentNullException("url", "Service Discovery can not find CIS:GlobalCache:Redis Proprietary service URL");
-                }, appConfiguration.Cache.CacheKeyPrefix);
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(appConfiguration.Cache.CacheConnectionString))
-                    throw new ArgumentNullException("CacheConnectionString", "Redis connection string for Service Discovery Global Cache must be defined");
-                builder.Services.AddRedisGlobalCache(appConfiguration.Cache.CacheConnectionString, appConfiguration.Cache.CacheKeyPrefix);
+                case CacheTypes.InMemory:
+                    builder.Services.AddInMemoryGlobalCache("ServiceDiscoveryCache");
+                    break;
+
+                case CacheTypes.Redis:
+                    if (appConfiguration.Cache.UseServiceDiscovery)
+                    {
+                        builder.Services.AddRedisGlobalCache(provider =>
+                        {
+                            string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
+                                .GetService(new("CIS:GlobalCache:Redis"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
+                                .GetAwaiter()
+                                .GetResult()?
+                                .ServiceUrl;
+                            return url ?? throw new ArgumentNullException("url", "Service Discovery can not find CIS:GlobalCache:Redis Proprietary service URL");
+                        }, appConfiguration.Cache.CacheKeyPrefix);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(appConfiguration.Cache.CacheConnectionString))
+                            throw new ArgumentNullException("CacheConnectionString", "Redis connection string for Service Discovery Global Cache must be defined");
+                        builder.Services.AddRedisGlobalCache(appConfiguration.Cache.CacheConnectionString, appConfiguration.Cache.CacheKeyPrefix);
+                    }
+
+                    break;
             }
         }
 

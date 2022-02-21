@@ -8,7 +8,7 @@ internal sealed class CaseServiceDbContext : BaseDbContext
     public CaseServiceDbContext(BaseDbContextAggregate aggregate)
         : base(aggregate) { }
 
-    public DbSet<Entities.Case> Cases { get; set; }
+    public DbSet<Entities.Case> Cases { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
