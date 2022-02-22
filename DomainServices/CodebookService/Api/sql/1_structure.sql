@@ -20,6 +20,7 @@ CREATE TABLE [dbo].[ProductTypeExtension](
     [ProductTypeId] [int] NOT NULL,
     [ProductCategory] [tinyint] NOT NULL,
     [MpHomeApiLoanType] [varchar](50) NULL,
+    [KonsDbLoanType] [tinyint] NOT NULL,
     CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED
     (
     [ProductTypeId] ASC

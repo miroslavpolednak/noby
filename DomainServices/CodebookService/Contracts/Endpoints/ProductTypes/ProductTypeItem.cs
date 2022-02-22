@@ -57,5 +57,9 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         [JsonIgnore]
         [DataMember(Order = 15)]
         public bool IsValid { get; set; }
+
+        [JsonIgnore]
+        [DataMember(Order = 16)]
+        public int? KonsDbLoanType { get; set; }
     }
 }
