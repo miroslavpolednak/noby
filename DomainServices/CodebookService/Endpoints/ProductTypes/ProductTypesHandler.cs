@@ -40,6 +40,7 @@ public class ProductTypesHandler
                         if (loanKinds.Any())
                             t.ProductLoanKinds = loanKinds.Where(x => loanKindIds.Contains(x.Id)).ToList();
                         t.MpHomeApiLoanType = null;
+                        t.KonsDbLoanType = null;
                     }
                         
                     // rozsirena nastaveni z extension tabulky
@@ -48,6 +49,7 @@ public class ProductTypesHandler
                     {
                         t.ProductCategory = item.ProductCategory.HasValue ? (ProductTypeCategory)item.ProductCategory : ProductTypeCategory.Unknown;
                         t.MpHomeApiLoanType = item.MpHomeApiLoanType;
+                        t.KonsDbLoanType = item.KonsDbLoanType;
                     }
                         
                 });
@@ -69,6 +71,7 @@ public class ProductTypesHandler
         public int ProductTypeId { get; set; }
         public int? ProductCategory { get; set; }
         public string? MpHomeApiLoanType { get; set; }
+        public int? KonsDbLoanType { get; set; }
     }
     
     // dotaz na rozsirene vlastnosti codebooku mimo SB
