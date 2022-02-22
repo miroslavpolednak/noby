@@ -2,8 +2,16 @@
 
 public class MortgageInputs
 {
+    /// <summary>
+    /// ID produktu. Ciselnik ProductTypes.
+    /// </summary>
     public int ProductTypeId { get; set; }
+    
+    /// <summary>
+    /// Druh uveru. Ciselnik ProductLoanKind.
+    /// </summary>
     public int ProductLoanKindId { get; set; }
+    
     public decimal LoanAmount { get; set; }
     public int? LoanDuration { get; set; }
     public decimal LoanPaymentAmount { get; set; }
