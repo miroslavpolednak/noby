@@ -12,7 +12,11 @@ public class MortgageInputs
     /// </summary>
     public int ProductLoanKindId { get; set; }
     
+    /// <summary>
+    /// Výše úvěru
+    /// </summary>
     public decimal LoanAmount { get; set; }
+    
     public int? LoanDuration { get; set; }
     public decimal LoanPaymentAmount { get; set; }
     public int FixationPeriod { get; set; }

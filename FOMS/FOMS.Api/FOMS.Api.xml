@@ -10,6 +10,7 @@
             </summary>
             <remarks>
             DS: CaseService/GetCaseDetail
+            https://wiki.kb.cz/confluence/display/HT/getCaseDetail
             </remarks>
             <param name="caseId">ID Case-u</param>
             <returns>Zakladni informace o Case-u.</returns>
@@ -20,6 +21,7 @@
             </summary>
             <remarks>
             DS: CseService/GetCaseCounts
+            https://wiki.kb.cz/confluence/display/HT/getCaseCounts
             </remarks>
             <returns>Kolekce ID stavu s poctem Cases.</returns>
         </member>
@@ -34,6 +36,7 @@
             - nastavit strankovani
             - nastavit razeni [stateUpdated]
             DS: CaseService/SearchCases
+            https://wiki.kb.cz/confluence/display/HT/searchCases
             </remarks>
             <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
             <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
@@ -61,6 +64,81 @@
         <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Pagination">
             <summary>
             Nastaveni strankovani a razeni kolekce Cases.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchResponse.Pagination">
+            <summary>
+            Informace o strankovani a razeni.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchResponse.Rows">
+            <summary>
+            Kolekce nalezenych Case-s.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.FirstName">
+            <summary>
+            FO/FOP/Cizinec/Nezletilec: Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.LastName">
+            <summary>
+            FO/FOP/Cizinec/Nezletilec: Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.DateOfBirth">
+            <summary>
+            FO/FOP/Cizinec/Nezletilec: Datum narození klienta
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.State">
+            <summary>
+            Stav Case - ciselnik CaseStates
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.StateName">
+            <summary>
+            Slovne nazev stavu Case.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.ActionRequired">
+            <summary>
+            Reprezentuje, zda existuje úkol na dealera na casu, který je třeba splnit.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.ContractNumber">
+            <summary>
+            ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.TargetAmount">
+            <summary>
+            Cílová částka zobrazující se na dashboardu.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.ProductName">
+            <summary>
+            Nazev produktu slovne - ciselnik CaseStates
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.CreatedTime">
+            <summary>
+            Datum vytvoreni Case
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.CreatedBy">
+            <summary>
+            Jmeno a prijmeni uzivatele, ktery vytvoril Case
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.StateUpdated">
+            <summary>
+            Datum a cas posledni zmeny Case.
             </summary>
         </member>
         <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
@@ -219,6 +297,76 @@
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.Outputs">
             <summary>
             Vysledky simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.ProductTypeId">
+            <summary>
+            ID produktu. Ciselnik ProductTypes.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.ProductLoanKindId">
+            <summary>
+            Druh uveru. Ciselnik ProductLoanKind.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanAmount">
+            <summary>
+            Výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
+            <summary>
+            Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRateAnnounced">
+            <summary>
+            Standardní číselníková úroková sazba
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.LoanAmount">
+            <summary>
+            Výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ContractNumber">
+            <summary>
+            ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.LoanAmount">
+            <summary>
+            Výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.InterestRate">
+            <summary>
+            Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ExpectedDateOfDrawing">
+            <summary>
+            Datum uzavreni???
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.FixationPeriod">
+            <summary>
+            Fixace???
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.SalesArrangementId">
+            <summary>
+            ID zadosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.SalesArrangementTypeId">
+            <summary>
+            Druh zadosti. Ciselnik SalesArrangementTypes.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Data">
+            <summary>
+            Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
             </summary>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
