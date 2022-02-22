@@ -3,6 +3,7 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.ProductService.Api;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using DomainServices.CaseService.Abstraction;
 using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
@@ -43,7 +44,9 @@ builder.AddCisServiceAuthentication();
 
 // add services
 builder.AddProductService(appConfiguration);
-builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS a mphome
+builder.Services
+    .AddCisServiceDiscovery(true)
+    .AddCaseService(true);
 
 builder.Services.AddGrpc(options =>
 {

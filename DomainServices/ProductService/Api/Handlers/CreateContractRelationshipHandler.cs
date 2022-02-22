@@ -2,6 +2,8 @@
 using ExternalServices.MpHome.V1._1.MpHomeWrapper;
 using DomainServices.CodebookService.Abstraction;
 
+using DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustomerProductTypes;
+
 namespace DomainServices.ProductService.Api.Handlers;
 
 internal class CreateContractRelationshipHandler
@@ -30,54 +32,49 @@ internal class CreateContractRelationshipHandler
             throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.Relationship)); //TODO: error code
         }
 
-        // TODO: check existension of KB entities (ProductId, PartnerId) 
-        // --------------------------------------------------------------------------------------------------------------------------
-
-        // check if loan exists
+        // check if loan exists (against KonsDB)
         var loanExists = await _repository.ExistsLoan(request.Request.ProductId, cancellation);
         if (!loanExists)
         {
             throw new CisNotFoundException(13014, nameof(Repositories.Entities.Loan), request.Request.ProductId); //TODO: error code
         }
 
-        // check if partner exists
+        // check if partner exists (against KonsDB)
         var partnerExists = await _repository.ExistsPartner(request.Request.Relationship.PartnerId, cancellation);
         if (!partnerExists)
         {
             throw new CisNotFoundException(13014, nameof(Repositories.Entities.Partner), request.Request.Relationship.PartnerId); //TODO: error code
         }
 
-        // --------------------------------------------------------------------------------------------------------------------------
-
-        // get codebook ContractRelationshipType item
-        // var = await GetContractRelationshipType(request.Request.Relationship.ContractRelationshipTypeId);
+        // get codebook RelationshipCustomerProductTypeItem item
+        var relationshipTypeItem = await GetContractRelationshipType(request.Request.Relationship.ContractRelationshipTypeId);
 
         // create request
         var loanLinkRequest = new LoanLinkRequest
         {
-            Type = (ContractRelationshipType)request.Request.Relationship.ContractRelationshipTypeId    //TODO: convert codebook ContractRelationshipType item to request enum
+            Type = (ContractRelationshipType)relationshipTypeItem.MpHomeContractRelationshipType
         };
 
         // call endpoint
-        var result = await _mpHomeClient.UpdateLoanPartnerLink(request.Request.ProductId, request.Request.Relationship.PartnerId, loanLinkRequest); //TODO: check result
+        _ = ServiceCallResult.ResolveToDefault<object>(await _mpHomeClient.UpdateLoanPartnerLink(request.Request.ProductId, request.Request.Relationship.PartnerId, loanLinkRequest));
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    ///// <summary>
-    ///// Returns ContractRelationshipType codebook item by ID
-    ///// </summary>
-    //private async Task<ContractRelationshipTypeItem> GetContractRelationshipType(int contractRelationshipTypeId)
-    //{
-    //    var list = await _codebookService.ContractRelationshipTypes();
-    //    var item = list.FirstOrDefault(t => t.Id == contractRelationshipTypeId);
+    /// <summary>
+    /// Returns RelationshipCustomerProductType codebook item by ID
+    /// </summary>
+    private async Task<RelationshipCustomerProductTypeItem> GetContractRelationshipType(int contractRelationshipTypeId)
+    {
+        var list = await _codebookService.RelationshipCustomerProductTypes();
+        var item = list.FirstOrDefault(t => t.Id == contractRelationshipTypeId);
 
-    //    if (item == null)
-    //    {
-    //        throw new CisNotFoundException(13014, nameof(ContractRelationshipTypeItem), contractRelationshipTypeId);
-    //    }
+        if (item == null)
+        {
+            throw new CisNotFoundException(13014, nameof(RelationshipCustomerProductTypeItem), contractRelationshipTypeId);
+        }
 
-    //    return item;
-    //}
+        return item;
+    }
 
 }

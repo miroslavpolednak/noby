@@ -30,7 +30,7 @@ internal class DeleteContractRelationshipHandler
         }
 
         // call endpoint
-        var result = await _mpHomeClient.DeletePartnerLoanLink(request.Request.ProductId, request.Request.PartnerId); // TODO: check result
+        _ = ServiceCallResult.ResolveToDefault<object>(await _mpHomeClient.DeletePartnerLoanLink(request.Request.ProductId, request.Request.PartnerId));
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

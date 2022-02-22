@@ -1,22 +1,20 @@
 ﻿using DomainServices.ProductService.Contracts;
+using DomainServices.CodebookService.Abstraction;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
 internal class GetProductListHandler
-    : IRequestHandler<Dto.GetProductListMediatrRequest, GetProductListResponse>
+    : BaseMortgageHandler, IRequestHandler<Dto.GetProductListMediatrRequest, GetProductListResponse>
 {
     #region Construction
 
-    private readonly ILogger<GetProductListHandler> _logger;
-    protected readonly Repositories.LoanRepository _repository;
-
     public GetProductListHandler(
-        ILogger<GetProductListHandler> logger,
-        Repositories.LoanRepository repository)
-    {
-        _logger = logger;
-        _repository = repository;
-    }
+      ICodebookServiceAbstraction codebookService,
+      Repositories.LoanRepository repository,
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        ILogger<GetProductListHandler> logger) : base(codebookService, repository, null, logger) { }
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+
 
     #endregion
 
@@ -28,14 +26,15 @@ internal class GetProductListHandler
         var model = new GetProductListResponse();
 
         // add mortgage product if exists
-        var loanExists = await _repository.ExistsLoan(request.Request.CaseId, cancellation);
-
-        if (loanExists)
+        var loan = await _repository.GetLoan(request.Request.CaseId, cancellation);
+        if (loan != null)
         {
+            var map = await GetMapLoanTypeToProductTypeId();
+
             var product = new Product
             {
                 ProductId = request.Request.CaseId,
-                ProductTypeId = 99999, //TODO: find out ProductTypeId by ProductTypeCategory Mortgage
+                ProductTypeId = map[loan.TypUveru]
             };
 
             model.Products.Add(product);

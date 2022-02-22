@@ -4,7 +4,6 @@ using DomainServices.ProductService.Contracts;
 using DomainServices.ProductService.Api.Repositories;
 using DomainServices.ProductService.Api.Repositories.Entities;
 using ExternalServices.MpHome.V1._1;
-using CIS.Core.Results;
 using CIS.Infrastructure.gRPC;
 
 
@@ -56,11 +55,10 @@ internal class BaseMortgageHandler
     /// <summary>
     /// Calls MpHome.UpdateMortgage endpoint according to params
     /// </summary>
-    protected async Task<bool> UpdateLoan(long loanId, MortgageData mortgage, bool createNewOne, CancellationToken cancellation)
+    protected async Task UpdateLoan(long loanId, MortgageData mortgage, bool createNewOne, CancellationToken cancellation)
     {
         var loanExists = await _repository.ExistsLoan(loanId, cancellation);
 
-        // TODO: check existension of KB entities (CaseId) 
         if (createNewOne && loanExists)
         {
             throw new CisAlreadyExistsException(13015, nameof(Loan), loanId); //TODO: error code
@@ -78,15 +76,19 @@ internal class BaseMortgageHandler
         var mortgageRequest = mortgage.ToMortgageRequest();
 
         // call endpoint
-        return resolveResult(await _mpHomeClient.UpdateLoan(loanId, mortgageRequest));
+        _ = ServiceCallResult.Resolve<object>(await _mpHomeClient.UpdateLoan(loanId, mortgageRequest));       
     }
 
-    private bool resolveResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult r => true,
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
-            _ => throw new NotImplementedException()
-        };
+    /// <summary>
+    /// Returns mapping LoanType -> ProductTypeId
+    /// </summary>
+    protected async Task<Dictionary<int, int>> GetMapLoanTypeToProductTypeId()
+    {
+        var list = await _codebookService.ProductTypes();
+#pragma warning disable CS8629 // Nullable value type may be null.
+        return list.Where(i => i.KonsDbLoanType.HasValue).ToDictionary(i => i.KonsDbLoanType.Value, i => i.Id);
+#pragma warning restore CS8629 // Nullable value type may be null.
+    }
+
 
 }

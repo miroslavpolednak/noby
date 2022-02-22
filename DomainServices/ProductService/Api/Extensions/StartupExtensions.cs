@@ -40,8 +40,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceMpHome(appConfiguration.MpHome);
 
         // dbcontext
-        string connectionString = builder.Configuration.GetConnectionString("konsdb");
-        builder.Services.AddDbContext<Repositories.ProductServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        builder.AddEntityFramework<Repositories.ProductServiceDbContext>();
 
         // repos
         builder.Services.AddScoped<Repositories.LoanRepository>();
