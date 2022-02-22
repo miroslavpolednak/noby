@@ -15,10 +15,12 @@ internal class LoanRepository
 
     public async Task<Entities.Loan> GetLoan(long loanId, CancellationToken cancellation)
     {
+#pragma warning disable CS8603 // Possible null reference return.
         return await _dbContext.Loans
             .AsNoTracking()
             .Where(t => t.Id == loanId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Loan #{loanId} not found"); //TODO: error code
+            .FirstOrDefaultAsync(cancellation);
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public async Task<bool> ExistsLoan(long loanId, CancellationToken cancellation)

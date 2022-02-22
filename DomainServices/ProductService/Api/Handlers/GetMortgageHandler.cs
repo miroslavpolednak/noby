@@ -1,22 +1,19 @@
 ﻿using DomainServices.ProductService.Contracts;
+using DomainServices.CodebookService.Abstraction;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
 internal class GetMortgageHandler
-    : IRequestHandler<Dto.GetMortgageMediatrRequest, GetMortgageResponse>
+    : BaseMortgageHandler, IRequestHandler<Dto.GetMortgageMediatrRequest, GetMortgageResponse>
 {
     #region Construction
-
-    private readonly ILogger<GetMortgageHandler> _logger;
-    protected readonly Repositories.LoanRepository _repository;
-
+   
     public GetMortgageHandler(
-        ILogger<GetMortgageHandler> logger,
-         Repositories.LoanRepository repository)
-    {
-        _logger = logger;
-        _repository = repository;
-    }
+        ICodebookServiceAbstraction codebookService,
+        Repositories.LoanRepository repository,
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        ILogger<GetMortgageHandler> logger) : base(codebookService, repository, null, logger) { }
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
     #endregion
 
@@ -25,14 +22,21 @@ internal class GetMortgageHandler
         _logger.RequestHandlerStarted(nameof(GetMortgageHandler));
 
         var loan = await _repository.GetLoan(request.Request.ProductId, cancellation);
+
+        if (loan == null)
+        {
+            throw new CisNotFoundException(13014, nameof(Repositories.Entities.Loan), request.Request.ProductId); //TODO: error code
+        }
+
         var relationships = await _repository.GetRelationships(request.Request.ProductId, cancellation);
 
-        var model = new GetMortgageResponse
-        { 
-            Mortgage = loan.ToMortgage(relationships)
-        };
+        var mortgage = loan.ToMortgage(relationships);
 
-        return model;
+        var map = await GetMapLoanTypeToProductTypeId();
+
+        mortgage.ProductTypeId = map[loan.TypUveru];
+
+        return new GetMortgageResponse{ Mortgage = mortgage};
     }
   
 }
