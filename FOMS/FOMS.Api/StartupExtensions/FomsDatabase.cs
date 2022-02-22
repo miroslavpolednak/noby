@@ -1,4 +1,6 @@
-﻿namespace FOMS.Api.StartupExtensions
+﻿using CIS.Infrastructure.StartupExtensions;
+
+namespace FOMS.Api.StartupExtensions
 {
     internal static class FomsDatabase
     {
@@ -14,6 +16,9 @@
 
             services.AddScoped<IUnitOfWork>(x => new UnitOfWork(dbContextOptions.Options));*/
 
+            // dapper konsdb
+            builder.Services.AddDapper<FOMS.Core.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
+            
             return builder;
         }
     }

@@ -6,8 +6,11 @@ public class MortgageDetailDto
     /// ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
     /// </summary>
     public string? ContractNumber { get; set; }
-    
-    // aakce produkt???
+
+    /// <summary>
+    /// Akce / produkt
+    /// </summary>
+    public string ProductName { get; set; } = null!;
     
     /// <summary>
     /// Výše úvěru
@@ -15,19 +18,47 @@ public class MortgageDetailDto
     public decimal LoanAmount { get; set; }
     
     /// <summary>
-    /// Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
+    /// Skládačková úroková sazba 
     /// </summary>
     public decimal InterestRate { get; set; }
     
     /// <summary>
-    /// Datum uzavreni???
+    /// Datum uzavreni smlouvy
     /// </summary>
-    public DateTime? ExpectedDateOfDrawing { get; set; }
+    public DateTime? ContractStartDate { get; set; }
     
     /// <summary>
-    /// Fixace???
+    /// Datum fixace
     /// </summary>
-    public int FixationPeriod { get; set; }
+    public DateTime? FixationDate { get; set; }
+
+    /// <summary>
+    /// Zustatek na ucte
+    /// </summary>
+    public decimal? AccountBalance { get; set; }
     
+    /// <summary>
+    /// Zbyva cerpat
+    /// </summary>
+    public decimal? AmountToWithdraw { get; set; }
     
+    /// <summary>
+    /// Mesicni splatka
+    /// </summary>
+    public decimal MonthlyPayment { get; set; }
+
+    /// <summary>
+    /// Datum cerpani
+    /// </summary>
+    public DateTime? DateOfDrawing { get; set; }
+    
+    /// <summary>
+    /// Platne VUP od
+    /// </summary>
+    public DateTime? LoanTermsValidFrom { get; set; }
+    
+    /// <summary>
+    /// Rocni vypis z uctu
+    /// </summary>
+    public bool YearlyAccountStatement { get; set; }
 }

@@ -9,6 +9,11 @@
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DocumentationFile>FOMS.Api.xml</DocumentationFile>
+    <NoWarn>1701;1702;CS1573</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <NoWarn>1701;1702;CS1573</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

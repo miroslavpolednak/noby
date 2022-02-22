@@ -334,6 +334,11 @@
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ProductName">
+            <summary>
+            Akce / produkt
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.LoanAmount">
             <summary>
             Výše úvěru
@@ -341,17 +346,47 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.InterestRate">
             <summary>
-            Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
+            Skládačková úroková sazba 
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ExpectedDateOfDrawing">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ContractStartDate">
             <summary>
-            Datum uzavreni???
+            Datum uzavreni smlouvy
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.FixationPeriod">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.FixationDate">
             <summary>
-            Fixace???
+            Datum fixace
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.AccountBalance">
+            <summary>
+            Zustatek na ucte
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.AmountToWithdraw">
+            <summary>
+            Zbyva cerpat
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.MonthlyPayment">
+            <summary>
+            Mesicni splatka
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.DateOfDrawing">
+            <summary>
+            Datum cerpani
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.LoanTermsValidFrom">
+            <summary>
+            Platne VUP od
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.YearlyAccountStatement">
+            <summary>
+            Rocni vypis z uctu
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.SalesArrangementId">
@@ -362,6 +397,21 @@
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.SalesArrangementTypeId">
             <summary>
             Druh zadosti. Ciselnik SalesArrangementTypes.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.ProductCategory">
+            <summary>
+            Kategorie produktu - hypoteka, SS, SS uver
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.CreatedTime">
+            <summary>
+            Datum vytvoreni SA
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.CreatedBy">
+            <summary>
+            Jmeno a prijmeni uzivatele, ktery vytvoril SA
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Data">

@@ -9,6 +9,15 @@ public static class DapperExtensions
     public static async Task<List<T>> ExecuteDapperRawSqlToList<T>(this IConnectionProvider connectionProvider, string sqlQuery, CancellationToken cancellationToken = default(CancellationToken))
         => await connectionProvider.ExecuteDapperQuery<List<T>>(async c => (await c.QueryAsync<T>(sqlQuery)).AsList(), cancellationToken);
     
+    public static async Task<List<T>> ExecuteDapperRawSqlToList<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default(CancellationToken))
+        => await connectionProvider.ExecuteDapperQuery<List<T>>(async c => (await c.QueryAsync<T>(sqlQuery, param)).AsList(), cancellationToken);
+    
+    public static async Task<T?> ExecuteDapperRawSqlFirstOrDefault<T>(this IConnectionProvider connectionProvider, string sqlQuery, CancellationToken cancellationToken = default(CancellationToken))
+        => await connectionProvider.ExecuteDapperQuery<T>(async c => (await c.QueryFirstOrDefaultAsync<T>(sqlQuery)), cancellationToken);
+    
+    public static async Task<T?> ExecuteDapperRawSqlFirstOrDefault<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default(CancellationToken))
+        => await connectionProvider.ExecuteDapperQuery<T>(async c => (await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param)), cancellationToken);
+    
     public static async Task<T> ExecuteDapperQuery<T>(this IConnectionProvider connectionProvider, Func<IDbConnection, Task<T>> getData, CancellationToken cancellationToken = default(CancellationToken))
     {
         await using var connection = connectionProvider.Create();

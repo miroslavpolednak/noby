@@ -36,7 +36,7 @@ internal static class FomsAppBuilder
             if (app.Environment.IsProduction())
                 appBuilder.UseHsts();
 
-            appBuilder.UseCors();
+            appBuilder.UseCisWebApiCors();
             appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware>();
 
             // autentizace a autorizace

@@ -1,6 +1,6 @@
-﻿namespace FOMS.Api;
+﻿namespace FOMS.Core;
 
-internal  sealed class LoggerEventIdCodes
+public struct LoggerEventIdCodes
 {
     public const int SharedCreateCaseStarted = 99001;
     public const int SharedCreateSalesArrangementStarted = 99002;
