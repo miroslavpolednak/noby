@@ -56,7 +56,7 @@ internal class CreateContractRelationshipHandler
         };
 
         // call endpoint
-        _ = ServiceCallResult.ResolveToDefault<object>(await _mpHomeClient.UpdateLoanPartnerLink(request.Request.ProductId, request.Request.Relationship.PartnerId, loanLinkRequest));
+        ServiceCallResult.Resolve(await _mpHomeClient.UpdateLoanPartnerLink(request.Request.ProductId, request.Request.Relationship.PartnerId, loanLinkRequest));
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

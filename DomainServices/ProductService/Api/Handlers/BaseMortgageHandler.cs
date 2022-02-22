@@ -76,7 +76,7 @@ internal class BaseMortgageHandler
         var mortgageRequest = mortgage.ToMortgageRequest();
 
         // call endpoint
-        _ = ServiceCallResult.Resolve<object>(await _mpHomeClient.UpdateLoan(loanId, mortgageRequest));       
+        ServiceCallResult.Resolve(await _mpHomeClient.UpdateLoan(loanId, mortgageRequest));       
     }
 
     /// <summary>
