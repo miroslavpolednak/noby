@@ -1,33 +1,65 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Api.Repositories;
+﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
-using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {
     internal class GetCustomerDetailHandler : IRequestHandler<GetCustomerDetailMediatrRequest, Contracts.CustomerResponse>
     {
-        private readonly KonsDbRepository _repository;
         private readonly ILogger<GetCustomerDetailHandler> _logger;
+        private readonly CustomerManagement.ICMClient _cm;
+        private readonly ICodebookServiceAbstraction _codebooks;
 
-        public GetCustomerDetailHandler(KonsDbRepository repository, ILogger<GetCustomerDetailHandler> logger)
+        public GetCustomerDetailHandler(ILogger<GetCustomerDetailHandler> logger, CustomerManagement.ICMClient cm, ICodebookServiceAbstraction codebooks)
         {
-            _repository = repository;
             _logger = logger;
+            _cm = cm;
+            _codebooks = codebooks;
         }
 
         public async Task<CustomerResponse> Handle(GetCustomerDetailMediatrRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Get detail instance ID #{id}", request.Request);
 
-            var entity = await _repository.GetDetail(0);
+            // zavolat CM
+            var cmResponse = (await _cm.GetDetail(request.Request.Identity.IdentityId)).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
 
-            if (entity == null)
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Detail instance #{request.Request} not found", 10007);
+            var response = new CustomerResponse();
 
-            //TODO: Jak poznam z konsdb jestli jde o FO/PO? Modulo asi nechceme, ne?
-            return entity.ToDetailResponse();
+            // ciselniky
+            var docTypes = await _codebooks.IdentificationDocumentTypes();
+            var countries = await _codebooks.Countries();
+            var genders = await _codebooks.Genders();
+            var maritals = await _codebooks.MaritalStatuses();
+
+            // identity
+            response.Identities.Add(cmResponse.CustomerId.ToIdentity());
+
+            // FO
+            var np = (CustomerManagement.CMWrapper.NaturalPerson)cmResponse.Party;
+
+            // customer
+            response.NaturalPerson = new NaturalPerson
+            {
+                BirthNumber = np.CzechBirthNumber.ToEmptyString(),
+                DateOfBirth = np.BirthDate,
+                FirstName = np.FirstName.ToEmptyString(),
+                LastName = np.Surname.ToEmptyString(),
+                GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id,
+                BirthName = np.BirthName.ToEmptyString(),
+                PlaceOfBirth = np.BirthPlace.ToEmptyString(),
+                BirthCountryId = countries.FirstOrDefault(t => t.Code == np.BirthCountryCode)?.Id,
+                MaritalStatusStateId = maritals.FirstOrDefault(t => t.RDMCode == np.MaritalStatusCode)?.Id ?? 0,
+            };
+
+            if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
+                response.NaturalPerson.CitizenshipCountriesId.AddRange(countries.Where(t => np.CitizenshipCodes.Contains(t.Code)).Select(t => t.Id));
+
+            // doklad
+            if (cmResponse.PrimaryIdentificationDocument != null)
+                response.IdentificationDocument = cmResponse.PrimaryIdentificationDocument.ToIdentificationDocument(countries, docTypes);
+
+            return response;
         }
     }
 }

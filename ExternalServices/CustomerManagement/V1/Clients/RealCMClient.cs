@@ -6,9 +6,41 @@ internal sealed class RealCMClient : BaseClient<RealCMClient>, ICMClient
 {
     public RealCMClient(HttpClient httpClient, ILogger<RealCMClient> logger) : base(httpClient, logger) { }
 
+    public async Task<IServiceCallResult> GetDetail(long model)
+    {
+        _logger.LogDebug("Run inputs: CustomerManagement GetDetail with data {model}", model);
+
+        return await WithClient(async c => {
+
+            return await callMethod(async () => {
+
+                var result = await c.GetCustomerBaseInfoAsync(customerId: model, showPrimaryAddress: true, showPrimaryIdDocument: true, showCustomerIdentification: true, showContactAddress: true, showPrimaryPhone: true, showPrimaryEmail: true, showSegment: null, showPoliticallyExposed: null, showEsa: null, showNace: null, showInsurability: null, showFirstNameVocative: null, showSurnameVocative: null, includeArchived: null, getAllPrimaryPhones: true, showFatca: null, showFinancialProfile: null, showHousing: null, showTurnovers: null, showEducation: null, showEmployeesNumber: null, showEmployment: null, showTemporaryStay: null, requiredAddressFormats: null, x_B3_TraceId: "", x_KB_Party_Identity_In_Service: "", x_KB_Orig_System_Identity: "", x_KB_Caller_System_Identity: "");
+
+                return new SuccessfulServiceCallResult<CustomerBaseInfo>(result);
+            });
+
+        });
+    }
+
+    public async Task<IServiceCallResult> GetList(IEnumerable<long> model)
+    {
+        _logger.LogDebug("Run inputs: CustomerManagement GetList with data {model}", System.Text.Json.JsonSerializer.Serialize(model));
+
+        return await WithClient(async c => {
+
+            return await callMethod(async () => {
+
+                var result = await c.GetCustomersBaseInfoAsync(body: model, showPrimaryAddress: null, showPrimaryIdDocument: true, showCustomerIdentification: true, showContactAddress: null, showPrimaryPhone: null, showPrimaryEmail: null, showSegment: null, showPoliticallyExposed: null, showEsa: null, showNace: null, showInsurability: null, showFirstNameVocative: null, showSurnameVocative: null, includeArchived: null, getAllPrimaryPhones: null, showFatca: null, showFinancialProfile: null, showHousing: null, showTurnovers: null, showEducation: null, showEmployeesNumber: null, showEmployment: null, showTemporaryStay: null, requiredAddressFormats: null, x_B3_TraceId: "", x_KB_Party_Identity_In_Service: "", x_KB_Orig_System_Identity: "", x_KB_Caller_System_Identity: "");
+
+                return new SuccessfulServiceCallResult<IEnumerable<CustomerBaseInfo>>(result);
+            });
+
+        });
+    }
+
     public async Task<IServiceCallResult> Search(SearchCustomerRequest model)
     {
-        _logger.LogDebug("Run inputs: CustomerManagement Search with data {contact}", System.Text.Json.JsonSerializer.Serialize(model));
+        _logger.LogDebug("Run inputs: CustomerManagement Search with data {model}", System.Text.Json.JsonSerializer.Serialize(model));
 
         return await WithClient(async c => {
 

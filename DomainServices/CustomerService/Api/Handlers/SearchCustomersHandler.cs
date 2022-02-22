@@ -1,5 +1,4 @@
 ﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Api.Repositories;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
 
@@ -7,14 +6,12 @@ namespace DomainServices.CustomerService.Api.Handlers
 {
     internal class SearchCustomersHandler : IRequestHandler<SearchCustomersMediatrRequest, SearchCustomersResponse>
     {
-        private readonly KonsDbRepository _repository;
         private readonly ILogger<SearchCustomersHandler> _logger;
         private readonly CustomerManagement.ICMClient _cm;
         private readonly ICodebookServiceAbstraction _codebooks;
 
-        public SearchCustomersHandler(KonsDbRepository repository, ILogger<SearchCustomersHandler> logger, CustomerManagement.ICMClient cm, ICodebookServiceAbstraction codebooks)
+        public SearchCustomersHandler(ILogger<SearchCustomersHandler> logger, CustomerManagement.ICMClient cm, ICodebookServiceAbstraction codebooks)
         {
-            _repository = repository;
             _logger = logger;
             _cm = cm;
             _codebooks = codebooks;
@@ -22,7 +19,7 @@ namespace DomainServices.CustomerService.Api.Handlers
 
         public async Task<SearchCustomersResponse> Handle(SearchCustomersMediatrRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Get list instance Identities #{id}", string.Join(",", request.Request));
+            _logger.LogInformation("Search CM #{id}", string.Join(",", request.Request));
 
             // ciselniky
             var docTypes = await _codebooks.IdentificationDocumentTypes();
@@ -31,9 +28,10 @@ namespace DomainServices.CustomerService.Api.Handlers
             // request pro vyhledavani v CM, zatim podle natural person
             var cmRequest = new CustomerManagement.CMWrapper.SearchCustomerRequest
             {
+                NumberOfEntries = 20,
                 CustomerId = request.Request.Identity?.IdentityId,
-                FirstName = request.Request.NaturalPerson?.FirstName,
-                Name = request.Request.NaturalPerson?.LastName,
+                FirstName = request.Request.NaturalPerson?.FirstName.ToCMstring(),
+                Name = request.Request.NaturalPerson?.LastName.ToCMstring(),
                 BirthEstablishedDate = request.Request.NaturalPerson?.DateOfBirth
             };
 
@@ -46,8 +44,7 @@ namespace DomainServices.CustomerService.Api.Handlers
 
             // podle dokladu
             if (request.Request.IdentificationDocument != null)
-            {
-                
+            {                
                 cmRequest.IdDocumentTypeCode = docTypes.First(t => t.Id == request.Request.IdentificationDocument.IdentificationDocumentTypeId).RDMCode;
                 cmRequest.IdDocumentIssuingCountryCode = countries.First(t => t.Id == request.Request.IdentificationDocument.IssuingCountryId).Code;
                 cmRequest.IdDocumentNumber = request.Request.IdentificationDocument.Number;
@@ -63,7 +60,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             }
 
             // zavolat CM
-            var cmResponse = (await _cm.Search(cmRequest)).ToCMResult<CustomerManagement.CMWrapper.CustomerSearchResult>();
+            var cmResponse = (await _cm.Search(cmRequest)).CheckCMResult<CustomerManagement.CMWrapper.CustomerSearchResult>();
 
             var response = new SearchCustomersResponse();
 
@@ -73,45 +70,33 @@ namespace DomainServices.CustomerService.Api.Handlers
             // bez PO
             foreach (var item in cmResponse.ResultRows.Where(t => t.Party is CustomerManagement.CMWrapper.NaturalPersonSearchResult))
             {
-                var customer = new SearchCustomerResult({  });
+                var customer = new SearchCustomerResult();
 
-                customer.Identities.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity
-                {
-                    IdentityId = (int)item.CustomerId,
-                    IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemas.Kb
-                });
+                // identity
+                customer.Identities.Add(item.CustomerId.ToIdentity());
 
+                // FO
                 var np = (CustomerManagement.CMWrapper.NaturalPersonSearchResult)item.Party;
 
+                // customer
                 customer.NaturalPerson = new NaturalPersonBaseData
                 {
-                    BirthNumber = np.CzechBirthNumber,
+                    BirthNumber = np.CzechBirthNumber.ToEmptyString(),
                     DateOfBirth = np.BirthDate,
-                    FirstName = np.FirstName,
-                    LastName = np.Surname,
+                    FirstName = np.FirstName.ToEmptyString(),
+                    LastName = np.Surname.ToEmptyString(),
                     GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id
                 };
 
+                // doklad
                 if (item.PrimaryIdentificationDocument != null)
-                {
-                    customer.IdentificationDocument.RegisterPlace = item.PrimaryIdentificationDocument.RegisterPlace;
-                    customer.IdentificationDocument.ValidTo = item.PrimaryIdentificationDocument.ValidTo;
-                    customer.IdentificationDocument.IssuedOn = item.PrimaryIdentificationDocument.IssuedOn;
-                    customer.IdentificationDocument.IssuedBy = item.PrimaryIdentificationDocument.IssuedBy;
-                    customer.IdentificationDocument.Number = item.PrimaryIdentificationDocument.DocumentNumber;
-                    customer.IdentificationDocument.IssuingCountryId = countries.First(t => t.Code == item.PrimaryIdentificationDocument.IssuingCountryCode).Id;
-                    customer.IdentificationDocument.IdentificationDocumentTypeId = docTypes.First(t => t.RDMCode == item.PrimaryIdentificationDocument.TypeCode).Id;
-                }
+                    customer.IdentificationDocument = item.PrimaryIdentificationDocument.ToIdentificationDocument(countries, docTypes);
 
-                if (item.PrimaryAddress != null)
-                {
-                    customer.Addresses.Add(new Address
-                    {
-                        
-                    });
-                }
+                // adresa
+                if (item.PrimaryAddress?.Address != null)
+                    customer.Addresses.Add(item.PrimaryAddress.ToAddress(countries));
 
-                response.Customers.Add(new SearchCustomerResult());
+                response.Customers.Add(customer);
             }
 
             return response;

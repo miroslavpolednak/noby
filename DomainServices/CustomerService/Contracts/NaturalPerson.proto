@@ -7,13 +7,13 @@ import "NullableGrpcDate.proto";
 
 message SearchNaturalPerson {
 	
-   google.protobuf.StringValue FirstName = 1;
+   string FirstName = 1;
 
-   google.protobuf.StringValue LastName = 2;
+   string LastName = 2;
 
    cis.types.NullableGrpcDate DateOfBirth = 3;
 
-   google.protobuf.StringValue BirthNumber = 4;
+   string BirthNumber = 4;
 }
 
 message NaturalPersonBaseData {
@@ -45,7 +45,7 @@ message NaturalPerson {
 
    string PlaceOfBirth = 7;
 
-   int32 BirthCountryId = 8;
+   google.protobuf.Int32Value BirthCountryId = 8;
 
    repeated int32 CitizenshipCountriesId = 9;
 
