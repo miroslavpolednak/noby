@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FOMS.Api.Endpoints.Codebooks.Dto;
+namespace FOMS.Api.Endpoints.Codebooks.GetAll;
 
-internal class GetAllResponseItem
+public class GetAllResponseItem
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public GetAllResponseItem() { }

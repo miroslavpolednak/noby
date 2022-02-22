@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-internal class MortgageOutputs
+public class MortgageOutputs
 {
     public decimal InterestRate { get; set; }
     public decimal InterestRateAnnounced { get; set; }

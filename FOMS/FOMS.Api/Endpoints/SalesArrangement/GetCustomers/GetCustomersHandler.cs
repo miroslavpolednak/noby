@@ -1,9 +1,9 @@
-﻿namespace FOMS.Api.Endpoints.SalesArrangement.Handlers;
+﻿namespace FOMS.Api.Endpoints.SalesArrangement.GetCustomers;
 
 internal class GetCustomersHandler
-    : IRequestHandler<Dto.GetCustomersRequest, List<Dto.CustomerListItem>>
+    : IRequestHandler<GetCustomersRequest, List<Dto.CustomerListItem>>
 {
-    public async Task<List<Dto.CustomerListItem>> Handle(Dto.GetCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<List<Dto.CustomerListItem>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetCustomersHandler), request.SalesArrangementId);
 

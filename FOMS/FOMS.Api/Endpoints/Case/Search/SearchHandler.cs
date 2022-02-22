@@ -1,12 +1,14 @@
-﻿using CIS.Core.Results;
+﻿using CIS.Core.Security;
 using CIS.Core.Types;
+using CIS.Infrastructure.WebApi.Types;
+using DSContracts = DomainServices.CaseService.Contracts;
 
-namespace FOMS.Api.Endpoints.Case.Handlers;
+namespace FOMS.Api.Endpoints.Case.Search;
 
 internal class SearchHandler
-    : IRequestHandler<Dto.SearchRequest, Dto.SearchResponse>
+    : IRequestHandler<SearchRequest, SearchResponse>
 {
-    public async Task<Dto.SearchResponse> Handle(Dto.SearchRequest request, CancellationToken cancellationToken)
+    public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
     {
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
@@ -16,14 +18,14 @@ internal class SearchHandler
         _logger.LogDebug("Search for user {userId} with {pagination}", _userAccessor.User.Id, paginable);
 
         // zavolat BE sluzbu
-        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
+        var result = ServiceCallResult.Resolve<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
         _logger.LogDebug("Found {records} records", result.Pagination.RecordsTotalSize);
 
         // transform
-        return new Dto.SearchResponse
+        return new SearchResponse
         {
             Rows = await _converter.FromContracts(result.Cases),
-            Pagination = new CIS.Infrastructure.WebApi.Types.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
+            Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
         };
     }
 
@@ -34,12 +36,12 @@ internal class SearchHandler
     };
 
     private readonly ILogger<SearchHandler> _logger;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly ICurrentUserAccessor _userAccessor;
     private readonly CaseModelConverter _converter;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public SearchHandler(
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        ICurrentUserAccessor userAccessor,
         ILogger<SearchHandler> logger,
         CaseModelConverter converter,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)

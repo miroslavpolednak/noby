@@ -11,6 +11,12 @@ internal static class FomsServices
             .AddMediatR(typeof(IApiAssembly).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(WebApiValidationBehaviour<,>));
 
+        // disable default modelstate validation
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
+        
         // add validators
         builder.Services.Scan(selector => selector
                 .FromAssembliesOf(typeof(IApiAssembly))
@@ -29,6 +35,9 @@ internal static class FomsServices
 
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
+        
+        // controllers
+        builder.Services.AddControllers();
         
         return builder;
     }

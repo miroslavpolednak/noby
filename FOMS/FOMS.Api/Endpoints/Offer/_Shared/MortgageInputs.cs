@@ -1,9 +1,17 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-internal class MortgageInputs
+public class MortgageInputs
 {
+    /// <summary>
+    /// ID produktu. Ciselnik ProductTypes.
+    /// </summary>
     public int ProductTypeId { get; set; }
-    public int LoanKindId { get; set; }
+    
+    /// <summary>
+    /// Druh uveru. Ciselnik ProductLoanKind.
+    /// </summary>
+    public int ProductLoanKindId { get; set; }
+    
     public decimal LoanAmount { get; set; }
     public int? LoanDuration { get; set; }
     public decimal LoanPaymentAmount { get; set; }
@@ -14,5 +22,11 @@ internal class MortgageInputs
     public int? PaymentDayOfTheMonth { get; set; }
     public bool EmployeeBonusRequested { get; set; }
     public DateTime? ExpectedDateOfDrawing { get; set; }
-    public List<int>? LoanPurpose { get; set; }
+    public List<MortgageInputsLoanPurpose>? LoanPurpose { get; set; }
+    
+    public class MortgageInputsLoanPurpose
+    {
+        public int Id { get; set; }
+        public decimal Sum { get; set; }
+    }
 }

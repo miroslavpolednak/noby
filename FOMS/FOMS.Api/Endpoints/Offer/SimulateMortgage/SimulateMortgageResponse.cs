@@ -1,8 +1,19 @@
-﻿namespace FOMS.Api.Endpoints.Offer.Dto;
+﻿namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
-internal sealed class SimulateMortgageResponse
+public sealed class SimulateMortgageResponse
 {
+    /// <summary>
+    /// ID vytvorene simulace.
+    /// </summary>
     public int OfferId { get; set; }
+    
+    /// <summary>
+    /// Unikatni identifikator pro session simulace.
+    /// </summary>
     public string? ResourceProcessId { get; set; }
-    public MortgageOutputs? Outputs { get; set; }
+    
+    /// <summary>
+    /// Vysledky simulace.
+    /// </summary>
+    public Dto.MortgageOutputs? Outputs { get; set; }
 }

@@ -1,0 +1,69 @@
+﻿using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds;
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace FOMS.Api.Endpoints.Codebooks;
+
+[ApiController]
+[Route("api/codebooks")]
+public class CodebooksController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    public CodebooksController(IMediator mediator) =>  _mediator = mediator;
+
+    /// <summary>Kolekce vyzadanych ciselniku.</summary>
+    /// <remarks>
+    /// Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.
+    /// Aktualne implementovane ciselniky jsou:
+    /// - ActionCodesSavings
+    /// - ActionCodesSavingsLoan
+    /// - CaseStates
+    /// - Countries
+    /// - FixedLengthPeriods
+    /// - Genders
+    /// - IdentificationDocumentTypes
+    /// - Mandants
+    /// - MaritalStatuses
+    /// - ProductTypes
+    /// - ProductLoanPurposes
+    /// - ProductLoanKinds
+    /// - SalesArrangementTypes
+    /// - SignatureTypes
+    /// </remarks>
+    /// <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
+    /// <returns>Kolekce vyzadanych ciselniku.</returns>
+    [HttpGet("get-all")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<GetAll.GetAllResponseItem>), StatusCodes.Status200OK)]
+    public async Task<List<GetAll.GetAllResponseItem>> GetAll([FromQuery(Name = "q")] string codebookTypes, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetAll.GetAllRequest(codebookTypes), cancellationToken);
+    
+    /// <summary>
+    /// Ciselnik fixace uveru.
+    /// </summary>
+    /// <returns>Kolekce dob fixaci v mesicich.</returns>
+    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
+    [HttpGet("fixation-period-length")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
+    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+        => (await svc.FixedLengthPeriods(cancellationToken))
+            .Where(t => t.ProductTypeId == productTypeId)
+            .Select(t => t.FixedLengthPeriod)
+            .OrderBy(t => t)
+            .ToList();
+    
+    /// <summary>
+    /// Ciselnik druhu uveru.
+    /// </summary>
+    /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
+    [HttpGet("product-loan-kinds")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<ProductLoanKindsItem>), StatusCodes.Status200OK)]
+    public async Task<List<ProductLoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+        => (await svc.ProductTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == productTypeId)?
+            .ProductLoanKinds
+            .Where(t => t.IsValid)
+            .ToList();
+}

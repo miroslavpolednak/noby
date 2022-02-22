@@ -1,7 +1,14 @@
-﻿namespace FOMS.Api.Endpoints.Case.Dto;
+﻿namespace FOMS.Api.Endpoints.Case.Search;
 
-internal sealed class SearchResponse
+public sealed class SearchResponse
 {
+    /// <summary>
+    /// Informace o strankovani a razeni.
+    /// </summary>
     public CIS.Infrastructure.WebApi.Types.PaginationResponse? Pagination { get; set; }
-    public List<CaseModel>? Rows { get; set; }
+    
+    /// <summary>
+    /// Kolekce nalezenych Case-s.
+    /// </summary>
+    public List<Dto.CaseModel>? Rows { get; set; }
 }

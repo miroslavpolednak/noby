@@ -22,7 +22,7 @@ internal class CaseModelConverter
 	private Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model, 
 		List<DomainServices.CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeItem> productTypes,
 		List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> caseStates)
-		=> new Dto.CaseModel
+		=> new()
         {
 			CaseId = model.CaseId,
 			State = (CIS.Foms.Enums.CaseStates)model.State,

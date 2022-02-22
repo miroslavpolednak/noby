@@ -1,12 +1,6 @@
-﻿namespace FOMS.Api.Endpoints.Case.Dto;
+﻿namespace FOMS.Api.Endpoints.Case.GetById;
 
-internal class GetByIdRequest
+internal record GetByIdRequest(long CaseId)
     : IRequest<Dto.CaseModel>
 {
-    public long CaseId { get; set; }
-
-    public GetByIdRequest(long caseId)
-    {
-        CaseId = caseId;
-    }
 }
