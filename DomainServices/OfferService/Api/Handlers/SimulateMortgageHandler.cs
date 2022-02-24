@@ -1,5 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Abstraction;
+using CIS.Infrastructure.gRPC.CisTypes;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -54,7 +55,7 @@ internal class SimulateMortgageHandler
             OfferId = entity.OfferId,
             ProductTypeId = entity.ProductTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
+            Created = new ModificationStamp(entity),
             Inputs = inputs,
             Outputs = outputs,
         };
@@ -76,6 +77,7 @@ internal class SimulateMortgageHandler
 
         var output = new MortgageOutput
         {
+            ProductTypeId = input.ProductTypeId,
             InterestRate = 0.02m,                           //mock: 0.02
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu
             LoanDuration = loanDuration,                    //mock: 0 (pokud na vstupu nezadáno)
@@ -86,6 +88,10 @@ internal class SimulateMortgageHandler
             Aprc = 0.25m,                                    //mock: 0.25
             LoanTotalAmount = (input.LoanAmount + 1000000), //mock: (vstupní hodnota výše úvěru + 1 000 000)
             StatementTypeId = 1,                            //mock: 1
+                                                            //mock: currentDate + 1D je defaultní hodnota při nezadání
+            ExpectedDateOfDrawing = (input.ExpectedDateOfDrawing == null) ? new GrpcDate(DateTime.Now.AddDays(1)) : new GrpcDate(input.ExpectedDateOfDrawing.Year, input.ExpectedDateOfDrawing.Month, input.ExpectedDateOfDrawing.Day),
+                                                            //mock: 15 je defaultní hodnota při nezadání
+            PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15,
         };
 
         output.LoanPurpose.AddRange(input.LoanPurpose);     //mock: ze vstupu
