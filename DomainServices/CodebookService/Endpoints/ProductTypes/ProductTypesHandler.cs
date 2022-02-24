@@ -19,7 +19,7 @@ public class ProductTypesHandler
                 _logger.TryAddItemToCache(_cacheKey);
 
                 // vytahnout druhy uveru pro naparovani do kolekci
-                var loanKinds = await _mediator.Send(new Contracts.Endpoints.ProductLoanKinds.ProductLoanKindsRequest(), cancellationToken);
+                var loanKinds = await _mediator.Send(new Contracts.Endpoints.LoanKinds.LoanKindsRequest(), cancellationToken);
                 
                 // vytahnout mapovani na product category
                 var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlCodebooks, cancellationToken);
@@ -38,7 +38,7 @@ public class ProductTypesHandler
                             .Select(x => Convert.ToInt32(x))
                             .ToArray();
                         if (loanKinds.Any())
-                            t.ProductLoanKinds = loanKinds.Where(x => loanKindIds.Contains(x.Id)).ToList();
+                            t.LoanKinds = loanKinds.Where(x => loanKindIds.Contains(x.Id)).ToList();
                         t.MpHomeApiLoanType = null;
                         t.KonsDbLoanType = null;
                     }

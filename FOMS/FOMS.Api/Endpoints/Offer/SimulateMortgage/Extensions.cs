@@ -10,11 +10,11 @@ internal static class Extensions
             Inputs = new()
             {
                 ProductTypeId = request.ProductTypeId,
-                LoanKindId = request.ProductLoanKindId,
+                LoanKindId = request.LoanKindId,
                 LoanAmount = request.LoanAmount,
                 LoanDuration = request.LoanDuration,
                 LoanPaymentAmount = request.LoanPaymentAmount,
-                FixedLengthPeriod = request.FixationPeriod,
+                FixedLengthPeriod = request.FixedLengthPeriod,
                 EmployeeBonusLoanCode = request.EmployeeBonusLoanCode,
                 CollateralAmount = request.CollateralAmount,
                 LoanToValue = request.LoanToValue,
@@ -25,7 +25,7 @@ internal static class Extensions
         
         if (request.LoanPurpose is not null && request.LoanPurpose.Any())
             model.Inputs.LoanPurpose.AddRange(
-                request.LoanPurpose.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { ProductLoanPurposeId = t.Id, Sum = t.Sum })
+                request.LoanPurpose.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
                 );
 
         return model;

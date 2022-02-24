@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds
+namespace DomainServices.CodebookService.Contracts.Endpoints.LoanKinds
 {
     [DataContract]
-    public class ProductLoanKindsItem
+    public class LoanKindsItem
     {
         [DataMember(Order = 1)]
         public int Id { get; set; }

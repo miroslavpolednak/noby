@@ -6,7 +6,7 @@ internal static class OfferApiModuleDtoExtensions
         => new()
         {
             ProductTypeId = result.ProductTypeId,
-            ProductLoanKindId = result.LoanKindId,
+            LoanKindId = result.LoanKindId,
             LoanAmount = result.LoanAmount,
             LoanDuration = result.LoanDuration,
             LoanPaymentAmount = result.LoanPaymentAmount,
@@ -14,7 +14,8 @@ internal static class OfferApiModuleDtoExtensions
             CollateralAmount = result.CollateralAmount,
             LoanToValue = result.LoanToValue,
             PaymentDayOfTheMonth = result.PaymentDayOfTheMonth,
-            EmployeeBonusRequested = result.EmployeeBonusRequested
+            EmployeeBonusRequested = result.EmployeeBonusRequested,
+            LoanPurpose = result.LoanPurpose?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList()
         };
     
     public static Dto.MortgageOutputs ToResponseDto(this DomainServices.OfferService.Contracts.MortgageOutput result)
@@ -31,6 +32,6 @@ internal static class OfferApiModuleDtoExtensions
             LoanToValue = result.LoanToValue,
             LoanAmount = result.LoanAmount,
             LoanPaymentAmount = result.LoanPaymentAmount,
-            LoanPurpose = result.LoanPurpose?.Select(t => t.ProductLoanPurposeId).ToList() ?? default(List<int>)
+            LoanPurpose = result.LoanPurpose?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList()
         };
 }

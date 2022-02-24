@@ -52,7 +52,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         public string MpHomeApiLoanType { get; set; }
 
         [DataMember(Order = 14)]
-        public List<Contracts.Endpoints.ProductLoanKinds.ProductLoanKindsItem> ProductLoanKinds { get; set; }
+        public List<Contracts.Endpoints.LoanKinds.LoanKindsItem> LoanKinds { get; set; }
         
         [JsonIgnore]
         [DataMember(Order = 15)]

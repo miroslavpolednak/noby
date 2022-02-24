@@ -32,7 +32,7 @@ internal class GetAllHandler
             "maritalstatuses" => new(original, (await _codebooks.MaritalStatuses(cancellationToken)).Where(t => t.IsValid)),
             "producttypes" => new(original, await _codebooks.ProductTypes(cancellationToken)),
             "productloanpurposes" => new(original, await _codebooks.ProductLoanPurposes(cancellationToken)),
-            "productloankinds" => new(original, await _codebooks.ProductLoanKinds(cancellationToken)),
+            "loankinds" => new(original, await _codebooks.LoanKinds(cancellationToken)),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes(cancellationToken)),
             "signaturetypes" => new(original, await _codebooks.SignatureTypes(cancellationToken)),
             

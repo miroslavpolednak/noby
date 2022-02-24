@@ -1,6 +1,5 @@
 ﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanKinds;
-using Swashbuckle.AspNetCore.Annotations;
+using DomainServices.CodebookService.Contracts.Endpoints.LoanKinds;
 
 namespace FOMS.Api.Endpoints.Codebooks;
 
@@ -59,11 +58,11 @@ public class CodebooksController : ControllerBase
     /// <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<ProductLoanKindsItem>), StatusCodes.Status200OK)]
-    public async Task<List<ProductLoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
+    public async Task<List<LoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
         => (await svc.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == productTypeId)?
-            .ProductLoanKinds
+            .LoanKinds
             .Where(t => t.IsValid)
             .ToList();
 }

@@ -303,15 +303,47 @@
             <summary>
             ID produktu. Ciselnik ProductTypes.
             </summary>
+            <example>20001</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.ProductLoanKindId">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanKindId">
             <summary>
-            Druh uveru. Ciselnik ProductLoanKind.
+            Druh uveru. Ciselnik LoanKind.
             </summary>
+            <example>0</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanAmount">
             <summary>
             Výše úvěru
+            </summary>
+            <example>1000000</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanDuration">
+            <summary>
+            Splatnost úvěru
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanPaymentAmount">
+            <summary>
+            Splátka úvěru
+            </summary>
+            <example>15000</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FixedLengthPeriod">
+            <summary>
+            Délka fixace úrokové sazby
+            </summary>
+            <example>48</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.CollateralAmount">
+            <summary>
+            Předpokládáné hodnoty zajištění
+            </summary>
+            <example>5000000</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanToValue">
+            <summary>
+            Předpokládáné výše úvěru
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">

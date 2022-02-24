@@ -8,6 +8,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<Endpoints.ProductLoanKinds.ProductLoanKindsItem>> ProductLoanKinds(Endpoints.ProductLoanKinds.ProductLoanKindsRequest request, CallContext context = default);
+        Task<List<Endpoints.LoanKinds.LoanKindsItem>> LoanKinds(Endpoints.LoanKinds.LoanKindsRequest request, CallContext context = default);
     }
 }

@@ -25,5 +25,5 @@ public class MortgageOutputs
     public decimal Aprc { get; set; }
     public decimal LoanTotalAmount { get; set; }
     public int StatementTypeId { get; set; }
-    public List<int>? LoanPurpose { get; set; }
+    public List<LoanPurposeItem>? LoanPurpose { get; set; }
 }
