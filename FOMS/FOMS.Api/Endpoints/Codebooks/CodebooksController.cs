@@ -18,6 +18,7 @@ public class CodebooksController : ControllerBase
     /// - ActionCodesSavingsLoan
     /// - CaseStates
     /// - Countries
+    /// - CustomerRoles
     /// - FixedLengthPeriods
     /// - Genders
     /// - IdentificationDocumentTypes

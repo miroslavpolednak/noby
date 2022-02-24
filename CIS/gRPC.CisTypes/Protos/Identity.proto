@@ -13,6 +13,6 @@ message Identity {
 		Kb = 2;
 	}
 
-	// Mandant - KB nebo MP
+	// KB nebo MP nebo v budoucnu neco jineho
 	IdentitySchemas identityScheme = 2;
 }

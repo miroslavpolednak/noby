@@ -25,6 +25,7 @@ internal class GetAllHandler
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan(cancellationToken)).Where(t => t.IsValid)),
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
             "countries" => new(original, await _codebooks.Countries(cancellationToken)),
+            "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
             "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),

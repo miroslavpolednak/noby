@@ -6,7 +6,9 @@ namespace DomainServices.SalesArrangementService.Api.Repositories;
 
 internal sealed class SalesArrangementServiceDbContext : BaseDbContext
 {
+#pragma warning disable CS8618
     public SalesArrangementServiceDbContext(BaseDbContextAggregate aggregate)
+#pragma warning restore CS8618
         : base(aggregate) { }
 
     public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }

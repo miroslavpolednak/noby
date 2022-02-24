@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "Identity.proto";
+import "NullableGrpcDate.proto";
+
+message CustomerOnSA {
+    int32 CustomerOnSAId = 1;
+
+    int32 SalesArrangementId = 2;
+    
+    repeated cis.types.Identity CustomerIdentifiers = 3;
+    
+    int32 CustomerRoleId = 4;
+    
+    bool HasPartner = 5;
+    
+    string FirstNameNaturalPerson = 6;
+    
+    string Name = 7;
+    
+    cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 8;
+}

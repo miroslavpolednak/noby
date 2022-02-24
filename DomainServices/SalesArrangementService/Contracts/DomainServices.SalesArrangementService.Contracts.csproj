@@ -39,6 +39,8 @@
 
 	<ItemGroup>
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		
 		<Protobuf Include="CreateSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="LinkModelationToSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
@@ -47,6 +49,11 @@
 		<Protobuf Include="UpdateSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+
+		<Protobuf Include="CustomerOnSA.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CreateCustomer.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSAIdRequest.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="GetCustomerList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 </Project>

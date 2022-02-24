@@ -38,16 +38,16 @@ public class RelationshipCustomerRelationshipCustomerProductTypesHandler
     private class RelationshipCustomerProductTypeExtension
     {
         public int RelationshipCustomerProductTypeId { get; set; }
-        public string MpHomeApiContractRelationshipType { get; set; }
+        public string MpHomeApiContractRelationshipType { get; set; } = null!;
     }
 
     #endregion
 
     // dotaz na codebook do SB
-    const string _sql = @"SELECT [ID_VZTAHU] 'Id', [POPIS_VZTAHU] 'Name' FROM [SBR].[VZTAH] ORDER BY [ID_VZTAHU] ASC";
+    const string _sql = "SELECT [ID_VZTAHU] 'Id', [POPIS_VZTAHU] 'Name' FROM [SBR].[VZTAH] ORDER BY [ID_VZTAHU] ASC";
 
     // dotaz na extenstion
-    const string _sqlExtension = @"SELECT [RelationshipCustomerProductTypeId], [MpHomeApiContractRelationshipType] FROM [dbo].[RelationshipCustomerProductTypeExtension]";
+    const string _sqlExtension = "SELECT [RelationshipCustomerProductTypeId], [MpHomeApiContractRelationshipType] FROM [dbo].[RelationshipCustomerProductTypeExtension]";
 
     
     public async Task<List<RelationshipCustomerProductTypeItem>> Handle(RelationshipCustomerProductTypesRequest request, CancellationToken cancellationToken)

@@ -1,5 +1,4 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.Genders;
 
@@ -10,8 +9,9 @@ public class GenderItem
     public int Id { get; set; }
 
     [DataMember(Order = 2)]
-    public string Code { get; set; }
-
+    [JsonIgnore]
+    public CIS.Foms.Enums.Genders Value { get; set; }
+    
     [DataMember(Order = 3)]
     public string Name { get; set; }
 
