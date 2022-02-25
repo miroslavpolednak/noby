@@ -76,6 +76,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapCisHealthChecks();
 
     endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
+    endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.CustomerOnSAService>();
 
     endpoints.MapGrpcReflectionService();
 });

@@ -9,6 +9,7 @@ internal class DeleteCustomerHandler
         
         await _repository.DeleteCustomer(request.CustomerOnSAId, cancellation);
         
+        
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
     

@@ -2,6 +2,7 @@
 
 public class SalesArrangementListItem
 {
+    public int SalesArrangementId { get; set; }
     public int? OfferId { get; set; }
     public int SalesArrangementTypeId { get; set; }
     public string? SalesArrangementTypeText { get; set; }

@@ -12,13 +12,11 @@ message CreateCustomerRequest {
     
     int32 CustomerRoleId = 3;
     
-    bool HasPartner = 4;
+    string FirstNameNaturalPerson = 4;
     
-    string FirstNameNaturalPerson = 5;
+    string Name = 5;
     
-    string Name = 6;
-    
-    cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 7;
+    cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 6;
 }
 
 message CreateCustomerResponse {

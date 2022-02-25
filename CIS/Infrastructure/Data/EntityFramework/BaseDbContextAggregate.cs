@@ -2,14 +2,18 @@
 
 namespace CIS.Infrastructure.Data;
 
-public sealed class BaseDbContextAggregate
+public sealed class BaseDbContextAggregate<TDbContext> where TDbContext : DbContext
 {
-    internal CisEntityFrameworkOptions CisOptions { get; init; }
     internal Core.Security.ICurrentUserAccessor CurrentUser { get; init; }
     internal CIS.Core.IDateTime DateTime { get; init; }
     internal DbContextOptions Options { get; init; }
-
-    public BaseDbContextAggregate(DbContextOptions options, CisEntityFrameworkOptions cisOptions, Core.Security.ICurrentUserAccessor userProvider, CIS.Core.IDateTime dateTime)
+    internal CisEntityFrameworkOptions<TDbContext> CisOptions { get; init; }
+    
+    public BaseDbContextAggregate(
+        DbContextOptions<TDbContext> options, 
+        CisEntityFrameworkOptions<TDbContext> cisOptions, 
+        Core.Security.ICurrentUserAccessor userProvider, 
+        CIS.Core.IDateTime dateTime)
     {
         CisOptions = cisOptions;
         Options = options;

@@ -20,13 +20,16 @@ public static class DataStartupExtensions
         return services;
     }
 
-    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, string connectionStringKey = "default", CisEntityFrameworkOptions? cisOptions = null)
+    /// <summary>
+    /// Registrace DbContextu pro EntityFramework
+    /// </summary>
+    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
         where TDbContext : DbContext
     {
         // add custom CIS options
-        builder.Services.TryAddSingleton(cisOptions ?? new CisEntityFrameworkOptions());
+        builder.Services.TryAddSingleton(cisOptions ?? new CisEntityFrameworkOptions<TDbContext>());
 
-        builder.Services.TryAddScoped<BaseDbContextAggregate>();
+        builder.Services.TryAddScoped<BaseDbContextAggregate<TDbContext>>();
         
         // add DbContext
         string connectionString = builder.Configuration.GetConnectionString(connectionStringKey);

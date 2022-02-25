@@ -30,6 +30,28 @@ internal class CustomerOnSAServiceRepository
         return model;
     }
 
+    public async Task<List<Contracts.CustomerOnSA>> GetList(int salesArrangementId, CancellationToken cancellation)
+    {
+        var model = await _dbContext.Customers
+            .Where(t => t.SalesArrangementId == salesArrangementId)
+            .AsNoTracking()
+            .Select(CustomerOnSAServiceRepositoryExpressions.CustomerDetail())
+            .ToListAsync(cancellation);
+        var ids = model.Select(t => t.CustomerOnSAId).ToList();
+        
+        var identities = await _dbContext.CustomersIdentities
+            .Where(t => ids.Contains(t.CustomerOnSAId))
+            .AsNoTracking()
+            .ToListAsync(cancellation);
+        
+        model.ForEach(t =>
+        {
+            t.CustomerIdentifiers.AddRange(identities.Where(x => x.CustomerOnSAId == t.CustomerOnSAId).Select(x => new Identity(x.Id, x.IdentityScheme)));
+        });
+
+        return model;
+    }
+
     public async Task DeleteCustomer(int customerOnSAId, CancellationToken cancellation)
     {
         var entity = await _dbContext.Customers
@@ -39,6 +61,8 @@ internal class CustomerOnSAServiceRepository
 
         _dbContext.Customers.Remove(entity);
 
+        await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={customerOnSAId}", cancellation);
+        
         await _dbContext.SaveChangesAsync(cancellation);
     }
     

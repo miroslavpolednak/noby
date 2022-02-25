@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService.v1;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+
+service HouseholdService {
+    
+}

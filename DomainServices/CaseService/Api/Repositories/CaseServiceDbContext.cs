@@ -3,9 +3,10 @@ using CIS.Infrastructure.Data;
 
 namespace DomainServices.CaseService.Api.Repositories;
 
-internal sealed class CaseServiceDbContext : BaseDbContext
+internal sealed class CaseServiceDbContext 
+    : BaseDbContext<CaseServiceDbContext>
 {
-    public CaseServiceDbContext(BaseDbContextAggregate aggregate)
+    public CaseServiceDbContext(BaseDbContextAggregate<CaseServiceDbContext> aggregate)
         : base(aggregate) { }
 
     public DbSet<Entities.Case> Cases { get; set; } = null!;

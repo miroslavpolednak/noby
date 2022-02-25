@@ -1,5 +1,8 @@
-﻿namespace CIS.Infrastructure.Data;
+﻿using Microsoft.EntityFrameworkCore;
 
-public sealed class CisEntityFrameworkOptions
+namespace CIS.Infrastructure.Data;
+
+public sealed class CisEntityFrameworkOptions<TDbContext> 
+    where TDbContext : DbContext
 {
 }

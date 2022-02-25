@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CIS.Infrastructure.Data;
 
-public abstract class BaseDbContext : DbContext
+public abstract class BaseDbContext<TDbContext>
+    : DbContext 
+    where TDbContext : DbContext
 {
-    /// <summary>
-    /// ID of current user
-    /// </summary>
-    protected Core.Security.ICurrentUser? CurrentUser { get => _aggregate.CurrentUser.User; }
-    private readonly BaseDbContextAggregate _aggregate;
+    protected Core.Security.ICurrentUserAccessor? CurrentUser { get; init; }
+    protected CIS.Core.IDateTime CisDateTime { get; init; }
 
-    public BaseDbContext(BaseDbContextAggregate aggregate)
+    public BaseDbContext(BaseDbContextAggregate<TDbContext> aggregate)
         : base(aggregate.Options)
     {
-        _aggregate = aggregate;
+        CurrentUser = aggregate.CurrentUser;
+        CisDateTime = aggregate.DateTime;
     }
 
     /// <summary>
@@ -77,23 +77,23 @@ public abstract class BaseDbContext : DbContext
                     {
                         if (CurrentUser is not null)
                         {
-                            obj1.CreatedUserId = CurrentUser.Id;
-                            obj1.CreatedUserName = CurrentUser.Name;
+                            obj1.CreatedUserId = CurrentUser.User.Id;
+                            obj1.CreatedUserName = CurrentUser.User.Name;
                         }
-                        obj1.CreatedTime = _aggregate.DateTime.Now;
+                        obj1.CreatedTime = CisDateTime.Now;
                     }
                     if (CurrentUser is not null && entry.Entity is IModifiedUser obj2)
                     {
-                        obj2.ModifiedUserId = CurrentUser.Id;
-                        obj2.ModifiedUserName = CurrentUser.Name;
+                        obj2.ModifiedUserId = CurrentUser.User.Id;
+                        obj2.ModifiedUserName = CurrentUser.User.Name;
                     }
                     break;
 
                 case EntityState.Modified:
                     if (CurrentUser is not null && entry.Entity is IModifiedUser obj3)
                     {
-                        obj3.ModifiedUserId = CurrentUser.Id;
-                        obj3.ModifiedUserName = CurrentUser.Name;
+                        obj3.ModifiedUserId = CurrentUser.User.Id;
+                        obj3.ModifiedUserName = CurrentUser.User.Name;
                     }
                     break;
             }

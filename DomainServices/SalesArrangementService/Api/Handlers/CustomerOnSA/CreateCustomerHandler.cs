@@ -24,15 +24,12 @@ internal class CreateCustomerHandler
         {
             SalesArrangementId = request.Request.SalesArrangementId,
             CustomerRoleId = request.Request.CustomerRoleId,
-            HasPartner = request.Request.HasPartner,
             DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson,
             FirstNameNaturalPerson = request.Request.FirstNameNaturalPerson,
-            Name = request.Request.Name
+            Name = request.Request.Name,
+            Identities = request.Request.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
-        // identity
-        if (request.Request.CustomerIdentifiers is not null)
-            entity.Identities.AddRange(request.Request.CustomerIdentifiers.Select(t => new CustomerOnSAIdentity() { Id = t.IdentityId, IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)t.IdentityScheme }));
-        
+
         int customerId = await _repository.CreateCustomer(entity, cancellation);
 
         _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSA), customerId);

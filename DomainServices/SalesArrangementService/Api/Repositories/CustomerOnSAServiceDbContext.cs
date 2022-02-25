@@ -4,10 +4,11 @@ using Microsoft.VisualBasic;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
 
-internal sealed class CustomerOnSAServiceDbContext : BaseDbContext
+internal sealed class CustomerOnSAServiceDbContext 
+    : BaseDbContext<CustomerOnSAServiceDbContext>
 {
 #pragma warning disable CS8618
-    public CustomerOnSAServiceDbContext(BaseDbContextAggregate aggregate)
+    public CustomerOnSAServiceDbContext(BaseDbContextAggregate<CustomerOnSAServiceDbContext> aggregate)
 #pragma warning restore CS8618
         : base(aggregate) { }
 
@@ -16,7 +17,7 @@ internal sealed class CustomerOnSAServiceDbContext : BaseDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.RegisterCisTemporalTable<Entities.SalesArrangement>();
+        modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSA>();
         //modelBuilder.RegisterCisTemporalTable<Entities.SalesArrangement>();
         
         modelBuilder.Entity<Entities.CustomerOnSA>()

@@ -8,8 +8,10 @@ internal class GetCustomerListHandler
         _logger.RequestHandlerStartedWithId(nameof(GetCustomerListHandler), request.SalesArrangementId);
 
         var model = new Contracts.GetCustomerListResponse();
-        //model.Customers.AddRange(await _repository.GetCustomer(request.SalesArrangementId, cancellation));
+        model.Customers.AddRange(await _repository.GetList(request.SalesArrangementId, cancellation));
 
+        _logger.FoundItems(model.Customers.Count);
+        
         return model;
     }
     

@@ -11,6 +11,11 @@
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"OfferId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/LinkModelationToSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"ContractNumber\":\"123456789\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangement
 
+        grpcurl -insecure -d "{\"SalesArrangementId\":1,\"CustomerIdentifiers\":{\"identityId\":1,\"identityScheme\":1},\"CustomerRoleId\":1,\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/CreateCustomer
+        grpcurl -insecure -d "{\"CustomerOnSAId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/DeleteCustomer
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/GetCustomer
+        grpcurl -insecure -d "{\"SalesArrangementId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/GetCustomerList
+
 ## run batch
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"

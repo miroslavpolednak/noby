@@ -22,6 +22,7 @@ internal class GetListHandler
         
         return result.SalesArrangements.Select(t => new Dto.SalesArrangementListItem
         {
+            SalesArrangementId = t.SalesArrangementId,
             SalesArrangementTypeId = t.SalesArrangementTypeId,
             SalesArrangementTypeText = saTypeList.First(x => x.Id == t.SalesArrangementTypeId).Name,
             State = (CIS.Foms.Enums.SalesArrangementStates)t.State,

@@ -3,10 +3,11 @@ using CIS.Infrastructure.Data;
 
 namespace DomainServices.ProductService.Api.Repositories;
 
-internal sealed class ProductServiceDbContext : BaseDbContext
+internal sealed class ProductServiceDbContext 
+    : BaseDbContext<ProductServiceDbContext>
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public ProductServiceDbContext(BaseDbContextAggregate aggregate)
+    public ProductServiceDbContext(BaseDbContextAggregate<ProductServiceDbContext> aggregate)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         : base(aggregate) { }
 
