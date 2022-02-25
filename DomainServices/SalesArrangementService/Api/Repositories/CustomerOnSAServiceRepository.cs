@@ -56,7 +56,6 @@ internal class CustomerOnSAServiceRepository
     {
         var entity = await _dbContext.Customers
             .Where(t => t.CustomerOnSAId == customerOnSAId)
-            .AsNoTracking()
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {customerOnSAId} does not exist.");
 
         _dbContext.Customers.Remove(entity);
@@ -66,12 +65,10 @@ internal class CustomerOnSAServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
     
-    private readonly CustomerOnSAServiceDbContext _dbContext;
-    private readonly CIS.Core.IDateTime _dateTime;
+    private readonly SalesArrangementServiceDbContext _dbContext;
 
-    public CustomerOnSAServiceRepository(CustomerOnSAServiceDbContext dbContext, CIS.Core.IDateTime datetime)
+    public CustomerOnSAServiceRepository(SalesArrangementServiceDbContext dbContext)
     {
-        _dateTime = datetime;
         _dbContext = dbContext;
     }
 }

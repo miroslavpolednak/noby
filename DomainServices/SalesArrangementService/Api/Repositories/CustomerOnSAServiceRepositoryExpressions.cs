@@ -13,7 +13,7 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             FirstNameNaturalPerson = t.Name,
             DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
             SalesArrangementId = t.SalesArrangementId,
-            CustomerRoleId = t.CustomerRoleId
+            CustomerRoleId = (int)t.CustomerRoleId
         };
     }
 }

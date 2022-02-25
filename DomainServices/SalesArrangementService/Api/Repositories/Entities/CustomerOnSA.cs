@@ -11,7 +11,7 @@ internal class CustomerOnSA : CIS.Core.Data.BaseCreatedWithModifiedUserId
     
     public int SalesArrangementId { get; set; }
     
-    public int CustomerRoleId { get; set; }
+    public CIS.Foms.Enums.CustomerRoles CustomerRoleId { get; set; }
     
     public bool HasPartner { get; set; }
 
@@ -21,5 +21,5 @@ internal class CustomerOnSA : CIS.Core.Data.BaseCreatedWithModifiedUserId
     
     public DateTime? DateOfBirthNaturalPerson { get; set; }
 
-    public virtual List<CustomerOnSAIdentity> Identities { get; set; } = null!;
+    public virtual List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
 }

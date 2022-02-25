@@ -34,7 +34,6 @@ internal static class StartupExtensions
 
         // dbcontext
         builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();
-        builder.AddEntityFramework<Repositories.CustomerOnSAServiceDbContext>();
 
         builder.Services.AddHttpContextAccessor();
         builder.AddCisCurrentUser();

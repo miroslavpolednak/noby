@@ -150,6 +150,7 @@
             - ActionCodesSavingsLoan
             - CaseStates
             - Countries
+            - CustomerRoles
             - FixedLengthPeriods
             - Genders
             - IdentificationDocumentTypes

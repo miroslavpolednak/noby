@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message HouseholdData {
+    google.protobuf.Int32Value ChildrenUpToTenYearsCount = 1;
+    
+    google.protobuf.Int32Value ChildrenOverTenYearsCount = 2;
+    
+    google.protobuf.Int32Value PropertySettlementId = 3;
+}

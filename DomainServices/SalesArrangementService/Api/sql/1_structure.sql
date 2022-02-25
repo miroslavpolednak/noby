@@ -39,6 +39,13 @@ CREATE TABLE [dbo].[SalesArrangement](
     )
 GO
 
+ALTER TABLE [dbo].[CustomerOnSA] SET ( SYSTEM_VERSIONING = OFF)
+GO
+DROP TABLE [dbo].[CustomerOnSA]
+GO
+DROP TABLE [dbo].[CustomerOnSAHistory]
+GO
+
 CREATE TABLE [dbo].[CustomerOnSA](
      [CustomerOnSAId] [int] IDENTITY(1,1) NOT NULL,
      [SalesArrangementId] [int] NOT NULL,
@@ -65,6 +72,7 @@ CREATE TABLE [dbo].[CustomerOnSA](
     )
 GO
 
+
 CREATE TABLE [dbo].[CustomerOnSAIdentity](
  [CustomerOnSAIdentityId] [int] IDENTITY(1,1) NOT NULL,
  [CustomerOnSAId] [int] NULL,
@@ -77,3 +85,40 @@ CREATE TABLE [dbo].[CustomerOnSAIdentity](
 ) ON [PRIMARY]
 GO
 
+ALTER TABLE [dbo].[Household] SET ( SYSTEM_VERSIONING = OFF)
+GO
+DROP TABLE [dbo].[Household]
+GO
+DROP TABLE [dbo].[HouseholdHistory]
+GO
+CREATE TABLE [dbo].[Household](
+	[HouseholdId] [int] IDENTITY(1,1) NOT NULL,
+	[SalesArrangementId] [int] NOT NULL,
+	[HouseholdTypeId] [int] NOT NULL,
+	[ChildrenUpToTenYearsCount] [int] NULL,
+	[ChildrenOverTenYearsCount] [int] NULL,
+	[PropertySettlementId] [int] NULL,
+    SavingExpenseAmount [int] NULL,
+    InsuranceExpenseAmount [int] NULL,
+    HousingExpenseAmount [int] NULL,
+    OtherExpenseAmount [int] NULL,
+	[CustomerOnSAId1] [int] NULL,
+	[CustomerOnSAId2] [int] NULL,
+	[Expenses] [nvarchar](max) NULL,
+	[CreatedUserName] [nvarchar](100) NOT NULL,
+	[CreatedUserId] [int] NOT NULL,
+	[CreatedTime] [datetime] NOT NULL,
+	[ModifiedUserId] [int] NULL,
+	[ModifiedUserName] [nvarchar](100) NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+ CONSTRAINT [PK_Household] PRIMARY KEY CLUSTERED 
+(
+	[HouseholdId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY], PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+WITH
+(
+SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[HouseholdHistory] )
+)
+GO

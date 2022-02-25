@@ -23,7 +23,7 @@ internal class CreateCustomerHandler
         var entity = new Repositories.Entities.CustomerOnSA
         {
             SalesArrangementId = request.Request.SalesArrangementId,
-            CustomerRoleId = request.Request.CustomerRoleId,
+            CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)request.Request.CustomerRoleId,
             DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson,
             FirstNameNaturalPerson = request.Request.FirstNameNaturalPerson,
             Name = request.Request.Name,

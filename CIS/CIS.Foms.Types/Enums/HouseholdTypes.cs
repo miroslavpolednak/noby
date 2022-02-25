@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CIS.Foms.Enums;
 
 [DataContract]
-public enum CustomerRoles : byte
+public enum HouseholdTypes : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

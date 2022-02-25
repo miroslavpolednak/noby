@@ -8,8 +8,8 @@ public abstract class BaseDbContext<TDbContext>
     : DbContext 
     where TDbContext : DbContext
 {
-    protected Core.Security.ICurrentUserAccessor? CurrentUser { get; init; }
-    protected CIS.Core.IDateTime CisDateTime { get; init; }
+    public Core.Security.ICurrentUserAccessor? CurrentUser { get; init; }
+    public CIS.Core.IDateTime CisDateTime { get; init; }
 
     public BaseDbContext(BaseDbContextAggregate<TDbContext> aggregate)
         : base(aggregate.Options)

@@ -3,5 +3,4 @@
 [DataContract]
 public class CustomerRolesRequest : IRequest<List<CustomerRoleItem>>
 {
-    
 }

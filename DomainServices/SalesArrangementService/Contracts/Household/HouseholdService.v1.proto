@@ -3,7 +3,17 @@ package DomainServices.SalesArrangementService.v1;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
+import "CreateHousehold.proto";
+import "HouseholdIdRequest.proto";
+import "GetHouseholdList.proto";
+import "Household.proto";
 
 service HouseholdService {
+    rpc CreateHousehold (DomainServices.SalesArrangementService.CreateHouseholdRequest) returns (DomainServices.SalesArrangementService.CreateHouseholdResponse);
     
+    rpc DeleteHousehold (DomainServices.SalesArrangementService.HouseholdIdRequest) returns (google.protobuf.Empty);
+    
+    rpc GetHousehold (DomainServices.SalesArrangementService.HouseholdIdRequest) returns (DomainServices.SalesArrangementService.Household);
+    
+    rpc GetHouseholdList (DomainServices.SalesArrangementService.GetHouseholdListRequest) returns (DomainServices.SalesArrangementService.GetHouseholdListResponse);
 }

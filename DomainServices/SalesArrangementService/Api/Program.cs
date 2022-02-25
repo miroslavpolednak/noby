@@ -77,6 +77,7 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
     endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.CustomerOnSAService>();
+    endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.HouseholdService>();
 
     endpoints.MapGrpcReflectionService();
 });
