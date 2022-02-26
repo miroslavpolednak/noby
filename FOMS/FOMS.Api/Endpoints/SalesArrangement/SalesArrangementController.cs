@@ -6,9 +6,6 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 [Route("api/sales-arrangement")]
 public class SalesArrangementController : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
-    
     /// <summary>
     /// Seznam Sales Arrangements pro Case.
     /// </summary>
@@ -50,4 +47,7 @@ public class SalesArrangementController : ControllerBase
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
+    
+    private readonly IMediator _mediator;
+    public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
 }

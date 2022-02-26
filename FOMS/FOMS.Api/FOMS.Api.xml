@@ -452,6 +452,86 @@
             Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.CustomerInHousehold.RoleId">
+            <summary>
+            Role klienta
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.Household.Id">
+            <summary>
+            HouseholdId
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.Household.HouseholdTypeId">
+            <summary>
+            ID typu domacnosti. Ciselnik HouseholdTypes
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.Household.HouseholdTypeName">
+            <summary>
+            Nazev typu domacnosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.Household.Data">
+            <summary>
+            Sekce Ostatni parametry
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.Household.Expenses">
+            <summary>
+            Sekce Vydaje domacnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.Household.Customers">
+            <summary>
+            Klient navazani na domacnost
+            </summary>
+        </member>
+        <member name="T:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdData">
+            <summary>
+            Sekce Ostatni parametry
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdData.ChildrenUpToTenYearsCount">
+            <summary>
+            Počet dětí 0-10 let
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdData.ChildrenOverTenYearsCount">
+            <summary>
+            Počet dětí nad 10 let
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdData.PropertySettlementId">
+            <summary>
+            Vypořádání majetku. Ciselnik ???
+            </summary>
+        </member>
+        <member name="T:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdExpenses">
+            <summary>
+            Sekce Vydaje
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdExpenses.SavingExpenseAmount">
+            <summary>
+            sporeni
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdExpenses.InsuranceExpenseAmount">
+            <summary>
+            pojisteni
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdExpenses.HousingExpenseAmount">
+            <summary>
+            naklady_na_bydleni
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetHouseholds.Dto.HouseholdExpenses.OtherExpenseAmount">
+            <summary>
+            ostatni_vydaje
+            </summary>
+        </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Seznam Sales Arrangements pro Case.
@@ -478,6 +558,16 @@
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
             <returns></returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.Customer.Id">
+            <summary>
+            CustomerOnSAId
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.Customer.Identities">
+            <summary>
+            Identity klienta v KB nebo MP
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>

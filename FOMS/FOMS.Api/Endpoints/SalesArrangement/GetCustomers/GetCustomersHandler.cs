@@ -1,4 +1,5 @@
 ﻿using DomainServices.CustomerService.Contracts;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetCustomers;
 
@@ -11,14 +12,14 @@ internal class GetCustomersHandler
         _logger.RequestHandlerStartedWithId(nameof(GetCustomersHandler), request.SalesArrangementId);
 
         // najit existujici customeryOnSA
-        var customersOnSA = ServiceCallResult.Resolve<List<DomainServices.SalesArrangementService.Contracts.CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
+        var customersOnSA = ServiceCallResult.Resolve<List<CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
 
-        _logger.FoundItems(customersOnSA.Count);
+        _logger.FoundItems(customersOnSA.Count, nameof(CustomerOnSA));
         
         List<Dto.CustomerListItem> model = new();
         
         //TODO idealne natahnout z customerService vsechny najednou?
-        customersOnSA.ForEach(async t =>
+        foreach (var t in customersOnSA)
         {
             var c = new Dto.CustomerListItem()
             {
@@ -52,7 +53,7 @@ internal class GetCustomersHandler
             c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 2)?.Value;
 
             model.Add(c);
-        });
+        }
 
         return model;
     }
