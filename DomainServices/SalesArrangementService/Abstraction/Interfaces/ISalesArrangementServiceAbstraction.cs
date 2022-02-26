@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-
-namespace DomainServices.SalesArrangementService.Abstraction;
+﻿namespace DomainServices.SalesArrangementService.Abstraction;
 
 public interface ISalesArrangementServiceAbstraction
 {

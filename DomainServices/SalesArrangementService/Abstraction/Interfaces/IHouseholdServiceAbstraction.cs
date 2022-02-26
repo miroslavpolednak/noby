@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Abstraction;
 
