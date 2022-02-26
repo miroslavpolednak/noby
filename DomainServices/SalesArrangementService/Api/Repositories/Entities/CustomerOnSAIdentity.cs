@@ -14,8 +14,8 @@ internal class CustomerOnSAIdentity
     public CIS.Foms.Enums.IdentitySchemes IdentityScheme { get; set; }
     
     public int Id { get; set; }
-
-    public virtual CustomerOnSA Customer { get; set; } = null!;
+    
+    public virtual CustomerOnSA Customer { get; set; }
 
     public CustomerOnSAIdentity()
     {

@@ -24,15 +24,16 @@ internal class CreateHouseholdHandler
         var entity = new Repositories.Entities.Household
         {
             SalesArrangementId = request.Request.SalesArrangementId,
+            HouseholdTypeId = (CIS.Foms.Enums.HouseholdTypes)request.Request.HouseholdTypeId,
             CustomerOnSAId1 = request.Request.CustomerOnSAId1,
             CustomerOnSAId2 = request.Request.CustomerOnSAId2,
-            ChildrenOverTenYearsCount = request.Request.Data.ChildrenOverTenYearsCount,
-            ChildrenUpToTenYearsCount = request.Request.Data.ChildrenUpToTenYearsCount,
-            PropertySettlementId = request.Request.Data.PropertySettlementId,
-            HousingExpenseAmount = request.Request.Expenses.HousingExpenseAmount,
-            SavingExpenseAmount = request.Request.Expenses.SavingExpenseAmount,
-            InsuranceExpenseAmount = request.Request.Expenses.InsuranceExpenseAmount,
-            OtherExpenseAmount = request.Request.Expenses.OtherExpenseAmount
+            ChildrenOverTenYearsCount = request.Request.Data?.ChildrenOverTenYearsCount,
+            ChildrenUpToTenYearsCount = request.Request.Data?.ChildrenUpToTenYearsCount,
+            PropertySettlementId = request.Request.Data?.PropertySettlementId,
+            HousingExpenseAmount = request.Request.Expenses?.HousingExpenseAmount,
+            SavingExpenseAmount = request.Request.Expenses?.SavingExpenseAmount,
+            InsuranceExpenseAmount = request.Request.Expenses?.InsuranceExpenseAmount,
+            OtherExpenseAmount = request.Request.Expenses?.OtherExpenseAmount
         };
 
         int householdId = await _repository.CreateHousehold(entity, cancellation);

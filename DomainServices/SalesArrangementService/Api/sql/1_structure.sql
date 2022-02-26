@@ -49,7 +49,7 @@ GO
 CREATE TABLE [dbo].[CustomerOnSA](
      [CustomerOnSAId] [int] IDENTITY(1,1) NOT NULL,
      [SalesArrangementId] [int] NOT NULL,
-     [CustomerRoleId] [int] NOT NULL,
+     [CustomerRoleId] [tinyint] NOT NULL,
      [HasPartner] [bit] NOT NULL,
      [FirstNameNaturalPerson] [nvarchar](100) NULL,
      [Name] [nvarchar](100) NULL,
@@ -72,17 +72,28 @@ CREATE TABLE [dbo].[CustomerOnSA](
     )
 GO
 
-
+ALTER TABLE [dbo].[CustomerOnSAIdentity] SET ( SYSTEM_VERSIONING = OFF)
+GO
+DROP TABLE [dbo].[CustomerOnSAIdentity]
+GO
+DROP TABLE [dbo].[CustomerOnSAIdentityHistory]
+GO
 CREATE TABLE [dbo].[CustomerOnSAIdentity](
- [CustomerOnSAIdentityId] [int] IDENTITY(1,1) NOT NULL,
- [CustomerOnSAId] [int] NULL,
- [IdentityScheme] [tinyint] NOT NULL,
- [Id] [int] NOT NULL,
- CONSTRAINT [PK_CustomerOnSAIdentity] PRIMARY KEY CLUSTERED
-     (
-      [CustomerOnSAIdentityId] ASC
-         )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+     [CustomerOnSAIdentityId] [int] IDENTITY(1,1) NOT NULL,
+     [CustomerOnSAId] [int] NULL,
+     [IdentityScheme] [tinyint] NOT NULL,
+     [Id] [int] NOT NULL,
+     [ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+     [ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+     CONSTRAINT [PK_CustomerOnSAIdentity] PRIMARY KEY CLUSTERED
+         (
+          [CustomerOnSAIdentityId] ASC
+             )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY], PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
 ) ON [PRIMARY]
+  WITH
+      (
+      SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[CustomerOnSAIdentityHistory] )
+    )
 GO
 
 ALTER TABLE [dbo].[Household] SET ( SYSTEM_VERSIONING = OFF)
@@ -92,33 +103,33 @@ GO
 DROP TABLE [dbo].[HouseholdHistory]
 GO
 CREATE TABLE [dbo].[Household](
-	[HouseholdId] [int] IDENTITY(1,1) NOT NULL,
-	[SalesArrangementId] [int] NOT NULL,
-	[HouseholdTypeId] [int] NOT NULL,
-	[ChildrenUpToTenYearsCount] [int] NULL,
-	[ChildrenOverTenYearsCount] [int] NULL,
-	[PropertySettlementId] [int] NULL,
-    SavingExpenseAmount [int] NULL,
-    InsuranceExpenseAmount [int] NULL,
-    HousingExpenseAmount [int] NULL,
-    OtherExpenseAmount [int] NULL,
-	[CustomerOnSAId1] [int] NULL,
-	[CustomerOnSAId2] [int] NULL,
-	[Expenses] [nvarchar](max) NULL,
-	[CreatedUserName] [nvarchar](100) NOT NULL,
-	[CreatedUserId] [int] NOT NULL,
-	[CreatedTime] [datetime] NOT NULL,
-	[ModifiedUserId] [int] NULL,
-	[ModifiedUserName] [nvarchar](100) NULL,
-	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
-	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
- CONSTRAINT [PK_Household] PRIMARY KEY CLUSTERED 
-(
-	[HouseholdId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY], PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+      [HouseholdId] [int] IDENTITY(1,1) NOT NULL,
+      [SalesArrangementId] [int] NOT NULL,
+      [HouseholdTypeId] tinyint NOT NULL,
+      [ChildrenUpToTenYearsCount] [int] NULL,
+      [ChildrenOverTenYearsCount] [int] NULL,
+      [PropertySettlementId] [int] NULL,
+      SavingExpenseAmount [int] NULL,
+      InsuranceExpenseAmount [int] NULL,
+      HousingExpenseAmount [int] NULL,
+      OtherExpenseAmount [int] NULL,
+      [CustomerOnSAId1] [int] NULL,
+      [CustomerOnSAId2] [int] NULL,
+      [Expenses] [nvarchar](max) NULL,
+      [CreatedUserName] [nvarchar](100) NOT NULL,
+      [CreatedUserId] [int] NOT NULL,
+      [CreatedTime] [datetime] NOT NULL,
+      [ModifiedUserId] [int] NULL,
+      [ModifiedUserName] [nvarchar](100) NULL,
+      [ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+      [ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+      CONSTRAINT [PK_Household] PRIMARY KEY CLUSTERED
+          (
+           [HouseholdId] ASC
+              )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY], PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-WITH
-(
-SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[HouseholdHistory] )
-)
+  WITH
+      (
+      SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[HouseholdHistory] )
+    )
 GO

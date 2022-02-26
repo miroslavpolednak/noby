@@ -21,6 +21,7 @@ internal sealed class SalesArrangementServiceDbContext
     {
         modelBuilder.RegisterCisTemporalTable<Entities.SalesArrangement>();
         modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSA>();
+        modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSAIdentity>();
         modelBuilder.RegisterCisTemporalTable<Entities.Household>();
         
         modelBuilder.Entity<Entities.CustomerOnSA>()

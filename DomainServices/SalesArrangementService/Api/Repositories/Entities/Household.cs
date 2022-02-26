@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories.Entities;
 
-[Table("CustomerOnSA", Schema = "dbo")]
+[Table("Household", Schema = "dbo")]
 internal class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

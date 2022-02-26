@@ -29,9 +29,8 @@ internal class CreateCustomerHandler
             Name = request.Request.Name,
             Identities = request.Request.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
-
         int customerId = await _repository.CreateCustomer(entity, cancellation);
-
+        
         _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSA), customerId);
         
         return new CreateCustomerResponse()

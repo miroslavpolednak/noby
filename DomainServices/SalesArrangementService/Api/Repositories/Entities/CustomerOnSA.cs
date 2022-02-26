@@ -21,5 +21,6 @@ internal class CustomerOnSA : CIS.Core.Data.BaseCreatedWithModifiedUserId
     
     public DateTime? DateOfBirthNaturalPerson { get; set; }
 
+    // kdyby me to nekdy v budoucnu napadlo - EF neumoznuje linka na jinou entitu pro temporal tables
     public virtual List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
 }
