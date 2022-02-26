@@ -23,4 +23,7 @@ internal class CustomerOnSAService : Contracts.v1.CustomerOnSAService.CustomerOn
     
     public override async Task<GetCustomerListResponse> GetCustomerList(GetCustomerListRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetCustomerListMediatrRequest(request.SalesArrangementId));
+    
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCustomer(UpdateCustomerRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateCustomerMediatrRequest(request));
 }

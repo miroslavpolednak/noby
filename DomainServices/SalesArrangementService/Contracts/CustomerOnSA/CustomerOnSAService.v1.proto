@@ -7,6 +7,7 @@ import "CustomerOnSA.proto";
 import "CreateCustomer.proto";
 import "CustomerOnSAIdRequest.proto";
 import "GetCustomerList.proto";
+import "UpdateCustomer.proto";
 
 service CustomerOnSAService {
     // zalozeni noveho customera
@@ -20,4 +21,7 @@ service CustomerOnSAService {
 	
 	// get list
 	rpc GetCustomerList (DomainServices.SalesArrangementService.GetCustomerListRequest) returns (DomainServices.SalesArrangementService.GetCustomerListResponse);
+	
+	// update
+	rpc UpdateCustomer (DomainServices.SalesArrangementService.UpdateCustomerRequest) returns (google.protobuf.Empty);
 }

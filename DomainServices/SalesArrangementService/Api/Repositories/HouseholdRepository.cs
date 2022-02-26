@@ -21,13 +21,13 @@ internal class HouseholdRepository
         
         entity.CustomerOnSAId1 = model.CustomerOnSAId1;
         entity.CustomerOnSAId2 = model.CustomerOnSAId2;
-        entity.ChildrenOverTenYearsCount = model.Data.ChildrenOverTenYearsCount;
-        entity.ChildrenUpToTenYearsCount = model.Data.ChildrenUpToTenYearsCount;
-        entity.PropertySettlementId = model.Data.PropertySettlementId;
-        entity.SavingExpenseAmount = model.Expenses.SavingExpenseAmount;
-        entity.InsuranceExpenseAmount = model.Expenses.InsuranceExpenseAmount;
-        entity.HousingExpenseAmount = model.Expenses.HousingExpenseAmount;
-        entity.OtherExpenseAmount = model.Expenses.OtherExpenseAmount;
+        entity.ChildrenOverTenYearsCount = model.Data?.ChildrenOverTenYearsCount;
+        entity.ChildrenUpToTenYearsCount = model.Data?.ChildrenUpToTenYearsCount;
+        entity.PropertySettlementId = model.Data?.PropertySettlementId;
+        entity.SavingExpenseAmount = model.Expenses?.SavingExpenseAmount;
+        entity.InsuranceExpenseAmount = model.Expenses?.InsuranceExpenseAmount;
+        entity.HousingExpenseAmount = model.Expenses?.HousingExpenseAmount;
+        entity.OtherExpenseAmount = model.Expenses?.OtherExpenseAmount;
 
         await _dbContext.SaveChangesAsync(cancellation);
     }

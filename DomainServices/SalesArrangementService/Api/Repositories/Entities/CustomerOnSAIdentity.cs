@@ -17,12 +17,18 @@ internal class CustomerOnSAIdentity
     
     public virtual CustomerOnSA Customer { get; set; }
 
+#pragma warning disable CS8618
     public CustomerOnSAIdentity()
+#pragma warning restore CS8618
     {
     }
 
-    public CustomerOnSAIdentity(CIS.Infrastructure.gRPC.CisTypes.Identity identity)
+#pragma warning disable CS8618
+    public CustomerOnSAIdentity(CIS.Infrastructure.gRPC.CisTypes.Identity identity, int? customerOnSAId = default(int?))
+#pragma warning restore CS8618
     {
+        if (customerOnSAId.HasValue)
+            this.CustomerOnSAId = customerOnSAId.Value;
         this.Id = identity.IdentityId;
         this.IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)identity.IdentityScheme;
     }

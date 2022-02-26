@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.SalesArrangementService.Api.Repositories.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
@@ -13,6 +14,28 @@ internal class CustomerOnSAServiceRepository
         return entity.CustomerOnSAId;
     }
 
+    public async Task UpdateCustomer(Contracts.UpdateCustomerRequest model, CancellationToken cancellation)
+    {
+        var entity = await _dbContext.Customers
+            .Include(t => t.Identities)
+            .Where(t => t.CustomerOnSAId == model.CustomerOnSAId)
+            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {model.CustomerOnSAId} does not exist.");
+        
+        entity.CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)model.CustomerRoleId;
+        entity.FirstNameNaturalPerson = model.FirstNameNaturalPerson;
+        entity.Name = model.Name;
+        entity.DateOfBirthNaturalPerson = model.DateOfBirthNaturalPerson;
+
+        entity.Identities?.RemoveAll(t => true);
+        if (model.CustomerIdentifiers is not null && model.CustomerIdentifiers.Any())
+        {
+            entity.Identities = new List<CustomerOnSAIdentity>();
+            entity.Identities.AddRange(model.CustomerIdentifiers.Select(t => new CustomerOnSAIdentity(t, model.CustomerOnSAId)));
+        }
+        
+        await _dbContext.SaveChangesAsync(cancellation);
+    }
+    
     public async Task<Contracts.CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellation)
     {
         var model = await _dbContext.Customers
