@@ -7,16 +7,17 @@ internal class GetCustomersHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetCustomersHandler), request.SalesArrangementId);
 
-        return new List<Dto.CustomerListItem>
-        {
-            new() {Id = 1, FirstName = "John", LastName = "Doe"}
-        };
+        _salesArrangement
     }
 
     private readonly ILogger<GetCustomersHandler> _logger;
+    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangement;
 
-    public GetCustomersHandler(ILogger<GetCustomersHandler> logger)
+    public GetCustomersHandler(
+        ILogger<GetCustomersHandler> logger, 
+        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangement)
     {
+        _salesArrangement = salesArrangement;
         _logger = logger;
     }
 }

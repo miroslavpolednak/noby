@@ -1,23 +1,27 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
-internal class GetHouseholdListHandler
-    : IRequestHandler<Dto.GetHouseholdMediatrRequest, Contracts.Household>
+namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
+
+internal class GetHouseholdHandler
+    : IRequestHandler<Dto.GetHouseholdListMediatrRequest, Contracts.GetHouseholdListResponse>
 {
-    public async Task<Contracts.Household> Handle(Dto.GetHouseholdMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.GetHouseholdListResponse> Handle(Dto.GetHouseholdListMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetHouseholdListHandler), request.HouseholdId);
+        _logger.RequestHandlerStartedWithId(nameof(GetHouseholdHandler), request.SalesArrangementId);
         
-        var model = await _repository.GetHousehold(request.HouseholdId, cancellation);
-        
-        return model;
+        var model = await _repository.GetList(request.SalesArrangementId, cancellation);
+
+        var response = new GetHouseholdListResponse();
+        response.Households.AddRange(model);
+        return response;
     }
     
     private readonly Repositories.HouseholdRepository _repository;
-    private readonly ILogger<GetHouseholdListHandler> _logger;
+    private readonly ILogger<GetHouseholdHandler> _logger;
     
-    public GetHouseholdListHandler(
+    public GetHouseholdHandler(
         Repositories.HouseholdRepository repository,
-        ILogger<GetHouseholdListHandler> logger)
+        ILogger<GetHouseholdHandler> logger)
     {
         _repository = repository;
         _logger = logger;

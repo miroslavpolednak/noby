@@ -1,7 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.SalesArrangementService.Contracts;
-using Microsoft.Extensions.Logging;
-using CIS.Infrastructure.Logging;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
