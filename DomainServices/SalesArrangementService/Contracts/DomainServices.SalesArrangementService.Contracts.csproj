@@ -51,6 +51,7 @@
 		<Protobuf Include="Household/HouseholdData.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/Household.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/GetHouseholdList.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/UpdateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 
 		<Protobuf Include="SalesArrangement/SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/CreateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

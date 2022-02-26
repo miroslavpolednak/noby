@@ -23,4 +23,7 @@ internal class HouseholdService : Contracts.v1.HouseholdService.HouseholdService
     
     public override async Task<GetHouseholdListResponse> GetHouseholdList(GetHouseholdListRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(request.SalesArrangementId));
+    
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateHousehold(UpdateHouseholdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateHouseholdMediatrRequest(request));
 }

@@ -7,6 +7,7 @@ import "CreateHousehold.proto";
 import "HouseholdIdRequest.proto";
 import "GetHouseholdList.proto";
 import "Household.proto";
+import "UpdateHousehold.proto";
 
 service HouseholdService {
     rpc CreateHousehold (DomainServices.SalesArrangementService.CreateHouseholdRequest) returns (DomainServices.SalesArrangementService.CreateHouseholdResponse);
@@ -16,4 +17,6 @@ service HouseholdService {
     rpc GetHousehold (DomainServices.SalesArrangementService.HouseholdIdRequest) returns (DomainServices.SalesArrangementService.Household);
     
     rpc GetHouseholdList (DomainServices.SalesArrangementService.GetHouseholdListRequest) returns (DomainServices.SalesArrangementService.GetHouseholdListResponse);
+    
+    rpc UpdateHousehold (DomainServices.SalesArrangementService.UpdateHouseholdRequest) returns (google.protobuf.Empty);
 }

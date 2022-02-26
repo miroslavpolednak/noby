@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
 
@@ -10,6 +11,25 @@ internal class HouseholdRepository
         _dbContext.Households.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
         return entity.HouseholdId;
+    }
+
+    public async Task Update(Contracts.UpdateHouseholdRequest model, CancellationToken cancellation)
+    {
+        var entity = await _dbContext.Households
+            .Where(t => t.HouseholdId == model.HouseholdId)
+            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {model.HouseholdId} does not exist.");
+        
+        entity.CustomerOnSAId1 = model.CustomerOnSAId1;
+        entity.CustomerOnSAId2 = model.CustomerOnSAId2;
+        entity.ChildrenOverTenYearsCount = model.Data.ChildrenOverTenYearsCount;
+        entity.ChildrenUpToTenYearsCount = model.Data.ChildrenUpToTenYearsCount;
+        entity.PropertySettlementId = model.Data.PropertySettlementId;
+        entity.SavingExpenseAmount = model.Expenses.SavingExpenseAmount;
+        entity.InsuranceExpenseAmount = model.Expenses.InsuranceExpenseAmount;
+        entity.HousingExpenseAmount = model.Expenses.HousingExpenseAmount;
+        entity.OtherExpenseAmount = model.Expenses.OtherExpenseAmount;
+
+        await _dbContext.SaveChangesAsync(cancellation);
     }
     
     public async Task<Contracts.Household> GetHousehold(int householdId, CancellationToken cancellation)
