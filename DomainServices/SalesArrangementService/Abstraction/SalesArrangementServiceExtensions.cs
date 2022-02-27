@@ -45,6 +45,8 @@ public static class SalesArrangementServiceExtensions
 
         // register storage services
         services.TryAddTransient<ISalesArrangementServiceAbstraction, Services.SalesArrangementService>();
+        services.TryAddTransient<ICustomerOnSAServiceAbstraction, Services.CustomerOnSAService>();
+        services.TryAddTransient<IHouseholdServiceAbstraction, Services.HouseholdService>();
 
         // exception handling
         services.TryAddSingleton<ExceptionInterceptor>();
@@ -59,6 +61,24 @@ public static class SalesArrangementServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
+                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
+                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<AuthenticationInterceptor>();
+        }
+        
+        if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.HouseholdService.HouseholdServiceClient)))
+        {
+            services
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
+                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
+                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<AuthenticationInterceptor>();
+        }
+        
+        if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient)))
+        {
+            services
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();

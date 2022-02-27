@@ -8,6 +8,7 @@ public class HouseholdData
     /// <summary>
     /// Počet dětí 0-10 let
     /// </summary>
+    /// <example>2</example>
     public int? ChildrenUpToTenYearsCount { get; set; }
     
     /// <summary>

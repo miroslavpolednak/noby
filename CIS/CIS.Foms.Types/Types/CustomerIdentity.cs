@@ -3,10 +3,14 @@ using CIS.Foms.Enums;
 
 namespace CIS.Foms.Types;
 
-public record CustomerIdentity
+public class CustomerIdentity
 {
-    public int Id { get; }
-    public IdentitySchemes Scheme { get; }
+    public int Id { get; init; }
+    public IdentitySchemes Scheme { get; init; }
+
+    public CustomerIdentity()
+    {
+    }
 
     public CustomerIdentity(int id, IdentitySchemes scheme)
     {

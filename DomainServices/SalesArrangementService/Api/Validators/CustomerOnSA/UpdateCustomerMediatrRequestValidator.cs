@@ -9,6 +9,6 @@ internal class UpdateCustomerMediatrRequestValidator
     {
         RuleFor(t => t.Request.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("13000");
+            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
     }
 }

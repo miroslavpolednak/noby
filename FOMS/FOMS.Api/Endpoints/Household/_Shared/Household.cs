@@ -5,17 +5,18 @@ public class Household
     /// <summary>
     /// HouseholdId
     /// </summary>
-    public int Id { get; set; }
+    public int? Id { get; set; }
     
     /// <summary>
     /// ID typu domacnosti. Ciselnik HouseholdTypes
     /// </summary>
+    /// <example>1</example>
     public int HouseholdTypeId { get; set; }
 
     /// <summary>
     /// Nazev typu domacnosti.
     /// </summary>
-    public string HouseholdTypeName { get; set; } = null!;
+    public string? HouseholdTypeName { get; set; } = null!;
     
     /// <summary>
     /// Sekce Ostatni parametry

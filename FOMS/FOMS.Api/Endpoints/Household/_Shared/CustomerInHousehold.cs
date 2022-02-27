@@ -6,5 +6,6 @@ public class CustomerInHousehold
     /// <summary>
     /// Role klienta
     /// </summary>
+    /// <example>1</example>
     public int RoleId { get; set; }
 }
