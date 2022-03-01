@@ -4,11 +4,13 @@ using contracts = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Api.Endpoints.Customer.Search;
 
-public class SearchHandler
+internal class SearchHandler
     : IRequestHandler<SearchRequest, SearchResponse>
 {
     public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
     {
+        _logger.RequestHandlerStarted(nameof(SearchHandler));
+        
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
             .FromRequest(request.Pagination)

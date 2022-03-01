@@ -1,7 +1,7 @@
 ﻿namespace FOMS.Api.Endpoints.Customer.Search.Dto;
 
 public class SearchData
-    : Dto.BaseCustomer
+    : BaseCustomer
 {
     /// <summary>
     /// Zeme vydani dokladu

@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\Customer\_Shared" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
