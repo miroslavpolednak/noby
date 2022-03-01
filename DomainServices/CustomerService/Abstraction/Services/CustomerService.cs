@@ -23,51 +23,51 @@ namespace DomainServices.CustomerService.Abstraction
             _logger = logger;
         }
 
-        public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request)
+        public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _userContext.AddUserContext(async () => await _service.SearchCustomersAsync(request));
+            var result = await _userContext.AddUserContext(async () => await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
         }
 
-        public async Task<IServiceCallResult> GetCustomerList(CustomerListRequest request)
+        public async Task<IServiceCallResult> GetCustomerList(CustomerListRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _userContext.AddUserContext(async () => await _service.GetCustomerListAsync(request));
+            var result = await _userContext.AddUserContext(async () => await _service.GetCustomerListAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult<CustomerListResponse>(result);
         }
 
-        public async Task<IServiceCallResult> GetCustomerDetail(CustomerRequest request)
+        public async Task<IServiceCallResult> GetCustomerDetail(CustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _userContext.AddUserContext(async () => await _service.GetCustomerDetailAsync(request));
+            var result = await _userContext.AddUserContext(async () => await _service.GetCustomerDetailAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult<CustomerResponse>(result);
         }
 
-        public async Task<IServiceCallResult> Create(CreateRequest request)
+        public async Task<IServiceCallResult> Create(CreateRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _userContext.AddUserContext(async () => await _service.CreateAsync(request));
+            var result = await _userContext.AddUserContext(async () => await _service.CreateAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult<CreateResponse>(result);
         }
 
-        public async Task<IServiceCallResult> CreateContact(CreateContactRequest request)
+        public async Task<IServiceCallResult> CreateContact(CreateContactRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _userContext.AddUserContext(async () => await _service.CreateContactAsync(request));
+            var result = await _userContext.AddUserContext(async () => await _service.CreateContactAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult<CreateContactResponse>(result);
         }
 
-        public async Task<IServiceCallResult> DeleteContact(DeleteContactRequest request)
+        public async Task<IServiceCallResult> DeleteContact(DeleteContactRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _userContext.AddUserContext(async () => await _service.DeleteContactAsync(request));
+            await _userContext.AddUserContext(async () => await _service.DeleteContactAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult();
         }
 
-        public async Task<IServiceCallResult> UpdateAdress(UpdateAdressRequest request)
+        public async Task<IServiceCallResult> UpdateAdress(UpdateAdressRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _userContext.AddUserContext(async () => await _service.UpdateAdressAsync(request));
+            await _userContext.AddUserContext(async () => await _service.UpdateAdressAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult();
         }
 
-        public async Task<IServiceCallResult> UpdateBasicData(UpdateBasicDataRequest request)
+        public async Task<IServiceCallResult> UpdateBasicData(UpdateBasicDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _userContext.AddUserContext(async () => await _service.UpdateBasicDataAsync(request));
+            await _userContext.AddUserContext(async () => await _service.UpdateBasicDataAsync(request, cancellationToken: cancellationToken));
             return new SuccessfulServiceCallResult();
         }
     }

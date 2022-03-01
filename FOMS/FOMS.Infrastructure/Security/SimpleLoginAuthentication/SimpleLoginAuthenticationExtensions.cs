@@ -17,7 +17,7 @@ public static class SimpleLoginAuthenticationExtensions
                 config.Cookie.HttpOnly = true;
                 config.Cookie.Path = "/";
                 config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                config.Cookie.SameSite = SameSiteMode.Lax;
+                config.Cookie.SameSite = SameSiteMode.None;
             });
     }
 }

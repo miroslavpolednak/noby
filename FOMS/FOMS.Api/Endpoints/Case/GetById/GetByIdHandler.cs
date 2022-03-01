@@ -5,19 +5,12 @@ internal class GetByIdHandler
 {
     public async Task<Dto.CaseModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Get #{caseId}", request.CaseId);
+        _logger.RequestHandlerStartedWithId(nameof(GetByIdHandler), request.CaseId);
 
-        var result = resolveResult(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
-
+        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
+        
         return await _converter.FromContract(result);
     }
-
-    private DomainServices.CaseService.Contracts.Case resolveResult(IServiceCallResult result) =>
-       result switch
-       {
-           SuccessfulServiceCallResult<DomainServices.CaseService.Contracts.Case> r => r.Model,
-           _ => throw new NotImplementedException()
-       };
 
     private readonly ILogger<GetByIdHandler> _logger;
     private readonly CaseModelConverter _converter;

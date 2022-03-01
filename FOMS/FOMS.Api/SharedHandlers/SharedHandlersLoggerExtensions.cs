@@ -9,12 +9,12 @@ internal static class SharedHandlersLoggingExtensions
     {
         _sharedCreateCaseStarted = LoggerMessage.Define<Requests.SharedCreateCaseRequest>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.SharedCreateCaseStarted, nameof(SharedCreateCaseStarted)),
+            new EventId(LoggerEventIdCodes.Endpoints_Shared_CreateCaseStarted, nameof(SharedCreateCaseStarted)),
             "Try to create new Case with {Request}");
         
         _sharedCreateSalesArrangementStarted = LoggerMessage.Define<Requests.SharedCreateSalesArrangementRequest>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.SharedCreateSalesArrangementStarted, nameof(SharedCreateSalesArrangementStarted)),
+            new EventId(LoggerEventIdCodes.Endpoints_Shared_CreateSalesArrangementStarted, nameof(SharedCreateSalesArrangementStarted)),
             "Try to create new SalesArrangement with {Request}");
     }
 

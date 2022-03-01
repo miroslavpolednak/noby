@@ -21,6 +21,7 @@ public static class CisWebApiCors
                             policyBuilder.WithOrigins(cisConfiguration.AllowedOrigins);
                         
                         policyBuilder
+                            .AllowCredentials()
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     }

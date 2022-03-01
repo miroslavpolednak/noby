@@ -8,7 +8,7 @@ internal static class CodebooksModuleLoggerExtensions
     {
         _codebooksGetAllStarted = LoggerMessage.Define<List<(string Original, string Key)>>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.CodebooksGetAllStarted, nameof(CodebooksGetAllStarted)),
+            new EventId(LoggerEventIdCodes.Endpoints_Codebooks_GetAllStarted, nameof(CodebooksGetAllStarted)),
             "Getting {Codebooks}");
     }
 

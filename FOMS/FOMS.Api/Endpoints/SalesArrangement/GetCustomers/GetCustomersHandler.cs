@@ -36,7 +36,7 @@ internal class GetCustomersHandler
                 IdentityId = t.CustomerIdentifiers[0].IdentityId,
                 IdentityScheme = t.CustomerIdentifiers[0].IdentityScheme
             };
-            var customerDetail = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}));
+            var customerDetail = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}, cancellationToken));
 
             // adresa
             //TODO kterou adresu brat?

@@ -11,7 +11,6 @@ public static class TracingExtensions
     /// Register Open Tracing instrumentation
     /// </summary>
     /// <param name="serviceName">Nazev sluzby, ktery se zobrazi v exporteru. Pokud neni zadano, hleda se v ICisEnvironmentConfiguration[DefaultApplicationKey]</param>
-    /// <returns></returns>
     public static WebApplicationBuilder AddCisTracing(this WebApplicationBuilder builder, string? serviceName = null)
     {
         builder.Services.AddOpenTelemetryTracing(b =>
@@ -31,7 +30,6 @@ public static class TracingExtensions
 
             // receive traces from built-in sources
             b.AddEntityFrameworkCoreInstrumentation();
-            b.AddWcfInstrumentation();
             b.AddSqlClientInstrumentation();
             b.AddHttpClientInstrumentation();
             b.AddAspNetCoreInstrumentation();

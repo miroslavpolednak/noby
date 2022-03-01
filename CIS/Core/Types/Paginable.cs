@@ -54,6 +54,16 @@ public sealed class Paginable : IPaginableRequest
         return this;
     }
 
+    public Paginable SetDefaultSort(string field, bool descending)
+    {
+        if (!HasSorting)
+            Sorting = new List<SortField>()
+            {
+                new SortField(field, descending)
+            };
+        return this;
+    }
+
     public record MapperField(string Name, string TranslateTo);
 
     public class SortField : IPaginableSortingField

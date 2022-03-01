@@ -178,6 +178,86 @@
             </summary>
             <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Identity">
+            <summary>
+            Hledani podkle konkretniho ID klienta v MP nebo KB
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
+            <summary>
+            Hledat ve jmene klienta
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.LastName">
+            <summary>
+            Hledat v prijmeni klienta
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.DateOfBirth">
+            <summary>
+            Hledat podle data narozeni
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.BirthNumber">
+            <summary>
+            Hledat podle rodneho cisla
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.NameJuridicalPerson">
+            <summary>
+            Nazev pravnicke osoby
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Cin">
+            <summary>
+            IC pravnicke osoby
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Phone">
+            <summary>
+            Telefon
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IssuingCountryId">
+            <summary>
+            Zeme vydani dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentTypeId">
+            <summary>
+            Type dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentNumber">
+            <summary>
+            Cislo dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchRequest.SearchData">
+            <summary>
+            Podle ceho se ma hledat
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchRequest.Pagination">
+            <summary>
+            Nastaveni strankovani a razeni kolekce Cases.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchResponse.Pagination">
+            <summary>
+            Informace o strankovani a razeni.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchResponse.Rows">
+            <summary>
+            Kolekce nalezenych klientu.
+            </summary>
+        </member>
         <member name="T:FOMS.Api.Endpoints.Household.HouseholdController">
             <summary>
             Prace s domacnostmi a customery

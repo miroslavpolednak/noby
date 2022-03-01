@@ -80,7 +80,7 @@ internal class SaveHouseholdsHandler
         if (customer.Id.GetValueOrDefault() > 0)
         {
             ServiceCallResult.Resolve(await _customerOnSAService.UpdateCustomer(_mapper.MapToRequest(customer), cancellationToken));
-            return customer.Id.Value;
+            return customer.Id!.Value;
         }
         else
             return ServiceCallResult.Resolve<int>(await _customerOnSAService.CreateCustomer(_mapper.MapToRequest(salesArrangementId, customer), cancellationToken));

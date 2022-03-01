@@ -10,16 +10,18 @@ internal class SearchHandler
 {
     public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
     {
+        _logger.RequestHandlerStartedWithId(nameof(SearchHandler), _userAccessor.User.Id);
+        
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
             .FromRequest(request.Pagination)
             .EnsureAndTranslateSortFields(sortingMapper);
 
-        _logger.LogDebug("Search for user {userId} with {pagination}", _userAccessor.User.Id, paginable);
+        _logger.SearchPaginableSettings(paginable);
 
         // zavolat BE sluzbu
         var result = ServiceCallResult.Resolve<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
-        _logger.LogDebug("Found {records} records", result.Pagination.RecordsTotalSize);
+        _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(DomainServices.CaseService.Contracts.Case));
 
         // transform
         return new SearchResponse

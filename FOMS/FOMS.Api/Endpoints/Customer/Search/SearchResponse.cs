@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Case.Search;
+﻿namespace FOMS.Api.Endpoints.Customer.Search;
 
 public sealed class SearchResponse
 {
@@ -8,7 +8,7 @@ public sealed class SearchResponse
     public CIS.Infrastructure.WebApi.Types.PaginationResponse? Pagination { get; set; }
     
     /// <summary>
-    /// Kolekce nalezenych Case-s.
+    /// Kolekce nalezenych klientu.
     /// </summary>
-    public List<Dto.CaseModel>? Rows { get; set; }
+    public List<Dto.CustomerInList>? Rows { get; set; }
 }

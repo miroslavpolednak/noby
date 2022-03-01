@@ -5,16 +5,17 @@ internal class GetTotalsByStatesHandler
 {
     public async Task<List<GetTotalsByStatesResponse>> Handle(GetTotalsByStatesRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("GetTotalsByStates");
+        _logger.RequestHandlerStartedWithId(nameof(GetTotalsByStatesHandler), _userAccessor.User.Id);
 
         // zavolat BE sluzbu
         var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.GetCaseCountsResponse>(await _caseService.GetCaseCounts(_userAccessor.User.Id, cancellationToken));
 
-        return result.CaseCounts.Select(t => new GetTotalsByStatesResponse
-        {
-            State = t.State,
-            Count = t.Count
-        }).ToList();
+        return result.CaseCounts
+            .Select(t => new GetTotalsByStatesResponse
+            {
+                State = t.State,
+                Count = t.Count
+            }).ToList();
     }
 
     private readonly ILogger<GetTotalsByStatesHandler> _logger;
