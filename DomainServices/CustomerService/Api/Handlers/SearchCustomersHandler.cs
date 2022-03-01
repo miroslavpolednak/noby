@@ -94,7 +94,7 @@ namespace DomainServices.CustomerService.Api.Handlers
 
                 // adresa
                 if (item.PrimaryAddress?.Address != null)
-                    customer.Addresses.Add(item.PrimaryAddress.ToAddress(countries));
+                    customer.Addresses.Add(item.PrimaryAddress.Address.ToAddress(countries));
 
                 response.Customers.Add(customer);
             }

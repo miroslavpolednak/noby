@@ -53,6 +53,10 @@ message CustomerListResult {
 
     IdentificationDocument IdentificationDocument = 3;
 
+    repeated Address Addresses = 4;
+
+    repeated Contact Contacts = 5;
+
 }
 
 message CustomerListResponse {

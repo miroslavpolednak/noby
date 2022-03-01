@@ -52,12 +52,30 @@ namespace DomainServices.CustomerService.Api.Handlers
                 MaritalStatusStateId = maritals.FirstOrDefault(t => t.RDMCode == np.MaritalStatusCode)?.Id ?? 0,
             };
 
+            // 
             if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
                 response.NaturalPerson.CitizenshipCountriesId.AddRange(countries.Where(t => np.CitizenshipCodes.Contains(t.Code)).Select(t => t.Id));
 
             // doklad
             if (cmResponse.PrimaryIdentificationDocument != null)
                 response.IdentificationDocument = cmResponse.PrimaryIdentificationDocument.ToIdentificationDocument(countries, docTypes);
+
+            // adresa
+            if (cmResponse.PrimaryAddress?.Address != null)
+                response.Addresses.Add(cmResponse.PrimaryAddress.Address.ToAddress(countries));
+            if (cmResponse.ContactAddress?.Address != null)
+                response.Addresses.Add(cmResponse.ContactAddress.Address.ToAddress(countries));
+
+            // kontakty - mobil
+            if (cmResponse.PrimaryPhoneConfirmed != null)
+                response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = cmResponse.PrimaryPhoneConfirmed.PhoneNumber, IsPrimary = true });
+            else if (cmResponse.PrimaryPhone != null)
+                response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = cmResponse.PrimaryPhone.PhoneNumber, IsPrimary = true });
+            // email
+            if (cmResponse.PrimaryEmailConfirmed != null)
+                response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = cmResponse.PrimaryEmailConfirmed.EmailAddress, IsPrimary = true });
+            else if (cmResponse.PrimaryEmail != null)
+                response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = cmResponse.PrimaryEmail.EmailAddress, IsPrimary = true });
 
             return response;
         }

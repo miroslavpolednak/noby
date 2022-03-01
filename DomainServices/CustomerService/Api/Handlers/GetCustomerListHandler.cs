@@ -56,6 +56,23 @@ namespace DomainServices.CustomerService.Api.Handlers
                 if (item.PrimaryIdentificationDocument != null)
                     customer.IdentificationDocument = item.PrimaryIdentificationDocument.ToIdentificationDocument(countries, docTypes);
 
+                // adresa
+                if (item.PrimaryAddress?.Address != null)
+                    customer.Addresses.Add(item.PrimaryAddress.Address.ToAddress(countries));
+                if (item.ContactAddress?.Address != null)
+                    customer.Addresses.Add(item.ContactAddress.Address.ToAddress(countries));
+
+                // kontakty - mobil
+                if (item.PrimaryPhoneConfirmed != null)
+                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = item.PrimaryPhoneConfirmed.PhoneNumber, IsPrimary = true });
+                else if (item.PrimaryPhone != null)
+                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = item.PrimaryPhone.PhoneNumber, IsPrimary = true });
+                // email
+                if (item.PrimaryEmailConfirmed != null)
+                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = item.PrimaryEmailConfirmed.EmailAddress, IsPrimary = true });
+                else if (item.PrimaryEmail != null)
+                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = item.PrimaryEmail.EmailAddress, IsPrimary = true });
+
                 response.Customers.Add(customer);
             }
 
