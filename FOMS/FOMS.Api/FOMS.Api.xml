@@ -178,6 +178,26 @@
             </summary>
             <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            [DEV] Vyhledavani klientu
+            </summary>
+            <remarks>
+            DS: CustomerService/SearchCustomers
+            </remarks>
+            <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.GetDetail(System.Int32,CIS.Foms.Enums.IdentitySchemes,System.Threading.CancellationToken)">
+            <summary>
+            [DEV] Detail klienta
+            </summary>
+            <remarks>
+            DS: CustomerService/GetCustomer
+            </remarks>
+            <param name="identityId">ID klienta v danem schematu</param>
+            <param name="identitySchema">Schema ve kterem je klient ulozeny - Kb | Mp</param>
+            <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Identity">
             <summary>
             Hledani podkle konkretniho ID klienta v MP nebo KB

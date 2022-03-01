@@ -15,7 +15,7 @@ internal class GetCustomersHandler
         var customersOnSA = ServiceCallResult.Resolve<List<CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
 
         _logger.FoundItems(customersOnSA.Count, nameof(CustomerOnSA));
-        
+
         List<Dto.CustomerListItem> model = new();
         
         //TODO idealne natahnout z customerService vsechny najednou?
@@ -29,28 +29,33 @@ internal class GetCustomersHandler
                 DateOfBirth = t.DateOfBirthNaturalPerson
             };
             
-            // zavolat customer svc pro detail
-            //TODO nejak prioritizovat schemata?
-            var identity = new CIS.Infrastructure.gRPC.CisTypes.Identity
+            // pokud nema identitu, ani nevolej customerSvc
+            if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any())
             {
-                IdentityId = t.CustomerIdentifiers[0].IdentityId,
-                IdentityScheme = t.CustomerIdentifiers[0].IdentityScheme
-            };
-            var customerDetail = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}, cancellationToken));
 
-            // adresa
-            //TODO kterou adresu brat?
-            var address = customerDetail.Addresses?.FirstOrDefault();
-            if (address is not null)
-            {
-                c.City = address.City;
-                c.Street = address.Street;
+                // zavolat customer svc pro detail
+                //TODO nejak prioritizovat schemata?
+                var identity = new CIS.Infrastructure.gRPC.CisTypes.Identity
+                {
+                    IdentityId = t.CustomerIdentifiers[0].IdentityId,
+                    IdentityScheme = t.CustomerIdentifiers[0].IdentityScheme
+                };
+                var customerDetail = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}, cancellationToken));
+
+                // adresa
+                //TODO kterou adresu brat?
+                var address = customerDetail.Addresses?.FirstOrDefault();
+                if (address is not null)
+                {
+                    c.City = address.City;
+                    c.Street = address.Street;
+                }
+
+                // kontakty
+                //TODO jak poznam jake kontakty se maji naplnit?
+                c.Phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 1)?.Value;
+                c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 2)?.Value;
             }
-
-            // kontakty
-            //TODO jak poznam jake kontakty se maji naplnit?
-            c.Phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 1)?.Value;
-            c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 2)?.Value;
 
             model.Add(c);
         }
