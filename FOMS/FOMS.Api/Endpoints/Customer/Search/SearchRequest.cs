@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Customer.Search;
 
-public class SearchRequest
+public sealed class SearchRequest
     : IRequest<SearchResponse>
 {
     /// <summary>
