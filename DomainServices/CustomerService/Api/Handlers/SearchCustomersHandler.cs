@@ -32,7 +32,9 @@ namespace DomainServices.CustomerService.Api.Handlers
                 CustomerId = request.Request.Identity?.IdentityId,
                 FirstName = request.Request.NaturalPerson?.FirstName.ToCMstring(),
                 Name = request.Request.NaturalPerson?.LastName.ToCMstring(),
-                BirthEstablishedDate = request.Request.NaturalPerson?.DateOfBirth
+                BirthEstablishedDate = request.Request.NaturalPerson?.DateOfBirth,
+                Email = request.Request.Email.ToCMstring(),
+                PhoneNumber = request.Request.PhoneNumber.ToCMstring()
             };
 
             // podle RC
@@ -48,15 +50,6 @@ namespace DomainServices.CustomerService.Api.Handlers
                 cmRequest.IdDocumentTypeCode = docTypes.First(t => t.Id == request.Request.IdentificationDocument.IdentificationDocumentTypeId).RDMCode;
                 cmRequest.IdDocumentIssuingCountryCode = countries.First(t => t.Id == request.Request.IdentificationDocument.IssuingCountryId).Code;
                 cmRequest.IdDocumentNumber = request.Request.IdentificationDocument.Number;
-            }
-
-            // podle kontaktu
-            if (request.Request.Contact != null)
-            {
-                if ((CIS.Foms.Enums.ContactTypes)request.Request.Contact.ContactTypeId == CIS.Foms.Enums.ContactTypes.Email)
-                    cmRequest.Email = request.Request.Contact.Value;
-                else
-                    cmRequest.PhoneNumber = request.Request.Contact.Value;
             }
 
             // zavolat CM

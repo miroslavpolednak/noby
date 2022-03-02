@@ -19,7 +19,9 @@ message SearchCustomersRequest {
 
     SearchIdentificationDocument IdentificationDocument = 4;
 
-    SearchContact Contact = 5;
+    string Email = 5;
+
+    string PhoneNumber = 6;
 }
 
 message SearchCustomerResult {
