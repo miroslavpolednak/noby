@@ -63,7 +63,13 @@ namespace DomainServices.CustomerService.Api.Handlers
             // bez PO
             foreach (var item in cmResponse.ResultRows.Where(t => t.Party is CustomerManagement.CMWrapper.NaturalPersonSearchResult))
             {
-                var customer = new SearchCustomerResult();
+                var customer = new SearchCustomerResult()
+                {
+                    Street = (item.PrimaryAddress?.Address?.Street).ToEmptyString(),
+                    City = (item.PrimaryAddress?.Address?.City).ToEmptyString(),
+                    Postcode = (item.PrimaryAddress?.Address?.PostCode).ToEmptyString(),
+                    CountryId = item.PrimaryAddress?.Address != null ? countries.FirstOrDefault(t => t.Code == item.PrimaryAddress.Address.CountryCode)?.Id : null
+                };
 
                 // identity
                 customer.Identities.Add(item.CustomerId.ToIdentity());
@@ -87,7 +93,12 @@ namespace DomainServices.CustomerService.Api.Handlers
 
                 // adresa
                 if (item.PrimaryAddress?.Address != null)
-                    customer.Addresses.Add(item.PrimaryAddress.Address.ToAddress(countries));
+                {
+                    customer.Street = item.PrimaryAddress.Address.Street;
+                    customer.City = item.PrimaryAddress.Address.City;
+                    customer.Postcode = item.PrimaryAddress.Address.PostCode;
+                    customer.CountryId = countries.FirstOrDefault(t => t.Code == item.PrimaryAddress.Address.CountryCode)?.Id;
+                }
 
                 response.Customers.Add(customer);
             }

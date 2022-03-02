@@ -9,6 +9,8 @@ import "IdentificationDocument.proto";
 import "Address.proto";
 import "Contact.proto";
 
+import "google/protobuf/wrappers.proto";
+
 message SearchCustomersRequest {
 
     cis.types.Identity Identity = 1;
@@ -31,8 +33,14 @@ message SearchCustomerResult {
     NaturalPersonBaseData NaturalPerson = 2;
 
     IdentificationDocument IdentificationDocument = 3;
+    
+    string Street = 4;
+   
+    string Postcode = 5;
 
-    repeated Address Addresses = 4;
+    string City = 6;
+
+    google.protobuf.Int32Value CountryId = 7;
 }
 
 message SearchCustomersResponse {

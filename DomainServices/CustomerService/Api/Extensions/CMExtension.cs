@@ -20,17 +20,17 @@ internal static class CMExtension
             IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemas.Kb
         };
 
-    public static Contracts.Address ToAddress(this CustomerManagement.CMWrapper.Address model, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries)
+    public static Contracts.Address ToAddress(this CustomerManagement.CMWrapper.Address model, CustomerManagement.CMWrapper.ComponentAddress componentAddress, CIS.Foms.Enums.AddressTypes addressType, bool isPrimary, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries)
         => new ()
         {
-            AddressTypeId = (int)CIS.Foms.Enums.AddressTypes.PERMANENT,
-            BuildingIdentificationNumber = "", //TODO neni mapovani z CM
-            LandRegistryNumber = "", //TODO neni mapovani z CM
+            AddressTypeId = (int)addressType,
+            BuildingIdentificationNumber = (componentAddress?.HouseNumber).ToEmptyString(),
+            LandRegistryNumber = (componentAddress?.EvidenceNumber).ToEmptyString(),
             City = model.City.ToEmptyString(),
-            IsPrimary = true,
+            IsPrimary = isPrimary,
             CountryId = countries.FirstOrDefault(t => t.Code == model.CountryCode)?.Id,
             Postcode = model.PostCode.ToEmptyString(),
-            Street = model.Street.ToEmptyString()
+            Street = (componentAddress?.Street ?? model.Street).ToEmptyString()
         };
 
     public static Contracts.IdentificationDocument ToIdentificationDocument(this CustomerManagement.CMWrapper.IdentificationDocument model, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries, List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> identificationDocumentTypes)

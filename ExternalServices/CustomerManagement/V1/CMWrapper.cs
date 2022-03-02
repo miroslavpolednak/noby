@@ -76,15 +76,18 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="showEmployment">flag indicating whether Employment will be returned</param>
         /// <param name="showTemporaryStay">flag indicating whether temporary stay address will be returned</param>
         /// <param name="requiredAddressFormats">Required address format. Multiple formats can be returned at the same time. If no format is defined, the address is returned in default format.</param>
+        /// <param name="showBRSubscription">flag indicating whether subscription for update from the Basic registry will be returned</param>
+        /// <param name="showTaxResidence">flag indicating whether Tax residence will be returned</param>
+        /// <param name="showCustomerKbRelationship">flag indicating whether Customer's relationship with KB will be returned</param>
         /// <param name="x_B3_TraceId">[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)</param>
         /// <param name="x_KB_Party_Identity_In_Service">[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)</param>
         /// <param name="x_KB_Orig_System_Identity">[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)</param>
         /// <param name="x_KB_Caller_System_Identity">[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)</param>
         /// <returns>Customer base info entity</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CustomerBaseInfo> GetCustomerBaseInfoAsync(long customerId, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity)
+        public System.Threading.Tasks.Task<CustomerBaseInfo> GetCustomerBaseInfoAsync(long customerId, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, bool? showBRSubscription, bool? showTaxResidence, bool? showCustomerKbRelationship, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity)
         {
-            return GetCustomerBaseInfoAsync(customerId, showPrimaryAddress, showPrimaryIdDocument, showCustomerIdentification, showContactAddress, showPrimaryPhone, showPrimaryEmail, showSegment, showPoliticallyExposed, showEsa, showNace, showInsurability, showFirstNameVocative, showSurnameVocative, includeArchived, getAllPrimaryPhones, showFatca, showFinancialProfile, showHousing, showTurnovers, showEducation, showEmployeesNumber, showEmployment, showTemporaryStay, requiredAddressFormats, x_B3_TraceId, x_KB_Party_Identity_In_Service, x_KB_Orig_System_Identity, x_KB_Caller_System_Identity, System.Threading.CancellationToken.None);
+            return GetCustomerBaseInfoAsync(customerId, showPrimaryAddress, showPrimaryIdDocument, showCustomerIdentification, showContactAddress, showPrimaryPhone, showPrimaryEmail, showSegment, showPoliticallyExposed, showEsa, showNace, showInsurability, showFirstNameVocative, showSurnameVocative, includeArchived, getAllPrimaryPhones, showFatca, showFinancialProfile, showHousing, showTurnovers, showEducation, showEmployeesNumber, showEmployment, showTemporaryStay, requiredAddressFormats, showBRSubscription, showTaxResidence, showCustomerKbRelationship, x_B3_TraceId, x_KB_Party_Identity_In_Service, x_KB_Orig_System_Identity, x_KB_Caller_System_Identity, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -114,13 +117,16 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="showEmployment">flag indicating whether Employment will be returned</param>
         /// <param name="showTemporaryStay">flag indicating whether temporary stay address will be returned</param>
         /// <param name="requiredAddressFormats">Required address format. Multiple formats can be returned at the same time. If no format is defined, the address is returned in default format.</param>
+        /// <param name="showBRSubscription">flag indicating whether subscription for update from the Basic registry will be returned</param>
+        /// <param name="showTaxResidence">flag indicating whether Tax residence will be returned</param>
+        /// <param name="showCustomerKbRelationship">flag indicating whether Customer's relationship with KB will be returned</param>
         /// <param name="x_B3_TraceId">[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)</param>
         /// <param name="x_KB_Party_Identity_In_Service">[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)</param>
         /// <param name="x_KB_Orig_System_Identity">[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)</param>
         /// <param name="x_KB_Caller_System_Identity">[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)</param>
         /// <returns>Customer base info entity</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CustomerBaseInfo> GetCustomerBaseInfoAsync(long customerId, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CustomerBaseInfo> GetCustomerBaseInfoAsync(long customerId, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, bool? showBRSubscription, bool? showTaxResidence, bool? showCustomerKbRelationship, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity, System.Threading.CancellationToken cancellationToken)
         {
             if (customerId == null)
                 throw new System.ArgumentNullException("customerId");
@@ -224,6 +230,18 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
             {
                 foreach (var item_ in requiredAddressFormats) { urlBuilder_.Append(System.Uri.EscapeDataString("requiredAddressFormats") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
+            if (showBRSubscription != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("showBRSubscription") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showBRSubscription, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (showTaxResidence != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("showTaxResidence") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showTaxResidence, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (showCustomerKbRelationship != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("showCustomerKbRelationship") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showCustomerKbRelationship, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
 
             var client_ = _httpClient;
@@ -284,52 +302,52 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
                         else
                         if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 403)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -377,15 +395,18 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="showEmployment">flag indicating whether Employment will be returned</param>
         /// <param name="showTemporaryStay">flag indicating whether temporary stay address will be returned</param>
         /// <param name="requiredAddressFormats">Required address format. Multiple formats can be returned at the same time. If no format is defined, the address is returned in default format.</param>
+        /// <param name="showBRSubscription">flag indicating whether subscription for update from the Basic registry will be returned</param>
+        /// <param name="showTaxResidence">flag indicating whether Tax residence will be returned</param>
+        /// <param name="showCustomerKbRelationship">flag indicating whether Customer's relationship with KB will be returned</param>
         /// <param name="x_B3_TraceId">[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)</param>
         /// <param name="x_KB_Party_Identity_In_Service">[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)</param>
         /// <param name="x_KB_Orig_System_Identity">[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)</param>
         /// <param name="x_KB_Caller_System_Identity">[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)</param>
         /// <returns>Base info for required customers</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CustomerBaseInfo>> GetCustomersBaseInfoAsync(System.Collections.Generic.IEnumerable<long> body, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CustomerBaseInfo>> GetCustomersBaseInfoAsync(System.Collections.Generic.IEnumerable<long> body, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, bool? showBRSubscription, bool? showTaxResidence, bool? showCustomerKbRelationship, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity)
         {
-            return GetCustomersBaseInfoAsync(body, showPrimaryAddress, showPrimaryIdDocument, showCustomerIdentification, showContactAddress, showPrimaryPhone, showPrimaryEmail, showSegment, showPoliticallyExposed, showEsa, showNace, showInsurability, showFirstNameVocative, showSurnameVocative, includeArchived, getAllPrimaryPhones, showFatca, showFinancialProfile, showHousing, showTurnovers, showEducation, showEmployeesNumber, showEmployment, showTemporaryStay, requiredAddressFormats, x_B3_TraceId, x_KB_Party_Identity_In_Service, x_KB_Orig_System_Identity, x_KB_Caller_System_Identity, System.Threading.CancellationToken.None);
+            return GetCustomersBaseInfoAsync(body, showPrimaryAddress, showPrimaryIdDocument, showCustomerIdentification, showContactAddress, showPrimaryPhone, showPrimaryEmail, showSegment, showPoliticallyExposed, showEsa, showNace, showInsurability, showFirstNameVocative, showSurnameVocative, includeArchived, getAllPrimaryPhones, showFatca, showFinancialProfile, showHousing, showTurnovers, showEducation, showEmployeesNumber, showEmployment, showTemporaryStay, requiredAddressFormats, showBRSubscription, showTaxResidence, showCustomerKbRelationship, x_B3_TraceId, x_KB_Party_Identity_In_Service, x_KB_Orig_System_Identity, x_KB_Caller_System_Identity, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -415,13 +436,16 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="showEmployment">flag indicating whether Employment will be returned</param>
         /// <param name="showTemporaryStay">flag indicating whether temporary stay address will be returned</param>
         /// <param name="requiredAddressFormats">Required address format. Multiple formats can be returned at the same time. If no format is defined, the address is returned in default format.</param>
+        /// <param name="showBRSubscription">flag indicating whether subscription for update from the Basic registry will be returned</param>
+        /// <param name="showTaxResidence">flag indicating whether Tax residence will be returned</param>
+        /// <param name="showCustomerKbRelationship">flag indicating whether Customer's relationship with KB will be returned</param>
         /// <param name="x_B3_TraceId">[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)</param>
         /// <param name="x_KB_Party_Identity_In_Service">[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)</param>
         /// <param name="x_KB_Orig_System_Identity">[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)</param>
         /// <param name="x_KB_Caller_System_Identity">[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)</param>
         /// <returns>Base info for required customers</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CustomerBaseInfo>> GetCustomersBaseInfoAsync(System.Collections.Generic.IEnumerable<long> body, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CustomerBaseInfo>> GetCustomersBaseInfoAsync(System.Collections.Generic.IEnumerable<long> body, bool? showPrimaryAddress, bool? showPrimaryIdDocument, bool? showCustomerIdentification, bool? showContactAddress, bool? showPrimaryPhone, bool? showPrimaryEmail, bool? showSegment, bool? showPoliticallyExposed, bool? showEsa, bool? showNace, bool? showInsurability, bool? showFirstNameVocative, bool? showSurnameVocative, bool? includeArchived, bool? getAllPrimaryPhones, bool? showFatca, bool? showFinancialProfile, bool? showHousing, bool? showTurnovers, bool? showEducation, bool? showEmployeesNumber, bool? showEmployment, bool? showTemporaryStay, System.Collections.Generic.IEnumerable<AddressFormat> requiredAddressFormats, bool? showBRSubscription, bool? showTaxResidence, bool? showCustomerKbRelationship, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -524,6 +548,18 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
             {
                 foreach (var item_ in requiredAddressFormats) { urlBuilder_.Append(System.Uri.EscapeDataString("requiredAddressFormats") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
+            if (showBRSubscription != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("showBRSubscription") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showBRSubscription, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (showTaxResidence != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("showTaxResidence") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showTaxResidence, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (showCustomerKbRelationship != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("showCustomerKbRelationship") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showCustomerKbRelationship, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
 
             var client_ = _httpClient;
@@ -587,52 +623,52 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
                         else
                         if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 403)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -661,10 +697,10 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="firstName">First name filter - can be used only as additional filter to surname for Natural Person. First name can be used with mask - at least 3 marks + *</param>
         /// <param name="birthEstablishedDate">Birth date/Established date filter, can be used only as additional filter with other filters</param>
         /// <param name="identifierValue">Identifier value filter - primary filter</param>
-        /// <param name="identifierTypeCode">Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used.</param>
-        /// <param name="idDocumentTypeCode">Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode.</param>
+        /// <param name="identifierTypeCode">Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used. RDM codebook CB_JuridicalPersonIdentificationType.</param>
+        /// <param name="idDocumentTypeCode">Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode. RDM codebook CB_IdentificationDocumentType</param>
         /// <param name="idDocumentNumber">Identification document number. Can be used only with idDocumentTypeCode and idDocumentIssuingCountryCode.</param>
-        /// <param name="idDocumentIssuingCountryCode">Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber.</param>
+        /// <param name="idDocumentIssuingCountryCode">Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber. RDM codebook CB_Country.</param>
         /// <param name="email">Email filter</param>
         /// <param name="phoneNumber">Phone number filter</param>
         /// <param name="isInKbi">Flag indicating whether subject should or should not be in KBI. Possible variants: &lt;ul&gt; &lt;li&gt;parameter is not used - all subject are returned&lt;/li&gt; &lt;li&gt;true - only subjects in KBI are returned&lt;/li&gt; &lt;li&gt;false - only subjects not in KBI are returned&lt;/li&gt; &lt;/ul&gt;</param>
@@ -690,10 +726,10 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="firstName">First name filter - can be used only as additional filter to surname for Natural Person. First name can be used with mask - at least 3 marks + *</param>
         /// <param name="birthEstablishedDate">Birth date/Established date filter, can be used only as additional filter with other filters</param>
         /// <param name="identifierValue">Identifier value filter - primary filter</param>
-        /// <param name="identifierTypeCode">Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used.</param>
-        /// <param name="idDocumentTypeCode">Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode.</param>
+        /// <param name="identifierTypeCode">Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used. RDM codebook CB_JuridicalPersonIdentificationType.</param>
+        /// <param name="idDocumentTypeCode">Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode. RDM codebook CB_IdentificationDocumentType</param>
         /// <param name="idDocumentNumber">Identification document number. Can be used only with idDocumentTypeCode and idDocumentIssuingCountryCode.</param>
-        /// <param name="idDocumentIssuingCountryCode">Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber.</param>
+        /// <param name="idDocumentIssuingCountryCode">Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber. RDM codebook CB_Country.</param>
         /// <param name="email">Email filter</param>
         /// <param name="phoneNumber">Phone number filter</param>
         /// <param name="isInKbi">Flag indicating whether subject should or should not be in KBI. Possible variants: &lt;ul&gt; &lt;li&gt;parameter is not used - all subject are returned&lt;/li&gt; &lt;li&gt;true - only subjects in KBI are returned&lt;/li&gt; &lt;li&gt;false - only subjects not in KBI are returned&lt;/li&gt; &lt;/ul&gt;</param>
@@ -834,52 +870,52 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
                         else
                         if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 403)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -911,6 +947,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="x_KB_Caller_System_Identity">[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)</param>
         /// <returns>Natural person personal data</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public System.Threading.Tasks.Task<NaturalPersonPersonalData> GetNaturalPersonPersonalDataAsync(long customerId, bool? showFirstNameVocative, bool? showSurnameVocative, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity)
         {
             return GetNaturalPersonPersonalDataAsync(customerId, showFirstNameVocative, showSurnameVocative, x_B3_TraceId, x_KB_Party_Identity_In_Service, x_KB_Orig_System_Identity, x_KB_Caller_System_Identity, System.Threading.CancellationToken.None);
@@ -927,6 +964,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <param name="x_KB_Caller_System_Identity">[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)</param>
         /// <returns>Natural person personal data</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public async System.Threading.Tasks.Task<NaturalPersonPersonalData> GetNaturalPersonPersonalDataAsync(long customerId, bool? showFirstNameVocative, bool? showSurnameVocative, string x_B3_TraceId, string x_KB_Party_Identity_In_Service, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity, System.Threading.CancellationToken cancellationToken)
         {
             if (customerId == null)
@@ -1003,52 +1041,52 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
                         else
                         if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Validation error - mostly invalid data in request is provided provided", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Authentication information is missing or is invalid", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 403)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("You are not authorized to run this operation", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Resource not found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Error>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<System.Collections.Generic.ICollection<Error>>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<Error>("Unexpected error occured", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1222,7 +1260,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         /// <summary>Flag indicating that customer is politically exposed. Only for Natural Person.
         /// <br/>If the value of the item is 'true', politicalExposition is also returned.
         /// <br/>If the value is not returned, the information about political exposition is not collected.
-        ///</summary>
+    //</summary>
         [Newtonsoft.Json.JsonProperty("isPoliticallyExposed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsPoliticallyExposed { get; set; }
 
@@ -1258,6 +1296,12 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
 
         [Newtonsoft.Json.JsonProperty("kyc", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Kyc Kyc { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("brSubscription", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public BRSubscription BrSubscription { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("taxResidence", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaxResidence TaxResidence { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
 
@@ -1491,7 +1535,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
 
     public partial class JuridicalPersonLegalForm
     {
-        /// <summary>Legal form code</summary>
+        /// <summary>Legal form code. CSC codebooks PRAV_FORM, PRAV_FORM2 (foreign legal forms)</summary>
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.StringLength(4, MinimumLength = 1)]
@@ -1515,6 +1559,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
 
     /// <summary>Legal capacity restriction - type and end date</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.6.3.0 (Newtonsoft.Json v13.0.0.0)")]
+    [System.Obsolete]
 
     public partial class LegalCapacityRestriction
     {
@@ -1571,7 +1616,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
 
     public partial class IdentificationDocument
     {
-        /// <summary>Type of identification document - CDM type</summary>
+        /// <summary>Type of identification document - RDM codebook CB_IdentificationDocumentType</summary>
         [Newtonsoft.Json.JsonProperty("typeCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(2)]
@@ -1583,7 +1628,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         [System.ComponentModel.DataAnnotations.StringLength(24)]
         public string DocumentNumber { get; set; }
 
-        /// <summary>Document issuing country - CB_Country - CDM issuingCountry</summary>
+        /// <summary>Document issuing country - RDM codebook CB_Country - CDM issuingCountry</summary>
         [Newtonsoft.Json.JsonProperty("issuingCountryCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(2)]
@@ -1836,7 +1881,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         [System.ComponentModel.DataAnnotations.StringLength(12)]
         public string PostCode { get; set; }
 
-        /// <summary>Country code - two characters ISO code - CB_Country</summary>
+        /// <summary>Country code - two characters ISO code - RDM codebook CB_Country</summary>
         [Newtonsoft.Json.JsonProperty("countryCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(2)]
@@ -1924,7 +1969,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         [System.ComponentModel.DataAnnotations.StringLength(35)]
         public string CountrySubdivision { get; set; }
 
-        /// <summary>Country code - two characters ISO code - CB_Country</summary>
+        /// <summary>Country code - two characters ISO code - RDM codebook CB_Country</summary>
         [Newtonsoft.Json.JsonProperty("countryCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(2)]
@@ -1957,7 +2002,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
     /// <summary>Type of the address format.
     /// <br/>* 'LINE'      - Address format in the form of address lines. An easy-to-read form for users. It is used, for example, for an address on a letter or a contractual document, or to display address to user in application. This notation returns in the Address schema definition
     /// <br/>* 'COMPONENT' - Address format in the form of address components. Harder for users to read form. Component writing is used primarily to enter an address or to exchange an address for machine processing. This notation returns in the ComponentAddress schema definition.
-    //</summary>
+    ///</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.6.3.0 (Newtonsoft.Json v13.0.0.0)")]
     public enum AddressFormat
     {
@@ -2521,6 +2566,9 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         [Newtonsoft.Json.JsonProperty("employment", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Employment Employment { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("customerKbRelationship", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CustomerKbRelationship CustomerKbRelationship { get; set; }
+
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
 
         [Newtonsoft.Json.JsonExtensionData]
@@ -2587,7 +2635,7 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         [System.ComponentModel.DataAnnotations.StringLength(1)]
         public string StatusCode { get; set; }
 
-        /// <summary>Country of political office, two-letter ISO code, defined in CB_Country codebook.</summary>
+        /// <summary>Country of political office, two-letter ISO code, defined in RDM codebook CB_Country.</summary>
         [Newtonsoft.Json.JsonProperty("countryCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(50)]
         public string CountryCode { get; set; }
@@ -2596,6 +2644,94 @@ namespace ExternalServices.CustomerManagement.V1.CMWrapper
         [Newtonsoft.Json.JsonProperty("endDateOfPoliticalActivity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime EndDateOfPoliticalActivity { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>Information about subscription for update from the Basic registry</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.6.3.0 (Newtonsoft.Json v13.0.0.0)")]
+
+    public partial class BRSubscription
+    {
+        /// <summary>Information if customer subscribed for update from the Basic registry</summary>
+        [Newtonsoft.Json.JsonProperty("isSubscribed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsSubscribed { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>Customer's relationship with KB</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.6.3.0 (Newtonsoft.Json v13.0.0.0)")]
+
+    public partial class CustomerKbRelationship
+    {
+        /// <summary>Code of the type of customer's relationship with KB - CSC codebook CLI_KB_REL</summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(1)]
+        public string Code { get; set; }
+
+        /// <summary>Financial group company code - only for code 'A' - RDM codebook CB_KBGroupCompany</summary>
+        [Newtonsoft.Json.JsonProperty("companyCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(5)]
+        public string CompanyCode { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>Tax residence</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.6.3.0 (Newtonsoft.Json v13.0.0.0)")]
+
+    public partial class TaxResidence
+    {
+        /// <summary>Country code of tax residence - two characters ISO code - RDM codebook CB_Country</summary>
+        [Newtonsoft.Json.JsonProperty("countryCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(2)]
+        public string CountryCode { get; set; }
+
+        /// <summary>Date of beginning of tax residence</summary>
+        [Newtonsoft.Json.JsonProperty("validFrom", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime ValidFrom { get; set; }
+
+        /// <summary>Tax identification number</summary>
+        [Newtonsoft.Json.JsonProperty("tin", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        public string Tin { get; set; }
+
+        /// <summary>Type of legal entity - Values are defined in CSC codebook PRAVT_CRS</summary>
+        [Newtonsoft.Json.JsonProperty("legalEntityTypeCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LegalEntityTypeCode { get; set; }
+
+        /// <summary>Passive NFE flag</summary>
+        [Newtonsoft.Json.JsonProperty("isPassiveNfe", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsPassiveNfe { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
 
