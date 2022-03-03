@@ -10,7 +10,7 @@ public class CustomerController : ControllerBase
     /// [DEV] Vyhledavani klientu
     /// </summary>
     /// <remarks>
-    /// DS: CustomerService/SearchCustomers
+    /// <i>DS:</i> CustomerService/SearchCustomers
     /// </remarks>
     /// <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
     [HttpPost("search")]
@@ -25,7 +25,7 @@ public class CustomerController : ControllerBase
     /// [DEV] Detail klienta
     /// </summary>
     /// <remarks>
-    /// DS: CustomerService/GetCustomer
+    /// <i>DS:</i> CustomerService/GetCustomer
     /// </remarks>
     /// <param name="identityId">ID klienta v danem schematu</param>
     /// <param name="identitySchema">Schema ve kterem je klient ulozeny - Kb | Mp</param>

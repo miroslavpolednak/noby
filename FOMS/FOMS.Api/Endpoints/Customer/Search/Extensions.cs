@@ -14,9 +14,9 @@ internal static class Extensions
         {
             NaturalPerson = new SearchNaturalPerson()
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                BirthNumber = request.BirthNumber,
+                FirstName = request.FirstName ?? "",
+                LastName = request.LastName ?? "",
+                BirthNumber = request.BirthNumber ?? "",
                 DateOfBirth = request.DateOfBirth
             }
         };

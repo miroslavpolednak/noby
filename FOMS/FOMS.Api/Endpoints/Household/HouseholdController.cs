@@ -13,8 +13,8 @@ public class HouseholdController : ControllerBase
     /// [DEV] Seznam domacnosti
     /// </summary>
     /// <remarks>
-    /// DS: SalesArrangementService/GetHouseholdList
-    /// DS: SalesArrangementService/GetCustomerList
+    /// <i>DS:</i> SalesArrangementService/GetHouseholdList
+    /// <i>DS:</i> SalesArrangementService/GetCustomerList
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <returns>Seznam domacnosti pro aktualni Sales Arrangement vcetne navazanych customeru</returns>
@@ -29,10 +29,10 @@ public class HouseholdController : ControllerBase
     /// [DEV] Ulozeni domacnosti
     /// </summary>
     /// <remarks>
-    /// DS: SalesArrangementService/UpdateHousehold
-    /// DS: SalesArrangementService/CreateHousehold
-    /// DS: SalesArrangementService/UpdateCustomer
-    /// DS: SalesArrangementService/CreateCustomer
+    /// <i>DS:</i> SalesArrangementService/UpdateHousehold
+    /// <i>DS:</i> SalesArrangementService/CreateHousehold
+    /// <i>DS:</i> SalesArrangementService/UpdateCustomer
+    /// <i>DS:</i> SalesArrangementService/CreateCustomer
     /// </remarks>
     /// <returns>Seznam ulozenych/nove vytvorenych HouseholdId</returns>
     [HttpPost("list")]

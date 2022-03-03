@@ -13,7 +13,7 @@ public class OfferController : ControllerBase
     /// Simulace KB hypoteky.
     /// </summary>
     /// <remarks>
-    /// DS: OfferService/SimulateMortgage
+    /// <i>DS:</i> OfferService/SimulateMortgage
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvorene simulace a jejich vysledky.</returns>
@@ -30,7 +30,7 @@ public class OfferController : ControllerBase
     /// Detail provedene simulace dle ID simulace.
     /// </summary>
     /// <remarks>
-    /// DS: OfferService/GetMortgageData
+    /// <i>DS:</i> OfferService/GetMortgageData
     /// </remarks>
     /// <returns>Vstupy a vystupy ulozene simulace.</returns>
     [HttpGet("mortgage/{offerId:int}")]
@@ -44,9 +44,9 @@ public class OfferController : ControllerBase
     /// Detail provedene simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>
-    /// Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.
-    /// DS: SalesArrangementService/GetSalesArrangement (to get OfferId)
-    /// DS: OfferService/GetMortgageData
+    /// Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.<br/>
+    /// <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
+    /// <i>DS:</i> OfferService/GetMortgageData
     /// </remarks>
     /// <returns>Vstupy a vystupy ulozene simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
@@ -60,8 +60,14 @@ public class OfferController : ControllerBase
     /// Vytvoreni noveho pripadu (hypoteky) ze simulace.
     /// </summary>
     /// <remarks>
-    /// Vytvori novy Case a Sales Arrangement.
-    /// DS:
+    /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
+    /// Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
+    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <param name="request.firstName">firstName</param> , <param name="request.lastName">lastName</param> a <param name="request.dateOfBirth">dateOfBirth</param>.<br/>
+    /// <i>DS:</i> OfferService/CreateCase<br/>
+    /// <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
+    /// <i>DS:</i> ProductService/CreateProduct<br/>
+    /// <i>DS:</i> SalesArrangement/CreateHousehold<br/>
+    /// <i>DS:</i> SalesArrangement/CreateCustomerOnSA
     /// </remarks>
     /// <param name="request">Identifikace klienta a ID simulace.</param>
     /// <returns>ID nove vytvoreneho Case</returns>

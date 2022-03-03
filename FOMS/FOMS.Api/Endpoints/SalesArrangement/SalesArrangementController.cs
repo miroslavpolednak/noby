@@ -10,7 +10,7 @@ public class SalesArrangementController : ControllerBase
     /// Seznam Sales Arrangements pro Case.
     /// </summary>
     /// <remarks>
-    /// DS: SalesArrangementService/GetSalesArrangementList
+    /// <i>DS:</i> SalesArrangementService/GetSalesArrangementList
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     /// <returns>Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>

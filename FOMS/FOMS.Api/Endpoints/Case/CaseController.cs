@@ -13,7 +13,7 @@ public class CaseController : ControllerBase
     /// Detail Case-u.
     /// </summary>
     /// <remarks>
-    /// DS: CaseService/GetCaseDetail
+    /// <i>DS:</i> CaseService/GetCaseDetail<br/>
     /// https://wiki.kb.cz/confluence/display/HT/getCaseDetail
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
@@ -29,7 +29,7 @@ public class CaseController : ControllerBase
     /// Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
     /// </summary>
     /// <remarks>
-    /// DS: CseService/GetCaseCounts
+    /// <i>DS:</i> CseService/GetCaseCounts<br/>
     /// https://wiki.kb.cz/confluence/display/HT/getCaseCounts
     /// </remarks>
     /// <returns>Kolekce ID stavu s poctem Cases.</returns>
@@ -49,7 +49,7 @@ public class CaseController : ControllerBase
     /// - zobrazit pouze Cases v pozadovanem stavu
     /// - nastavit strankovani
     /// - nastavit razeni [stateUpdated]
-    /// DS: CaseService/SearchCases
+    /// <i>DS:</i> CaseService/SearchCases<br/>
     /// https://wiki.kb.cz/confluence/display/HT/searchCases
     /// </remarks>
     /// <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>

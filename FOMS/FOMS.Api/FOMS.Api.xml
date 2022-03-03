@@ -505,8 +505,14 @@
             Vytvoreni noveho pripadu (hypoteky) ze simulace.
             </summary>
             <remarks>
-            Vytvori novy Case a Sales Arrangement.
-            DS:
+            Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
+            Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.
+            Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <param name="request.firstName.firstName">firstName</param> , <param name="request.lastName.lastName">lastName</param> a <param name="request.dateOfBirth.dateOfBirth">dateOfBirth</param>.
+            DS: OfferService/CreateCase
+            DS: SalesArrangement/CreateSalesArrangement
+            DS: ProductService/CreateProduct
+            DS: SalesArrangement/CreateHousehold
+            DS: SalesArrangement/CreateCustomerOnSA
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nove vytvoreneho Case</returns>

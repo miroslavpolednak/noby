@@ -12,7 +12,7 @@ public class CodebooksController : ControllerBase
 
     /// <summary>Kolekce vyzadanych ciselniku.</summary>
     /// <remarks>
-    /// Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.
+    /// Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
     /// Aktualne implementovane ciselniky jsou:
     /// - ActionCodesSavings
     /// - ActionCodesSavingsLoan
