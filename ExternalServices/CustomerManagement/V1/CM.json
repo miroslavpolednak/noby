@@ -1,9 +1,9 @@
-﻿{
+{
   "openapi": "3.0.1",
   "info": {
     "description": "Customer service, contains operations for getting basic customer data and search customers",
     "title": "CustomerService.v1",
-    "version": "1.14.5"
+    "version": "1.15.2"
   },
   "servers": [
     {
@@ -287,6 +287,36 @@
             }
           },
           {
+            "name": "showBRSubscription",
+            "in": "query",
+            "description": "flag indicating whether subscription for update from the Basic registry will be returned",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "showTaxResidence",
+            "in": "query",
+            "description": "flag indicating whether Tax residence will be returned",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "showCustomerKbRelationship",
+            "in": "query",
+            "description": "flag indicating whether Customer's relationship with KB will be returned",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "$ref": "#/components/parameters/X-B3-TraceId"
           },
           {
@@ -314,10 +344,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -327,10 +354,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -340,10 +364,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -353,10 +374,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -366,10 +384,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -642,6 +657,36 @@
             }
           },
           {
+            "name": "showBRSubscription",
+            "in": "query",
+            "description": "flag indicating whether subscription for update from the Basic registry will be returned",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "showTaxResidence",
+            "in": "query",
+            "description": "flag indicating whether Tax residence will be returned",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "showCustomerKbRelationship",
+            "in": "query",
+            "description": "flag indicating whether Customer's relationship with KB will be returned",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "$ref": "#/components/parameters/X-B3-TraceId"
           },
           {
@@ -672,10 +717,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -685,10 +727,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -698,10 +737,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -711,10 +747,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -724,10 +757,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -804,7 +834,7 @@
           },
           {
             "name": "identifierTypeCode",
-            "description": "Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used.",
+            "description": "Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used. RDM codebook CB_JuridicalPersonIdentificationType.",
             "in": "query",
             "required": false,
             "schema": {
@@ -813,7 +843,7 @@
           },
           {
             "name": "idDocumentTypeCode",
-            "description": "Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode.",
+            "description": "Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode. RDM codebook CB_IdentificationDocumentType",
             "in": "query",
             "required": false,
             "schema": {
@@ -831,7 +861,7 @@
           },
           {
             "name": "idDocumentIssuingCountryCode",
-            "description": "Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber.",
+            "description": "Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber. RDM codebook CB_Country.",
             "in": "query",
             "required": false,
             "schema": {
@@ -932,10 +962,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -945,10 +972,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -958,10 +982,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -971,10 +992,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -984,10 +1002,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -1004,6 +1019,7 @@
         ],
         "summary": "getNaturalPersonPersonalData",
         "description": "Operation returns basic personal data for natural person with vocative for first name and surname",
+        "deprecated": true,
         "parameters": [
           {
             "name": "customerId",
@@ -1063,10 +1079,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -1076,10 +1089,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -1089,10 +1099,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -1102,10 +1109,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -1115,10 +1119,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             },
@@ -1208,6 +1209,12 @@
           },
           "kyc": {
             "$ref": "#/components/schemas/Kyc"
+          },
+          "brSubscription": {
+            "$ref": "#/components/schemas/BRSubscription"
+          },
+          "taxResidence": {
+            "$ref": "#/components/schemas/TaxResidence"
           }
         },
         "required": [
@@ -1380,7 +1387,7 @@
           "legalStatus": "E",
           "customerIdentifiers": [
             {
-              "identifierValue": "09254447",
+              "identifierValue": 9254447,
               "typeCode": "CZ_ICO"
             }
           ],
@@ -1389,7 +1396,7 @@
           "legalForm": {
             "code": 101
           },
-          "czechIdentificationNumber": "09254447"
+          "czechIdentificationNumber": 9254447
         },
         "description": "Party of typ Entrepreneur"
       },
@@ -1503,7 +1510,7 @@
           "legalStatus": "P",
           "customerIdentifiers": [
             {
-              "identifierValue": "0005221898",
+              "identifierValue": 5221898,
               "typeCode": "CZ_RC"
             }
           ],
@@ -1515,7 +1522,7 @@
           "birthCountryCode": "CZ",
           "citizenshipCode": "CZ",
           "genderCode": "M",
-          "czechBirthNumber": "0005221898",
+          "czechBirthNumber": 5221898,
           "dateOfDeath": "2020-05-22T00:00:00.000Z"
         },
         "description": "Party type of Natural Person"
@@ -1528,7 +1535,7 @@
         "properties": {
           "code": {
             "type": "string",
-            "description": "Legal form code",
+            "description": "Legal form code. CSC codebooks PRAV_FORM, PRAV_FORM2 (foreign legal forms)",
             "minLength": 1,
             "maxLength": 4
           },
@@ -1542,6 +1549,7 @@
         "description": "Legal form"
       },
       "LegalCapacityRestriction": {
+        "deprecated": true,
         "type": "object",
         "required": [
           "restrictionType"
@@ -1590,7 +1598,7 @@
         "properties": {
           "typeCode": {
             "type": "string",
-            "description": "Type of identification document - CDM type",
+            "description": "Type of identification document - RDM codebook CB_IdentificationDocumentType",
             "maxLength": 2
           },
           "documentNumber": {
@@ -1600,7 +1608,7 @@
           },
           "issuingCountryCode": {
             "type": "string",
-            "description": "Document issuing country - CB_Country - CDM issuingCountry",
+            "description": "Document issuing country - RDM codebook CB_Country - CDM issuingCountry",
             "maxLength": 2
           },
           "issuedBy": {
@@ -1805,7 +1813,7 @@
           },
           "countryCode": {
             "type": "string",
-            "description": "Country code - two characters ISO code - CB_Country",
+            "description": "Country code - two characters ISO code - RDM codebook CB_Country",
             "maxLength": 2
           },
           "addressPointId": {
@@ -1899,7 +1907,7 @@
           },
           "countryCode": {
             "type": "string",
-            "description": "Country code - two characters ISO code - CB_Country",
+            "description": "Country code - two characters ISO code - RDM codebook CB_Country",
             "maxLength": 2,
             "example": "CZ"
           },
@@ -2441,6 +2449,9 @@
           },
           "employment": {
             "$ref": "#/components/schemas/Employment"
+          },
+          "customerKbRelationship": {
+            "$ref": "#/components/schemas/CustomerKbRelationship"
           }
         },
         "description": "Natural person KYC data. Object is only present when customer is type of NaturalPerson."
@@ -2504,7 +2515,7 @@
           },
           "countryCode": {
             "type": "string",
-            "description": "Country of political office, two-letter ISO code, defined in CB_Country codebook.",
+            "description": "Country of political office, two-letter ISO code, defined in RDM codebook CB_Country.",
             "maxLength": 50,
             "example": "CZ"
           },
@@ -2513,6 +2524,79 @@
             "format": "date",
             "description": "Date of termination of public office, may even be foreseen for the future. When the date expires, the status should be set to passive.",
             "example": "2020-01-09"
+          }
+        }
+      },
+      "BRSubscription": {
+        "type": "object",
+        "description": "Information about subscription for update from the Basic registry",
+        "required": [
+          "isSubscribed"
+        ],
+        "properties": {
+          "isSubscribed": {
+            "type": "boolean",
+            "description": "Information if customer subscribed for update from the Basic registry"
+          }
+        }
+      },
+      "CustomerKbRelationship": {
+        "type": "object",
+        "description": "Customer's relationship with KB",
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 1,
+            "description": "Code of the type of customer's relationship with KB - CSC codebook CLI_KB_REL",
+            "example": "A"
+          },
+          "companyCode": {
+            "type": "string",
+            "maxLength": 5,
+            "description": "Financial group company code - only for code 'A' - RDM codebook CB_KBGroupCompany",
+            "example": "ESS"
+          }
+        }
+      },
+      "TaxResidence": {
+        "type": "object",
+        "description": "Tax residence",
+        "required": [
+          "countryCode",
+          "validFrom"
+        ],
+        "properties": {
+          "countryCode": {
+            "type": "string",
+            "description": "Country code of tax residence - two characters ISO code - RDM codebook CB_Country",
+            "maxLength": 2,
+            "example": "CZ"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of beginning of tax residence",
+            "example": "2010-01-01T00:00:00.000Z"
+          },
+          "tin": {
+            "type": "string",
+            "description": "Tax identification number",
+            "maxLength": 50,
+            "example": "CZ01002222"
+          },
+          "legalEntityTypeCode": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Type of legal entity - Values are defined in CSC codebook PRAVT_CRS",
+            "example": 1
+          },
+          "isPassiveNfe": {
+            "type": "boolean",
+            "description": "Passive NFE flag",
+            "example": true
           }
         }
       },

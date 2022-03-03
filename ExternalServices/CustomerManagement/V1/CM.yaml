@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   description: 'Customer service, contains operations for getting basic customer data and search customers'
   title: CustomerService.v1
-  version: 1.14.5
+  version: 1.15.2
 servers:
   - url: https://cm-dev.kb.cz/be-cm/api
     description: DEV environment
@@ -197,6 +197,27 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/AddressFormats'
+        - name: showBRSubscription
+          in: query
+          description: flag indicating whether subscription for update from the Basic registry will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: showTaxResidence
+          in: query
+          description: flag indicating whether Tax residence will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: showCustomerKbRelationship
+          in: query
+          description: flag indicating whether Customer's relationship with KB will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
         - $ref: '#/components/parameters/X-B3-TraceId'
         - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
         - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
@@ -212,41 +233,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Validation error - mostly invalid data in request is provided provided
         "401":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Authentication information is missing or is invalid
         "403":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: You are not authorized to run this operation
         "404":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Resource not found
         "500":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Unexpected error occured
   /public/v1/customers/base-info:
     post:
@@ -433,6 +444,27 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/AddressFormats'
+        - name: showBRSubscription
+          in: query
+          description: flag indicating whether subscription for update from the Basic registry will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: showTaxResidence
+          in: query
+          description: flag indicating whether Tax residence will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: showCustomerKbRelationship
+          in: query
+          description: flag indicating whether Customer's relationship with KB will be returned
+          required: false
+          schema:
+            type: boolean
+            default: false
         - $ref: '#/components/parameters/X-B3-TraceId'
         - $ref: '#/components/parameters/X-KB-Party-Identity-In-Service'
         - $ref: '#/components/parameters/X-KB-Orig-System-Identity'
@@ -450,41 +482,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Validation error - mostly invalid data in request is provided provided
         "401":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Authentication information is missing or is invalid
         "403":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: You are not authorized to run this operation
         "404":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Resource not found
         "500":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Unexpected error occured
   /public/v1/customers:
     get:
@@ -534,13 +556,13 @@ paths:
           schema:
             type: string
         - name: identifierTypeCode
-          description: Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used.
+          description: Identifier type filter, additional filter to identifierValue. When not specified then all identifier types are used. RDM codebook CB_JuridicalPersonIdentificationType.
           in: query
           required: false
           schema:
             type: string
         - name: idDocumentTypeCode
-          description: Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode.
+          description: Type of identification document. Can be used only with idDocumentNumber and idDocumentIssuingCountryCode. RDM codebook CB_IdentificationDocumentType
           in: query
           required: false
           schema:
@@ -552,7 +574,7 @@ paths:
           schema:
             type: string
         - name: idDocumentIssuingCountryCode
-          description: Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber.
+          description: Identification document issuing country code. Can be used only with idDocumentTypeCode and idDocumentNumber. RDM codebook CB_Country.
           in: query
           required: false
           schema:
@@ -623,41 +645,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Validation error - mostly invalid data in request is provided provided
         "401":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Authentication information is missing or is invalid
         "403":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: You are not authorized to run this operation
         "404":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Resource not found
         "500":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Unexpected error occured
   /public/v1/customers/{customerId}/natural-person-personal-data:
     get:
@@ -666,6 +678,7 @@ paths:
         - CustomerService.v1
       summary: getNaturalPersonPersonalData
       description: "Operation returns basic personal data for natural person with vocative for first name and surname"
+      deprecated: true
       parameters:
         - name: customerId
           in: path
@@ -703,41 +716,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Validation error - mostly invalid data in request is provided provided
         "401":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Authentication information is missing or is invalid
         "403":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: You are not authorized to run this operation
         "404":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Resource not found
         "500":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error'
           description: Unexpected error occured
 components:
   schemas:
@@ -801,6 +804,10 @@ components:
           $ref: '#/components/schemas/Fatca'
         kyc:
           $ref: '#/components/schemas/Kyc'
+        brSubscription:
+          $ref: '#/components/schemas/BRSubscription'
+        taxResidence:
+          $ref: '#/components/schemas/TaxResidence'
       required:
         - party
         - lifecycleStatusCode
@@ -1037,7 +1044,7 @@ components:
       properties:
         code:
           type: string
-          description: Legal form code
+          description: Legal form code. CSC codebooks PRAV_FORM, PRAV_FORM2 (foreign legal forms)
           minLength: 1
           maxLength: 4
         unstructured:
@@ -1047,6 +1054,7 @@ components:
           maxLength: 256
       description: Legal form
     LegalCapacityRestriction:
+      deprecated: true
       type: object
       required:
         - restrictionType
@@ -1084,7 +1092,7 @@ components:
       properties:
         typeCode:
           type: string
-          description: Type of identification document - CDM type
+          description: Type of identification document - RDM codebook CB_IdentificationDocumentType
           maxLength: 2
         documentNumber:
           type: string
@@ -1092,7 +1100,7 @@ components:
           maxLength: 24
         issuingCountryCode:
           type: string
-          description: Document issuing country - CB_Country - CDM issuingCountry
+          description: Document issuing country - RDM codebook CB_Country - CDM issuingCountry
           maxLength: 2
         issuedBy:
           type: string
@@ -1250,7 +1258,7 @@ components:
           maxLength: 12
         countryCode:
           type: string
-          description: Country code - two characters ISO code - CB_Country
+          description: Country code - two characters ISO code - RDM codebook CB_Country
           maxLength: 2
         addressPointId:
           type: string
@@ -1376,7 +1384,7 @@ Examples:
           example: Texas
         countryCode:
           type: string
-          description: Country code - two characters ISO code - CB_Country
+          description: Country code - two characters ISO code - RDM codebook CB_Country
           maxLength: 2
           example: CZ
         addressPointId:
@@ -1779,6 +1787,8 @@ Examples:
           $ref: '#/components/schemas/Housing'
         employment:
           $ref: '#/components/schemas/Employment'
+        customerKbRelationship:
+          $ref: '#/components/schemas/CustomerKbRelationship'
       description: Natural person KYC data. Object is only present when customer is type of NaturalPerson.
     JuridicalPersonKyc:
       type: object
@@ -1828,7 +1838,7 @@ Examples:
           example: A
         countryCode:
           type: string
-          description: Country of political office, two-letter ISO code, defined in CB_Country codebook.
+          description: Country of political office, two-letter ISO code, defined in RDM codebook CB_Country.
           maxLength: 50
           example: CZ
         endDateOfPoliticalActivity:
@@ -1836,6 +1846,62 @@ Examples:
           format: date
           description: Date of termination of public office, may even be foreseen for the future. When the date expires, the status should be set to passive.
           example: "2020-01-09"
+    BRSubscription:
+      type: object
+      description: Information about subscription for update from the Basic registry
+      required:
+        - isSubscribed
+      properties:
+        isSubscribed:
+          type: boolean
+          description: Information if customer subscribed for update from the Basic registry
+    CustomerKbRelationship:
+      type: object
+      description: Customer's relationship with KB
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          maxLength: 1
+          description: Code of the type of customer's relationship with KB - CSC codebook CLI_KB_REL
+          example: A
+        companyCode:
+          type: string
+          maxLength: 5
+          description: Financial group company code - only for code 'A' - RDM codebook CB_KBGroupCompany
+          example: ESS
+    TaxResidence:
+      type: object
+      description: Tax residence
+      required:
+        - countryCode
+        - validFrom
+      properties:
+        countryCode:
+          type: string
+          description: Country code of tax residence - two characters ISO code - RDM codebook CB_Country
+          maxLength: 2
+          example: CZ
+        validFrom:
+          type: string
+          format: date
+          description: Date of beginning of tax residence
+          example: 2010-01-01
+        tin:
+          type: string
+          description: Tax identification number
+          maxLength: 50
+          example: CZ01002222
+        legalEntityTypeCode:
+          type: integer
+          format: int32
+          description: Type of legal entity - Values are defined in CSC codebook PRAVT_CRS
+          example: 1
+        isPassiveNfe:
+          type: boolean
+          description: Passive NFE flag
+          example: true
     Error:
       type: object
       properties:

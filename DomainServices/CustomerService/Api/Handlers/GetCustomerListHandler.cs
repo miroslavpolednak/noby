@@ -58,19 +58,15 @@ namespace DomainServices.CustomerService.Api.Handlers
 
                 // adresa
                 if (item.PrimaryAddress?.Address != null)
-                    customer.Addresses.Add(item.PrimaryAddress.Address.ToAddress(countries));
+                    customer.Addresses.Add(item.PrimaryAddress.Address.ToAddress(item.PrimaryAddress.ComponentAddress, CIS.Foms.Enums.AddressTypes.PERMANENT, true, countries));
                 if (item.ContactAddress?.Address != null)
-                    customer.Addresses.Add(item.ContactAddress.Address.ToAddress(countries));
+                    customer.Addresses.Add(item.ContactAddress.Address.ToAddress(item.ContactAddress.ComponentAddress, CIS.Foms.Enums.AddressTypes.MAILING, true, countries));
 
                 // kontakty - mobil
-                if (item.PrimaryPhoneConfirmed != null)
-                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = item.PrimaryPhoneConfirmed.PhoneNumber, IsPrimary = true });
-                else if (item.PrimaryPhone != null)
+                if (item.PrimaryPhone != null)
                     customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = item.PrimaryPhone.PhoneNumber, IsPrimary = true });
                 // email
-                if (item.PrimaryEmailConfirmed != null)
-                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = item.PrimaryEmailConfirmed.EmailAddress, IsPrimary = true });
-                else if (item.PrimaryEmail != null)
+                if (item.PrimaryEmail != null)
                     customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = item.PrimaryEmail.EmailAddress, IsPrimary = true });
 
                 response.Customers.Add(customer);

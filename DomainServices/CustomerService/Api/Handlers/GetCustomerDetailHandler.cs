@@ -62,19 +62,15 @@ namespace DomainServices.CustomerService.Api.Handlers
 
             // adresa
             if (cmResponse.PrimaryAddress?.Address != null)
-                response.Addresses.Add(cmResponse.PrimaryAddress.Address.ToAddress(countries));
+                response.Addresses.Add(cmResponse.PrimaryAddress.Address.ToAddress(cmResponse.PrimaryAddress.ComponentAddress, CIS.Foms.Enums.AddressTypes.PERMANENT, true, countries));
             if (cmResponse.ContactAddress?.Address != null)
-                response.Addresses.Add(cmResponse.ContactAddress.Address.ToAddress(countries));
+                response.Addresses.Add(cmResponse.ContactAddress.Address.ToAddress(cmResponse.ContactAddress.ComponentAddress, CIS.Foms.Enums.AddressTypes.MAILING, true, countries));
 
             // kontakty - mobil
-            if (cmResponse.PrimaryPhoneConfirmed != null)
-                response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = cmResponse.PrimaryPhoneConfirmed.PhoneNumber, IsPrimary = true });
-            else if (cmResponse.PrimaryPhone != null)
+            if (cmResponse.PrimaryPhone != null)
                 response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = cmResponse.PrimaryPhone.PhoneNumber, IsPrimary = true });
             // email
-            if (cmResponse.PrimaryEmailConfirmed != null)
-                response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = cmResponse.PrimaryEmailConfirmed.EmailAddress, IsPrimary = true });
-            else if (cmResponse.PrimaryEmail != null)
+            if (cmResponse.PrimaryEmail != null)
                 response.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = cmResponse.PrimaryEmail.EmailAddress, IsPrimary = true });
 
             return response;
