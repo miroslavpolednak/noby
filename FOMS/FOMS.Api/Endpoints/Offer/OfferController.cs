@@ -55,14 +55,14 @@ public class OfferController : ControllerBase
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangementId([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
-    
+
     /// <summary>
     /// Vytvoreni noveho pripadu (hypoteky) ze simulace.
     /// </summary>
     /// <remarks>
     /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
     /// Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
-    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <param name="request.firstName">firstName</param> , <param name="request.lastName">lastName</param> a <param name="request.dateOfBirth">dateOfBirth</param>.<br/>
+    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/>
     /// <i>DS:</i> OfferService/CreateCase<br/>
     /// <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
     /// <i>DS:</i> ProductService/CreateProduct<br/>
