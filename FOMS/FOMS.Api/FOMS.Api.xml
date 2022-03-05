@@ -9,7 +9,7 @@
             Detail Case-u.
             </summary>
             <remarks>
-            DS: CaseService/GetCaseDetail
+            <i>DS:</i> CaseService/GetCaseDetail<br/>
             https://wiki.kb.cz/confluence/display/HT/getCaseDetail
             </remarks>
             <param name="caseId">ID Case-u</param>
@@ -20,7 +20,7 @@
             Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
             </summary>
             <remarks>
-            DS: CseService/GetCaseCounts
+            <i>DS:</i> CseService/GetCaseCounts<br/>
             https://wiki.kb.cz/confluence/display/HT/getCaseCounts
             </remarks>
             <returns>Kolekce ID stavu s poctem Cases.</returns>
@@ -35,7 +35,7 @@
             - zobrazit pouze Cases v pozadovanem stavu
             - nastavit strankovani
             - nastavit razeni [stateUpdated]
-            DS: CaseService/SearchCases
+            <i>DS:</i> CaseService/SearchCases<br/>
             https://wiki.kb.cz/confluence/display/HT/searchCases
             </remarks>
             <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
@@ -144,7 +144,7 @@
         <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
             <summary>Kolekce vyzadanych ciselniku.</summary>
             <remarks>
-            Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.
+            Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
             Aktualne implementovane ciselniky jsou:
             - ActionCodesSavings
             - ActionCodesSavingsLoan
@@ -183,7 +183,7 @@
             [DEV] Vyhledavani klientu
             </summary>
             <remarks>
-            DS: CustomerService/SearchCustomers
+            <i>DS:</i> CustomerService/SearchCustomers
             </remarks>
             <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
         </member>
@@ -192,7 +192,7 @@
             [DEV] Detail klienta
             </summary>
             <remarks>
-            DS: CustomerService/GetCustomer
+            <i>DS:</i> CustomerService/GetCustomer
             </remarks>
             <param name="identityId">ID klienta v danem schematu</param>
             <param name="identitySchema">Schema ve kterem je klient ulozeny - Kb | Mp</param>
@@ -288,8 +288,8 @@
             [DEV] Seznam domacnosti
             </summary>
             <remarks>
-            DS: SalesArrangementService/GetHouseholdList
-            DS: SalesArrangementService/GetCustomerList
+            <i>DS:</i> SalesArrangementService/GetHouseholdList
+            <i>DS:</i> SalesArrangementService/GetCustomerList
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
             <returns>Seznam domacnosti pro aktualni Sales Arrangement vcetne navazanych customeru</returns>
@@ -299,10 +299,10 @@
             [DEV] Ulozeni domacnosti
             </summary>
             <remarks>
-            DS: SalesArrangementService/UpdateHousehold
-            DS: SalesArrangementService/CreateHousehold
-            DS: SalesArrangementService/UpdateCustomer
-            DS: SalesArrangementService/CreateCustomer
+            <i>DS:</i> SalesArrangementService/UpdateHousehold
+            <i>DS:</i> SalesArrangementService/CreateHousehold
+            <i>DS:</i> SalesArrangementService/UpdateCustomer
+            <i>DS:</i> SalesArrangementService/CreateCustomer
             </remarks>
             <returns>Seznam ulozenych/nove vytvorenych HouseholdId</returns>
         </member>
@@ -475,7 +475,7 @@
             Simulace KB hypoteky.
             </summary>
             <remarks>
-            DS: OfferService/SimulateMortgage
+            <i>DS:</i> OfferService/SimulateMortgage
             </remarks>
             <param name="request">Nastaveni simulace.</param>
             <returns>ID vytvorene simulace a jejich vysledky.</returns>
@@ -485,7 +485,7 @@
             Detail provedene simulace dle ID simulace.
             </summary>
             <remarks>
-            DS: OfferService/GetMortgageData
+            <i>DS:</i> OfferService/GetMortgageData
             </remarks>
             <returns>Vstupy a vystupy ulozene simulace.</returns>
         </member>
@@ -494,9 +494,9 @@
             Detail provedene simulace dle ID Sales Arrangement.
             </summary>
             <remarks>
-            Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.
-            DS: SalesArrangementService/GetSalesArrangement (to get OfferId)
-            DS: OfferService/GetMortgageData
+            Stejny endpoint jako GetMortgageByOfferId, jen podle jineho ID.<br/>
+            <i>DS:</i> SalesArrangementService/GetSalesArrangement (to get OfferId)<br/>
+            <i>DS:</i> OfferService/GetMortgageData
             </remarks>
             <returns>Vstupy a vystupy ulozene simulace.</returns>
         </member>
@@ -506,13 +506,13 @@
             </summary>
             <remarks>
             Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
-            Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.
-            Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <param name="request.firstName.firstName">firstName</param> , <param name="request.lastName.lastName">lastName</param> a <param name="request.dateOfBirth.dateOfBirth">dateOfBirth</param>.
-            DS: OfferService/CreateCase
-            DS: SalesArrangement/CreateSalesArrangement
-            DS: ProductService/CreateProduct
-            DS: SalesArrangement/CreateHousehold
-            DS: SalesArrangement/CreateCustomerOnSA
+            Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
+            Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <param name="request.firstName.firstName">firstName</param> , <param name="request.lastName.lastName">lastName</param> a <param name="request.dateOfBirth.dateOfBirth">dateOfBirth</param>.<br/>
+            <i>DS:</i> OfferService/CreateCase<br/>
+            <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
+            <i>DS:</i> ProductService/CreateProduct<br/>
+            <i>DS:</i> SalesArrangement/CreateHousehold<br/>
+            <i>DS:</i> SalesArrangement/CreateCustomerOnSA
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nove vytvoreneho Case</returns>
@@ -715,7 +715,7 @@
             Seznam Sales Arrangements pro Case.
             </summary>
             <remarks>
-            DS: SalesArrangementService/GetSalesArrangementList
+            <i>DS:</i> SalesArrangementService/GetSalesArrangementList
             </remarks>
             <param name="caseId">ID Case-u</param>
             <returns>Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>

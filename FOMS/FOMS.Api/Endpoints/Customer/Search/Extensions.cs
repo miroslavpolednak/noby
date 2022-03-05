@@ -27,7 +27,6 @@ internal static class Extensions
     {
         return request.Select(t => (new CustomerInList())
             .FillBaseData(t)
-            .FillAddress(t.Addresses)
             .FillIdentification(t.Identities)
             ).ToList();
     }
@@ -36,6 +35,10 @@ internal static class Extensions
     {
         customer.FirstName = result.NaturalPerson?.FirstName;
         customer.LastName = result.NaturalPerson?.LastName;
+        customer.Street = result.Street;
+        customer.City = result.City;
+        customer.Postcode = result.Postcode;
+        
         return customer;
     }
 
@@ -54,7 +57,7 @@ internal static class Extensions
         {
             customer.Street = $"{result[0].Street} {result[0].BuildingIdentificationNumber} {result[0].LandRegistryNumber}";//TODO ???
             customer.City = result[0].City;
-            customer.PostCode = result[0].Postcode;
+            customer.Postcode = result[0].Postcode;
         }
         return customer;
     }
