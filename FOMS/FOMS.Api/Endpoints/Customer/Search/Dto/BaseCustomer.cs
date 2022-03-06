@@ -3,27 +3,22 @@
 public abstract class BaseCustomer
 {
     /// <summary>
-    /// Hledani podkle konkretniho ID klienta v MP nebo KB
-    /// </summary>
-    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
-    
-    /// <summary>
-    /// Hledat ve jmene klienta
+    /// Jmeno klienta
     /// </summary>
     public string? FirstName { get; set; }
     
     /// <summary>
-    /// Hledat v prijmeni klienta
+    /// Prijmeni klienta
     /// </summary>
     public string? LastName { get; set; }
     
     /// <summary>
-    /// Hledat podle data narozeni
+    /// Datum narozeni FO
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
     
     /// <summary>
-    /// Hledat podle rodneho cisla
+    /// Rodne cislo
     /// </summary>
     public string? BirthNumber { get; set; }
     
