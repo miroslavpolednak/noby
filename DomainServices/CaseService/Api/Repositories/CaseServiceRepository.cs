@@ -68,7 +68,7 @@ internal class CaseServiceRepository
 
         // seznam case
         var data = await query
-            .Skip(paginable.RecordOffset * (paginable.PageSize - 1))
+            .Skip(paginable.RecordOffset)
             .Take(paginable.PageSize)
             .AsNoTracking()
             .Select(CaseServiceRepositoryExpressions.CaseDetail()

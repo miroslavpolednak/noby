@@ -50,9 +50,21 @@ public class MortgageInputs
     /// Předpokládáné výše úvěru
     /// </summary>
     public decimal LoanToValue { get; set; }
-    
+
+    /// <summary>
+    /// Den splátky úvěru
+    /// </summary>
     public int? PaymentDayOfTheMonth { get; set; }
+
+    /// <summary>
+    /// Je žádáno zaměstnanecké zvýhodnění?
+    /// </summary>
     public bool EmployeeBonusRequested { get; set; }
+
+    /// <summary>
+    /// Předpokládané datum čerpání
+    /// </summary>
     public DateTime? ExpectedDateOfDrawing { get; set; }
+    
     public List<LoanPurposeItem>? LoanPurpose { get; set; }
 }

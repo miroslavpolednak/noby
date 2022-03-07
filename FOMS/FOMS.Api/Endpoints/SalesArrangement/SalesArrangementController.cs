@@ -20,12 +20,16 @@ public class SalesArrangementController : ControllerBase
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     public async Task<List<Dto.SalesArrangementListItem>> GetList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetList.GetListRequest(caseId), cancellationToken);
-    
+
     /// <summary>
     /// Seznam klientu navazanych na Sales Arrangement.
     /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> SalesArrangementService/GetCustomerList<br/>
+    /// <i>DS:</i> CustomerService/GetCustomerDetail
+    /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns>Seznam klientu - aktualne je namockovany pouze jeden staticky klient.</returns>
+    /// <returns>Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]

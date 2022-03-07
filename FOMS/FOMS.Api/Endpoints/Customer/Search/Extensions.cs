@@ -12,6 +12,8 @@ internal static class Extensions
     {
         var model = new SearchCustomersRequest
         {
+            Email = request.Email ?? "",
+            PhoneNumber = request.Phone ?? "",
             NaturalPerson = new SearchNaturalPerson()
             {
                 FirstName = request.FirstName ?? "",
@@ -20,6 +22,21 @@ internal static class Extensions
                 DateOfBirth = request.DateOfBirth
             }
         };
+
+        // ID klienta
+        if (request.IdentityId.HasValue)
+        {
+            model.Identity = new Identity(request.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb);
+        }
+
+        // document
+        /*model.IdentificationDocument = new SearchIdentificationDocument
+        {
+            IdentificationDocumentTypeId = request.IdentificationDocumentTypeId.GetValueOrDefault(),
+            IssuingCountryId = request.IssuingCountryId.GetValueOrDefault(),
+            Number = request.IdentificationDocumentNumber ?? ""
+        };*/
+
         return model;
     }
     

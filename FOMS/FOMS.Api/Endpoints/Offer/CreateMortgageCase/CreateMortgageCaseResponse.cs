@@ -16,4 +16,14 @@ public sealed class CreateMortgageCaseResponse
     /// ID simulace pro kterou Case vznikl
     /// </summary>
     public int OfferId { get; set; }
+
+    /// <summary>
+    /// ID default domacnosti
+    /// </summary>
+    public int HouseholdId { get; set; }
+
+    /// <summary>
+    /// ID noveho klienta
+    /// </summary>
+    public int CustomerOnSAId { get; set; }
 }

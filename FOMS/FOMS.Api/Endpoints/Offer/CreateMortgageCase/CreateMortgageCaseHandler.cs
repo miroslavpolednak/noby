@@ -40,14 +40,22 @@ internal class CreateMortgageCaseHandler
             SalesArrangementTypeId = salesArrangementTypeId
         }, cancellationToken);
 
+        // create customer on SA
+        var customerResult = await _createCustomerWithHouseholdService.Create(salesArrangementId, request, cancellationToken);
+
+        //TODO co udelat, kdyz se neco z toho nepovede?
+
         return new CreateMortgageCaseResponse
         {
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,
-            OfferId = offerInstance.OfferId
+            OfferId = offerInstance.OfferId,
+            CustomerOnSAId = customerResult.CustomerOnSAId,
+            HouseholdId = customerResult.HouseholdId
         };
     }
 
+    private readonly CreateCustomerWithHouseholdService _createCustomerWithHouseholdService;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IOfferServiceAbstraction _offerService;
@@ -55,11 +63,13 @@ internal class CreateMortgageCaseHandler
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
 
     public CreateMortgageCaseHandler(
+        CreateCustomerWithHouseholdService createCustomerWithHouseholdService,
         ISalesArrangementServiceAbstraction salesArrangementService, 
         ICodebookServiceAbstraction codebookService, 
         IOfferServiceAbstraction offerService, 
         ILogger<CreateMortgageCaseHandler> logger, IMediator mediator)
     {
+        _createCustomerWithHouseholdService = createCustomerWithHouseholdService;
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;
         _mediator = mediator;

@@ -115,7 +115,6 @@ CREATE TABLE [dbo].[Household](
       OtherExpenseAmount [int] NULL,
       [CustomerOnSAId1] [int] NULL,
       [CustomerOnSAId2] [int] NULL,
-      [Expenses] [nvarchar](max) NULL,
       [CreatedUserName] [nvarchar](100) NOT NULL,
       [CreatedUserId] [int] NOT NULL,
       [CreatedTime] [datetime] NOT NULL,
@@ -127,7 +126,7 @@ CREATE TABLE [dbo].[Household](
           (
            [HouseholdId] ASC
               )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY], PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+)
   WITH
       (
       SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[HouseholdHistory] )

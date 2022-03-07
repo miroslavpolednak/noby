@@ -31,7 +31,7 @@ internal static class FomsSwagger
         });
         
         // Adds FluentValidationRules staff to Swagger.
-        builder.Services.AddFluentValidationRulesToSwagger();
+        //builder.Services.AddFluentValidationRulesToSwagger();
 
         return builder;
     }

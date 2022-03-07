@@ -7,7 +7,7 @@ namespace FOMS.Api.Endpoints.Customer;
 public class CustomerController : ControllerBase
 {
     /// <summary>
-    /// [DEV] Vyhledavani klientu
+    /// Vyhledavani klientu
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> CustomerService/SearchCustomers
@@ -22,7 +22,7 @@ public class CustomerController : ControllerBase
         => await _mediator.Send(resquest, cancellationToken);
     
     /// <summary>
-    /// [DEV] Detail klienta
+    /// Detail klienta
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> CustomerService/GetCustomer

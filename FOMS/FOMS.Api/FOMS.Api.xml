@@ -180,7 +180,7 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
-            [DEV] Vyhledavani klientu
+            Vyhledavani klientu
             </summary>
             <remarks>
             <i>DS:</i> CustomerService/SearchCustomers
@@ -189,7 +189,7 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.GetDetail(System.Int32,CIS.Foms.Enums.IdentitySchemes,System.Threading.CancellationToken)">
             <summary>
-            [DEV] Detail klienta
+            Detail klienta
             </summary>
             <remarks>
             <i>DS:</i> CustomerService/GetCustomer
@@ -198,29 +198,24 @@
             <param name="identitySchema">Schema ve kterem je klient ulozeny - Kb | Mp</param>
             <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Identity">
-            <summary>
-            Hledani podkle konkretniho ID klienta v MP nebo KB
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
             <summary>
-            Hledat ve jmene klienta
+            Jmeno klienta
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.LastName">
             <summary>
-            Hledat v prijmeni klienta
+            Prijmeni klienta
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.DateOfBirth">
             <summary>
-            Hledat podle data narozeni
+            Datum narozeni FO
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.BirthNumber">
             <summary>
-            Hledat podle rodneho cisla
+            Rodne cislo
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.NameJuridicalPerson">
@@ -241,6 +236,11 @@
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Phone">
             <summary>
             Telefon
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentityId">
+            <summary>
+            ID klienta v MP nebo KB
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IssuingCountryId">
@@ -278,6 +278,27 @@
             Kolekce nalezenych klientu.
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.SalesArrangementId">
+            <summary>
+            ID pripadu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.HouseholdTypeId">
+            <summary>
+            ID typu domacnosti. Ciselnik HouseholdTypes
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.GetHouseholds.GetHouseholdsResponse.Households">
+            <summary>
+            Seznam domacnosti pro dany SalesArrangement
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.HouseholdId">
+            <summary>
+            ID domacnosti
+            </summary>
+        </member>
         <member name="T:FOMS.Api.Endpoints.Household.HouseholdController">
             <summary>
             Prace s domacnostmi a customery
@@ -285,64 +306,98 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.GetList(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            [DEV] Seznam domacnosti
+            Seznam domacnosti
             </summary>
             <remarks>
+            Vraci zakladni seznam domacnosti pro dany Sales Arrangement bez detailu.<br/>
             <i>DS:</i> SalesArrangementService/GetHouseholdList
-            <i>DS:</i> SalesArrangementService/GetCustomerList
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
-            <returns>Seznam domacnosti pro aktualni Sales Arrangement vcetne navazanych customeru</returns>
+            <returns>Seznam domacnosti pro aktualni Sales Arrangement</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Save(FOMS.Api.Endpoints.Household.SaveHouseholds.SaveHouseholdsRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.GetHousehold(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            [DEV] Ulozeni domacnosti
+            Detail domacnosti
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/UpdateHousehold
-            <i>DS:</i> SalesArrangementService/CreateHousehold
-            <i>DS:</i> SalesArrangementService/UpdateCustomer
+            Vraci detail dane domacnosti vcetne detailu navazanych CustomerOnSA.<br/>
+            <i>DS:</i> SalesArrangementService/GetHousehold
+            </remarks>
+            <param name="householdId">ID domacnosti</param>
+            <returns>Detail domacnosti</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazani domacnosti
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/DeleteHousehold
+            </remarks>
+            <param name="householdId">ID domacnosti</param>
+            <returns>ID smazane domacnosti</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Create(FOMS.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni nove domacnosti
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/CreateHousehold<br/>
             <i>DS:</i> SalesArrangementService/CreateCustomer
             </remarks>
-            <returns>Seznam ulozenych/nove vytvorenych HouseholdId</returns>
+            <returns>Nove HouseholdId, typ domacnosti a nazev typu domacnosti</returns>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.SaveHouseholds.SaveHouseholdsRequest.SalesArrangementId">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Update(System.Int32,FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest,System.Threading.CancellationToken)">
             <summary>
-            ID sales arrangementu
+            Update existujici domacnosti
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/UpdateHousehold<br/>
+            <i>DS:</i> SalesArrangementService/CreateHousehold<br/>
+            <i>DS:</i> SalesArrangementService/UpdateCustomer<br/>
+            <i>DS:</i> SalesArrangementService/CreateCustomer
+            </remarks>
+            <param name="householdId">ID domacnosti</param>
+            <returns>HouseholdId</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdResponse.HouseholdId">
+            <summary>
+            ID updatovane domacnosti
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.SaveHouseholds.SaveHouseholdsRequest.Households">
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdResponse.CustomerOnSAId1">
             <summary>
-            Seznam vsech zadanych domacnosti
+            ID nove ulozeneho nebo updatovaneho customera 1
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Customer.Id">
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdResponse.CustomerOnSAId2">
+            <summary>
+            ID nove ulozeneho nebo updatovaneho customera 2
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseHousehold.Data">
+            <summary>
+            Sekce Ostatni parametry
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseHousehold.Expenses">
+            <summary>
+            Sekce Vydaje domacnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseHousehold.Customer1">
+            <summary>
+            Klient 1= sef domacnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseHousehold.Customer2">
+            <summary>
+            Klient 2= spoludluznik
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.CustomerInHousehold.CustomerOnSAId">
             <summary>
             CustomerOnSAId
             </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Customer.Identities">
-            <summary>
-            Identity klienta v KB nebo MP
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Customer.FirstName">
-            <summary>
-            Jmeno klienta
-            </summary>
-            <example>John</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Customer.LastName">
-            <summary>
-            Prijmeni klienta
-            </summary>
-            <example>Doe</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Customer.DateOfBirth">
-            <summary>
-            Datum narozeni klienta
-            </summary>
-            <example>2002-00-01T00:00:00.000Z</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Household.Dto.CustomerInHousehold.RoleId">
             <summary>
@@ -350,36 +405,28 @@
             </summary>
             <example>1</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Household.Id">
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.CustomerInHousehold.Identities">
             <summary>
-            HouseholdId
+            Identity klienta v KB nebo MP
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Household.HouseholdTypeId">
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.CustomerInHousehold.FirstName">
             <summary>
-            ID typu domacnosti. Ciselnik HouseholdTypes
+            Jmeno klienta
             </summary>
-            <example>1</example>
+            <example>John</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Household.HouseholdTypeName">
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.CustomerInHousehold.LastName">
             <summary>
-            Nazev typu domacnosti.
+            Prijmeni klienta
             </summary>
+            <example>Doe</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Household.Data">
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.CustomerInHousehold.DateOfBirth">
             <summary>
-            Sekce Ostatni parametry
+            Datum narozeni klienta
             </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Household.Expenses">
-            <summary>
-            Sekce Vydaje domacnosti
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.Household.Customers">
-            <summary>
-            Klient navazani na domacnost
-            </summary>
+            <example>2002-01-01T00:00:00.000Z</example>
         </member>
         <member name="T:FOMS.Api.Endpoints.Household.Dto.HouseholdData">
             <summary>
@@ -430,6 +477,26 @@
             </summary>
             <example>3300</example>
         </member>
+        <member name="T:FOMS.Api.Endpoints.Household.Dto.HouseholdInList">
+            <summary>
+            Domacnost v seznamu domacnosti - pro vytvoreni tab listu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdInList.HouseholdId">
+            <summary>
+            ID domacnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdInList.HouseholdTypeId">
+            <summary>
+            ID typu domacnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdInList.HouseholdTypeName">
+            <summary>
+            Typ domacnosti slovne
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">
             <summary>
             ID simulace ze ktere se ma vytvorit Case.
@@ -468,6 +535,16 @@
         <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.OfferId">
             <summary>
             ID simulace pro kterou Case vznikl
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.HouseholdId">
+            <summary>
+            ID default domacnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.CustomerOnSAId">
+            <summary>
+            ID noveho klienta
             </summary>
         </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.SimulateMortgage(FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
@@ -605,6 +682,21 @@
             Předpokládáné výše úvěru
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.PaymentDayOfTheMonth">
+            <summary>
+            Den splátky úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.EmployeeBonusRequested">
+            <summary>
+            Je žádáno zaměstnanecké zvýhodnění?
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.ExpectedDateOfDrawing">
+            <summary>
+            Předpokládané datum čerpání
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
             <summary>
             Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
@@ -724,8 +816,12 @@
             <summary>
             Seznam klientu navazanych na Sales Arrangement.
             </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/GetCustomerList<br/>
+            <i>DS:</i> CustomerService/GetCustomerDetail
+            </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns>Seznam klientu - aktualne je namockovany pouze jeden staticky klient.</returns>
+            <returns>Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetDetail(System.Int32,System.Threading.CancellationToken)">
             <summary>

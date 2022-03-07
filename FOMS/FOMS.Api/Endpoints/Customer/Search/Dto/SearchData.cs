@@ -16,7 +16,7 @@ public class SearchData
     /// <summary>
     /// Type dokladu
     /// </summary>
-    public string? IdentificationDocumentTypeId { get; set; }
+    public int? IdentificationDocumentTypeId { get; set; }
     
     /// <summary>
     /// Cislo dokladu

@@ -1,41 +1,45 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.CodebookService.Abstraction;
+using DomainServices.SalesArrangementService.Abstraction;
 using contracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.GetHouseholds;
 
 internal class GetHouseholdsHandler
-    : IRequestHandler<GetHouseholdsRequest, List<Dto.Household>>
+    : IRequestHandler<GetHouseholdsRequest, GetHouseholdsResponse>
 {
-    public async Task<List<Dto.Household>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
+    public async Task<GetHouseholdsResponse> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetHouseholdsHandler), request.SalesArrangementId);
 
         // vsechny households
         var households = ServiceCallResult.Resolve<List<contracts.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
         _logger.FoundItems(households.Count, nameof(Household));
-        
-        // dotahnout customers
-        var customersOnSA = ServiceCallResult.Resolve<List<CustomerOnSA>>(await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellationToken));
-        _logger.FoundItems(customersOnSA.Count, nameof(CustomerOnSA));
 
-        return await _mapper.MapToResponse(households, customersOnSA);
+        var householdTypes = await _codebookService.HouseholdTypes();
+
+        var model = new GetHouseholdsResponse
+        {
+            Households = households.Select(t => new Dto.HouseholdInList
+            {
+                HouseholdId = t.HouseholdId,
+                HouseholdTypeId = t.HouseholdTypeId,
+                HouseholdTypeName = householdTypes.First(x => x.Id == t.HouseholdTypeId).Name
+            }).ToList()
+        };
+        return model;
     }
-    
-    private readonly Mapper _mapper;
+
+    private readonly ICodebookServiceAbstraction _codebookService;
     private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly ILogger<GetHouseholdsHandler> _logger;
     
     public GetHouseholdsHandler(
-        IHouseholdServiceAbstraction householdService, 
-        ICustomerOnSAServiceAbstraction customerOnSAService,
-        Mapper mapper, 
+        IHouseholdServiceAbstraction householdService,
+        ICodebookServiceAbstraction codebookService,
         ILogger<GetHouseholdsHandler> logger)
     {
         _logger = logger;
-        _customerOnSAService = customerOnSAService;
-        _mapper = mapper;
+        _codebookService = codebookService;
         _householdService = householdService;
     }
 }
