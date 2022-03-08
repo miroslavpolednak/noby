@@ -10,6 +10,10 @@ public class CustomerController : ControllerBase
     /// Vyhledavani klientu
     /// </summary>
     /// <remarks>
+    /// Endpoint umoznuje:
+    /// - hledat podle zadanych kriterii
+    /// - nastavit strankovani
+    /// - nastavit razeni [lastName]
     /// <i>DS:</i> CustomerService/SearchCustomers
     /// </remarks>
     /// <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
