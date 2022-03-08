@@ -3,7 +3,7 @@ using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
 using DSContracts = DomainServices.CaseService.Contracts;
 
-namespace FOMS.Api.Endpoints.Case.Search;
+namespace FOMS.Api.Endpoints.Cases.Search;
 
 internal class SearchHandler
     : IRequestHandler<SearchRequest, SearchResponse>
@@ -39,13 +39,13 @@ internal class SearchHandler
 
     private readonly ILogger<SearchHandler> _logger;
     private readonly ICurrentUserAccessor _userAccessor;
-    private readonly CaseModelConverter _converter;
+    private readonly CasesModelConverter _converter;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public SearchHandler(
         ICurrentUserAccessor userAccessor,
         ILogger<SearchHandler> logger,
-        CaseModelConverter converter,
+        CasesModelConverter converter,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {
         _converter = converter;

@@ -5,7 +5,7 @@ namespace FOMS.Api.Endpoints.Household.UpdateHousehold;
 internal static class Extensions
 {
     #region customer
-    public static contracts.UpdateCustomerRequest MapToRequest(this Dto.CustomerInHousehold model)
+    public static contracts.UpdateCustomerRequest ToDomainServiceRequest(this Dto.CustomerInHousehold model)
     {
         var result = new contracts.UpdateCustomerRequest()
         {
@@ -20,7 +20,7 @@ internal static class Extensions
         return result;
     }
 
-    public static contracts.CreateCustomerRequest MapToRequest(this Dto.CustomerInHousehold model, int salesArrangementId)
+    public static contracts.CreateCustomerRequest ToDomainServiceRequest(this Dto.CustomerInHousehold model, int salesArrangementId)
     {
         var result = new contracts.CreateCustomerRequest()
         {
@@ -38,7 +38,7 @@ internal static class Extensions
     #endregion customer
 
     #region household
-    public static contracts.HouseholdData? MapToRequest(this Dto.HouseholdData? model)
+    public static contracts.HouseholdData? ToDomainServiceRequest(this Dto.HouseholdData? model)
     {
         if (model is null) return null;
         return new contracts.HouseholdData()
@@ -49,7 +49,7 @@ internal static class Extensions
         };
     }
 
-    public static contracts.Expenses? MapToRequest(this Dto.HouseholdExpenses? model)
+    public static contracts.Expenses? ToDomainServiceRequest(this Dto.HouseholdExpenses? model)
     {
         if (model is null) return null;
         return new contracts.Expenses()

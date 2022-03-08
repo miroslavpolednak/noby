@@ -1,4 +1,5 @@
 ﻿using DomainServices.CodebookService.Abstraction;
+using DomainServices.ProductService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CaseService.Abstraction;
@@ -17,7 +18,7 @@ internal class CreateMortgageCaseHandler
         var offerInstance = ServiceCallResult.Resolve<offerContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
         // chyba pokud simulace je uz nalinkovana na jiny SA
-        if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId)))
+        if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken)))
             throw new CisValidationException(ErrorCodes.OfferIdAlreadyLinkedToSalesArrangement, $"OfferId {request.OfferId} has been already linked to another contract");
         
         // get default saTypeId from productTypeId
@@ -37,6 +38,10 @@ internal class CreateMortgageCaseHandler
         
         // create household and customer on SA
         var householdCustomerResult = await _createCustomerWithHouseholdService.Create(salesArrangementId, request, cancellationToken);
+
+        // zalozit produkt, pokud ma klient modre ID
+        if (householdCustomerResult.PartnerId.HasValue)
+            await _createProductService.CreateMortgage(caseId, offerInstance, cancellationToken);
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 
@@ -72,6 +77,7 @@ internal class CreateMortgageCaseHandler
         };
 
     private readonly CreateCustomerWithHouseholdService _createCustomerWithHouseholdService;
+    private readonly CreateProductService _createProductService;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ICaseServiceAbstraction _caseService;
@@ -81,6 +87,7 @@ internal class CreateMortgageCaseHandler
 
     public CreateMortgageCaseHandler(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        CreateProductService createProductService,
         CreateCustomerWithHouseholdService createCustomerWithHouseholdService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICaseServiceAbstraction caseService,
@@ -88,6 +95,7 @@ internal class CreateMortgageCaseHandler
         IOfferServiceAbstraction offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
+        _createProductService = createProductService;
         _userAccessor = userAccessor;
         _caseService = caseService;
         _createCustomerWithHouseholdService = createCustomerWithHouseholdService;

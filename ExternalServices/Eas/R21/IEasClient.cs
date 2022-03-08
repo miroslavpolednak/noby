@@ -37,7 +37,7 @@ public interface IEasClient
     /// Vytvori noveho klienta (rezervace partnerId)
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[S_KLIENTDATA]
+    /// SuccessfulServiceCallResult[CreateNewClientResponse]
     /// </returns>
-    Task<IServiceCallResult> NewKlient(S_KLIENTDATA client);
+    Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData);
 }

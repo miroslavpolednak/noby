@@ -23,8 +23,8 @@ internal class UpdateHouseholdHandler
             HouseholdId = request.HouseholdId,
             CustomerOnSAId1 = customerId1,
             CustomerOnSAId2 = customerId2,
-            Data = request.Data.MapToRequest(),
-            Expenses = request.Expenses.MapToRequest()
+            Data = request.Data.ToDomainServiceRequest(),
+            Expenses = request.Expenses.ToDomainServiceRequest()
         };
         await _householdService.UpdateHousehold(householdRequest, cancellationToken);
 
@@ -49,12 +49,12 @@ internal class UpdateHouseholdHandler
         {
             if (householdCustomerExists && householdCustomerOnSAId == customer.CustomerOnSAId) // update existujiciho customera
             {
-                await _customerOnSAService.UpdateCustomer(customer.MapToRequest(), cancellationToken);
+                await _customerOnSAService.UpdateCustomer(customer.ToDomainServiceRequest(), cancellationToken);
                 customerId = customer.CustomerOnSAId;
             }
             else // vytvorit noveho customera
             {
-                customerId = ServiceCallResult.Resolve<int>(await _customerOnSAService.CreateCustomer(customer.MapToRequest(household.SalesArrangementId), cancellationToken));
+                customerId = ServiceCallResult.Resolve<int>(await _customerOnSAService.CreateCustomer(customer.ToDomainServiceRequest(household.SalesArrangementId), cancellationToken));
             }
 
             // smazat puvodniho, pokud je jiny nez aktualni

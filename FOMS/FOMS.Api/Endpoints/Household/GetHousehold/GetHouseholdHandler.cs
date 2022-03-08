@@ -12,7 +12,7 @@ internal class GetHouseholdHandler
 
         // nacist ulozenou domacnost
         var household = ServiceCallResult.Resolve<contracts.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
-        GetHouseholdResponse response = household.MapToResponse();
+        GetHouseholdResponse response = household.ToApiResponse();
 
         // nacist klienty
         if (household.CustomerOnSAId1.HasValue)
@@ -26,7 +26,7 @@ internal class GetHouseholdHandler
     private async Task<Dto.CustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)
     {
         var customer = ServiceCallResult.Resolve<contracts.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAId, cancellationToken));
-        return customer?.MapToResponse();
+        return customer?.ToApiResponse();
     }
 
     private readonly IHouseholdServiceAbstraction _householdService;

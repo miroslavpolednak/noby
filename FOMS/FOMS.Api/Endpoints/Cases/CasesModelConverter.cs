@@ -1,7 +1,7 @@
-﻿namespace FOMS.Api.Endpoints.Case;
+﻿namespace FOMS.Api.Endpoints.Cases;
 
 [CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
-internal class CaseModelConverter
+internal class CasesModelConverter
 {
     public async Task<Dto.CaseModel> FromContract(DomainServices.CaseService.Contracts.Case model)
     {
@@ -19,7 +19,7 @@ internal class CaseModelConverter
 		return models.Select(t => convert(t, productTypes, caseStates)).ToList();
 	}
 
-	private Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model, 
+	static Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model, 
 		List<DomainServices.CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeItem> productTypes,
 		List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> caseStates)
 		=> new()
@@ -41,7 +41,7 @@ internal class CaseModelConverter
 
 	private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 
-    public CaseModelConverter(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public CasesModelConverter(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
         _codebookService = codebookService;
     }

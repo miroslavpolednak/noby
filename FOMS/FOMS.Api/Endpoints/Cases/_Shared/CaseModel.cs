@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Case.Dto;
+﻿namespace FOMS.Api.Endpoints.Cases.Dto;
 
 public class CaseModel
 {

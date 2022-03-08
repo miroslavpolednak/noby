@@ -4,7 +4,7 @@
         <name>FOMS.Api</name>
     </assembly>
     <members>
-        <member name="M:FOMS.Api.Endpoints.Case.CaseController.GetById(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetById(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail Case-u.
             </summary>
@@ -15,7 +15,7 @@
             <param name="caseId">ID Case-u</param>
             <returns>Zakladni informace o Case-u.</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Case.CaseController.GetTotalsByStates(System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetTotalsByStates(System.Threading.CancellationToken)">
             <summary>
             Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
             </summary>
@@ -25,7 +25,7 @@
             </remarks>
             <returns>Kolekce ID stavu s poctem Cases.</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Case.CaseController.Search(FOMS.Api.Endpoints.Case.Search.SearchRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.Search(FOMS.Api.Endpoints.Cases.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
             Seznam Cases pro prihlaseneho uzivatele.
             </summary>
@@ -41,102 +41,102 @@
             <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
             <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.GetTotalsByStates.GetTotalsByStatesResponse.State">
+        <member name="P:FOMS.Api.Endpoints.Cases.GetTotalsByStates.GetTotalsByStatesResponse.State">
             <summary>
             Stav Case-u. Ciselnik 'CaseStates'.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.GetTotalsByStates.GetTotalsByStatesResponse.Count">
+        <member name="P:FOMS.Api.Endpoints.Cases.GetTotalsByStates.GetTotalsByStatesResponse.Count">
             <summary>
             Pocet Cases v danem stavu.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.State">
+        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.State">
             <summary>
             [optional] ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Term">
+        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.Term">
             <summary>
             [optional] Klicove slovo pro vyhledavani nad Cases.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Pagination">
+        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.Pagination">
             <summary>
             Nastaveni strankovani a razeni kolekce Cases.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchResponse.Pagination">
+        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchResponse.Pagination">
             <summary>
             Informace o strankovani a razeni.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Search.SearchResponse.Rows">
+        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchResponse.Rows">
             <summary>
             Kolekce nalezenych Case-s.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.CaseId">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.CaseId">
             <summary>
             Unikátní Id obchodního případu
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.FirstName">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.FirstName">
             <summary>
             FO/FOP/Cizinec/Nezletilec: Jméno
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.LastName">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.LastName">
             <summary>
             FO/FOP/Cizinec/Nezletilec: Příjmení
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.DateOfBirth">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.DateOfBirth">
             <summary>
             FO/FOP/Cizinec/Nezletilec: Datum narození klienta
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.State">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.State">
             <summary>
             Stav Case - ciselnik CaseStates
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.StateName">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.StateName">
             <summary>
             Slovne nazev stavu Case.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.ActionRequired">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ActionRequired">
             <summary>
             Reprezentuje, zda existuje úkol na dealera na casu, který je třeba splnit.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.ContractNumber">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ContractNumber">
             <summary>
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.TargetAmount">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.TargetAmount">
             <summary>
             Cílová částka zobrazující se na dashboardu.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.ProductName">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ProductName">
             <summary>
             Nazev produktu slovne - ciselnik CaseStates
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.CreatedTime">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.CreatedTime">
             <summary>
             Datum vytvoreni Case
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.CreatedBy">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.CreatedBy">
             <summary>
             Jmeno a prijmeni uzivatele, ktery vytvoril Case
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Case.Dto.CaseModel.StateUpdated">
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.StateUpdated">
             <summary>
             Datum a cas posledni zmeny Case.
             </summary>

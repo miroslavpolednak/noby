@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Case.GetTotalsByStates;
+﻿namespace FOMS.Api.Endpoints.Cases.GetTotalsByStates;
 
 internal class GetTotalsByStatesHandler
     : IRequestHandler<GetTotalsByStatesRequest, List<GetTotalsByStatesResponse>>

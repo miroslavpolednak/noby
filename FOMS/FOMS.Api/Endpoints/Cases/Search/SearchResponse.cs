@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Case.Search;
+﻿namespace FOMS.Api.Endpoints.Cases.Search;
 
 public sealed class SearchResponse
 {

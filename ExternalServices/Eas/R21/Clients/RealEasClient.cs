@@ -60,22 +60,36 @@ internal sealed class RealEasClient
         });
     }
 
-    public async Task<IServiceCallResult> NewKlient(S_KLIENTDATA input)
+    public async Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
     {
-        _logger.LogDebug("Run inputs: {input}", System.Text.Json.JsonSerializer.Serialize(input));
+        _logger.LogDebug("Run inputs: {input}", System.Text.Json.JsonSerializer.Serialize(clientData));
 
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
-            var result = await client.NewKlientAsync(input);
+            var result = await client.GetKlientData_NewKlientAsync(new S_KLIENTDATA[] { clientData.MapToEas() });
 
-            if (result.return_val != 0)
-                _logger.LogInformation("Incorrect inputs to EAS NewKlient {error}: {errorText}", result.return_val, result.return_info);
+            if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
+                return new ErrorServiceCallResult(0, "EAS GetKlientData_NewKlientResult is empty");
+
+            var r = result.GetKlientData_NewKlientResult[0];
+            if (r.return_val != 0)
+            {
+                _logger.LogInformation("Incorrect inputs to EAS NewKlient {error}: {errorText}", r.return_val, r.return_info);
+
+                return new ErrorServiceCallResult(r.return_val, r.return_info);
+            }
             else
+            {
                 _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
 
-            return new SuccessfulServiceCallResult<S_KLIENTDATA>(result);
+                return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
+                {
+                    Id = r.klient_id,
+                    BirthNumber = r.rodne_cislo_ico
+                });
+            }
         });
     }
 

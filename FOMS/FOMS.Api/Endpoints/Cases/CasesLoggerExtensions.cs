@@ -1,12 +1,12 @@
 ﻿using CIS.Core.Types;
 
-namespace FOMS.Api.Endpoints.Case;
+namespace FOMS.Api.Endpoints.Cases;
 
-internal static class CaseLoggerExtensions
+internal static class CasesLoggerExtensions
 {
     private static readonly Action<ILogger, Paginable?, Exception> _searchPaginableSettings;
 
-    static CaseLoggerExtensions()
+    static CasesLoggerExtensions()
     {
         _searchPaginableSettings = LoggerMessage.Define<Paginable?>(
             LogLevel.Debug,

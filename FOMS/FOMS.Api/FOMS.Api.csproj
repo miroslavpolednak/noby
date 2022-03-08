@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
+	  <Company>Wookiee.Apps s.r.o.</Company>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
     <Platforms>AnyCPU;x64</Platforms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -15,6 +18,10 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <NoWarn>1701;1702;CS1573</NoWarn>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
@@ -30,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CIS\CIS.Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
@@ -41,6 +48,7 @@
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\FOMS.Services\FOMS.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

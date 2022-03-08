@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Case.GetTotalsByStates;
+﻿namespace FOMS.Api.Endpoints.Cases.GetTotalsByStates;
 
 public sealed class GetTotalsByStatesResponse
 {

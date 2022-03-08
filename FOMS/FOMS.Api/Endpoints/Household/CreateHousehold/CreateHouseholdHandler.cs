@@ -11,7 +11,7 @@ internal class CreateHouseholdHandler
         _logger.RequestHandlerStartedWithId(nameof(CreateHouseholdHandler), request.SalesArrangementId);
 
         // nazev typu domacnosti
-        string householdTypeName = (await _codebookService.HouseholdTypes()).FirstOrDefault(x => x.Id == request.HouseholdTypeId)?.Name ??
+        string householdTypeName = (await _codebookService.HouseholdTypes(cancellationToken)).FirstOrDefault(x => x.Id == request.HouseholdTypeId)?.Name ??
             throw new CisNotFoundException(Core.ErrorCodes.HouseholdTypeNotFound, nameof(CIS.Foms.Enums.HouseholdTypes), request.HouseholdTypeId);
 
         // vytvorit domacnost

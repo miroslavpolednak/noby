@@ -8,4 +8,5 @@ public struct LoggerEventIdCodes
     public const int Endpoints_Offer_SimulateMortgageResult = 99004;
     public const int Endpoints_Codebooks_GetAllStarted = 99005;
     public const int Endpoints_Case_SearchPaginableSettings = 99006;
+    public const int Endpoints_Users_SigningInAs = 99007;
 }

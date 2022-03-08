@@ -13,7 +13,7 @@ internal static class StartupExtensions
     public static void CheckAppConfiguration(this AppConfiguration configuration)
     {
         if (configuration?.EAS == null)
-            throw new ArgumentNullException(nameof(configuration));
+            throw new CisConfigurationNotFound("EAS");
     }
 
     public static WebApplicationBuilder AddCaseService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
@@ -32,7 +32,7 @@ internal static class StartupExtensions
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
-        //registerMpHome(appConfiguration.EAS?.Implementation, services);
+        //TODO
 
         // dbcontext
         builder.AddEntityFramework<Repositories.CaseServiceDbContext>();

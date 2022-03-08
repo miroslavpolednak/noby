@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\CIS\CIS.Foms.Types\CIS.Foms.Types.csproj" />
+	  <ProjectReference Include="..\..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
 	  <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
 	</ItemGroup>
 </Project>

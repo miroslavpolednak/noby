@@ -15,7 +15,7 @@ internal class GetHouseholdsHandler
         var households = ServiceCallResult.Resolve<List<contracts.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
         _logger.FoundItems(households.Count, nameof(Household));
 
-        var householdTypes = await _codebookService.HouseholdTypes();
+        var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
 
         var model = new GetHouseholdsResponse
         {

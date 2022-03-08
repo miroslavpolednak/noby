@@ -9,15 +9,15 @@ internal sealed class SignInHandler
 {
     protected override async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Try to sign in as '{login}'", request.Login);
+        _logger.UserSigningInAs(request.Login);
 
-        var userInstance = CIS.Core.Results.ServiceCallResult.ResolveToDefault<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(request.Login ?? ""));
-        if (userInstance is null) throw new CIS.Core.Exceptions.CisValidationException("Login not found");
+        var userInstance = ServiceCallResult.ResolveToDefault<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(request.Login ?? "", cancellationToken));
+        if (userInstance is null) throw new CisValidationException("Login not found");
 
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, userInstance.FullName),
-            new Claim(ClaimTypes.Sid, userInstance.Id.ToString()),
+            new Claim(ClaimTypes.Sid, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)),
             new Claim(ClaimTypes.Spn, userInstance.CPM),
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

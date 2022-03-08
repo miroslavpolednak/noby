@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Case.GetById;
+﻿namespace FOMS.Api.Endpoints.Cases.GetById;
 
 internal class GetByIdHandler
     : IRequestHandler<GetByIdRequest, Dto.CaseModel>
@@ -13,11 +13,11 @@ internal class GetByIdHandler
     }
 
     private readonly ILogger<GetByIdHandler> _logger;
-    private readonly CaseModelConverter _converter;
+    private readonly CasesModelConverter _converter;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public GetByIdHandler(
-        CaseModelConverter converter,
+        CasesModelConverter converter,
         ILogger<GetByIdHandler> logger,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {

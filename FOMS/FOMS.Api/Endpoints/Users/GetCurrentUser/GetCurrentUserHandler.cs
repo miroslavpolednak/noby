@@ -1,18 +1,13 @@
-﻿using CIS.Core.Results;
-
-namespace FOMS.Api.Endpoints.Users.GetCurrentUser;
+﻿namespace FOMS.Api.Endpoints.Users.GetCurrentUser;
 
 internal class GetCurrentUserHandler
     : IRequestHandler<GetCurrentUserRequest, GetCurrentUserResponse>
 {
     public async Task<GetCurrentUserResponse> Handle(GetCurrentUserRequest request, CancellationToken cancellationToken)
     {
-        //TODO get login from CAAS
-        string login = "990614w";
+        _logger.UserGetCurrentUserInfo(_userAccessor.User.Login);
 
-        _logger.LogDebug("Get info about {login}", login);
-
-        var userInstance = ServiceCallResult.Resolve<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(login, cancellationToken));
+        var userInstance = ServiceCallResult.Resolve<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(_userAccessor.User.Login, cancellationToken));
 
         return new GetCurrentUserResponse
         {
@@ -26,9 +21,14 @@ internal class GetCurrentUserHandler
 
     private readonly ILogger<GetCurrentUserHandler> _logger;
     private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
-    public GetCurrentUserHandler(ILogger<GetCurrentUserHandler> logger, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
+    public GetCurrentUserHandler(
+        CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        ILogger<GetCurrentUserHandler> logger, 
+        DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
     {
+        _userAccessor = userAccessor;
         _logger = logger;
         _userService = userService;
     }

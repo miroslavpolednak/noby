@@ -1,13 +1,13 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 
-namespace FOMS.Api.Endpoints.Case;
+namespace FOMS.Api.Endpoints.Cases;
 
 [ApiController]
 [Route("api/case")]
-public class CaseController : ControllerBase
+public class CasesController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public CaseController(IMediator mediator) =>  _mediator = mediator;
+    public CasesController(IMediator mediator) =>  _mediator = mediator;
     
     /// <summary>
     /// Detail Case-u.

@@ -24,29 +24,28 @@ namespace DomainServices.CustomerService.Api.Handlers
             _logger.LogInformation("Run Create with {inputs}", request);
 
             // vytvorit klienta v eas kvuli rezervaci id partnera
-            var easResult = getEasResult(await _eas.NewKlient(request.Request.ToEasKlientData()));
+            var easResult = getEasResult(await _eas.CreateNewOrGetExisingClient(request.Request.ToEasKlientData()));
             //var easResult = new Eas.EasWrapper.S_KLIENTDATA { klient_id = 300500167 };
 
             // u cizincu aktualizovat data v modelu
-            if (request.Request.EasTypKlienta() == EasKlientTypes.CizinecBezRc)
-                request.Request.BirthNumber = easResult.rodne_cislo_ico;
+            if (!string.IsNullOrEmpty(easResult.BirthNumber))
+                request.Request.BirthNumber = easResult.BirthNumber;
 
             // poslat klienta do mphome
-            (await _mpHome.Create(request.Request.ToMpHomePartner(), easResult.klient_id)).CheckMpHomeResult();
+            (await _mpHome.Create(request.Request.ToMpHomePartner(), easResult.Id)).CheckMpHomeResult();
 
-            return await Task.FromResult(new CreateResponse { Identity = easResult.klient_id });
+            return await Task.FromResult(new CreateResponse { Identity = easResult.Id });
         }
 
-        private Eas.EasWrapper.S_KLIENTDATA getEasResult(IServiceCallResult result) =>
+        private ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse getEasResult(IServiceCallResult result) =>
         result switch
         {
-            SuccessfulServiceCallResult<Eas.EasWrapper.S_KLIENTDATA> r when r.Model.return_val == 0 => r.Model,
-            SuccessfulServiceCallResult<Eas.EasWrapper.S_KLIENTDATA> r when r.Model.return_val != 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to EAS NewKlient", 10011, new()
+            SuccessfulServiceCallResult<ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse> r => r.Model,
+            ErrorServiceCallResult r => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to EAS NewKlient", 10011, new()
             {
-                ("eassimerrorcode", r.Model.return_val.ToString()),
-                ("eassimerrortext", r.Model.return_info)
+                ("eassimerrorcode", r.Errors.First().Key.ToString()),
+                ("eassimerrortext", r.Errors.First().Message)
             }),
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
             _ => throw new NotImplementedException()
         };
     }

@@ -4,7 +4,7 @@ namespace FOMS.Api.Endpoints.Household.GetHousehold;
 
 internal static class Extensions
 {
-    public static GetHouseholdResponse MapToResponse(this contracts.Household household)
+    public static GetHouseholdResponse ToApiResponse(this contracts.Household household)
         => new GetHouseholdResponse
         {
             Data = household.Data?.mapData(),
@@ -12,7 +12,7 @@ internal static class Extensions
             HouseholdId = household.HouseholdId
         };
 
-    public static Dto.CustomerInHousehold? MapToResponse(this contracts.CustomerOnSA model)
+    public static Dto.CustomerInHousehold? ToApiResponse(this contracts.CustomerOnSA model)
         => new Dto.CustomerInHousehold()
             {
                 CustomerOnSAId = model.CustomerOnSAId,

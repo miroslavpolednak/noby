@@ -21,7 +21,7 @@ internal class SimulateMortgageHandler
         {
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
-            Outputs = result.Outputs.ToResponseDto()
+            Outputs = result.Outputs.ToApiResponse()
         };
         
         _logger.OfferSimulateMortgageResult(responseModel);

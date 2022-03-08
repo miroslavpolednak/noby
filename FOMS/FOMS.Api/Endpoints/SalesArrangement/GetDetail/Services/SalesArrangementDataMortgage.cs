@@ -41,7 +41,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
     async Task<Dto.MortgageDetailDto> getDataInternal(long caseId, int? offerId, CancellationToken cancellationToken)
     {
         if (!offerId.HasValue)
-            throw new CisArgumentNullException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{caseId}", "offerId");
+            throw new CisArgumentNullException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{caseId}", nameof(offerId));
         
         // instance Case
         var saCase = ServiceCallResult.Resolve<CaseContracts.Case>(await _caseService.GetCaseDetail(caseId, cancellationToken));

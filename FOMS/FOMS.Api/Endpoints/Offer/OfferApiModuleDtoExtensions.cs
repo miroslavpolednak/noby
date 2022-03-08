@@ -2,7 +2,7 @@
 
 internal static class OfferApiModuleDtoExtensions
 {
-    public static Dto.MortgageInputs ToResponseDto(this DomainServices.OfferService.Contracts.MortgageInput result)
+    public static Dto.MortgageInputs ToApiResponse(this DomainServices.OfferService.Contracts.MortgageInput result)
         => new()
         {
             ProductTypeId = result.ProductTypeId,
@@ -18,7 +18,7 @@ internal static class OfferApiModuleDtoExtensions
             LoanPurpose = result.LoanPurpose?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList()
         };
     
-    public static Dto.MortgageOutputs ToResponseDto(this DomainServices.OfferService.Contracts.MortgageOutput result)
+    public static Dto.MortgageOutputs ToApiResponse(this DomainServices.OfferService.Contracts.MortgageOutput result)
         => new()
         {
             StatementTypeId = result.StatementTypeId,

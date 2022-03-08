@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.Case.GetById;
+namespace FOMS.Api.Endpoints.Cases.GetById;
 
 internal class GetByIdRequestValidator
     : AbstractValidator<GetByIdRequest>
