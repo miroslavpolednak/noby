@@ -4,12 +4,12 @@ public class SearchRequest
     : IRequest<SearchResponse>
 {
     /// <summary>
-    /// ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
+    /// [optional] ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
     /// </summary>
     public int? State { get; set; }
-    
+
     /// <summary>
-    /// Klicove slovo pro vyhledavani nad Cases.
+    /// [optional] Klicove slovo pro vyhledavani nad Cases.
     /// </summary>
     public string? Term { get; set; }
 

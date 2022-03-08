@@ -3,7 +3,7 @@
 namespace FOMS.Api.Endpoints.Offer.CreateMortgageCase;
 
 public sealed class CreateMortgageCaseRequest
-    : IRequest<CreateMortgageCaseResponse>, IValidatableRequest
+    : IRequest<CreateMortgageCaseResponse>
 {
     /// <summary>
     /// ID simulace ze ktere se ma vytvorit Case.

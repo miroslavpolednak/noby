@@ -44,11 +44,12 @@ internal static class FomsAppBuilder
             appBuilder.UseMiddleware<Infrastructure.Security.AppSecurityMiddleware>();
 
             // namapovani API modulu
-            appBuilder.UseRouting();
-            appBuilder.UseEndpoints(t =>
-            {
-                t.MapControllers();
-            });
+            appBuilder
+                .UseRouting()
+                .UseEndpoints(t =>
+                {
+                    t.MapControllers();
+                });
         });
 
     public static IApplicationBuilder UseFomsSwagger(this IApplicationBuilder app)

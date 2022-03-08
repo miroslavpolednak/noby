@@ -3,7 +3,7 @@
 namespace FOMS.Api.Endpoints.Household.CreateHousehold;
 
 public class CreateHouseholdRequest
-    : IRequest<Dto.HouseholdInList>, IValidatableRequest
+    : IRequest<Dto.HouseholdInList>
 {
     /// <summary>
     /// ID pripadu

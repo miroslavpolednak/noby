@@ -4,22 +4,22 @@ public class SearchData
     : BaseCustomer
 {
     /// <summary>
-    /// ID klienta v MP nebo KB
+    /// [optional] ID klienta v MP nebo KB
     /// </summary>
     public int? IdentityId { get; set; }
 
     /// <summary>
-    /// Zeme vydani dokladu
+    /// [optional] Zeme vydani dokladu
     /// </summary>
     public int? IssuingCountryId { get; set; }
-    
+
     /// <summary>
-    /// Type dokladu
+    /// [optional] Type dokladu
     /// </summary>
     public int? IdentificationDocumentTypeId { get; set; }
-    
+
     /// <summary>
-    /// Cislo dokladu
+    /// [optional] Cislo dokladu
     /// </summary>
     public string? IdentificationDocumentNumber { get; set; }
 }

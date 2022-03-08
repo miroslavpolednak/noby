@@ -8,11 +8,9 @@ internal class CreateHouseholdRequestValidator
     public CreateHouseholdRequestValidator()
     {
         RuleFor(t => t.SalesArrangementId)
-            .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0");
+            .GreaterThan(0).WithMessage("SalesArrangementId must be > 0");
 
         RuleFor(t => t.HouseholdTypeId)
-            .GreaterThan(0)
-            .WithMessage("HouseholdTypeId must be > 0");
+            .GreaterThan(0).WithMessage("HouseholdTypeId must be > 0");
     }
 }

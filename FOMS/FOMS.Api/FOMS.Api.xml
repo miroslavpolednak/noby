@@ -53,12 +53,12 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.State">
             <summary>
-            ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
+            [optional] ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Term">
             <summary>
-            Klicove slovo pro vyhledavani nad Cases.
+            [optional] Klicove slovo pro vyhledavani nad Cases.
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Case.Search.SearchRequest.Pagination">
@@ -240,22 +240,22 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentityId">
             <summary>
-            ID klienta v MP nebo KB
+            [optional] ID klienta v MP nebo KB
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IssuingCountryId">
             <summary>
-            Zeme vydani dokladu
+            [optional] Zeme vydani dokladu
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentTypeId">
             <summary>
-            Type dokladu
+            [optional] Type dokladu
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentNumber">
             <summary>
-            Cislo dokladu
+            [optional] Cislo dokladu
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchRequest.SearchData">
@@ -495,6 +495,11 @@
         <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdInList.HouseholdTypeName">
             <summary>
             Typ domacnosti slovne
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseHandler.getCreateCaseRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,DomainServices.OfferService.Contracts.MortgageInput)">
+            <summary>
+            Vytvoreni requestu pro zalozeni CASE
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">

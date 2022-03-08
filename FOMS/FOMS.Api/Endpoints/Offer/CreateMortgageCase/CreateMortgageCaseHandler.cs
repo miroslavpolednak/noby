@@ -1,6 +1,10 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.CaseService.Abstraction;
+using caseContracts = DomainServices.CaseService.Contracts;
+using offerContracts = DomainServices.OfferService.Contracts;
+using saContracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -10,8 +14,9 @@ internal class CreateMortgageCaseHandler
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
-        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
+        var offerInstance = ServiceCallResult.Resolve<offerContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
+        // chyba pokud simulace je uz nalinkovana na jiny SA
         if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId)))
             throw new CisValidationException(ErrorCodes.OfferIdAlreadyLinkedToSalesArrangement, $"OfferId {request.OfferId} has been already linked to another contract");
         
@@ -19,29 +24,19 @@ internal class CreateMortgageCaseHandler
         int salesArrangementTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
             .FirstOrDefault(t => t.ProductTypeId == offerInstance.ProductTypeId && t.IsDefault)
             ?.Id ?? throw new CisNotFoundException(ErrorCodes.OfferDefaultSalesArrangementTypeIdNotFound, $"Default SalesArrangementTypeId for ProductTypeId {offerInstance.ProductTypeId} not found");
-        
+
         // vytvorit case
-        long caseId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateCaseRequest
-        {
-            OfferId = offerInstance.OfferId,
-            DateOfBirth = request.DateOfBirth,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Customer = request.Customer,
-            ProductTypeId = offerInstance.ProductTypeId,
-            TargetAmount = offerInstance.Inputs.LoanAmount
-        }, cancellationToken);
+        _logger.SharedCreateCaseStarted(offerInstance.OfferId);
+        long caseId = ServiceCallResult.Resolve<long>(await _caseService.CreateCase(getCreateCaseRequest(request, offerInstance.Inputs), cancellationToken));
+        _logger.EntityCreated(nameof(caseContracts.Case), caseId);
 
         // vytvorit zadost
-        int salesArrangementId = await _mediator.Send(new SharedHandlers.Requests.SharedCreateSalesArrangementRequest
-        {
-            CaseId = caseId,
-            OfferId = request.OfferId,
-            SalesArrangementTypeId = salesArrangementTypeId
-        }, cancellationToken);
-
-        // create customer on SA
-        var customerResult = await _createCustomerWithHouseholdService.Create(salesArrangementId, request, cancellationToken);
+        _logger.SharedCreateSalesArrangementStarted(salesArrangementTypeId, caseId, request.OfferId);
+        int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
+        _logger.EntityCreated(nameof(saContracts.SalesArrangement), salesArrangementId);
+        
+        // create household and customer on SA
+        var householdCustomerResult = await _createCustomerWithHouseholdService.Create(salesArrangementId, request, cancellationToken);
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 
@@ -50,29 +45,54 @@ internal class CreateMortgageCaseHandler
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,
             OfferId = offerInstance.OfferId,
-            CustomerOnSAId = customerResult.CustomerOnSAId,
-            HouseholdId = customerResult.HouseholdId
+            CustomerOnSAId = householdCustomerResult.CustomerOnSAId,
+            HouseholdId = householdCustomerResult.HouseholdId
         };
     }
+
+    /// <summary>
+    /// Vytvoreni requestu pro zalozeni CASE
+    /// </summary>
+    caseContracts.CreateCaseRequest getCreateCaseRequest(CreateMortgageCaseRequest request, offerContracts.MortgageInput offerInstance)
+        => new caseContracts.CreateCaseRequest
+        {
+            CaseOwnerUserId = _userAccessor.User.Id,
+            Customer = new caseContracts.CustomerData
+            {
+                DateOfBirthNaturalPerson = request.DateOfBirth,
+                FirstNameNaturalPerson = request.FirstName,
+                Name = request.LastName,
+                Identity = request.Customer is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Customer)
+            },
+            Data = new caseContracts.CaseData
+            {
+                ProductTypeId = offerInstance.ProductTypeId,
+                TargetAmount = offerInstance.LoanAmount
+            }
+        };
 
     private readonly CreateCustomerWithHouseholdService _createCustomerWithHouseholdService;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
-    private readonly IMediator _mediator;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
+    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public CreateMortgageCaseHandler(
+        CIS.Core.Security.ICurrentUserAccessor userAccessor,
         CreateCustomerWithHouseholdService createCustomerWithHouseholdService,
-        ISalesArrangementServiceAbstraction salesArrangementService, 
+        ISalesArrangementServiceAbstraction salesArrangementService,
+        ICaseServiceAbstraction caseService,
         ICodebookServiceAbstraction codebookService, 
         IOfferServiceAbstraction offerService, 
-        ILogger<CreateMortgageCaseHandler> logger, IMediator mediator)
+        ILogger<CreateMortgageCaseHandler> logger)
     {
+        _userAccessor = userAccessor;
+        _caseService = caseService;
         _createCustomerWithHouseholdService = createCustomerWithHouseholdService;
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;
-        _mediator = mediator;
         _logger = logger;
         _offerService = offerService;
     }

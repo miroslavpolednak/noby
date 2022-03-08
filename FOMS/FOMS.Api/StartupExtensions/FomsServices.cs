@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace FOMS.Api.StartupExtensions;
 
@@ -8,22 +9,8 @@ internal static class FomsServices
     {
         // mediatr
         builder.Services
-            .AddMediatR(typeof(IApiAssembly).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(WebApiValidationBehaviour<,>));
-
-        // disable default modelstate validation
-        builder.Services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.SuppressModelStateInvalidFilter = true;
-        });
+            .AddMediatR(typeof(IApiAssembly).Assembly);
         
-        // add validators
-        builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(IApiAssembly))
-                .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-
         // json
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
         {
@@ -36,8 +23,14 @@ internal static class FomsServices
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
         
-        // controllers
-        builder.Services.AddControllers();
+        // controllers and validation
+        builder.Services
+            .AddControllers()
+            .AddFluentValidation(fv =>
+            {
+                fv.RegisterValidatorsFromAssemblyContaining<IApiAssembly>(includeInternalTypes: true);
+                fv.DisableDataAnnotationsValidation = true;
+            });
         
         return builder;
     }

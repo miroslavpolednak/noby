@@ -3,5 +3,5 @@
 namespace FOMS.Api.Endpoints.Offer.GetMortgageByOfferId;
 
 internal record GetMortgageByOfferIdRequest(int OfferId)
-    : IRequest<Dto.GetMortgageResponse>, IValidatableRequest
+    : IRequest<Dto.GetMortgageResponse>
 { }

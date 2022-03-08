@@ -3,7 +3,7 @@
 namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
 public sealed class SimulateMortgageRequest
-    : Dto.MortgageInputs, IRequest<SimulateMortgageResponse>, IValidatableRequest
+    : Dto.MortgageInputs, IRequest<SimulateMortgageResponse>
 {
     /// <summary>
     /// Unikatni identifikator pro session simulace.

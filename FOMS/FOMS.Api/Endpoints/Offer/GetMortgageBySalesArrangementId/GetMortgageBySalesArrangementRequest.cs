@@ -3,6 +3,6 @@
 namespace FOMS.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
 internal record GetMortgageBySalesArrangementRequest(int SalesArrangementId)
-    : IRequest<Dto.GetMortgageResponse>, IValidatableRequest
+    : IRequest<Dto.GetMortgageResponse>
 {
 }
