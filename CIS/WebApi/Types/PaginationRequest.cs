@@ -8,11 +8,13 @@ public class PaginationRequest
     /// <summary>
     /// Offset (index, start=0) zaznamu, od ktereho se ma zacit s nacitanim
     /// </summary>
+    /// <example>0</example>
     public int RecordOffset { get; init; }
     
     /// <summary>
     /// Pocet zaznamu na jedne strance
     /// </summary>
+    /// <example>10</example>
     public int PageSize { get; init; }
 
     /// <summary>
