@@ -1,0 +1,80 @@
+﻿
+Revize číselníků k 10.03.2022:
+-----------------------------------------------------------------------------------------------------------------
+Confluence							Implemented as
+-----------------------------------------------------------------------------------------------------------------
+AcademicDegreeAfter					PersonDegreeAfter
+AcademicDegreeBefore				PersonDegreeBefore
+ActionCodeSavings					ActionCodesSavings
+ActionCodeSavingsLoan				ActionCodesSavingsLoan
+* AddressType						AddressTypes
+* CaseState							CaseStates
+* Channel							Channels	
+ClassficationOfEconomicActivities	-
+ConsentType							-
+ContactType							ContactTypes
+ContractSegment						-
+ContractSigningMethods				-
+Country								Countries
+* Currency							- (informace o měnách obsaženy v Countries, např. IsAllowedForIncomeChange)
+CustomerRole						CustomerRoles
+DocumentRelationType				-
+DocumentState						-
+DocumentType						-
+EaCodeMain							-
+* EducationLevel					EducationLevels
+EmployeeBonusLoan					-
+EmploymentType						-
+* ExpenseType							-
+* FixedLengthPeriod					FixedPeriodLengths
+FormType							-
+* Gender								Genders
+* HouseholdType						-
+* IdentificationDocumentType			IdentificationDocumentTypes
+* IdentityScheme						- ?
+IncomeAbroadType					-
+* IncomeType							-
+JobType								-
+LegalCapacity						-
+* LoanKind							LoanKinds
+* LoanPurpose						ProductLoanPurposes ?
+* Mandant								Mandants
+* MaritalState						MaritalStatuses
+MarketingAction						-
+MarketingActionType					-
+ObligationState						-
+* ObligationType						-
+* PostCode							-
+ProductType							ProductTypes
+ProductVariationsSavings			-
+* PropertySettlement					-
+* RealEstatePurchaseType				-
+* RealEstateType						-
+RelationshipCustomerCustomerType	-
+RelationshipCustomerProductType		RelationshipCustomerProductTypes
+RelationshipPartyCaseType			-
+SalesArrangementItem				- ?
+SalesArrangementState				SalesArrangementStates
+SalesArrangementType				SalesArrangementTypes
+SignatureState						-
+* SignatureType						SignatureTypes
+SigningMethodsForNaturalPerson		-
+StatementType						-
+Tariff								-
+WorkSector							-
+-----------------------------------------------------------------------------------------------------------------
+-									MktActionCodesSavings   
+[{ Id = 1, Name = "Efekt" }, { Id = 2, Name = "Efekt Plus" }]
+
+-									Nationalities
+SELECT Id, NazevStatniPrislusnost 'Name' FROM [cis].[Zeme] WHERE Id>0 ORDER BY NazevStatniPrislusnost ASC
+
+-									ResidencyTypes
+                new() { Id = 25, Name = "25 - občan ČR s trvalým pobytem na území ČR" },
+                new() { Id = 26, Name = "26 - občan ČR bez trvalého pobytu na území ČR" },
+                new() { Id = 21, Name = "21 - občan EU s průkazem nebo potvrzením o pobytu na území ČR" },
+                new() { Id = 22, Name = "22 - občan EU bez průkazu nebo povolení o pobytu na území ČR" },
+                new() { Id = 23, Name = "23 - občan 3. státu s trvalým pobytem na území ČR" },
+                new() { Id = 24, Name = "24 - občan 3. státu bez trvalého pobytu na území ČR" }
+-----------------------------------------------------------------------------------------------------------------
+MktActionCodesSavings, Nationalities, ResidencyTypes
