@@ -25,5 +25,11 @@ public class MortgageOutputs
     public decimal Aprc { get; set; }
     public decimal LoanTotalAmount { get; set; }
     public int StatementTypeId { get; set; }
+
+    /// <summary>
+    /// Den splátky úvěru
+    /// </summary>
+    public int? PaymentDayOfTheMonth { get; set; }
+
     public List<LoanPurposeItem>? LoanPurpose { get; set; }
 }

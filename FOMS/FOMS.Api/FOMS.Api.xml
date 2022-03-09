@@ -183,6 +183,10 @@
             Vyhledavani klientu
             </summary>
             <remarks>
+            Endpoint umoznuje:
+            - hledat podle zadanych kriterii
+            - nastavit strankovani
+            - nastavit razeni [lastName]
             <i>DS:</i> CustomerService/SearchCustomers
             </remarks>
             <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
@@ -715,6 +719,11 @@
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.LoanAmount">
             <summary>
             Výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.PaymentDayOfTheMonth">
+            <summary>
+            Den splátky úvěru
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ContractNumber">

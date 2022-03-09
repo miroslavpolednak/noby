@@ -32,6 +32,7 @@ internal static class OfferApiModuleDtoExtensions
             LoanToValue = result.LoanToValue,
             LoanAmount = result.LoanAmount,
             LoanPaymentAmount = result.LoanPaymentAmount,
-            LoanPurpose = result.LoanPurpose?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList()
+            LoanPurpose = result.LoanPurpose?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
+            PaymentDayOfTheMonth = result.PaymentDayOfTheMonth
         };
 }
