@@ -13,23 +13,23 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
         => _mediator = mediator;
 
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CreateSalesArrangementMediatrRequest(request));
+        => await _mediator.Send(new Dto.CreateSalesArrangementMediatrRequest(request), context.CancellationToken);
 
     public override async Task<SalesArrangement> GetSalesArrangement(GetSalesArrangementRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(request));
+        => await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(request), context.CancellationToken);
     
     public override async Task<GetSalesArrangementByOfferIdResponse> GetSalesArrangementByOfferId(GetSalesArrangementByOfferIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetSalesArrangementByOfferIdMediatrRequest(request));
+        => await _mediator.Send(new Dto.GetSalesArrangementByOfferIdMediatrRequest(request), context.CancellationToken);
 
     public override async Task<GetSalesArrangementListResponse> GetSalesArrangementList(GetSalesArrangementListRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetSalesArrangementListMediatrRequest(request));
+        => await _mediator.Send(new Dto.GetSalesArrangementListMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangementState(UpdateSalesArrangementStateRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.UpdateSalesArrangementStateMediatrRequest(request));
+        => await _mediator.Send(new Dto.UpdateSalesArrangementStateMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateSalesArrangement(UpdateSalesArrangementRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(request));
+        => await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkModelationToSalesArrangement(LinkModelationToSalesArrangementRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(request));
+        => await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(request), context.CancellationToken);
 }

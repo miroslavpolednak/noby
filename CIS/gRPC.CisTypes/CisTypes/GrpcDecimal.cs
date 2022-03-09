@@ -21,4 +21,7 @@ public sealed partial class GrpcDecimal
         var nanos = decimal.ToInt32((value - units) * NanoFactor);
         return new GrpcDecimal(units, nanos);
     }
+
+    public static implicit operator NullableGrpcDecimal(GrpcDecimal grpcDecimal)
+        => grpcDecimal;
 }

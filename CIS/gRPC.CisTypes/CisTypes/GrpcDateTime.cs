@@ -29,7 +29,8 @@ public sealed partial class GrpcDateTime
     }
 
     public static implicit operator GrpcDateTime(DateTime value)
-    {
-        return new GrpcDateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second, value.Millisecond);
-    }
+        => new GrpcDateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second, value.Millisecond);
+
+    public static implicit operator NullableGrpcDate(GrpcDateTime value)
+        => value;
 }

@@ -41,7 +41,7 @@ internal class CreateMortgageCaseHandler
 
         // zalozit produkt, pokud ma klient modre ID
         if (householdCustomerResult.PartnerId.HasValue)
-            await _createProductService.CreateMortgage(caseId, offerInstance, cancellationToken);
+            await _createProductService.CreateMortgage(caseId, householdCustomerResult.PartnerId.Value, offerInstance, cancellationToken);
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 

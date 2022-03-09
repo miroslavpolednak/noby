@@ -13,8 +13,8 @@ internal class UserService : Contracts.v1.UserService.UserServiceBase
         => _mediator = mediator;
 
     public override async Task<User> GetUserByLogin(GetUserByLoginRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetUserByLoginMediatrRequest(request));
+        => await _mediator.Send(new Dto.GetUserByLoginMediatrRequest(request), context.CancellationToken);
 
     public override async Task<User> GetUser(GetUserRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetUserMediatrRequest(request));
+        => await _mediator.Send(new Dto.GetUserMediatrRequest(request), context.CancellationToken);
 }

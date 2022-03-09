@@ -45,15 +45,17 @@ public class MortgageInputs
     /// </summary>
     /// <example>5000000</example>
     public decimal CollateralAmount { get; set; }
-    
+
     /// <summary>
     /// Předpokládáné výše úvěru
     /// </summary>
+    /// <example>300000</example>
     public decimal LoanToValue { get; set; }
 
     /// <summary>
     /// Den splátky úvěru
     /// </summary>
+    /// <example></example>
     public int? PaymentDayOfTheMonth { get; set; }
 
     /// <summary>
@@ -64,6 +66,7 @@ public class MortgageInputs
     /// <summary>
     /// Předpokládané datum čerpání
     /// </summary>
+    /// <example></example>
     public DateTime? ExpectedDateOfDrawing { get; set; }
     
     public List<LoanPurposeItem>? LoanPurpose { get; set; }

@@ -8,14 +8,14 @@ namespace FOMS.Services;
 [CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
 public sealed class CreateProductService
 {
-    public async Task<long> CreateMortgage(long caseId, GetMortgageDataResponse offerData, CancellationToken cancellationToken)
+    public async Task<long> CreateMortgage(long caseId, int partnerId, GetMortgageDataResponse offerData, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateProductService), caseId);
 
         var request = new CreateMortgageRequest
         {
             CaseId = caseId,
-            Mortgage = offerData.ToDomainServiceRequest()
+            Mortgage = offerData.ToDomainServiceRequest(partnerId)
         };
         var result = ServiceCallResult.Resolve<ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
 

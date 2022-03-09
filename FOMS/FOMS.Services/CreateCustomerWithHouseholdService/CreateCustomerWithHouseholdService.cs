@@ -8,6 +8,9 @@ namespace FOMS.Services;
 [CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
 public sealed class CreateCustomerWithHouseholdService
 {
+    /// <summary>
+    /// Vytvori novou domacnost a vychoziho klienta v domacnosti
+    /// </summary>
     public async Task<(int HouseholdId, int CustomerOnSAId, int? PartnerId)> Create(int salesArrangementId, CreateCustomerWithHousehold.IClientInfo request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateCustomerWithHouseholdService), salesArrangementId);

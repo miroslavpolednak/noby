@@ -690,11 +690,13 @@
             <summary>
             Předpokládáné výše úvěru
             </summary>
+            <example>300000</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.PaymentDayOfTheMonth">
             <summary>
             Den splátky úvěru
             </summary>
+            <example></example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.EmployeeBonusRequested">
             <summary>
@@ -705,6 +707,7 @@
             <summary>
             Předpokládané datum čerpání
             </summary>
+            <example></example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
             <summary>

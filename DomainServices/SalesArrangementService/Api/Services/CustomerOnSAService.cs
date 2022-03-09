@@ -13,17 +13,17 @@ internal class CustomerOnSAService : Contracts.v1.CustomerOnSAService.CustomerOn
         => _mediator = mediator;
     
     public override async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CreateCustomerMediatrRequest(request));
+        => await _mediator.Send(new Dto.CreateCustomerMediatrRequest(request), context.CancellationToken);
     
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteCustomer(CustomerOnSAIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.DeleteCustomerMediatrRequest(request.CustomerOnSAId));
+        => await _mediator.Send(new Dto.DeleteCustomerMediatrRequest(request.CustomerOnSAId), context.CancellationToken);
     
     public override async Task<CustomerOnSA> GetCustomer(CustomerOnSAIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetCustomerMediatrRequest(request.CustomerOnSAId));
+        => await _mediator.Send(new Dto.GetCustomerMediatrRequest(request.CustomerOnSAId), context.CancellationToken);
     
     public override async Task<GetCustomerListResponse> GetCustomerList(GetCustomerListRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetCustomerListMediatrRequest(request.SalesArrangementId));
+        => await _mediator.Send(new Dto.GetCustomerListMediatrRequest(request.SalesArrangementId), context.CancellationToken);
     
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCustomer(UpdateCustomerRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.UpdateCustomerMediatrRequest(request));
+        => await _mediator.Send(new Dto.UpdateCustomerMediatrRequest(request), context.CancellationToken);
 }

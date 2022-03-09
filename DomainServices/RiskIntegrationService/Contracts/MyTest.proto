@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.RiskIntegrationService;
+option csharp_namespace = "DomainServices.RiskIntegrationService.Contracts";
+
+message MyTestRequest {
+	int32 Id = 1;
+}
+
+message MyTestResponse {
+	int32 ResponseId = 1;
+}

@@ -9,8 +9,7 @@ internal static class FomsServices
     public static WebApplicationBuilder AddFomsServices(this WebApplicationBuilder builder, Infrastructure.Configuration.AppConfiguration appConfiguration)
     {
         // mediatr
-        builder.Services
-            .AddMediatR(typeof(IApiAssembly).Assembly);
+        builder.Services.AddMediatR(typeof(IApiAssembly).Assembly);
         
         // json
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>

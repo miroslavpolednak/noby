@@ -17,27 +17,27 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
     }
 
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
-        => await _mediator.Send(new SearchCustomersMediatrRequest(request));
+        => await _mediator.Send(new SearchCustomersMediatrRequest(request), context.CancellationToken);
 
     public override async Task<CustomerListResponse> GetCustomerList(CustomerListRequest request, ServerCallContext context)
-        => await _mediator.Send(new GetCustomerListMediatrRequest(request));
+        => await _mediator.Send(new GetCustomerListMediatrRequest(request), context.CancellationToken);
 
     public override async Task<CustomerResponse> GetCustomerDetail(CustomerRequest request, ServerCallContext context)
-        => await _mediator.Send(new GetCustomerDetailMediatrRequest(request));
+        => await _mediator.Send(new GetCustomerDetailMediatrRequest(request), context.CancellationToken);
 
     public override async Task<CreateResponse> Create(CreateRequest request, ServerCallContext context)
-        => await _mediator.Send(new CreateMediatrRequest(request));
+        => await _mediator.Send(new CreateMediatrRequest(request), context.CancellationToken);
 
     public override async Task<CreateContactResponse> CreateContact(CreateContactRequest request, ServerCallContext context)
-        => await _mediator.Send(new CreateContactMediatrRequest(request));
+        => await _mediator.Send(new CreateContactMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Empty> DeleteContact(DeleteContactRequest request, ServerCallContext context)
-        => await _mediator.Send(new DeleteContactMediatrRequest(request));
+        => await _mediator.Send(new DeleteContactMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Empty> UpdateAdress(UpdateAdressRequest request, ServerCallContext context)
-        => await _mediator.Send(new UpdateAdressMediatrRequest(request));
+        => await _mediator.Send(new UpdateAdressMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Empty> UpdateBasicData(UpdateBasicDataRequest request, ServerCallContext context)
-        => await _mediator.Send(new UpdateBasicDataMediatrRequest(request));
+        => await _mediator.Send(new UpdateBasicDataMediatrRequest(request), context.CancellationToken);
 
 }
