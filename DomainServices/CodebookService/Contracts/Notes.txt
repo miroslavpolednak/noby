@@ -43,7 +43,7 @@ LegalCapacity						-
 MarketingAction						-
 MarketingActionType					-
 ObligationState						-
-* ObligationType						-
+* ObligationType					ObligationTypes [mock]
 * PostCode							-
 ProductType							ProductTypes
 ProductVariationsSavings			-
