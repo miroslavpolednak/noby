@@ -44,10 +44,10 @@ MarketingAction						-
 MarketingActionType					-
 ObligationState						-
 * ObligationType					ObligationTypes [mock]
-* PostCode							-
+* PostCode							- ? (obsahuje cca 40.000 záznamů, filtrování?)
 ProductType							ProductTypes
 ProductVariationsSavings			-
-* PropertySettlement					-
+* PropertySettlement				PropertySettlement [mock]
 * RealEstatePurchaseType				-
 * RealEstateType						-
 RelationshipCustomerCustomerType	-
