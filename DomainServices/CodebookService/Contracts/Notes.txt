@@ -16,7 +16,7 @@ ContactType							ContactTypes
 ContractSegment						-
 ContractSigningMethods				-
 Country								Countries
-* Currency							- (informace o měnách obsaženy v Countries, např. IsAllowedForIncomeChange)
+* Currency							- ? (informace o měnách obsaženy v Countries, např. IsAllowedForIncomeChange)
 CustomerRole						CustomerRoles
 DocumentRelationType				-
 DocumentState						-
@@ -25,20 +25,20 @@ EaCodeMain							-
 * EducationLevel					EducationLevels
 EmployeeBonusLoan					-
 EmploymentType						-
-* ExpenseType							-
+* ExpenseType						- ?
 * FixedLengthPeriod					FixedPeriodLengths
 FormType							-
 * Gender								Genders
 * HouseholdType						-
 * IdentificationDocumentType			IdentificationDocumentTypes
-* IdentityScheme						- ?
+* IdentityScheme					- ? (v kódu se používá enum, není však jako číselník)
 IncomeAbroadType					-
-* IncomeType							-
+* IncomeType						IncomeTypes [mock]
 JobType								-
 LegalCapacity						-
 * LoanKind							LoanKinds
 * LoanPurpose						ProductLoanPurposes ?
-* Mandant								Mandants
+* Mandant							Mandants
 * MaritalState						MaritalStatuses
 MarketingAction						-
 MarketingActionType					-
