@@ -48,7 +48,7 @@ ObligationState						-
 ProductType							ProductTypes
 ProductVariationsSavings			-
 * PropertySettlement				PropertySettlement [mock]
-* RealEstatePurchaseType				-
+* RealEstatePurchaseType			RealEstatePurchaseTypes
 * RealEstateType					RealEstateTypes
 RelationshipCustomerCustomerType	-
 RelationshipCustomerProductType		RelationshipCustomerProductTypes
