@@ -49,7 +49,7 @@ ProductType							ProductTypes
 ProductVariationsSavings			-
 * PropertySettlement				PropertySettlement [mock]
 * RealEstatePurchaseType				-
-* RealEstateType						-
+* RealEstateType					RealEstateTypes
 RelationshipCustomerCustomerType	-
 RelationshipCustomerProductType		RelationshipCustomerProductTypes
 RelationshipPartyCaseType			-
