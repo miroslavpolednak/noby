@@ -16,7 +16,7 @@ ContactType							ContactTypes
 ContractSegment						-
 ContractSigningMethods				-
 Country								Countries
-* Currency							- ? (informace o měnách obsaženy v Countries, např. IsAllowedForIncomeChange)
+* Currency							Currencies (příznak IsDefault se bere ze sloupce DEF, totožně jako u Countries)
 CustomerRole						CustomerRoles
 DocumentRelationType				-
 DocumentState						-
