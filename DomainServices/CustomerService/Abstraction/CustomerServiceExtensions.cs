@@ -9,19 +9,6 @@ namespace DomainServices.CustomerService.Abstraction;
 
 public static class CustomerServiceExtensions
 {
-    /// <summary>
-    /// Override for integration testing
-    /// </summary>
-    internal static IServiceCollection AddCustomerServiceTest(this IServiceCollection services, Action<IServiceProvider, Grpc.Net.ClientFactory.GrpcClientFactoryOptions> customConfiguration)
-    {
-        services
-           .AddGrpcClient<Contracts.V1.CustomerService.CustomerServiceClient>(customConfiguration)
-           .AddInterceptor<ExceptionInterceptor>()
-           .AddInterceptor<AuthenticationInterceptor>();
-
-        return services.registerServices();
-    }
-
     public static IServiceCollection AddCustomerService(this IServiceCollection services, bool isInvalidCertificateAllowed)
         => services
             .AddCisServiceDiscovery(isInvalidCertificateAllowed)
@@ -60,7 +47,7 @@ public static class CustomerServiceExtensions
         services.TryAddTransient<ICustomerServiceAbstraction, CustomerService>();
 
         // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
@@ -73,7 +60,7 @@ public static class CustomerServiceExtensions
             services
             .AddGrpcClientFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
             .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
-            .AddInterceptor<ExceptionInterceptor>()
+            .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<AuthenticationInterceptor>();
         }
         return services;

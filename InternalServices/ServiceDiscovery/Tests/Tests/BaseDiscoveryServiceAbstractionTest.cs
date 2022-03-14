@@ -67,12 +67,12 @@ public abstract partial class BaseDiscoveryServiceAbstractionTest
             {
                 services.AddHttpContextAccessor();
 
-                services.AddCisServiceDiscoveryTest(options =>
+                /*services.AddCisServiceDiscoveryTest(options =>
                 {
                     options.ChannelOptionsActions.Add(t => t.HttpHandler = null);
                     options.ChannelOptionsActions.Add(t => t.HttpClient = testFixture.GrpcClient);
                     options.Address = testFixture.GrpcClient.BaseAddress;
-                });
+                });*/
 
                 // abstraction caching
                 var svcToRemove = services

@@ -49,7 +49,7 @@ builder.AddDocumentService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.SimpleServerExceptionInterceptor>();
+    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 #endregion register builder.Services

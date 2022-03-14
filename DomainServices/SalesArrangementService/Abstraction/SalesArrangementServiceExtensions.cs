@@ -49,7 +49,7 @@ public static class SalesArrangementServiceExtensions
         services.TryAddTransient<IHouseholdServiceAbstraction, Services.HouseholdService>();
 
         // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
@@ -62,7 +62,7 @@ public static class SalesArrangementServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
         
@@ -71,7 +71,7 @@ public static class SalesArrangementServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
         
@@ -80,7 +80,7 @@ public static class SalesArrangementServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
         return services;

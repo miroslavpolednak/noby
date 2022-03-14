@@ -1,4 +1,6 @@
-﻿using DomainServices.CaseService.Contracts;
+﻿using CIS.Infrastructure.gRPC;
+using DomainServices.CaseService.Contracts;
+using Grpc.Core;
 
 namespace DomainServices.CaseService.Api.Handlers;
 

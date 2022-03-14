@@ -11,7 +11,7 @@ internal sealed class MockEasClient : IEasClient
 #pragma warning restore CS1998
     {
         Random random = new Random();
-        return new SuccessfulServiceCallResult<long>(random.NextInt64(100, 199));
+        return new SuccessfulServiceCallResult<long>(random.NextInt64(1000, 1999));
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -52,7 +52,7 @@ internal sealed class MockEasClient : IEasClient
 #pragma warning restore CS1998
     {
         Random random = new Random();
-        return new SuccessfulServiceCallResult<long>(random.NextInt64(1, 99));
+        return new SuccessfulServiceCallResult<long>(random.NextInt64(1, 999));
     }
 
     public async Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)

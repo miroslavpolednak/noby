@@ -594,7 +594,9 @@
             Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
             Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
             Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/>
-            <i>DS:</i> OfferService/CreateCase<br/>
+            <i>DS:</i> OfferService/GetMortgageData<br/>
+            <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId
+            <i>DS:</i> CaseService/CreateCase<br/>
             <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
             <i>DS:</i> ProductService/CreateProduct<br/>
             <i>DS:</i> SalesArrangement/CreateHousehold<br/>

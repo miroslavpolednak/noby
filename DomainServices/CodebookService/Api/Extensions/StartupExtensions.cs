@@ -13,7 +13,7 @@ internal static class StartupExtensions
         // add grpc
         builder.Services.AddCodeFirstGrpc(config => {
             config.ResponseCompressionLevel = CompressionLevel.Optimal;
-            config.Interceptors.Add<CIS.Infrastructure.gRPC.SimpleServerExceptionInterceptor>();
+            config.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
         });
 
         // add current user context

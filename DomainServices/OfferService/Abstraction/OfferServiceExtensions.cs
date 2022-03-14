@@ -9,19 +9,6 @@ namespace DomainServices.OfferService.Abstraction;
 
 public static class OfferServiceExtensions
 {
-    /// <summary>
-    /// Override for integration testing
-    /// </summary>
-    internal static IServiceCollection AddOfferServiceTest(this IServiceCollection services, Action<IServiceProvider, Grpc.Net.ClientFactory.GrpcClientFactoryOptions> customConfiguration)
-    {
-        services
-            .AddGrpcClient<Contracts.v1.OfferService.OfferServiceClient>(customConfiguration)
-            .AddInterceptor<ExceptionInterceptor>()
-            .AddInterceptor<AuthenticationInterceptor>();
-
-        return services.registerServices();
-    }
-
     public static IServiceCollection AddOfferService(this IServiceCollection services, bool isInvalidCertificateAllowed)
         => services
             .AddCisServiceDiscovery(isInvalidCertificateAllowed)
@@ -60,6 +47,7 @@ public static class OfferServiceExtensions
         services.TryAddTransient<IOfferServiceAbstraction, OfferService>();
 
         // exception handling
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<ExceptionInterceptor>();
         services.TryAddSingleton<AuthenticationInterceptor>();
 
@@ -73,6 +61,7 @@ public static class OfferServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.OfferService.OfferServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.OfferService.OfferServiceClient>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }

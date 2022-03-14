@@ -47,7 +47,7 @@ public static class ProductServiceExtensions
         services.TryAddTransient<IProductServiceAbstraction, Services.ProductService>();
 
         // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
@@ -60,7 +60,7 @@ public static class ProductServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.ProductService.ProductServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.ProductService.ProductServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
         return services;

@@ -9,18 +9,6 @@ namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 public static class ServiceDiscoveryExtensions
 {
-    /// <summary>
-    /// Override for integration testing
-    /// </summary>
-    internal static IServiceCollection AddCisServiceDiscoveryTest(this IServiceCollection services, Action<Grpc.Net.ClientFactory.GrpcClientFactoryOptions> customConfiguration)
-    {
-        services
-            .AddGrpcClient<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(customConfiguration)
-            .AddInterceptor<ExceptionInterceptor>();
-
-        return services.registerServices();
-    }
-
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, bool isInvalidCertificateAllowed)
         => services
             .registerUriSettings(isInvalidCertificateAllowed)
