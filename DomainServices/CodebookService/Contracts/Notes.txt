@@ -3,8 +3,8 @@ Revize číselníků k 10.03.2022:
 -----------------------------------------------------------------------------------------------------------------
 Confluence							Implemented as
 -----------------------------------------------------------------------------------------------------------------
-AcademicDegreeAfter					PersonDegreeAfter
-AcademicDegreeBefore				PersonDegreeBefore
+AcademicDegreeAfter					AcademicDegreesAfter
+AcademicDegreeBefore				AcademicDegreesBefore
 ActionCodeSavings					ActionCodesSavings
 ActionCodeSavingsLoan				ActionCodesSavingsLoan
 * AddressType						AddressTypes
@@ -15,7 +15,7 @@ ConsentType							-
 ContactType							ContactTypes
 ContractSegment						-
 ContractSigningMethods				-
-Country								Countries
+Country								Countries ?
 * Currency							- ? (informace o měnách obsaženy v Countries, např. IsAllowedForIncomeChange)
 CustomerRole						CustomerRoles
 DocumentRelationType				-
@@ -25,26 +25,26 @@ EaCodeMain							-
 * EducationLevel					EducationLevels
 EmployeeBonusLoan					-
 EmploymentType						-
-* ExpenseType						- ?
+* ExpenseType						- [ke zrušení]
 * FixedLengthPeriod					FixedPeriodLengths
 FormType							-
-* Gender								Genders
+* Gender							Genders
 * HouseholdType						-
-* IdentificationDocumentType			IdentificationDocumentTypes
-* IdentityScheme					- ? (v kódu se používá enum, není však jako číselník)
+* IdentificationDocumentType		IdentificationDocumentTypes
+* IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
 IncomeAbroadType					-
 * IncomeType						IncomeTypes [mock]
 JobType								-
 LegalCapacity						-
 * LoanKind							LoanKinds
-* LoanPurpose						ProductLoanPurposes ?
+* LoanPurpose						LoanPurposes
 * Mandant							Mandants
 * MaritalState						MaritalStatuses
 MarketingAction						-
 MarketingActionType					-
 ObligationState						-
 * ObligationType					ObligationTypes [mock]
-* PostCode							- ? (obsahuje cca 40.000 záznamů, filtrování?)
+* PostCode							- ? (obsahuje cca 40.000 záznamů, filtrování?) . . . [mock] 20 záznamů
 ProductType							ProductTypes
 ProductVariationsSavings			-
 * PropertySettlement				PropertySettlement [mock]
@@ -53,7 +53,7 @@ ProductVariationsSavings			-
 RelationshipCustomerCustomerType	-
 RelationshipCustomerProductType		RelationshipCustomerProductTypes
 RelationshipPartyCaseType			-
-SalesArrangementItem				- ?
+SalesArrangementItem				-
 SalesArrangementState				SalesArrangementStates
 SalesArrangementType				SalesArrangementTypes
 SignatureState						-

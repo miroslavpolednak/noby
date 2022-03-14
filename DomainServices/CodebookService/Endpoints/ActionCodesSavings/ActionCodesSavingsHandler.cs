@@ -1,7 +1,5 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ActionCodesSavingsLoan;
-using DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes;
 
 namespace DomainServices.CodebookService.Endpoints.ActionCodesSavingsLoan;
 
