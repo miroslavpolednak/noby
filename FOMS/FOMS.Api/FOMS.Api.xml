@@ -199,7 +199,7 @@
             <i>DS:</i> CustomerService/GetCustomer
             </remarks>
             <param name="identityId">ID klienta v danem schematu</param>
-            <param name="identitySchema">Schema ve kterem je klient ulozeny - Kb | Mp</param>
+            <param name="identityScheme">Schema ve kterem je klient ulozeny - Kb | Mp</param>
             <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
