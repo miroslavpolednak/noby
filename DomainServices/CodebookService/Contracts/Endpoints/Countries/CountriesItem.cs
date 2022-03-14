@@ -11,24 +11,28 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.Countries
 
         [DataMember(Order = 2)]
         [JsonIgnore]
-        public string Code { get; set; }
+        public string ShortName { get; set; }
 
         [DataMember(Order = 3)]
         public string Name { get; set; }
 
         [DataMember(Order = 4)]
-        public string FullName { get; set; }
+        [JsonIgnore]
+        public string LongName { get; set; }
 
         [DataMember(Order = 5)]
-        [JsonIgnore]
-        public string CurrencyCode { get; set; }
+        public bool IsDefault { get; set; }
 
         [DataMember(Order = 6)]
         [JsonIgnore]
-        public bool IsAllowedForIncomeChange { get; set; }
+        public bool Risk { get; set; }
 
         [DataMember(Order = 7)]
         [JsonIgnore]
-        public bool IsAllowedForResidenceChange { get; set; }
+        public bool EuMember { get; set; }
+
+        [DataMember(Order = 8)]
+        [JsonIgnore]
+        public bool Eurozone { get; set; }
     }
 }

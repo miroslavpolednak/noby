@@ -1,24 +1,24 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.Countries;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.Currencies;
 
-namespace DomainServices.CodebookService.Endpoints.Countries
+namespace DomainServices.CodebookService.Endpoints.Currencies
 {
-    public class CountriesHandler
-        : IRequestHandler<CountriesRequest, List<CountriesItem>>
+    public class CurrenciesHandler
+        : IRequestHandler<CurrenciesRequest, List<CurrenciesItem>>
     {
-        public async Task<List<CountriesItem>> Handle(CountriesRequest request, CancellationToken cancellationToken)
+        public async Task<List<CurrenciesItem>> Handle(CurrenciesRequest request, CancellationToken cancellationToken)
         {
             try
             {
                 if (_cache.Exists(_cacheKey))
                 {
                     _logger.ItemFoundInCache(_cacheKey);
-                    return await _cache.GetAllAsync<CountriesItem>(_cacheKey);
+                    return await _cache.GetAllAsync<CurrenciesItem>(_cacheKey);
                 }
                 else
                 {
                     _logger.TryAddItemToCache(_cacheKey);
 
-                    var result = await _connectionProvider.ExecuteDapperRawSqlToList<CountriesItem>(_sqlQuery, cancellationToken);
+                    var result = await _connectionProvider.ExecuteDapperRawSqlToList<CurrenciesItem>(_sqlQuery, cancellationToken);
                     await _cache.SetAllAsync(_cacheKey, result);
                     return result;
                 }
@@ -30,22 +30,22 @@ namespace DomainServices.CodebookService.Endpoints.Countries
             }
         }
 
-        const string _sqlQuery = "SELECT KOD 'Id', SKRATKA 'ShortName', TEXT 'Name', TEXT_CELY 'LongName', DEF 'IsDefault', RIZIKOVOST 'Risk', CLEN_EU 'EuMember', EUROZONA 'Eurozone' FROM [SBR].[CIS_STATY] ORDER BY KOD ASC";
+        const string _sqlQuery = "SELECT DISTINCT MENA 'Code', POVOLENO_PRO_MENU_PRIJMU 'AllowedForIncomeCurrency', POVOLENO_PRO_MENU_BYDLISTE 'AllowedForResidencyCurrency', DEF 'IsDefault' FROM [SBR].[CIS_STATY] WHERE MENA LIKE '[A-Z][A-Z][A-Z]' ORDER BY MENA ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
-        private readonly ILogger<CountriesHandler> _logger;
+        private readonly ILogger<CurrenciesHandler> _logger;
         private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
-        public CountriesHandler(
+        public CurrenciesHandler(
             CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
-            ILogger<CountriesHandler> logger)
+            ILogger<CurrenciesHandler> logger)
         {
             _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
 
-        private const string _cacheKey = "Countries";
+        private const string _cacheKey = "Currencies";
     }
 }
