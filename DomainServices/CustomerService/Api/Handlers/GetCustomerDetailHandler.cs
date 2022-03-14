@@ -48,13 +48,13 @@ namespace DomainServices.CustomerService.Api.Handlers
                 GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id,
                 BirthName = np.BirthName.ToEmptyString(),
                 PlaceOfBirth = np.BirthPlace.ToEmptyString(),
-                BirthCountryId = countries.FirstOrDefault(t => t.Code == np.BirthCountryCode)?.Id,
+                BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
                 MaritalStatusStateId = maritals.FirstOrDefault(t => t.RDMCode == np.MaritalStatusCode)?.Id ?? 0,
             };
 
             // 
             if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
-                response.NaturalPerson.CitizenshipCountriesId.AddRange(countries.Where(t => np.CitizenshipCodes.Contains(t.Code)).Select(t => t.Id));
+                response.NaturalPerson.CitizenshipCountriesId.AddRange(countries.Where(t => np.CitizenshipCodes.Contains(t.ShortName)).Select(t => t.Id));
 
             // doklad
             if (cmResponse.PrimaryIdentificationDocument != null)

@@ -28,7 +28,7 @@ internal static class CMExtension
             LandRegistryNumber = (componentAddress?.EvidenceNumber).ToEmptyString(),
             City = model.City.ToEmptyString(),
             IsPrimary = isPrimary,
-            CountryId = countries.FirstOrDefault(t => t.Code == model.CountryCode)?.Id,
+            CountryId = countries.FirstOrDefault(t => t.ShortName == model.CountryCode)?.Id,
             Postcode = model.PostCode.ToEmptyString(),
             Street = (componentAddress?.Street ?? model.Street).ToEmptyString()
         };
@@ -41,7 +41,7 @@ internal static class CMExtension
             IssuedOn = model.IssuedOn,
             IssuedBy = model.IssuedBy.ToEmptyString(),
             Number = model.DocumentNumber.ToEmptyString(),
-            IssuingCountryId = countries.FirstOrDefault(t => t.Code == model.IssuingCountryCode)?.Id,
+            IssuingCountryId = countries.FirstOrDefault(t => t.ShortName == model.IssuingCountryCode)?.Id,
             IdentificationDocumentTypeId = identificationDocumentTypes.First(t => t.RDMCode == model.TypeCode).Id
         };
 

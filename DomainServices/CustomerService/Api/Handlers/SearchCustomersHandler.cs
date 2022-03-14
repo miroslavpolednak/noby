@@ -48,7 +48,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             if (request.Request.IdentificationDocument != null)
             {                
                 cmRequest.IdDocumentTypeCode = docTypes.First(t => t.Id == request.Request.IdentificationDocument.IdentificationDocumentTypeId).RDMCode;
-                cmRequest.IdDocumentIssuingCountryCode = countries.First(t => t.Id == request.Request.IdentificationDocument.IssuingCountryId).Code;
+                cmRequest.IdDocumentIssuingCountryCode = countries.First(t => t.Id == request.Request.IdentificationDocument.IssuingCountryId).ShortName;
                 cmRequest.IdDocumentNumber = request.Request.IdentificationDocument.Number;
             }
 
@@ -68,7 +68,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                     Street = (item.PrimaryAddress?.Address?.Street).ToEmptyString(),
                     City = (item.PrimaryAddress?.Address?.City).ToEmptyString(),
                     Postcode = (item.PrimaryAddress?.Address?.PostCode).ToEmptyString(),
-                    CountryId = item.PrimaryAddress?.Address != null ? countries.FirstOrDefault(t => t.Code == item.PrimaryAddress.Address.CountryCode)?.Id : null
+                    CountryId = item.PrimaryAddress?.Address != null ? countries.FirstOrDefault(t => t.ShortName == item.PrimaryAddress.Address.CountryCode)?.Id : null
                 };
 
                 // identity
@@ -97,7 +97,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                     customer.Street = item.PrimaryAddress.Address.Street;
                     customer.City = item.PrimaryAddress.Address.City;
                     customer.Postcode = item.PrimaryAddress.Address.PostCode;
-                    customer.CountryId = countries.FirstOrDefault(t => t.Code == item.PrimaryAddress.Address.CountryCode)?.Id;
+                    customer.CountryId = countries.FirstOrDefault(t => t.ShortName == item.PrimaryAddress.Address.CountryCode)?.Id;
                 }
 
                 response.Customers.Add(customer);
