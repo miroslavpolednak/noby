@@ -44,7 +44,7 @@ MarketingAction						-
 MarketingActionType					-
 ObligationState						-
 * ObligationType					ObligationTypes [mock]
-* PostCode							- ? (obsahuje cca 40.000 záznamů, filtrování?) . . . [mock] 20 záznamů
+* PostCode							PostCodes (20 záznamů, celá tabulka obsahuje cca 40.000 záznamů)
 ProductType							ProductTypes
 ProductVariationsSavings			-
 * PropertySettlement				PropertySettlement [mock]
