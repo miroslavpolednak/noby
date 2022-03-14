@@ -15,7 +15,7 @@ ConsentType							-
 ContactType							ContactTypes
 ContractSegment						-
 ContractSigningMethods				-
-Country								Countries ?
+Country								Countries
 * Currency							- ? (informace o měnách obsaženy v Countries, např. IsAllowedForIncomeChange)
 CustomerRole						CustomerRoles
 DocumentRelationType				-
