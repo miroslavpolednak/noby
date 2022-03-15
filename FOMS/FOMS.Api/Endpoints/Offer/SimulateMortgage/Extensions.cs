@@ -14,7 +14,7 @@ internal static class Extensions
                 LoanAmount = request.LoanAmount,
                 LoanDuration = request.LoanDuration,
                 LoanPaymentAmount = request.LoanPaymentAmount,
-                FixedLengthPeriod = request.FixedLengthPeriod,
+                FixedRatePeriod = request.FixedRatePeriod,
                 EmployeeBonusLoanCode = request.EmployeeBonusLoanCode,
                 CollateralAmount = request.CollateralAmount,
                 LoanToValue = request.LoanToValue,

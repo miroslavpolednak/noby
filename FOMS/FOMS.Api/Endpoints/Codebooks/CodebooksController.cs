@@ -19,7 +19,7 @@ public class CodebooksController : ControllerBase
     /// - CaseStates
     /// - Countries
     /// - CustomerRoles
-    /// - FixedLengthPeriods
+    /// - FixedRatePeriods
     /// - Genders
     /// - IdentificationDocumentTypes
     /// - Mandants
@@ -47,9 +47,9 @@ public class CodebooksController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
     public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
-        => (await svc.FixedLengthPeriods(cancellationToken))
+        => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId)
-            .Select(t => t.FixedLengthPeriod)
+            .Select(t => t.FixedRatePeriod)
             .OrderBy(t => t)
             .ToList();
     

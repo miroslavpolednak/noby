@@ -24,7 +24,7 @@ internal static class OfferApiModuleDtoExtensions
             StatementTypeId = result.StatementTypeId,
             Aprc = result.Aprc,
             EmployeeBonusLoanCode = result.EmployeeBonusLoanCode,
-            InterestRate = result.InterestRate,
+            InterestRate = result.LoanInterestRate,
             InterestRateAnnounced = result.InterestRateAnnounced,
             LoanDuration = result.LoanDuration,
             LoanToCost = result.LoanToCost,

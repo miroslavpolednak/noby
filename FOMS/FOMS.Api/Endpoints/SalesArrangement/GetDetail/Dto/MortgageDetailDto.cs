@@ -20,7 +20,7 @@ public class MortgageDetailDto
     /// <summary>
     /// Skládačková úroková sazba 
     /// </summary>
-    public decimal InterestRate { get; set; }
+    public decimal LoanInterestRate { get; set; }
     
     /// <summary>
     /// Datum uzavreni smlouvy

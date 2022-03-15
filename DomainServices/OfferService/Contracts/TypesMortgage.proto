@@ -37,7 +37,7 @@ message MortgageInput {
    cis.types.GrpcDecimal LoanAmount = 3;
    google.protobuf.Int32Value LoanDuration = 4;
    cis.types.GrpcDecimal LoanPaymentAmount = 5;
-   int32 FixedLengthPeriod = 6;					
+   int32 FixedRatePeriod = 6;					
    google.protobuf.Int32Value EmployeeBonusLoanCode = 7;
    cis.types.GrpcDecimal CollateralAmount = 8;
    cis.types.GrpcDecimal LoanToValue = 9;
@@ -49,7 +49,7 @@ message MortgageInput {
 }
 
 message MortgageOutput {
-	cis.types.GrpcDecimal InterestRate = 1;
+	cis.types.GrpcDecimal LoanInterestRate  = 1;
 	cis.types.GrpcDecimal InterestRateAnnounced = 2;
 	cis.types.GrpcDecimal LoanAmount = 3;
     int32 LoanDuration = 4;

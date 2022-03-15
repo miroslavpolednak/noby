@@ -9,9 +9,9 @@ internal static class Extensions
     {
         var model = new MortgageData
         {
-            FixedRatePeriod = offerData.Inputs.FixedLengthPeriod,
+            FixedRatePeriod = offerData.Inputs.FixedRatePeriod,
             LoanAmount = offerData.Inputs.LoanAmount,
-            LoanInterestRate = offerData.Outputs.InterestRate,
+            LoanInterestRate = offerData.Outputs.LoanInterestRate,
             ProductTypeId = offerData.Inputs.ProductTypeId,
             LoanPaymentAmount = offerData.Outputs.LoanPaymentAmount,
             PartnerId = partnerId

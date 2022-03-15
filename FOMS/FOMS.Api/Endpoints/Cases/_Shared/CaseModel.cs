@@ -6,7 +6,12 @@ public class CaseModel
 	/// Unikátní Id obchodního případu
 	/// </summary>
 	public long CaseId { get; set; }
-	
+
+	/// <summary>
+	/// Id klienta
+	/// </summary>
+	public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
+
 	/// <summary>
 	/// FO/FOP/Cizinec/Nezletilec: Jméno
 	/// </summary>

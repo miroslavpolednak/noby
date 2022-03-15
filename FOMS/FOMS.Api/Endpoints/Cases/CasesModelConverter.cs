@@ -24,6 +24,7 @@ internal class CasesModelConverter
 		List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> caseStates)
 		=> new()
         {
+			
 			CaseId = model.CaseId,
 			State = (CIS.Foms.Enums.CaseStates)model.State,
 			StateName = caseStates.First(x => x.Id == model.State).Name,
@@ -33,8 +34,9 @@ internal class CasesModelConverter
 			TargetAmount = model.Data.TargetAmount,
 			CreatedBy = model.Created.UserName,
 			CreatedTime = model.Created.DateTime,
-			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
 			ProductName = productTypes.First(x => x.Id == model.Data.ProductTypeId).Name,
+			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
+			CustomerIdentity = model.Customer?.Identity,
 			FirstName = model.Customer?.FirstNameNaturalPerson,
 			LastName = model.Customer?.Name
 		};
