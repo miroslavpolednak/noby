@@ -1,5 +1,5 @@
 ﻿
-Revize číselníků k 10.03.2022:
+Revize číselníků k 15.03.2022:
 -----------------------------------------------------------------------------------------------------------------
 Confluence							Implemented as
 -----------------------------------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ EaCodeMain							-
 EmployeeBonusLoan					-
 EmploymentType						-
 * ExpenseType						- [ke zrušení]
-* FixedLengthPeriod					FixedPeriodLengths
+* FixedLengthPeriod					FixedRatePeriods
 FormType							-
 * Gender							Genders
 * HouseholdType						-
