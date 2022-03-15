@@ -4,9 +4,9 @@ namespace ExternalServices.CustomerManagement.V1;
 
 public interface ICMClient
 {
-    Task<IServiceCallResult> Search(SearchCustomerRequest model);
+    Task<IServiceCallResult> Search(SearchCustomerRequest model, CancellationToken cancellationToken = default);
 
-    Task<IServiceCallResult> GetList(IEnumerable<long> model);
+    Task<IServiceCallResult> GetList(IEnumerable<long> model, CancellationToken cancellationToken = default);
 
-    Task<IServiceCallResult> GetDetail(long model);
+    Task<IServiceCallResult> GetDetail(long model, CancellationToken cancellationToken = default);
 }

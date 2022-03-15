@@ -53,7 +53,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             }
 
             // zavolat CM
-            var cmResponse = (await _cm.Search(cmRequest)).CheckCMResult<CustomerManagement.CMWrapper.CustomerSearchResult>();
+            var cmResponse = (await _cm.Search(cmRequest, cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerSearchResult>();
 
             var response = new SearchCustomersResponse();
 
