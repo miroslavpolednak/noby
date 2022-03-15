@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Results;
 using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Contracts;
 using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api;
