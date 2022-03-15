@@ -77,8 +77,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Api", "DomainServices\CustomerService\Api\DomainServices.CustomerService.Api.csproj", "{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_CustomerService", "DomainServices\CustomerService\Console_CustomerService\Console_CustomerService.csproj", "{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodebookService", "CodebookService", "{6C60ADF4-04DA-46C0-91BE-054BDC00A89E}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\CodebookService\README.md = DomainServices\CodebookService\README.md
@@ -193,7 +191,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.Api", "DomainServices\RiskIntegrationService\Api\DomainServices.RiskIntegrationService.Api.csproj", "{DB728629-D622-4950-BA50-A587D2C262E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.RiskIntegrationService.Abstraction", "DomainServices\RiskIntegrationService\Abstraction\DomainServices.RiskIntegrationService.Abstraction.csproj", "{875FC3AF-8A86-4FA2-BF1A-499F3FDE2077}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.Abstraction", "DomainServices\RiskIntegrationService\Abstraction\DomainServices.RiskIntegrationService.Abstraction.csproj", "{875FC3AF-8A86-4FA2-BF1A-499F3FDE2077}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -387,14 +385,6 @@ Global
 		{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB}.Release|x64.ActiveCfg = Release|x64
 		{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB}.Release|x64.Build.0 = Release|x64
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Debug|x64.ActiveCfg = Debug|x64
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Debug|x64.Build.0 = Debug|x64
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Release|x64.ActiveCfg = Release|x64
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8}.Release|x64.Build.0 = Release|x64
 		{D0492191-2356-444C-8653-440F9CD031CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0492191-2356-444C-8653-440F9CD031CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0492191-2356-444C-8653-440F9CD031CE}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -797,7 +787,6 @@ Global
 		{7B04CC9B-7F95-457D-B1B1-77B14F6FA95C} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{7A1307BD-0B58-4F54-831C-6B7FE507F7EE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
-		{AF7B15CA-A6DB-4ED9-8DAF-0D03F1D006E8} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{6C60ADF4-04DA-46C0-91BE-054BDC00A89E} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{D0492191-2356-444C-8653-440F9CD031CE} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
 		{96A9DCD2-4A3A-4C48-A3C4-63E7DBC7047B} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}

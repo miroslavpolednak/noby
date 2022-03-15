@@ -4,7 +4,7 @@ namespace ExternalServices.CustomerManagement.V1;
 
 internal sealed class MockCMClient : ICMClient
 {
-    public async Task<IServiceCallResult> GetDetail(long model)
+    public async Task<IServiceCallResult> GetDetail(long model, CancellationToken cancellationToken)
     {
         var result = new CustomerBaseInfo()
         {
@@ -22,7 +22,7 @@ internal sealed class MockCMClient : ICMClient
         return await Task.FromResult(new SuccessfulServiceCallResult<CustomerBaseInfo>(result));
     }
 
-    public async Task<IServiceCallResult> GetList(IEnumerable<long> model)
+    public async Task<IServiceCallResult> GetList(IEnumerable<long> model, CancellationToken cancellationToken)
     {
         var result = new List<CustomerBaseInfo>() {
             new CustomerBaseInfo() {
@@ -40,7 +40,7 @@ internal sealed class MockCMClient : ICMClient
         return await Task.FromResult(new SuccessfulServiceCallResult<IEnumerable<CustomerBaseInfo>>(result));
     }
 
-    public async Task<IServiceCallResult> Search(SearchCustomerRequest model)
+    public async Task<IServiceCallResult> Search(SearchCustomerRequest model, CancellationToken cancellationToken)
     {
         var result = new CustomerSearchResult()
         {

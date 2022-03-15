@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Results;
 using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Contracts;
 using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api;
@@ -50,20 +49,17 @@ internal static class CMExtension
         {
             SuccessfulServiceCallResult<T> r
             => r.Model,
+
             SuccessfulServiceCallResult<CustomerManagement.CMWrapper.ApiException<CustomerManagement.CMWrapper.Error>> r
-            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Incorrect inputs to CustomerManagement: {r.Model.Result.Message}", 10011),
+            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {r.Model.Result.Message}", 10011),
+
             SuccessfulServiceCallResult<CustomerManagement.CMWrapper.Error> r
-            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"CustomerManagement error: {r.Model.Message}", 10011, new()
+            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"CustomerManagement error: {r.Model.Message}", 10011, new()
             {
                 ("cmerrorcode", r.Model.Code),
                 ("cmerrortext", r.Model.Message)
             }),
-            SuccessfulServiceCallResult<MpHome.MpHomeWrapper.ApiException> r
-                    => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "Incorrect inputs to CustomerManagement", 10011, new()
-                    {
-                        ("cmerrorcode", r.Model.StatusCode.ToString()),
-                        ("cmerrortext", r.Model.Message)
-                    }),
+
             ErrorServiceCallResult err
                     => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
             _ => throw new NotImplementedException()

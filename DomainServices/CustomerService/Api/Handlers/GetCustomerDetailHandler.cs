@@ -22,7 +22,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             _logger.LogInformation("Get detail instance ID #{id}", request.Request);
 
             // zavolat CM
-            var cmResponse = (await _cm.GetDetail(request.Request.Identity.IdentityId)).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
+            var cmResponse = (await _cm.GetDetail(request.Request.Identity.IdentityId, cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
 
             var response = new CustomerResponse();
 
