@@ -78,7 +78,7 @@ internal class SimulateMortgageHandler
         var output = new MortgageOutput
         {
             ProductTypeId = input.ProductTypeId,
-            InterestRate = 0.02m,                           //mock: 0.02
+            LoanInterestRate = 0.02m,                       //mock: 0.02
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu
             LoanDuration = loanDuration,                    //mock: 0 (pokud na vstupu nezadáno)
                                                             //mock: (náhodné číslo generované např. jako výše úvěru / splatností)

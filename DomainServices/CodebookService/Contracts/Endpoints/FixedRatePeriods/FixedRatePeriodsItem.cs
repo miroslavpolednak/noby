@@ -9,6 +9,6 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods
         public int ProductTypeId { get; set; }
 
         [DataMember(Order = 2)]
-        public int FixedLengthPeriod { get; set; }
+        public int FixedRatePeriod { get; set; }
     }
 }
