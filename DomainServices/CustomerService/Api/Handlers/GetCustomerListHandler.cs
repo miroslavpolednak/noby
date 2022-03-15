@@ -45,10 +45,10 @@ namespace DomainServices.CustomerService.Api.Handlers
                 // customer
                 customer.NaturalPerson = new NaturalPersonBaseData
                 {
-                    BirthNumber = np.CzechBirthNumber.ToEmptyString(),
+                    BirthNumber = np.CzechBirthNumber ?? "",
                     DateOfBirth = np.BirthDate,
-                    FirstName = np.FirstName.ToEmptyString(),
-                    LastName = np.Surname.ToEmptyString(),
+                    FirstName = np.FirstName ?? "",
+                    LastName = np.Surname ?? "",
                     GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id
                 };
 

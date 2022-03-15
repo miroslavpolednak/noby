@@ -22,8 +22,8 @@ namespace DomainServices.CustomerService.Api.Handlers
             _logger.LogInformation("Search CM #{id}", string.Join(",", request.Request));
 
             // ciselniky
-            var docTypes = await _codebooks.IdentificationDocumentTypes();
-            var countries = await _codebooks.Countries();
+            var docTypes = await _codebooks.IdentificationDocumentTypes(cancellationToken);
+            var countries = await _codebooks.Countries(cancellationToken);
 
             // request pro vyhledavani v CM, zatim podle natural person
             var cmRequest = new CustomerManagement.CMWrapper.SearchCustomerRequest
@@ -58,16 +58,16 @@ namespace DomainServices.CustomerService.Api.Handlers
             var response = new SearchCustomersResponse();
 
             // ciselniky
-            var genders = await _codebooks.Genders();
+            var genders = await _codebooks.Genders(cancellationToken);
 
             // bez PO
             foreach (var item in cmResponse.ResultRows.Where(t => t.Party is CustomerManagement.CMWrapper.NaturalPersonSearchResult))
             {
                 var customer = new SearchCustomerResult()
                 {
-                    Street = (item.PrimaryAddress?.Address?.Street).ToEmptyString(),
-                    City = (item.PrimaryAddress?.Address?.City).ToEmptyString(),
-                    Postcode = (item.PrimaryAddress?.Address?.PostCode).ToEmptyString(),
+                    Street = item.PrimaryAddress?.Address?.Street ?? "",
+                    City = item.PrimaryAddress?.Address?.City ?? "",
+                    Postcode = item.PrimaryAddress?.Address?.PostCode ?? "",
                     CountryId = item.PrimaryAddress?.Address != null ? countries.FirstOrDefault(t => t.ShortName == item.PrimaryAddress.Address.CountryCode)?.Id : null
                 };
 
@@ -80,10 +80,10 @@ namespace DomainServices.CustomerService.Api.Handlers
                 // customer
                 customer.NaturalPerson = new NaturalPersonBaseData
                 {
-                    BirthNumber = np.CzechBirthNumber.ToEmptyString(),
+                    BirthNumber = np.CzechBirthNumber ?? "",
                     DateOfBirth = np.BirthDate,
-                    FirstName = np.FirstName.ToEmptyString(),
-                    LastName = np.Surname.ToEmptyString(),
+                    FirstName = np.FirstName ?? "",
+                    LastName = np.Surname ?? "",
                     GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id
                 };
 

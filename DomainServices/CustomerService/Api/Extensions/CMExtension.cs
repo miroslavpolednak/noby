@@ -9,9 +9,6 @@ internal static class CMExtension
     public static string? ToCMstring(this string value)
         => string.IsNullOrEmpty(value) ? null : value;
 
-    public static string ToEmptyString(this string? value)
-        => value ?? "";
-
     public static CIS.Infrastructure.gRPC.CisTypes.Identity ToIdentity(this long customerId)
         => new()
         {
@@ -23,23 +20,23 @@ internal static class CMExtension
         => new ()
         {
             AddressTypeId = (int)addressType,
-            BuildingIdentificationNumber = (componentAddress?.HouseNumber).ToEmptyString(),
-            LandRegistryNumber = (componentAddress?.EvidenceNumber).ToEmptyString(),
-            City = model.City.ToEmptyString(),
+            BuildingIdentificationNumber = componentAddress?.HouseNumber ?? "",
+            LandRegistryNumber = componentAddress?.EvidenceNumber ?? "",
+            City = model.City ?? "",
             IsPrimary = isPrimary,
             CountryId = countries.FirstOrDefault(t => t.ShortName == model.CountryCode)?.Id,
-            Postcode = model.PostCode.ToEmptyString(),
-            Street = (componentAddress?.Street ?? model.Street).ToEmptyString()
+            Postcode = model.PostCode ?? "",
+            Street = (componentAddress?.Street ?? model.Street) ?? ""
         };
 
     public static Contracts.IdentificationDocument ToIdentificationDocument(this CustomerManagement.CMWrapper.IdentificationDocument model, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries, List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> identificationDocumentTypes)
         => new ()
         {
-            RegisterPlace = model.RegisterPlace.ToEmptyString(),
+            RegisterPlace = model.RegisterPlace ?? "",
             ValidTo = model.ValidTo,
             IssuedOn = model.IssuedOn,
-            IssuedBy = model.IssuedBy.ToEmptyString(),
-            Number = model.DocumentNumber.ToEmptyString(),
+            IssuedBy = model.IssuedBy ?? "",
+            Number = model.DocumentNumber ?? "",
             IssuingCountryId = countries.FirstOrDefault(t => t.ShortName == model.IssuingCountryCode)?.Id,
             IdentificationDocumentTypeId = identificationDocumentTypes.First(t => t.RDMCode == model.TypeCode).Id
         };
@@ -51,10 +48,10 @@ internal static class CMExtension
             => r.Model,
 
             SuccessfulServiceCallResult<CustomerManagement.CMWrapper.ApiException<CustomerManagement.CMWrapper.Error>> r
-            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {r.Model.Result.Message}", 10011),
+            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {r.Model.Result.Detail}", 17000),
 
             SuccessfulServiceCallResult<CustomerManagement.CMWrapper.Error> r
-            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"CustomerManagement error: {r.Model.Message}", 10011, new()
+            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"CustomerManagement error: {r.Model.Message}", 17000, new()
             {
                 ("cmerrorcode", r.Model.Code),
                 ("cmerrortext", r.Model.Message)
@@ -62,6 +59,7 @@ internal static class CMExtension
 
             ErrorServiceCallResult err
                     => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key),
+
             _ => throw new NotImplementedException()
         };
 }
