@@ -26,7 +26,7 @@ internal class GetAllHandler
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
             "countries" => new(original, await _codebooks.Countries(cancellationToken)),
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
-            "fixedlengthperiods" => new(original, await _codebooks.FixedLengthPeriods(cancellationToken)),
+            "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),

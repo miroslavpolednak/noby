@@ -81,6 +81,11 @@
             Unikátní Id obchodního případu
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.CustomerIdentity">
+            <summary>
+            Id klienta
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.FirstName">
             <summary>
             FO/FOP/Cizinec/Nezletilec: Jméno
@@ -151,7 +156,7 @@
             - CaseStates
             - Countries
             - CustomerRoles
-            - FixedLengthPeriods
+            - FixedRatePeriods
             - Genders
             - IdentificationDocumentTypes
             - Mandants
@@ -676,7 +681,7 @@
             </summary>
             <example>15000</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FixedLengthPeriod">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FixedRatePeriod">
             <summary>
             Délka fixace úrokové sazby
             </summary>
@@ -746,7 +751,7 @@
             Výše úvěru
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.InterestRate">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.LoanInterestRate">
             <summary>
             Skládačková úroková sazba 
             </summary>

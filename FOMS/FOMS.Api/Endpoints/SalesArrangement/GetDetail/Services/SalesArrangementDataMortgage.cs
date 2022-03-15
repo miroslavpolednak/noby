@@ -53,7 +53,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         return new Dto.MortgageDetailDto()
         {
             ContractNumber = saCase.Data.ContractNumber,
-            InterestRate = offerInstance.Outputs.InterestRate,
+            LoanInterestRate = offerInstance.Outputs.LoanInterestRate,
             LoanAmount = offerInstance.Outputs.LoanAmount,
             ProductName = "co tady ma byt?"
         };

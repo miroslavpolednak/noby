@@ -36,7 +36,7 @@ public class MortgageInputs
     /// Délka fixace úrokové sazby
     /// </summary>
     /// <example>48</example>
-    public int FixedLengthPeriod { get; set; }
+    public int FixedRatePeriod { get; set; }
     
     public int? EmployeeBonusLoanCode { get; set; }
     
