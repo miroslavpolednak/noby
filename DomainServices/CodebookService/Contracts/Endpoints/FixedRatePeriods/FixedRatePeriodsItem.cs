@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.FixedPeriodLengths
+namespace DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods
 {
     [DataContract]
-    public class FixedLengthPeriodsItem
+    public class FixedRatePeriodsItem
     {
         [DataMember(Order = 1)]
         public int ProductTypeId { get; set; }
