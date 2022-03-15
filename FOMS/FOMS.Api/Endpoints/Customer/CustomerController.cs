@@ -32,14 +32,14 @@ public class CustomerController : ControllerBase
     /// <i>DS:</i> CustomerService/GetCustomer
     /// </remarks>
     /// <param name="identityId">ID klienta v danem schematu</param>
-    /// <param name="identitySchema">Schema ve kterem je klient ulozeny - Kb | Mp</param>
+    /// <param name="identityScheme">Schema ve kterem je klient ulozeny - Kb | Mp</param>
     /// <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
     [HttpGet("get")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Identifikace klienta", "UC: Domacnost" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetDetail.GetDetailResponse> GetDetail([FromQuery] int identityId, [FromQuery] CIS.Foms.Enums.IdentitySchemes identitySchema, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDetail.GetDetailRequest(identityId, identitySchema), cancellationToken);
+    public async Task<GetDetail.GetDetailResponse> GetDetail([FromQuery] int identityId, [FromQuery] CIS.Foms.Enums.IdentitySchemes identityScheme, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDetail.GetDetailRequest(identityId, identityScheme), cancellationToken);
     
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;

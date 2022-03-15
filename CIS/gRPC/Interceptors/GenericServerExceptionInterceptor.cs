@@ -6,11 +6,11 @@ using CIS.Infrastructure.Logging;
 
 namespace CIS.Infrastructure.gRPC;
 
-public class SimpleServerExceptionInterceptor : Interceptor
+public class GenericServerExceptionInterceptor : Interceptor
 {
-    private readonly ILogger<SimpleServerExceptionInterceptor> _logger;
+    private readonly ILogger<GenericServerExceptionInterceptor> _logger;
 
-    public SimpleServerExceptionInterceptor(ILogger<SimpleServerExceptionInterceptor> logger)
+    public GenericServerExceptionInterceptor(ILogger<GenericServerExceptionInterceptor> logger)
     {
         _logger = logger;
     }

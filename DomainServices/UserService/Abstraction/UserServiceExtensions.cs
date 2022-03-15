@@ -59,7 +59,7 @@ public static class UserServiceExtensions
         }, "MPSS:");*/
 
         // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
@@ -72,7 +72,7 @@ public static class UserServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.UserService.UserServiceClient, Contracts.v1.UserService.UserServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.UserService.UserServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
         return services;

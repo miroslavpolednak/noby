@@ -50,7 +50,7 @@ builder.AddOfferService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.SimpleServerExceptionInterceptor>();
+    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
 });
 
 // add BE services

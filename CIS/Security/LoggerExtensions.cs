@@ -36,7 +36,7 @@ public static class LoggerExtensions
            "Incorrect Authorization header");
 
         _authParsedLogin = LoggerMessage.Define<string>(
-           LogLevel.Error,
+           LogLevel.Debug,
            new EventId(524, nameof(AuthParsedLogin)),
            "Parsed as {Login}");
 
@@ -46,7 +46,7 @@ public static class LoggerExtensions
            "AD connection failed for '{Login}'");
 
         _contextUserAdded = LoggerMessage.Define<string>(
-           LogLevel.Error,
+           LogLevel.Debug,
            new EventId(526, nameof(ContextUserAdded)),
            "Context user identity {PartyId} added");
     }

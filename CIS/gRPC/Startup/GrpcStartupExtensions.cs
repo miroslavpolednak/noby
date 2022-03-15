@@ -51,7 +51,8 @@ public static class GrpcStartupExtensions
         {
             var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
             options.Address = serviceUri.Url;
-        });
+        })
+            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
     }
 
     public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services)
@@ -62,7 +63,8 @@ public static class GrpcStartupExtensions
         {
             var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
             options.Address = serviceUri.Url;
-        });
+        })
+            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
     }
 
     public static IHttpClientBuilder ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<TService>(this IHttpClientBuilder builder)

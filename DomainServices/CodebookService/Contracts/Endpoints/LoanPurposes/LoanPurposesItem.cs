@@ -1,10 +1,9 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace DomainServices.CodebookService.Contracts.Endpoints.ProductLoanPurposes
+namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
 {
     [DataContract]
-    public sealed class ProductLoanPurposesItem
+    public sealed class LoanPurposesItem
     {
         [DataMember(Order = 1)]
         public int Id { get; set; }

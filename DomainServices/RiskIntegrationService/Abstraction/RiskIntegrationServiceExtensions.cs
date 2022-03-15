@@ -47,7 +47,7 @@ public static class RiskIntegrationServiceExtensions
         services.TryAddTransient<IRiskIntegrationServiceAbstraction, Services.RiskIntegrationService>();
 
         // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
@@ -60,7 +60,7 @@ public static class RiskIntegrationServiceExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.RiskIntegrationService.RiskIntegrationServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.RiskIntegrationService.RiskIntegrationServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>()
+                .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
         return services;

@@ -7,12 +7,12 @@ message Identity {
 	// Id klienta - bud ID_PARTNER nebo KBID
 	int32 identityId = 1;
 
-	enum IdentitySchemas {
+	enum IdentitySchemes {
 		Unknown = 0;
 		Mp = 1;
 		Kb = 2;
 	}
 
 	// KB nebo MP nebo v budoucnu neco jineho
-	IdentitySchemas identityScheme = 2;
+	IdentitySchemes identityScheme = 2;
 }

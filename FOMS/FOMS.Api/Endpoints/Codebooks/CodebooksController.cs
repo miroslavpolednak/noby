@@ -25,7 +25,7 @@ public class CodebooksController : ControllerBase
     /// - Mandants
     /// - MaritalStatuses
     /// - ProductTypes
-    /// - ProductLoanPurposes
+    /// - LoanPurposes
     /// - ProductLoanKinds
     /// - SalesArrangementTypes
     /// - SignatureTypes

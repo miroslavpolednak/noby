@@ -7,6 +7,7 @@ public class PaginationRequestValidator
 {
     public PaginationRequestValidator()
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         RuleFor(t => t.RecordOffset)
             .GreaterThanOrEqualTo(0).WithMessage("Pagination RecordOffset must be >= 0");
 
@@ -15,6 +16,7 @@ public class PaginationRequestValidator
 
         RuleForEach(t => t.Sorting)
             .SetValidator(new PaginationSortFieldValidator()).When(t => t.Sorting is not null && t.Sorting.Any());
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 }
 
