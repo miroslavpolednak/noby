@@ -41,13 +41,13 @@ namespace DomainServices.CustomerService.Api.Handlers
             // customer
             response.NaturalPerson = new NaturalPerson
             {
-                BirthNumber = np.CzechBirthNumber.ToEmptyString(),
+                BirthNumber = np.CzechBirthNumber ?? "",
                 DateOfBirth = np.BirthDate,
-                FirstName = np.FirstName.ToEmptyString(),
-                LastName = np.Surname.ToEmptyString(),
+                FirstName = np.FirstName ?? "",
+                LastName = np.Surname ?? "",
                 GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id,
-                BirthName = np.BirthName.ToEmptyString(),
-                PlaceOfBirth = np.BirthPlace.ToEmptyString(),
+                BirthName = np.BirthName ?? "",
+                PlaceOfBirth = np.BirthPlace ?? "",
                 BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
                 MaritalStatusStateId = maritals.FirstOrDefault(t => t.RDMCode == np.MaritalStatusCode)?.Id ?? 0,
             };
