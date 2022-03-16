@@ -14,9 +14,10 @@ public sealed partial class Identity
         IdentityScheme = Enum.Parse<Types.IdentitySchemes>((scheme ?? CIS.Foms.Enums.IdentitySchemes.Unknown).ToString());
     }
 
-    public static implicit operator CIS.Foms.Types.CustomerIdentity(Identity identity)
+    public static implicit operator CIS.Foms.Types.CustomerIdentity?(Identity? identity)
     {
-        if (identity is null) throw new ArgumentNullException(nameof(identity), "CustomerIdentity is null");
+        if (identity is null) return null;
+        //if (identity is null) throw new ArgumentNullException(nameof(identity), "CustomerIdentity is null");
         return new CIS.Foms.Types.CustomerIdentity(identity.IdentityId, identity.IdentityScheme.ToString());
     }
 
