@@ -11,6 +11,7 @@ import "UpdateSalesArrangementState.proto";
 import "GetSalesArrangementList.proto";
 import "GetSalesArrangementByOfferId.proto";
 import "UpdateSalesArrangement.proto";
+import "SendToCmp.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -33,4 +34,7 @@ service SalesArrangementService {
    
     // updatuje SA - cislo smlouvy
 	rpc UpdateSalesArrangement (DomainServices.SalesArrangementService.UpdateSalesArrangementRequest) returns (google.protobuf.Empty);
+
+	// predani ke zpracovani
+	rpc SendToCmp (DomainServices.SalesArrangementService.SendToCmpRequest) returns (google.protobuf.Empty);
 }
