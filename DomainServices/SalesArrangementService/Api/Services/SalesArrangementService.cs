@@ -35,4 +35,7 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkModelationToSalesArrangement(LinkModelationToSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> SendToCmp(SendToCmpRequest request, ServerCallContext context)
+       => await _mediator.Send(new Dto.SendToCmpMediatrRequest(request), context.CancellationToken);
 }

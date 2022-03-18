@@ -11,8 +11,11 @@ import "UpdateSalesArrangementState.proto";
 import "GetSalesArrangementList.proto";
 import "GetSalesArrangementByOfferId.proto";
 import "UpdateSalesArrangement.proto";
-import "SendToCmp.proto";
+<<<<<<< HEAD
 import "CreateRiskBusinessCase.proto";
+=======
+import "SendToCmp.proto";
+>>>>>>> df7c11932ab7c0433b52f1c7c755b5ca51b79dba
 
 service SalesArrangementService {
 	// RIP

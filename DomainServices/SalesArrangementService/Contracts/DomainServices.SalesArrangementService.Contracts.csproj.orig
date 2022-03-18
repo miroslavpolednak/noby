@@ -65,8 +65,11 @@
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/SendToCmp.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+<<<<<<< HEAD
 		<Protobuf Include="SalesArrangement/CreateRiskBusinessCase.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+=======
+		<Protobuf Include="SalesArrangement/SendToCmp.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+>>>>>>> df7c11932ab7c0433b52f1c7c755b5ca51b79dba
 	</ItemGroup>
 
 </Project>

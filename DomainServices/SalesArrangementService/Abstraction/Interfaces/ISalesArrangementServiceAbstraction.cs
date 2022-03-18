@@ -85,4 +85,15 @@ public interface ISalesArrangementServiceAbstraction
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
     Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Předání žádosti ke zpracování.
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[Google.Protobuf.WellKnownTypes.Empty] - OK;
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
+    Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 }
+
