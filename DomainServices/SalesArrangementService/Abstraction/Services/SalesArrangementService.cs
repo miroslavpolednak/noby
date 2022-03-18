@@ -92,6 +92,19 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
+    public async Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
+    {
+        _logger.RequestHandlerStartedWithId(nameof(SendToCmp), salesArrangementId);
+        var result = await _userContext.AddUserContext(async () => await _service.SendToCmpAsync(
+            new()
+            {
+                SalesArrangementId = salesArrangementId
+            }, cancellationToken: cancellationToken)
+        );
+        return new SuccessfulServiceCallResult();
+    }
+   
+
     private readonly ILogger<SalesArrangementService> _logger;
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
     private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;

@@ -22,6 +22,7 @@
 		<None Remove="LinkModelationToSalesArrangement.proto" />
 		<None Remove="SalesArrangement.proto" />
 		<None Remove="UpdateSalesArrangementState.proto" />
+		<None Remove="SendToCmp.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -63,6 +64,7 @@
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangement/SendToCmp.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 </Project>
