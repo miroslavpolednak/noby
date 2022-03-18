@@ -36,7 +36,10 @@ internal class GetAllHandler
             "loankinds" => new(original, await _codebooks.LoanKinds(cancellationToken)),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes(cancellationToken)),
             "signaturetypes" => new(original, await _codebooks.SignatureTypes(cancellationToken)),
-            
+            "realestatetypes" => new(original, await _codebooks.RealEstateTypes(cancellationToken)),
+            "realestatepurchasetypes" => new(original, await _codebooks.RealEstatePurchaseTypes(cancellationToken)),
+            "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),
+
             //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
             //"nationalities" => new(original, await _codebooks.Nationalities()),//!!!

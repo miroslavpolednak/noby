@@ -27,4 +27,6 @@ message SalesArrangement {
 	
 	// ID kanalu uzivatele, ktery SA vytvoril
 	int32 ChannelId = 8;
+
+	string RiskBusinessCaseId = 9;
 }

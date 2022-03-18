@@ -39,9 +39,11 @@ internal class CreateMortgageCaseHandler
         // create household and customer on SA
         var householdCustomerResult = await _createCustomerWithHouseholdService.Create(salesArrangementId, request, cancellationToken);
 
-        // zalozit produkt, pokud ma klient modre ID
         if (householdCustomerResult.PartnerId.HasValue)
-            await _createProductService.CreateMortgage(caseId, householdCustomerResult.PartnerId.Value, offerInstance, cancellationToken);
+        {
+            var notification = new Notifications.CustomerFullyIdentifiedNotification(caseId, salesArrangementId, request.Customer!, householdCustomerResult.PartnerId.Value);
+            await _mediator.Publish(notification, cancellationToken);
+        }
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 
@@ -77,17 +79,17 @@ internal class CreateMortgageCaseHandler
         };
 
     private readonly CreateCustomerWithHouseholdService _createCustomerWithHouseholdService;
-    private readonly CreateProductService _createProductService;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly Mediator _mediator;
 
     public CreateMortgageCaseHandler(
+        Mediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        CreateProductService createProductService,
         CreateCustomerWithHouseholdService createCustomerWithHouseholdService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICaseServiceAbstraction caseService,
@@ -95,7 +97,7 @@ internal class CreateMortgageCaseHandler
         IOfferServiceAbstraction offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
-        _createProductService = createProductService;
+        _mediator = mediator;
         _userAccessor = userAccessor;
         _caseService = caseService;
         _createCustomerWithHouseholdService = createCustomerWithHouseholdService;

@@ -11,8 +11,12 @@ import "UpdateSalesArrangementState.proto";
 import "GetSalesArrangementList.proto";
 import "GetSalesArrangementByOfferId.proto";
 import "UpdateSalesArrangement.proto";
+import "CreateRiskBusinessCase.proto";
 
 service SalesArrangementService {
+	// RIP
+	rpc CreateRiskBusinessCase (CreateRiskBusinessCaseRequest) returns (CreateRiskBusinessCaseResponse);
+
 	// zalozeni noveho SA
 	rpc CreateSalesArrangement (DomainServices.SalesArrangementService.CreateSalesArrangementRequest) returns (DomainServices.SalesArrangementService.CreateSalesArrangementResponse);
    

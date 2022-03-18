@@ -18,25 +18,29 @@ internal class CreateSalesArrangementHandler
         _ = ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
             ?? throw new CisNotFoundException(16002, $"Case ID #{request.Request.CaseId} does not exist.");
 
-        // validace na existenci offer
-        if (request.Request.OfferId.HasValue)
-            _ = ServiceCallResult.ResolveToDefault<DomainServices.OfferService.Contracts.GetOfferResponse>(await _offerService.GetOffer(request.Request.OfferId.Value, cancellation))
-                ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");
-
-        // get default SA state
-        int defaultSaState = (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
-
-        // ulozit do DB
+        // vytvorit entitu
         var saEntity = new Repositories.Entities.SalesArrangement()
         {
             CaseId = request.Request.CaseId,
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
-            State = defaultSaState,
             StateUpdateTime = _dateTime.Now,
             ContractNumber = request.Request.ContractNumber,
             OfferId = request.Request.OfferId,
             ChannelId = 1 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss...
         };
+
+        // validace na existenci offer
+        if (request.Request.OfferId.HasValue)
+        {
+            var offerInstance = ServiceCallResult.ResolveToDefault<DomainServices.OfferService.Contracts.GetOfferResponse>(await _offerService.GetOffer(request.Request.OfferId.Value, cancellation))
+                ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");
+            saEntity.ResourceProcessId = Guid.Parse(offerInstance.ResourceProcessId);
+        }
+
+        // get default SA state
+        saEntity.State = (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
+
+        // ulozit do DB
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
 
         _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);

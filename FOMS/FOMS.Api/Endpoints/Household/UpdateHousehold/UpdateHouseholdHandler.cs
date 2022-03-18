@@ -1,5 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Abstraction;
-using contracts = DomainServices.SalesArrangementService.Contracts;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateHousehold;
 
@@ -11,14 +11,17 @@ internal class UpdateHouseholdHandler
         _logger.RequestHandlerStartedWithId(nameof(UpdateHouseholdHandler), request.HouseholdId);
 
         // nacist ulozenou domacnost
-        var household = ServiceCallResult.Resolve<contracts.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        var household = ServiceCallResult.Resolve<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+
+        // detail SA
+        var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(household.SalesArrangementId, cancellationToken));
 
         // update customeru
         int? customerId1 = await createOrUpdateCustomer(request.Customer1, household, household.CustomerOnSAId1, cancellationToken);
         int? customerId2 = await createOrUpdateCustomer(request.Customer2, household, household.CustomerOnSAId2, cancellationToken);
 
         // update domacnosti
-        var householdRequest = new DomainServices.SalesArrangementService.Contracts.UpdateHouseholdRequest
+        var householdRequest = new _SA.UpdateHouseholdRequest
         {
             HouseholdId = request.HouseholdId,
             CustomerOnSAId1 = customerId1,
@@ -31,7 +34,8 @@ internal class UpdateHouseholdHandler
         // hlavni domacnost - hlavni klient ma modre ID
         if (customerId1.HasValue && household.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
         {
-
+            var notification = new Notifications.CustomerFullyIdentifiedNotification(saInstance.CaseId, household.SalesArrangementId, request.Customer1!.Identities!.First(), customerId1.Value);
+            await _mediator.Publish(notification, cancellationToken);
         }
 
         return new UpdateHouseholdResponse
@@ -42,7 +46,7 @@ internal class UpdateHouseholdHandler
         };
     }
 
-    async Task<int?> createOrUpdateCustomer(Dto.CustomerInHousehold? customer, contracts.Household household, int? householdCustomerOnSAId, CancellationToken cancellationToken)
+    async Task<int?> createOrUpdateCustomer(Dto.CustomerInHousehold? customer, _SA.Household household, int? householdCustomerOnSAId, CancellationToken cancellationToken)
     {
         bool householdCustomerExists = householdCustomerOnSAId.GetValueOrDefault() > 0;
         int? customerId = null;
@@ -71,16 +75,22 @@ internal class UpdateHouseholdHandler
         return customerId;
     }
 
+    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly ILogger<UpdateHouseholdHandler> _logger;
+    private readonly Mediator _mediator;
 
     public UpdateHouseholdHandler(
+        Mediator mediator,
+        ISalesArrangementServiceAbstraction salesArrangementService,
         IHouseholdServiceAbstraction householdService,
         ICustomerOnSAServiceAbstraction customerOnSAService,
         ILogger<UpdateHouseholdHandler> logger)
     {
+        _mediator = mediator;
         _logger = logger;
+        _salesArrangementService = salesArrangementService;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
     }

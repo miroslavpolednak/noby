@@ -21,12 +21,13 @@
 		<None Remove="GetSalesArrangementByCaseId.proto" />
 		<None Remove="LinkModelationToSalesArrangement.proto" />
 		<None Remove="SalesArrangement.proto" />
+		<None Remove="SalesArrangement\CreateRiskBusinessCase.proto" />
 		<None Remove="UpdateSalesArrangementState.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.19.4" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.43.0" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.44.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.44.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -63,6 +64,7 @@
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangement/CreateRiskBusinessCase.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 </Project>

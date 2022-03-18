@@ -3,6 +3,18 @@
 public interface ISalesArrangementServiceAbstraction
 {
     /// <summary>
+    /// Vytvoreni RiskBusinessCaseId a ulozi ho na Sales Arrangement
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 16000; Sales Arrangement #{SalesArrangementId} is not linked to Offer</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">Code: 16000; Sales Arrangement #{SalesArrangementId} already contains RiskBusinessCaseId {RiskBusinessCaseId}</exception>  
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
+    Task<IServiceCallResult> CreateRiskBusinessCase(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
     /// Vytvoreni Sales Arrangement
     /// </summary>
     /// <returns>

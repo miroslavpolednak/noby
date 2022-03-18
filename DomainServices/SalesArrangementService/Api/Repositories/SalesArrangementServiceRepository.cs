@@ -26,10 +26,11 @@ internal class SalesArrangementServiceRepository
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
             .FirstOrDefaultAsync(cancellation);
 
-    public async Task UpdateOfferId(int salesArrangementId, int offerId, CancellationToken cancellation)
+    public async Task UpdateOfferId(int salesArrangementId, int offerId, Guid resourceProcessId, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.OfferId = offerId;
+        entity.ResourceProcessId = resourceProcessId;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
@@ -59,6 +60,9 @@ internal class SalesArrangementServiceRepository
 
     public async Task<Entities.SalesArrangement> GetSalesArrangementEntity(int salesArrangementId, CancellationToken cancellation)
         => await _dbContext.SalesArrangements.FindAsync(new object[] { salesArrangementId }, cancellation) ?? throw new CisNotFoundException(16000, $"Sales arrangement ID {salesArrangementId} does not exist.");
+
+    public async Task<int> SaveChangesAsync(CancellationToken cancellation)
+        => await _dbContext.SaveChangesAsync(cancellation);
 
     private readonly SalesArrangementServiceDbContext _dbContext;
 
