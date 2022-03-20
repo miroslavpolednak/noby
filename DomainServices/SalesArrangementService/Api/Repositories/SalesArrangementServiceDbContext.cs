@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CIS.Infrastructure.Data;
-using Microsoft.VisualBasic;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
 
@@ -14,6 +13,7 @@ internal sealed class SalesArrangementServiceDbContext
 
     public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }
     public DbSet<Entities.CustomerOnSA> Customers { get; set; }
+    public DbSet<Entities.CustomerIncome> CustomersIncomes { get; set; }
     public DbSet<Entities.CustomerOnSAIdentity> CustomersIdentities { get; set; }
     public DbSet<Entities.Household> Households { get; set; }
 

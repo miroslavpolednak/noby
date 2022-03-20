@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+message IncomeIdRequest {
+    int32 IncomeId = 1;
+}

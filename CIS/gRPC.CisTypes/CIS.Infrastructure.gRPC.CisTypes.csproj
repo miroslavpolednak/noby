@@ -17,6 +17,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Protos\GrpcAddress.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.19.4" />
 		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.44.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.44.0">
@@ -43,6 +47,7 @@
 		<Protobuf Include="./Protos/UserInfo.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/Mandants.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/NullableGrpcDecimal.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./Protos/GrpcAddress.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 	</ItemGroup>
 
 </Project>

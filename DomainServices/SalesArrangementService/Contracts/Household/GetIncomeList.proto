@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetIncomeListRequest {
+    int32 CustomerOnSAId = 1;
+}
+
+message GetIncomeListResponse {
+    repeated IncomeInList Incomes = 1;
+}
+
+message IncomeInList {
+    int32 IncomeId = 1;
+    int32 IncomeTypeId = 2;
+    google.protobuf.Int32Value Sum = 3;
+    google.protobuf.Int32Value CurrencyId = 4;
+}

@@ -25,6 +25,7 @@ internal class GetAllHandler
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan(cancellationToken)).Where(t => t.IsValid)),
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
             "countries" => new(original, await _codebooks.Countries(cancellationToken)),
+            "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
             "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
@@ -38,8 +39,7 @@ internal class GetAllHandler
             "signaturetypes" => new(original, await _codebooks.SignatureTypes(cancellationToken)),
             "realestatetypes" => new(original, await _codebooks.RealEstateTypes(cancellationToken)),
             "realestatepurchasetypes" => new(original, await _codebooks.RealEstatePurchaseTypes(cancellationToken)),
-            "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),
-
+            
             //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
             //"nationalities" => new(original, await _codebooks.Nationalities()),//!!!

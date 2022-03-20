@@ -9,6 +9,6 @@ internal class UpdateHouseholdMediatrRequestValidator
     {
         RuleFor(t => t.Request.HouseholdId)
             .GreaterThan(0)
-            .WithMessage("HouseholdId must be > 0").WithErrorCode("13000");
+            .WithMessage("HouseholdId must be > 0").WithErrorCode("16027");
     }
 }

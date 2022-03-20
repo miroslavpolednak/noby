@@ -36,7 +36,7 @@ internal class CreateHouseholdHandler
             OtherExpenseAmount = request.Request.Expenses?.OtherExpenseAmount
         };
 
-        int householdId = await _repository.CreateHousehold(entity, cancellation);
+        int householdId = await _repository.Create(entity, cancellation);
 
         _logger.EntityCreated(nameof(Repositories.Entities.Household), householdId);
         

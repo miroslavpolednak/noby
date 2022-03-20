@@ -16,14 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="CreateSalesArrangement.proto" />
-		<None Remove="GetSalesArrangement.proto" />
-		<None Remove="GetSalesArrangementByCaseId.proto" />
-		<None Remove="LinkModelationToSalesArrangement.proto" />
-		<None Remove="SalesArrangement.proto" />
-		<None Remove="SalesArrangement\CreateRiskBusinessCase.proto" />
-		<None Remove="UpdateSalesArrangementState.proto" />
-		<None Remove="SendToCmp.proto" />
+	  <None Remove="Household\UpdateIncome.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -34,7 +27,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
 	</ItemGroup>
@@ -55,6 +48,12 @@
 		<Protobuf Include="Household/Household.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/GetHouseholdList.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/UpdateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/CreateIncome.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/IncomeShared.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/IncomeIdRequest.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/GetIncomeList.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household\UpdateIncome.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household\Income.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 
 		<Protobuf Include="SalesArrangement/SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/CreateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

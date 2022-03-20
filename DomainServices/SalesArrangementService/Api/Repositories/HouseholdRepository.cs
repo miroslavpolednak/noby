@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Repositories;
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class HouseholdRepository
 {
-    public async Task<int> CreateHousehold(Entities.Household entity, CancellationToken cancellation)
+    public async Task<int> Create(Entities.Household entity, CancellationToken cancellation)
     {
         _dbContext.Households.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
@@ -46,7 +46,7 @@ internal class HouseholdRepository
             .Select(HouseholdRepositoryExpressions.HouseholdDetail())
             .ToListAsync(cancellation);
     
-    public async Task DeleteHousehold(int householdId, CancellationToken cancellation)
+    public async Task Delete(int householdId, CancellationToken cancellation)
     {
         var entity = await _dbContext.Households
             .Where(t => t.HouseholdId == householdId)

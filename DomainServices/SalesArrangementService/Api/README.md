@@ -23,6 +23,13 @@
         grpcurl -insecure -d "{\"HouseholdId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/DeleteHousehold
         grpcurl -insecure -d "{\"HouseholdId\":122,\"CustomerOnSAId1\":222,\"CustomerOnSAId2\":333}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/UpdateHousehold
 
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"Sum\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/CreateIncome
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"Sum\":2,\"Employement\":{\"IsAbroadIncome\":true,\"AbroadIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/CreateIncome
+        grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/DeleteIncome
+        grpcurl -insecure -d "{\"IncomeId\":2,\"Sum\":2000,\"Employement\":{\"IsAbroadIncome\":true,\"AbroadIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/UpdateIncome
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/GetIncomeList
+        grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/GetIncome
+
 ## run batch
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"

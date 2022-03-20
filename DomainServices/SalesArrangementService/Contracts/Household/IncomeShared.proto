@@ -1,0 +1,58 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcAddress.proto";
+import "NullableGrpcDate.proto";
+import "NullableGrpcDecimal.proto";
+
+message EmployerData {
+    string Name = 1;
+    string BirthNumber = 2;
+    string Cin = 3;
+    cis.types.GrpcAddress Address = 4;
+    string PhoneNumber = 5;
+    string ClassficationOfEconomicActivities = 6;
+    google.protobuf.Int32Value WorkSectorId = 7;
+    bool SensitiveSector = 8;
+}
+
+message JobData {
+    google.protobuf.Int32Value JobType = 1;
+    string JobDescription = 2;
+    bool JobNoticePeriod = 3;
+    bool JobTrialPeriod = 4;
+    google.protobuf.Int32Value EmploymentTypeId = 5;
+    cis.types.NullableGrpcDate CurrentWorkContractSince = 6;
+    cis.types.NullableGrpcDate CurrentWorkContractTo = 7;
+    cis.types.NullableGrpcDate FirstWorkContractSince = 8;
+}
+
+message WageDeductionData {
+     cis.types.NullableGrpcDecimal DeductionDecision = 1;
+     cis.types.NullableGrpcDecimal DeductionPayments = 2;
+     cis.types.NullableGrpcDecimal DeductionOther = 3;
+}
+
+message IncomeConfirmationData {
+    bool ConfirmationByCompany = 1;
+    string ConfirmationPlace = 2;
+    cis.types.NullableGrpcDate ConfirmationDate = 3;
+    string ConfirmationPerson = 4;
+    string ConfirmationContact = 5;
+}
+
+message IncomeDataEmployement {
+    bool IsAbroadIncome = 1;
+    google.protobuf.Int32Value AbroadIncomeTypeId = 2;
+    bool IsDomicile = 3;
+    DomainServices.SalesArrangementService.EmployerData Employer = 4;
+    DomainServices.SalesArrangementService.JobData Job = 5;
+    DomainServices.SalesArrangementService.WageDeductionData WageDeduction = 6;
+    DomainServices.SalesArrangementService.IncomeConfirmationData IncomeConfirmation = 7;
+}
+
+message IncomeDataOther {
+    string something = 1;
+}
