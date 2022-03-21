@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
@@ -10,11 +11,15 @@ internal class CreateIncomeHandler
     {
         _logger.RequestHandlerStarted(nameof(CreateIncomeHandler));
 
+        // check customer existence
+        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
+            throw new CisNotFoundException(16020, "CustomerOnSA", request.Request.CustomerOnSAId);
+
         var entity = new Repositories.Entities.CustomerIncome
         {
             CustomerOnSAId = request.Request.CustomerOnSAId,
-            Sum = request.Request.Sum,
-            CurrencyId = request.Request.CurrencyId,
+            Sum = request.Request.BaseData?.Sum,
+            CurrencyCode = request.Request.BaseData?.CurrencyCode,
             IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)request.Request.IncomeTypeId,
             Data = JsonSerializer.Serialize(getDataObject(request.Request))
         };

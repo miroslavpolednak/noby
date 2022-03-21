@@ -8,9 +8,7 @@ import "IncomeShared.proto";
 message UpdateIncomeRequest {
     int32 IncomeId = 1;
 
-    google.protobuf.Int32Value Sum = 2;
-    
-    google.protobuf.Int32Value CurrencyId = 3;
+    DomainServices.SalesArrangementService.IncomeBaseData BaseData = 2;
     
     oneof Data {
         DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;

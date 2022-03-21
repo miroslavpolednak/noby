@@ -186,6 +186,88 @@
             </summary>
             <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
         </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.CreateIncomes.CreateIncomeItem.IncomeId">
+            <summary>
+            ID prijmu, pokud se jedna o jiz ulozeny prijem. NULL pokud se jedna o novy prijem.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.CreateIncomes.CreateIncomeItem.IncomeTypeId">
+            <summary>
+            Typ prijmu
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.CreateIncomes.CreateIncomesRequest.Incomes">
+            <summary>
+            Seznam prijmu (novych, existujicich) pro daneho customera
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.GetList(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Seznam prijmu pro daneho customera
+            </summary>
+            <remarks>
+            Vraci zakladni seznam prijmu bez detailu - pouze spolecne vlastnosti.<br/>
+            <i>DS:</i> SalesArrangementService/GetIncomeList
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <returns>Seznam prijmu</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazani prijmu customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/DeleteIncome
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="incomeId">ID prijmu ke smazani</param>
+            <returns>ID smazaneho prijmu</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.CreateIncomes(System.Int32,FOMS.Api.Endpoints.CustomerIncome.CreateIncomes.CreateIncomesRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni noveho prijmu customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/CreateIncome
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <returns>ID noveho prijmu</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update detailu prijmu customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/UpdateIncome
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="incomeId">ID prijmu</param>
+            <returns>ID prijmu</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.GetIncomes.IncomeInList.IncomeId">
+            <summary>
+            IncomeId
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.GetIncomes.IncomeInList.IncomeTypeId">
+            <summary>
+            Typ prijmu
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.Dto.BaseIncome.Sum">
+            <summary>
+            Celkova castka prijmu
+            </summary>
+            <example>25000</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.Dto.BaseIncome.CurrencyCode">
+            <summary>
+            Kod meny
+            </summary>
+            <example>CZK</example>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledavani klientu
@@ -363,27 +445,61 @@
             Update existujici domacnosti
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/UpdateHousehold<br/>
-            <i>DS:</i> SalesArrangementService/CreateHousehold<br/>
-            <i>DS:</i> SalesArrangementService/UpdateCustomer<br/>
-            <i>DS:</i> SalesArrangementService/CreateCustomer
+            <i>DS:</i> SalesArrangementService/UpdateHousehold
             </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns>HouseholdId</returns>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdResponse.HouseholdId">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.UpdateCustomers(System.Int32,FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
             <summary>
-            ID updatovane domacnosti
+            Update customeru na domacnosti
+            </summary>
+            <param name="householdId">ID domacnosti</param>
+            <returns>CustomerOnSAId nalinkovanych customeru</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer1">
+            <summary>
+            ID hlavniho frajera v domacnosti
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdResponse.CustomerOnSAId1">
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer2">
             <summary>
-            ID nove ulozeneho nebo updatovaneho customera 1
+            ID spoludluznika
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdResponse.CustomerOnSAId2">
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer.CustomerOnSAId">
             <summary>
-            ID nove ulozeneho nebo updatovaneho customera 2
+            ID entity pokud jiz existuje
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer.Identity">
+            <summary>
+            Identita klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer.FirstName">
+            <summary>
+            Jmeno klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer.LastName">
+            <summary>
+            Prijmeni klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer.DateOfBirth">
+            <summary>
+            Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Data">
+            <summary>
+            Sekce Ostatni parametry
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Expenses">
+            <summary>
+            Sekce Vydaje domacnosti
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseHousehold.Data">
@@ -519,7 +635,7 @@
             ID simulace ze ktere se ma vytvorit Case.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.Customer">
+        <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.Identity">
             <summary>
             Identifikovany klient.
             </summary>

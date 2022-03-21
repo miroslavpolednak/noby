@@ -19,8 +19,6 @@ internal class HouseholdRepository
             .Where(t => t.HouseholdId == model.HouseholdId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {model.HouseholdId} does not exist.");
         
-        entity.CustomerOnSAId1 = model.CustomerOnSAId1;
-        entity.CustomerOnSAId2 = model.CustomerOnSAId2;
         entity.ChildrenOverTenYearsCount = model.Data?.ChildrenOverTenYearsCount;
         entity.ChildrenUpToTenYearsCount = model.Data?.ChildrenUpToTenYearsCount;
         entity.PropertySettlementId = model.Data?.PropertySettlementId;

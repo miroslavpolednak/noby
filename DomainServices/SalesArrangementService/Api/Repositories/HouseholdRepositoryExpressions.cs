@@ -11,6 +11,7 @@ internal static class HouseholdRepositoryExpressions
         {
             HouseholdId = t.HouseholdId,
             SalesArrangementId = t.SalesArrangementId,
+            CaseId = t.CaseId,
             HouseholdTypeId = (int)t.HouseholdTypeId,
             CustomerOnSAId1 = t.CustomerOnSAId1,
             CustomerOnSAId2 = t.CustomerOnSAId2,

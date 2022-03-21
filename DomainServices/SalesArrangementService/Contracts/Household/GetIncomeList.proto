@@ -16,5 +16,5 @@ message IncomeInList {
     int32 IncomeId = 1;
     int32 IncomeTypeId = 2;
     google.protobuf.Int32Value Sum = 3;
-    google.protobuf.Int32Value CurrencyId = 4;
+    string CurrencyCode = 4;
 }

@@ -7,9 +7,11 @@ import "IncomeShared.proto";
 
 message CreateIncomeRequest {
     int32 CustomerOnSAId = 1;
+
     int32 IncomeTypeId = 2;
-    google.protobuf.Int32Value Sum = 3;
-    google.protobuf.Int32Value CurrencyId = 4;
+    
+    DomainServices.SalesArrangementService.IncomeBaseData BaseData = 3;
+    
     oneof Data {
         DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;
         DomainServices.SalesArrangementService.IncomeDataOther Other = 21;

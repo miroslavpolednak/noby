@@ -41,4 +41,7 @@ internal class HouseholdService : Contracts.v1.HouseholdService.HouseholdService
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateIncome(UpdateIncomeRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateIncomeMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateIncomeBaseDataMediatrRequest(request), context.CancellationToken);
 }

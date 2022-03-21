@@ -9,6 +9,7 @@ internal class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int HouseholdId { get; set; }
     
+    public long CaseId { get; set; }
     public int SalesArrangementId { get; set; }
     
     public CIS.Foms.Enums.HouseholdTypes HouseholdTypeId { get; set; }

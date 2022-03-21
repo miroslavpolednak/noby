@@ -7,6 +7,11 @@ import "GrpcAddress.proto";
 import "NullableGrpcDate.proto";
 import "NullableGrpcDecimal.proto";
 
+message IncomeBaseData {
+    google.protobuf.Int32Value Sum = 1;
+    string CurrencyCode = 2;
+}
+
 message EmployerData {
     string Name = 1;
     string BirthNumber = 2;

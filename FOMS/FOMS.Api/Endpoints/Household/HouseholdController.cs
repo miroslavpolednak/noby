@@ -75,19 +75,27 @@ public class HouseholdController : ControllerBase
     /// Update existujici domacnosti
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/UpdateHousehold<br/>
-    /// <i>DS:</i> SalesArrangementService/CreateHousehold<br/>
-    /// <i>DS:</i> SalesArrangementService/UpdateCustomer<br/>
-    /// <i>DS:</i> SalesArrangementService/CreateCustomer
+    /// <i>DS:</i> SalesArrangementService/UpdateHousehold
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
     /// <returns>HouseholdId</returns>
     [HttpPut("{householdId:int}")]
-    [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
-    [ProducesResponseType(typeof(UpdateHousehold.UpdateHouseholdResponse), StatusCodes.Status200OK)]
-    public async Task<UpdateHousehold.UpdateHouseholdResponse> Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    public async Task<int> Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request, CancellationToken cancellationToken)
+        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
+
+    /// <summary>
+    /// Update customeru na domacnosti
+    /// </summary>
+    /// <param name="householdId">ID domacnosti</param>
+    /// <returns>CustomerOnSAId nalinkovanych customeru</returns>
+    [HttpPut("{householdId:int}/customers")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
+    public async Task<UpdateCustomers.UpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] UpdateCustomers.UpdateCustomersRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
 
     private readonly IMediator _mediator;

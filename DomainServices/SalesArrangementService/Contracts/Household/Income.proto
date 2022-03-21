@@ -12,9 +12,7 @@ message Income {
     
     int32 IncomeTypeId = 3;
     
-    google.protobuf.Int32Value Sum = 4;
-    
-    google.protobuf.Int32Value CurrencyId = 5;
+    DomainServices.SalesArrangementService.IncomeBaseData BaseData = 4;
     
     oneof Data {
         DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;

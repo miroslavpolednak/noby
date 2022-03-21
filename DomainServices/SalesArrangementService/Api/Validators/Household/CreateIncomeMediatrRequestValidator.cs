@@ -19,14 +19,11 @@ internal class CreateIncomeMediatrRequestValidator
             .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
             .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
 
-        // check codebooks
-        /*RuleFor(t => t.Request.CurrencyId)
-            .MustAsync(async (currencyId, cancellation) =>
+        RuleFor(t => t.Request.BaseData)
+            .SetInheritanceValidator(v =>
             {
-                return (await codebookService.Currencies(cancellation)).Any(t => t.Code == currencyId);
-            })
-            .When(t => t.Request.CurrencyId.HasValue)
-            .WithMessage("CurrencyId is not valid").WithErrorCode("16030");*/
+                v.Add<Contracts.IncomeBaseData>(new IncomeBaseDataValidator(codebookService));
+            });
 
     }
 }

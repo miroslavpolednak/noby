@@ -12,6 +12,6 @@ internal class CustomerIncome : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public int CustomerOnSAId { get; set; }
     public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
     public int? Sum { get; set; }
-    public int? CurrencyId { get; set; }
+    public string? CurrencyCode { get; set; }
     public string? Data { get; set; }
 }

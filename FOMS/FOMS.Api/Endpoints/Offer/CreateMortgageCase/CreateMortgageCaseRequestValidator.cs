@@ -13,12 +13,12 @@ internal class CreateMortgageCaseRequestValidator
 
         RuleFor(t => t.FirstName)
             .NotEmpty()
-            .When(t => t.Customer is null)
+            .When(t => t.Identity is null)
             .WithMessage("Jméno není vyplněné");
 
         RuleFor(t => t.LastName)
             .NotEmpty()
-            .When(t => t.Customer is null)
+            .When(t => t.Identity is null)
             .WithMessage("Příjmení není vyplněné");
     }
 }

@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -9,14 +9,14 @@ internal class UpdateIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateIncomeMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(CreateIncomeHandler));
+        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeHandler), request.Request.IncomeId);
 
         var entity = (await _dbContext.CustomersIncomes
             .Where(t => t.CustomerIncomeId == request.Request.IncomeId)
             .FirstOrDefaultAsync(cancellation)) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");
         
-        entity.Sum = request.Request.Sum;
-        entity.CurrencyId = request.Request.CurrencyId;
+        entity.Sum = request.Request.BaseData?.Sum;
+        entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
         entity.Data = JsonSerializer.Serialize(getDataObject(entity.IncomeTypeId, request.Request));
 
         await _dbContext.SaveChangesAsync(cancellation);
@@ -24,7 +24,7 @@ internal class UpdateIncomeHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    static object getDataObject(CIS.Foms.Enums.CustomerIncomeTypes incomeType, UpdateIncomeRequest request)
+    static object getDataObject(CIS.Foms.Enums.CustomerIncomeTypes incomeType, _SA.UpdateIncomeRequest request)
         => incomeType switch
         {
             CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement,

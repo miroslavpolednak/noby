@@ -16,7 +16,7 @@ internal class GetIncomeListHandler
             {
                 IncomeId = t.CustomerIncomeId,
                 IncomeTypeId = (int)t.IncomeTypeId,
-                CurrencyId = t.CurrencyId,
+                CurrencyCode = t.CurrencyCode ?? "",
                 Sum = t.Sum
             })
             .ToListAsync(cancellation);

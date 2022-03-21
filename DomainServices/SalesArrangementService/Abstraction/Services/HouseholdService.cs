@@ -55,9 +55,7 @@ internal class HouseholdService : IHouseholdServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-
-
-
+    #region Income
     public async Task<IServiceCallResult> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateIncome), request.CustomerOnSAId);
@@ -101,12 +99,20 @@ internal class HouseholdService : IHouseholdServiceAbstraction
         return new SuccessfulServiceCallResult<List<IncomeInList>>(result.Incomes.ToList());
     }
 
-    public async Task<IServiceCallResult> UpdateIncome(Income request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateIncome), request.IncomeId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken));
         return new SuccessfulServiceCallResult();
     }
+
+    public async Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeBaseData), request.IncomeId);
+        var result = await _userContext.AddUserContext(async () => await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken));
+        return new SuccessfulServiceCallResult();
+    }
+    #endregion Income
 
     private readonly ILogger<HouseholdService> _logger;
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;

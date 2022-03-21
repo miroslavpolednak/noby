@@ -95,12 +95,22 @@ public interface IHouseholdServiceAbstraction
     Task<IServiceCallResult> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Update dat o prijmu
+    /// Update detailu dat o prijmu
     /// </summary>
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
     /// </returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> UpdateIncome(Income request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update zakladnich dat o prijmu
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; IncomeId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -19,8 +19,11 @@ internal class GetIncomeHandler
             IncomeId = entity.CustomerIncomeId,
             IncomeTypeId = (int)entity.IncomeTypeId,
             CustomerOnSAId = entity.CustomerOnSAId,
-            CurrencyId = entity.CurrencyId,
-            Sum = entity.Sum
+            BaseData = new IncomeBaseData
+            {
+                CurrencyCode = entity.CurrencyCode,
+                Sum = entity.Sum
+            }
         };
 
         if (!string.IsNullOrEmpty(entity.Data))

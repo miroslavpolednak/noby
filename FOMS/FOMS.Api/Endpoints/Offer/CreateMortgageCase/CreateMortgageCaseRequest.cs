@@ -3,7 +3,7 @@
 namespace FOMS.Api.Endpoints.Offer.CreateMortgageCase;
 
 public sealed class CreateMortgageCaseRequest
-    : IRequest<CreateMortgageCaseResponse>, Services.CreateCustomerWithHousehold.IClientInfo
+    : IRequest<CreateMortgageCaseResponse>, Services.CreateCustomer.IClientInfo
 {
     /// <summary>
     /// ID simulace ze ktere se ma vytvorit Case.
@@ -13,7 +13,7 @@ public sealed class CreateMortgageCaseRequest
     /// <summary>
     /// Identifikovany klient.
     /// </summary>
-    public CIS.Foms.Types.CustomerIdentity? Customer { get; set; }
+    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
 
     /// <summary>
     /// Jmeno klienta, pokud neni identifikovan.
