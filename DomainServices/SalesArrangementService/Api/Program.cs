@@ -5,6 +5,8 @@ using DomainServices.SalesArrangementService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
+using DomainServices.CustomerService.Abstraction;
+
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 
@@ -49,7 +51,9 @@ builder.Services
     .AddCisServiceDiscovery(true)
     .AddCaseService(true)
     .AddCodebookService(true)
-    .AddOfferService(true);
+    .AddOfferService(true)
+    .AddCustomerService(true);
+
 builder.AddSalesArrangementService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
