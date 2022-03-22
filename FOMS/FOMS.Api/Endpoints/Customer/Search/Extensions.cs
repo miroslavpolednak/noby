@@ -30,12 +30,12 @@ internal static class Extensions
         }
 
         // document
-        /*model.IdentificationDocument = new SearchIdentificationDocument
+        model.IdentificationDocument = new SearchIdentificationDocument
         {
             IdentificationDocumentTypeId = request.IdentificationDocumentTypeId.GetValueOrDefault(),
             IssuingCountryId = request.IssuingCountryId.GetValueOrDefault(),
             Number = request.IdentificationDocumentNumber ?? ""
-        };*/
+        };
 
         return model;
     }
@@ -55,6 +55,8 @@ internal static class Extensions
         customer.Street = result.Street;
         customer.City = result.City;
         customer.Postcode = result.Postcode;
+        customer.BirthNumber = result.NaturalPerson?.BirthNumber;
+        customer.DateOfBirth = result.NaturalPerson?.DateOfBirth;
         
         return customer;
     }

@@ -207,7 +207,7 @@
             Seznam prijmu pro daneho customera
             </summary>
             <remarks>
-            Vraci zakladni seznam prijmu bez detailu - pouze spolecne vlastnosti.<br/>
+            Vraci zakladni seznam prijmu bez detailu - pouze spolecne vlastnosti. Bude pouzito pro zobrazeni prijmu na detailu domacnosti<br/>
             <i>DS:</i> SalesArrangementService/GetIncomeList
             </remarks>
             <param name="customerOnSAId">ID customera</param>
@@ -218,6 +218,7 @@
             Smazani prijmu customera
             </summary>
             <remarks>
+            Tento endpoint se v soucasne dobe asi pouzivat nebude.<br/>
             <i>DS:</i> SalesArrangementService/DeleteIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
@@ -226,10 +227,17 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.CreateIncomes(System.Int32,FOMS.Api.Endpoints.CustomerIncome.CreateIncomes.CreateIncomesRequest,System.Threading.CancellationToken)">
             <summary>
-            Vytvoreni noveho prijmu customera
+            Update prijmu customera
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/CreateIncome
+            V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>
+            - pokud je v CreateIncomeItem vyplnen IncomeId, pokusi se updatovat zakladni data daneho prijmu
+            - pokud je v CreateIncomeItem IcnomeId=NULL, vytvori novy prijem
+            - pokud v payloadu nenajde nektery z jiz existujicich prijmu v databazi, tyto prijmy smaze
+            Pokud uzivatel zmeni v dropdownu typ prijmu, tento se bere jako novy prijem. Frontend tedy musi zajistit, aby se dany CreateIncomeItem odstranil z kolekce a vlozil se do nej novy s novym IncomeTypeId a IncomeId=NULL.<br/>
+            <i>DS:</i> SalesArrangementService/CreateIncome<br/>
+            <i>DS:</i> SalesArrangementService/DeleteIncome<br/>
+            <i>DS:</i> SalesArrangementService/UpdateIncomeBasicData
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <returns>ID noveho prijmu</returns>
@@ -239,6 +247,7 @@
             Update detailu prijmu customera
             </summary>
             <remarks>
+            Pouzit pro update detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
             <i>DS:</i> SalesArrangementService/UpdateIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
@@ -688,7 +697,7 @@
             <i>DS:</i> OfferService/SimulateMortgage
             </remarks>
             <param name="request">Nastaveni simulace.</param>
-            <returns>ID vytvorene simulace a jejich vysledky.</returns>
+            <returns>ID vytvorene simulace a jeji vysledky.</returns>
         </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.GetMortgageByOfferId(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -715,7 +724,8 @@
             Vytvoreni noveho pripadu (hypoteky) ze simulace.
             </summary>
             <remarks>
-            Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
+            Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
+            V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
             Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
             Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/>
             <i>DS:</i> OfferService/GetMortgageData<br/>

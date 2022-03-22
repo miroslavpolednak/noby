@@ -58,7 +58,8 @@ internal class CreateMortgageCaseHandler
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,
             OfferId = offerInstance.OfferId,
-            HouseholdId = householdId
+            HouseholdId = householdId,
+            CustomerOnSAId = createCustomerResult.CustomerOnSAId
         };
     }
 

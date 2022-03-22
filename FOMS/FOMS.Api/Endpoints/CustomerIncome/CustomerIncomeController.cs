@@ -10,7 +10,7 @@ public class CustomerIncomeController : ControllerBase
     /// Seznam prijmu pro daneho customera
     /// </summary>
     /// <remarks>
-    /// Vraci zakladni seznam prijmu bez detailu - pouze spolecne vlastnosti.<br/>
+    /// Vraci zakladni seznam prijmu bez detailu - pouze spolecne vlastnosti. Bude pouzito pro zobrazeni prijmu na detailu domacnosti<br/>
     /// <i>DS:</i> SalesArrangementService/GetIncomeList
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
@@ -26,6 +26,7 @@ public class CustomerIncomeController : ControllerBase
     /// Smazani prijmu customera
     /// </summary>
     /// <remarks>
+    /// Tento endpoint se v soucasne dobe asi pouzivat nebude.<br/>
     /// <i>DS:</i> SalesArrangementService/DeleteIncome
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
@@ -39,10 +40,17 @@ public class CustomerIncomeController : ControllerBase
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
-    /// Vytvoreni noveho prijmu customera
+    /// Update prijmu customera
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/CreateIncome
+    /// V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>
+    /// - pokud je v CreateIncomeItem vyplnen IncomeId, pokusi se updatovat zakladni data daneho prijmu
+    /// - pokud je v CreateIncomeItem IcnomeId=NULL, vytvori novy prijem
+    /// - pokud v payloadu nenajde nektery z jiz existujicich prijmu v databazi, tyto prijmy smaze
+    /// Pokud uzivatel zmeni v dropdownu typ prijmu, tento se bere jako novy prijem. Frontend tedy musi zajistit, aby se dany CreateIncomeItem odstranil z kolekce a vlozil se do nej novy s novym IncomeTypeId a IncomeId=NULL.<br/>
+    /// <i>DS:</i> SalesArrangementService/CreateIncome<br/>
+    /// <i>DS:</i> SalesArrangementService/DeleteIncome<br/>
+    /// <i>DS:</i> SalesArrangementService/UpdateIncomeBasicData
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <returns>ID noveho prijmu</returns>
@@ -57,6 +65,7 @@ public class CustomerIncomeController : ControllerBase
     /// Update detailu prijmu customera
     /// </summary>
     /// <remarks>
+    /// Pouzit pro update detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
     /// <i>DS:</i> SalesArrangementService/UpdateIncome
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
