@@ -29,7 +29,7 @@ internal class UpdateHouseholdHandler
         await _householdService.UpdateHousehold(householdRequest, cancellationToken);
 
         // hlavni domacnost - hlavni klient ma modre ID
-        if (customerId1.HasValue && household.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
+        if (customerId1.HasValue && household.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main)
         {
 
         }

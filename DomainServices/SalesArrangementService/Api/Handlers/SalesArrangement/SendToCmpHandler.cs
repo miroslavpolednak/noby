@@ -85,12 +85,12 @@ internal class SendToCmpHandler
             // pro EAS.Get_ContractNumber se jako ´clientId´ vezme ´CustomerOnSAId1´ z domácnosti ´Debtor´?
             // ... co když taková na SA není, nebo jich je naopak více?
             // ... co když je nalezen právě jedna domácnost, ale nemá vyplněné ´CustomerOnSAId1´?
-            if (!householdsByType.ContainsKey(CIS.Foms.Enums.HouseholdTypes.Debtor)) //opravit číselník (Main)
+            if (!householdsByType.ContainsKey(CIS.Foms.Enums.HouseholdTypes.Main)) //opravit číselník (Main)
             {
-                throw new CisValidationException(99999, $"Sales arrangement {request.SalesArrangementId} contains no household of type {CIS.Foms.Enums.HouseholdTypes.Debtor}."); //TODO: ErrorCode
+                throw new CisValidationException(99999, $"Sales arrangement {request.SalesArrangementId} contains no household of type {CIS.Foms.Enums.HouseholdTypes.Main}."); //TODO: ErrorCode
             }
 
-            var debtorHousehold = householdsByType[CIS.Foms.Enums.HouseholdTypes.Debtor].First();
+            var debtorHousehold = householdsByType[CIS.Foms.Enums.HouseholdTypes.Main].First();
 
             if (!debtorHousehold.CustomerOnSAId1.HasValue)
             {
@@ -125,7 +125,7 @@ internal class SendToCmpHandler
 
         // customerId???
         // get customer from customerOnSa with KB identity
-        var customerOnSAId = householdsByType.ContainsKey(CIS.Foms.Enums.HouseholdTypes.Debtor) ? householdsByType[CIS.Foms.Enums.HouseholdTypes.Debtor].First().CustomerOnSAId1 : null;
+        var customerOnSAId = householdsByType.ContainsKey(CIS.Foms.Enums.HouseholdTypes.Main) ? householdsByType[CIS.Foms.Enums.HouseholdTypes.Main].First().CustomerOnSAId1 : null;
         //var customerOnSAIdentity = customerOnSAId.HasValue ? new CIS.Infrastructure.gRPC.CisTypes.Identity(customerOnSAId, CIS.Foms.Enums.IdentitySchemes.Kb) : null;
         var customerOnSAIdentity = customerOnSAId.HasValue ? new CIS.Infrastructure.gRPC.CisTypes.Identity(customerOnSAId, CIS.Foms.Enums.IdentitySchemes.Unknown) : null;
 
@@ -336,7 +336,8 @@ internal class SendToCmpHandler
             // forma_splaceni =                                                                                                     // OfferInstance default = inkaso  ??? na offer zatím nemáme 
             // seznam_poplatku =                                                                                                    // OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci ??? na offer zatím nemáme
             seznam_ucelu = offerLoanPurposes,                                                                                       // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
-            //seznam_ucastniku =                                                                   // CustomerOnSA, Customer ???
+            // seznam_objektu =                                                                                                     // SalesArrangement - 0..3 ??? na SA zatím nemáme (chybí implementace ?)
+            // seznam_ucastniku =                                                                   // CustomerOnSA, Customer ???
 
             // zprostredkovano_3_stranou                                                                                            // SalesArrangement - dle typu Usera ???
             // sjednal_CPM = user.CPM,                                                                 // User
@@ -607,6 +608,17 @@ Pokud na entitě SalesArrangement není číslo smlouvy, pak proběhne provolán
         - vytáhnout z CustomerService obdobně jako u 'ClientId', avšak použít KB identitu z CustomerOnSA.Identities
 
     Notes: zajímá nás pouze hlavní domácnost a z ní CustomerOnSAId1
+    -------------------------------------------------------------------------------------------------------------
+
+    [Včera 9:32] Herych Jan EX          MPSS
+    getnout customera on SA pomoci CustomerOnSAId1
+
+    [Včera 9:32] Herych Jan EX          MPSS
+    zafiltrovat v jeho identitach na MP identitu
+
+    [Včera 9:33] Herych Jan EX          MPSS
+    a ID teto identity poslat do EAS jako partnerId
+
     -------------------------------------------------------------------------------------------------------------
 
  */

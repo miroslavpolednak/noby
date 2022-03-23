@@ -22,7 +22,7 @@ public sealed class CreateCustomerWithHouseholdService
         // pak vytvorim domacnost a rovnou ji navazu na pred tim vytvoreneho klienta
         int householdId = ServiceCallResult.Resolve<int>(await _householdService.CreateHousehold(new CreateHouseholdRequest
         {
-            HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Debtor,
+            HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
             SalesArrangementId = salesArrangementId,
             CustomerOnSAId1 = customerResult.CustomerOnSAId
         }, cancellationToken));

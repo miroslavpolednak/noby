@@ -10,15 +10,15 @@ public enum HouseholdTypes : byte
     [EnumMember]
     Unknown = 0,
     
-    [Display(Name = "Dlužník")]
+    [Display(Name = "Hlavní domácnost")]
     [EnumMember]
-    Debtor = 1,
+    Main = 1,
     
-    [Display(Name = "Spoludlužník")]
+    [Display(Name = "Spoludlužnická domácnost")]
     [EnumMember]
     Codebtor = 2,
     
-    [Display(Name = "Ručitel")]
+    [Display(Name = "Ručitelská domácnost")]
     [EnumMember]
     Garantor = 3
 }
