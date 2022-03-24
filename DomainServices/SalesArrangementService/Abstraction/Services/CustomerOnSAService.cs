@@ -54,7 +54,14 @@ internal class CustomerOnSAService : ICustomerOnSAServiceAbstraction
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken));
         return new SuccessfulServiceCallResult();
     }
-    
+
+    public async Task<IServiceCallResult> UpdateObligations(UpdateObligationsRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(UpdateObligations), request.CustomerOnSAId);
+        var result = await _userContext.AddUserContext(async () => await _service.UpdateObligationsAsync(request, cancellationToken: cancellationToken));
+        return new SuccessfulServiceCallResult();
+    }
+
     private readonly ILogger<CustomerOnSAService> _logger;
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;
     private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;

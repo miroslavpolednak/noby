@@ -87,6 +87,14 @@ public interface ISalesArrangementServiceAbstraction
     Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
+    /// Update parametru SA
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    Task<IServiceCallResult> UpdateSalesArrangementParameters(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
     /// Předání žádosti ke zpracování.
     /// </summary>
     /// <returns>

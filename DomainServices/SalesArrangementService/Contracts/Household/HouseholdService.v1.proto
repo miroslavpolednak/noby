@@ -14,6 +14,7 @@ import "GetIncomeList.proto";
 import "Income.proto";
 import "UpdateIncome.proto";
 import "UpdateIncomeBaseData.proto";
+import "LinkCustomerOnSAToHousehold.proto";
 
 service HouseholdService {
     rpc CreateHousehold (DomainServices.SalesArrangementService.CreateHouseholdRequest) returns (DomainServices.SalesArrangementService.CreateHouseholdResponse);
@@ -25,6 +26,8 @@ service HouseholdService {
     rpc GetHouseholdList (DomainServices.SalesArrangementService.GetHouseholdListRequest) returns (DomainServices.SalesArrangementService.GetHouseholdListResponse);
     
     rpc UpdateHousehold (DomainServices.SalesArrangementService.UpdateHouseholdRequest) returns (google.protobuf.Empty);
+
+    rpc LinkCustomerOnSAToHousehold (DomainServices.SalesArrangementService.LinkCustomerOnSAToHouseholdRequest) returns (google.protobuf.Empty);
 
     // income part -------------------------------------------------------
     rpc CreateIncome (DomainServices.SalesArrangementService.CreateIncomeRequest) returns (DomainServices.SalesArrangementService.CreateIncomeResponse);

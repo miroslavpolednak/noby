@@ -162,6 +162,7 @@
             - IdentificationDocumentTypes
             - Mandants
             - MaritalStatuses
+            - ObligationTypes
             - ProductTypes
             - LoanPurposes
             - ProductLoanKinds
@@ -227,7 +228,7 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.CreateIncomes(System.Int32,FOMS.Api.Endpoints.CustomerIncome.CreateIncomes.CreateIncomesRequest,System.Threading.CancellationToken)">
             <summary>
-            Update prijmu customera
+            Vytvoreni prijmu customera
             </summary>
             <remarks>
             V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>

@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "NullableGrpcDate.proto";
+
+message UpdateSalesArrangementParametersRequest {
+	int32 SalesArrangementId = 1;
+	
+	oneof Data {
+        SalesArrangementParametersMortgage Mortgage = 20;
+    }
+}
+
+message SalesArrangementParametersMortgage {
+	cis.types.NullableGrpcDate ExpectedDateOfDrawing = 1;
+	string IncomeCurrencyCode = 2;
+	string ResidencyCurrencyCode = 3;
+	int32 SignatureTypeId = 4;
+	repeated LoanRealEstate LoanRealEstates = 5;
+
+	message LoanRealEstate {
+		int32 RealEstateTypeId = 1;
+		bool IsCollateral = 2;
+		int32 RealEstatePurchaseTypeId = 3;
+	}
+}

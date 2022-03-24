@@ -113,4 +113,15 @@ public interface IHouseholdServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Nalinkovani customeru na Household
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID {CustomerOnSAId} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16022; Household ID {HouseholdId} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> LinkCustomerOnSAToHousehold(int householdId, int? customerOnSAId1, int? customerOnSAId2, CancellationToken cancellationToken = default(CancellationToken));
 }

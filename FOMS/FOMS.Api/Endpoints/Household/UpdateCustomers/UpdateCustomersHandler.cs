@@ -20,7 +20,8 @@ internal class UpdateCustomersHandler
         };
 
         // linkovani na household
-
+        if (householdInstance.CustomerOnSAId1 != response.CustomerOnSAId1 || householdInstance.CustomerOnSAId2 != response.CustomerOnSAId2)
+            await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, response.CustomerOnSAId1, response.CustomerOnSAId2, cancellationToken);
 
         return response;
     }
@@ -33,10 +34,15 @@ internal class UpdateCustomersHandler
         CancellationToken cancellationToken)
     {
         // smazat existujiciho
-        if ((customer is null || customer?.CustomerOnSAId.GetValueOrDefault() == 0 || customer?.CustomerOnSAId != householdCustomerId) && householdCustomerId.HasValue)
+        if ((customer is null || customer?.CustomerOnSAId.GetValueOrDefault() == 0) && householdCustomerId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
             return default(int?);
+        }
+        else if (customer?.CustomerOnSAId != householdCustomerId && customer?.CustomerOnSAId != null &&  householdCustomerId.HasValue)
+        {
+            await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
+            return customer.CustomerOnSAId;
         }
         // zalozit noveho
         else if (customer?.Identity?.Id > 0)
