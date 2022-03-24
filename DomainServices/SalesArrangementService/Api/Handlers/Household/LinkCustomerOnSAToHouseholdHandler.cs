@@ -15,10 +15,12 @@ internal class LinkCustomerOnSAToHouseholdHandler
             ?? throw new CisNotFoundException(16022, $"Household ID {request.Request.HouseholdId} does not exist.");
 
         // overeni existence customeru
-        if (request.Request.CustomerOnSAId1.HasValue && !_dbContext.Customers.Any(t => t.CustomerOnSAId == request.Request.CustomerOnSAId1))
-            throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId1} does not exist.");
-        if (request.Request.CustomerOnSAId2.HasValue && !_dbContext.Customers.Any(t => t.CustomerOnSAId == request.Request.CustomerOnSAId2))
-            throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId2} does not exist.");
+        if (request.Request.CustomerOnSAId1.HasValue 
+            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId1, cancellation))?.SalesArrangementId != householdEntity.SalesArrangementId)
+            throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId1} does not exist in this SA.");
+        if (request.Request.CustomerOnSAId2.HasValue
+            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId2, cancellation))?.SalesArrangementId != householdEntity.SalesArrangementId)
+            throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId2} does not exist in this SA.");
 
         householdEntity.CustomerOnSAId1 = request.Request.CustomerOnSAId1;
         householdEntity.CustomerOnSAId2 = request.Request.CustomerOnSAId2;

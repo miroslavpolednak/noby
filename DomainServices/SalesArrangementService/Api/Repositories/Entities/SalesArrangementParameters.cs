@@ -11,5 +11,5 @@ internal class SalesArrangementParameters
     public int SalesArrangementParametersId { get; set; }
 
     public int SalesArrangementId { get; set; }
-    public string? Parameteres { get; set; }
+    public string? Parameters { get; set; }
 }

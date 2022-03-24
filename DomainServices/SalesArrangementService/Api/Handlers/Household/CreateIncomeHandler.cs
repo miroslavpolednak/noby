@@ -21,7 +21,7 @@ internal class CreateIncomeHandler
             Sum = request.Request.BaseData?.Sum,
             CurrencyCode = request.Request.BaseData?.CurrencyCode,
             IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)request.Request.IncomeTypeId,
-            Data = JsonSerializer.Serialize(getDataObject(request.Request))
+            Data = JsonSerializer.Serialize(getDataObject(request.Request), GrpcHelpers.GrpcJsonSerializerOptions)
         };
 
         _dbContext.CustomersIncomes.Add(entity);

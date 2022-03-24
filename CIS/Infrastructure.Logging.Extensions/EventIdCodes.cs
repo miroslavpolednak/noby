@@ -17,4 +17,5 @@ public sealed class EventIdCodes
     public const int ValidationException = 513;
     public const int ItemFoundInCache = 514;
     public const int TryAddItemToCache = 515;
+    public const int LogSerializedObject = 516;
 }

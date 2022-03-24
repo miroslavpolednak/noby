@@ -38,10 +38,22 @@ internal class GetDetailHandler
         };
     }
 
-    static object? getParameters(_SA.SalesArrangement saInstance)
+    static SalesArrangement.Dto.ParametersMortgage? getParameters(_SA.SalesArrangement saInstance)
         => saInstance.ParametersCase switch
         {
-            _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage,
+            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangement.Dto.ParametersMortgage
+            {
+                SignatureTypeId = saInstance.Mortgage.SignatureTypeId,
+                ExpectedDateOfDrawing = saInstance.Mortgage.ExpectedDateOfDrawing,
+                IncomeCurrencyCode = saInstance.Mortgage.IncomeCurrencyCode,
+                ResidencyCurrencyCode = saInstance.Mortgage.ResidencyCurrencyCode,
+                LoanRealEstates = saInstance.Mortgage.LoanRealEstates is null ? null : saInstance.Mortgage.LoanRealEstates.Select(x => new SalesArrangement.Dto.ParametersMortgage.LoanRealEstate
+                {
+                    IsCollateral = x.IsCollateral,
+                    RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
+                    RealEstateTypeId = x.RealEstateTypeId
+                }).ToList()
+            },
             _ => throw new NotImplementedException()
         };
     

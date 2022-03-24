@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.SalesArrangementService.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -31,7 +32,7 @@ internal class GetCustomerHandler
             .Select(t => t.Obligations)
             .FirstOrDefaultAsync(cancellation);
         if (!string.IsNullOrEmpty(obligations))
-            customerInstance.Obligations.AddRange(System.Text.Json.JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations));
+            customerInstance.Obligations.AddRange(JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations, GrpcHelpers.GrpcJsonSerializerOptions));
 
         return customerInstance;
     }

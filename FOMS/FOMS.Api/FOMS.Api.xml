@@ -744,6 +744,16 @@
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nove vytvoreneho Case</returns>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.LinkModelation(FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Nalinkuje novou modelaci na stavajici SA.
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/GetSalesArrangement<br/>
+            <i>DS:</i> OfferService/LinkModelationToSalesArrangement
+            <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+            </remarks>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.ResourceProcessId">
             <summary>
             Unikatni identifikator pro session simulace.
@@ -962,8 +972,13 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Parameters">
             <summary>
-            Dalsi udaje o pripadu/uveru
+            Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
             </summary>
+            <remarks>
+            OneOf(
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
+            )
+            </remarks>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
             <summary>
@@ -994,7 +1009,39 @@
             Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns></returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateParameters(System.Int32,FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update ostatnich parametru produktu / uveru.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest.Parameters">
+            <summary>
+            Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
+            </summary>
+            <remarks>
+            OneOf(
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
+            )
+            </remarks>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.IncomeCurrencyCode">
+            <example>CZK</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.ResidencyCurrencyCode">
+            <example>CZK</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SignatureTypeId">
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.LoanRealEstate.RealEstateTypeId">
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.LoanRealEstate.IsCollateral">
+            <example>false</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.LoanRealEstate.RealEstatePurchaseTypeId">
+            <example>1</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>

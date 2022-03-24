@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement;
 
@@ -24,7 +25,7 @@ internal class UpdateSalesArrangementParametersHandler
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
         // naplnit parametry serializovanym objektem
-        entity.Parameteres = serializeParameters(request.Request);
+        entity.Parameters = serializeParameters(request.Request);
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -34,7 +35,7 @@ internal class UpdateSalesArrangementParametersHandler
     static string? serializeParameters(Contracts.UpdateSalesArrangementParametersRequest request)
         => request.DataCase switch
         {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : System.Text.Json.JsonSerializer.Serialize(request.Mortgage),
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : JsonSerializer.Serialize(request.Mortgage, options: GrpcHelpers.GrpcJsonSerializerOptions),
             _ => throw new NotImplementedException()
         };
 

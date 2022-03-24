@@ -35,7 +35,12 @@ public sealed class GetDetailResponse
     public object? Data { get; set; }
 
     /// <summary>
-    /// Dalsi udaje o pripadu/uveru
+    /// Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
     /// </summary>
-    public object? Parameters { get; set; }
+    /// <remarks>
+    /// OneOf(
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
+    /// )
+    /// </remarks>
+    public SalesArrangement.Dto.ParametersMortgage? Parameters { get; set; }
 }

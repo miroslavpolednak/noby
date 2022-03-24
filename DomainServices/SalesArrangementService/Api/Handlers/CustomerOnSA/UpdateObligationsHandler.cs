@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -34,7 +35,7 @@ internal class UpdateObligationsHandler
             };
             _dbContext.CustomersObligations.Add(obligationEntity);
         }
-        obligationEntity.Obligations = request.Request.Obligations is null ? null : System.Text.Json.JsonSerializer.Serialize(request.Request.Obligations!.ToList());
+        obligationEntity.Obligations = request.Request.Obligations is null ? null : JsonSerializer.Serialize(request.Request.Obligations!.ToList(), GrpcHelpers.GrpcJsonSerializerOptions);
 
         await _dbContext.SaveChangesAsync(cancellation);
 

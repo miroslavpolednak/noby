@@ -82,4 +82,19 @@ public class OfferController : ControllerBase
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
+
+    /// <summary>
+    /// Nalinkuje novou modelaci na stavajici SA.
+    /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> SalesArrangementService/GetSalesArrangement<br/>
+    /// <i>DS:</i> OfferService/LinkModelationToSalesArrangement
+    /// <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+    /// </remarks>
+    [HttpPut("mortgage/sales-arrangement/link")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Modelace Hypoteky" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
 }

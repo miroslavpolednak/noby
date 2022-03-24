@@ -52,7 +52,7 @@ GO
 CREATE TABLE [dbo].[SalesArrangementParameters](
 	[SalesArrangementParametersId] [int] IDENTITY(1,1) NOT NULL,
 	[SalesArrangementId] [int] NULL,
-	[Parameteres] [nvarchar](max) NULL,
+	[Parameters] [nvarchar](max) NULL,
 	[CreatedUserName] [nvarchar](100) NOT NULL,
 	[CreatedUserId] [int] NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,

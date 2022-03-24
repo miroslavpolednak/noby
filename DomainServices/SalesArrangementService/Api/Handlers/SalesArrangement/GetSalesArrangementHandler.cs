@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
@@ -17,11 +18,11 @@ internal class GetSalesArrangementHandler
         string? parameters = await _dbContext.SalesArrangementsParameters
             .AsNoTracking()
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .Select(t => t.Parameteres)
+            .Select(t => t.Parameters)
             .FirstOrDefaultAsync(cancellation);
 
         //TODO udelat rozdeleni podle typu produkt. Bude tady vubec rozdil mezi produkty?
-        model.Mortgage = System.Text.Json.JsonSerializer.Deserialize<_SA.SalesArrangementParametersMortgage>(parameters!);
+        model.Mortgage = JsonSerializer.Deserialize<_SA.SalesArrangementParametersMortgage>(parameters!, GrpcHelpers.GrpcJsonSerializerOptions);
 
         return model;
     }
