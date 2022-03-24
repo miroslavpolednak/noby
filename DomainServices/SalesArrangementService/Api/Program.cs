@@ -6,6 +6,7 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
+using DomainServices.UserService.Abstraction;
 
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
@@ -52,7 +53,8 @@ builder.Services
     .AddCaseService(true)
     .AddCodebookService(true)
     .AddOfferService(true)
-    .AddCustomerService(true);
+    .AddCustomerService(true)
+    .AddUserService(true);
 
 builder.AddSalesArrangementService(appConfiguration);
 
