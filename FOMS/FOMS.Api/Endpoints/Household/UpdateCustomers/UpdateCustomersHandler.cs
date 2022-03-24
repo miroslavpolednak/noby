@@ -45,7 +45,7 @@ internal class UpdateCustomersHandler
             _logger.EntityCreated(nameof(_SA.CustomerOnSA), createCustomerResult.CustomerOnSAId);
 
             // hlavni domacnost - hlavni klient ma modre ID
-            if (createCustomerResult.PartnerId.HasValue && householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
+            if (createCustomerResult.PartnerId.HasValue && householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main)
             {
                 var notification = new Notifications.CustomerFullyIdentifiedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customer.Identity, createCustomerResult.PartnerId.Value);
                 await _mediator.Publish(notification, cancellationToken);
