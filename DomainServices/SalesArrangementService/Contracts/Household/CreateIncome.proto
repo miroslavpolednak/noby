@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "IncomeShared.proto";
+
+message CreateIncomeRequest {
+    int32 CustomerOnSAId = 1;
+
+    int32 IncomeTypeId = 2;
+    
+    DomainServices.SalesArrangementService.IncomeBaseData BaseData = 3;
+    
+    oneof Data {
+        DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;
+        DomainServices.SalesArrangementService.IncomeDataOther Other = 21;
+    }
+}
+
+message CreateIncomeResponse {
+    int32 IncomeId = 1;
+}

@@ -1,56 +1,34 @@
 ﻿using DomainServices.CustomerService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.SalesArrangementService.Contracts;
-using Microsoft.Extensions.Logging;
+using FOMS.Services.CreateCustomer;
+using _Customer = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Services;
 
 [CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
-public sealed class CreateCustomerWithHouseholdService
+public sealed class CreateCustomerService
 {
-    /// <summary>
-    /// Vytvori novou domacnost a vychoziho klienta v domacnosti
-    /// </summary>
-    public async Task<(int HouseholdId, int CustomerOnSAId, int? PartnerId)> Create(int salesArrangementId, CreateCustomerWithHousehold.IClientInfo request, CancellationToken cancellationToken)
-    {
-        _logger.RequestHandlerStartedWithId(nameof(CreateCustomerWithHouseholdService), salesArrangementId);
-
-        // nejdriv vytvorim klienta
-        var customerResult = await createCustomer(salesArrangementId, request, cancellationToken);
-        _logger.EntityCreated(nameof(CustomerOnSA), customerResult.CustomerOnSAId);
-
-        // pak vytvorim domacnost a rovnou ji navazu na pred tim vytvoreneho klienta
-        int householdId = ServiceCallResult.Resolve<int>(await _householdService.CreateHousehold(new CreateHouseholdRequest
-        {
-            HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
-            SalesArrangementId = salesArrangementId,
-            CustomerOnSAId1 = customerResult.CustomerOnSAId
-        }, cancellationToken));
-        _logger.EntityCreated(nameof(Household), householdId);
-
-        return (householdId, customerResult.CustomerOnSAId, customerResult.PartnerId);
-    }
-
     /// <summary>
     /// Vytvoreni noveho CustomerOnSA.
     /// Pokud je klient identifikovany, dotahnou se jeho udaje z CM a propisou do CustomerOnSA.
     /// Pokud klient neni identifikovany, pouziji se jako zakladni identifikator udaje z FE - requestu
     /// </summary>
-    private async Task<(int CustomerOnSAId, int? PartnerId)> createCustomer(int salesArrangementId, CreateCustomerWithHousehold.IClientInfo request, CancellationToken cancellationToken)
+    public async Task<(int CustomerOnSAId, int? PartnerId)> Create(int salesArrangementId, IClientInfo request, CancellationToken cancellationToken)
     {
         CreateCustomerRequest createCustomerRequest;
         int? partnerId = default(int?);
 
-        if (request.Customer is null || request.Customer.Id == 0) // neidentifikovany klient
+        if (request.Identity is null || request.Identity?.Id == 0) // neidentifikovany klient
         {
             createCustomerRequest = createRequest(request, salesArrangementId);
         }
         else // identifikovany klient
         {
             //TODO co delat, kdyz ho nenajdu?
-            var customer = ServiceCallResult.Resolve<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
+            var customer = ServiceCallResult.Resolve<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
             {
-                Identity = request.Customer
+                Identity = request.Identity!
             }, cancellationToken));
 
             createCustomerRequest = createRequest(customer, salesArrangementId);
@@ -84,7 +62,7 @@ public sealed class CreateCustomerWithHouseholdService
     /// <summary>
     /// Vytvoreni requestu pro identifikovaneho klienta
     /// </summary>
-    private static CreateCustomerRequest createRequest(DomainServices.CustomerService.Contracts.CustomerResponse customer, int salesArrangementId)
+    private static CreateCustomerRequest createRequest(_Customer.CustomerResponse customer, int salesArrangementId)
     {
         var model = new CreateCustomerRequest
         {
@@ -102,7 +80,7 @@ public sealed class CreateCustomerWithHouseholdService
     /// <summary>
     /// Vytvoreni requestu pro zalozeni neidentifikovaneho klienta
     /// </summary>
-    private static CreateCustomerRequest createRequest(CreateCustomerWithHousehold.IClientInfo request, int salesArrangementId)
+    private static CreateCustomerRequest createRequest(IClientInfo request, int salesArrangementId)
         => new CreateCustomerRequest
         {
             SalesArrangementId = salesArrangementId,
@@ -116,11 +94,11 @@ public sealed class CreateCustomerWithHouseholdService
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ILogger<CreateCustomerWithHouseholdService> _logger;
+    private readonly ILogger<CreateCustomerService> _logger;
 
-    public CreateCustomerWithHouseholdService(
+    public CreateCustomerService(
         Eas.IEasClient easClient,
-        ILogger<CreateCustomerWithHouseholdService> logger, 
+        ILogger<CreateCustomerService> logger, 
         ICustomerOnSAServiceAbstraction customerOnSAService,
         IHouseholdServiceAbstraction householdService,
         ICustomerServiceAbstraction customerService)

@@ -26,4 +26,22 @@ internal class HouseholdService : Contracts.v1.HouseholdService.HouseholdService
     
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateHousehold(UpdateHouseholdRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateHouseholdMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<CreateIncomeResponse> CreateIncome(CreateIncomeRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.CreateIncomeMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteIncome(IncomeIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.DeleteIncomeMediatrRequest(request.IncomeId), context.CancellationToken);
+
+    public override async Task<Income> GetIncome(IncomeIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetIncomeMediatrRequest(request.IncomeId), context.CancellationToken);
+
+    public override async Task<GetIncomeListResponse> GetIncomeList(GetIncomeListRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetIncomeListMediatrRequest(request.CustomerOnSAId), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateIncome(UpdateIncomeRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateIncomeMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateIncomeBaseDataMediatrRequest(request), context.CancellationToken);
 }

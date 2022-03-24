@@ -13,7 +13,8 @@ internal static class SalesArrangementServiceRepositoryExpressions
             State = t.State,
             OfferId = t.OfferId,
             SalesArrangementTypeId = t.SalesArrangementTypeId,
-            ContractNumber = t.ContractNumber,
+            ContractNumber = t.ContractNumber ?? "",
+            RiskBusinessCaseId = t.RiskBusinessCaseId ?? "",
             ChannelId = t.ChannelId,
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
         };

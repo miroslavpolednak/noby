@@ -1,9 +1,9 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Contracts;
 
-namespace FOMS.Services.CreateProduct;
+namespace FOMS.Api.Notifications.Handlers;
 
-internal static class Extensions
+internal static class CreateProductExtensions
 {
     public static MortgageData ToDomainServiceRequest(this GetMortgageDataResponse offerData, int partnerId)
     {
@@ -21,4 +21,3 @@ internal static class Extensions
         return model;
     }
 }
-

@@ -10,7 +10,7 @@ internal class CreateHouseholdHandler
         _logger.RequestHandlerStarted(nameof(CreateHouseholdHandler));
         
         // check existing SalesArrangementId
-        await _saRepository.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
+        var saInstance = await _saRepository.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
         
         // check customer role
         if (!(await _codebookService.HouseholdTypes(cancellation)).Any(t => t.Id == request.Request.HouseholdTypeId))
@@ -24,6 +24,7 @@ internal class CreateHouseholdHandler
         var entity = new Repositories.Entities.Household
         {
             SalesArrangementId = request.Request.SalesArrangementId,
+            CaseId = saInstance.CaseId,
             HouseholdTypeId = (CIS.Foms.Enums.HouseholdTypes)request.Request.HouseholdTypeId,
             CustomerOnSAId1 = request.Request.CustomerOnSAId1,
             CustomerOnSAId2 = request.Request.CustomerOnSAId2,
@@ -36,7 +37,7 @@ internal class CreateHouseholdHandler
             OtherExpenseAmount = request.Request.Expenses?.OtherExpenseAmount
         };
 
-        int householdId = await _repository.CreateHousehold(entity, cancellation);
+        int householdId = await _repository.Create(entity, cancellation);
 
         _logger.EntityCreated(nameof(Repositories.Entities.Household), householdId);
         

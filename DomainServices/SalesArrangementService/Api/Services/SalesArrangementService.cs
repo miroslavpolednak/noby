@@ -12,6 +12,9 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
     public SalesArrangementService(IMediator mediator)
         => _mediator = mediator;
 
+    public override async Task<CreateRiskBusinessCaseResponse> CreateRiskBusinessCase(CreateRiskBusinessCaseRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.CreateRiskBusinessCaseMediatrRequest(request.SalesArrangementId), context.CancellationToken);
+
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateSalesArrangementMediatrRequest(request), context.CancellationToken);
 

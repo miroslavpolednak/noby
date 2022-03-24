@@ -13,6 +13,10 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     public int? OfferId { get; set; }
 
+    public Guid? ResourceProcessId { get; set; }
+
+    public string? RiskBusinessCaseId { get; set; }
+
     public int SalesArrangementTypeId { get; set; }
 
     public int State { get; set; }

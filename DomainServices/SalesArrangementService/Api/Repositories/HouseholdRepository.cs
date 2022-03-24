@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Repositories;
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class HouseholdRepository
 {
-    public async Task<int> CreateHousehold(Entities.Household entity, CancellationToken cancellation)
+    public async Task<int> Create(Entities.Household entity, CancellationToken cancellation)
     {
         _dbContext.Households.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
@@ -19,8 +19,6 @@ internal class HouseholdRepository
             .Where(t => t.HouseholdId == model.HouseholdId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {model.HouseholdId} does not exist.");
         
-        entity.CustomerOnSAId1 = model.CustomerOnSAId1;
-        entity.CustomerOnSAId2 = model.CustomerOnSAId2;
         entity.ChildrenOverTenYearsCount = model.Data?.ChildrenOverTenYearsCount;
         entity.ChildrenUpToTenYearsCount = model.Data?.ChildrenUpToTenYearsCount;
         entity.PropertySettlementId = model.Data?.PropertySettlementId;
@@ -46,7 +44,7 @@ internal class HouseholdRepository
             .Select(HouseholdRepositoryExpressions.HouseholdDetail())
             .ToListAsync(cancellation);
     
-    public async Task DeleteHousehold(int householdId, CancellationToken cancellation)
+    public async Task Delete(int householdId, CancellationToken cancellation)
     {
         var entity = await _dbContext.Households
             .Where(t => t.HouseholdId == householdId)

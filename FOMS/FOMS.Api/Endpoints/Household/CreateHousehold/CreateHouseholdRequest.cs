@@ -1,6 +1,4 @@
-﻿using CIS.Core.Validation;
-
-namespace FOMS.Api.Endpoints.Household.CreateHousehold;
+﻿namespace FOMS.Api.Endpoints.Household.CreateHousehold;
 
 public class CreateHouseholdRequest
     : IRequest<Dto.HouseholdInList>

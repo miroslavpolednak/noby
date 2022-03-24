@@ -16,7 +16,7 @@ public class OfferController : ControllerBase
     /// <i>DS:</i> OfferService/SimulateMortgage
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
-    /// <returns>ID vytvorene simulace a jejich vysledky.</returns>
+    /// <returns>ID vytvorene simulace a jeji vysledky.</returns>
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -60,7 +60,8 @@ public class OfferController : ControllerBase
     /// Vytvoreni noveho pripadu (hypoteky) ze simulace.
     /// </summary>
     /// <remarks>
-    /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA, Product (pokud je mozno).<br/>
+    /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
+    /// V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
     /// Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
     /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/>
     /// <i>DS:</i> OfferService/GetMortgageData<br/>

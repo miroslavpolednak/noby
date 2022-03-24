@@ -8,6 +8,12 @@ import "HouseholdIdRequest.proto";
 import "GetHouseholdList.proto";
 import "Household.proto";
 import "UpdateHousehold.proto";
+import "CreateIncome.proto";
+import "IncomeIdRequest.proto";
+import "GetIncomeList.proto";
+import "Income.proto";
+import "UpdateIncome.proto";
+import "UpdateIncomeBaseData.proto";
 
 service HouseholdService {
     rpc CreateHousehold (DomainServices.SalesArrangementService.CreateHouseholdRequest) returns (DomainServices.SalesArrangementService.CreateHouseholdResponse);
@@ -19,4 +25,17 @@ service HouseholdService {
     rpc GetHouseholdList (DomainServices.SalesArrangementService.GetHouseholdListRequest) returns (DomainServices.SalesArrangementService.GetHouseholdListResponse);
     
     rpc UpdateHousehold (DomainServices.SalesArrangementService.UpdateHouseholdRequest) returns (google.protobuf.Empty);
+
+    // income part -------------------------------------------------------
+    rpc CreateIncome (DomainServices.SalesArrangementService.CreateIncomeRequest) returns (DomainServices.SalesArrangementService.CreateIncomeResponse);
+
+    rpc UpdateIncome (DomainServices.SalesArrangementService.UpdateIncomeRequest) returns (google.protobuf.Empty);
+
+    rpc UpdateIncomeBaseData (DomainServices.SalesArrangementService.UpdateIncomeBaseDataRequest) returns (google.protobuf.Empty);
+
+    rpc DeleteIncome (DomainServices.SalesArrangementService.IncomeIdRequest) returns (google.protobuf.Empty);
+
+    rpc GetIncomeList (DomainServices.SalesArrangementService.GetIncomeListRequest) returns (DomainServices.SalesArrangementService.GetIncomeListResponse);
+
+    rpc GetIncome (DomainServices.SalesArrangementService.IncomeIdRequest) returns (DomainServices.SalesArrangementService.Income);
 }

@@ -18,6 +18,7 @@ public class CodebooksController : ControllerBase
     /// - ActionCodesSavingsLoan
     /// - CaseStates
     /// - Countries
+    /// - Currencies
     /// - CustomerRoles
     /// - FixedRatePeriods
     /// - Genders
@@ -27,6 +28,8 @@ public class CodebooksController : ControllerBase
     /// - ProductTypes
     /// - LoanPurposes
     /// - ProductLoanKinds
+    /// - RealEstateTypes
+    /// - RealEstatePurchaseTypes
     /// - SalesArrangementTypes
     /// - SignatureTypes
     /// </remarks>

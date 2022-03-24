@@ -9,10 +9,14 @@ internal class CreateHouseholdMediatrRequestValidator
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("13000");
-        
+            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("16010");
+
         RuleFor(t => t.Request.HouseholdTypeId)
             .GreaterThan(0)
-            .WithMessage("Household type must not be empty").WithErrorCode("0");
+            .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
+
+        RuleFor(t => t.Request.HouseholdTypeId)
+            .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
+            .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
     }
 }

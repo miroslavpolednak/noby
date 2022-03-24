@@ -7,7 +7,7 @@ internal class DeleteHouseholdHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(DeleteCustomerHandler), request.HouseholdId);
         
-        await _repository.DeleteHousehold(request.HouseholdId, cancellation);
+        await _repository.Delete(request.HouseholdId, cancellation);
         
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
