@@ -21,12 +21,16 @@ internal class GetAllHandler
     private async Task<GetAllResponseItem> fillCodebook(string code, string original, CancellationToken cancellationToken)
         => code switch
         {
+            "academicdegreesafter" => new(original, (await _codebooks.AcademicDegreesAfter(cancellationToken))),
+            "academicdegreesbefore" => new(original, (await _codebooks.AcademicDegreesBefore(cancellationToken))),
             "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings(cancellationToken)).Where(t => t.IsValid)),
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan(cancellationToken)).Where(t => t.IsValid)),
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
+            "contacttypes" => new(original, await _codebooks.ContactTypes(cancellationToken)),
             "countries" => new(original, await _codebooks.Countries(cancellationToken)),
             "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
+            "educationlevels" => new(original, await _codebooks.EducationLevels(cancellationToken)),
             "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),

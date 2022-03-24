@@ -14,12 +14,16 @@ public class CodebooksController : ControllerBase
     /// <remarks>
     /// Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
     /// Aktualne implementovane ciselniky jsou:
+    /// - AcademicDegreesAfter
+    /// - AcademicDegreesBefore
     /// - ActionCodesSavings
     /// - ActionCodesSavingsLoan
     /// - CaseStates
+    /// - ContactTypes
     /// - Countries
     /// - Currencies
     /// - CustomerRoles
+    /// - EducationLevels
     /// - FixedRatePeriods
     /// - Genders
     /// - IdentificationDocumentTypes

@@ -11,7 +11,7 @@
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"OfferId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/LinkModelationToSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"ContractNumber\":\"123456789\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/SendToCmp
-        grpcurl -insecure -d "{\"SalesArrangementId\":2,\"Mortgage\":{\"IncomeCurrencyCode\":\"CZK\",\"SignatureTypeId\":1}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementParameters
+        grpcurl -insecure -d "{\"SalesArrangementId\":2,\"Mortgage\":{\"IncomeCurrencyCode\":\"CZK\",\"ResidencyCurrencyCode\":\"CZK\",\"SignatureTypeId\":1}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementParameters
 
         grpcurl -insecure -d "{\"SalesArrangementId\":1,\"CustomerIdentifiers\":{\"identityId\":1,\"identityScheme\":1},\"CustomerRoleId\":1,\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/CreateCustomer
         grpcurl -insecure -d "{\"CustomerOnSAId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/DeleteCustomer

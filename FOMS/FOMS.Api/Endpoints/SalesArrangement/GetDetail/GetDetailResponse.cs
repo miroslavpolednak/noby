@@ -33,4 +33,9 @@ public sealed class GetDetailResponse
     /// Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
     /// </summary>
     public object? Data { get; set; }
+
+    /// <summary>
+    /// Dalsi udaje o pripadu/uveru
+    /// </summary>
+    public object? Parameters { get; set; }
 }

@@ -21,6 +21,7 @@
 	  <None Remove="Household\LinkCustomerOnSAToHousehold.proto" />
 	  <None Remove="Household\UpdateIncome.proto" />
 	  <None Remove="Household\UpdateIncomeBaseData.proto" />
+	  <None Remove="SalesArrangement\SalesArrangementParameters.proto" />
 	  <None Remove="SalesArrangement\UpdateSalesArrangementParameters.proto" />
 	</ItemGroup>
 
@@ -75,6 +76,7 @@
 		<Protobuf Include="SalesArrangement/GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/SendToCmp.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/CreateRiskBusinessCase.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangement\SalesArrangementParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement\UpdateSalesArrangementParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 

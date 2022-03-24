@@ -151,12 +151,16 @@
             <remarks>
             Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
             Aktualne implementovane ciselniky jsou:
+            - AcademicDegreesAfter
+            - AcademicDegreesBefore
             - ActionCodesSavings
             - ActionCodesSavingsLoan
             - CaseStates
+            - ContactTypes
             - Countries
             - Currencies
             - CustomerRoles
+            - EducationLevels
             - FixedRatePeriods
             - Genders
             - IdentificationDocumentTypes
@@ -954,6 +958,11 @@
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Data">
             <summary>
             Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Parameters">
+            <summary>
+            Dalsi udaje o pripadu/uveru
             </summary>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
