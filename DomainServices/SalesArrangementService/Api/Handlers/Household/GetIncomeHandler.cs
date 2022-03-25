@@ -1,5 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
 
@@ -31,7 +32,7 @@ internal class GetIncomeHandler
             switch (entity.IncomeTypeId)
             {
                 case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
-                    model.Employement = System.Text.Json.JsonSerializer.Deserialize<IncomeDataEmployement>(entity.Data!);
+                    model.Employement = JsonSerializer.Deserialize<IncomeDataEmployement>(entity.Data!, GrpcHelpers.GrpcJsonSerializerOptions);
                     break;
                 default:
                     throw new NotImplementedException("This customer income type deserializer is not implemented");

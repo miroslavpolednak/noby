@@ -55,6 +55,18 @@ internal class HouseholdService : IHouseholdServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
+    public async Task<IServiceCallResult> LinkCustomerOnSAToHousehold(int householdId, int? customerOnSAId1, int? customerOnSAId2, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(LinkCustomerOnSAToHousehold), householdId);
+        var result = await _userContext.AddUserContext(async () => await _service.LinkCustomerOnSAToHouseholdAsync(new LinkCustomerOnSAToHouseholdRequest
+        {
+            HouseholdId = householdId,
+            CustomerOnSAId1 = customerOnSAId1,
+            CustomerOnSAId2 = customerOnSAId2,
+        }, cancellationToken: cancellationToken));
+        return new SuccessfulServiceCallResult();
+    }
+
     #region Income
     public async Task<IServiceCallResult> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {

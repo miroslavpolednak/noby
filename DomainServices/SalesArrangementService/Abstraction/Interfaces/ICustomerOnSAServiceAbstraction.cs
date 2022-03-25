@@ -46,7 +46,7 @@ public interface ICustomerOnSAServiceAbstraction
     Task<IServiceCallResult> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
     
     /// <summary>
-    /// Update dat o domacnosti
+    /// Update dat o customerovi
     /// </summary>
     /// <returns>
     /// SuccessfulServiceCallResult - OK;
@@ -54,4 +54,14 @@ public interface ICustomerOnSAServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update zavazku customera
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult - OK;
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> UpdateObligations(UpdateObligationsRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -44,14 +44,23 @@ public class SalesArrangementController : ControllerBase
     /// Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns></returns>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
-    
+
+    /// <summary>
+    /// Update ostatnich parametru produktu / uveru.
+    /// </summary>
+    [HttpPut("{salesArrangementId:int}/parameters")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request.InfuseId(salesArrangementId), cancellationToken);
+
     private readonly IMediator _mediator;
     public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
 }

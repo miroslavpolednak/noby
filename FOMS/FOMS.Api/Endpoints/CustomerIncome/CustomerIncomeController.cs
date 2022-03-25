@@ -40,7 +40,7 @@ public class CustomerIncomeController : ControllerBase
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
-    /// Update prijmu customera
+    /// Vytvoreni prijmu customera
     /// </summary>
     /// <remarks>
     /// V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>

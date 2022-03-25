@@ -1,4 +1,3 @@
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.SalesArrangementService.Api;

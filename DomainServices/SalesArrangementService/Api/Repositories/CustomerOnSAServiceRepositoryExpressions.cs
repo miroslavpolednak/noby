@@ -10,7 +10,7 @@ internal static class CustomerOnSAServiceRepositoryExpressions
         {
             CustomerOnSAId = t.CustomerOnSAId,
             Name = t.Name,
-            FirstNameNaturalPerson = t.Name,
+            FirstNameNaturalPerson = t.FirstNameNaturalPerson,
             DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
             SalesArrangementId = t.SalesArrangementId,
             CustomerRoleId = (int)t.CustomerRoleId

@@ -36,23 +36,6 @@ internal class CustomerOnSAServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
     
-    public async Task<Contracts.CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellation)
-    {
-        var model = await _dbContext.Customers
-            .Where(t => t.CustomerOnSAId == customerOnSAId)
-            .AsNoTracking()
-            .Select(CustomerOnSAServiceRepositoryExpressions.CustomerDetail())
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {customerOnSAId} does not exist.");
-
-        var identities = await _dbContext.CustomersIdentities
-            .Where(t => t.CustomerOnSAId == customerOnSAId)
-            .AsNoTracking()
-            .ToListAsync(cancellation);
-        model.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.Id, t.IdentityScheme)));
-        
-        return model;
-    }
-
     public async Task<List<Contracts.CustomerOnSA>> GetList(int salesArrangementId, CancellationToken cancellation)
     {
         var model = await _dbContext.Customers

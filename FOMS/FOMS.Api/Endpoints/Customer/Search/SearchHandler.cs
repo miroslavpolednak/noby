@@ -17,8 +17,11 @@ internal class SearchHandler
             .EnsureAndTranslateSortFields(sortingMapper)
             .SetDefaultSort("LastName", true);
 
+        var dsRequest = request.SearchData?.ToDomainServiceRequest() ?? new contracts.SearchCustomersRequest();
+        _logger.LogSerializedObject(nameof(dsRequest), dsRequest);
+
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = ServiceCallResult.Resolve<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(request.SearchData?.ToDomainServiceRequest() ?? new contracts.SearchCustomersRequest(), cancellationToken));
+        var result = ServiceCallResult.Resolve<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
         _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomerResult));
 
         // transform

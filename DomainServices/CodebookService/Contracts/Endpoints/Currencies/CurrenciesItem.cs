@@ -9,11 +9,9 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.Currencies
         public string Code { get; set; }
 
         [DataMember(Order = 2)]
-        [JsonIgnore]
         public bool AllowedForIncomeCurrency { get; set; }
 
         [DataMember(Order = 3)]
-        [JsonIgnore]
         public bool AllowedForResidencyCurrency { get; set; }
 
         [DataMember(Order = 4)]

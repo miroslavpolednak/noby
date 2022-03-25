@@ -1,5 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Api.Repositories.Entities;
 using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.CustomerService.Abstraction;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -19,6 +20,17 @@ internal class CreateCustomerHandler
             throw new CisArgumentException(16021, $"CustomerRoleId {request.Request.CustomerRoleId} does not exist.", "CustomerRoleId");
 #pragma warning restore CA2208
         
+        // zkontrolovat zda customer existuje pokud ma danou identitu
+        if (request.Request.CustomerIdentifiers is not null && request.Request.CustomerIdentifiers.Any())
+        {
+            //TODO nepotrebuju asi cely detail, tak by stacila nejaka metoda CustomerExists? Nebo mam propsat udaje z CM nize do CustomerOnSA?
+            // pokud klient neexistuje, mela by CustomerService vyhodit vyjimku
+            await _customerService.GetCustomerDetail(new CustomerService.Contracts.CustomerRequest
+            {
+                Identity = request.Request.CustomerIdentifiers.First()
+            }, cancellation);
+        }
+
         // ulozit customera do databaze
         var entity = new Repositories.Entities.CustomerOnSA
         {
@@ -41,15 +53,18 @@ internal class CreateCustomerHandler
     
     private readonly Repositories.CustomerOnSAServiceRepository _repository;
     private readonly Repositories.SalesArrangementServiceRepository _saRepository;
+    private readonly ICustomerServiceAbstraction _customerService;
     private readonly ILogger<CreateCustomerHandler> _logger;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     
     public CreateCustomerHandler(
+        ICustomerServiceAbstraction customerService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Repositories.CustomerOnSAServiceRepository repository,
         Repositories.SalesArrangementServiceRepository saRepository,
         ILogger<CreateCustomerHandler> logger)
     {
+        _customerService = customerService;
         _codebookService = codebookService;
         _repository = repository;
         _saRepository = saRepository;

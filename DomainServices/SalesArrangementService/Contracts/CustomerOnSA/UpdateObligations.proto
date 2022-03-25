@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "CustomerObligation.proto";
+
+message UpdateObligationsRequest {
+    int32 CustomerOnSAId = 1;
+
+    repeated CustomerObligation Obligations = 2;
+}

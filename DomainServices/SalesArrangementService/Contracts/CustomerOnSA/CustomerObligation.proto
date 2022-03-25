@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Mandants.proto";
+
+message CustomerObligation {
+    google.protobuf.Int32Value ObligationTypeId = 1;
+
+    google.protobuf.Int32Value LoanPaymentAmount = 2;
+
+    google.protobuf.Int32Value RemainingLoanPrincipal = 3;
+
+    google.protobuf.Int32Value CreditCardLimit = 4;
+
+    cis.types.Mandants ObligationCreditor = 5;
+
+    int32 ObligationState  = 6;
+}

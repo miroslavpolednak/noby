@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CodebookService.Abstraction;
-using SaContracts = DomainServices.SalesArrangementService.Contracts;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail;
 
@@ -13,7 +13,7 @@ internal class GetDetailHandler
         _logger.RequestHandlerStartedWithId(nameof(GetDetailHandler), request.SalesArrangementId);
 
         // instance SA
-        var saInstance = ServiceCallResult.Resolve<SaContracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // kategorie produktu
         int? productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId).ProductTypeId
@@ -33,9 +33,29 @@ internal class GetDetailHandler
             ProductCategory = productCategory,
             CreatedBy = saInstance.Created.UserName,
             CreatedTime = saInstance.Created.DateTime,
-            Data = detailData
+            Data = detailData,
+            Parameters = getParameters(saInstance)
         };
     }
+
+    static SalesArrangement.Dto.ParametersMortgage? getParameters(_SA.SalesArrangement saInstance)
+        => saInstance.ParametersCase switch
+        {
+            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangement.Dto.ParametersMortgage
+            {
+                SignatureTypeId = saInstance.Mortgage.SignatureTypeId,
+                ExpectedDateOfDrawing = saInstance.Mortgage.ExpectedDateOfDrawing,
+                IncomeCurrencyCode = saInstance.Mortgage.IncomeCurrencyCode,
+                ResidencyCurrencyCode = saInstance.Mortgage.ResidencyCurrencyCode,
+                LoanRealEstates = saInstance.Mortgage.LoanRealEstates is null ? null : saInstance.Mortgage.LoanRealEstates.Select(x => new SalesArrangement.Dto.ParametersMortgage.LoanRealEstate
+                {
+                    IsCollateral = x.IsCollateral,
+                    RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
+                    RealEstateTypeId = x.RealEstateTypeId
+                }).ToList()
+            },
+            _ => throw new NotImplementedException()
+        };
     
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;

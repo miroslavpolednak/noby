@@ -13,6 +13,7 @@ import "GetSalesArrangementByOfferId.proto";
 import "UpdateSalesArrangement.proto";
 import "SendToCmp.proto";
 import "CreateRiskBusinessCase.proto";
+import "UpdateSalesArrangementParameters.proto";
 
 service SalesArrangementService {
 	// RIP
@@ -41,4 +42,6 @@ service SalesArrangementService {
 
 	// predani ke zpracovani
 	rpc SendToCmp (DomainServices.SalesArrangementService.SendToCmpRequest) returns (google.protobuf.Empty);
+
+	rpc UpdateSalesArrangementParameters (DomainServices.SalesArrangementService.UpdateSalesArrangementParametersRequest) returns (google.protobuf.Empty);
 }

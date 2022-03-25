@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
+import "SalesArrangementParameters.proto";
 
 message SalesArrangement {
 	int32 SalesArrangementId = 1;
@@ -29,4 +30,8 @@ message SalesArrangement {
 	int32 ChannelId = 8;
 
 	string RiskBusinessCaseId = 9;
+
+	oneof Parameters {
+        DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 20;
+    }
 }

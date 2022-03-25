@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using Grpc.Core;
+using System.Text.Json;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -43,5 +44,14 @@ public static class GrpcHelpers
             return true;
         }
         return false;
+    }
+
+    public static JsonSerializerOptions GrpcJsonSerializerOptions { get; private set; }
+
+    static GrpcHelpers()
+    {
+        GrpcJsonSerializerOptions = new JsonSerializerOptions();
+        GrpcJsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        GrpcJsonSerializerOptions.AddProtobufSupport();
     }
 }

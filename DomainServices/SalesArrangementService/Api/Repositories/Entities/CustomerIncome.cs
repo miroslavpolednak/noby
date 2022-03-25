@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.SalesArrangementService.Api.Repositories.Entities;
 
 [Table("CustomerIncome", Schema = "dbo")]
-internal class CustomerIncome : CIS.Core.Data.BaseCreatedWithModifiedUserId
+internal class CustomerIncome 
+    : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int CustomerIncomeId { get; set; }

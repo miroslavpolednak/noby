@@ -36,4 +36,5 @@ public class CustomerInHousehold
     /// <example>2002-01-01T00:00:00.000Z</example>
     public DateTime? DateOfBirth { get; set; }
     
+    public List<Dto.CustomerObligation>? Obligations { get; set; }
 }

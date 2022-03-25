@@ -1,4 +1,6 @@
-﻿using contracts = DomainServices.SalesArrangementService.Contracts;
+﻿using Google.Protobuf.Collections;
+using System.Linq.Expressions;
+using contracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.GetHousehold;
 
@@ -14,14 +16,22 @@ internal static class Extensions
 
     public static Dto.CustomerInHousehold? ToApiResponse(this contracts.CustomerOnSA model)
         => new Dto.CustomerInHousehold()
+        {
+            CustomerOnSAId = model.CustomerOnSAId,
+            Identities = null,
+            FirstName = model.FirstNameNaturalPerson,
+            LastName = model.Name,
+            DateOfBirth = model.DateOfBirthNaturalPerson,
+            RoleId = model.CustomerRoleId,
+            Obligations = model.Obligations is null ? null : model.Obligations.Select(x => new Dto.CustomerObligation
             {
-                CustomerOnSAId = model.CustomerOnSAId,
-                Identities = null,
-                FirstName = model.FirstNameNaturalPerson,
-                LastName = model.Name,
-                DateOfBirth = model.DateOfBirthNaturalPerson,
-                RoleId = model.CustomerRoleId
-            };
+                CreditCardLimit = x.CreditCardLimit,
+                LoanPaymentAmount = x.LoanPaymentAmount,
+                ObligationCreditor = (CIS.Foms.Enums.Mandants)(int)x.ObligationCreditor,
+                ObligationTypeId = x.ObligationTypeId,
+                RemainingLoanPrincipal = x.RemainingLoanPrincipal
+            }).ToList()
+        };
 
     static Dto.HouseholdExpenses? mapExpenses(this contracts.Expenses model)
         => new Dto.HouseholdExpenses()
