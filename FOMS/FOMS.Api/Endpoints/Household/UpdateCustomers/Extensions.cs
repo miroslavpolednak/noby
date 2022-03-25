@@ -15,4 +15,17 @@ internal static class Extensions
             ObligationState = 1
         })
         .ToList();
+
+    public static CustomerOnSABase ToDomainServiceRequest(this CustomerDto customer)
+    {
+        var model = new CustomerOnSABase
+        {
+            DateOfBirthNaturalPerson = customer.DateOfBirth,
+            FirstNameNaturalPerson = customer.FirstName,
+            Name = customer.LastName
+        };
+        if (customer.Identity is not null)
+            model.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.Identity));
+        return model;
+    }
 }

@@ -7,7 +7,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// <summary>
     /// Vytvoreni noveho klienta
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="int" /> (CustomerOnSAId)</returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="CreateCustomerResponse" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16021; CustomerRoleId does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
@@ -40,7 +40,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// <summary>
     /// Update dat o customerovi
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="UpdateCustomerResponse"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));

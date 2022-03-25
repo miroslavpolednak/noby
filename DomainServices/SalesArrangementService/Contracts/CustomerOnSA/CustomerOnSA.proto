@@ -28,3 +28,13 @@ message CustomerOnSA {
 
     repeated IncomeInList Incomes = 10;
 }
+
+message CustomerOnSABase {
+    repeated cis.types.Identity CustomerIdentifiers = 1;
+    
+    string FirstNameNaturalPerson = 2;
+    
+    string Name = 3;
+    
+    cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 4;
+}

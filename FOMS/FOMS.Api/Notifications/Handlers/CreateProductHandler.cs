@@ -9,11 +9,12 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 namespace FOMS.Api.Notifications.Handlers;
 
 internal class CreateProductHandler
-    : INotificationHandler<CustomerFullyIdentifiedNotification>
+    : INotificationHandler<MainCustomerUpdatedNotification>
 {
-    public async Task Handle(CustomerFullyIdentifiedNotification notification, CancellationToken cancellationToken)
+    public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateRiskBusinessCaseHandler), notification.SalesArrangementId);
+        if (!notification.NewMpCustomerId.HasValue) return;
 
         // detail SA
         var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
@@ -27,7 +28,7 @@ internal class CreateProductHandler
             .First(t => t.Id == productType)
             .ProductCategory;
 
-        long productId = await createProduct(notification.CaseId, saInstance.OfferId!.Value, productCategory, notification.NewMpCustomerId, cancellationToken);
+        long productId = await createProduct(notification.CaseId, saInstance.OfferId!.Value, productCategory, notification.NewMpCustomerId.Value, cancellationToken);
 
         _logger.EntityCreated(nameof(_Product.Product), productId);
     }

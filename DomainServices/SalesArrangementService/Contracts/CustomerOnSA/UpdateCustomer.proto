@@ -5,21 +5,16 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
+import "CustomerOnSA.proto";
 
 message UpdateCustomerRequest {
     int32 CustomerOnSAId = 1;
     
-    repeated cis.types.Identity CustomerIdentifiers = 2;
-    
-    int32 CustomerRoleId = 3;
-    
-    string FirstNameNaturalPerson = 4;
-    
-    string Name = 5;
-    
-    cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 6;
+    CustomerOnSABase Customer = 2;
 }
 
 message UpdateCustomerResponse {
     google.protobuf.Int32Value PartnerId = 1;
+
+    repeated cis.types.Identity CustomerIdentifiers = 2;
 }

@@ -67,34 +67,50 @@ internal class UpdateCustomersHandler
         CancellationToken cancellationToken)
     {
         // smazat existujiciho, neni misto nej zadny novy
-        if ((customer is null || customer?.CustomerOnSAId.GetValueOrDefault() == 0) && householdCustomerId.HasValue)
+        if ((customer is null || customer.CustomerOnSAId.GetValueOrDefault() == 0) && householdCustomerId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
             return default(int?);
         }
-        // smazat existujiciho, je nahrazen novym
-        else if (customer?.CustomerOnSAId != householdCustomerId && customer?.CustomerOnSAId != null &&  householdCustomerId.HasValue)
+        else if (customer is not null)
         {
-            await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
-            return customer.CustomerOnSAId;
-        }
-        // zalozit noveho
-        else if (customer?.Identity?.Id > 0)
-        {
-            var createCustomerResult = await _createCustomerService.Create(householdInstance.SalesArrangementId, customer, cancellationToken);
-            _logger.EntityCreated(nameof(_SA.CustomerOnSA), createCustomerResult.CustomerOnSAId);
+            int? newMpId = null;
+            int? customerId = customer.CustomerOnSAId;
+
+            // smazat existujiciho, je nahrazen novym
+            if (customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue)
+                await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
+
+            // update stavajiciho
+            if (customer.CustomerOnSAId.HasValue)
+            {
+                newMpId = ServiceCallResult.Resolve<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                {
+                    CustomerOnSAId = customer.CustomerOnSAId!.Value,
+                    Customer = customer.ToDomainServiceRequest()
+                }, cancellationToken)).PartnerId;
+            }
+            else // vytvoreni noveho
+            {
+                var createResult = ServiceCallResult.Resolve<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _SA.CreateCustomerRequest
+                {
+                    SalesArrangementId = householdInstance.SalesArrangementId,
+                    Customer = customer.ToDomainServiceRequest()
+                }, cancellationToken));
+                newMpId = createResult.PartnerId;
+                customerId = createResult.CustomerOnSAId;
+            }
 
             // hlavni domacnost - hlavni klient ma modre ID
-            if (createCustomerResult.PartnerId.HasValue && householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
+            if (customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Debtor)
             {
-                var notification = new Notifications.CustomerFullyIdentifiedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customer.Identity, createCustomerResult.PartnerId.Value);
+                var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customerId!.Value, newMpId);
                 await _mediator.Publish(notification, cancellationToken);
             }
 
-            return createCustomerResult.CustomerOnSAId;
+            return customerId;
         }
-
-        return customer?.CustomerOnSAId;
+        return null;
     }
 
     private readonly CreateCustomerService _createCustomerService;

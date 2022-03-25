@@ -1,5 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Api.Repositories.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
@@ -16,40 +15,35 @@ internal class UpdateCustomerHandler
             .Include(t => t.Identities)
             .Where(t => t.CustomerOnSAId == request.Request.CustomerOnSAId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId} does not exist.");
-        int? newMpIdentityId = null;
 
         // jestlize uz ma nejakou identitu, neni co menit - asi vyhod chybu? Nebo ne?
-        if (entity.Identities.Any())
-        {
+        if (entity.Identities is not null && entity.Identities.Any())
+            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 0);
 
-        }
-
-        entity.CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)request.Request.CustomerRoleId;
-        entity.FirstNameNaturalPerson = request.Request.FirstNameNaturalPerson;
-        entity.Name = request.Request.Name;
-        entity.DateOfBirthNaturalPerson = request.Request.DateOfBirthNaturalPerson;
-
-        if (request.Request.CustomerIdentifiers is not null && request.Request.CustomerIdentifiers.Any())
-        {
-            entity.Identities = new List<CustomerOnSAIdentity>();
-            entity.Identities.AddRange(request.Request.CustomerIdentifiers.Select(t => new CustomerOnSAIdentity(t, request.Request.CustomerOnSAId)));
-        }
+        // updatovat entitu udaji z requestu, pripadne dotahnout z CM. Zajistit nove MP ID.
+        var result = await _identifyCustomerService.FillEntity(entity, request.Request.Customer, cancellation);
 
         await _dbContext.SaveChangesAsync(cancellation);
 
-        return new _SA.UpdateCustomerResponse
+        var model = new _SA.UpdateCustomerResponse
         {
-            PartnerId = newMpIdentityId
+            PartnerId = result.PartnerId
         };
+        if (result.Identities is not null)
+            model.CustomerIdentifiers.AddRange(result.Identities);
+        return model;
     }
-    
+
+    private readonly Shared.IdentifyCustomerService _identifyCustomerService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly ILogger<UpdateCustomerHandler> _logger;
     
     public UpdateCustomerHandler(
+        Shared.IdentifyCustomerService identifyCustomerService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         ILogger<UpdateCustomerHandler> logger)
     {
+        _identifyCustomerService = identifyCustomerService;
         _dbContext = dbContext;
         _logger = logger;
     }
