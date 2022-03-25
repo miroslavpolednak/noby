@@ -59,4 +59,9 @@ internal sealed class MockEasClient : IEasClient
     {
         return await Task.FromResult(new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse() { Id = 123 }));
     }
+
+    public async Task<IServiceCallResult> GetContractNumber(int clientId, int caseId)
+    {
+        return new SuccessfulServiceCallResult<string>( $"{clientId}_{caseId}");
+    }
 }

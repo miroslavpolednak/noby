@@ -40,4 +40,12 @@ public interface IEasClient
     /// SuccessfulServiceCallResult[CreateNewClientResponse]
     /// </returns>
     Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData);
+
+    /// <summary>
+    /// Vrací číslo smlouvy podle klienta a případu (case)
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[ContractNrResponse]
+    /// </returns>
+    Task<IServiceCallResult> GetContractNumber(int clientId, int caseId);
 }
