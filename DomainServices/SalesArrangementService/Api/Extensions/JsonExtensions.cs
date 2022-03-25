@@ -30,9 +30,25 @@ internal static class JsonExtensions
     {
         return value.ToString(FormatDate, CultureInfo.InvariantCulture);
     }
+    public static string? ToJsonString(this DateTime? value)
+    {
+        return value.HasValue ? value.Value.ToJsonString() : null;
+    }
+
+    public static string? ToJsonString(this CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate value)
+    {
+        return ((DateTime?)value).ToJsonString();
+    }
+
     public static string ToJsonString(this bool value)
     {
         return value ? "1" : "0";
+    }
+
+
+    public static string ToCode(this CIS.Infrastructure.gRPC.CisTypes.Identity identity)
+    {
+        return $"{identity.IdentityScheme}|{identity.IdentityId}";
     }
 
 }

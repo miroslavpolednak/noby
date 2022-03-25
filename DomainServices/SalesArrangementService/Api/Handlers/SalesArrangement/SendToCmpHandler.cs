@@ -6,6 +6,7 @@ using Grpc.Core;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.CisTypes;
 
+using DomainServices.CodebookService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.CaseService.Contracts;
 using DomainServices.OfferService.Contracts;
@@ -30,6 +31,8 @@ internal class SendToCmpHandler
     : IRequestHandler<Dto.SendToCmpMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     #region Construction
+
+    private static readonly string StringJoinSeparator = ",";
 
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ICaseServiceAbstraction _caseService;
@@ -80,51 +83,49 @@ internal class SendToCmpHandler
             throw new CisArgumentException(1, $"SalesArrangementTypeId '{arrangement.SalesArrangementTypeId}' doesn't match ProductTypeCategory '{ProductTypeCategory.Mortgage}'.", nameof(request));
         }
 
+        // TODO: Některé validace se týkají pouze DROPu 1 !!!
+
+        // load customers on SA and validate them
+        var customersOnSa = (await _mediator.Send(new Dto.GetCustomerListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Customers.ToList();
+        // CheckCustomersOnSA(customersOnSa);   //TODO: validace vypnuta, neboť není implementováno vytváření MP identity při UpdateCustomerOnSA !!!
+
         // load households and validate them
         var households = (await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Households.ToList();
         var householdTypesById = (await _codebookService.HouseholdTypes(cancellation)).ToDictionary(i => i.Id);
-        CheckHouseholds(households, householdTypesById, arrangement.SalesArrangementId);
+        CheckHouseholds(households, householdTypesById, customersOnSa);
 
-        // load customers on SA
-        var customerOnSAIds = households.Where(i => i.CustomerOnSAId1.HasValue).Select(i => i.CustomerOnSAId1!.Value)
-            .Concat(households.Where(i => i.CustomerOnSAId2.HasValue).Select(i => i.CustomerOnSAId2!.Value))
-            .ToList();
-        var customersOnSaById = GetCustomersOnSA(customerOnSAIds, cancellation).ToDictionary(i=>i.CustomerOnSAId);
+        // load customers
+        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSa, cancellation);
 
+        // load case
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-           ?? throw new CisNotFoundException(16002, $"Case ID #{arrangement.CaseId} does not exist.");
+            ?? throw new CisNotFoundException(16002, $"Case ID #{arrangement.CaseId} does not exist.");
 
-        //arrangement.ContractNumber = String.Empty;
         // update ContractNumber if not specified
+        // arrangement.ContractNumber = String.Empty;
         if (String.IsNullOrEmpty(arrangement.ContractNumber))
         {
-            var mainHousehold = households.Where(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main).First();
-            var customerOnSa1 = customersOnSaById[mainHousehold.CustomerOnSAId1!.Value];
-
-            var identityMP = customerOnSa1.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).FirstOrDefault();
-            if (identityMP == null)
-            {
-                throw new CisNotFoundException(999999, $"{Identity.Types.IdentitySchemes.Mp} identity of customer on SA ID #{customerOnSa1.CustomerOnSAId} not found."); //TODO: ErrorCode
-            }
-
-            var contractNumber = resolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
-
+            var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSa);
+            var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
             await UpdateSalesArrangement(arrangement, contractNumber, cancellation);
             await UpdateCase(_case, contractNumber, cancellation);
-
-            //arrangement.ContractNumber = contractNumber;
         }
 
         // User load (by arrangement.Created.UserId)
         var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId, cancellation))
-           ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
+            ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
 
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageDataResponse>(await _offerService.GetMortgageData(arrangement.OfferId!.Value, cancellation))
-                ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
+            ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
+
+        // Load codebooks
+        // var academicDegreesBefore = (await _codebookService.AcademicDegreesBefore(cancellation)).GroupBy(i => i.Id).Where(g => g.Count() > 1).ToList();
+        var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).GroupBy(i => i.Id).Select(g => g.First()).ToDictionary(i => i.Id); // TODO: duplicity s ID 148
+        var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
 
         // create JSON data
-        var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSaById);
+        var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSa, customersByIdentityCode, academicDegreesBeforeById, gendersById);
 
         // save form to DB
         await SaveForm(arrangement.ContractNumber, jsonData, cancellation);
@@ -134,40 +135,91 @@ internal class SendToCmpHandler
 
     #region Data (loading & modifications)
 
-    //private async Task<OfferService.Contracts.GetMortgageDataResponse> GetOfferMortgage(int? offerId, CancellationToken cancellation)
-    //{
-    //    if (!offerId.HasValue)
-    //    {
-    //        return null;
-    //    }
+    private static void CheckCustomersOnSA(List<CustomerOnSA> customersOnSa)
+    {
+        // check if each customer contains Mp identity and also Kb identity
+        var customerIds = customersOnSa.Select(x => x.CustomerOnSAId);
 
-    //    var response = ServiceCallResult.ResolveToDefault<OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellation))
-    //            ?? throw new CisNotFoundException(16001, $"Offer ID #{offerId} does not exist.");
+        var customerIdentities = customersOnSa.SelectMany(c => c.CustomerIdentifiers.Select(i => new { CustomerOnSAId = c.CustomerOnSAId, Identity = i }));
 
-    //    return response;
-    //}
+        var customerIdsWithIdentityMp = customerIdentities.Where(i => i.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp).Select(i => i.CustomerOnSAId);
+        var customerIdsWithIdentityKb = customerIdentities.Where(i => i.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb).Select(i => i.CustomerOnSAId);
 
-    private static void CheckHouseholds(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, int salesArrangementId)
+        var customerIdsWithoutIdentityMp = customerIds.Where(id => !customerIdsWithIdentityMp.Contains(id));
+        var customerIdsWithoutIdentityKb = customerIds.Where(id => !customerIdsWithIdentityKb.Contains(id));
+
+        var customerIdsInvalid = customerIdsWithoutIdentityMp.Concat(customerIdsWithoutIdentityKb).ToList();
+
+        if (customerIdsInvalid.Any())
+        {
+            throw new CisValidationException(99999, $"Sales arrangement customers [{ String.Join(StringJoinSeparator, customerIdsInvalid) }] don't contain both [KB,MP] identities."); //TODO: ErrorCode
+        }
+    }
+
+    private static void CheckHouseholds(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
     {
         // check if each household type is represented at most once
-        var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key).ToList();
+        var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
         if (duplicitHouseholdTypeIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement {salesArrangementId} contains duplicit household types."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement contains duplicit household types [{ String.Join(StringJoinSeparator, duplicitHouseholdTypeIds) }]."); //TODO: ErrorCode
         }
 
         // check if MAIN household is available
-        var mainHousehold = households.Where(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main).FirstOrDefault();
-        if (mainHousehold == null)
+        var mainHouseholdCount = households.Count(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
+        if (mainHouseholdCount != 1)
         {
-            throw new CisValidationException(99999, $"Sales arrangement {salesArrangementId} must contain household of '{CIS.Foms.Enums.HouseholdTypes.Main}' type."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement must contain just one '{CIS.Foms.Enums.HouseholdTypes.Main}' household."); //TODO: ErrorCode
         }
 
-        // check if CustomerOnSAId1 is available
+        // check if any household contains CustomerOnSAId2 without CustomerOnSAId1
+        var invalidHouseholdIds = households.Where(i => !i.CustomerOnSAId1.HasValue && i.CustomerOnSAId2.HasValue).Select(i => i.HouseholdId);
+        if (invalidHouseholdIds.Any())
+        {
+            throw new CisValidationException(99999, $"Sales arrangement contains households [{ String.Join(StringJoinSeparator, invalidHouseholdIds) }] with CustomerOnSAId2 but without CustomerOnSAId1."); //TODO: ErrorCode
+        }
+
+        // check if CustomerOnSAId1 is available on Main households
+        var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
         if (!mainHousehold.CustomerOnSAId1.HasValue)
         {
-            throw new CisValidationException(99999, $"Main household´s CustomerOnSAId1 not defined '{mainHousehold.HouseholdId}'."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Main household´s CustomerOnSAId1 not defined [{mainHousehold.HouseholdId}]."); //TODO: ErrorCode
         }
+
+        // check if the same CustomerOnSA belongs to only one household
+        var duplicitCustomerOnSAIds = households.Where(i => i.CustomerOnSAId1.HasValue).Select(i => i.CustomerOnSAId1!.Value)
+           .Concat(households.Where(i => i.CustomerOnSAId2.HasValue).Select(i => i.CustomerOnSAId2!.Value))
+           .GroupBy(i => i).Where(i => i.Count() > 1).Select(i => i.Key);
+        if (duplicitCustomerOnSAIds.Any())
+        {
+            throw new CisValidationException(99999, $"Sales arrangement households contain duplicit customers [{ String.Join(StringJoinSeparator, duplicitCustomerOnSAIds) }] on sales arrangement."); //TODO: ErrorCode
+        }
+
+        // check if customers on SA correspond to customers on households
+        var arrangementCustomerIds = customersOnSa.Select(i => i.CustomerOnSAId);
+        var householdCustomerIds = households.Where(i => i.CustomerOnSAId1.HasValue).Select(i => i.CustomerOnSAId1!.Value)
+            .Concat(households.Where(i => i.CustomerOnSAId2.HasValue).Select(i => i.CustomerOnSAId2!.Value));
+
+        var missingCustomerIdsOnHouseholds = arrangementCustomerIds.Where(id => !householdCustomerIds.Contains(id));
+        var missingCustomerIdsOnArrangement = householdCustomerIds.Where(id => !arrangementCustomerIds.Contains(id));
+
+        var customerIdsInvalid = missingCustomerIdsOnHouseholds.Concat(missingCustomerIdsOnArrangement).ToList();
+
+        if (customerIdsInvalid.Any())
+        {
+            throw new CisValidationException(99999, $"Customers [{ String.Join(StringJoinSeparator, customerIdsInvalid) }] on sales arrangement don't correspond to customers on households."); //TODO: ErrorCode
+        }
+    }
+
+    private static Identity GetMainMpIdentity(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
+    {
+        var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
+
+        //var customersOnSaById = customersOnSa.ToDictionary(i => i.CustomerOnSAId);
+        //var customerOnSa1 = customersOnSaById[mainHousehold.CustomerOnSAId1!.Value];
+
+        var mainCustomerOnSa1 = customersOnSa.Single(i=> i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
+        return mainCustomerOnSa1.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).First();
     }
 
     private async Task<ProductTypeItem> GetProductType(int salesArrangementTypeId, CancellationToken cancellation)
@@ -194,38 +246,29 @@ internal class SendToCmpHandler
         return productType;
     }
 
-    private List<CustomerOnSA> GetCustomersOnSA(List<int> customerOnSAIds, CancellationToken cancellation)
+    private async Task<List<CustomerOnSA>> GetCustomersOnSA(List<int> customerOnSAIds, CancellationToken cancellation)
     {
-        var tasks = customerOnSAIds.Select(id => _mediator.Send(new Dto.GetCustomerMediatrRequest(id), cancellation)).ToArray();
-        Task.WaitAll( tasks, cancellation);
-        return tasks.Select(t=> t.Result).ToList();
+        var results = new List<CustomerOnSA>();
+        for (int i = 0; i < customerOnSAIds.Count; i++)
+        {
+            var customerOnSA = await _mediator.Send(new Dto.GetCustomerMediatrRequest(customerOnSAIds[i]), cancellation);
+            results.Add(customerOnSA);
+        }
+        return results;
     }
 
-    //private async Task<List<Contracts.Household>> GetHouseholds(int salesArrangementId, CancellationToken cancellation)
-    //{
-    //    var households = (await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(salesArrangementId), cancellation)).Households.ToList();
-    //    var householdTypes = await _codebookService.HouseholdTypes(cancellation);
+    private async Task<Dictionary<string, CustomerListResult>> GetCustomersByIdentityCode(List<CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    {
+        var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
 
-    //    var householdTypesById = householdTypes.ToDictionary(i => i.Id);
+        var customerListRequest = new CustomerListRequest();
+        customerIdentities.ForEach(i => customerListRequest.Identities.Add(i));
 
-    //    var householdsByType = new Dictionary<CIS.Foms.Enums.HouseholdTypes, List<Contracts.Household>>();
+        var customerList = ServiceCallResult.ResolveToDefault<CustomerListResponse>(await _customerService.GetCustomerList(customerListRequest, cancellation))!.Customers.ToList();
+        return customerList.ToDictionary(i => i.Identities.First().ToCode());
+    }
 
-    //    households.ForEach(household =>
-    //    {
-    //        var type = householdTypesById[household.HouseholdTypeId];
-
-    //        if (!householdsByType.ContainsKey(type.Value))
-    //        {
-    //            householdsByType.Add(type.Value, new List<Contracts.Household>());
-    //        }
-
-    //        householdsByType[type.Value].Add(household);
-    //    });
-
-    //    return householdsByType;
-    //}
-
-    private static string resolveGetContractNumber(IServiceCallResult result) =>
+    private static string ResolveGetContractNumber(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<string> r => r.Model,
@@ -233,28 +276,11 @@ internal class SendToCmpHandler
             _ => throw new NotImplementedException()
         };
 
-    //private async Task UpdateSalesArrangement(int salesArrangementId, string contractNumber, CancellationToken cancellation)
-    //{
-    //    await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = salesArrangementId, ContractNumber = contractNumber }), cancellation);
-    //}
-
     private async Task UpdateSalesArrangement(SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
         await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber }), cancellation);
         entity.ContractNumber = contractNumber;
     }
-
-
-    //private async Task UpdateCase(long caseId, string contractNumber, CancellationToken cancellation)
-    //{
-    //    var entity = ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(caseId, cancellation))
-    //     ?? throw new CisNotFoundException(16002, $"Case ID #{caseId} does not exist.");
-
-    //    var data = new CaseService.Contracts.CaseData(entity.Data);
-    //    data.ContractNumber = contractNumber;
-
-    //    ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.UpdateCaseData(caseId, data, cancellation));
-    //}
 
     private async Task UpdateCase(Case entity, string contractNumber, CancellationToken cancellation)
     {
@@ -263,7 +289,6 @@ internal class SendToCmpHandler
         ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.UpdateCaseData(entity.CaseId, data, cancellation));
         entity.Data.ContractNumber = contractNumber;
     }
-
 
     private async Task SaveForm(string contractNumber, string jsonData, CancellationToken cancellation)
     {
@@ -316,30 +341,192 @@ internal class SendToCmpHandler
         return prefix + sId + suffix;
     }
 
-    private static string CreateJsonData(SalesArrangement arrangement, ProductTypeItem productType, GetMortgageDataResponse offer, Case caseData, User? user, List<Contracts.Household> households, Dictionary<int, CustomerOnSA> customersOnSaById)
-    {
-        // loan purposes
-        // offer.Inputs.LoanPurpose.Add(new LoanPurpose { LoanPurposeId = 1, Sum = 10000000 }); (test)
-        var offerLoanPurposes = offer.Inputs.LoanPurpose.Select(i => new {
-            uv_ucel = i.LoanPurposeId.ToJsonString(),
-            uv_ucel_suma = i.Sum.ToJsonString()
-        }).ToArray();
+    private static string CreateJsonData(
+        SalesArrangement arrangement,
+        ProductTypeItem productType,
+        GetMortgageDataResponse offer,
+        Case caseData,
+        User? user,
+        List<Contracts.Household> households,
+        List<CustomerOnSA> customersOnSa,
+        Dictionary<string, CustomerListResult> customersByIdentityCode,
+        Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
+        Dictionary<int, CodebookService.Contracts.Endpoints.Genders.GenderItem> gendersById
 
-        // households
-        var arrangementHouseholds = households.Select(i => new {
-            cislo_domacnosti = i.HouseholdTypeId.ToJsonString(),
-            pocet_deti_0_10let = i.Data.ChildrenUpToTenYearsCount.ToJsonString(),
-            pocet_deti_nad_10let = i.Data.ChildrenOverTenYearsCount.ToJsonString(),
-            sporeni = i.Expenses.SavingExpenseAmount.ToJsonString(),
-            pojisteni = i.Expenses.InsuranceExpenseAmount.ToJsonString(),
-            naklady_na_bydleni = i.Expenses.HousingExpenseAmount.ToJsonString(),
-            ostatni_vydaje = i.Expenses.OtherExpenseAmount.ToJsonString(),
-            vyporadani_majetku = i.Data.PropertySettlementId.ToJsonString(),
-        }).ToArray();
+        )
+    {
+        var householdsByCustomerOnSAId = customersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
+
+        object MapHousehold(Contracts.Household i)
+        {
+            return new
+            {
+                cislo_domacnosti = i.HouseholdTypeId.ToJsonString(),
+                pocet_deti_0_10let = i.Data.ChildrenUpToTenYearsCount.ToJsonString(),
+                pocet_deti_nad_10let = i.Data.ChildrenOverTenYearsCount.ToJsonString(),
+                sporeni = i.Expenses.SavingExpenseAmount.ToJsonString(),
+                pojisteni = i.Expenses.InsuranceExpenseAmount.ToJsonString(),
+                naklady_na_bydleni = i.Expenses.HousingExpenseAmount.ToJsonString(),
+                ostatni_vydaje = i.Expenses.OtherExpenseAmount.ToJsonString(),
+                vyporadani_majetku = i.Data.PropertySettlementId.ToJsonString(),
+            };
+        }
+
+        object MapLoanPurpose(LoanPurpose i)
+        {
+            return new
+            {
+                uv_ucel = i.LoanPurposeId.ToJsonString(),
+                uv_ucel_suma = i.Sum.ToJsonString(),
+            };
+        }
+
+        object MapAddress(Address i)
+        {
+            //{
+            //              "typ_adresy": "1",
+            //            "ulice": "Milady Horákové",
+            //            "cislo_popisne": "12360",
+            //            "cislo_orientacni": "",     //pokud načteme z CM
+            //            "ulice_dodatek": "",    //pokud načteme z CM
+            //            "psc": "11000",
+            //            "misto": "PRAHA",
+            //            "stat": "16"
+            //}
+            return null;
+        }
+
+        object MapIdentificationDocument(IdentificationDocument i) {
+                //{
+                //            "cislo_dokladu": "ABC123",
+                //            "typ_dokladu": "1",
+                //            "vydal": "MěÚ Litomyšl",
+                //            "vydal_datum": "01.01.2020",
+                //            "vydal_stat": "16",
+                //            "platnost_do": "31.07.2028"
+                //}
+                return null; 
+        }
+
+        object MapContact(Contact i)
+        {
+            return new
+            {
+                typ_kontaktu = i.ContactTypeId.ToJsonString(),
+                hodnota_kontaktu = i.Value,
+            };
+        }
+
+        object MapCustomer(CustomerOnSA i)
+        {
+            // do JSON věty jdou pouze Customers s Kb identitou
+            var identityKb = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            //var identityMp = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp); //TODO: až bude implementováno vytváření MP identity při UpdateCustomerOnSA !!!
+            var c = customersByIdentityCode[identityKb.ToCode()];
+
+            return new
+            {
+                rodne_cislo = c.NaturalPerson.BirthNumber,
+
+                kb_id = identityKb.IdentityId.ToJsonString(),
+                // mp_id = identityKMp.IdentityId.ToJsonString(),                               //TODO: až bude implementováno vytváření MP identity při UpdateCustomerOnSA !!!
+                // spolecnost_KB =                                                              //Customer - pokud načteme z CM ??? OP! 
+
+                // titul_pred = academicDegreesBeforeById[c.NaturalPerson.DegreeBeforeId].Name, // ??? chybí implementace! (použít Name, nikoliv jen Id) 
+                // titul_za = c.NaturalPerson.DegreeAfterId,                                    // ??? chybí implementace! (použít Name, nikoliv jen Id), ve vzorovém JSONu ani není - neposílat
+
+                prijmeni_nazev = c.NaturalPerson.LastName,
+                // prijmeni_rodne = c.NaturalPerson.BirthName,                                  // ??? chybí implementace! 
+                jmeno = c.NaturalPerson.FirstName,
+                datum_narozeni = c.NaturalPerson.DateOfBirth.ToJsonString(),
+                // misto_narozeni_obec = c.NaturalPerson.PlaceOfBirth                           // ??? chybí implementace!
+                // misto_narozeni_stat = c.NaturalPerson.BirthCountryId.ToJsonString(),         // ??? chybí implementace!
+                 pohlavi = gendersById[c.NaturalPerson.GenderId].RDMCode,                       // ??? (použít ???, nikoliv jen Id)   example: "pohlavi": "Z", //Customer
+                // statni_prislusnost =  .CitizenshipCountriesId                                // ??? chybí implementace! vzít první
+                // zamestnanec =                                                                // ??? OP!     mock default 0
+                // rezident =                                                                   // ??? OP!     mock default 0
+                // PEP =                                                                        // ??? OP!     neposílat, není definováno ve starbuild
+                seznam_adres = c.Addresses.Select(i => MapAddress(i)).ToArray(),
+                seznam_dokladu = new object[1] { MapIdentificationDocument(c.IdentificationDocument) }, // ??? mělo by to být pole, nikoliv jeden objekt ???
+                seznam_kontaktu = c.Contacts.Select(i => MapContact(i)).ToArray(),
+                // rodinny_stav = c.NaturalPerson.MaritalStatusStateId.ToJsonString(),           // ??? chybí implementace! 
+                druh_druzka = i.HasPartner.ToJsonString(),
+                // vzdelani =                                                                   // ??? OP!
+                // prijmy =                                                                     // ??? chybí specifikace! 
+                // zavazky =                                                                    // ??? chybí implementace!
+                // prijem_sbiran =                                                              // ??? out of scope
+                // uzamcene_prijmy = c.LockedIncomeDateTime.HasValue.ToJsonString(),            // ??? chybí implementace!
+                // datum_posledniho_uzam_prijmu = c.LockedIncomeDateTime.ToJsonString(),        // ??? chybí implementace!
+
+
+                //    "prijmy": [ //Incomes
+                //        {
+                //"prvni_pracovni_sml_od": "28.01.2020",
+                //            "posledni_zamestnani_od": "28.01.2020",
+                //            "poradi_prijmu": "1",
+                //            "zdroj_prijmu_hlavni": "1",
+                //            "typ_pracovniho_pomeru": "3",
+                //            "klient_ve_vypovedni_lhute": "0",
+                //            "klient_ve_zkusebni_lhute": "0",
+                //            "prijem_ze_zahranici": "0",
+                //            "domicilace_prijmu_ze_zamestnani": "0",
+                //            "pracovni_smlouva_aktualni_od": "",
+                //            "pracovni_smlouva_aktualni_do": "",
+                //            "zamestnavatel_nazov": "",
+                //            "zamestnavatel_rc_ico": "",
+                //            "zamestnavatel_sidlo_ulice": "",
+                //            "zamestnavatel_sidlo_cislo_popisne_orientacni": "",
+                //            "zamestnavatel_sidlo_mesto": "",
+                //            "zamestnavatel_sidlo_psc": "",
+                //            "zamestnavatel_sidlo_stat": "",
+                //            "zamestnavatel_telefonni_cislo": "",
+                //            "zamestnavatel_okec": "",
+                //            "zamestnavatel_pracovni_sektor": "",
+                //            "zamestnavatel_senzitivni_sektor": "0",
+                //            "povolani": "1",
+                //            "zamestnan_jako": "",
+                //            "prijem_vyse": "50000",
+                //            "prijem_mena": "CZK",
+                //            "zrazky_ze_mzdy_rozhodnuti": "",
+                //            "zrazky_ze_mzdy_splatky": "",
+                //            "zrazky_ze_mzdy_ostatni": "",
+                //            "prijem_potvrzeni_vystavila_ext_firma": "0",
+                //            "prijem_potvrzeni_misto_vystaveni": "",
+                //            "prijem_potvrzeni_datum": "",
+                //            "prijem_potvrzení_osoba": "",
+                //            "prijem_potvrzeni_kontakt": ""
+                //        }
+                //    ],
+                //    "zavazky": [ //Expenses
+                //        {
+                //"cislo_zavazku": "1",
+                //            "druh_zavazku": "1",
+                //            "vyse_splatky": "10000",
+                //            "vyse_nesplacene_jistiny": "600000",
+                //            "vyse_limitu": "",
+                //            "mimo_entitu_mandanta": "0"
+                //        }
+                //    ],
+
+            };
+        }
+
+        object MapCustomerOnSA(CustomerOnSA i)
+        {
+            var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();       // ??? co když je stejné CustomerOnSAId ve vícero households
+            return new
+            {
+                role = i.CustomerRoleId.ToJsonString(),                     // CustomerOnSA
+                //zmocnenec =                                               // CustomerOnSA ???
+                cislo_domacnosti = household.HouseholdId.ToJsonString(),    // CustomerOnSA ??? brát Houshold.CustomerOnSAId (1 nebo 2)
+                klient = MapCustomer(i),
+            };
+        }
 
         // root
         var actualDate = DateTime.Now.Date;
-        var data = new {
+        var data = new
+        {
             cislo_smlouvy = arrangement.ContractNumber,
             case_id = arrangement.CaseId,
             // business_case_ID = arrangement.RiskBusinessCaseId,                                                                   // SalesArrangement - na základě volání RBC ??? na SA chybí implementace!
@@ -367,13 +554,12 @@ internal class SendToCmpHandler
             forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
             seznam_poplatku = Array.Empty<object>(),                                                                                // [MOCK] OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci 
                                                                                                                                     //          (na offer zatím nemáme, dohodnuta mockovaná hodnota prázdné pole)
-            seznam_ucelu = offerLoanPurposes,                                                                                       // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
+            seznam_ucelu = offer.Inputs.LoanPurpose.Select(i => MapLoanPurpose(i)).ToArray(),                                       // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
             // seznam_objektu =                                                                                                     // SalesArrangement - 0..3 ???  na SA chybí implementace!
-            // seznam_ucastniku =                                                                   // CustomerOnSA, Customer ???
-
+            seznam_ucastniku = customersOnSa.Select(i => MapCustomerOnSA(i)).ToArray(),                                  // CustomerOnSA, Customer
             zprostredkovano_3_stranou = false.ToJsonString(),                                                                       // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
-            sjednal_CPM = user.CPM,                                                                                                 // User
-            sjednal_ICP = user.ICP,                                                                                                 // User
+            sjednal_CPM = user!.CPM,                                                                                                 // User
+            sjednal_ICP = user!.ICP,                                                                                                 // User
             // mena_prijmu = arrangement.IncomeCurrencyCode                                                                         // SalesArrangement ??? na SA chybí implementace!
             // mena_bydliste = arrangement.ResidencyCurrencyCode                                                                    // SalesArrangement ??? na SA chybí implementace!
 
@@ -383,7 +569,7 @@ internal class SendToCmpHandler
             fin_kryti_cizi_zdroje = ((decimal)1000000).ToJsonString(),                                                              // [MOCK] OfferInstance (na offer zatím nemáme, dohodnuta mockovaná hodnota 1.000.000,--)
             fin_kryti_celkem = ((decimal)1500000).ToJsonString(),                                                                   // [MOCK] OfferInstance (na offer zatím nemáme, dohodnuta mockovaná hodnota 1.500.000,--)
             // zpusob_podpisu_smluv_dok =                                                                                           // SalesArrangement ??? na SA chybí implementace!
-            seznam_domacnosti = arrangementHouseholds,
+            seznam_domacnosti = households.Select(i => MapHousehold(i)).ToArray()
         };
 
         var json = JsonSerializer.Serialize(data);
@@ -644,13 +830,9 @@ Pokud na entitě SalesArrangement není číslo smlouvy, pak proběhne provolán
     Notes: zajímá nás pouze hlavní domácnost a z ní CustomerOnSAId1
     -------------------------------------------------------------------------------------------------------------
 
-    [Včera 9:32] Herych Jan EX          MPSS
+    Honza Herych:
     getnout customera on SA pomoci CustomerOnSAId1
-
-    [Včera 9:32] Herych Jan EX          MPSS
     zafiltrovat v jeho identitach na MP identitu
-
-    [Včera 9:33] Herych Jan EX          MPSS
     a ID teto identity poslat do EAS jako partnerId
 
     -------------------------------------------------------------------------------------------------------------
