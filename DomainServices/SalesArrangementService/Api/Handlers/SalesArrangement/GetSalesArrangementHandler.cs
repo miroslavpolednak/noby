@@ -22,7 +22,8 @@ internal class GetSalesArrangementHandler
             .FirstOrDefaultAsync(cancellation);
 
         //TODO udelat rozdeleni podle typu produkt. Bude tady vubec rozdil mezi produkty?
-        model.Mortgage = JsonSerializer.Deserialize<_SA.SalesArrangementParametersMortgage>(parameters!, GrpcHelpers.GrpcJsonSerializerOptions);
+        if (!string.IsNullOrEmpty(parameters))
+            model.Mortgage = JsonSerializer.Deserialize<_SA.SalesArrangementParametersMortgage>(parameters!, GrpcHelpers.GrpcJsonSerializerOptions);
 
         return model;
     }

@@ -164,6 +164,7 @@
             - FixedRatePeriods
             - Genders
             - IdentificationDocumentTypes
+            - IncomeTypes
             - Mandants
             - MaritalStatuses
             - ObligationTypes
@@ -1013,6 +1014,11 @@
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateParameters(System.Int32,FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest,System.Threading.CancellationToken)">
             <summary>
             Update ostatnich parametru produktu / uveru.
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Odeslani SA do SB
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest.Parameters">

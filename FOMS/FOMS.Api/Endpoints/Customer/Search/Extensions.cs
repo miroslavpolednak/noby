@@ -30,12 +30,17 @@ internal static class Extensions
         }
 
         // document
-        model.IdentificationDocument = new SearchIdentificationDocument
+        if (!string.IsNullOrEmpty(request.IdentificationDocumentNumber)
+            && request.IdentificationDocumentTypeId.HasValue
+            && request.IssuingCountryId.HasValue)
         {
-            IdentificationDocumentTypeId = request.IdentificationDocumentTypeId.GetValueOrDefault(),
-            IssuingCountryId = request.IssuingCountryId.GetValueOrDefault(),
-            Number = request.IdentificationDocumentNumber ?? ""
-        };
+            model.IdentificationDocument = new SearchIdentificationDocument
+            {
+                IdentificationDocumentTypeId = request.IdentificationDocumentTypeId!.Value,
+                IssuingCountryId = request.IssuingCountryId!.Value,
+                Number = request.IdentificationDocumentNumber ?? ""
+            };
+        }
 
         return model;
     }

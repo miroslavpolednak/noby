@@ -23,6 +23,11 @@ public static class Extensions
             CitizenshipCountriesId = customer.NaturalPerson?.CitizenshipCountriesId?.Select(t => t).ToList()
         };
 
+        /*model.JuridicalPerson = new JuridicalPersonModel
+        {
+            Cin = customer
+        };*/
+
         model.IdentificationDocument = new IdentificationDocumentModel()
         {
             IssuingCountryId = customer.IdentificationDocument?.IssuingCountryId,
@@ -46,6 +51,7 @@ public static class Extensions
             {
                 Street = t.Street,
                 Postcode = t.Postcode,
+                City = t.City,
                 IsPrimary = t.IsPrimary,
                 AddressTypeId = t.AddressTypeId,
                 LandRegistryNumber = t.LandRegistryNumber,

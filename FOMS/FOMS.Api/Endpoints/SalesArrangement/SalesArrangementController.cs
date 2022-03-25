@@ -61,6 +61,16 @@ public class SalesArrangementController : ControllerBase
     public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(salesArrangementId), cancellationToken);
 
+    /// <summary>
+    /// Odeslani SA do SB
+    /// </summary>
+    [HttpPut("{salesArrangementId:int}/send")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: SendToCmp" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task SendToCmp([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId), cancellationToken);
+
     private readonly IMediator _mediator;
     public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
 }
