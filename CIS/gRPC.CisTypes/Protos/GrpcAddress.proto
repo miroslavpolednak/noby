@@ -15,5 +15,5 @@ message GrpcAddress {
   
   string City = 5;
   
-  int32 CountryId = 6;
+  google.protobuf.Int32Value CountryId = 6;
 }

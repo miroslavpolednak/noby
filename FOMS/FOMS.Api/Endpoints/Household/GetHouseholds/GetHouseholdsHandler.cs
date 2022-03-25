@@ -5,9 +5,9 @@ using contracts = DomainServices.SalesArrangementService.Contracts;
 namespace FOMS.Api.Endpoints.Household.GetHouseholds;
 
 internal class GetHouseholdsHandler
-    : IRequestHandler<GetHouseholdsRequest, GetHouseholdsResponse>
+    : IRequestHandler<GetHouseholdsRequest, List<Dto.HouseholdInList>>
 {
-    public async Task<GetHouseholdsResponse> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
+    public async Task<List<Dto.HouseholdInList>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetHouseholdsHandler), request.SalesArrangementId);
 
@@ -17,16 +17,12 @@ internal class GetHouseholdsHandler
 
         var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
 
-        var model = new GetHouseholdsResponse
+        return households.Select(t => new Dto.HouseholdInList
         {
-            Households = households.Select(t => new Dto.HouseholdInList
-            {
-                HouseholdId = t.HouseholdId,
-                HouseholdTypeId = t.HouseholdTypeId,
-                HouseholdTypeName = householdTypes.First(x => x.Id == t.HouseholdTypeId).Name
-            }).ToList()
-        };
-        return model;
+            HouseholdId = t.HouseholdId,
+            HouseholdTypeId = t.HouseholdTypeId,
+            HouseholdTypeName = householdTypes.First(x => x.Id == t.HouseholdTypeId).Name
+        }).ToList();
     }
 
     private readonly ICodebookServiceAbstraction _codebookService;

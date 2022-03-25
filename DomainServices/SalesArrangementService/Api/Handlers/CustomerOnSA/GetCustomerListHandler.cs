@@ -1,4 +1,4 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class GetCustomerListHandler
     : IRequestHandler<Dto.GetCustomerListMediatrRequest, Contracts.GetCustomerListResponse>

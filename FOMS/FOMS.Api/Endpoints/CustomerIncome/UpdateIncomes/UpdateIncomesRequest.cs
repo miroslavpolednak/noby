@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FOMS.Api.Endpoints.CustomerIncome.CreateIncomes;
+namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncomes;
 
-public class CreateIncomesRequest
+public class UpdateIncomesRequest
     : IRequest<int[]>
 {
     [JsonIgnore]
@@ -11,9 +11,9 @@ public class CreateIncomesRequest
     /// <summary>
     /// Seznam prijmu (novych, existujicich) pro daneho customera
     /// </summary>
-    public List<CreateIncomeItem>? Incomes { get; set; }
+    public List<Dto.IncomeBaseData>? Incomes { get; set; }
 
-    internal CreateIncomesRequest InfuseId(int customerOnSAId)
+    internal UpdateIncomesRequest InfuseId(int customerOnSAId)
     {
         this.CustomerOnSAId = customerOnSAId;
         return this;

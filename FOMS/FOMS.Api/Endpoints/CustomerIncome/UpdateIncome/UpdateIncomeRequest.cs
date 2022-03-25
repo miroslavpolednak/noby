@@ -3,7 +3,7 @@
 namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncome;
 
 public class UpdateIncomeRequest
-    : Dto.BaseIncome, IRequest<int>
+    : Dto.BaseIncome, IRequest
 {
     [JsonIgnore]
     public int IncomeId { get; set; }

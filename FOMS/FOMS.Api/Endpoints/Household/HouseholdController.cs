@@ -17,12 +17,12 @@ public class HouseholdController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/GetHouseholdList
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
-    /// <returns>Seznam domacnosti pro aktualni Sales Arrangement</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
     [HttpGet("list/{salesArrangementId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Domacnost" })]
-    [ProducesResponseType(typeof(GetHouseholds.GetHouseholdsResponse), StatusCodes.Status200OK)]
-    public async Task<GetHouseholds.GetHouseholdsResponse> GetList([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<Dto.HouseholdInList>), StatusCodes.Status200OK)]
+    public async Task<List<Dto.HouseholdInList>> GetList([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHouseholds.GetHouseholdsRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -33,7 +33,7 @@ public class HouseholdController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/GetHousehold
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
-    /// <returns>Detail domacnosti</returns>
+    /// <returns><see cref="GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
     [HttpGet("{householdId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
@@ -78,12 +78,11 @@ public class HouseholdController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/UpdateHousehold
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
-    /// <returns>HouseholdId</returns>
     [HttpPut("{householdId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<int> Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
 
     /// <summary>

@@ -1,7 +1,7 @@
-﻿namespace FOMS.Api.Endpoints.CustomerIncome.CreateIncomes;
+﻿namespace FOMS.Api.Endpoints.CustomerIncome.Dto;
 
-public class CreateIncomeItem 
-    : Dto.BaseIncome
+public class IncomeBaseData 
+    : BaseIncome
 {
     /// <summary>
     /// ID prijmu, pokud se jedna o jiz ulozeny prijem. NULL pokud se jedna o novy prijem.

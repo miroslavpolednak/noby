@@ -3,25 +3,23 @@
 namespace FOMS.Api.Endpoints.CustomerIncome.DeleteIncome;
 
 internal class DeleteIncomeHandler
-        : IRequestHandler<DeleteIncomeRequest, int>
+    : AsyncRequestHandler<DeleteIncomeRequest>
 {
-    public async Task<int> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
+    protected override async Task Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(DeleteIncomeHandler), request.IncomeId);
 
-        ServiceCallResult.Resolve(await _householdService.DeleteIncome(request.IncomeId, cancellationToken));
-
-        return request.IncomeId;
+        ServiceCallResult.Resolve(await _customerService.DeleteIncome(request.IncomeId, cancellationToken));
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly ICustomerOnSAServiceAbstraction _customerService;
     private readonly ILogger<DeleteIncomeHandler> _logger;
 
     public DeleteIncomeHandler(
-        IHouseholdServiceAbstraction householdService,
+        ICustomerOnSAServiceAbstraction customerService,
         ILogger<DeleteIncomeHandler> logger)
     {
         _logger = logger;
-        _householdService = householdService;
+        _customerService = customerService;
     }
 }

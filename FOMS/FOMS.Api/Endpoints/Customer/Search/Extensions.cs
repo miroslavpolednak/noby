@@ -75,7 +75,7 @@ internal static class Extensions
         return customer;
     } 
     
-    private static CustomerInList FillAddress(this CustomerInList customer, RepeatedField<Address>? result)
+    private static CustomerInList FillAddress(this CustomerInList customer, RepeatedField<DomainServices.CustomerService.Contracts.Address>? result)
     {
         if (result is not null && result.Any())
         {

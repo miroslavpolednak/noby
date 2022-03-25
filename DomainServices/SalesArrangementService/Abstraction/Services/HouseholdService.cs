@@ -67,65 +67,6 @@ internal class HouseholdService : IHouseholdServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    #region Income
-    public async Task<IServiceCallResult> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(CreateIncome), request.CustomerOnSAId);
-        var result = await _userContext.AddUserContext(async () => await _service.CreateIncomeAsync(request, cancellationToken: cancellationToken));
-        return new SuccessfulServiceCallResult<int>(result.IncomeId);
-    }
-
-    public async Task<IServiceCallResult> DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteIncome), incomeId);
-        var result = await _userContext.AddUserContext(async () => await _service.DeleteIncomeAsync(
-            new()
-            {
-                IncomeId = incomeId
-            }, cancellationToken: cancellationToken)
-        );
-        return new SuccessfulServiceCallResult();
-    }
-
-    public async Task<IServiceCallResult> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncome), incomeId);
-        var result = await _userContext.AddUserContext(async () => await _service.GetIncomeAsync(
-            new()
-            {
-                IncomeId = incomeId
-            }, cancellationToken: cancellationToken)
-        );
-        return new SuccessfulServiceCallResult<Income>(result);
-    }
-
-    public async Task<IServiceCallResult> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncomeList), customerOnSAId);
-        var result = await _userContext.AddUserContext(async () => await _service.GetIncomeListAsync(
-            new()
-            {
-                CustomerOnSAId = customerOnSAId
-            }, cancellationToken: cancellationToken)
-        );
-        return new SuccessfulServiceCallResult<List<IncomeInList>>(result.Incomes.ToList());
-    }
-
-    public async Task<IServiceCallResult> UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncome), request.IncomeId);
-        var result = await _userContext.AddUserContext(async () => await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken));
-        return new SuccessfulServiceCallResult();
-    }
-
-    public async Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeBaseData), request.IncomeId);
-        var result = await _userContext.AddUserContext(async () => await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken));
-        return new SuccessfulServiceCallResult();
-    }
-    #endregion Income
-
     private readonly ILogger<HouseholdService> _logger;
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
     private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;

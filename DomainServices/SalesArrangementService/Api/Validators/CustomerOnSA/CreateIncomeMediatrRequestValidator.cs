@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace DomainServices.SalesArrangementService.Api.Validators.Household;
+namespace DomainServices.SalesArrangementService.Api.Validators;
 
 internal class CreateIncomeMediatrRequestValidator
     : AbstractValidator<Dto.CreateIncomeMediatrRequest>

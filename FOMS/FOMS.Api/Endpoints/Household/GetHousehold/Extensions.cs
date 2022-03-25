@@ -14,8 +14,8 @@ internal static class Extensions
             HouseholdId = household.HouseholdId
         };
 
-    public static Dto.CustomerInHousehold? ToApiResponse(this contracts.CustomerOnSA model)
-        => new Dto.CustomerInHousehold()
+    public static CustomerInHousehold? ToApiResponse(this contracts.CustomerOnSA model)
+        => new CustomerInHousehold()
         {
             CustomerOnSAId = model.CustomerOnSAId,
             Identities = null,
@@ -23,6 +23,13 @@ internal static class Extensions
             LastName = model.Name,
             DateOfBirth = model.DateOfBirthNaturalPerson,
             RoleId = model.CustomerRoleId,
+            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new CustomerIncome.Dto.IncomeBaseData
+            {
+                Sum = x.Sum,
+                CurrencyCode = x.CurrencyCode,
+                IncomeId = x.IncomeId,
+                IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)x.IncomeTypeId
+            }).ToList(),
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => new Dto.CustomerObligation
             {
                 CreditCardLimit = x.CreditCardLimit,

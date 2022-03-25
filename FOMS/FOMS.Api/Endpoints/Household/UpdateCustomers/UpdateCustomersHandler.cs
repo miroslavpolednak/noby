@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using CIS.Foms.Enums;
+using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateCustomers;
@@ -15,8 +16,8 @@ internal class UpdateCustomersHandler
 
         var response = new UpdateCustomersResponse
         {
-            CustomerOnSAId1 = await processCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CIS.Foms.Enums.CustomerRoles.Debtor, cancellationToken),
-            CustomerOnSAId2 = await processCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CIS.Foms.Enums.CustomerRoles.Codebtor, cancellationToken),
+            CustomerOnSAId1 = await processCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken),
+            CustomerOnSAId2 = await processCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken),
         };
 
         // linkovani na household
@@ -27,18 +28,51 @@ internal class UpdateCustomersHandler
     }
 
     async Task<int?> processCustomer(
-        UpdateCustomersRequest.Customer? customer, 
+        CustomerDto? customer,
         int? householdCustomerId,
         _SA.Household householdInstance,
-        CIS.Foms.Enums.CustomerRoles customerRole,
+        CustomerRoles customerRole,
         CancellationToken cancellationToken)
     {
-        // smazat existujiciho
+        // zalozit, updatovat nebo smazat customera
+        int? customerId = await crudCustomer(customer, householdCustomerId, householdInstance, customerRole, cancellationToken);
+
+        if (customerId.HasValue)
+        {
+            // ulozit obligations
+            var obligationsRequest = new _SA.UpdateObligationsRequest
+            {
+                CustomerOnSAId = customerId.Value
+            };
+            if (customer!.Obligations is not null)
+                obligationsRequest.Obligations.AddRange(customer.Obligations.ToDomainServiceRequest());
+            await _customerOnSAService.UpdateObligations(obligationsRequest, cancellationToken);
+
+            // ulozit incomes
+            await _mediator.Send(new CustomerIncome.UpdateIncomes.UpdateIncomesRequest
+            {
+                CustomerOnSAId = customerId.Value,
+                Incomes = customer?.Incomes
+            }, cancellationToken);
+        }
+
+        return customerId;
+    }
+
+    async Task<int?> crudCustomer(
+        CustomerDto? customer, 
+        int? householdCustomerId,
+        _SA.Household householdInstance,
+        CustomerRoles customerRole,
+        CancellationToken cancellationToken)
+    {
+        // smazat existujiciho, neni misto nej zadny novy
         if ((customer is null || customer?.CustomerOnSAId.GetValueOrDefault() == 0) && householdCustomerId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
             return default(int?);
         }
+        // smazat existujiciho, je nahrazen novym
         else if (customer?.CustomerOnSAId != householdCustomerId && customer?.CustomerOnSAId != null &&  householdCustomerId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);

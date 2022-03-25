@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
+namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class UpdateIncomeBaseDataHander
     : IRequestHandler<Dto.UpdateIncomeBaseDataMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>

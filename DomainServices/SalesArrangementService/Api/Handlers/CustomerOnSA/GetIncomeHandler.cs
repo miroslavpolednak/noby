@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
+namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class GetIncomeHandler
     : IRequestHandler<Dto.GetIncomeMediatrRequest, Income>

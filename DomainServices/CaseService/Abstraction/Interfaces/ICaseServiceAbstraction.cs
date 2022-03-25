@@ -9,9 +9,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Vytvoreni Case
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[long] - OK; returns CaseId;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{TModel}">SuccessfulServiceCallResult&lt;long&gt;</see> (CaseId)</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13004; Unable to get CaseId from SB</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; Case Owner Id not must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13010; ContractNumber length must be 10</exception>
@@ -29,9 +27,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Vraci pocet CASE pro daneho uzivatele v jednotlivych stavech
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetCaseCountsResponse] - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{TModel}">SuccessfulServiceCallResult&lt;GetCaseCountsResponse&gt;</see></returns>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task<IServiceCallResult> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken));
@@ -39,9 +35,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Vraci detail Case
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[CaseModel] - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
@@ -51,17 +45,13 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Seznam Case pro uzivatele
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[SearchCasesResponse] - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="SearchCasesResponse" /></returns>
     Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Zmena majitele Case
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
@@ -73,9 +63,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Update zakladnich udaju Case - cislo smlouvy
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13002; ProductTypeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13010; ContractNumber length must be 10</exception>
@@ -89,9 +77,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Update stavu Case
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13011; Case State {} does not exists</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
@@ -103,9 +89,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Update infa o klientovi na case
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13012; Customer Name must not be empty</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>

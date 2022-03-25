@@ -1,4 +1,4 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class UpdateCustomerHandler
     : IRequestHandler<Dto.UpdateCustomerMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>

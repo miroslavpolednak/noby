@@ -7,22 +7,6 @@ namespace FOMS.Api.Endpoints.CustomerIncome;
 public class CustomerIncomeController : ControllerBase
 {
     /// <summary>
-    /// Seznam prijmu pro daneho customera
-    /// </summary>
-    /// <remarks>
-    /// Vraci zakladni seznam prijmu bez detailu - pouze spolecne vlastnosti. Bude pouzito pro zobrazeni prijmu na detailu domacnosti<br/>
-    /// <i>DS:</i> SalesArrangementService/GetIncomeList
-    /// </remarks>
-    /// <param name="customerOnSAId">ID customera</param>
-    /// <returns>Seznam prijmu</returns>
-    [HttpGet("{customerOnSAId:int}/income")]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
-    [ProducesResponseType(typeof(List<GetIncomes.IncomeInList>), StatusCodes.Status200OK)]
-    public async Task<List<GetIncomes.IncomeInList>> GetList([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetIncomes.GetIncomesRequest(customerOnSAId), cancellationToken);
-
-    /// <summary>
     /// Smazani prijmu customera
     /// </summary>
     /// <remarks>
@@ -31,16 +15,14 @@ public class CustomerIncomeController : ControllerBase
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID prijmu ke smazani</param>
-    /// <returns>ID smazaneho prijmu</returns>
     [HttpDelete("{customerOnSAId:int}/income/{incomeId:int}")]
-    [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<int> Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
-    /// Vytvoreni prijmu customera
+    /// Update zakladnich dat o prijmech customera
     /// </summary>
     /// <remarks>
     /// V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>
@@ -53,13 +35,32 @@ public class CustomerIncomeController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/UpdateIncomeBasicData
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
-    /// <returns>ID noveho prijmu</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="int"/> (IncomeId)</returns>
     [HttpPost("{customerOnSAId:int}/income")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
     [ProducesResponseType(typeof(int[]), StatusCodes.Status200OK)]
-    public async Task<int[]> CreateIncomes([FromRoute] int customerOnSAId, [FromBody] CreateIncomes.CreateIncomesRequest? request, CancellationToken cancellationToken)
+    public async Task<int[]> UpdateIncomes([FromRoute] int customerOnSAId, [FromBody] UpdateIncomes.UpdateIncomesRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
+
+    /// <summary>
+    /// Detail prijmu customera
+    /// </summary>
+    /// <remarks>
+    /// Pouzit pro zobrazeni detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
+    /// <i>DS:</i> SalesArrangementService/GetIncome
+    /// </remarks>
+    /// <param name="customerOnSAId">ID customera</param>
+    /// <param name="incomeId">ID prijmu</param>
+    /// <returns>
+    /// <see cref="Dto.IncomeDataEmployement"/>
+    /// </returns>
+    [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    public async Task<object> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetIncome.GetIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
     /// Update detailu prijmu customera
@@ -70,12 +71,11 @@ public class CustomerIncomeController : ControllerBase
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID prijmu</param>
-    /// <returns>ID prijmu</returns>
     [HttpPut("{customerOnSAId:int}/income/{incomeId:int}")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<int> Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request, CancellationToken cancellationToken)
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
 
     private readonly IMediator _mediator;

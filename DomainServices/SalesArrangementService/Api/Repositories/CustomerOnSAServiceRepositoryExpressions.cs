@@ -16,4 +16,15 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             CustomerRoleId = (int)t.CustomerRoleId
         };
     }
+
+    public static Expression<Func<Entities.CustomerIncome, Contracts.IncomeInList>> Income()
+    {
+        return t => new Contracts.IncomeInList
+        {
+            IncomeId = t.CustomerIncomeId,
+            IncomeTypeId = (int)t.IncomeTypeId,
+            CurrencyCode = t.CurrencyCode ?? "",
+            Sum = t.Sum
+        };
+    }
 }

@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace DomainServices.SalesArrangementService.Api.Validators.Household;
+namespace DomainServices.SalesArrangementService.Api.Validators;
 
-internal class UpdateIncomeBaseDataMediatrRequestValidator
-    : AbstractValidator<Dto.UpdateIncomeBaseDataMediatrRequest>
+internal class UpdateIncomeMediatrRequestValidator
+    : AbstractValidator<Dto.UpdateIncomeMediatrRequest>
 {
-    public UpdateIncomeBaseDataMediatrRequestValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public UpdateIncomeMediatrRequestValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
         RuleFor(t => t.Request.IncomeId)
             .GreaterThan(0)

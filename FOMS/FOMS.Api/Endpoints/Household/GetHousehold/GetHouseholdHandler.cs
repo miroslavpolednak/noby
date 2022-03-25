@@ -23,7 +23,7 @@ internal class GetHouseholdHandler
         return response;
     }
 
-    private async Task<Dto.CustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)
+    private async Task<CustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)
     {
         var customer = ServiceCallResult.Resolve<contracts.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAId, cancellationToken));
         return customer?.ToApiResponse();

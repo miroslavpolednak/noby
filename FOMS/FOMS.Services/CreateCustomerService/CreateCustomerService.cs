@@ -26,7 +26,7 @@ public sealed class CreateCustomerService
         else // identifikovany klient
         {
             //TODO co delat, kdyz ho nenajdu?
-            var customer = ServiceCallResult.Resolve<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
+            var customer = ServiceCallResult.Resolve<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new()
             {
                 Identity = request.Identity!
             }, cancellationToken));

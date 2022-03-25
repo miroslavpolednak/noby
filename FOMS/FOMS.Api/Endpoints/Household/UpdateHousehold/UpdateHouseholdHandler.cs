@@ -4,9 +4,9 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 namespace FOMS.Api.Endpoints.Household.UpdateHousehold;
 
 internal class UpdateHouseholdHandler
-    : IRequestHandler<UpdateHouseholdRequest, int>
+    : AsyncRequestHandler<UpdateHouseholdRequest>
 {
-    public async Task<int> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
+    protected override async Task Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateHouseholdHandler), request.HouseholdId);
 
@@ -17,9 +17,8 @@ internal class UpdateHouseholdHandler
             Data = request.Data.ToDomainServiceRequest(),
             Expenses = request.Expenses.ToDomainServiceRequest()
         };
-        await _householdService.UpdateHousehold(householdRequest, cancellationToken);
 
-        return request.HouseholdId;
+        await _householdService.UpdateHousehold(householdRequest, cancellationToken);
     }
 
     private readonly IHouseholdServiceAbstraction _householdService;

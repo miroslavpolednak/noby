@@ -3,7 +3,7 @@ using DomainServices.SalesArrangementService.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers;
+namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class GetCustomerHandler
     : IRequestHandler<Dto.GetCustomerMediatrRequest, Contracts.CustomerOnSA>
@@ -34,14 +34,22 @@ internal class GetCustomerHandler
         if (!string.IsNullOrEmpty(obligations))
             customerInstance.Obligations.AddRange(JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations, GrpcHelpers.GrpcJsonSerializerOptions));
 
+        // incomes
+        var list = await _dbContext.CustomersIncomes
+           .AsNoTracking()
+           .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
+           .Select(CustomerOnSAServiceRepositoryExpressions.Income())
+           .ToListAsync(cancellation);
+        customerInstance.Incomes.AddRange(list);
+
         return customerInstance;
     }
     
-    private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-        private readonly ILogger<GetCustomerHandler> _logger;
+    private readonly SalesArrangementServiceDbContext _dbContext;
+    private readonly ILogger<GetCustomerHandler> _logger;
     
     public GetCustomerHandler(
-        Repositories.SalesArrangementServiceDbContext dbContext,
+        SalesArrangementServiceDbContext dbContext,
         ILogger<GetCustomerHandler> logger)
     {
         _dbContext = dbContext;

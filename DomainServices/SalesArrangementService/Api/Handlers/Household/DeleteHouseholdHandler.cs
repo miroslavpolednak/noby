@@ -5,7 +5,7 @@ internal class DeleteHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteHouseholdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteCustomerHandler), request.HouseholdId);
+        _logger.RequestHandlerStartedWithId(nameof(DeleteHouseholdHandler), request.HouseholdId);
         
         await _repository.Delete(request.HouseholdId, cancellation);
         

@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Household.GetHouseholds;
 
 internal record GetHouseholdsRequest(int SalesArrangementId)
-    : IRequest<GetHouseholdsResponse>
+    : IRequest<List<Dto.HouseholdInList>>
 {
 }

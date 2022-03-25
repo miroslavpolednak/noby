@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace FOMS.Api.Endpoints.Household.UpdateHousehold;
 
 public class UpdateHouseholdRequest
-    : IRequest<int>
+    : IRequest
 {
     [JsonIgnore]
     internal int HouseholdId;

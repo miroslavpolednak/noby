@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
+namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class DeleteIncomeHandler
     : IRequestHandler<Dto.DeleteIncomeMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>

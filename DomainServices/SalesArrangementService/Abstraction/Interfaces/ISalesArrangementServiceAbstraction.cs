@@ -1,13 +1,13 @@
-﻿namespace DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.SalesArrangementService.Contracts;
+
+namespace DomainServices.SalesArrangementService.Abstraction;
 
 public interface ISalesArrangementServiceAbstraction
 {
     /// <summary>
     /// Vytvoreni RiskBusinessCaseId a ulozi ho na Sales Arrangement
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 16000; Sales Arrangement #{SalesArrangementId} is not linked to Offer</exception>
     /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">Code: 16000; Sales Arrangement #{SalesArrangementId} already contains RiskBusinessCaseId {RiskBusinessCaseId}</exception>  
@@ -17,9 +17,7 @@ public interface ISalesArrangementServiceAbstraction
     /// <summary>
     /// Vytvoreni Sales Arrangement
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[int (SalesArrangementId)] - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="int" /> (SalesArrangementId)</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16002; Case ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16005; SalesArrangementType #{} does not exist.</exception>
@@ -29,19 +27,17 @@ public interface ISalesArrangementServiceAbstraction
     /// <summary>
     /// Vraci detail Sales Arrangement bez JSON dat
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[Contracts.SalesArrangement] - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="SalesArrangement" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
-    
+
     /// <summary>
     /// Vraci detail nalinkovaneho Sales Arrangement na zaklade OfferId
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[Contracts.SalesArrangement] - nalinkovani SA;
-    /// EmptyServiceCallResult - neexistuje zadny nalinkovany SA pro toto OfferId 
+    /// <see cref="SuccessfulServiceCallResult{}"/> of type <see cref="GetSalesArrangementListResponse" />
+    /// <see cref="EmptyServiceCallResult"/> - neexistuje zadny nalinkovany SA pro toto OfferId 
     /// </returns>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken));
@@ -49,9 +45,7 @@ public interface ISalesArrangementServiceAbstraction
     /// <summary>
     /// Napojeni OfferInstance na SA
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
@@ -60,18 +54,14 @@ public interface ISalesArrangementServiceAbstraction
     /// <summary>
     /// Vrati seznam SalesArrangementu pro dane CaseId - s moznosti filtrovani na stavy
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[GetSalesArrangementListResponse] - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="GetSalesArrangementListResponse" /></returns>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> GetSalesArrangementList(long caseId, IEnumerable<int>? states = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update stavu SA
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16006; SalesArrangementState #{} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16007; SalesArrangement {} is already in state {}</exception>
@@ -81,17 +71,13 @@ public interface ISalesArrangementServiceAbstraction
     /// <summary>
     /// Update obsahu SA
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update parametru SA
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult - OK;
-    /// </returns>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     Task<IServiceCallResult> UpdateSalesArrangementParameters(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>

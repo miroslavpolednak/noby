@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DomainServices.SalesArrangementService.Api.Repositories;
+using Microsoft.EntityFrameworkCore;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
+namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
 internal class GetIncomeListHandler
     : IRequestHandler<Dto.GetIncomeListMediatrRequest, Contracts.GetIncomeListResponse>
@@ -12,13 +13,7 @@ internal class GetIncomeListHandler
         var list = await _dbContext.CustomersIncomes
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .Select(t => new Contracts.IncomeInList
-            {
-                IncomeId = t.CustomerIncomeId,
-                IncomeTypeId = (int)t.IncomeTypeId,
-                CurrencyCode = t.CurrencyCode ?? "",
-                Sum = t.Sum
-            })
+            .Select(CustomerOnSAServiceRepositoryExpressions.Income())
             .ToListAsync(cancellation);
 
         _logger.FoundItems(list.Count, nameof(Repositories.Entities.CustomerIncome));
@@ -28,11 +23,11 @@ internal class GetIncomeListHandler
         return response;
     }
 
-    private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
+    private readonly SalesArrangementServiceDbContext _dbContext;
     private readonly ILogger<GetIncomeListHandler> _logger;
 
     public GetIncomeListHandler(
-        Repositories.SalesArrangementServiceDbContext dbContext,
+        SalesArrangementServiceDbContext dbContext,
         ILogger<GetIncomeListHandler> logger)
     {
         _dbContext = dbContext;

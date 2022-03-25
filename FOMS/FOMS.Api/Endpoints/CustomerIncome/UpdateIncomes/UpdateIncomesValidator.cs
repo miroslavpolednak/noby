@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.CustomerIncome.CreateIncomes;
+namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncomes;
 
-internal class CreateIncomesValidator
-    : AbstractValidator<CreateIncomesRequest>
+internal class UpdateIncomesValidator
+    : AbstractValidator<UpdateIncomesRequest>
 {
-    public CreateIncomesValidator()
+    public UpdateIncomesValidator()
     {
         RuleForEach(t => t.Incomes)
             .Must(t => t.IncomeTypeId != CIS.Foms.Enums.CustomerIncomeTypes.Unknown || t.IncomeId.GetValueOrDefault() > 0)

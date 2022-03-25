@@ -16,7 +16,7 @@ internal class CustomerOnSA
     
     public bool HasPartner { get; set; }
 
-    public string FirstNameNaturalPerson { get; set; } = null!;
+    public string? FirstNameNaturalPerson { get; set; } = null!;
     
     public string Name { get; set; }= null!;
     

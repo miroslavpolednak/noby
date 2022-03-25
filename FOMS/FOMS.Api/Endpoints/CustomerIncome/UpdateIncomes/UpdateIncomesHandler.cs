@@ -2,26 +2,26 @@
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace FOMS.Api.Endpoints.CustomerIncome.CreateIncomes;
+namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncomes;
 
-internal class CreateIncomesHandler
-    : IRequestHandler<CreateIncomesRequest, int[]>
+internal class UpdateIncomesHandler
+    : IRequestHandler<UpdateIncomesRequest, int[]>
 {
-    public async Task<int[]> Handle(CreateIncomesRequest request, CancellationToken cancellationToken)
+    public async Task<int[]> Handle(UpdateIncomesRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateIncomesHandler), request.CustomerOnSAId);
+        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomesHandler), request.CustomerOnSAId);
 
         // at se mi s tim lepe pracuje
-        var requestIncomes = request.Incomes ?? new List<CreateIncomeItem>(0);
+        var requestIncomes = request.Incomes ?? new List<Dto.IncomeBaseData>(0);
         var responseModel = requestIncomes.Select(t => t.IncomeId.GetValueOrDefault()).ToArray();
 
         // vytahnout jiz ulozene prijmy
-        var existingIncomes = ServiceCallResult.Resolve<List<_SA.IncomeInList>>(await _householdService.GetIncomeList(request.CustomerOnSAId, cancellationToken));
+        var existingIncomes = ServiceCallResult.Resolve<List<_SA.IncomeInList>>(await _customerService.GetIncomeList(request.CustomerOnSAId, cancellationToken));
 
         // smazat smazane prijmy
         foreach (var incomeToDelete in existingIncomes.Where(t => !requestIncomes.Any(x => x.IncomeId == t.IncomeId)))
         {
-            await _householdService.DeleteIncome(incomeToDelete.IncomeId, cancellationToken);
+            await _customerService.DeleteIncome(incomeToDelete.IncomeId, cancellationToken);
         }
 
         for (int i = 0; i < requestIncomes.Count; i++)
@@ -31,11 +31,11 @@ internal class CreateIncomesHandler
             // zalozeni novych
             if (!income.IncomeId.HasValue)
             {
-                responseModel[i] = ServiceCallResult.Resolve<int>(await _householdService.CreateIncome(new _SA.CreateIncomeRequest
+                responseModel[i] = ServiceCallResult.Resolve<int>(await _customerService.CreateIncome(new()
                 {
                     IncomeTypeId = (int)income.IncomeTypeId,
                     CustomerOnSAId = request.CustomerOnSAId,
-                    BaseData = new _SA.IncomeBaseData
+                    BaseData = new()
                     {
                         Sum = income.Sum,
                         CurrencyCode = income.CurrencyCode
@@ -45,10 +45,10 @@ internal class CreateIncomesHandler
                 _logger.EntityCreated(nameof(_SA.Income), responseModel[i]);
             }
             else // update existujicich
-                await _householdService.UpdateIncomeBaseData(new _SA.UpdateIncomeBaseDataRequest
+                await _customerService.UpdateIncomeBaseData(new()
                 {
                     IncomeId = income.IncomeId.Value,
-                    BaseData = new _SA.IncomeBaseData
+                    BaseData = new()
                     {
                         Sum = income.Sum,
                         CurrencyCode = income.CurrencyCode
@@ -59,14 +59,14 @@ internal class CreateIncomesHandler
         return responseModel;
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ILogger<CreateIncomesHandler> _logger;
+    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ILogger<UpdateIncomesHandler> _logger;
 
-    public CreateIncomesHandler(
-        IHouseholdServiceAbstraction householdService,
-        ILogger<CreateIncomesHandler> logger)
+    public UpdateIncomesHandler(
+        ICustomerOnSAServiceAbstraction customerService,
+        ILogger<UpdateIncomesHandler> logger)
     {
         _logger = logger;
-        _householdService = householdService;
+        _customerService = customerService;
     }
 }
