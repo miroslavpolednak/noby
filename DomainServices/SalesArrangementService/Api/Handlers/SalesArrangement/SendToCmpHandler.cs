@@ -135,7 +135,7 @@ internal class SendToCmpHandler
 
     #region Data (loading & modifications)
 
-    private static void CheckCustomersOnSA(List<CustomerOnSA> customersOnSa)
+    private static void CheckCustomersOnSA(List<Contracts.CustomerOnSA> customersOnSa)
     {
         // check if each customer contains Mp identity and also Kb identity
         var customerIds = customersOnSa.Select(x => x.CustomerOnSAId);
@@ -156,7 +156,7 @@ internal class SendToCmpHandler
         }
     }
 
-    private static void CheckHouseholds(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
+    private static void CheckHouseholds(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<Contracts.CustomerOnSA> customersOnSa)
     {
         // check if each household type is represented at most once
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
@@ -211,14 +211,14 @@ internal class SendToCmpHandler
         }
     }
 
-    private static Identity GetMainMpIdentity(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
+    private static Identity GetMainMpIdentity(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<Contracts.CustomerOnSA> customersOnSa)
     {
         var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
 
         //var customersOnSaById = customersOnSa.ToDictionary(i => i.CustomerOnSAId);
         //var customerOnSa1 = customersOnSaById[mainHousehold.CustomerOnSAId1!.Value];
 
-        var mainCustomerOnSa1 = customersOnSa.Single(i=> i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
+        var mainCustomerOnSa1 = customersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
         return mainCustomerOnSa1.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).First();
     }
 
@@ -246,9 +246,9 @@ internal class SendToCmpHandler
         return productType;
     }
 
-    private async Task<List<CustomerOnSA>> GetCustomersOnSA(List<int> customerOnSAIds, CancellationToken cancellation)
+    private async Task<List<Contracts.CustomerOnSA>> GetCustomersOnSA(List<int> customerOnSAIds, CancellationToken cancellation)
     {
-        var results = new List<CustomerOnSA>();
+        var results = new List<Contracts.CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Count; i++)
         {
             var customerOnSA = await _mediator.Send(new Dto.GetCustomerMediatrRequest(customerOnSAIds[i]), cancellation);
@@ -257,7 +257,7 @@ internal class SendToCmpHandler
         return results;
     }
 
-    private async Task<Dictionary<string, CustomerListResult>> GetCustomersByIdentityCode(List<CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, CustomerListResult>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
 
@@ -276,7 +276,7 @@ internal class SendToCmpHandler
             _ => throw new NotImplementedException()
         };
 
-    private async Task UpdateSalesArrangement(SalesArrangement entity, string contractNumber, CancellationToken cancellation)
+    private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
         await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber }), cancellation);
         entity.ContractNumber = contractNumber;
@@ -342,13 +342,13 @@ internal class SendToCmpHandler
     }
 
     private static string CreateJsonData(
-        SalesArrangement arrangement,
+        Contracts.SalesArrangement arrangement,
         ProductTypeItem productType,
         GetMortgageDataResponse offer,
         Case caseData,
         User? user,
         List<Contracts.Household> households,
-        List<CustomerOnSA> customersOnSa,
+        List<Contracts.CustomerOnSA> customersOnSa,
         Dictionary<string, CustomerListResult> customersByIdentityCode,
         Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
         Dictionary<int, CodebookService.Contracts.Endpoints.Genders.GenderItem> gendersById
@@ -393,19 +393,20 @@ internal class SendToCmpHandler
             //            "misto": "PRAHA",
             //            "stat": "16"
             //}
-            return null;
+            return new { };
         }
 
-        object MapIdentificationDocument(IdentificationDocument i) {
-                //{
-                //            "cislo_dokladu": "ABC123",
-                //            "typ_dokladu": "1",
-                //            "vydal": "MěÚ Litomyšl",
-                //            "vydal_datum": "01.01.2020",
-                //            "vydal_stat": "16",
-                //            "platnost_do": "31.07.2028"
-                //}
-                return null; 
+        object MapIdentificationDocument(IdentificationDocument i)
+        {
+            //{
+            //            "cislo_dokladu": "ABC123",
+            //            "typ_dokladu": "1",
+            //            "vydal": "MěÚ Litomyšl",
+            //            "vydal_datum": "01.01.2020",
+            //            "vydal_stat": "16",
+            //            "platnost_do": "31.07.2028"
+            //}
+            return new { };
         }
 
         object MapContact(Contact i)
@@ -417,7 +418,7 @@ internal class SendToCmpHandler
             };
         }
 
-        object MapCustomer(CustomerOnSA i)
+        object MapCustomer(Contracts.CustomerOnSA i)
         {
             // do JSON věty jdou pouze Customers s Kb identitou
             var identityKb = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
@@ -441,7 +442,7 @@ internal class SendToCmpHandler
                 datum_narozeni = c.NaturalPerson.DateOfBirth.ToJsonString(),
                 // misto_narozeni_obec = c.NaturalPerson.PlaceOfBirth                           // ??? chybí implementace!
                 // misto_narozeni_stat = c.NaturalPerson.BirthCountryId.ToJsonString(),         // ??? chybí implementace!
-                 pohlavi = gendersById[c.NaturalPerson.GenderId].RDMCode,                       // ??? (použít ???, nikoliv jen Id)   example: "pohlavi": "Z", //Customer
+                pohlavi = gendersById[c.NaturalPerson.GenderId].RDMCode,                       // ??? (použít ???, nikoliv jen Id)   example: "pohlavi": "Z", //Customer
                 // statni_prislusnost =  .CitizenshipCountriesId                                // ??? chybí implementace! vzít první
                 // zamestnanec =                                                                // ??? OP!     mock default 0
                 // rezident =                                                                   // ??? OP!     mock default 0
@@ -511,7 +512,7 @@ internal class SendToCmpHandler
             };
         }
 
-        object MapCustomerOnSA(CustomerOnSA i)
+        object MapCustomerOnSA(Contracts.CustomerOnSA i)
         {
             var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();       // ??? co když je stejné CustomerOnSAId ve vícero households
             return new
