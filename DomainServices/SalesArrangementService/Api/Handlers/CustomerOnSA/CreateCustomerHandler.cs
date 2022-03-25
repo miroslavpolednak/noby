@@ -1,7 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Api.Repositories.Entities;
-using _SA = DomainServices.SalesArrangementService.Contracts;
 using DomainServices.CustomerService.Abstraction;
 using CIS.Infrastructure.gRPC.CisTypes;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Customer = DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
@@ -12,7 +12,7 @@ internal class CreateCustomerHandler
     public async Task<_SA.CreateCustomerResponse> Handle(Dto.CreateCustomerMediatrRequest request, CancellationToken cancellation)
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateCustomerHandler), request.Request.SalesArrangementId);
-        
+
         // check existing SalesArrangementId
         await _saRepository.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
 
@@ -22,6 +22,7 @@ internal class CreateCustomerHandler
             CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)request.Request.CustomerRoleId,
             Identities = request.Request.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
+        int? newMpIdentityId = null;
 
         // pokud se jedna o existujici identitu v KB
         if (request.Request.CustomerIdentifiers is not null && request.Request.CustomerIdentifiers.Any())
@@ -43,7 +44,7 @@ internal class CreateCustomerHandler
             {
                 //TODO jak tady bude vypadat volani pro PO?
                 // zavolat EAS
-                int? partnerId = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(new ExternalServices.Eas.Dto.ClientDataModel
+                newMpIdentityId = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(new ExternalServices.Eas.Dto.ClientDataModel
                 {
                     BirthNumber = customerInstance.NaturalPerson!.BirthNumber,
                     FirstName = customerInstance.NaturalPerson.FirstName,
@@ -52,11 +53,11 @@ internal class CreateCustomerHandler
                 }));
 
                 // pokud se to povedlo, pridej customerovi modrou identitu
-                if (partnerId.HasValue)
+                if (newMpIdentityId.HasValue)
                     entity.Identities!.Add(new CustomerOnSAIdentity
                     {
                         IdentityScheme = CIS.Foms.Enums.IdentitySchemes.Mp,
-                        CustomerOnSAIdentityId = partnerId.Value
+                        CustomerOnSAIdentityId = newMpIdentityId.Value
                     });
             }
         }
@@ -67,13 +68,17 @@ internal class CreateCustomerHandler
             entity.Name = request.Request.Name;
         }
 
-        int customerId = await _repository.CreateCustomer(entity, cancellation);
+        // ulozit do DB
+        _dbContext.Customers.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellation);
+        int customerId = entity.CustomerOnSAId;
         
         _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSA), customerId);
         
         return new _SA.CreateCustomerResponse()
         {
-            CustomerOnSAId = customerId
+            CustomerOnSAId = customerId,
+            PartnerId = newMpIdentityId
         };
     }
 
@@ -83,11 +88,11 @@ internal class CreateCustomerHandler
         {
             SuccessfulServiceCallResult<ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse> r => r.Model.Id,
             ErrorServiceCallResult r => default(int?), //TODO co se ma v tomhle pripade delat?
-            _ => throw new NotImplementedException("CreateCustomerWithHouseholdService.resolveCreateClient")
+            _ => throw new NotImplementedException("resolveCreateEasClient")
         };
 
+    private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly Eas.IEasClient _easClient;
-    private readonly Repositories.CustomerOnSAServiceRepository _repository;
     private readonly Repositories.SalesArrangementServiceRepository _saRepository;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly ILogger<CreateCustomerHandler> _logger;
@@ -97,14 +102,14 @@ internal class CreateCustomerHandler
         Eas.IEasClient easClient,
         ICustomerServiceAbstraction customerService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        Repositories.CustomerOnSAServiceRepository repository,
+        Repositories.SalesArrangementServiceDbContext dbContext,
         Repositories.SalesArrangementServiceRepository saRepository,
         ILogger<CreateCustomerHandler> logger)
     {
+        _dbContext = dbContext;
         _easClient = easClient;
         _customerService = customerService;
         _codebookService = codebookService;
-        _repository = repository;
         _saRepository = saRepository;
         _logger = logger;
     }

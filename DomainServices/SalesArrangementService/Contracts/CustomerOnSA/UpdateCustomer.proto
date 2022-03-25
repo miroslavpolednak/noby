@@ -2,6 +2,7 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
 
@@ -17,4 +18,8 @@ message UpdateCustomerRequest {
     string Name = 5;
     
     cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 6;
+}
+
+message UpdateCustomerResponse {
+    google.protobuf.Int32Value PartnerId = 1;
 }

@@ -30,7 +30,7 @@ service CustomerOnSAService {
 	rpc GetCustomerList (DomainServices.SalesArrangementService.GetCustomerListRequest) returns (DomainServices.SalesArrangementService.GetCustomerListResponse);
 	
 	// update
-	rpc UpdateCustomer (DomainServices.SalesArrangementService.UpdateCustomerRequest) returns (google.protobuf.Empty);
+	rpc UpdateCustomer (DomainServices.SalesArrangementService.UpdateCustomerRequest) returns (DomainServices.SalesArrangementService.UpdateCustomerResponse);
 
 	// update obligations
 	rpc UpdateObligations (DomainServices.SalesArrangementService.UpdateObligationsRequest) returns (google.protobuf.Empty);
