@@ -54,7 +54,8 @@ internal class GetDetailHandler
                     RealEstateTypeId = x.RealEstateTypeId
                 }).ToList()
             },
-            _ => throw new NotImplementedException()
+            _SA.SalesArrangement.ParametersOneofCase.None => null,
+            _ => throw new NotImplementedException("Api/SalesArrangement/GetDetailHandler/getParameters")
         };
     
     private readonly ICodebookServiceAbstraction _codebookService;

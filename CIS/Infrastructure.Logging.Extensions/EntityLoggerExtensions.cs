@@ -21,7 +21,7 @@ public static class EntityLoggerExtensions
            "{EntityName} #{Id} already exist in DB");
 
         _entityCreated = LoggerMessage.Define<string, long>(
-            LogLevel.Error,
+            LogLevel.Information,
             new EventId(EventIdCodes.EntityCreated, nameof(EntityCreated)),
             "{EntityName} created with #{Id}");
     }

@@ -13,7 +13,7 @@ public class SalesArrangementController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/GetSalesArrangementList
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
-    /// <returns>Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
@@ -29,21 +29,23 @@ public class SalesArrangementController : ControllerBase
     /// <i>DS:</i> CustomerService/GetCustomerDetail
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns>Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.CustomerListItem"/> Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
     [ProducesResponseType(typeof(List<Dto.CustomerListItem>), StatusCodes.Status200OK)]
     public async Task<List<Dto.CustomerListItem>> GetCustomers([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(salesArrangementId), cancellationToken);
-    
+
     /// <summary>
     /// Detail Sales Arrangement-u.
     /// </summary>
     /// <remarks>
+    /// <i>/Endpoints/SalesArrangement/GetDetail</i><br/>
     /// Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
+    /// <returns><see cref="GetDetail.GetDetailResponse"/> detail SA vcetne dalsich parametru uveru</returns>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]

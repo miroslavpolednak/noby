@@ -11,10 +11,14 @@ internal class CreateHouseholdHandler
         
         // check existing SalesArrangementId
         var saInstance = await _saRepository.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
-        
-        // check customer role
-        if (!(await _codebookService.HouseholdTypes(cancellation)).Any(t => t.Id == request.Request.HouseholdTypeId))
+
 #pragma warning disable CA2208
+        // Debtor domacnost muze byt jen jedna
+        if (request.Request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
+            throw new CisArgumentException(16031, "Only one Debtor household allowed", "HouseholdTypeId");
+
+        // check household role
+        if (!(await _codebookService.HouseholdTypes(cancellation)).Any(t => t.Id == request.Request.HouseholdTypeId))
             throw new CisArgumentException(16023, $"HouseholdTypeId {request.Request.HouseholdTypeId} does not exist.", "HouseholdTypeId");
 #pragma warning restore CA2208
         

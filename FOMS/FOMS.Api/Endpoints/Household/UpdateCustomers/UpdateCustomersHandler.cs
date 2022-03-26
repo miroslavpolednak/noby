@@ -113,7 +113,6 @@ internal class UpdateCustomersHandler
         return null;
     }
 
-    private readonly CreateCustomerService _createCustomerService;
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly ILogger<UpdateCustomersHandler> _logger;
@@ -121,14 +120,12 @@ internal class UpdateCustomersHandler
 
     public UpdateCustomersHandler(
         IMediator mediator,
-        CreateCustomerService createCustomerService,
         IHouseholdServiceAbstraction householdService,
         ICustomerOnSAServiceAbstraction customerOnSAService,
         ILogger<UpdateCustomersHandler> logger)
     {
         _mediator = mediator;
         _logger = logger;
-        _createCustomerService = createCustomerService;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
     }

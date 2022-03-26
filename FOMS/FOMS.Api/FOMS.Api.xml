@@ -611,11 +611,6 @@
             Typ domacnosti slovne
             </summary>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseHandler.getCreateCaseRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,DomainServices.OfferService.Contracts.MortgageInput)">
-            <summary>
-            Vytvoreni requestu pro zalozeni CASE
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">
             <summary>
             ID simulace ze ktere se ma vytvorit Case.
@@ -664,6 +659,11 @@
         <member name="P:FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.CustomerOnSAId">
             <summary>
             ID noveho klienta
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageInput)">
+            <summary>
+            Vytvoreni requestu pro zalozeni CASE
             </summary>
         </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.SimulateMortgage(FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
@@ -960,7 +960,7 @@
             <i>DS:</i> SalesArrangementService/GetSalesArrangementList
             </remarks>
             <param name="caseId">ID Case-u</param>
-            <returns>Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:FOMS.Api.Endpoints.SalesArrangement.Dto.SalesArrangementListItem"/> Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCustomers(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -971,16 +971,18 @@
             <i>DS:</i> CustomerService/GetCustomerDetail
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns>Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:FOMS.Api.Endpoints.SalesArrangement.Dto.CustomerListItem"/> Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetDetail(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Detail Sales Arrangement-u.
             </summary>
             <remarks>
+            <i>/Endpoints/SalesArrangement/GetDetail</i><br/>
             Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
+            <returns><see cref="T:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse"/> detail SA vcetne dalsich parametru uveru</returns>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateParameters(System.Int32,FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest,System.Threading.CancellationToken)">
             <summary>

@@ -7,9 +7,8 @@ internal class CustomerOnSAService : ICustomerOnSAServiceAbstraction
     public async Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateCustomer), request.SalesArrangementId);
-        var result = await _userContext.AddUserContext(async () => await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken)
-        );
-        return new SuccessfulServiceCallResult<int>(result.CustomerOnSAId);
+        var result = await _userContext.AddUserContext(async () => await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken));
+        return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
     }
 
     public async Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
@@ -52,7 +51,7 @@ internal class CustomerOnSAService : ICustomerOnSAServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateCustomer), request.CustomerOnSAId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken));
-        return new SuccessfulServiceCallResult();
+        return new SuccessfulServiceCallResult<UpdateCustomerResponse>(result);
     }
 
     public async Task<IServiceCallResult> UpdateObligations(UpdateObligationsRequest request, CancellationToken cancellationToken = default(CancellationToken))

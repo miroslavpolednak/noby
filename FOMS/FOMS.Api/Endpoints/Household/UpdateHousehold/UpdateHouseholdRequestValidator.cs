@@ -8,7 +8,5 @@ public class UpdateHouseholdRequestValidator
 {
     public UpdateHouseholdRequestValidator()
     {
-        RuleFor(t => t.HouseholdId)
-            .GreaterThan(0).WithMessage("HouseholdId must be > 0");
     }
 }

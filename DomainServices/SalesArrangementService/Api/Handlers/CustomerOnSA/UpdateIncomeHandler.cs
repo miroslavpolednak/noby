@@ -12,7 +12,7 @@ internal class UpdateIncomeHandler
         _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeHandler), request.Request.IncomeId);
 
         var entity = (await _dbContext.CustomersIncomes
-            .Where(t => t.CustomerIncomeId == request.Request.IncomeId)
+            .Where(t => t.CustomerOnSAIncomeId == request.Request.IncomeId)
             .FirstOrDefaultAsync(cancellation)) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");
         
         entity.Sum = request.Request.BaseData?.Sum;

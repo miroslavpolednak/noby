@@ -16,7 +16,7 @@ internal class GetIncomeListHandler
             .Select(CustomerOnSAServiceRepositoryExpressions.Income())
             .ToListAsync(cancellation);
 
-        _logger.FoundItems(list.Count, nameof(Repositories.Entities.CustomerIncome));
+        _logger.FoundItems(list.Count, nameof(Repositories.Entities.CustomerOnSAIncome));
 
         var response = new Contracts.GetIncomeListResponse();
         response.Incomes.AddRange(list);

@@ -12,7 +12,7 @@ internal class DeleteIncomeHandler
         //TODO kontrola zda muze smazat?
 
         var entity = await _dbContext.CustomersIncomes
-            .Where(t => t.CustomerIncomeId == request.IncomeId)
+            .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
          
         _dbContext.CustomersIncomes.Remove(entity);

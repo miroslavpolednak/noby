@@ -17,11 +17,11 @@ internal static class CustomerOnSAServiceRepositoryExpressions
         };
     }
 
-    public static Expression<Func<Entities.CustomerIncome, Contracts.IncomeInList>> Income()
+    public static Expression<Func<Entities.CustomerOnSAIncome, Contracts.IncomeInList>> Income()
     {
         return t => new Contracts.IncomeInList
         {
-            IncomeId = t.CustomerIncomeId,
+            IncomeId = t.CustomerOnSAIncomeId,
             IncomeTypeId = (int)t.IncomeTypeId,
             CurrencyCode = t.CurrencyCode ?? "",
             Sum = t.Sum

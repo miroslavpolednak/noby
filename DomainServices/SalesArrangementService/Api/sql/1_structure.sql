@@ -196,15 +196,15 @@ CREATE TABLE [dbo].[Household](
     )
 GO
 
-ALTER TABLE [dbo].[CustomerIncome] SET ( SYSTEM_VERSIONING = OFF)
+ALTER TABLE [dbo].[CustomerOnSAIncome] SET ( SYSTEM_VERSIONING = OFF)
 GO
-DROP TABLE [dbo].[CustomerIncome]
+DROP TABLE [dbo].[CustomerOnSAIncome]
 GO
-DROP TABLE [dbo].[CustomerIncomeHistory]
+DROP TABLE [dbo].[CustomerOnSAIncomeHistory]
 GO
 
-CREATE TABLE [dbo].[CustomerIncome](
-	[CustomerIncomeId] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[CustomerOnSAIncome](
+	[CustomerOnSAIncomeIncomeId] [int] IDENTITY(1,1) NOT NULL,
 	[CustomerOnSAId] [int] NOT NULL,
 	[IncomeTypeId] [int] NOT NULL,
 	[Sum] [int] NULL,
@@ -219,13 +219,12 @@ CREATE TABLE [dbo].[CustomerIncome](
 	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
  CONSTRAINT [PK_CustomerIncome] PRIMARY KEY CLUSTERED 
 (
-	[CustomerIncomeId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY], PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+	[CustomerOnSAIncomeIncomeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 WITH
 (
-SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[CustomerIncomeHistory] )
+SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[CustomerOnSAIncomeHistory] )
 )
 GO
-
-

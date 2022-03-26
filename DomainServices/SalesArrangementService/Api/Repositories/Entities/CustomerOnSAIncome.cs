@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories.Entities;
 
-[Table("CustomerIncome", Schema = "dbo")]
-internal class CustomerIncome 
+[Table("CustomerOnSAIncome", Schema = "dbo")]
+internal class CustomerOnSAIncome 
     : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int CustomerIncomeId { get; set; }
+    public int CustomerOnSAIncomeId { get; set; }
 
     public int CustomerOnSAId { get; set; }
     public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }

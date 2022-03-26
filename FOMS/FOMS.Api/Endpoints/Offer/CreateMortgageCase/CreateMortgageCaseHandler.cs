@@ -27,7 +27,7 @@ internal class CreateMortgageCaseHandler
 
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);
-        long caseId = ServiceCallResult.Resolve<long>(await _caseService.CreateCase(getCreateCaseRequest(request, offerInstance.Inputs), cancellationToken));
+        long caseId = ServiceCallResult.Resolve<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User.Id, offerInstance.Inputs), cancellationToken));
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 
         // vytvorit zadost
@@ -35,21 +35,22 @@ internal class CreateMortgageCaseHandler
         int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
+        // create customer on SA
+        var createCustomerResult = ServiceCallResult.Resolve<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
+        if (createCustomerResult.PartnerId.HasValue)
+        {
+            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
+            await _mediator.Publish(notification, cancellationToken);
+        }
+
         // create household
         int householdId = ServiceCallResult.Resolve<int>(await _householdService.CreateHousehold(new _SA.CreateHouseholdRequest
         {
             HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Debtor,
+            CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken));
         _logger.EntityCreated(nameof(Household), householdId);
-
-        // create household and customer on SA
-        var createCustomerResult = await _createCustomerService.Create(salesArrangementId, request, cancellationToken);
-        if (createCustomerResult.PartnerId.HasValue)
-        {
-            var notification = new Notifications.CustomerFullyIdentifiedNotification(caseId, salesArrangementId, request.Identity!, createCustomerResult.PartnerId.Value);
-            await _mediator.Publish(notification, cancellationToken);
-        }
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 
@@ -63,28 +64,7 @@ internal class CreateMortgageCaseHandler
         };
     }
 
-    /// <summary>
-    /// Vytvoreni requestu pro zalozeni CASE
-    /// </summary>
-    _Case.CreateCaseRequest getCreateCaseRequest(CreateMortgageCaseRequest request, _Offer.MortgageInput offerInstance)
-        => new _Case.CreateCaseRequest
-        {
-            CaseOwnerUserId = _userAccessor.User.Id,
-            Customer = new _Case.CustomerData
-            {
-                DateOfBirthNaturalPerson = request.DateOfBirth,
-                FirstNameNaturalPerson = request.FirstName,
-                Name = request.LastName,
-                Identity = request.Identity is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Identity)
-            },
-            Data = new _Case.CaseData
-            {
-                ProductTypeId = offerInstance.ProductTypeId,
-                TargetAmount = offerInstance.LoanAmount
-            }
-        };
-
-    private readonly CreateCustomerService _createCustomerService;
+    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IHouseholdServiceAbstraction _householdService;
@@ -97,7 +77,7 @@ internal class CreateMortgageCaseHandler
     public CreateMortgageCaseHandler(
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        CreateCustomerService createCustomerService,
+        ICustomerOnSAServiceAbstraction customerOnSAService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         IHouseholdServiceAbstraction householdService,
         ICaseServiceAbstraction caseService,
@@ -105,11 +85,11 @@ internal class CreateMortgageCaseHandler
         IOfferServiceAbstraction offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
+        _customerOnSAService = customerOnSAService;
         _mediator = mediator;
         _userAccessor = userAccessor;
         _caseService = caseService;
         _householdService = householdService;
-        _createCustomerService = createCustomerService;
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;
         _logger = logger;
