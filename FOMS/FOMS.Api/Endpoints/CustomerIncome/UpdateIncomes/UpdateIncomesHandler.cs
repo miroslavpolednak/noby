@@ -29,7 +29,7 @@ internal class UpdateIncomesHandler
             var income = requestIncomes[i];
 
             // zalozeni novych
-            if (!income.IncomeId.HasValue)
+            if (income.IncomeId.GetValueOrDefault() == 0)
             {
                 responseModel[i] = ServiceCallResult.Resolve<int>(await _customerService.CreateIncome(new()
                 {
@@ -47,7 +47,7 @@ internal class UpdateIncomesHandler
             else // update existujicich
                 await _customerService.UpdateIncomeBaseData(new()
                 {
-                    IncomeId = income.IncomeId.Value,
+                    IncomeId = income.IncomeId!.Value,
                     BaseData = new()
                     {
                         Sum = income.Sum,

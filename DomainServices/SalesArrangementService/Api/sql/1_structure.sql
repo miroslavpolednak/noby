@@ -204,7 +204,7 @@ DROP TABLE [dbo].[CustomerOnSAIncomeHistory]
 GO
 
 CREATE TABLE [dbo].[CustomerOnSAIncome](
-	[CustomerOnSAIncomeIncomeId] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerOnSAIncomeId] [int] IDENTITY(1,1) NOT NULL,
 	[CustomerOnSAId] [int] NOT NULL,
 	[IncomeTypeId] [int] NOT NULL,
 	[Sum] [int] NULL,
@@ -219,7 +219,7 @@ CREATE TABLE [dbo].[CustomerOnSAIncome](
 	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
  CONSTRAINT [PK_CustomerIncome] PRIMARY KEY CLUSTERED 
 (
-	[CustomerOnSAIncomeIncomeId] ASC
+	[CustomerOnSAIncomeId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
 	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
