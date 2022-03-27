@@ -16,7 +16,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID prijmu ke smazani</param>
     [HttpDelete("{customerOnSAId:int}/income/{incomeId:int}")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId), cancellationToken);
@@ -57,7 +57,7 @@ public class CustomerIncomeController : ControllerBase
     /// </returns>
     [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     public async Task<object> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetIncome.GetIncomeRequest(customerOnSAId, incomeId), cancellationToken);
@@ -73,7 +73,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="incomeId">ID prijmu</param>
     [HttpPut("{customerOnSAId:int}/income/{incomeId:int}")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);

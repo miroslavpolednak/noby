@@ -21,7 +21,7 @@ internal class UpdateCustomerOnCaseHandler
             DateOfBirthNaturalPerson = customerInstance.DateOfBirthNaturalPerson,
             FirstNameNaturalPerson = customerInstance.FirstNameNaturalPerson,
             Name = customerInstance.Name,
-            Identity = customerInstance.CustomerIdentifiers?.First()
+            Identity = customerInstance.CustomerIdentifiers?.FirstOrDefault()
         }, cancellationToken);
     }
 

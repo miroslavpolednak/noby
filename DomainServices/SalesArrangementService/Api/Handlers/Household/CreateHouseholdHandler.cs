@@ -14,7 +14,7 @@ internal class CreateHouseholdHandler
 
 #pragma warning disable CA2208
         // Debtor domacnost muze byt jen jedna
-        if (request.Request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
+        if (request.Request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor && _dbContext.Households.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId))
             throw new CisArgumentException(16031, "Only one Debtor household allowed", "HouseholdTypeId");
 
         // check household role
@@ -41,29 +41,30 @@ internal class CreateHouseholdHandler
             OtherExpenseAmount = request.Request.Expenses?.OtherExpenseAmount
         };
 
-        int householdId = await _repository.Create(entity, cancellation);
-
-        _logger.EntityCreated(nameof(Repositories.Entities.Household), householdId);
+        _dbContext.Households.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellation);
+        
+        _logger.EntityCreated(nameof(Repositories.Entities.Household), entity.HouseholdId);
         
         return new CreateHouseholdResponse()
         {
-            HouseholdId = householdId
+            HouseholdId = entity.HouseholdId
         };
     }
     
-    private readonly Repositories.HouseholdRepository _repository;
+    private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly Repositories.SalesArrangementServiceRepository _saRepository;
     private readonly ILogger<CreateHouseholdHandler> _logger;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     
     public CreateHouseholdHandler(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        Repositories.HouseholdRepository repository,
+        Repositories.SalesArrangementServiceDbContext dbContext,
         Repositories.SalesArrangementServiceRepository saRepository,
         ILogger<CreateHouseholdHandler> logger)
     {
         _codebookService = codebookService;
-        _repository = repository;
+        _dbContext = dbContext;
         _saRepository = saRepository;
         _logger = logger;
     }
