@@ -14,7 +14,7 @@ internal class CreateHouseholdHandler
 
 #pragma warning disable CA2208
         // Debtor domacnost muze byt jen jedna
-        if (request.Request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor && _dbContext.Households.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId))
+        if (request.Request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main && _dbContext.Households.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId))
             throw new CisArgumentException(16031, "Only one Debtor household allowed", "HouseholdTypeId");
 
         // check household role

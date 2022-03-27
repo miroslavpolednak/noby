@@ -9,7 +9,7 @@ internal class DeleteHouseholdHandler
         _logger.RequestHandlerStartedWithId(nameof(DeleteHouseholdHandler), request.HouseholdId);
         
         var householdInstance = await _repository.GetHousehold(request.HouseholdId, cancellation);
-        if (householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Debtor)
+        if (householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main)
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly

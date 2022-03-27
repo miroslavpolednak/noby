@@ -46,7 +46,7 @@ internal class CreateMortgageCaseHandler
         // create household
         int householdId = ServiceCallResult.Resolve<int>(await _householdService.CreateHousehold(new _SA.CreateHouseholdRequest
         {
-            HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Debtor,
+            HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken));

@@ -102,7 +102,7 @@ internal class UpdateCustomersHandler
             }
 
             // hlavni domacnost - hlavni klient ma modre ID
-            if (customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Debtor)
+            if (customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
             {
                 var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customerId!.Value, newMpId);
                 await _mediator.Publish(notification, cancellationToken);
