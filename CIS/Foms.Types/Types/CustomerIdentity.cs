@@ -18,6 +18,12 @@ public class CustomerIdentity
         Scheme = scheme;
     }
 
+    public CustomerIdentity(int id, int scheme)
+    {
+        Id = id;
+        Scheme = (IdentitySchemes)scheme;
+    }
+
     public CustomerIdentity(int? id, string? scheme) 
         : this(id.GetValueOrDefault(), scheme) { }
 

@@ -144,7 +144,7 @@ CREATE TABLE [dbo].[CustomerOnSAIdentity](
      [CustomerOnSAIdentityId] [int] IDENTITY(1,1) NOT NULL,
      [CustomerOnSAId] [int] NULL,
      [IdentityScheme] [tinyint] NOT NULL,
-     [Id] [int] NOT NULL,
+     [IdentityId] [int] NOT NULL,
      [ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
      [ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
      CONSTRAINT [PK_CustomerOnSAIdentity] PRIMARY KEY CLUSTERED

@@ -16,6 +16,9 @@ internal class UpdateCustomerHandler
             .Where(t => t.CustomerOnSAId == request.Request.CustomerOnSAId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId} does not exist.");
 
+        //entity.Identities.Add(new Repositories.Entities.CustomerOnSAIdentity(new CIS.Infrastructure.gRPC.CisTypes.Identity(111, CIS.Foms.Enums.IdentitySchemes.Mp), 1));
+        await _dbContext.SaveChangesAsync(cancellation);
+
         // jestlize uz ma nejakou identitu, neni co menit - asi vyhod chybu? Nebo ne?
         if (entity.Identities is not null && entity.Identities.Any())
             throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 0);

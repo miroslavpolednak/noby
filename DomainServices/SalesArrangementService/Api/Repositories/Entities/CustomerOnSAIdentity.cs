@@ -13,7 +13,7 @@ internal class CustomerOnSAIdentity
     
     public CIS.Foms.Enums.IdentitySchemes IdentityScheme { get; set; }
     
-    public int Id { get; set; }
+    public int IdentityId { get; set; }
     
     public virtual CustomerOnSA Customer { get; set; }
 
@@ -27,9 +27,9 @@ internal class CustomerOnSAIdentity
     public CustomerOnSAIdentity(CIS.Infrastructure.gRPC.CisTypes.Identity identity, int? customerOnSAId = default(int?))
 #pragma warning restore CS8618
     {
-        if (customerOnSAId.HasValue)
-            this.CustomerOnSAId = customerOnSAId.Value;
-        this.Id = identity.IdentityId;
+        if (customerOnSAId.GetValueOrDefault() > 0)
+            this.CustomerOnSAId = customerOnSAId!.Value;
+        this.IdentityId = identity.IdentityId;
         this.IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)identity.IdentityScheme;
     }
 }

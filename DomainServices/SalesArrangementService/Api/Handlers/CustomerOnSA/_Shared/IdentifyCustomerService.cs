@@ -4,7 +4,7 @@ using _Customer = DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA.Shared;
 
-[CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class IdentifyCustomerService
 {
     public async Task<(int? PartnerId, List<Identity>? Identities)> FillEntity(Repositories.Entities.CustomerOnSA entity, Contracts.CustomerOnSABase? customer, CancellationToken cancellation)
@@ -24,8 +24,10 @@ internal class IdentifyCustomerService
             entity.DateOfBirthNaturalPerson = customerInstance.NaturalPerson?.DateOfBirth;
             entity.FirstNameNaturalPerson = customerInstance.NaturalPerson?.FirstName;
             entity.Name = customerInstance.NaturalPerson?.LastName ?? "";
-            if (entity.Identities is null || !entity.Identities.Any(t => (int)t.IdentityScheme == (int)ident.IdentityScheme))
-                entity.Identities = new() { new Repositories.Entities.CustomerOnSAIdentity(ident) };
+            if (entity.Identities is null)
+                entity.Identities = new() { new(ident) };
+            else if (!entity.Identities.Any(t => (int)t.IdentityScheme == (int)ident.IdentityScheme))
+                entity.Identities.Add(new(ident));
 
             // pokud jeste nema modre ID, ale ma cervene
             if (!customer.CustomerIdentifiers.Any(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp))
@@ -45,7 +47,7 @@ internal class IdentifyCustomerService
                     entity.Identities!.Add(new()
                     {
                         IdentityScheme = CIS.Foms.Enums.IdentitySchemes.Mp,
-                        CustomerOnSAIdentityId = newMpIdentityId.Value
+                        IdentityId = newMpIdentityId.Value
                     });
             }
         }
@@ -70,11 +72,14 @@ internal class IdentifyCustomerService
 
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly Eas.IEasClient _easClient;
+    private readonly ILogger<IdentifyCustomerService> _logger;
 
     public IdentifyCustomerService(
+        ILogger<IdentifyCustomerService> logger,
         ICustomerServiceAbstraction customerService,
         Eas.IEasClient easClient)
     {
+        _logger = logger;
         _customerService = customerService;
         _easClient = easClient;
     }

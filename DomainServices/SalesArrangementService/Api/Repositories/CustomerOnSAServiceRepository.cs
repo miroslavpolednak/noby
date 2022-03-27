@@ -23,7 +23,7 @@ internal class CustomerOnSAServiceRepository
         
         model.ForEach(t =>
         {
-            t.CustomerIdentifiers.AddRange(identities.Where(x => x.CustomerOnSAId == t.CustomerOnSAId).Select(x => new Identity(x.Id, x.IdentityScheme)));
+            t.CustomerIdentifiers.AddRange(identities.Where(x => x.CustomerOnSAId == t.CustomerOnSAId).Select(x => new Identity(x.IdentityId, x.IdentityScheme)));
         });
 
         return model;

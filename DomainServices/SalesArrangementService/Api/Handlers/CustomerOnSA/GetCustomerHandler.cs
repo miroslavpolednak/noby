@@ -23,7 +23,7 @@ internal class GetCustomerHandler
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .AsNoTracking()
             .ToListAsync(cancellation);
-        customerInstance.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.Id, t.IdentityScheme)));
+        customerInstance.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
 
         // obligations
         var obligations = await _dbContext.CustomersObligations
@@ -32,7 +32,7 @@ internal class GetCustomerHandler
             .Select(t => t.Obligations)
             .FirstOrDefaultAsync(cancellation);
         if (!string.IsNullOrEmpty(obligations))
-            customerInstance.Obligations.AddRange(JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations, GrpcHelpers.GrpcJsonSerializerOptions));
+            customerInstance.Obligations.AddRange(JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations));
 
         // incomes
         var list = await _dbContext.CustomersIncomes

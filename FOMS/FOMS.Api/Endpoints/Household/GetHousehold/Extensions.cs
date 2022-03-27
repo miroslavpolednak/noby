@@ -18,7 +18,7 @@ internal static class Extensions
         => new CustomerInHousehold()
         {
             CustomerOnSAId = model.CustomerOnSAId,
-            Identities = null,
+            Identities = model.CustomerIdentifiers?.Select(t => new CIS.Foms.Types.CustomerIdentity(t.IdentityId, (int)t.IdentityScheme)).ToList(),
             FirstName = model.FirstNameNaturalPerson,
             LastName = model.Name,
             DateOfBirth = model.DateOfBirthNaturalPerson,
