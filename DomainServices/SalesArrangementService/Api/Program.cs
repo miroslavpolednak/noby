@@ -1,13 +1,14 @@
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Security;
 using DomainServices.SalesArrangementService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
+using DomainServices.CustomerService.Abstraction;
+using DomainServices.UserService.Abstraction;
+
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
-using DomainServices.CustomerService.Abstraction;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -50,8 +51,10 @@ builder.Services
     .AddCisServiceDiscovery(true)
     .AddCaseService(true)
     .AddCodebookService(true)
+    .AddOfferService(true)
     .AddCustomerService(true)
-    .AddOfferService(true);
+    .AddUserService(true);
+
 builder.AddSalesArrangementService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
