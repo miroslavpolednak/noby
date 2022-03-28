@@ -10,4 +10,5 @@ public class CustomerListItem
     public string? City { get; set; }
     public string? Phone { get; set; }
     public string? Email { get; set; }
+    public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
 }

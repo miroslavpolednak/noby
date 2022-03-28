@@ -32,6 +32,7 @@ internal class GetCustomersHandler
             // pokud nema identitu, ani nevolej customerSvc
             if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any())
             {
+                c.Identities = t.CustomerIdentifiers.Select(x => new CIS.Foms.Types.CustomerIdentity(x.IdentityId, (int)x.IdentityScheme)).ToList();
 
                 // zavolat customer svc pro detail
                 //TODO nejak prioritizovat schemata?

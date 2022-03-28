@@ -21,7 +21,7 @@ internal class UpdateCustomerHandler
 
         // jestlize uz ma nejakou identitu, neni co menit - asi vyhod chybu? Nebo ne?
         if (entity.Identities is not null && entity.Identities.Any())
-            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 0);
+            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 16033);
 
         // updatovat entitu udaji z requestu, pripadne dotahnout z CM. Zajistit nove MP ID.
         var result = await _identifyCustomerService.FillEntity(entity, request.Request.Customer, cancellation);

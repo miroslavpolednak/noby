@@ -11,4 +11,5 @@ public struct ErrorCodes
     public const int HouseholdTypeNotFound = 8;
 
     public const int CaseNotFoundInKonsDb = 7;
+    public const int PayloadIsEmpty = 16;
 }

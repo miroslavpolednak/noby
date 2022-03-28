@@ -41,7 +41,7 @@ public class CustomerIncomeController : ControllerBase
     [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
     [ProducesResponseType(typeof(int[]), StatusCodes.Status200OK)]
     public async Task<int[]> UpdateIncomes([FromRoute] int customerOnSAId, [FromBody] UpdateIncomes.UpdateIncomesRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
+        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
 
     /// <summary>
     /// Detail prijmu customera
@@ -76,7 +76,7 @@ public class CustomerIncomeController : ControllerBase
     [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(0, "Payload is empty", nameof(request)), cancellationToken);
+        => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
 
     private readonly IMediator _mediator;
     public CustomerIncomeController(IMediator mediator) => _mediator = mediator;

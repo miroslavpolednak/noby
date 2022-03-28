@@ -11,8 +11,9 @@ public static class GrpcExceptionHelpers
 
     public static RpcException CreateRpcException(StatusCode statusCode, string message, int exceptionCode, List<(string Key, string Value)>? trailers, Exception? baseException = null)
     {
-        if (exceptionCode <= 0)
-            throw new ArgumentOutOfRangeException(nameof(exceptionCode), "exceptionCode <= 0");
+        //TODO nejsem si jisty, ze lze toto vyzadovat vzdy - napr. pri prekladu error kodu z ext systemu
+        /*if (exceptionCode <= 0)
+            throw new ArgumentOutOfRangeException(nameof(exceptionCode), "exceptionCode <= 0");*/
 
         Metadata trailersCollection = new();
         trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exceptionCode.ToString(System.Globalization.CultureInfo.InvariantCulture));

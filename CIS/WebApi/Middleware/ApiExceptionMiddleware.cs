@@ -48,7 +48,7 @@ public class ApiExceptionMiddleware
             if (ex.ContainErrorsList)
             {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(0, "Errors collection is empty", "errors");
+                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
                 result = Results.ValidationProblem(errors);
             }
