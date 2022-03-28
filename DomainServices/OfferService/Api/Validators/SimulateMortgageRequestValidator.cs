@@ -13,5 +13,9 @@ internal class SimulateMortgageRequestValidator : AbstractValidator<Dto.Simulate
         RuleFor(t => t.Request.Inputs.ProductTypeId)
             .GreaterThan(0)
             .WithMessage("ProductTypeId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
+        RuleFor(t => t.Request.Inputs.SimulationToggleSettings)
+            .Must(p => ((int)(Contracts.SimulationToggleSettings)p) > 0)
+            .WithMessage("SimulationToggleSettings is not specified").WithErrorCode("99999"); //TODO: ErrorCode
     }
 }
