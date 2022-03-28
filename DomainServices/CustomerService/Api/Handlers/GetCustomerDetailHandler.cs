@@ -31,6 +31,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             var countries = await _codebooks.Countries();
             var genders = await _codebooks.Genders();
             var maritals = await _codebooks.MaritalStatuses();
+            var titles = await _codebooks.AcademicDegreesBefore();
 
             // identity
             response.Identities.Add(cmResponse.CustomerId.ToIdentity());
@@ -50,6 +51,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                 PlaceOfBirth = np.BirthPlace ?? "",
                 BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
                 MaritalStatusStateId = maritals.FirstOrDefault(t => t.RDMCode == np.MaritalStatusCode)?.Id ?? 0,
+                DegreeBeforeId = titles.FirstOrDefault(t => String.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id
             };
 
             // 

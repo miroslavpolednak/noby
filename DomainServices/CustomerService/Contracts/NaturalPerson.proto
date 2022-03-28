@@ -50,4 +50,8 @@ message NaturalPerson {
    repeated int32 CitizenshipCountriesId = 9;
 
    int32 MaritalStatusStateId = 10;
+   
+   google.protobuf.Int32Value DegreeBeforeId = 11;
+
+   google.protobuf.Int32Value DegreeAfterId = 12;
 }

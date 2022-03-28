@@ -48,10 +48,12 @@ internal static class CMExtension
             => r.Model,
 
             SuccessfulServiceCallResult<CustomerManagement.CMWrapper.ApiException<CustomerManagement.CMWrapper.Error>> r
-            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {r.Model.Result.Detail}", 17000),
+            => r.Model.StatusCode == 404 ?
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, "Customer does not found", 17002) :
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {r.Model.Result.Detail}", 17001),
 
-            SuccessfulServiceCallResult<CustomerManagement.CMWrapper.Error> r
-            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"CustomerManagement error: {r.Model.Message}", 17000, new()
+            SuccessfulServiceCallResult <CustomerManagement.CMWrapper.Error> r
+            => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"CustomerManagement error: {r.Model.Message}", 17001, new()
             {
                 ("cmerrorcode", r.Model.Code),
                 ("cmerrortext", r.Model.Message)
