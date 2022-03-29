@@ -165,6 +165,7 @@
             - Genders
             - IdentificationDocumentTypes
             - IncomeTypes
+            - LegalCapacities
             - Mandants
             - MaritalStatuses
             - ObligationTypes
@@ -832,12 +833,12 @@
             </summary>
             <example></example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FinantialResourcesOwn">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FinancialResourcesOwn">
             <summary>
             Vlastní zdroje
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FinantialResourcesOther">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FinancialResourcesOther">
             <summary>
             Cizí zdroje
             </summary>

@@ -20,8 +20,8 @@ internal static class Extensions
                 LoanToValue = request.LoanToValue,
                 PaymentDayOfTheMonth = request.PaymentDayOfTheMonth,
                 EmployeeBonusRequested = request.EmployeeBonusRequested,
-                FinantialResourcesOwn = request.FinantialResourcesOwn,
-                FinantialResourcesOther = request.FinantialResourcesOther,
+                FinancialResourcesOwn = request.FinancialResourcesOwn,
+                FinancialResourcesOther = request.FinancialResourcesOther,
                 ExpectedDateOfDrawing = request.ExpectedDateOfDrawing,
                 SimulationToggleSettings = (DomainServices.OfferService.Contracts.SimulationToggleSettings) request.SimulationToggleSettings
             }

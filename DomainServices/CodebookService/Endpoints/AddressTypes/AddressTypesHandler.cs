@@ -1,14 +1,15 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.AddressTypes;
+﻿using DomainServices.CodebookService.Contracts;
+using DomainServices.CodebookService.Contracts.Endpoints.AddressTypes;
 
 namespace DomainServices.CodebookService.Endpoints.AddressTypes;
 
-public class AddressTypesHandler : IRequestHandler<AddressTypesRequest, List<AddressTypeItem>>
+public class AddressTypesHandler : IRequestHandler<AddressTypesRequest, List<GenericCodebookItemWithCode>>
 {
-    public Task<List<AddressTypeItem>> Handle(AddressTypesRequest request, CancellationToken cancellationToken)
+    public Task<List<GenericCodebookItemWithCode>> Handle(AddressTypesRequest request, CancellationToken cancellationToken)
     {
         var values = Enum.GetValues<CIS.Foms.Enums.AddressTypes>()
                 .Where(t => t > 0)
-                .Select(t => new AddressTypeItem
+                .Select(t => new GenericCodebookItemWithCode
                 {
                     Id = (int)t,
                     Code = t.ToString(),

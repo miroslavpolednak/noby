@@ -6,5 +6,5 @@ namespace DomainServices.CodebookService.Contracts;
 public partial interface ICodebookService
 {
     [OperationContract]
-    Task<List<AddressTypeItem>> AddressTypes(AddressTypesRequest request, CallContext context = default);
+    Task<List<GenericCodebookItemWithCode>> AddressTypes(AddressTypesRequest request, CallContext context = default);
 }

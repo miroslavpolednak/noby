@@ -72,12 +72,12 @@ public class MortgageInputs
     /// <summary>
     /// Vlastní zdroje
     /// </summary>
-    public decimal? FinantialResourcesOwn { get; set; }
+    public decimal? FinancialResourcesOwn { get; set; }
 
     /// <summary>
     /// Cizí zdroje
     /// </summary>
-    public decimal? FinantialResourcesOther { get; set; }
+    public decimal? FinancialResourcesOther { get; set; }
 
     /// <summary>
     /// Nastavení toggle na FE pro počítání LTV.

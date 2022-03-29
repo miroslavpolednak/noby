@@ -28,6 +28,7 @@ public class CodebooksController : ControllerBase
     /// - Genders
     /// - IdentificationDocumentTypes
     /// - IncomeTypes
+    /// - LegalCapacities
     /// - Mandants
     /// - MaritalStatuses
     /// - ObligationTypes

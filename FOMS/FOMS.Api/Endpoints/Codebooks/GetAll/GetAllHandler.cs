@@ -35,6 +35,7 @@ internal class GetAllHandler
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
             "incometypes" => new(original, await _codebooks.IncomeTypes(cancellationToken)),
+            "legalcapacities" => new(original, await _codebooks.LegalCapacities(cancellationToken)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),
             "maritalstatuses" => new(original, (await _codebooks.MaritalStatuses(cancellationToken)).Where(t => t.IsValid)),
             "obligationtypes" => new(original, await _codebooks.ObligationTypes(cancellationToken)),
