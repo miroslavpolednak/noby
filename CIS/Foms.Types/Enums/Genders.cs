@@ -10,11 +10,11 @@ public enum Genders : byte
     [EnumMember]
     Unknown = 0,
     
-    [Display(Name = "Muž")]
+    [Display(Name = "muž")]
     [EnumMember]
     Male = 1,
     
-    [Display(Name = "Žena")]
+    [Display(Name = "žena")]
     [EnumMember]
     Female = 2,
 }

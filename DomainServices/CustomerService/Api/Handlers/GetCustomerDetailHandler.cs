@@ -46,7 +46,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                 DateOfBirth = np.BirthDate,
                 FirstName = np.FirstName ?? "",
                 LastName = np.Surname ?? "",
-                GenderId = genders.First(t => t.RDMCode == np.GenderCode.ToString()).Id,
+                GenderId = genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id,
                 BirthName = np.BirthName ?? "",
                 PlaceOfBirth = np.BirthPlace ?? "",
                 BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,

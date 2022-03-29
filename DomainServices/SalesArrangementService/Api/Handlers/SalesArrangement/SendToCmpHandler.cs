@@ -442,7 +442,7 @@ internal class SendToCmpHandler
                 datum_narozeni = c.NaturalPerson.DateOfBirth.ToJsonString(),
                 // misto_narozeni_obec = c.NaturalPerson.PlaceOfBirth                           // ??? chybí implementace!
                 // misto_narozeni_stat = c.NaturalPerson.BirthCountryId.ToJsonString(),         // ??? chybí implementace!
-                pohlavi = gendersById[c.NaturalPerson.GenderId].RDMCode,                       // ??? (použít ???, nikoliv jen Id)   example: "pohlavi": "Z", //Customer
+                pohlavi = gendersById[c.NaturalPerson.GenderId].KbCmCode,                       // ??? (použít ???, nikoliv jen Id)   example: "pohlavi": "Z", //Customer
                 // statni_prislusnost =  .CitizenshipCountriesId                                // ??? chybí implementace! vzít první
                 // zamestnanec =                                                                // ??? OP!     mock default 0
                 // rezident =                                                                   // ??? OP!     mock default 0
