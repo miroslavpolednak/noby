@@ -1,9 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 
-using CIS.Core.Results;
 using Grpc.Core;
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.CisTypes;
 
 using DomainServices.CodebookService.Contracts;
@@ -23,7 +21,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 
-using DomainServices.SalesArrangementService.Api;
+//using DomainServices.SalesArrangementService.Api;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -120,8 +118,7 @@ internal class SendToCmpHandler
             ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
 
         // Load codebooks
-        // var academicDegreesBefore = (await _codebookService.AcademicDegreesBefore(cancellation)).GroupBy(i => i.Id).Where(g => g.Count() > 1).ToList();
-        var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).GroupBy(i => i.Id).Select(g => g.First()).ToDictionary(i => i.Id); // TODO: duplicity s ID 148
+        var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).ToDictionary(i => i.Id);
         var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
 
         // create JSON data
@@ -351,14 +348,19 @@ internal class SendToCmpHandler
         List<Contracts.CustomerOnSA> customersOnSa,
         Dictionary<string, CustomerListResult> customersByIdentityCode,
         Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
-        Dictionary<int, CodebookService.Contracts.Endpoints.Genders.GenderItem> gendersById
-
+        Dictionary<int, CodebookService.Contracts.Endpoints.Genders.GenderItem> gendersById,
+        bool ignoreNullValues = true
         )
     {
         var householdsByCustomerOnSAId = customersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
 
-        object MapHousehold(Contracts.Household i)
+        object? MapHousehold(Contracts.Household i)
         {
+            if (i == null)
+            {
+                return null;
+            }
+
             return new
             {
                 cislo_domacnosti = i.HouseholdTypeId.ToJsonString(),
@@ -372,8 +374,13 @@ internal class SendToCmpHandler
             };
         }
 
-        object MapLoanPurpose(LoanPurpose i)
+        object? MapLoanPurpose(LoanPurpose i)
         {
+            if (i == null)
+            {
+                return null;
+            }
+
             return new
             {
                 uv_ucel = i.LoanPurposeId.ToJsonString(),
@@ -381,36 +388,49 @@ internal class SendToCmpHandler
             };
         }
 
-        object MapAddress(Address i)
+        object? MapAddress(Address i)
         {
-            //{
-            //              "typ_adresy": "1",
-            //            "ulice": "Milady Horákové",
-            //            "cislo_popisne": "12360",
-            //            "cislo_orientacni": "",     //pokud načteme z CM
-            //            "ulice_dodatek": "",    //pokud načteme z CM
-            //            "psc": "11000",
-            //            "misto": "PRAHA",
-            //            "stat": "16"
-            //}
-            return new { };
+            if (i == null)
+            {
+                return null;
+            }
+
+            return new {
+                typ_adresy = i.AddressTypeId.ToJsonString(),
+                ulice = i.Street,
+                cislo_popisne = i.BuildingIdentificationNumber,
+                cislo_orientacni = i.LandRegistryNumber,
+                // ulice_dodatek =                                  // ??? OP!
+                psc = i.Postcode,
+                misto = i.City,
+                stat = i.CountryId.ToJsonString(),
+            };
         }
 
-        object MapIdentificationDocument(IdentificationDocument i)
+        object? MapIdentificationDocument(IdentificationDocument i)
         {
-            //{
-            //            "cislo_dokladu": "ABC123",
-            //            "typ_dokladu": "1",
-            //            "vydal": "MěÚ Litomyšl",
-            //            "vydal_datum": "01.01.2020",
-            //            "vydal_stat": "16",
-            //            "platnost_do": "31.07.2028"
-            //}
-            return new { };
+            if (i == null) { 
+                return null; 
+            }
+
+            return new {
+                cislo_dokladu = i.Number,
+                typ_dokladu = i.IdentificationDocumentTypeId.ToJsonString(),
+                vydal = i.IssuedBy,
+                vydal_datum = i.IssuedOn.ToJsonString(),
+                vydal_stat = i.IssuingCountryId.ToJsonString(),
+                platnost_do = i.ValidTo.ToJsonString(),
+
+            };
         }
 
-        object MapContact(Contact i)
+        object? MapContact(Contact i)
         {
+            if (i == null)
+            {
+                return null;
+            }
+
             return new
             {
                 typ_kontaktu = i.ContactTypeId.ToJsonString(),
@@ -418,12 +438,20 @@ internal class SendToCmpHandler
             };
         }
 
-        object MapCustomer(Contracts.CustomerOnSA i)
+        object? MapCustomer(Contracts.CustomerOnSA i)
         {
+            if (i == null)
+            {
+                return null;
+            }
+
             // do JSON věty jdou pouze Customers s Kb identitou
             var identityKb = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
             //var identityMp = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp); //TODO: až bude implementováno vytváření MP identity při UpdateCustomerOnSA !!!
             var c = customersByIdentityCode[identityKb.ToCode()];
+
+            var cIdentificationDocument = MapIdentificationDocument(c.IdentificationDocument);
+            var cIdentificationDocuments = (cIdentificationDocument == null) ? Array.Empty<object>() : new object[1] { cIdentificationDocument };
 
             return new
             {
@@ -442,15 +470,15 @@ internal class SendToCmpHandler
                 datum_narozeni = c.NaturalPerson.DateOfBirth.ToJsonString(),
                 // misto_narozeni_obec = c.NaturalPerson.PlaceOfBirth                           // ??? chybí implementace!
                 // misto_narozeni_stat = c.NaturalPerson.BirthCountryId.ToJsonString(),         // ??? chybí implementace!
-                pohlavi = gendersById[c.NaturalPerson.GenderId].RDMCode,                       // ??? (použít ???, nikoliv jen Id)   example: "pohlavi": "Z", //Customer
+                pohlavi = gendersById[c.NaturalPerson.GenderId].StarBuildJsonCode,              // ??? (použít StarBuildJsonCode, nikoliv jen Id) example: "pohlavi": "Z", //Customer
                 // statni_prislusnost =  .CitizenshipCountriesId                                // ??? chybí implementace! vzít první
-                // zamestnanec =                                                                // ??? OP!     mock default 0
-                // rezident =                                                                   // ??? OP!     mock default 0
-                // PEP =                                                                        // ??? OP!     neposílat, není definováno ve starbuild
+                zamestnanec = 0.ToJsonString(),                                                 // [MOCK] OfferInstance (default 0)
+                rezident = 0.ToJsonString(),                                                    // [MOCK] OfferInstance (default 0)
+                // PEP =                                                                        // ??? OP! Neposílat, není definováno ve starbuild.
                 seznam_adres = c.Addresses.Select(i => MapAddress(i)).ToArray(),
-                seznam_dokladu = new object[1] { MapIdentificationDocument(c.IdentificationDocument) }, // ??? mělo by to být pole, nikoliv jeden objekt ???
+                seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
                 seznam_kontaktu = c.Contacts.Select(i => MapContact(i)).ToArray(),
-                // rodinny_stav = c.NaturalPerson.MaritalStatusStateId.ToJsonString(),           // ??? chybí implementace! 
+                // rodinny_stav = c.NaturalPerson.MaritalStatusStateId.ToJsonString(),          // ??? chybí implementace! 
                 druh_druzka = i.HasPartner.ToJsonString(),
                 // vzdelani =                                                                   // ??? OP!
                 // prijmy =                                                                     // ??? chybí specifikace! 
@@ -512,9 +540,14 @@ internal class SendToCmpHandler
             };
         }
 
-        object MapCustomerOnSA(Contracts.CustomerOnSA i)
+        object? MapCustomerOnSA(Contracts.CustomerOnSA i)
         {
-            var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();       // ??? co když je stejné CustomerOnSAId ve vícero households
+            if (i == null)
+            {
+                return null;
+            }
+
+            var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();  // ??? co když je stejné CustomerOnSAId ve vícero households
             return new
             {
                 role = i.CustomerRoleId.ToJsonString(),                     // CustomerOnSA
@@ -526,6 +559,11 @@ internal class SendToCmpHandler
 
         // root
         var actualDate = DateTime.Now.Date;
+
+        var financialResourcesOwn = offer.Inputs.FinancialResourcesOwn.ToDecimal();
+        var financialResourcesOther = offer.Inputs.FinancialResourcesOther.ToDecimal();
+        decimal? financialResourcesTotal = (financialResourcesOwn.HasValue || financialResourcesOther.HasValue) ? ((financialResourcesOwn ?? 0) + (financialResourcesOther ?? 0)) : null;
+
         var data = new
         {
             cislo_smlouvy = arrangement.ContractNumber,
@@ -557,23 +595,24 @@ internal class SendToCmpHandler
                                                                                                                                     //          (na offer zatím nemáme, dohodnuta mockovaná hodnota prázdné pole)
             seznam_ucelu = offer.Inputs.LoanPurpose.Select(i => MapLoanPurpose(i)).ToArray(),                                       // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
             // seznam_objektu =                                                                                                     // SalesArrangement - 0..3 ???  na SA chybí implementace!
-            seznam_ucastniku = customersOnSa.Select(i => MapCustomerOnSA(i)).ToArray(),                                  // CustomerOnSA, Customer
+            seznam_ucastniku = customersOnSa.Select(i => MapCustomerOnSA(i)).ToArray(),                                             // CustomerOnSA, Customer
             zprostredkovano_3_stranou = false.ToJsonString(),                                                                       // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
-            sjednal_CPM = user!.CPM,                                                                                                 // User
-            sjednal_ICP = user!.ICP,                                                                                                 // User
+            sjednal_CPM = user!.CPM,                                                                                                // User
+            sjednal_ICP = user!.ICP,                                                                                                // User
             // mena_prijmu = arrangement.IncomeCurrencyCode                                                                         // SalesArrangement ??? na SA chybí implementace!
             // mena_bydliste = arrangement.ResidencyCurrencyCode                                                                    // SalesArrangement ??? na SA chybí implementace!
 
             zpusob_zasilani_vypisu = offer.Outputs.StatementTypeId.ToJsonString(),                                                  // Offerinstance
             predp_hodnota_nem_zajisteni = offer.Inputs.CollateralAmount.ToJsonString(),                                             // Offerinstance
-            fin_kryti_vlastni_zdroje = ((decimal)500000).ToJsonString(),                                                            // [MOCK] OfferInstance (na offer zatím nemáme, dohodnuta mockovaná hodnota   500.000,--)
-            fin_kryti_cizi_zdroje = ((decimal)1000000).ToJsonString(),                                                              // [MOCK] OfferInstance (na offer zatím nemáme, dohodnuta mockovaná hodnota 1.000.000,--)
-            fin_kryti_celkem = ((decimal)1500000).ToJsonString(),                                                                   // [MOCK] OfferInstance (na offer zatím nemáme, dohodnuta mockovaná hodnota 1.500.000,--)
+            fin_kryti_vlastni_zdroje = offer.Inputs.FinancialResourcesOwn.ToJsonString(),                                           // OfferInstance
+            fin_kryti_cizi_zdroje = offer.Inputs.FinancialResourcesOther.ToJsonString(),                                            // OfferInstance
+            fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                              // OfferInstance
             // zpusob_podpisu_smluv_dok =                                                                                           // SalesArrangement ??? na SA chybí implementace!
             seznam_domacnosti = households.Select(i => MapHousehold(i)).ToArray()
         };
 
-        var json = JsonSerializer.Serialize(data);
+        var options = new JsonSerializerOptions { DefaultIgnoreCondition = ignoreNullValues ? System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull : System.Text.Json.Serialization.JsonIgnoreCondition.Never };
+        var json = JsonSerializer.Serialize(data, options);
 
         return json;
 
