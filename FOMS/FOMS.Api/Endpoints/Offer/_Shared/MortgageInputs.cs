@@ -68,6 +68,21 @@ public class MortgageInputs
     /// </summary>
     /// <example></example>
     public DateTime? ExpectedDateOfDrawing { get; set; }
-    
+
+    /// <summary>
+    /// Vlastní zdroje
+    /// </summary>
+    public decimal? FinantialResourcesOwn { get; set; }
+
+    /// <summary>
+    /// Cizí zdroje
+    /// </summary>
+    public decimal? FinantialResourcesOther { get; set; }
+
+    /// <summary>
+    /// Nastavení toggle na FE pro počítání LTV.
+    /// </summary>
+    public int SimulationToggleSettings { get; set; }
+
     public List<LoanPurposeItem>? LoanPurpose { get; set; }
 }

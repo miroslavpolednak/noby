@@ -14,6 +14,8 @@ public static class Extensions
             FirstName = customer.NaturalPerson?.FirstName,
             LastName = customer.NaturalPerson?.LastName,
             DateOfBirth = customer.NaturalPerson?.DateOfBirth,
+            DegreeAfterId = customer.NaturalPerson?.DegreeAfterId,
+            DegreeBeforeId = customer.NaturalPerson?.DegreeBeforeId,
             MaritalStatusStateId = customer.NaturalPerson?.MaritalStatusStateId,
             BirthName = customer.NaturalPerson?.BirthName,
             BirthNumber = customer.NaturalPerson?.BirthNumber,

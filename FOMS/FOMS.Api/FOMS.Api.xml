@@ -832,6 +832,21 @@
             </summary>
             <example></example>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FinantialResourcesOwn">
+            <summary>
+            Vlastní zdroje
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FinantialResourcesOther">
+            <summary>
+            Cizí zdroje
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.SimulationToggleSettings">
+            <summary>
+            Nastavení toggle na FE pro počítání LTV.
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
             <summary>
             Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 

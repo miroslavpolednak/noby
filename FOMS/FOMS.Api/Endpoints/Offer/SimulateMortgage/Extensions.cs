@@ -19,7 +19,11 @@ internal static class Extensions
                 CollateralAmount = request.CollateralAmount,
                 LoanToValue = request.LoanToValue,
                 PaymentDayOfTheMonth = request.PaymentDayOfTheMonth,
-                EmployeeBonusRequested = request.EmployeeBonusRequested
+                EmployeeBonusRequested = request.EmployeeBonusRequested,
+                FinantialResourcesOwn = request.FinantialResourcesOwn,
+                FinantialResourcesOther = request.FinantialResourcesOther,
+                ExpectedDateOfDrawing = request.ExpectedDateOfDrawing,
+                SimulationToggleSettings = (DomainServices.OfferService.Contracts.SimulationToggleSettings) request.SimulationToggleSettings
             }
         };
         
