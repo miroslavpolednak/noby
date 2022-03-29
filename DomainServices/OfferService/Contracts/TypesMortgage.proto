@@ -52,8 +52,8 @@ message MortgageInput {
    repeated LoanPurpose LoanPurpose = 12;
    int32 StatementTypeId = 13;
    cis.types.NullableGrpcDate ExpectedDateOfDrawing = 14;
-   cis.types.GrpcDecimal FinantialResourcesOwn = 15;
-   cis.types.GrpcDecimal FinantialResourcesOther = 16;
+   cis.types.GrpcDecimal FinancialResourcesOwn = 15;
+   cis.types.GrpcDecimal FinancialResourcesOther = 16;
    SimulationToggleSettings SimulationToggleSettings = 17;
 }
 
