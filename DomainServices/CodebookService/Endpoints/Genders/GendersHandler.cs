@@ -12,9 +12,11 @@ public class GendersHandler
             .Select(t => new GenderItem
             {
                 Id = (int)t,
-                Value = t,
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
-                RDMCode = t == CIS.Foms.Enums.Genders.Female ? "F" : "M"
+                MpHomeCode = t,
+                KonsDBCode = (int)t,
+                KbCmCode = t == CIS.Foms.Enums.Genders.Female ? "F" : "M",
+                StarBuildJsonCode = t == CIS.Foms.Enums.Genders.Female ? "Z" : "M"
             })
             .ToList();
 
