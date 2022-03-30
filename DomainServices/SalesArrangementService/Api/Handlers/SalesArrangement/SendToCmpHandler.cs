@@ -21,7 +21,6 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 
-//using DomainServices.SalesArrangementService.Api;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -85,15 +84,12 @@ internal class SendToCmpHandler
 
         // load customers on SA and validate them
         var customersOnSa = (await _mediator.Send(new Dto.GetCustomerListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Customers.ToList();
-        // CheckCustomersOnSA(customersOnSa);   //TODO: validace vypnuta, neboť není implementováno vytváření MP identity při UpdateCustomerOnSA !!!
+        CheckCustomersOnSA(customersOnSa);   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
 
         // load households and validate them
         var households = (await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Households.ToList();
         var householdTypesById = (await _codebookService.HouseholdTypes(cancellation)).ToDictionary(i => i.Id);
         CheckHouseholds(households, householdTypesById, customersOnSa);
-
-        // load customers
-        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSa, cancellation);
 
         // load case
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
@@ -109,20 +105,26 @@ internal class SendToCmpHandler
             await UpdateCase(_case, contractNumber, cancellation);
         }
 
-        // User load (by arrangement.Created.UserId)
-        var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId, cancellation))
-            ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
-
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageDataResponse>(await _offerService.GetMortgageData(arrangement.OfferId!.Value, cancellation))
             ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
+
+        // User load (by arrangement.Created.UserId)
+        var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId, cancellation))
+            ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
+        
+        // load customers
+        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSa, cancellation);
+
+        // load incomes
+        var incomesById = await GetIncomesById(customersOnSa, cancellation);
 
         // Load codebooks
         var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).ToDictionary(i => i.Id);
         var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
 
         // create JSON data
-        var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSa, customersByIdentityCode, academicDegreesBeforeById, gendersById);
+        var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSa, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById);
 
         // save form to DB
         await SaveForm(arrangement.ContractNumber, jsonData, cancellation);
@@ -211,10 +213,6 @@ internal class SendToCmpHandler
     private static Identity GetMainMpIdentity(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<Contracts.CustomerOnSA> customersOnSa)
     {
         var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
-
-        //var customersOnSaById = customersOnSa.ToDictionary(i => i.CustomerOnSAId);
-        //var customerOnSa1 = customersOnSaById[mainHousehold.CustomerOnSAId1!.Value];
-
         var mainCustomerOnSa1 = customersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
         return mainCustomerOnSa1.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).First();
     }
@@ -243,26 +241,30 @@ internal class SendToCmpHandler
         return productType;
     }
 
-    private async Task<List<Contracts.CustomerOnSA>> GetCustomersOnSA(List<int> customerOnSAIds, CancellationToken cancellation)
+    private async Task<Dictionary<int, Income>> GetIncomesById(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
-        var results = new List<Contracts.CustomerOnSA>();
-        for (int i = 0; i < customerOnSAIds.Count; i++)
+        var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i=>i.IncomeId)).ToArray();
+        var incomes = new List<Income>();
+        for (int i = 0; i < incomeIds.Length; i++)
         {
-            var customerOnSA = await _mediator.Send(new Dto.GetCustomerMediatrRequest(customerOnSAIds[i]), cancellation);
-            results.Add(customerOnSA);
+            var income = await _mediator.Send(new Dto.GetIncomeMediatrRequest(incomeIds[i]), cancellation);
+            incomes.Add(income);
         }
-        return results;
+        return incomes.ToDictionary(i=>i.IncomeId);
     }
 
-    private async Task<Dictionary<string, CustomerListResult>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+
+    private async Task<Dictionary<string, CustomerResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
-        var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
-
-        var customerListRequest = new CustomerListRequest();
-        customerIdentities.ForEach(i => customerListRequest.Identities.Add(i));
-
-        var customerList = ServiceCallResult.ResolveToDefault<CustomerListResponse>(await _customerService.GetCustomerList(customerListRequest, cancellation))!.Customers.ToList();
-        return customerList.ToDictionary(i => i.Identities.First().ToCode());
+        // vrací pouze pro KB identity
+        var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
+        var results = new List<CustomerResponse>();
+        for (int i = 0; i < customerIdentities.Count; i++)
+        {
+            var customer = ServiceCallResult.ResolveToDefault<CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest { Identity = customerIdentities[i] }, cancellation));
+            results.Add(customer!);
+        }
+        return results.ToDictionary(i => i.Identities.First().ToCode());
     }
 
     private static string ResolveGetContractNumber(IServiceCallResult result) =>
@@ -346,7 +348,8 @@ internal class SendToCmpHandler
         User? user,
         List<Contracts.Household> households,
         List<Contracts.CustomerOnSA> customersOnSa,
-        Dictionary<string, CustomerListResult> customersByIdentityCode,
+        Dictionary<int, Income> incomesById,
+        Dictionary<string, CustomerResponse> customersByIdentityCode,
         Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
         Dictionary<int, CodebookService.Contracts.Endpoints.Genders.GenderItem> gendersById,
         bool ignoreNullValues = true
@@ -385,6 +388,22 @@ internal class SendToCmpHandler
             {
                 uv_ucel = i.LoanPurposeId.ToJsonString(),
                 uv_ucel_suma = i.Sum.ToJsonString(),
+            };
+        }
+        
+        object? MapLoanRealEstate(SalesArrangementParametersMortgage.Types.LoanRealEstate i, int rowNumber)
+        {
+            if (i == null)
+            {
+                return null;
+            }
+
+            return new
+            {
+                cislo_objektu_uveru = rowNumber.ToJsonString(),
+                typ_nemovitosti = i.RealEstateTypeId.ToJsonString(),
+                objekt_uv_je_zajisteni = i.IsCollateral.ToJsonString(),
+                ucel_porizeni = i.RealEstatePurchaseTypeId.ToJsonString(),
             };
         }
 
@@ -438,6 +457,112 @@ internal class SendToCmpHandler
             };
         }
 
+        object? MapCustomerObligation(CustomerObligation i, int rowNumber)
+        {
+            if (i == null)
+            {
+                return null;
+            }
+
+            return new
+            {
+                cislo_zavazku = rowNumber,
+                druh_zavazku = i.ObligationTypeId.ToJsonString(),
+                vyse_splatky = i.LoanPaymentAmount.ToJsonString(),
+                vyse_nesplacene_jistiny = i.RemainingLoanPrincipal.ToJsonString(),
+                vyse_limitu = i.CreditCardLimit.ToJsonString(),
+                mimo_entitu_mandanta = ((int)i.ObligationCreditor).ToJsonString(),
+            };
+        }
+
+        object? MapCustomerIncome(IncomeInList iil, int rowNumber)
+        {
+            if (iil == null)
+            {
+                return null;
+            }
+
+            var i = incomesById[iil.IncomeId];
+
+            return new
+            {
+                prvni_pracovni_sml_od = i.Employement?.Job?.FirstWorkContractSince.ToJsonString(),
+                //posledni_zamestnani_od =                                                  // ???
+                //poradi_prijmu =                                                           // ???
+                zdroj_prijmu_hlavni = iil.IncomeTypeId.ToJsonString(),
+                typ_pracovniho_pomeru = i.Employement?.Job?.EmploymentTypeId.ToJsonString(),
+                klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),
+                klient_ve_zkusebni_lhute = i.Employement?.Job?.JobTrialPeriod.ToJsonString(),
+                prijem_ze_zahranici = i.Employement?.IsAbroadIncome.ToJsonString(),
+                domicilace_prijmu_ze_zamestnani = i.Employement?.IsDomicile.ToJsonString(),
+                pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
+                pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
+                zamestnavatel_nazov = i.Employement?.Employer?.Name,
+                zamestnavatel_rc_ico = i.Employement?.Employer?.BirthNumber,
+                zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
+                //zamestnavatel_sidlo_cislo_popisne_orientacni =                            // BuildingIdentificationNumber / LandRegistryNumber ???
+                zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
+                zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode,
+                zamestnavatel_sidlo_stat = i.Employement?.Employer?.Address?.CountryId.ToJsonString(),
+                zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
+                zamestnavatel_okec = i.Employement?.Employer?.ClassficationOfEconomicActivities,
+                zamestnavatel_pracovni_sektor =  i.Employement?.Employer?.WorkSectorId.ToJsonString(),
+                zamestnavatel_senzitivni_sektor =  i.Employement?.Employer?.SensitiveSector.ToJsonString(),
+                povolani = i.Employement?.Job?.JobType.ToJsonString(),
+                zamestnan_jako = i.Employement?.Job?.JobDescription,
+                prijem_vyse = iil.Sum.ToJsonString(),
+                prijem_mena = iil.CurrencyCode,
+                zrazky_ze_mzdy_rozhodnuti = i.Employement?.WageDeduction?.DeductionDecision.ToJsonString(),
+                zrazky_ze_mzdy_splatky = i.Employement?.WageDeduction?.DeductionPayments.ToJsonString(),
+                zrazky_ze_mzdy_ostatni = i.Employement?.WageDeduction?.DeductionOther.ToJsonString(),
+                prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.ConfirmationByCompany.ToJsonString(),
+                prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
+                prijem_potvrzeni_datum =  i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
+                prijem_potvrzení_osoba =  i.Employement?.IncomeConfirmation?.ConfirmationPerson,
+                prijem_potvrzeni_kontakt =  i.Employement?.IncomeConfirmation?.ConfirmationContact,
+            };
+
+            //    "prijmy": [ //Incomes
+            //        {
+            //"prvni_pracovni_sml_od": "28.01.2020",
+            //            "posledni_zamestnani_od": "28.01.2020",
+            //            "poradi_prijmu": "1",
+            //            "zdroj_prijmu_hlavni": "1",
+            //            "typ_pracovniho_pomeru": "3",
+            //            "klient_ve_vypovedni_lhute": "0",
+            //            "klient_ve_zkusebni_lhute": "0",
+            //            "prijem_ze_zahranici": "0",
+            //            "domicilace_prijmu_ze_zamestnani": "0",
+            //            "pracovni_smlouva_aktualni_od": "",
+            //            "pracovni_smlouva_aktualni_do": "",
+            //            "zamestnavatel_nazov": "",
+            //            "zamestnavatel_rc_ico": "",
+            //            "zamestnavatel_sidlo_ulice": "",
+            //            "zamestnavatel_sidlo_cislo_popisne_orientacni": "",
+            //            "zamestnavatel_sidlo_mesto": "",
+            //            "zamestnavatel_sidlo_psc": "",
+            //            "zamestnavatel_sidlo_stat": "",
+            //            "zamestnavatel_telefonni_cislo": "",
+            //            "zamestnavatel_okec": "",
+            //            "zamestnavatel_pracovni_sektor": "",
+            //            "zamestnavatel_senzitivni_sektor": "0",
+            //            "povolani": "1",
+            //            "zamestnan_jako": "",
+            //            "prijem_vyse": "50000",
+            //            "prijem_mena": "CZK",
+            //            "zrazky_ze_mzdy_rozhodnuti": "",
+            //            "zrazky_ze_mzdy_splatky": "",
+            //            "zrazky_ze_mzdy_ostatni": "",
+            //            "prijem_potvrzeni_vystavila_ext_firma": "0",
+            //            "prijem_potvrzeni_misto_vystaveni": "",
+            //            "prijem_potvrzeni_datum": "",
+            //            "prijem_potvrzení_osoba": "",
+            //            "prijem_potvrzeni_kontakt": ""
+            //        }
+            //    ],
+
+        }
+
         object? MapCustomer(Contracts.CustomerOnSA i)
         {
             if (i == null)
@@ -447,96 +572,48 @@ internal class SendToCmpHandler
 
             // do JSON věty jdou pouze Customers s Kb identitou
             var identityKb = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
-            //var identityMp = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp); //TODO: až bude implementováno vytváření MP identity při UpdateCustomerOnSA !!!
+            var identityMp = i.CustomerIdentifiers.Single(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp); // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
             var c = customersByIdentityCode[identityKb.ToCode()];
 
             var cIdentificationDocument = MapIdentificationDocument(c.IdentificationDocument);
             var cIdentificationDocuments = (cIdentificationDocument == null) ? Array.Empty<object>() : new object[1] { cIdentificationDocument };
+            var cCitizenshipCountriesId = c.NaturalPerson?.CitizenshipCountriesId?.ToList().FirstOrDefault();
+            var cDegreeBeforeId = c.NaturalPerson?.DegreeBeforeId;
+            var cGenderId = c.NaturalPerson?.GenderId;
 
             return new
             {
-                rodne_cislo = c.NaturalPerson.BirthNumber,
+                rodne_cislo = c.NaturalPerson?.BirthNumber,
 
                 kb_id = identityKb.IdentityId.ToJsonString(),
-                // mp_id = identityKMp.IdentityId.ToJsonString(),                               //TODO: až bude implementováno vytváření MP identity při UpdateCustomerOnSA !!!
-                // spolecnost_KB =                                                              //Customer - pokud načteme z CM ??? OP! 
+                mp_id = identityMp.IdentityId.ToJsonString(),                                   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
+                // spolecnost_KB =                                                              // Customer - pokud načteme z CM ??? OP! 
 
-                // titul_pred = academicDegreesBeforeById[c.NaturalPerson.DegreeBeforeId].Name, // ??? chybí implementace! (použít Name, nikoliv jen Id) 
-                // titul_za = c.NaturalPerson.DegreeAfterId,                                    // ??? chybí implementace! (použít Name, nikoliv jen Id), ve vzorovém JSONu ani není - neposílat
+                titul_pred = cDegreeBeforeId.HasValue ? academicDegreesBeforeById[cDegreeBeforeId.Value].Name : null,    // (použít Name, nikoliv jen Id) 
+                // titul_za = c.NaturalPerson?.DegreeAfterId,                                    // ??? (použít Name, nikoliv jen Id), ve vzorovém JSONu ani není - neposílat
 
-                prijmeni_nazev = c.NaturalPerson.LastName,
-                // prijmeni_rodne = c.NaturalPerson.BirthName,                                  // ??? chybí implementace! 
-                jmeno = c.NaturalPerson.FirstName,
-                datum_narozeni = c.NaturalPerson.DateOfBirth.ToJsonString(),
-                // misto_narozeni_obec = c.NaturalPerson.PlaceOfBirth                           // ??? chybí implementace!
-                // misto_narozeni_stat = c.NaturalPerson.BirthCountryId.ToJsonString(),         // ??? chybí implementace!
-                pohlavi = gendersById[c.NaturalPerson.GenderId].StarBuildJsonCode,              // ??? (použít StarBuildJsonCode, nikoliv jen Id) example: "pohlavi": "Z", //Customer
-                // statni_prislusnost =  .CitizenshipCountriesId                                // ??? chybí implementace! vzít první
+                prijmeni_nazev = c.NaturalPerson?.LastName,
+                prijmeni_rodne = c.NaturalPerson?.BirthName,
+                jmeno = c.NaturalPerson?.FirstName,
+                datum_narozeni = c.NaturalPerson?.DateOfBirth.ToJsonString(),
+                misto_narozeni_obec = c.NaturalPerson?.PlaceOfBirth,                             
+                misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
+                pohlavi = cGenderId.HasValue ? gendersById[cGenderId.Value].StarBuildJsonCode : null,
+                statni_prislusnost = cCitizenshipCountriesId.ToJsonString(),                    // vzít první
                 zamestnanec = 0.ToJsonString(),                                                 // [MOCK] OfferInstance (default 0)
                 rezident = 0.ToJsonString(),                                                    // [MOCK] OfferInstance (default 0)
-                // PEP =                                                                        // ??? OP! Neposílat, není definováno ve starbuild.
-                seznam_adres = c.Addresses.Select(i => MapAddress(i)).ToArray(),
+                // PEP =                                                                        // OP! Neposílat, není definováno ve starbuild.
+                seznam_adres = c.Addresses?.Select(i => MapAddress(i)).ToArray() ?? Array.Empty<object>(),
                 seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
-                seznam_kontaktu = c.Contacts.Select(i => MapContact(i)).ToArray(),
-                // rodinny_stav = c.NaturalPerson.MaritalStatusStateId.ToJsonString(),          // ??? chybí implementace! 
+                seznam_kontaktu = c.Contacts?.Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
+                rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
                 druh_druzka = i.HasPartner.ToJsonString(),
                 // vzdelani =                                                                   // ??? OP!
-                // prijmy =                                                                     // ??? chybí specifikace! 
-                // zavazky =                                                                    // ??? chybí implementace!
+                prijmy = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index)).ToArray() ?? Array.Empty<object>(),
+                zavazky = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index)).ToArray() ?? Array.Empty<object>(),
                 // prijem_sbiran =                                                              // ??? out of scope
-                // uzamcene_prijmy = c.LockedIncomeDateTime.HasValue.ToJsonString(),            // ??? chybí implementace!
+                uzamcene_prijmy = false.ToJsonString(),                                         // [MOCK] (default 0) jinak z c.LockedIncomeDateTime.HasValue.ToJsonString(),
                 // datum_posledniho_uzam_prijmu = c.LockedIncomeDateTime.ToJsonString(),        // ??? chybí implementace!
-
-
-                //    "prijmy": [ //Incomes
-                //        {
-                //"prvni_pracovni_sml_od": "28.01.2020",
-                //            "posledni_zamestnani_od": "28.01.2020",
-                //            "poradi_prijmu": "1",
-                //            "zdroj_prijmu_hlavni": "1",
-                //            "typ_pracovniho_pomeru": "3",
-                //            "klient_ve_vypovedni_lhute": "0",
-                //            "klient_ve_zkusebni_lhute": "0",
-                //            "prijem_ze_zahranici": "0",
-                //            "domicilace_prijmu_ze_zamestnani": "0",
-                //            "pracovni_smlouva_aktualni_od": "",
-                //            "pracovni_smlouva_aktualni_do": "",
-                //            "zamestnavatel_nazov": "",
-                //            "zamestnavatel_rc_ico": "",
-                //            "zamestnavatel_sidlo_ulice": "",
-                //            "zamestnavatel_sidlo_cislo_popisne_orientacni": "",
-                //            "zamestnavatel_sidlo_mesto": "",
-                //            "zamestnavatel_sidlo_psc": "",
-                //            "zamestnavatel_sidlo_stat": "",
-                //            "zamestnavatel_telefonni_cislo": "",
-                //            "zamestnavatel_okec": "",
-                //            "zamestnavatel_pracovni_sektor": "",
-                //            "zamestnavatel_senzitivni_sektor": "0",
-                //            "povolani": "1",
-                //            "zamestnan_jako": "",
-                //            "prijem_vyse": "50000",
-                //            "prijem_mena": "CZK",
-                //            "zrazky_ze_mzdy_rozhodnuti": "",
-                //            "zrazky_ze_mzdy_splatky": "",
-                //            "zrazky_ze_mzdy_ostatni": "",
-                //            "prijem_potvrzeni_vystavila_ext_firma": "0",
-                //            "prijem_potvrzeni_misto_vystaveni": "",
-                //            "prijem_potvrzeni_datum": "",
-                //            "prijem_potvrzení_osoba": "",
-                //            "prijem_potvrzeni_kontakt": ""
-                //        }
-                //    ],
-                //    "zavazky": [ //Expenses
-                //        {
-                //"cislo_zavazku": "1",
-                //            "druh_zavazku": "1",
-                //            "vyse_splatky": "10000",
-                //            "vyse_nesplacene_jistiny": "600000",
-                //            "vyse_limitu": "",
-                //            "mimo_entitu_mandanta": "0"
-                //        }
-                //    ],
-
             };
         }
 
@@ -572,7 +649,7 @@ internal class SendToCmpHandler
             kanal_ziskani = arrangement.ChannelId.ToJsonString(),                                                                   // SalesArrangement - vyplněno na základě usera
             datum_vytvoreni_zadosti = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
             datum_prvniho_podpisu = actualDate.ToJsonString(),                                                                      // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
-            //uv_produkt = offer.ProductTypeId.ToJsonString(),                                                                        // ??? SalesArrangement nemá být z OfferProductTypeId ???
+            //uv_produkt = offer.ProductTypeId.ToJsonString(),                                                                      // ??? SalesArrangement nemá být z OfferProductTypeId ???
             uv_produkt = productType.Id.ToJsonString(),
             uv_druh = offer.Inputs.LoanKindId.ToJsonString(),                                                                       // OfferInstance
             indikativni_LTV = offer.Outputs.LoanToValue.ToJsonString(),                                                             // OfferInstance
@@ -588,27 +665,27 @@ internal class SendToCmpHandler
             anuitni_splatka = offer.Outputs.LoanPaymentAmount.ToJsonString(),                                                       // OfferInstance
             splatnost_uv_mesice = offer.Outputs.LoanDuration.ToJsonString(),                                                        // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
             fixace_uv_mesice = offer.Inputs.FixedRatePeriod.ToJsonString(),                                                         // OfferInstance - na FE je to v rocích a je to číselník ?
-            // predp_termin_cerpani = arrangement.ExpectedDateOfDrawing,                                                            // SalesArrangement ??? na SA chybí implementace!
+            predp_termin_cerpani = arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                       // SalesArrangement ??? na SA chybí implementace!
             den_splaceni = offer.Outputs.PaymentDayOfTheMonth.ToJsonString(),                                                       // OfferInstance default=15
             forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
             seznam_poplatku = Array.Empty<object>(),                                                                                // [MOCK] OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci 
                                                                                                                                     //          (na offer zatím nemáme, dohodnuta mockovaná hodnota prázdné pole)
-            seznam_ucelu = offer.Inputs.LoanPurpose.Select(i => MapLoanPurpose(i)).ToArray(),                                       // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
-            // seznam_objektu =                                                                                                     // SalesArrangement - 0..3 ???  na SA chybí implementace!
-            seznam_ucastniku = customersOnSa.Select(i => MapCustomerOnSA(i)).ToArray(),                                             // CustomerOnSA, Customer
+            seznam_ucelu = offer.Inputs.LoanPurpose?.Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),             // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
+            seznam_objektu = arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???  na SA chybí implementace!
+            seznam_ucastniku = customersOnSa?.Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),                   // CustomerOnSA, Customer
             zprostredkovano_3_stranou = false.ToJsonString(),                                                                       // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
             sjednal_CPM = user!.CPM,                                                                                                // User
             sjednal_ICP = user!.ICP,                                                                                                // User
-            // mena_prijmu = arrangement.IncomeCurrencyCode                                                                         // SalesArrangement ??? na SA chybí implementace!
-            // mena_bydliste = arrangement.ResidencyCurrencyCode                                                                    // SalesArrangement ??? na SA chybí implementace!
+            mena_prijmu = arrangement.Mortgage?.IncomeCurrencyCode,                                                                  // SalesArrangement ??? na SA chybí implementace!
+            mena_bydliste = arrangement.Mortgage?.ResidencyCurrencyCode,                                                             // SalesArrangement ??? na SA chybí implementace!
 
             zpusob_zasilani_vypisu = offer.Outputs.StatementTypeId.ToJsonString(),                                                  // Offerinstance
             predp_hodnota_nem_zajisteni = offer.Inputs.CollateralAmount.ToJsonString(),                                             // Offerinstance
             fin_kryti_vlastni_zdroje = offer.Inputs.FinancialResourcesOwn.ToJsonString(),                                           // OfferInstance
             fin_kryti_cizi_zdroje = offer.Inputs.FinancialResourcesOther.ToJsonString(),                                            // OfferInstance
             fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                              // OfferInstance
-            // zpusob_podpisu_smluv_dok =                                                                                           // SalesArrangement ??? na SA chybí implementace!
-            seznam_domacnosti = households.Select(i => MapHousehold(i)).ToArray()
+            zpusob_podpisu_smluv_dok = arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement ??? na SA chybí implementace!
+            seznam_domacnosti = households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
         };
 
         var options = new JsonSerializerOptions { DefaultIgnoreCondition = ignoreNullValues ? System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull : System.Text.Json.Serialization.JsonIgnoreCondition.Never };
@@ -833,29 +910,6 @@ Pokud na entitě SalesArrangement není číslo smlouvy, pak proběhne provolán
 	uložení na entitě SalesArrangementu voláním updateSalesArrangement
 	uložení na entitě Case voláním updateCaseData
 	???  metoda CaseService.UpdateCaseData požaduje kromě ´ContractNumber´ rovněž ´ProductTypeId´ a ´TargetAmount´, tyto položky se také nějak updatují?(getCase a poslat tatáž data)
-
-
-        //JObject o = JObject.FromObject(new
-        //{
-        //    channel = new
-        //    {
-        //        title = "Star Wars",
-        //        link = "http://www.starwars.com",
-        //        description = "Star Wars blog.",
-        //        item =
-        //    from p in posts
-        //    orderby p.Title
-        //    select new
-        //    {
-        //        title = p.Title,
-        //        description = p.Description,
-        //        link = p.Link,
-        //        category = p.Categories
-        //    }
-        //    }
-        //});
-
-
     -------------------------------------------------------------------------------------------------------------
     - získání ClientId pro GetContractNumber:
         - vytáhnout Housholds, které jsou obsaženy v SA
