@@ -37,12 +37,12 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/NOBY_FEAPI_$(Build.BuildNumber).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/FEAPI_$(Build.BuildNumber).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/NOBY_FEAPI_$(Build.BuildNumber).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/FEAPI_$(Build.BuildNumber).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\'
