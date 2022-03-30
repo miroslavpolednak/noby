@@ -80,9 +80,9 @@ public class MortgageInputs
     public decimal? FinancialResourcesOther { get; set; }
 
     /// <summary>
-    /// Nastavení toggle na FE pro počítání LTV.
+    /// Nastavení toggle na FE pro počítání LTV. Na zadost FE se tvari jako bool.
     /// </summary>
-    public int SimulationToggleSettings { get; set; }
+    public bool SimulationToggleSettings { get; set; }
 
     public List<LoanPurposeItem>? LoanPurpose { get; set; }
 }

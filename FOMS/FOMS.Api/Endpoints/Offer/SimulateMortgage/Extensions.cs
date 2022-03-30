@@ -23,7 +23,7 @@ internal static class Extensions
                 FinancialResourcesOwn = request.FinancialResourcesOwn,
                 FinancialResourcesOther = request.FinancialResourcesOther,
                 ExpectedDateOfDrawing = request.ExpectedDateOfDrawing,
-                SimulationToggleSettings = (DomainServices.OfferService.Contracts.SimulationToggleSettings) request.SimulationToggleSettings
+                SimulationToggleSettings = request.SimulationToggleSettings ? DomainServices.OfferService.Contracts.SimulationToggleSettings.LoanAmount : DomainServices.OfferService.Contracts.SimulationToggleSettings.InvestmentAmount
             }
         };
         

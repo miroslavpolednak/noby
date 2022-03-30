@@ -58,7 +58,7 @@ internal class IdentifyCustomerService
             entity.Name = customer?.Name ?? "";
         }
 
-        return (newMpIdentityId, entity.Identities?.Select(t => new Identity(t.CustomerOnSAIdentityId, t.IdentityScheme)).ToList());
+        return (newMpIdentityId, entity.Identities?.Select(t => new Identity(t.IdentityId, t.IdentityScheme)).ToList());
     }
 
     // zalozit noveho klienta v EAS

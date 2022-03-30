@@ -845,7 +845,7 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.SimulationToggleSettings">
             <summary>
-            Nastavení toggle na FE pro počítání LTV.
+            Nastavení toggle na FE pro počítání LTV. Na zadost FE se tvari jako bool.
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
