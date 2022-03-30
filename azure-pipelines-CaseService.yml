@@ -19,12 +19,12 @@ steps:
     version: '6.0.x'
     includePreviewVersions: true
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
-    feedsToUse: 'config'
-    noCache: true
+#- task: NuGetCommand@2
+#  inputs:
+#    command: 'restore'
+#    restoreSolution: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
+#    feedsToUse: 'config'
+#    noCache: true
 
 - task: DotNetCoreCLI@2
   inputs:
