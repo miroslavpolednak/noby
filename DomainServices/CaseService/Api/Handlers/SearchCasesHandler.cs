@@ -19,7 +19,7 @@ internal class SearchCasesHandler
         _logger.SearchCasesStart(paginable);
 
         // dotaz do DB
-        var model = await _repository.GetCaseList(paginable, request.Request.CaseOwnerUserId, request.Request.State, request.Request.SearchTerm, cancellation);
+        var model = await _repository.GetCaseList(paginable, request.Request.CaseOwnerUserId, request.Request.State?.Select(t => t).ToList(), request.Request.SearchTerm, cancellation);
         _logger.FoundItems(model.RecordsTotalSize);
 
         var result = new SearchCasesResponse()

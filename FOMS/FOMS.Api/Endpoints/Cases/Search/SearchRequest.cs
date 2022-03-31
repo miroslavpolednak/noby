@@ -4,9 +4,9 @@ public class SearchRequest
     : IRequest<SearchResponse>
 {
     /// <summary>
-    /// [optional] ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
+    /// [optional] ID pozadovaneho stavu filtru.
     /// </summary>
-    public int? State { get; set; }
+    public int? FilterId { get; set; }
 
     /// <summary>
     /// [optional] Klicove slovo pro vyhledavani nad Cases.

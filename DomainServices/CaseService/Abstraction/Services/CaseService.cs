@@ -39,16 +39,18 @@ internal class CaseService : ICaseServiceAbstraction
         return new SuccessfulServiceCallResult<Case>(result);
     }
 
-    public async Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(SearchCases), caseOwnerUserId);
-        var result = await _userContext.AddUserContext(async () => await _service.SearchCasesAsync(new SearchCasesRequest
+        var request = new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
-            State = state,
             Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationRequest(pagination),
             CaseOwnerUserId = caseOwnerUserId,
-        }, cancellationToken: cancellationToken));
+        };
+        if (states is not null)
+            request.State.AddRange(states);
+        var result = await _userContext.AddUserContext(async () => await _service.SearchCasesAsync(request, cancellationToken: cancellationToken));
         return new SuccessfulServiceCallResult<SearchCasesResponse>(result);
     }
 

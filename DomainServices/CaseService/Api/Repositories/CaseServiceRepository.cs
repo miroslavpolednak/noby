@@ -36,7 +36,7 @@ internal class CaseServiceRepository
     public async Task<(int RecordsTotalSize, List<Contracts.Case> CaseInstances)> GetCaseList(
         CIS.Core.Types.Paginable paginable, 
         int userId, 
-        int? state, 
+        List<int>? state, 
         string? searchTerm, 
         CancellationToken cancellation)
     {
@@ -44,8 +44,8 @@ internal class CaseServiceRepository
         var query = _dbContext.Cases.AsNoTracking().Where(t => t.OwnerUserId == userId);
 
         // omezeni na state
-        if (state.HasValue)
-            query = query.Where(t => t.State == state.Value);
+        if (state is not null && state.Any())
+            query = query.Where(t => state.Contains(t.State));
         // hledani podle retezce
         if (!string.IsNullOrEmpty(searchTerm))
         {

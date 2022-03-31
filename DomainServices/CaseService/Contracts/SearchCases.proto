@@ -12,7 +12,7 @@ message SearchCasesRequest {
 	int32 CaseOwnerUserId = 1;
 
 	// Pozadovany status Case - nepovinne
-	google.protobuf.Int32Value State = 2;
+	repeated int32 State = 2;
 
 	// Fulltext hledani - nepovinne
 	string SearchTerm = 3;

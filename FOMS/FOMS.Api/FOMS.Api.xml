@@ -15,7 +15,7 @@
             <param name="caseId">ID Case-u</param>
             <returns>Zakladni informace o Case-u.</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetTotalsByStates(System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetDashboardFilters(System.Threading.CancellationToken)">
             <summary>
             Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
             </summary>
@@ -41,19 +41,9 @@
             <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
             <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.GetTotalsByStates.GetTotalsByStatesResponse.State">
+        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
-            Stav Case-u. Ciselnik 'CaseStates'.
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.GetTotalsByStates.GetTotalsByStatesResponse.Count">
-            <summary>
-            Pocet Cases v danem stavu.
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.State">
-            <summary>
-            [optional] ID pozadovaneho stavu Case. Ciselnik 'CaseStates'.
+            [optional] ID pozadovaneho stavu filtru.
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.Term">
@@ -1020,6 +1010,15 @@
             )
             </remarks>
         </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.IsCollateral">
+            <example>false</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstatePurchaseTypeId">
+            <example>1</example>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.IncomeCurrencyCode">
             <example>CZK</example>
         </member>
@@ -1027,15 +1026,6 @@
             <example>CZK</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SignatureTypeId">
-            <example>1</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.LoanRealEstate.RealEstateTypeId">
-            <example>1</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.LoanRealEstate.IsCollateral">
-            <example>false</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.LoanRealEstate.RealEstatePurchaseTypeId">
             <example>1</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">

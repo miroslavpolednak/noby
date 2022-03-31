@@ -46,7 +46,7 @@ public interface ICaseServiceAbstraction
     /// Seznam Case pro uzivatele
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="SearchCasesResponse" /></returns>
-    Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int userId, int? state = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int userId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Zmena majitele Case

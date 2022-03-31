@@ -20,7 +20,7 @@ internal class SearchHandler
         _logger.SearchPaginableSettings(paginable);
 
         // zavolat BE sluzbu
-        var result = ServiceCallResult.Resolve<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, request.State, request.Term, cancellationToken));
+        var result = ServiceCallResult.Resolve<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
         _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(DomainServices.CaseService.Contracts.Case));
 
         // transform
@@ -31,7 +31,17 @@ internal class SearchHandler
         };
     }
 
-    private static List<Paginable.MapperField> sortingMapper = new()
+    static List<int>? getStatesFilter(int? filterId)
+        => filterId switch
+        {
+            1 => new List<int>() { 1, 2 },
+            2 => new List<int>() { 3 },
+            3 => new List<int>() { 4 },
+            4 => new List<int>() { 5 },
+            _ => null
+        };
+
+    static List<Paginable.MapperField> sortingMapper = new()
     {
         new ("stateUpdated", "StateUpdatedOn"),
         new ("customerName", "Name")

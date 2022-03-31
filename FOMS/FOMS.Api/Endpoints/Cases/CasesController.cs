@@ -36,9 +36,9 @@ public class CasesController : ControllerBase
     [HttpGet("totals-by-states")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Dashboard" })]
-    [ProducesResponseType(typeof(List<GetTotalsByStates.GetTotalsByStatesResponse>), StatusCodes.Status200OK)]
-    public async Task<List<GetTotalsByStates.GetTotalsByStatesResponse>> GetTotalsByStates(CancellationToken cancellationToken)
-        => await _mediator.Send(new GetTotalsByStates.GetTotalsByStatesRequest(), cancellationToken);
+    [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
+    public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
+        => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
     
     /// <summary>
     /// Seznam Cases pro prihlaseneho uzivatele.
