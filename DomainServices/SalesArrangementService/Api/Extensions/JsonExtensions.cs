@@ -6,10 +6,14 @@ internal static class JsonExtensions
     private static readonly string FormatDecimal = "###########0.00";
     private static readonly string FormatDate = "dd.MM.yyyy";
 
-
     public static decimal? ToDecimal(this CIS.Infrastructure.gRPC.CisTypes.GrpcDecimal value)
     {
-        return  value == null ? null : (decimal)value;
+        return value == null ? null : (decimal)value;
+    }
+
+    public static string? ToJsonString(this CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimal value)
+    {
+        return ((decimal?)value).ToJsonString();
     }
 
     public static string? ToJsonString(this CIS.Infrastructure.gRPC.CisTypes.GrpcDecimal value)
