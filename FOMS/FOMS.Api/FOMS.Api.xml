@@ -17,7 +17,7 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetDashboardFilters(System.Threading.CancellationToken)">
             <summary>
-            Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
+            Pocty Cases pro prihlaseneho uzivatele zgrupovane podle nastavenych filtru.
             </summary>
             <remarks>
             <i>DS:</i> CseService/GetCaseCounts<br/>

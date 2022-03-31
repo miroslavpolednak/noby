@@ -26,14 +26,14 @@ public class CasesController : ControllerBase
         => await _mediator.Send(new GetById.GetByIdRequest(caseId), cancellationToken);
     
     /// <summary>
-    /// Pocty Cases pro prihlaseneho uzivatele zgrupovane podle stavu.
+    /// Pocty Cases pro prihlaseneho uzivatele zgrupovane podle nastavenych filtru.
     /// </summary>
     /// <remarks>
     /// <i>DS:</i> CseService/GetCaseCounts<br/>
     /// https://wiki.kb.cz/confluence/display/HT/getCaseCounts
     /// </remarks>
     /// <returns>Kolekce ID stavu s poctem Cases.</returns>
-    [HttpGet("totals-by-states")]
+    [HttpGet("dashboard-filters")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Dashboard" })]
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
