@@ -355,6 +355,8 @@ internal class SendToCmpHandler
         bool ignoreNullValues = true
         )
     {
+        var actualDate = DateTime.Now.Date;
+
         var householdsByCustomerOnSAId = customersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
 
         object? MapHousehold(Contracts.Household i)
@@ -482,13 +484,28 @@ internal class SendToCmpHandler
                 return null;
             }
 
+            string? GetAddressNumber(GrpcAddress? address)
+            {
+                if (address == null)
+                {
+                    return null;
+                }
+
+                //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
+                var parts = new int?[] { address.BuildingIdentificationNumber, address.LandRegistryNumber };
+
+                var number = String.Join("/", parts.Where(i => i.HasValue));
+
+                return String.IsNullOrEmpty(number) ? null : number;
+            }
+
             var i = incomesById[iil.IncomeId];
 
             return new
             {
                 prvni_pracovni_sml_od = i.Employement?.Job?.FirstWorkContractSince.ToJsonString(),
-                //posledni_zamestnani_od =                                                  // ???
-                //poradi_prijmu =                                                           // ???
+                posledni_zamestnani_od = actualDate.ToJsonString(),                         // [MOCK] aktuální datum (relevantní v tomto DROPu, poté bude ´posledni_zamestnani_od´ zrušeno)
+                poradi_prijmu = rowNumber.ToJsonString(),                                                          
                 zdroj_prijmu_hlavni = iil.IncomeTypeId.ToJsonString(),
                 typ_pracovniho_pomeru = i.Employement?.Job?.EmploymentTypeId.ToJsonString(),
                 klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),
@@ -500,7 +517,7 @@ internal class SendToCmpHandler
                 zamestnavatel_nazov = i.Employement?.Employer?.Name,
                 zamestnavatel_rc_ico = i.Employement?.Employer?.BirthNumber,
                 zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
-                //zamestnavatel_sidlo_cislo_popisne_orientacni =                            // BuildingIdentificationNumber / LandRegistryNumber ???
+                zamestnavatel_sidlo_cislo_popisne_orientacni = GetAddressNumber(i.Employement?.Employer?.Address),  //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
                 zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
                 zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode,
                 zamestnavatel_sidlo_stat = i.Employement?.Employer?.Address?.CountryId.ToJsonString(),
@@ -521,46 +538,6 @@ internal class SendToCmpHandler
                 prijem_potvrzení_osoba =  i.Employement?.IncomeConfirmation?.ConfirmationPerson,
                 prijem_potvrzeni_kontakt =  i.Employement?.IncomeConfirmation?.ConfirmationContact,
             };
-
-            //    "prijmy": [ //Incomes
-            //        {
-            //"prvni_pracovni_sml_od": "28.01.2020",
-            //            "posledni_zamestnani_od": "28.01.2020",
-            //            "poradi_prijmu": "1",
-            //            "zdroj_prijmu_hlavni": "1",
-            //            "typ_pracovniho_pomeru": "3",
-            //            "klient_ve_vypovedni_lhute": "0",
-            //            "klient_ve_zkusebni_lhute": "0",
-            //            "prijem_ze_zahranici": "0",
-            //            "domicilace_prijmu_ze_zamestnani": "0",
-            //            "pracovni_smlouva_aktualni_od": "",
-            //            "pracovni_smlouva_aktualni_do": "",
-            //            "zamestnavatel_nazov": "",
-            //            "zamestnavatel_rc_ico": "",
-            //            "zamestnavatel_sidlo_ulice": "",
-            //            "zamestnavatel_sidlo_cislo_popisne_orientacni": "",
-            //            "zamestnavatel_sidlo_mesto": "",
-            //            "zamestnavatel_sidlo_psc": "",
-            //            "zamestnavatel_sidlo_stat": "",
-            //            "zamestnavatel_telefonni_cislo": "",
-            //            "zamestnavatel_okec": "",
-            //            "zamestnavatel_pracovni_sektor": "",
-            //            "zamestnavatel_senzitivni_sektor": "0",
-            //            "povolani": "1",
-            //            "zamestnan_jako": "",
-            //            "prijem_vyse": "50000",
-            //            "prijem_mena": "CZK",
-            //            "zrazky_ze_mzdy_rozhodnuti": "",
-            //            "zrazky_ze_mzdy_splatky": "",
-            //            "zrazky_ze_mzdy_ostatni": "",
-            //            "prijem_potvrzeni_vystavila_ext_firma": "0",
-            //            "prijem_potvrzeni_misto_vystaveni": "",
-            //            "prijem_potvrzeni_datum": "",
-            //            "prijem_potvrzení_osoba": "",
-            //            "prijem_potvrzeni_kontakt": ""
-            //        }
-            //    ],
-
         }
 
         object? MapCustomer(Contracts.CustomerOnSA i)
@@ -635,8 +612,7 @@ internal class SendToCmpHandler
         }
 
         // root
-        var actualDate = DateTime.Now.Date;
-
+        
         var financialResourcesOwn = offer.Inputs.FinancialResourcesOwn.ToDecimal();
         var financialResourcesOther = offer.Inputs.FinancialResourcesOther.ToDecimal();
         decimal? financialResourcesTotal = (financialResourcesOwn.HasValue || financialResourcesOther.HasValue) ? ((financialResourcesOwn ?? 0) + (financialResourcesOther ?? 0)) : null;
@@ -894,7 +870,7 @@ internal class SendToCmpHandler
 /*
  * https://wiki.kb.cz/confluence/display/HT/Offer
  * 
-Pokud na entitě SalesArrangement není číslo smlouvy, pak proběhne provolání StarBuild - getContractNumber (relevantní pro Drop 1.1, pak dojde k přesunu na Document service)
+    Pokud na entitě SalesArrangement není číslo smlouvy, pak proběhne provolání StarBuild - getContractNumber (relevantní pro Drop 1.1, pak dojde k přesunu na Document service)
 	EAS voláním dojde k získání čísla smlouvy
 	???  metoda EAS.Get_ContractNumberAsync požaduje kromě ´caseId´ rovněž ´clientId´, kde to vezmu? následně:
 	---------------------------------
@@ -930,7 +906,4 @@ Pokud na entitě SalesArrangement není číslo smlouvy, pak proběhne provolán
     a ID teto identity poslat do EAS jako partnerId
 
     -------------------------------------------------------------------------------------------------------------
-
-Core.Security.ICurrentUserAccessor userProvider,
-
  */
