@@ -15,6 +15,11 @@ internal static class OfferApiModuleDtoExtensions
             LoanToValue = result.LoanToValue,
             PaymentDayOfTheMonth = result.PaymentDayOfTheMonth,
             EmployeeBonusRequested = result.EmployeeBonusRequested,
+            FixedRatePeriod = result.FixedRatePeriod,
+            ExpectedDateOfDrawing = result.ExpectedDateOfDrawing,
+            FinancialResourcesOwn = result.FinancialResourcesOwn,
+            FinancialResourcesOther = result.FinancialResourcesOther,
+            SimulationToggleSettings = result.SimulationToggleSettings == DomainServices.OfferService.Contracts.SimulationToggleSettings.LoanAmount,
             LoanPurpose = result.LoanPurpose?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList()
         };
     
