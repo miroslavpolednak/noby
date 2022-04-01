@@ -12,6 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  buildPlatform: 'Any CPU'
 
 steps:
 - task: UseDotNet@2
@@ -48,7 +49,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
-    arguments: '--configuration $(buildConfiguration) --no-restore --output $(Build.BinariesDirectory)'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)'    
     noCache: false
 
 - task: ArchiveFiles@2
