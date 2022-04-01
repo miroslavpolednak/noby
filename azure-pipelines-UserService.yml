@@ -46,8 +46,9 @@ steps:
   inputs:
     command: 'build'
     projects: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
-    arguments: '--output $(Build.BinariesDirectory) --no-restore'
+    arguments: '--output $(Build.BinariesDirectory)'
     noCache: false
+
 
 - task: ArchiveFiles@2
   inputs:
