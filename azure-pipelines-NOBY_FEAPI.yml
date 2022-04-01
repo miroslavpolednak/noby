@@ -27,13 +27,21 @@ steps:
     versionSpec: 6.1.0
     checkLatest: false
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   inputs:
     command: 'restore'
-    projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
+    restoreSolution: 'FOMS\FOMS.Api\FOMS.Api.csproj'
     feedsToUse: 'config'
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: false
+
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'restore'
+#    projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
+#    feedsToUse: 'config'
+#    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
+#    noCache: false
 
 - task: DotNetCoreCLI@2
   inputs:
