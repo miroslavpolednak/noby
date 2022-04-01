@@ -16,7 +16,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '6.1.x'
+    version: '6.0.x'
     includePreviewVersions: true
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
