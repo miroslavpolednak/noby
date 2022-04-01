@@ -33,13 +33,14 @@ steps:
     projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
     feedsToUse: 'config'
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
-    noCache: true
+    noCache: false
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
     arguments: '--configuration $(buildConfiguration) --no-restore --output $(Build.BinariesDirectory)'
+    noCache: false
 
 - task: ArchiveFiles@2
   inputs:
