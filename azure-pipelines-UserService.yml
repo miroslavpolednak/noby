@@ -19,6 +19,13 @@ steps:
     version: '6.0.x'
     includePreviewVersions: true
 
+# NuGet tool installer
+# Acquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 6.1.0
+    checkLatest: false
+
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
