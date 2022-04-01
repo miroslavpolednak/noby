@@ -24,6 +24,7 @@ steps:
     command: 'restore'
     projects: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
     feedsToUse: 'config'
+    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
 - task: DotNetCoreCLI@2
