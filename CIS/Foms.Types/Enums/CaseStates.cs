@@ -12,15 +12,27 @@ public enum CaseStates : byte
     Unknown = 0,
     
     [EnumMember]
-    [Display(Name = "Rozpracováno")]
+    [Display(Name = "Příprava žádosti")]
     [CisDefaultValue]
-    InProcess = 1,
+    InProgress = 1,
         
     [EnumMember]
-    [Display(Name = "Předáno")]
-    HandedToSb = 2,
+    [Display(Name = "Zpracování žádosti v továrně")]
+    InApproval = 2,
         
     [EnumMember]
-    [Display(Name = "Stornováno")]
-    Cancelled = 3
+    [Display(Name = "Podepisování")]
+    InSigning = 3,
+
+    [EnumMember]
+    [Display(Name = "Čerpání")]
+    InDisbursement = 4,
+
+    [EnumMember]
+    [Display(Name = "Správa")]
+    InAdministration = 5,
+
+    [EnumMember]
+    [Display(Name = "Ukončeno")]
+    Finished = 6,
 }
