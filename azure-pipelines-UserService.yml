@@ -26,21 +26,21 @@ steps:
     versionSpec: 6.1.0
     checkLatest: false
 
-#- task: DotNetCoreCLI@2
-#  inputs:
-#    command: 'restore'
-#    projects: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
-#    feedsToUse: 'config'
-#    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
-#    noCache: true
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    restoreSolution: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
+    projects: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
     feedsToUse: 'config'
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
+
+#- task: NuGetCommand@2
+#  inputs:
+#    command: 'restore'
+#    restoreSolution: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
+#    feedsToUse: 'config'
+#    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
+#    noCache: true
 
 - task: DotNetCoreCLI@2
   inputs:
