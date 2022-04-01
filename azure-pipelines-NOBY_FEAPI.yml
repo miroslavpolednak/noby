@@ -18,19 +18,21 @@ steps:
     packageType: 'sdk'
     version: '6.0.x'
     includePreviewVersions: true
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
     projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
     feedsToUse: 'config'
+    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
-    arguments: '--output $(Build.BinariesDirectory)'
+    arguments: '--configuration $(buildConfiguration) --no-restore --output $(Build.BinariesDirectory)'
 
 - task: ArchiveFiles@2
   inputs:
