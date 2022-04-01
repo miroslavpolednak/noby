@@ -8,6 +8,7 @@ trigger:
 
 pool:
   name: MPSS Common
+  vmImage: 'windows-2022'
 
 variables:
   buildConfiguration: 'Release'
