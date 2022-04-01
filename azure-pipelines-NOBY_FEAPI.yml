@@ -49,7 +49,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'FOMS\FOMS.Api\FOMS.Api.csproj'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)'    
+    arguments: '--configuration $(buildConfiguration) --no-restore --output $(Build.BinariesDirectory)'    
     noCache: false
 
 - task: ArchiveFiles@2
