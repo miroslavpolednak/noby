@@ -49,7 +49,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:OutputPath=$(Build.BinariesDirectory)'
+    msbuildArgs: '/p:OutputPath=$(Build.BinariesDirectory) /p:SkipInvalidConfigurations=true'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
