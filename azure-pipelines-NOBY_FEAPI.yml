@@ -54,6 +54,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
+    msbuildArchitecture: x86
     msbuildArgs: '/p:OutputPath=$(Build.BinariesDirectory) /p:SkipInvalidConfigurations=true'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
