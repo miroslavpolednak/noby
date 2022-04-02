@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  buildPlatform: 'Any CPU'
+  buildPlatform: 'AnyCPU'
   solution: 'FOMS\FOMS.Api\FOMS.Api.csproj'
 
 steps:
