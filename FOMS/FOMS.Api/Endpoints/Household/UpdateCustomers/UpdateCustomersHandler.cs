@@ -67,10 +67,9 @@ internal class UpdateCustomersHandler
         CancellationToken cancellationToken)
     {
         // smazat existujiciho, neni misto nej zadny novy
-        if ((customer is null || customer.CustomerOnSAId.GetValueOrDefault() == 0) && householdCustomerId.HasValue)
+        if (customer is null && householdCustomerId.HasValue)
         {
             await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
-            return default(int?);
         }
         else if (customer is not null)
         {
@@ -84,17 +83,26 @@ internal class UpdateCustomersHandler
             // update stavajiciho
             if (customer.CustomerOnSAId.HasValue)
             {
-                newMpId = ServiceCallResult.Resolve<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                try
                 {
-                    CustomerOnSAId = customer.CustomerOnSAId!.Value,
-                    Customer = customer.ToDomainServiceRequest()
-                }, cancellationToken)).PartnerId;
+                    newMpId = ServiceCallResult.Resolve<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                    {
+                        CustomerOnSAId = customer.CustomerOnSAId!.Value,
+                        Customer = customer.ToDomainServiceRequest()
+                    }, cancellationToken)).PartnerId;
+                }
+                catch (CisArgumentException ex) when (ex.ExceptionCode == 16033)
+                {
+                    // osetrena vyjimka, kdy je klient identifikovan KB identitou, ale nepodarilo se vytvorit identitu v MP
+                    //TODO je otazka, jak se zde zachovat?
+                }
             }
             else // vytvoreni noveho
             {
                 var createResult = ServiceCallResult.Resolve<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _SA.CreateCustomerRequest
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
+                    CustomerRoleId = (int)customerRole,
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken));
                 newMpId = createResult.PartnerId;
@@ -102,7 +110,7 @@ internal class UpdateCustomersHandler
             }
 
             // hlavni domacnost - hlavni klient ma modre ID
-            if (customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
+            if (newMpId.HasValue && customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
             {
                 var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customerId!.Value, newMpId);
                 await _mediator.Publish(notification, cancellationToken);
@@ -110,7 +118,7 @@ internal class UpdateCustomersHandler
 
             return customerId;
         }
-        return null;
+        return default(int?);
     }
 
     private readonly IHouseholdServiceAbstraction _householdService;

@@ -34,13 +34,7 @@ internal class IdentifyCustomerService
             {
                 //TODO jak tady bude vypadat volani pro PO?
                 // zavolat EAS
-                newMpIdentityId = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(new()
-                {
-                    BirthNumber = customerInstance.NaturalPerson!.BirthNumber,
-                    FirstName = customerInstance.NaturalPerson.FirstName,
-                    LastName = customerInstance.NaturalPerson.LastName,
-                    DateOfBirth = customerInstance.NaturalPerson.DateOfBirth
-                }));
+                newMpIdentityId = await createMpIdWithEas(customerInstance);
 
                 // pokud se to povedlo, pridej customerovi modrou identitu
                 if (newMpIdentityId.HasValue)
@@ -59,6 +53,28 @@ internal class IdentifyCustomerService
         }
 
         return (newMpIdentityId, entity.Identities?.Select(t => new Identity(t.IdentityId, t.IdentityScheme)).ToList());
+    }
+
+    public async Task<int?> TryCreateMpIdentity(Identity identity, CancellationToken cancellation)
+    {
+        var customerInstance = ServiceCallResult.Resolve<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new() { Identity = identity }, cancellation));
+
+        // zavolat EAS
+        var newMpIdentityId = await createMpIdWithEas(customerInstance);
+
+        return newMpIdentityId;
+    }
+
+    private async Task<int?> createMpIdWithEas(_Customer.CustomerResponse customerInstance)
+    {
+        var newMpIdentityId = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(new()
+        {
+            BirthNumber = customerInstance.NaturalPerson!.BirthNumber,
+            FirstName = customerInstance.NaturalPerson.FirstName,
+            LastName = customerInstance.NaturalPerson.LastName,
+            DateOfBirth = customerInstance.NaturalPerson.DateOfBirth
+        }));
+        return newMpIdentityId;
     }
 
     // zalozit noveho klienta v EAS

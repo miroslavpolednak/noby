@@ -1,0 +1,5 @@
+﻿ALTER TABLE [dbo].[Case] SET (SYSTEM_VERSIONING = OFF)
+TRUNCATE TABLE [dbo].[CaseHistory];
+TRUNCATE TABLE [dbo].[Case];
+ALTER TABLE [dbo].[Case] SET (SYSTEM_VERSIONING = On (HISTORY_TABLE =  [dbo].[CaseHistory], DATA_CONSISTENCY_CHECK = ON))  
+GO

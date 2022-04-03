@@ -18,7 +18,7 @@ public static class EntityLoggerExtensions
         _entityNotFound = LoggerMessage.Define<string, long>(
            LogLevel.Error,
            new EventId(EventIdCodes.EntityNotFound, nameof(EntityNotFound)),
-           "{EntityName} #{Id} already exist in DB");
+           "{EntityName} #{Id} not found in DB");
 
         _entityCreated = LoggerMessage.Define<string, long>(
             LogLevel.Information,

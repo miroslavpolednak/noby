@@ -3,7 +3,7 @@
 namespace DomainServices.CaseService.Api.Dto;
 
 internal sealed class GetCaseCountsMediatrRequest
-    : IRequest<GetCaseCountsResponse>
+    : IRequest<GetCaseCountsResponse>, CIS.Core.Validation.IValidatableRequest
 {
     public int CaseOwnerUserId { get; set; }
 

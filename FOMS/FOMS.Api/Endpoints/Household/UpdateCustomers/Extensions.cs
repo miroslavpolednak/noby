@@ -22,7 +22,7 @@ internal static class Extensions
         {
             DateOfBirthNaturalPerson = customer.DateOfBirth,
             FirstNameNaturalPerson = customer.FirstName,
-            Name = customer.LastName
+            Name = customer.LastName,
         };
         if (customer.Identity is not null)
             model.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.Identity));
