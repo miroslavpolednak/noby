@@ -14,6 +14,12 @@ internal class UpdateCustomersHandler
         // detail domacnosti
         var householdInstance = ServiceCallResult.Resolve<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
 
+        // Honza chtel Obligations v rootu requestu
+        if (request.Obligations is not null && request.Customer1 is not null)
+            request.Customer1!.Obligations = convertObligations(request.Obligations, 1);
+        if (request.Obligations is not null && request.Customer2 is not null)
+            request.Customer2!.Obligations = convertObligations(request.Obligations, 2);
+
         var response = new UpdateCustomersResponse
         {
             CustomerOnSAId1 = await processCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken),
@@ -26,6 +32,16 @@ internal class UpdateCustomersHandler
 
         return response;
     }
+
+    static List<Dto.CustomerObligation>? convertObligations(List<Dto.HouseholdCustomerObligation>? list, int index)
+        =>list?.Where(t => t.CustomerIndex == index).Select(t => new Dto.CustomerObligation
+        {
+            CreditCardLimit = t.CreditCardLimit,
+            LoanPaymentAmount = t.LoanPaymentAmount,
+            ObligationCreditor = t.ObligationCreditor,
+            ObligationTypeId = t.ObligationTypeId,
+            RemainingLoanPrincipal = t.RemainingLoanPrincipal
+        }).ToList();
 
     async Task<int?> processCustomer(
         CustomerDto? customer,

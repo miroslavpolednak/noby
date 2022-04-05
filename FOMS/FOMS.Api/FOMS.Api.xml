@@ -415,6 +415,11 @@
             Klient 2= spoludluznik
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Obligations">
+            <summary>
+            Zavazky obou klientu vytazene z objektu Customer1 a Customer2.
+            </summary>
+        </member>
         <member name="T:FOMS.Api.Endpoints.Household.HouseholdController">
             <summary>
             Prace s domacnostmi a customery
@@ -493,6 +498,11 @@
             ID spoludluznika
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Obligations">
+            <summary>
+            Zavazky obou klientu vytazene do objektu Customer1 a Customer2.
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Data">
             <summary>
             Sekce Ostatni parametry
@@ -531,6 +541,11 @@
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.Obligations">
             <summary>
             Zavazky customera
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdCustomerObligation.CustomerIndex">
+            <summary>
+            Cislo klienta (1 nebo 2)
             </summary>
         </member>
         <member name="T:FOMS.Api.Endpoints.Household.Dto.HouseholdData">

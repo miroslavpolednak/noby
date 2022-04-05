@@ -20,7 +20,20 @@ internal class GetHouseholdHandler
         if (household.CustomerOnSAId2.HasValue)
             response.Customer2 = await getCustomer(household.CustomerOnSAId2.Value, cancellationToken);
 
+        // Honza chtel vytahnout obligations do rootu objektu
+        response.Obligations = createObligations(response.Customer1, response.Customer2);
+
         return response;
+    }
+
+    static List<Dto.HouseholdCustomerObligation> createObligations(CustomerInHousehold? customer1, CustomerInHousehold? customer2)
+    {
+        var list = new List<Dto.HouseholdCustomerObligation>();
+        if (customer1?.Obligations is not null)
+            list.AddRange(customer1.Obligations.Select(t => new Dto.HouseholdCustomerObligation(t, 1)));
+        if (customer2?.Obligations is not null)
+            list.AddRange(customer2.Obligations.Select(t => new Dto.HouseholdCustomerObligation(t, 2)));
+        return list;
     }
 
     private async Task<CustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)

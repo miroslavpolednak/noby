@@ -1,4 +1,5 @@
 ﻿using ExternalServices.Eas.R21.EasWrapper;
+using CIS.Infrastructure.Logging;
 
 namespace ExternalServices.Eas.R21;
 
@@ -7,8 +8,6 @@ internal sealed class RealEasClient
 {
     public async Task<IServiceCallResult> GetSavingsLoanId(long caseId)
     {
-        _logger.LogDebug("Run inputs: {caseId}", caseId);
-
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
@@ -26,12 +25,15 @@ internal sealed class RealEasClient
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
-
-            var result = await client.Get_CaseIdAsync(new CaseIdRequest
+            var request = new CaseIdRequest
             {
                 mandant = (int)mandant,
                 productCode = productTypeId
-            });
+            };
+
+            _logger.LogSerializedObject("CaseIdRequest", request);
+            var result = await client.Get_CaseIdAsync(request);
+            _logger.LogSerializedObject("CaseIdResponse", result);
 
             //TODO jak ma vypadat chyba vracena z EAS?
             if (result.commonResult?.return_val != 0)
@@ -43,18 +45,16 @@ internal sealed class RealEasClient
 
     public async Task<IServiceCallResult> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input)
     {
-        _logger.LogDebug("Run inputs: {input}", System.Text.Json.JsonSerializer.Serialize(input));
-
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
-        
+
+            _logger.LogSerializedObject("ESBI_SIMULATION_INPUT_PARAMETERS", input);
             var result = await client.SimulationAsync(input);
+            _logger.LogSerializedObject("ESBI_SIMULATION_RESULT", result);
 
             if (result.SIM_error != 0)
                 _logger.LogInformation("Incorrect inputs to EAS Simulation {error}: {errorText}", result.SIM_error, result.SIM_error_text);
-            else
-                _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
 
             return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
         });
@@ -62,13 +62,15 @@ internal sealed class RealEasClient
 
     public async Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
     {
-        _logger.LogDebug("Run inputs: {input}", System.Text.Json.JsonSerializer.Serialize(clientData));
-
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
-            var result = await client.GetKlientData_NewKlientAsync(new S_KLIENTDATA[] { clientData.MapToEas() });
+            var request = new S_KLIENTDATA[] { clientData.MapToEas() };
+
+            _logger.LogSerializedObject("S_KLIENTDATA[]", request);
+            var result = await client.GetKlientData_NewKlientAsync(request);
+            _logger.LogSerializedObject("GetKlientData_NewKlientResponse", result);
 
             if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
                 return new ErrorServiceCallResult(0, "EAS GetKlientData_NewKlientResult is empty");
@@ -82,8 +84,6 @@ internal sealed class RealEasClient
             }
             else
             {
-                _logger.LogDebug("Run outputs: {output}", System.Text.Json.JsonSerializer.Serialize(result));
-
                 return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
                 {
                     Id = r.klient_id,
@@ -100,7 +100,13 @@ internal sealed class RealEasClient
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
-            var result = await client.Get_ContractNumberAsync(new ContractNrRequest(clientId, caseId));
+
+            var request = new ContractNrRequest(clientId, caseId);
+
+            _logger.LogSerializedObject("ContractNrRequest", request);
+            var result = await client.Get_ContractNumberAsync(request);
+            _logger.LogSerializedObject("ContractNrResponse", result);
+
             return new SuccessfulServiceCallResult<string>(result.contractNumber);
         });
     }

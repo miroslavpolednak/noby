@@ -4,6 +4,10 @@
       {
         "Port": 5020,
         "Protocol": 2
+      },
+      {
+        "Port": 5006,
+        "Protocol": 1
       }
     ],
     "Certificate": {

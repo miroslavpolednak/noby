@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.Logging;
 using ExternalServices.ESignatures.V1.ESignaturesWrapper;
 
 namespace ExternalServices.ESignatures.V1
@@ -21,6 +22,8 @@ namespace ExternalServices.ESignatures.V1
                 return await callMethod(async () =>
                 {
                     var result = await c.GetDocumentStatusAsync(documentId, ToOrg(mandant));
+                    _logger.LogSerializedObject("ResponseStatus", result);
+
                     return new SuccessfulServiceCallResult<ResponseStatus>(result);
                 });
             });

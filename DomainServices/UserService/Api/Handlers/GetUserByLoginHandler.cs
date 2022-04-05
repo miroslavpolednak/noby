@@ -1,4 +1,7 @@
-﻿namespace DomainServices.UserService.Api.Handlers;
+﻿using System.Diagnostics;
+using CIS.Infrastructure.Telemetry;
+
+namespace DomainServices.UserService.Api.Handlers;
 
 internal class GetUserByLoginHandler
     : IRequestHandler<Dto.GetUserByLoginMediatrRequest, Contracts.User>

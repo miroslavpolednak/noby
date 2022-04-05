@@ -32,6 +32,7 @@ public static class LoggerExtensions
     public static void FoundItems(this ILogger logger, int count, string entityName)
         => _foundItemsWithName(logger, count, entityName, null!);
 
-    public static void LogSerializedObject(this ILogger logger, string name, object objectToLog)
+    //TODO dodelat ostatni log levels
+    public static void LogSerializedObject(this ILogger logger, string name, object objectToLog, LogLevel logLevel = LogLevel.Debug)
         => _logSerializedObject(logger, name, System.Text.Json.JsonSerializer.Serialize(objectToLog), null!);
 }

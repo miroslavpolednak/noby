@@ -18,6 +18,11 @@ public class UpdateCustomersRequest
     /// </summary>
     public CustomerDto? Customer2 { get; set; }
 
+    /// <summary>
+    /// Zavazky obou klientu vytazene do objektu Customer1 a Customer2.
+    /// </summary>
+    public List<Dto.HouseholdCustomerObligation>? Obligations { get; set; }
+
     internal UpdateCustomersRequest InfuseId(int householdId)
     {
         this.HouseholdId = householdId;
