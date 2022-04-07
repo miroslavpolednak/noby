@@ -59,5 +59,10 @@ public class ApiExceptionMiddleware
 
             await result.ExecuteAsync(context);
         }
+        // jakakoliv jina chyba
+        catch (Exception ex)
+        {
+            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
+        }
     }
 }

@@ -23,5 +23,5 @@ public sealed partial class GrpcDecimal
     }
 
     public static implicit operator NullableGrpcDecimal(GrpcDecimal grpcDecimal)
-        => grpcDecimal;
+        => new NullableGrpcDecimal(grpcDecimal.Units, grpcDecimal.Nanos);
 }

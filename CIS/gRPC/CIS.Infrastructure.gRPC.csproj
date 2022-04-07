@@ -22,14 +22,14 @@
 		
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="10.4.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+    <PackageReference Include="Google.Protobuf" Version="3.20.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.44.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.44.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.44.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-    <PackageReference Include="Protobuf.System.Text.Json" Version="1.0.0-preview3" />
+    <PackageReference Include="Protobuf.System.Text.Json" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
