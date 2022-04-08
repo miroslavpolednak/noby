@@ -1,0 +1,2280 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "RIP API",
+    "version": "v1"
+  },
+  "paths": {
+    "/v1/credit-worthiness": {
+      "put": {
+        "tags": [
+          "CreditWorthiness"
+        ],
+        "summary": "Výpočet rozšířené bonity",
+        "operationId": "ComputeCreditWorthiness",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditWorthiness.CreditWorthinessCalculationArguments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditWorthiness.CreditWorthinessCalculation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditWorthiness.CreditWorthinessCalculation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/loan-application": {
+      "post": {
+        "tags": [
+          "LoanApplication"
+        ],
+        "summary": "Založí LoanApplication",
+        "operationId": "CreateLoanApplication",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanApplication.LOanApplication"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplication.LoanApplicationResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplication.LoanApplicationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/loan-application-assessment/{loanApplicationAssessmentId}": {
+      "get": {
+        "tags": [
+          "LoanApplicationAssessment"
+        ],
+        "summary": "Vrátí LoanApplicationAssessment podle ID",
+        "operationId": "GetLoanApplicationAssessment",
+        "parameters": [
+          {
+            "name": "loanApplicationAssessmentId",
+            "in": "path",
+            "description": "loanApplicationAssessmentId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "loanApplicationAssessmentId",
+              "nullable": true
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky |assessmentDetail|householdAssessmentDetail|counterpartyAssessmentDetail|loanApplicationApprovalPossibilities|collateralRiskCharacteristics",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky |assessmentDetail|householdAssessmentDetail|counterpartyAssessmentDetail|loanApplicationApprovalPossibilities|collateralRiskCharacteristics",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessment"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/assessment/command/riskBusinessCaseId={id}": {
+      "post": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "summary": "Business case - Assessment (Asynchronous)",
+        "operationId": "RiskBusinessCaseAssessment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskBusinessCase.AssessmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase.RiskBusinessCaseCommand"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase.RiskBusinessCaseCommand"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/risk-business-case": {
+      "post": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "summary": "Business case - Create",
+        "operationId": "RiskBusinessCaseCreate",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskBusinessCase.CreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase.LoanApplicationCreate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase.LoanApplicationCreate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/risk-business-case/{id}/commitment": {
+      "put": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "summary": "Business case - Commit",
+        "operationId": "RiskBusinessCaseCommit",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskBusinessCase.CommitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase.LoanApplicationCommit"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskBusinessCase.LoanApplicationCommit"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Shared.HumanUser": {
+        "type": "object",
+        "properties": {
+          "identity": {
+            "type": "string",
+            "description": "Identifikátor uživatele/schvalovatele (os.číslo, login, ...)",
+            "nullable": true
+          },
+          "identityScheme": {
+            "type": "string",
+            "description": "Identitní schéma (\"MPAD\", \"KBAD\", \"DMID\" (BrokerId), \"M04ID\", \"M17ID\")",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Uživatel (přihlášený uživatel/schvalovatel aplikace StarBuild/NOBY)"
+      },
+      "CreditWorthiness.LoanApplicationProduct": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "integer",
+            "description": "Kód produktu",
+            "format": "int32"
+          },
+          "maturity": {
+            "type": "integer",
+            "description": "Doba splatnosti úvěru v měsících.",
+            "format": "int32"
+          },
+          "interestRate": {
+            "type": "number",
+            "description": "Žádaná roční úroková sazba.",
+            "format": "double"
+          },
+          "amountRequired": {
+            "type": "integer",
+            "description": "Požadovaná výše úvěru v Kč.",
+            "format": "int32"
+          },
+          "annuity": {
+            "type": "integer",
+            "description": "Požadovaná výše splátky v Kč.",
+            "format": "int32"
+          },
+          "fixationPeriod": {
+            "type": "integer",
+            "description": "Doba fixace úrokové sazby v měsících.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry potřebné pro výpočet Bonity"
+      },
+      "CreditWorthiness.ExpensesSummary": {
+        "type": "object",
+        "properties": {
+          "rent": {
+            "type": "number",
+            "description": "Náklady domácnosti spojené s bydlením (Kč/měsíc).",
+            "format": "double"
+          },
+          "saving": {
+            "type": "number",
+            "description": "Výdaje domácnosti na spoření (Kč/měsíc).",
+            "format": "double"
+          },
+          "insurance": {
+            "type": "number",
+            "description": "Výdaje domácnosti na pojištění (Kč/měsíc).",
+            "format": "double"
+          },
+          "other": {
+            "type": "number",
+            "description": "Ostatní výdaje domácnosti (Kč/měsíc).",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "CreditWorthiness.LoanApplicationIncome": {
+        "type": "object",
+        "properties": {
+          "categoryMp": {
+            "type": "integer",
+            "description": "Kategorie příjmu.",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Výše příjmu.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Příjem klienta"
+      },
+      "CreditWorthiness.CreditLiability": {
+        "type": "object",
+        "properties": {
+          "liabilityType": {
+            "type": "integer",
+            "description": "Typ závazku.",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Výše limitu kreditní karty nebo povoleného debetu.",
+            "format": "double"
+          },
+          "amountConsolidated": {
+            "type": "number",
+            "description": "Konsolidovaná výše limitu kreditní karty nebo povoleného debetu.",
+            "format": "double"
+          },
+          "installment": {
+            "type": "number",
+            "description": "Výše splátky spotřebitelského nebo hypotečního úvěru.",
+            "format": "double"
+          },
+          "installmentConsolidated": {
+            "type": "number",
+            "description": "Konsolidovaná výše splátky spotřebitelského nebo hypotečního úvěru.",
+            "format": "double"
+          },
+          "outHomeCompanyFlag": {
+            "type": "boolean",
+            "description": "Příznak, že závazek je veden u jiného peněžního ústavu (JPÚ), než v kterém je sjednáván úvěr."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Household Credit Liabilities OutHomeCompany."
+      },
+      "CreditWorthiness.LoanApplicationCounterParty": {
+        "type": "object",
+        "properties": {
+          "idMp": {
+            "type": "string",
+            "description": "ID klienta",
+            "nullable": true
+          },
+          "isPartnerMp": {
+            "type": "boolean",
+            "description": "Je klient druhem/družkou?"
+          },
+          "maritalStatusMp": {
+            "type": "integer",
+            "description": "Rodinný stav.",
+            "format": "int32"
+          },
+          "loanApplicationIncome": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditWorthiness.LoanApplicationIncome"
+            },
+            "description": "Příjem klienta.",
+            "nullable": true
+          },
+          "creditLiabilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditWorthiness.CreditLiability"
+            },
+            "description": "Závazky klienta.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Protistrana žádosti o půjčku."
+      },
+      "CreditWorthiness.LoanApplicationHousehold": {
+        "type": "object",
+        "properties": {
+          "childrenUnderAnd10": {
+            "type": "integer",
+            "description": "Počet vyživovaných dětí do 10 let (včetně).",
+            "format": "int64",
+            "nullable": true
+          },
+          "childrenOver10": {
+            "type": "integer",
+            "description": "Počet vyživovaných dětí nad 10 let.",
+            "format": "int64",
+            "nullable": true
+          },
+          "expensesSummary": {
+            "$ref": "#/components/schemas/CreditWorthiness.ExpensesSummary"
+          },
+          "clients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditWorthiness.LoanApplicationCounterParty"
+            },
+            "description": "Klienti",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "CreditWorthiness.CreditWorthinessCalculationArguments": {
+        "required": [
+          "households",
+          "humanUser",
+          "itChannel",
+          "loanApplicationProduct",
+          "resourceProcessIdMp"
+        ],
+        "type": "object",
+        "properties": {
+          "resourceProcessIdMp": {
+            "type": "string",
+            "description": "ResourceProcessId"
+          },
+          "itChannel": {
+            "type": "string",
+            "description": "Identifikátor volající aplikace."
+          },
+          "riskBusinessCaseIdMp": {
+            "type": "string",
+            "description": "Identifikátor žádosti z pohledu Risku (nepovinné).",
+            "nullable": true
+          },
+          "humanUser": {
+            "$ref": "#/components/schemas/Shared.HumanUser"
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/CreditWorthiness.LoanApplicationProduct"
+          },
+          "households": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditWorthiness.LoanApplicationHousehold"
+            },
+            "description": "Domácnosti."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry potřebné pro výpočet Bonity"
+      },
+      "CreditWorthiness.ResultReason": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Kód důvodu nespočtení výsledku",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Popis důvodu nespočtení výsledku",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Důvod(y) nespočtení výsledků bonity."
+      },
+      "CreditWorthiness.CreditWorthinessCalculation": {
+        "type": "object",
+        "properties": {
+          "installmentLimit": {
+            "type": "integer",
+            "description": "Maximální disponibilní splátka",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxAmount": {
+            "type": "integer",
+            "description": "Maximální výše úvěru",
+            "format": "int64",
+            "nullable": true
+          },
+          "remainsLivingAnnuity": {
+            "type": "integer",
+            "description": "Zbývá na živobytí s ANNUITY",
+            "format": "int64",
+            "nullable": true
+          },
+          "remainsLivingInst": {
+            "type": "integer",
+            "description": "Zbývá na živobytí s disp. Splátkou",
+            "format": "int64",
+            "nullable": true
+          },
+          "worthinessResult": {
+            "type": "integer",
+            "description": "Výsledek porovnání disponibilní a požadované splátky (0 - nebonitní, 1 - bonitní)",
+            "format": "int32"
+          },
+          "resultReason": {
+            "$ref": "#/components/schemas/CreditWorthiness.ResultReason"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Vypočtená Bonita (výsledek)"
+      },
+      "Shared.SystemId": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id",
+            "nullable": true
+          },
+          "system": {
+            "type": "string",
+            "description": "System (eg. NOBY, STARBUILD)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanApplication.ExpensesSummary": {
+        "type": "object",
+        "properties": {
+          "rent": {
+            "type": "number",
+            "description": "Kategorie.",
+            "format": "double"
+          },
+          "saving": {
+            "type": "number",
+            "description": "Saving.",
+            "format": "double"
+          },
+          "insurance": {
+            "type": "number",
+            "description": "Insurance.",
+            "format": "double"
+          },
+          "other": {
+            "type": "number",
+            "description": "Other.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplication.PrimaryAddress": {
+        "type": "object",
+        "properties": {
+          "streetNameMp": {
+            "type": "string",
+            "description": "Ulice.",
+            "nullable": true
+          },
+          "houseNumberMp": {
+            "type": "string",
+            "description": "Cislo popisne.",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "description": "Město.",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Země.",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "integer",
+            "description": "Směrovací číslo.",
+            "format": "int64",
+            "nullable": true
+          },
+          "regionCode": {
+            "type": "integer",
+            "description": "Region.",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "PhoneContact"
+      },
+      "LoanApplication.Amount": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Hodnota částky",
+            "format": "double",
+            "nullable": true
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Kód měny částky (ISO 4217)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Amount"
+      },
+      "LoanApplication.IncomeDeduction": {
+        "type": "object",
+        "properties": {
+          "execution": {
+            "type": "number",
+            "description": "Execution",
+            "format": "double"
+          },
+          "installments": {
+            "type": "number",
+            "description": "Installments",
+            "format": "double"
+          },
+          "other": {
+            "type": "number",
+            "description": "Other",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "IncomeDeduction"
+      },
+      "LoanApplication.LoanApplicationEmploymentIncome": {
+        "type": "object",
+        "properties": {
+          "employerIdentificationNumber": {
+            "type": "string",
+            "description": "rodné číslo / IČO zaměstnavatele.",
+            "nullable": true
+          },
+          "employerType": {
+            "type": "integer",
+            "description": "Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc..",
+            "format": "int64",
+            "nullable": true
+          },
+          "employerName": {
+            "type": "string",
+            "description": "Název zaměstnavatele",
+            "nullable": true
+          },
+          "nace": {
+            "type": "integer",
+            "description": "agregovaný OKEČ zaměstnavatele.",
+            "format": "int64",
+            "nullable": true
+          },
+          "profession": {
+            "type": "integer",
+            "description": "povolání.",
+            "format": "int64",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "integer",
+            "description": "PSČ sídla zaměstnavatele.",
+            "format": "int64",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "description": "město sídla zaměstnání.",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Stát sídla zaměstnání.",
+            "nullable": true
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Název pracovní pozice.",
+            "nullable": true
+          },
+          "street": {
+            "type": "string",
+            "description": "ulice sídla zaměstnání.",
+            "nullable": true
+          },
+          "landRegisterNumber": {
+            "type": "string",
+            "description": "číslo katastru nemovitostí.",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Telefonní kontakt.",
+            "nullable": true
+          },
+          "monthlyIncomeAmount": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          },
+          "accountNumberMp": {
+            "type": "string",
+            "description": "Číslo účtu, ze kterého od daného zaměstnavatele chodí mzda.",
+            "nullable": true
+          },
+          "accountBankCode": {
+            "type": "string",
+            "description": "Kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda.",
+            "nullable": true
+          },
+          "domiciled": {
+            "type": "boolean",
+            "description": "Je příjem domicilován?.",
+            "nullable": true
+          },
+          "proofType": {
+            "type": "string",
+            "description": "typ dokumentu dokládajícího příjmy (\\\"PNZ\\\"=příjem není zadán).",
+            "nullable": true
+          },
+          "foreignEmploymentType": {
+            "type": "string",
+            "description": "Typ zaměstnání.",
+            "nullable": true
+          },
+          "grossAnnualIncome": {
+            "type": "number",
+            "description": "Hrubý roční příjem bez pojistného za poslední zdaňovací období.",
+            "format": "double",
+            "nullable": true
+          },
+          "proofConfirmationContactSurname": {
+            "type": "string",
+            "description": "kontaktní osoba uvedená na potvrzení o výši příjmu.",
+            "nullable": true
+          },
+          "proofConfirmationContactPhone": {
+            "type": "string",
+            "description": "kontaktní tel. číslo uvedené na potvrzení o výši příjmu.",
+            "nullable": true
+          },
+          "proofCreatedOn": {
+            "type": "string",
+            "description": "Datum vystavení potvrzení o výši příjmu.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "probationaryPeriod": {
+            "type": "boolean",
+            "description": "Je klient ve zkušební době?.",
+            "nullable": true
+          },
+          "noticePeriod": {
+            "type": "boolean",
+            "description": "Je klient ve výpovědní lhůtě?.",
+            "nullable": true
+          },
+          "employmentTypeMp": {
+            "type": "integer",
+            "description": "Je pracovní poměr sjednán na dobu určitou?.",
+            "format": "int32"
+          },
+          "firstContractFrom": {
+            "type": "string",
+            "description": "první pracovní smlouva se zaměstnavatelem od.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "currentContractFrom": {
+            "type": "string",
+            "description": "aktuální pracovní smlouva od.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "currentContractTo": {
+            "type": "string",
+            "description": "aktuální pracovní smlouva do.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "issuedByExternalAccountant": {
+            "type": "boolean",
+            "description": "Vystavila potvrzení o příjmu externí účetní firma?",
+            "nullable": true
+          },
+          "incomeDeduction": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.IncomeDeduction"
+            },
+            "description": "Z příjmu Zaměstnance  jsou/nejsou prováděny srážky.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationEmploymentIncome"
+      },
+      "LoanApplication.LoanApplicationEntrepreneurIncome": {
+        "type": "object",
+        "properties": {
+          "entrepreneurIdentificationNumber": {
+            "type": "string",
+            "description": "rodné číslo / IČO FOP.",
+            "nullable": true
+          },
+          "nace": {
+            "type": "integer",
+            "description": "agregovaný OKEČ.",
+            "format": "int64",
+            "nullable": true
+          },
+          "profession": {
+            "type": "integer",
+            "description": "povolání.",
+            "format": "int64",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "integer",
+            "description": "PSČ sídla podnikání.",
+            "format": "int64",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "description": "město sídla podnikání.",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "země sídla podnikání.",
+            "nullable": true
+          },
+          "establishedOn": {
+            "type": "string",
+            "description": "establishedOn",
+            "format": "date-time",
+            "nullable": true
+          },
+          "domiciled": {
+            "type": "boolean",
+            "description": "Příznak, zdali je příjem domicilován.",
+            "nullable": true
+          },
+          "proofType": {
+            "type": "string",
+            "description": "dokument dokládající příjem z pronájmu.",
+            "nullable": true
+          },
+          "annualIncomeAmount": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationEntrepreneurIncome"
+      },
+      "LoanApplication.LoanApplicationRentIncome": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "description": "accountNumber.",
+            "nullable": true
+          },
+          "domiciled": {
+            "type": "boolean",
+            "description": "domiciled.",
+            "nullable": true
+          },
+          "proofType": {
+            "type": "string",
+            "description": "proofType.",
+            "nullable": true
+          },
+          "monthlyIncomeAmount": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationRentIncome"
+      },
+      "LoanApplication.LoanApplicationOtherIncome": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Typ  vedlejšího prokazatelného příjmu. Opakující se atribut podle počtu vedeljších prokazatelných příjmů příjmů.",
+            "nullable": true
+          },
+          "monthlyIncomeAmount": {
+            "type": "number",
+            "description": "Částka  vedlejšího prokazatelného příjmu. Opakující se atribut podle počtu vedeljších prokazatelných příjmů příjmů.",
+            "format": "double",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "číslo účtu, z kterého příjem přichází.",
+            "nullable": true
+          },
+          "domiciled": {
+            "type": "boolean",
+            "description": "Příznak, zdali je příjem domicilován.",
+            "nullable": true
+          },
+          "proofType": {
+            "type": "string",
+            "description": "dokument dokládající příjem z pronájmu.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationOtherIncome"
+      },
+      "LoanApplication.LoanApplicationIncome": {
+        "type": "object",
+        "properties": {
+          "incomeConfirmed": {
+            "type": "boolean",
+            "description": "Product group.",
+            "nullable": true
+          },
+          "lastConfirmedDate": {
+            "type": "string",
+            "description": "Product group.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "employmentIncome": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationEmploymentIncome"
+            },
+            "description": "Product group.",
+            "nullable": true
+          },
+          "entrepreneurIncome": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationEntrepreneurIncome"
+            },
+            "description": "Product group.",
+            "nullable": true
+          },
+          "rentIncome": {
+            "$ref": "#/components/schemas/LoanApplication.LoanApplicationRentIncome"
+          },
+          "otherIncome": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationOtherIncome"
+            },
+            "description": "Product group.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationIncome"
+      },
+      "LoanApplication.LoanApplicationPersonalDocument": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Product group.",
+            "nullable": true
+          },
+          "typeMp": {
+            "type": "string",
+            "description": "Product group.",
+            "nullable": true
+          },
+          "issuedOn": {
+            "type": "string",
+            "description": "issuedOn",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validTo": {
+            "type": "string",
+            "description": "validTo",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationPersonalDocument"
+      },
+      "LoanApplication.CreditLiability": {
+        "type": "object",
+        "properties": {
+          "liabilityType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Výše limitu v JPÚ",
+            "format": "double"
+          },
+          "amountConsolidated": {
+            "type": "number",
+            "format": "double"
+          },
+          "installment": {
+            "type": "number",
+            "format": "double"
+          },
+          "installmentConsolidated": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanApplication.LoanApplicationCounterParty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "LoanApplication identity",
+            "format": "int64",
+            "nullable": true
+          },
+          "isPartner": {
+            "type": "boolean",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "groupEmployee": {
+            "type": "boolean",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "specialRelationsWithKB": {
+            "type": "boolean",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "roleCodeMp": {
+            "type": "integer",
+            "description": "LoanApplication identity",
+            "format": "int32"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "surname": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "birthName": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "format": "date-time",
+            "nullable": true
+          },
+          "birthPlace": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/LoanApplication.PrimaryAddress"
+          },
+          "genderMp": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "maritalStatusMp": {
+            "type": "integer",
+            "description": "LoanApplication identity",
+            "format": "int32"
+          },
+          "highestEducation": {
+            "type": "integer",
+            "description": "LoanApplication identity",
+            "format": "int64",
+            "nullable": true
+          },
+          "academicTitlePrefix": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "mobilePhoneNumber": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "hasEmail": {
+            "type": "boolean",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "housingCondition": {
+            "type": "string",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "income": {
+            "$ref": "#/components/schemas/LoanApplication.LoanApplicationIncome"
+          },
+          "taxpayer": {
+            "type": "boolean",
+            "description": "LoanApplication identity",
+            "nullable": true
+          },
+          "loanApplicationPersonalDocument": {
+            "$ref": "#/components/schemas/LoanApplication.LoanApplicationPersonalDocument"
+          },
+          "creditLiability": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.CreditLiability"
+            },
+            "description": "Závazky klienta",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplication.LoanApplicationHousehold": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "LoanApplicationHousehold identity",
+            "format": "int64",
+            "nullable": true
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "počet vyživovaných dětí do 10 let (včetně).",
+            "nullable": true
+          },
+          "childrenUnderAnd10": {
+            "type": "integer",
+            "description": "počet vyživovaných dětí do 10 let (včetně).",
+            "format": "int64",
+            "nullable": true
+          },
+          "childrenOver10": {
+            "type": "integer",
+            "description": "počet vyživovaných dětí nad 10 let .",
+            "format": "int64",
+            "nullable": true
+          },
+          "householdExpensesSummary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.ExpensesSummary"
+            },
+            "description": "Household Expenses Summary",
+            "nullable": true
+          },
+          "settlementTypeCode": {
+            "type": "string",
+            "description": "Shrnutí splátek mimo domácnosti",
+            "nullable": true
+          },
+          "counterParty": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationCounterParty"
+            },
+            "description": "Shrnutí splátek domácnosti",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplication.MarketingActions": {
+        "type": "object",
+        "properties": {
+          "marketingAction": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanApplication.LoanApplicationPurpose": {
+        "type": "object",
+        "properties": {
+          "codeMp": {
+            "type": "integer",
+            "description": "účel úvěru.",
+            "format": "int64",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "výše požadované výše úvěru pro daný účel.",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplication.LoanApplicationCollateral": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID zajištění v dané evidenci (Bagman,StarBuild, atd.).",
+            "nullable": true
+          },
+          "categoryCode": {
+            "type": "string",
+            "description": "Kategorie zajištění.",
+            "nullable": true
+          },
+          "appraisedValue": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplication.LoanApplicationProduct": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "integer",
+            "description": "kód produktového shluku (shluk jednoho produktu).",
+            "format": "int64",
+            "nullable": true
+          },
+          "loanType": {
+            "type": "integer",
+            "description": "LoanType",
+            "format": "int64",
+            "nullable": true
+          },
+          "marketingActions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.MarketingActions"
+            },
+            "description": "MarketingActions",
+            "nullable": true
+          },
+          "ltv": {
+            "type": "number",
+            "description": "Ltv",
+            "format": "double"
+          },
+          "aplType": {
+            "type": "string",
+            "description": "aplikace + typ účtu.",
+            "nullable": true
+          },
+          "loanApplicationPurpose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationPurpose"
+            },
+            "description": "účely úvěru.",
+            "nullable": true
+          },
+          "loanApplicationCollateral": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationCollateral"
+            },
+            "description": "seznam zajištění daného účtu. Zabaluje větve COLLATERAL. Shodná struktura jako v CrI_out.",
+            "nullable": true
+          },
+          "amountRequired": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          },
+          "amountInvestment": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          },
+          "amountOwnResources": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          },
+          "amountForeignResources": {
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          },
+          "maturity": {
+            "type": "integer",
+            "description": "počet splátek (anuitní a úrokové).",
+            "format": "int64",
+            "nullable": true
+          },
+          "annuity": {
+            "type": "integer",
+            "description": "žádaná anuitní splátka.",
+            "format": "int64",
+            "nullable": true
+          },
+          "fixationPeriod": {
+            "type": "integer",
+            "description": "doba fixace úrokové sazby.",
+            "format": "int64",
+            "nullable": true
+          },
+          "interestRate": {
+            "type": "integer",
+            "description": "žádaná roční úroková sazba.",
+            "format": "int64",
+            "nullable": true
+          },
+          "repaymentScheduleType": {
+            "type": "string",
+            "description": "typ splátkového kalendáře.",
+            "nullable": true
+          },
+          "installmentPeriod": {
+            "type": "string",
+            "description": "periodicity splátek.",
+            "nullable": true
+          },
+          "installmentCount": {
+            "type": "integer",
+            "description": "počet splátek (pouze anuitní).",
+            "format": "int64",
+            "nullable": true
+          },
+          "drawingPeriodStart": {
+            "type": "string",
+            "description": "termín čerpání obchodu od.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "drawingPeriodEnd": {
+            "type": "string",
+            "description": "termín čerpání obchodu do.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "repaymentPeriodStart": {
+            "type": "string",
+            "description": "datum začátku splácení.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "repaymentPeriodEnd": {
+            "type": "string",
+            "description": "konečný den splatnosti.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "homeCurrencyIncome": {
+            "type": "string",
+            "description": "vnitrobankovní úroková sazba.",
+            "nullable": true
+          },
+          "homeCurrencyResidence": {
+            "type": "string",
+            "description": "domácí měna dle bydliště žadatelů.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "Shared.CompanyId": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "type": "string",
+            "description": "Company (eg. MP, KB)",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "description": "Id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanApplication.LoanApplicationProductRelation": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "$ref": "#/components/schemas/Shared.CompanyId"
+          },
+          "productType": {
+            "type": "string",
+            "description": "kód produktového shluku (shluk jednoho produktu).",
+            "nullable": true
+          },
+          "relationType": {
+            "type": "string",
+            "description": "kód produktového shluku (shluk jednoho produktu).",
+            "nullable": true
+          },
+          "remainingExposure": {
+            "type": "number",
+            "description": "remainingExposure",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Parametry domácnosti."
+      },
+      "LoanApplication.LOanApplication": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Shared.SystemId"
+          },
+          "appendixCode": {
+            "type": "integer",
+            "description": "rozlišení nového obchodu a typu dodatku",
+            "format": "int64",
+            "nullable": true
+          },
+          "distributionChannelCode": {
+            "type": "string",
+            "description": "distribuční kanál vzniku žádosti",
+            "nullable": true
+          },
+          "signatureType": {
+            "type": "string",
+            "description": "Způsob podpisu žádosti",
+            "nullable": true
+          },
+          "loanApplicationDataVersion": {
+            "type": "string",
+            "description": "loan application verze",
+            "nullable": true
+          },
+          "loanApplicationHousehold": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationHousehold"
+            },
+            "description": "aplikačních data jednotlivých domácností (včetně ručitelských)",
+            "nullable": true
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/LoanApplication.LoanApplicationProduct"
+          },
+          "loanApplicationProductRelation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplication.LoanApplicationProductRelation"
+            },
+            "description": "konsolidované/zrušené úvěry",
+            "nullable": true
+          },
+          "humanUser": {
+            "$ref": "#/components/schemas/Shared.HumanUser"
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplication"
+      },
+      "LoanApplication.LoanApplicationResponse": {
+        "type": "object",
+        "properties": {
+          "riskSegment": {
+            "type": "string",
+            "description": "Risk segment (calculated on RIP)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanApplicationAssessment.ResourceIdentifier": {
+        "type": "object",
+        "properties": {
+          "instance": {
+            "type": "string",
+            "description": "The resource instance code, eg. 'KBCZ'",
+            "nullable": true
+          },
+          "domain": {
+            "type": "string",
+            "description": "The resource domain code, eg. 'CFLM'",
+            "nullable": true
+          },
+          "resource": {
+            "type": "string",
+            "description": "The resource code (the in-domain resource code, eg. 'LimitModel')",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "nullable": true
+          },
+          "variant": {
+            "type": "string",
+            "description": "The variant of the resource, eg. distinguishing the origin of the source",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "ResourceIdentifier"
+      },
+      "LoanApplicationAssessment.Resource": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Entity",
+            "nullable": true
+          },
+          "id": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.ResourceIdentifier"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Resource"
+      },
+      "LoanApplicationAssessment.AssessmentReasonDetail": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Target",
+            "nullable": true
+          },
+          "desc": {
+            "type": "string",
+            "description": "Desc",
+            "nullable": true
+          },
+          "riskScaleValue": {
+            "type": "string",
+            "description": "RiskScaleValue",
+            "nullable": true
+          },
+          "resource": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessment.Resource"
+            },
+            "description": "Target",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "AssessmentReasonDetail"
+      },
+      "LoanApplicationAssessment.LoanApplicationAssessmentReason": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code",
+            "nullable": true
+          },
+          "level": {
+            "type": "string",
+            "description": "Level",
+            "nullable": true
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Weight",
+            "format": "int64",
+            "nullable": true
+          },
+          "detail": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentReasonDetail"
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationAssessmentReason"
+      },
+      "LoanApplicationAssessment.LoanApplicationScore": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "nullable": true
+          },
+          "scale": {
+            "type": "string",
+            "description": "Scale",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationScore"
+      },
+      "LoanApplicationAssessment.Amount": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Hodnota částky",
+            "format": "double",
+            "nullable": true
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Kód měny částky (ISO 4217)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Amount"
+      },
+      "LoanApplicationAssessment.LoanApplicationLimit": {
+        "type": "object",
+        "properties": {
+          "_LoanApplicationLimit": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "loanApplicationInstallmentLimit": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "loanApplicationCollateralLimit": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "remainingAnnuityLivingAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "calculationIrStressed": {
+            "type": "boolean",
+            "description": "Remaining Annuity Living Amount",
+            "nullable": true
+          },
+          "iir": {
+            "type": "integer",
+            "description": "iir",
+            "format": "int64",
+            "nullable": true
+          },
+          "cir": {
+            "type": "integer",
+            "description": "cir",
+            "format": "int64",
+            "nullable": true
+          },
+          "dti": {
+            "type": "integer",
+            "description": "dti",
+            "format": "int64",
+            "nullable": true
+          },
+          "dsti": {
+            "type": "integer",
+            "description": "dsti",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationLimit"
+      },
+      "LoanApplicationAssessment.RiskCharacteristics": {
+        "type": "object",
+        "properties": {
+          "monthlyIncomeAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "monthlyCostsWithoutInstAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "monthlyInstallmentsInKBAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "monthlyEntrepreneurInstallmentsInKBAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "monthlyInstallmentsInMPSSAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "monthlyInstallmentsInOFIAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          },
+          "monthlyInstallmentsInCBCBAmount": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          }
+        },
+        "additionalProperties": false,
+        "description": "RiskCharacteristics"
+      },
+      "LoanApplicationAssessment.AssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "loanApplicationScore": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationScore"
+          },
+          "loanApplicationLimit": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationLimit"
+          },
+          "loanApplicationRiskCharacteristics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessment.RiskCharacteristics"
+            },
+            "description": "Assessment detail",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "AssessmentDetail"
+      },
+      "LoanApplicationAssessment.HouseholdAssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id",
+            "format": "int64",
+            "nullable": true
+          },
+          "householdId": {
+            "type": "integer",
+            "description": "Household id",
+            "format": "int64",
+            "nullable": true
+          },
+          "householdIndex": {
+            "type": "integer",
+            "description": "Household index",
+            "format": "int64",
+            "nullable": true
+          },
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentDetail"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Household Assessment detail"
+      },
+      "LoanApplicationAssessment.CounterpartyAssessmentDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id",
+            "format": "int64",
+            "nullable": true
+          },
+          "counterPartyId": {
+            "type": "integer",
+            "description": "Counterparty id",
+            "format": "int64",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "string",
+            "description": "Customer id",
+            "nullable": true
+          },
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentDetail"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Counterparty Assessment Detail"
+      },
+      "LoanApplicationAssessment.CollateralRiskCharacteristics": {
+        "type": "object",
+        "properties": {
+          "ltv": {
+            "type": "integer",
+            "description": "Ltv",
+            "format": "int64",
+            "nullable": true
+          },
+          "ltfv": {
+            "type": "integer",
+            "description": "Ltfv",
+            "format": "int64",
+            "nullable": true
+          },
+          "ltp": {
+            "type": "integer",
+            "description": "Ltp",
+            "format": "int64",
+            "nullable": true
+          },
+          "sumAppraisedValue": {
+            "type": "integer",
+            "description": "SumAppraisedValue",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "CollateralRiskCharacteristics"
+      },
+      "LoanApplicationAssessment.SemanticVersion": {
+        "type": "object",
+        "properties": {
+          "major": {
+            "type": "integer",
+            "description": "Major part of a version",
+            "format": "int32",
+            "nullable": true
+          },
+          "minor": {
+            "type": "integer",
+            "description": "Minor part of a version",
+            "format": "int32",
+            "nullable": true
+          },
+          "bugfix": {
+            "type": "integer",
+            "description": "Bugfix part of a version",
+            "format": "int32",
+            "nullable": true
+          },
+          "nonSemanticPart": {
+            "type": "string",
+            "description": "A non-semantic part of a version",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "SemanticVersion"
+      },
+      "LoanApplicationAssessment.Change": {
+        "type": "object",
+        "properties": {
+          "identityId": {
+            "type": "string",
+            "description": "Identita actora/uživatele",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "description": "Datum změny",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change"
+      },
+      "LoanApplicationAssessment.LoanApplicationAssessment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "nullable": true
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/Shared.SystemId"
+          },
+          "riskBusinesscaseId": {
+            "type": "string",
+            "description": "Risk BusinessCase resource-identifier",
+            "nullable": true
+          },
+          "riskBusinesscaseExpirationDate": {
+            "type": "string",
+            "description": "Gets or Sets RiskBusinesscaseExpirationDate",
+            "format": "date-time",
+            "nullable": true
+          },
+          "assessmentResult": {
+            "type": "integer",
+            "description": "Assessment result",
+            "format": "int64",
+            "nullable": true
+          },
+          "standardRiskCosts": {
+            "type": "number",
+            "description": "Gets or Sets StandardRiskCosts",
+            "format": "float",
+            "nullable": true
+          },
+          "glTableCode": {
+            "type": "integer",
+            "description": "Gets or Sets GlTableCode",
+            "format": "int64",
+            "nullable": true
+          },
+          "loanApplicationAssessmentReason": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessmentReason"
+            },
+            "description": "LoanApplicationAssessment resource-identifier",
+            "nullable": true
+          },
+          "assessmentDetail": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentDetail"
+          },
+          "householdAssessmentDetail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessment.HouseholdAssessmentDetail"
+            },
+            "description": "HouseholdAssessmentDetail",
+            "nullable": true
+          },
+          "counterpartyAssessmentDetail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessment.CounterpartyAssessmentDetail"
+            },
+            "description": "HouseholdAssessmentDetail",
+            "nullable": true
+          },
+          "collateralRiskCharacteristics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationAssessment.CollateralRiskCharacteristics"
+            },
+            "description": "CollateralRiskCharacteristics",
+            "nullable": true
+          },
+          "version": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.SemanticVersion"
+          },
+          "created": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Change"
+          },
+          "updated": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.Change"
+          },
+          "resourceIdentifier": {
+            "$ref": "#/components/schemas/LoanApplicationAssessment.ResourceIdentifier"
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationAssessment"
+      },
+      "RiskBusinessCase.LoanApplicationException": {
+        "type": "object",
+        "properties": {
+          "arm": {
+            "type": "string",
+            "description": "Arm.",
+            "nullable": true
+          },
+          "reasonCode": {
+            "type": "string",
+            "description": "ReasonCode.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationException"
+      },
+      "RiskBusinessCase.AssessmentRequest": {
+        "type": "object",
+        "properties": {
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/Shared.SystemId"
+          },
+          "itChannel": {
+            "type": "string",
+            "description": "IT Channel.",
+            "nullable": true
+          },
+          "itChannelPrevious": {
+            "type": "string",
+            "description": "IT Channel Previous.",
+            "nullable": true
+          },
+          "assessmentMode": {
+            "type": "string",
+            "description": "Mód vyhodnocení daného případu.",
+            "nullable": true
+          },
+          "grantingProcedureCode": {
+            "type": "string",
+            "description": "Poskytovací procedura.",
+            "nullable": true
+          },
+          "selfApprovalRequired": {
+            "type": "boolean",
+            "description": "Příznak, zdali je požadováno samoschválení."
+          },
+          "systemApprovalRequired": {
+            "type": "boolean",
+            "description": "Příznak, zdali je požadováno automatické schválení (systémem)."
+          },
+          "exceptionHighestApprovalLevel": {
+            "type": "string",
+            "description": "ExceptionHighestApprovalLevel",
+            "nullable": true
+          },
+          "loanApplicationException": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskBusinessCase.LoanApplicationException"
+            },
+            "description": "Parametry metodické vyjímky.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Assessment request"
+      },
+      "RiskBusinessCase.RiskBusinessCaseCommand": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "integer",
+            "description": "ID založeného požadavku",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "RiskBusinessCaseCommand"
+      },
+      "RiskBusinessCase.CreateRequest": {
+        "required": [
+          "itChannel",
+          "loanApplicationIdMp"
+        ],
+        "type": "object",
+        "properties": {
+          "loanApplicationIdMp": {
+            "$ref": "#/components/schemas/Shared.SystemId"
+          },
+          "resourceProcessIdMp": {
+            "type": "string",
+            "description": "ID business procesu, v rámci kterého, Risk Business Case vzniká.",
+            "nullable": true
+          },
+          "itChannel": {
+            "type": "string",
+            "description": "Typ zdrojové aplikace (např. NOBY, STARBUILD)"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Risk Busines Case create"
+      },
+      "RiskBusinessCase.LoanApplicationCreate": {
+        "type": "object",
+        "properties": {
+          "riskBusinessCaseIdMp": {
+            "type": "string",
+            "description": "identifikátor obchodního případu v C4M (ResoureIdentifier.Id)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationCreate"
+      },
+      "RiskBusinessCase.LoanApplicationProduct": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "integer",
+            "description": "kód produktového shluku (shluk jednoho produktu).",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationProduct"
+      },
+      "RiskBusinessCase.LoanSoldProduct": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Shared.CompanyId"
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
+      "RiskBusinessCase.LoanAgreement": {
+        "type": "object",
+        "properties": {
+          "distributionChannel": {
+            "type": "string",
+            "description": "Identifikátor obchodního případu.",
+            "nullable": true
+          },
+          "signatureType": {
+            "type": "string",
+            "description": "Identifikátor obchodního případu.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
+      "RiskBusinessCase.CollateralAgreement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifikátor obchodního případu.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
+      "RiskBusinessCase.CommitRequest": {
+        "type": "object",
+        "properties": {
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/Shared.SystemId"
+          },
+          "itChannel": {
+            "type": "string",
+            "description": "IT Channel.",
+            "nullable": true
+          },
+          "loanApplicationProduct": {
+            "$ref": "#/components/schemas/RiskBusinessCase.LoanApplicationProduct"
+          },
+          "riskBusinessCaseFinalResult": {
+            "type": "string",
+            "description": "riskBusinessCaseFinalResult.",
+            "nullable": true
+          },
+          "loanSoldProduct": {
+            "$ref": "#/components/schemas/RiskBusinessCase.LoanSoldProduct"
+          },
+          "approvalLevel": {
+            "type": "string",
+            "description": "approvalLevel.",
+            "nullable": true
+          },
+          "approvalDate": {
+            "type": "string",
+            "description": "Datum schválení.  Format: yyyy-MM-dd",
+            "format": "date-time",
+            "nullable": true
+          },
+          "loanAgreement": {
+            "$ref": "#/components/schemas/RiskBusinessCase.LoanAgreement"
+          },
+          "approver": {
+            "$ref": "#/components/schemas/Shared.HumanUser"
+          },
+          "collateralAgreements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskBusinessCase.CollateralAgreement"
+            },
+            "description": "collateralAgreements.",
+            "nullable": true
+          },
+          "humanUser": {
+            "$ref": "#/components/schemas/Shared.HumanUser"
+          }
+        },
+        "additionalProperties": false,
+        "description": "CommitRequest"
+      },
+      "RiskBusinessCase.ResultReason": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "kód důvodu nespočtení výsledku.",
+            "nullable": true
+          },
+          "desc": {
+            "type": "string",
+            "description": "popis důvodu nespočtení výsledku.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
+      "RiskBusinessCase.LoanApplicationCommit": {
+        "type": "object",
+        "properties": {
+          "riskBusinessCaseId": {
+            "type": "integer",
+            "description": "identifikátor obchodního případu v C4M",
+            "format": "int64",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Datum a čas odpovědi",
+            "format": "date-time",
+            "nullable": true
+          },
+          "operationResult": {
+            "type": "string",
+            "description": "Status",
+            "nullable": true
+          },
+          "resultReasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskBusinessCase.ResultReason"
+            },
+            "description": "Důvod(y) nespočetní výsledků bonity",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response"
+      }
+    }
+  }
+}
