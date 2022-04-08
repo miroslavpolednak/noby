@@ -11,9 +11,9 @@ public partial class Client
 
     }
 
-    public Task<CustomerSearchResult> SearchCustomerAsync(SearchCustomerRequest model, CancellationToken cancellationToken = default)
+    public Task<CustomerSearchResult> SearchCustomerAsync(SearchCustomerRequest model, string x_B3_TraceId, string x_KB_Orig_System_Identity, string x_KB_Caller_System_Identity, CancellationToken cancellationToken = default)
     {
-        return SearchCustomerAsync(model.NumberOfEntries, model.CustomerId, model.Name, model.FirstName, model.BirthEstablishedDate, model.IdentifierValue, model.IdentifierTypeCode, model.IdDocumentTypeCode, model.IdDocumentNumber, model.IdDocumentIssuingCountryCode, model.Email, model.PhoneNumber, model.IsInKbi, model.LegalStatusCode, model.IncludeArchived, model.ShowSegment, "", "", "", "", cancellationToken: cancellationToken);
+        return SearchCustomerAsync(model.NumberOfEntries, model.CustomerId, model.Name, model.FirstName, model.BirthEstablishedDate, model.IdentifierValue, model.IdentifierTypeCode, model.IdDocumentTypeCode, model.IdDocumentNumber, model.IdDocumentIssuingCountryCode, model.Email, model.PhoneNumber, model.IsInKbi, model.LegalStatusCode, model.IncludeArchived, model.ShowSegment, x_B3_TraceId, "", x_KB_Orig_System_Identity, x_KB_Caller_System_Identity, cancellationToken: cancellationToken);
     }
 }
 

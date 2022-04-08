@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
+using System.Diagnostics;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {
@@ -53,7 +54,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             }
 
             // zavolat CM
-            var cmResponse = (await _cm.Search(cmRequest, cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerSearchResult>();
+            var cmResponse = (await _cm.Search(cmRequest, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerSearchResult>();
 
             var response = new SearchCustomersResponse();
 

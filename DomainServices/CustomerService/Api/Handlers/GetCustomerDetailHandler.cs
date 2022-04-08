@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
+using System.Diagnostics;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {
@@ -22,7 +23,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             _logger.LogInformation("Get detail instance ID #{id}", request.Request);
 
             // zavolat CM
-            var cmResponse = (await _cm.GetDetail(request.Request.Identity.IdentityId, cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
+            var cmResponse = (await _cm.GetDetail(request.Request.Identity.IdentityId, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
 
             var response = new CustomerResponse();
 
