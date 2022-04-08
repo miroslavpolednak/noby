@@ -35,8 +35,10 @@ public class CodebooksController : ControllerBase
     /// - ProductTypes
     /// - LoanPurposes
     /// - ProductLoanKinds
+    /// - PropertySettlement
     /// - RealEstateTypes
     /// - RealEstatePurchaseTypes
+    /// - SalesArrangementStates
     /// - SalesArrangementTypes
     /// - SignatureTypes
     /// </remarks>
