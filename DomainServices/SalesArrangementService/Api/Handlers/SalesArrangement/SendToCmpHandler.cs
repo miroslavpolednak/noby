@@ -80,6 +80,10 @@ internal class SendToCmpHandler
             throw new CisArgumentException(1, $"SalesArrangementTypeId '{arrangement.SalesArrangementTypeId}' doesn't match ProductTypeCategory '{ProductTypeCategory.Mortgage}'.", nameof(request));
         }
 
+        // check if Offer exists
+        if (!arrangement.OfferId.HasValue)
+            throw new CisNotFoundException(16000, $"Sales Arrangement #{request.SalesArrangementId} is not linked to Offer");
+
         // TODO: Některé validace se týkají pouze DROPu 1 !!!
 
         // load customers on SA and validate them
@@ -468,7 +472,7 @@ internal class SendToCmpHandler
 
             return new
             {
-                cislo_zavazku = rowNumber,
+                cislo_zavazku = rowNumber.ToJsonString(),
                 druh_zavazku = i.ObligationTypeId.ToJsonString(),
                 vyse_splatky = i.LoanPaymentAmount.ToJsonString(),
                 vyse_nesplacene_jistiny = i.RemainingLoanPrincipal.ToJsonString(),
@@ -620,8 +624,8 @@ internal class SendToCmpHandler
         var data = new
         {
             cislo_smlouvy = arrangement.ContractNumber,
-            case_id = arrangement.CaseId,
-            // business_case_ID = arrangement.RiskBusinessCaseId,                                                                   // SalesArrangement - na základě volání RBC ??? na SA chybí implementace!
+            case_id = arrangement.CaseId.ToJsonString(),
+            business_case_ID = arrangement.RiskBusinessCaseId,                                                                      // SalesArrangement
             kanal_ziskani = arrangement.ChannelId.ToJsonString(),                                                                   // SalesArrangement - vyplněno na základě usera
             datum_vytvoreni_zadosti = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
             datum_prvniho_podpisu = actualDate.ToJsonString(),                                                                      // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
@@ -641,26 +645,26 @@ internal class SendToCmpHandler
             anuitni_splatka = offer.Outputs.LoanPaymentAmount.ToJsonString(),                                                       // OfferInstance
             splatnost_uv_mesice = offer.Outputs.LoanDuration.ToJsonString(),                                                        // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
             fixace_uv_mesice = offer.Inputs.FixedRatePeriod.ToJsonString(),                                                         // OfferInstance - na FE je to v rocích a je to číselník ?
-            predp_termin_cerpani = arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                       // SalesArrangement ??? na SA chybí implementace!
+            predp_termin_cerpani = arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement
             den_splaceni = offer.Outputs.PaymentDayOfTheMonth.ToJsonString(),                                                       // OfferInstance default=15
             forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
             seznam_poplatku = Array.Empty<object>(),                                                                                // [MOCK] OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci 
                                                                                                                                     //          (na offer zatím nemáme, dohodnuta mockovaná hodnota prázdné pole)
             seznam_ucelu = offer.Inputs.LoanPurpose?.Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),             // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
-            seznam_objektu = arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???  na SA chybí implementace!
+            seznam_objektu = arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???
             seznam_ucastniku = customersOnSa?.Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),                   // CustomerOnSA, Customer
             zprostredkovano_3_stranou = false.ToJsonString(),                                                                       // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
             sjednal_CPM = user!.CPM,                                                                                                // User
             sjednal_ICP = user!.ICP,                                                                                                // User
-            mena_prijmu = arrangement.Mortgage?.IncomeCurrencyCode,                                                                  // SalesArrangement ??? na SA chybí implementace!
-            mena_bydliste = arrangement.Mortgage?.ResidencyCurrencyCode,                                                             // SalesArrangement ??? na SA chybí implementace!
+            mena_prijmu = arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
+            mena_bydliste = arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
 
             zpusob_zasilani_vypisu = offer.Outputs.StatementTypeId.ToJsonString(),                                                  // Offerinstance
             predp_hodnota_nem_zajisteni = offer.Inputs.CollateralAmount.ToJsonString(),                                             // Offerinstance
             fin_kryti_vlastni_zdroje = offer.Inputs.FinancialResourcesOwn.ToJsonString(),                                           // OfferInstance
             fin_kryti_cizi_zdroje = offer.Inputs.FinancialResourcesOther.ToJsonString(),                                            // OfferInstance
             fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                              // OfferInstance
-            zpusob_podpisu_smluv_dok = arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement ??? na SA chybí implementace!
+            zpusob_podpisu_smluv_dok = arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
             seznam_domacnosti = households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
         };
 

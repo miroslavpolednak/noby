@@ -1,4 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using ExternalServices.Rip.V1;
+using ExternalServices.Rip.V1.RipWrapper;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -19,27 +21,40 @@ internal class CreateRiskBusinessCaseHandler
         if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
             throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.AlreadyExists, $"Sales Arrangement #{request.SalesArrangementId} already contains RiskBusinessCaseId {saInstance.RiskBusinessCaseId}", 16000);
 
-        // ziskat RBCID
+        // TODO: ziskat RBCID
+        /*
+        // System = "NOBY" ... přidat do konfigurace a do externí služby posílat jen SalesArrangementId ???
+        var ripCreateRequest = new CreateRequest {
+            LoanApplicationIdMp = new SystemId { Id = saInstance.SalesArrangementId.ToString(System.Globalization.CultureInfo.InvariantCulture), System = "NOBY" },
+            ResourceProcessIdMp = "NOBY",
+            ItChannel = "NOBY"
+        };
+        */
+
+        var riskBusinessCaseId = saInstance.SalesArrangementId.ToString(System.Globalization.CultureInfo.InvariantCulture); //TODO: ServiceCallResult.Resolve<string>(await _ripClient.CreateRiskBusinesCase(ripCreateRequest));
 
         // ulozit ho do DB
-        saInstance.RiskBusinessCaseId = "xxxx";
+        saInstance.RiskBusinessCaseId = riskBusinessCaseId;
         await _repository.SaveChangesAsync(cancellation);
 
         return new CreateRiskBusinessCaseResponse
         {
             RequestId = "zzzz",
-            RiskBusinessCaseId = "xxxx"
+            RiskBusinessCaseId = riskBusinessCaseId
         };
     }
 
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<CreateRiskBusinessCaseHandler> _logger;
+    private readonly IRipClient _ripClient;
 
     public CreateRiskBusinessCaseHandler(
         Repositories.SalesArrangementServiceRepository repository,
-        ILogger<CreateRiskBusinessCaseHandler> logger)
+        ILogger<CreateRiskBusinessCaseHandler> logger,
+        IRipClient ripClient)
     {
         _repository = repository;
         _logger = logger;
+        _ripClient = ripClient;
     }
 }
