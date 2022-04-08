@@ -28,7 +28,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         CancellationToken cancellationToken)
         => salesArrangementState switch
         {
-            SalesArrangementStates.InProcess => await getDataInternal(caseId, offerId, cancellationToken),
+            SalesArrangementStates.InProgress => await getDataInternal(caseId, offerId, cancellationToken),
             _ => await getDataKonsDb(caseId, cancellationToken)
         };
 
