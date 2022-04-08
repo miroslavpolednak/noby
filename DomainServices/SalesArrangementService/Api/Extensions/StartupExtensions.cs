@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ExternalServices.Eas;
+using ExternalServices.Rip;
 
 namespace DomainServices.SalesArrangementService.Api;
 
@@ -14,6 +15,8 @@ internal static class StartupExtensions
     {
         if (configuration?.EAS is null)
             throw new CisConfigurationNotFound("AppConfiguration");
+        if (configuration?.Rip == null)
+            throw new ArgumentNullException("AppConfiguration.Rip", nameof(configuration.Rip));
     }
 
     public static WebApplicationBuilder AddSalesArrangementService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
@@ -31,6 +34,9 @@ internal static class StartupExtensions
 
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
+
+        // Rip svc
+        builder.Services.AddExternalServiceRip(appConfiguration.Rip);
 
         // dbcontext
         builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
@@ -32,6 +32,7 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
+		<ProjectReference Include="..\..\..\ExternalServices\Rip\ExternalServices.Rip.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
