@@ -16,9 +16,9 @@ internal class UpdateCustomersHandler
 
         // Honza chtel Obligations v rootu requestu
         if (request.Obligations is not null && request.Customer1 is not null)
-            request.Customer1!.Obligations = convertObligations(request.Obligations, 1);
+            request.Customer1!.Obligations = convertObligations(request.Obligations, 0);
         if (request.Obligations is not null && request.Customer2 is not null)
-            request.Customer2!.Obligations = convertObligations(request.Obligations, 2);
+            request.Customer2!.Obligations = convertObligations(request.Obligations, 1);
 
         var response = new UpdateCustomersResponse
         {

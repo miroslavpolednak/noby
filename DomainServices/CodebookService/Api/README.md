@@ -53,8 +53,8 @@ Konfigurace služby je možná souborem appsettings.json.
  - **EndpointsConfiguration** struktura pro custom konfigurace jednotlivých číselníkových metod.
 
 ## grpcurl tests
-        grpcurl -insecure 172.30.35.51:5003 list
+        grpcurl -insecure 172.30.35.51:5007 list
 
         grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/ProductTypes
         grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/RelationshipCustomerProductTypes
-        grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:5060 DomainServices.CodebookService/SalesArrangementTypes
+        grpcurl -insecure -H "Authorization: Basic YTph" 172.30.35.51:5007 DomainServices.CodebookService/SalesArrangementStates
