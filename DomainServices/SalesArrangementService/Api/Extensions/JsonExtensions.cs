@@ -25,9 +25,15 @@ internal static class JsonExtensions
     {
         return value.ToString(CultureInfo.InvariantCulture);
     }
+
     public static string? ToJsonString(this int? value)
     {
         return value.HasValue ? value.Value.ToJsonString() : null;
+    }
+
+    public static string ToJsonString(this long value)
+    {
+        return value.ToString(CultureInfo.InvariantCulture);
     }
 
     public static string ToJsonString(this decimal value)
