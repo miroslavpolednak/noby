@@ -24,7 +24,7 @@ DocumentType						-
 EaCodeMain							-
 * EducationLevel					EducationLevels
 EmployeeBonusLoan					-
-EmploymentType						-
+EmploymentType						EmploymentTypes
 * ExpenseType						- [ke zrušení]
 * FixedLengthPeriod					FixedRatePeriods
 FormType							-
@@ -32,7 +32,7 @@ FormType							-
 * HouseholdType						-
 * IdentificationDocumentType		IdentificationDocumentTypes
 * IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
-IncomeAbroadType					-
+IncomeAbroadType					IncomeAbroadTypes
 * IncomeType						IncomeTypes [mock]
 JobType								JobTypes
 LegalCapacity						-
