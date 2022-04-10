@@ -6,5 +6,5 @@ namespace DomainServices.CodebookService.Contracts;
 public partial interface ICodebookService
 {
     [OperationContract]
-    Task<List<ClassficationOfEconomicActivitiesItem>> ClassficationOfEconomicActivities(ClassficationOfEconomicActivitiesRequest request, CallContext context = default);
+    Task<List<GenericCodebookItem>> ClassficationOfEconomicActivities(ClassficationOfEconomicActivitiesRequest request, CallContext context = default);
 }

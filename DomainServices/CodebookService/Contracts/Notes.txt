@@ -10,7 +10,7 @@ ActionCodeSavingsLoan				ActionCodesSavingsLoan
 * AddressType						AddressTypes
 * CaseState							CaseStates
 * Channel							Channels	
-ClassficationOfEconomicActivities	-
+ClassficationOfEconomicActivities	ClassficationOfEconomicActivities
 ConsentType							-
 ContactType							ContactTypes
 ContractSegment						-
@@ -34,7 +34,7 @@ FormType							-
 * IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
 IncomeAbroadType					-
 * IncomeType						IncomeTypes [mock]
-JobType								-
+JobType								JobTypes
 LegalCapacity						-
 * LoanKind							LoanKinds
 * LoanPurpose						LoanPurposes
@@ -61,7 +61,7 @@ SignatureState						-
 SigningMethodsForNaturalPerson		-
 StatementType						-
 Tariff								-
-WorkSector							-
+WorkSector							WorkSectors
 -----------------------------------------------------------------------------------------------------------------
 -									MktActionCodesSavings   
 [{ Id = 1, Name = "Efekt" }, { Id = 2, Name = "Efekt Plus" }]
