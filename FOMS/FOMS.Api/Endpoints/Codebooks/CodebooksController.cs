@@ -19,15 +19,18 @@ public class CodebooksController : ControllerBase
     /// - ActionCodesSavings
     /// - ActionCodesSavingsLoan
     /// - CaseStates
+    /// - ClassficationOfEconomicActivities
     /// - ContactTypes
     /// - Countries
     /// - Currencies
     /// - CustomerRoles
     /// - EducationLevels
+    /// - EmploymentTypes
     /// - FixedRatePeriods
     /// - Genders
     /// - IdentificationDocumentTypes
     /// - IncomeTypes
+    /// - IncomeAbroadTypes
     /// - LegalCapacities
     /// - Mandants
     /// - MaritalStatuses
@@ -41,6 +44,7 @@ public class CodebooksController : ControllerBase
     /// - SalesArrangementStates
     /// - SalesArrangementTypes
     /// - SignatureTypes
+    /// - WorkSectors
     /// </remarks>
     /// <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
     /// <returns>Kolekce vyzadanych ciselniku.</returns>

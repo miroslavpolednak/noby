@@ -26,15 +26,19 @@ internal class GetAllHandler
             "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings(cancellationToken)).Where(t => t.IsValid)),
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan(cancellationToken)).Where(t => t.IsValid)),
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
+            "classficationofeconomicactivities" => new(original, await _codebooks.ClassficationOfEconomicActivities(cancellationToken)),
             "contacttypes" => new(original, await _codebooks.ContactTypes(cancellationToken)),
             "countries" => new(original, await _codebooks.Countries(cancellationToken)),
             "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
             "educationlevels" => new(original, await _codebooks.EducationLevels(cancellationToken)),
+            "employmenttypes" => new(original, await _codebooks.EmploymentTypes(cancellationToken)),
             "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
             "incometypes" => new(original, await _codebooks.IncomeTypes(cancellationToken)),
+            "incomeabroadtypes" => new(original, await _codebooks.IncomeAbroadTypes(cancellationToken)),
+            "jobtypes" => new(original, await _codebooks.JobTypes(cancellationToken)),
             "legalcapacities" => new(original, await _codebooks.LegalCapacities(cancellationToken)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),
             "maritalstatuses" => new(original, (await _codebooks.MaritalStatuses(cancellationToken)).Where(t => t.IsValid)),
@@ -48,7 +52,8 @@ internal class GetAllHandler
             "signaturetypes" => new(original, await _codebooks.SignatureTypes(cancellationToken)),
             "realestatetypes" => new(original, await _codebooks.RealEstateTypes(cancellationToken)),
             "realestatepurchasetypes" => new(original, await _codebooks.RealEstatePurchaseTypes(cancellationToken)),
-            
+            "worksectors" => new(original, await _codebooks.WorkSectors(cancellationToken)),
+
             //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
             //"nationalities" => new(original, await _codebooks.Nationalities()),//!!!
