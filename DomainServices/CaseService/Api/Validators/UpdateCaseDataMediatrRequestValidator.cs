@@ -14,9 +14,10 @@ internal class UpdateCaseDataMediatrRequestValidator : AbstractValidator<Dto.Upd
             .GreaterThan(0)
             .WithMessage(t => "ProductTypeId must be > 0").WithErrorCode("13002");
 
-        RuleFor(t => t.Request.Data.ContractNumber)
+        //TODO delat validaci na delku???
+        /*RuleFor(t => t.Request.Data.ContractNumber)
             .Length(10).When(t => !string.IsNullOrEmpty(t.Request.Data.ContractNumber))
-            .WithMessage("ContractNumber length must be 10").WithErrorCode("13010");
+            .WithMessage("ContractNumber length must be 10").WithErrorCode("13010");*/
 
         RuleFor(t => (decimal)t.Request.Data.TargetAmount)
             .InclusiveBetween(20_000, 99_999_999)

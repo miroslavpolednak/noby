@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[Case](
     [Name] [nvarchar](100) NULL,
     [DateOfBirthNaturalPerson] [date] NULL,
     [Cin] [varchar](10) NULL,
-    [ContractNumber] [varchar](10) NULL,
+    [ContractNumber] [varchar](20) NULL,
     [TargetAmount] decimal(12,2) NULL,
     [IsActionRequired] [bit] NOT NULL,
     [ProductTypeId] [int] NOT NULL,
