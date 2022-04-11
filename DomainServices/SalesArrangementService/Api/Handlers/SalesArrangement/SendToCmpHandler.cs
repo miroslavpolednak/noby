@@ -87,13 +87,13 @@ internal class SendToCmpHandler
         // TODO: Některé validace se týkají pouze DROPu 1 !!!
 
         // load customers on SA and validate them
-        var customersOnSa = (await _mediator.Send(new Dto.GetCustomerListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Customers.ToList();
-        CheckCustomersOnSA(customersOnSa);   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
+        var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
+        CheckCustomersOnSA(customersOnSA);   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
 
         // load households and validate them
         var households = (await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Households.ToList();
         var householdTypesById = (await _codebookService.HouseholdTypes(cancellation)).ToDictionary(i => i.Id);
-        CheckHouseholds(households, householdTypesById, customersOnSa);
+        CheckHouseholds(households, householdTypesById, customersOnSA);
 
         // load case
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
@@ -103,7 +103,7 @@ internal class SendToCmpHandler
         // arrangement.ContractNumber = String.Empty;
         if (String.IsNullOrEmpty(arrangement.ContractNumber))
         {
-            var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSa);
+            var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSA);
             var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
             await UpdateSalesArrangement(arrangement, contractNumber, cancellation);
             await UpdateCase(_case, contractNumber, cancellation);
@@ -118,17 +118,17 @@ internal class SendToCmpHandler
             ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
         
         // load customers
-        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSa, cancellation);
+        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
 
         // load incomes
-        var incomesById = await GetIncomesById(customersOnSa, cancellation);
+        var incomesById = await GetIncomesById(customersOnSA, cancellation);
 
         // Load codebooks
         var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).ToDictionary(i => i.Id);
         var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
 
         // create JSON data
-        var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSa, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById);
+        var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById);
 
         // save form to DB
         await SaveForm(arrangement.ContractNumber, jsonData, cancellation);
@@ -245,6 +245,19 @@ internal class SendToCmpHandler
         return productType;
     }
 
+    private async Task<List<Contracts.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
+    {
+        var customersOnSa = (await _mediator.Send(new Dto.GetCustomerListMediatrRequest(salesArrangementId), cancellation)).Customers.ToList();
+        var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
+        var customers = new List<Contracts.CustomerOnSA>();
+        for (int i = 0; i < customerOnSAIds.Length; i++)
+        {
+            var customer = await _mediator.Send(new Dto.GetCustomerMediatrRequest(customerOnSAIds[i]), cancellation);
+            customers.Add(customer);
+        }
+        return customers;
+    }
+
     private async Task<Dictionary<int, Income>> GetIncomesById(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i=>i.IncomeId)).ToArray();
@@ -256,7 +269,6 @@ internal class SendToCmpHandler
         }
         return incomes.ToDictionary(i=>i.IncomeId);
     }
-
 
     private async Task<Dictionary<string, CustomerResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
@@ -590,8 +602,8 @@ internal class SendToCmpHandler
                 rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
                 druh_druzka = i.HasPartner.ToJsonString(),
                 // vzdelani =                                                                   // ??? OP!
-                prijmy = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index)).ToArray() ?? Array.Empty<object>(),
-                zavazky = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index)).ToArray() ?? Array.Empty<object>(),
+                prijmy = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                zavazky = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                 // prijem_sbiran =                                                              // ??? out of scope
                 uzamcene_prijmy = false.ToJsonString(),                                         // [MOCK] (default 0) jinak z c.LockedIncomeDateTime.HasValue.ToJsonString(),
                 // datum_posledniho_uzam_prijmu = c.LockedIncomeDateTime.ToJsonString(),        // ??? chybí implementace!
