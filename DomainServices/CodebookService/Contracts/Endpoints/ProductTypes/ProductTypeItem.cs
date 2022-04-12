@@ -30,7 +30,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         public int Order { get; set; }
 
         [DataMember(Order = 7)]
-        public int? LoanAmountInt { get; set; }
+        public int? LoanAmountMin { get; set; }
 
         [DataMember(Order = 8)]
         public int? LoanAmountMax { get; set; }

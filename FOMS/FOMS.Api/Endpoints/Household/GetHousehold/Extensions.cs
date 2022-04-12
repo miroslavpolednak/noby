@@ -34,7 +34,7 @@ internal static class Extensions
             {
                 CreditCardLimit = x.CreditCardLimit,
                 LoanPaymentAmount = x.LoanPaymentAmount,
-                ObligationCreditor = (CIS.Foms.Enums.Mandants)(int)x.ObligationCreditor,
+                IsObligationCreditorExternal = x.IsObligationCreditorExternal,
                 ObligationTypeId = x.ObligationTypeId,
                 RemainingLoanPrincipal = x.RemainingLoanPrincipal
             }).ToList()

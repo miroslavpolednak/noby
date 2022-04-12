@@ -6,5 +6,5 @@ public class CustomerObligation
     public int? LoanPaymentAmount { get; set; }
     public int? RemainingLoanPrincipal { get; set; }
     public int? CreditCardLimit { get; set; }
-    public CIS.Foms.Enums.Mandants ObligationCreditor { get; set; }
+    public bool IsObligationCreditorExternal { get; set; }
 }

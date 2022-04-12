@@ -14,7 +14,7 @@ message CustomerObligation {
 
     google.protobuf.Int32Value CreditCardLimit = 4;
 
-    cis.types.Mandants ObligationCreditor = 5;
+    bool IsObligationCreditorExternal = 5;
 
     int32 ObligationState  = 6;
 }

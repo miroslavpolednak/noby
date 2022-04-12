@@ -38,7 +38,7 @@ internal class UpdateCustomersHandler
         {
             CreditCardLimit = t.CreditCardLimit,
             LoanPaymentAmount = t.LoanPaymentAmount,
-            ObligationCreditor = t.ObligationCreditor,
+            IsObligationCreditorExternal = t.IsObligationCreditorExternal,
             ObligationTypeId = t.ObligationTypeId,
             RemainingLoanPrincipal = t.RemainingLoanPrincipal
         }).ToList();

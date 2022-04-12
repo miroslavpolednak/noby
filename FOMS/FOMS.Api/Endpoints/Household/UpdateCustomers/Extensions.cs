@@ -9,7 +9,7 @@ internal static class Extensions
         {
             CreditCardLimit = t.CreditCardLimit,
             LoanPaymentAmount = t.LoanPaymentAmount,
-            ObligationCreditor = (CIS.Infrastructure.gRPC.CisTypes.Mandants)(int)t.ObligationCreditor,
+            IsObligationCreditorExternal = t.IsObligationCreditorExternal,
             ObligationTypeId = t.ObligationTypeId,
             RemainingLoanPrincipal = t.RemainingLoanPrincipal,
             ObligationState = 1

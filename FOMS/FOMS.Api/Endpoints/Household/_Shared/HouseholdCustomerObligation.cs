@@ -12,7 +12,7 @@ public class HouseholdCustomerObligation
     
     internal HouseholdCustomerObligation(CustomerObligation parent, int index)
     {
-        this.ObligationCreditor = parent.ObligationCreditor;
+        this.IsObligationCreditorExternal = parent.IsObligationCreditorExternal;
         this.CreditCardLimit = parent.CreditCardLimit;
         this.RemainingLoanPrincipal = parent.RemainingLoanPrincipal;
         this.LoanPaymentAmount = parent.LoanPaymentAmount;

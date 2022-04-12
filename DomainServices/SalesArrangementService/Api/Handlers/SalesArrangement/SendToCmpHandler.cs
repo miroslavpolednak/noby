@@ -489,7 +489,7 @@ internal class SendToCmpHandler
                 vyse_splatky = i.LoanPaymentAmount.ToJsonString(),
                 vyse_nesplacene_jistiny = i.RemainingLoanPrincipal.ToJsonString(),
                 vyse_limitu = i.CreditCardLimit.ToJsonString(),
-                mimo_entitu_mandanta = ((int)i.ObligationCreditor).ToJsonString(),
+                mimo_entitu_mandanta = i.IsObligationCreditorExternal.ToJsonString()
             };
         }
 
