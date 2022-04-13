@@ -28,33 +28,33 @@ internal class SalesArrangementParametersMortgageValidator
     {
         RuleFor(t => t.IncomeCurrencyCode)
             .NotEmpty()
-            .WithMessage("IncomeCurrencyCode is empty").WithErrorCode("16xxx");
+            .WithMessage("IncomeCurrencyCode is empty").WithErrorCode("16034");
         RuleFor(t => t.IncomeCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
-            .WithMessage("IncomeCurrencyCode not found").WithErrorCode("16xxx");
+            .WithMessage("IncomeCurrencyCode not found").WithErrorCode("16034");
 
         RuleFor(t => t.ResidencyCurrencyCode)
             .NotEmpty()
-            .WithMessage("ResidencyCurrencyCode is empty").WithErrorCode("16xxx");
+            .WithMessage("ResidencyCurrencyCode is empty").WithErrorCode("16035");
         RuleFor(t => t.ResidencyCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
-            .WithMessage("ResidencyCurrencyCode not found").WithErrorCode("16xxx");
+            .WithMessage("ResidencyCurrencyCode not found").WithErrorCode("16035");
 
         RuleFor(t => t.SignatureTypeId)
            .GreaterThan(0)
-           .WithMessage("SignatureTypeId is empty").WithErrorCode("16xxx");
+           .WithMessage("SignatureTypeId is empty").WithErrorCode("16036");
         RuleFor(t => t.SignatureTypeId)
             .MustAsync(async (id, cancellation) =>
             {
                 return (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id);
             })
-            .WithMessage("SignatureTypeId not found").WithErrorCode("16xxx");
+            .WithMessage("SignatureTypeId not found").WithErrorCode("16036");
 
         RuleForEach(t => t.LoanRealEstates)
             .SetValidator(new MortgageLoanRealEstateValidator(codebookService));
@@ -67,13 +67,10 @@ internal class MortgageLoanRealEstateValidator
     public MortgageLoanRealEstateValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
         RuleFor(t => t.RealEstateTypeId)
-           .GreaterThan(0)
-           .WithMessage("RealEstateTypeId is empty").WithErrorCode("16xxx");
-        RuleFor(t => t.RealEstateTypeId)
             .MustAsync(async (id, cancellation) =>
             {
-                return (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id);
+                return (await codebookService.RealEstateTypes(cancellation)).Any(t => t.Id == id);
             })
-            .WithMessage("RealEstateTypeId not found").WithErrorCode("16xxx");
+            .WithMessage("RealEstateTypeId not found").WithErrorCode("16037");
     }
 };
