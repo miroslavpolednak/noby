@@ -31,13 +31,16 @@ public class CodebooksController : ControllerBase
     /// - IdentificationDocumentTypes
     /// - IncomeTypes
     /// - IncomeAbroadTypes
+    /// - JobTypes
     /// - LegalCapacities
+    /// - LoanPurposes
+    /// - LoanKinds
     /// - Mandants
     /// - MaritalStatuses
     /// - ObligationTypes
+    /// - PostCodes
     /// - ProductTypes
-    /// - LoanPurposes
-    /// - ProductLoanKinds
+    /// - PropertySettlement
     /// - PropertySettlement
     /// - RealEstateTypes
     /// - RealEstatePurchaseTypes
