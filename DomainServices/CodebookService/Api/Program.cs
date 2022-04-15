@@ -31,8 +31,9 @@ builder.Services.AddSingleton(appConfiguration);
 builder.AddCisEnvironmentConfiguration();
 
 // logging 
-builder.AddCisLogging();
-builder.AddCisTracing();
+builder
+    .AddCisLogging()
+    .AddCisTracing();
 
 // add mediatr
 builder.Services.AddMediatR(assembly);
@@ -44,16 +45,18 @@ builder.AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program), endpointsType);
 
 // add general Dapper repository
-builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
-builder.Services.AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"));
-builder.Services.AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
+builder.Services
+    .AddDapper(builder.Configuration.GetConnectionString("default"))
+    .AddDapper<DomainServices.CodebookService.Endpoints.IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd"))
+    .AddDapper<DomainServices.CodebookService.Endpoints.IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb"));
 
 // authentication
 builder.AddCisServiceAuthentication();
 
 // current project related
-builder.AddCodebookService(appConfiguration);
-builder.AddCodebookServiceEndpointsStartup(assembly);
+builder
+    .AddCodebookService(appConfiguration)
+    .AddCodebookServiceEndpointsStartup(assembly);
 
 builder.Services.AddHttpContextAccessor();
 
@@ -92,6 +95,7 @@ app.UseRouting();
 // auth
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>
 {

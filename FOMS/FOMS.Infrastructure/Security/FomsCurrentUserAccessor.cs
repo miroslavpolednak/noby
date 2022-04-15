@@ -5,18 +5,18 @@ namespace FOMS.Infrastructure.Security;
 
 public class FomsCurrentUserAccessor : ICurrentUserAccessor
 {
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor? _httpContext;
 
-    public FomsCurrentUserAccessor(IHttpContextAccessor httpContext)
+    public FomsCurrentUserAccessor(IHttpContextAccessor? httpContext)
     {
         _httpContext = httpContext;
     }
 
-    public ICurrentUser User
+    public ICurrentUser? User
     {
         get
         {
-            return _httpContext.HttpContext?.User as ICurrentUser ?? throw new System.NullReferenceException("HttpContext.User not found");
+            return _httpContext?.HttpContext?.User as ICurrentUser;
         }
     }
 }

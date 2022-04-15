@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CIS.Core.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -10,6 +11,12 @@ namespace CIS.Infrastructure.Telemetry;
 
 public static class LoggingExtensions
 {
+    public static IApplicationBuilder UseCisLogging(this IApplicationBuilder webApplication)
+    {
+        webApplication.UseMiddleware<Serilog.SerilogCisUserMiddleware>();
+        return webApplication;
+    }
+
     public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
     {
         builder.Host.AddCisLogging();
@@ -24,6 +31,11 @@ public static class LoggingExtensions
             var assembly = Assembly.GetEntryAssembly().GetName();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+            // get configuration from json file
+            var configSection = hostingContext.Configuration.GetSection("CisTelemetry");
+            CisTelemetryConfiguration configuration = new();
+            configSection.Bind(configuration);
+
             loggerConfiguration
                 .ReadFrom.Configuration(hostingContext.Configuration)
                 .Enrich.WithSpan()
@@ -32,10 +44,14 @@ public static class LoggingExtensions
                 .Enrich.WithProperty("Assembly", $"{assembly.Name}")
                 .Enrich.WithProperty("Version", $"{assembly.Version}");
 
-            // get configuration from json file
-            var configSection = hostingContext.Configuration.GetSection("CisTelemetry");
-            CisTelemetryConfiguration configuration = new();
-            configSection.Bind(configuration);
+            // enrich from CIS env
+            var cisEnvConfiguration = serviceProvider.GetService(typeof(ICisEnvironmentConfiguration)) as ICisEnvironmentConfiguration;
+            if (cisEnvConfiguration is not null)
+            {
+                loggerConfiguration
+                    .Enrich.WithProperty("CisEnvironment", cisEnvConfiguration.EnvironmentName)
+                    .Enrich.WithProperty("CisAppKey", cisEnvConfiguration.DefaultApplicationKey);
+            }
 
             // seq
             if (configuration.Logging?.Seq is not null)
@@ -54,6 +70,7 @@ public static class LoggingExtensions
             }
 
             // logovani do databaze
+            //TODO tohle poradne dodelat nebo uplne vyhodit - moc se mi do DB logovat nechce, ale jestli nebude nic jinyho nez Logman, tak asi nutnost
             if (configuration.Logging?.Database is not null)
             {
                 MSSqlServerSinkOptions sqlOptions = new()
@@ -74,9 +91,11 @@ public static class LoggingExtensions
             }
 
             // console output
-            loggerConfiguration
-                .WriteTo.Console();
-
+            if (configuration.Logging?.UseConsole ?? false)
+            {
+                loggerConfiguration
+                    .WriteTo.Console();
+            }
         });
 
         return builder;

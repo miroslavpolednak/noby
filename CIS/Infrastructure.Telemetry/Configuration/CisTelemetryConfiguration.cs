@@ -17,6 +17,11 @@ public sealed class CisTelemetryConfiguration
         public MsSqlLogger? Database { get; set; }
 
         /// <summary>
+        /// Logovat output do console
+        /// </summary>
+        public bool UseConsole { get; set; }
+
+        /// <summary>
         /// Logovani do Sequ
         /// </summary>
         public SeqLogger? Seq { get; set; }

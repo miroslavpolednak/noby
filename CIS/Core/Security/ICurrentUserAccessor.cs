@@ -2,5 +2,5 @@
 
 public interface ICurrentUserAccessor
 {
-    ICurrentUser User { get; }
+    ICurrentUser? User { get; }
 }

@@ -71,6 +71,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>
 {

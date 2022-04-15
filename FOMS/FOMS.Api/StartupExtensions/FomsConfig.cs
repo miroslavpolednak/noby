@@ -11,9 +11,6 @@ internal static class FomsConfig
         // register to DI
         builder.Services.AddSingleton(appConfiguration);
 
-        if (appConfiguration?.EAS == null)
-            throw new CisConfigurationNotFound("EAS");
-
         return appConfiguration;
     }
 }

@@ -5,10 +5,10 @@ internal class GetDashboardFiltersHandler
 {
     public async Task<List<GetDashboardFiltersResponse>> Handle(GetDashboardFiltersRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetDashboardFiltersHandler), _userAccessor.User.Id);
+        _logger.RequestHandlerStartedWithId(nameof(GetDashboardFiltersHandler), _userAccessor.User!.Id);
 
         // zavolat BE sluzbu
-        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.GetCaseCountsResponse>(await _caseService.GetCaseCounts(_userAccessor.User.Id, cancellationToken));
+        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.GetCaseCountsResponse>(await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken));
 
         // rucne vytvorena kolekce podle Motalika
         return new List<GetDashboardFiltersResponse>

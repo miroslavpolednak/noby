@@ -1,6 +1,4 @@
-﻿using ExternalServices.Eas;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 
 namespace FOMS.Api.StartupExtensions;
 
@@ -22,9 +20,6 @@ internal static class FomsServices
 
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, Infrastructure.Security.FomsCurrentUserAccessor>();
-
-        // EAS svc
-        builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 
         // controllers and validation
         builder.Services

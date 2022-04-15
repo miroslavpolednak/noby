@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using System.Reflection;
+using CIS.Infrastructure.Telemetry;
 
 namespace FOMS.Api.StartupExtensions;
 
@@ -41,6 +41,7 @@ internal static class FomsAppBuilder
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
+            appBuilder.UseCisLogging();
             appBuilder.UseMiddleware<Infrastructure.Security.AppSecurityMiddleware>();
 
             // namapovani API modulu

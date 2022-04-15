@@ -12,9 +12,4 @@ public class AppConfiguration
     /// When set to false, Swagger middleware is not added to pipeline.
     /// </summary>
     public bool EnableSwaggerUi { get; set; }
-
-    /// <summary>
-    /// Konfigurace EAS-SB sluzby
-    /// </summary>
-    public ExternalServices.Eas.EasConfiguration? EAS { get; set; }
 }

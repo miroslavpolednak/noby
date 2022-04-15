@@ -10,7 +10,7 @@ internal class SearchHandler
 {
     public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(SearchHandler), _userAccessor.User.Id);
+        _logger.RequestHandlerStartedWithId(nameof(SearchHandler), _userAccessor.User!.Id);
         
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
@@ -20,7 +20,7 @@ internal class SearchHandler
         _logger.SearchPaginableSettings(paginable);
 
         // zavolat BE sluzbu
-        var result = ServiceCallResult.Resolve<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
+        var result = ServiceCallResult.Resolve<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
         _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(DomainServices.CaseService.Contracts.Case));
 
         // transform

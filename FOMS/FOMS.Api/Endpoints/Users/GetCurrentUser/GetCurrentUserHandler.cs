@@ -5,9 +5,9 @@ internal class GetCurrentUserHandler
 {
     public async Task<GetCurrentUserResponse> Handle(GetCurrentUserRequest request, CancellationToken cancellationToken)
     {
-        _logger.UserGetCurrentUserInfo(_userAccessor.User.Login);
+        _logger.UserGetCurrentUserInfo(_userAccessor.User!.Login);
 
-        var userInstance = ServiceCallResult.Resolve<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(_userAccessor.User.Login, cancellationToken));
+        var userInstance = ServiceCallResult.Resolve<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(_userAccessor.User!.Login, cancellationToken));
 
         return new GetCurrentUserResponse
         {
