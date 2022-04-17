@@ -1,23 +1,22 @@
-﻿namespace CIS.InternalServices.ServiceDiscovery.Abstraction
+﻿namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
+
+internal sealed class EnvironmentNameProvider
 {
-    internal sealed class EnvironmentNameProvider
+    public bool IsSet { get; init; }
+
+    public Core.Types.ApplicationEnvironmentName Name { get; init; }
+
+    public EnvironmentNameProvider(string? name)
     {
-        public bool IsSet { get; init; }
-
-        public Core.Types.ApplicationEnvironmentName Name { get; init; }
-
-        public EnvironmentNameProvider(string? name)
+        if (string.IsNullOrEmpty(name))
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                IsSet = false;
-                Name = new Core.Types.ApplicationEnvironmentName("");
-            }
-            else
-            {
-                IsSet = true;
-                Name = new(name);
-            }
+            IsSet = false;
+            Name = new Core.Types.ApplicationEnvironmentName("");
+        }
+        else
+        {
+            IsSet = true;
+            Name = new(name);
         }
     }
 }

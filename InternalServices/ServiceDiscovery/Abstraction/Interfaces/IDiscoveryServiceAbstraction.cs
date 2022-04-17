@@ -4,11 +4,11 @@ namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 public interface IDiscoveryServiceAbstraction
 {
-    Task<List<Contracts.DiscoverableService>> GetServices();
+    Task<IReadOnlyCollection<DiscoverableService>> GetServices(CancellationToken cancellationToken);
 
-    Task<List<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName);
+    Task<IReadOnlyCollection<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken);
 
-    Task<Contracts.DiscoverableService> GetService(ServiceName serviceName, Contracts.ServiceTypes serviceType);
+    Task<DiscoverableService> GetService(ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken);
 
-    Task<Contracts.DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType);
+    Task<DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken);
 }

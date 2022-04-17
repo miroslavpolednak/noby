@@ -2,8 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using CIS.Security.InternalServices;
-using CIS.Infrastructure.Caching;
-using Microsoft.Extensions.Logging;
 
 namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
@@ -38,10 +36,8 @@ public static class ServiceDiscoveryExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        // mediatr
-        services.AddMediatR(typeof(ServiceDiscoveryExtensions).Assembly);
         // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         // abstraction svc
         services.TryAddTransient<IDiscoveryServiceAbstraction, DiscoveryService>();
         // def environment name
@@ -50,8 +46,6 @@ public static class ServiceDiscoveryExtensions
             var configuration = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>();
             return new EnvironmentNameProvider(configuration?.EnvironmentName);
         });
-        // cache
-        services.AddInMemoryGlobalCache<DiscoveryService>();
         // context user
         services.AddCisContextUser();
 
@@ -65,7 +59,7 @@ public static class ServiceDiscoveryExtensions
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.DiscoveryService.DiscoveryServiceClient>()
                 .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.DiscoveryService.DiscoveryServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>();
+                .AddInterceptor<GenericClientExceptionInterceptor>();
         }
         return services;
     }
