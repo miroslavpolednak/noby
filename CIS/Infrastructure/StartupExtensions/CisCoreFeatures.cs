@@ -23,6 +23,8 @@ public static class CisCoreFeatures
             x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
+        builder.Services.AddHttpContextAccessor();
+
         return builder;
     }
 }

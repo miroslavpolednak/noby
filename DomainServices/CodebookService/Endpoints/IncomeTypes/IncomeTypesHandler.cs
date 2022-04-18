@@ -10,18 +10,8 @@ public class IncomeTypesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.LogDebug("Found IncomeTypes in cache");
-
-                return await _cache.GetAllAsync<GenericCodebookItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.LogDebug("Reading IncomeTypes from database");
-
-                return GetMockData(); // TODO: Redirect to real data source!                    
-            }
+            // TODO: Redirect to real data source!  
+            return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(IncomeTypesHandler), async () => GetMockData());
         }
         catch (Exception ex)
         {
@@ -41,19 +31,11 @@ public class IncomeTypesHandler
         };
     }
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<IncomeTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public IncomeTypesHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
-        CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
         ILogger<IncomeTypesHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
-        _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "IncomeTypes";
 }

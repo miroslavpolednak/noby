@@ -9,19 +9,9 @@ public class FixedRatePeriodsHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.ItemFoundInCache(_cacheKey);
-                return await _cache.GetAllAsync<FixedRatePeriodsItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<FixedRatePeriodsItem>(_sqlQuery, cancellationToken);
-                await _cache.SetAllAsync(_cacheKey, result);
-                return result;
-            }
+            return await FastMemoryCache.GetOrCreate<FixedRatePeriodsItem>(nameof(FixedRatePeriodsHandler), async () =>
+                    await _connectionProvider.ExecuteDapperRawSqlToList<FixedRatePeriodsItem>(_sqlQuery, cancellationToken)
+                );
         }
         catch (Exception ex)
         {
@@ -34,17 +24,12 @@ public class FixedRatePeriodsHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<FixedRatePeriodsHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public FixedRatePeriodsHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
         ILogger<FixedRatePeriodsHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "FixationPeriodLengths";
 }

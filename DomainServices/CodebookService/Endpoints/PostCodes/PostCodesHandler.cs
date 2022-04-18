@@ -10,29 +10,19 @@ namespace DomainServices.CodebookService.Endpoints.PostCodes
         {
             try
             {
-                if (_cache.Exists(_cacheKey))
+                // nebudeme kesovat, stejne je to potemkin
+                _logger.LogDebug("Reading PostCodes from database");
+
+                await using (var connection = _connectionProvider.Create())
                 {
-                    _logger.LogDebug("Found PostCodes in cache");
+                    await connection.OpenAsync();
+                    var result = (await connection.QueryAsync<PostCodeItem>("SELECT TOP 20 PSC 'PostCode', NAZEV 'Name', KOD_KRAJA 'Disctrict', KOD_OBCE 'Municipality' FROM [SBR].[CIS_PSC] ORDER BY PSC ASC")).ToList();
 
-                    return await _cache.GetAllAsync<PostCodeItem>(_cacheKey);
-                }
-                else
-                {
-                    _logger.LogDebug("Reading PostCodes from database");
+                    result.ForEach(i => {
+                        i.Name = i.Name.Trim();
+                    });
 
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<PostCodeItem>("SELECT TOP 20 PSC 'PostCode', NAZEV 'Name', KOD_KRAJA 'Disctrict', KOD_OBCE 'Municipality' FROM [SBR].[CIS_PSC] ORDER BY PSC ASC")).ToList();
-
-                        result.ForEach(i => {
-                            i.Name = i.Name.Trim();
-                        });
-
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
-                    }
+                    return result;
                 }
             }
             catch (Exception ex)
@@ -44,18 +34,13 @@ namespace DomainServices.CodebookService.Endpoints.PostCodes
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<PostCodesHandler> _logger;
-        private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
         public PostCodesHandler(
-            CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
             ILogger<PostCodesHandler> logger)
         {
-            _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
-
-        private const string _cacheKey = "PostCodes";
     }
 }

@@ -5,6 +5,7 @@ using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
+using CIS.Infrastructure.Caching;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);
@@ -18,17 +19,13 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-#endregion strongly typed configuration
-
 #region register builder.Services
-// strongly-typed konfigurace aplikace
-builder.Services.AddSingleton(appConfiguration);
-
 // globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
+builder
+    .AddCisEnvironmentConfiguration()
+    .AddCisCoreFeatures();
+builder.Services.AddAttributedServices(typeof(Program), endpointsType);
+builder.Services.AddCisDistributedCache();
 
 // logging 
 builder
@@ -41,9 +38,6 @@ builder.Services.AddMediatR(assembly);
 // health checks
 builder.AddCisHealthChecks();
 
-builder.AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program), endpointsType);
-
 // add general Dapper repository
 builder.Services
     .AddDapper(builder.Configuration.GetConnectionString("default"))
@@ -55,10 +49,8 @@ builder.AddCisServiceAuthentication();
 
 // current project related
 builder
-    .AddCodebookService(appConfiguration)
+    .AddCodebookService()
     .AddCodebookServiceEndpointsStartup(assembly);
-
-builder.Services.AddHttpContextAccessor();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();

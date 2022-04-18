@@ -2,7 +2,7 @@
 using CIS.Infrastructure.Data;
 using CIS.Core.Data;
 
-namespace CIS.InternalServices.ServiceDiscovery;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Repositories;
 
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class ServiceDiscoveryRepository 
@@ -13,9 +13,9 @@ internal sealed class ServiceDiscoveryRepository
     {
     }
 
-    public async Task<List<Dto.ServiceModel>> GetList(Core.Types.ApplicationEnvironmentName environment)
+    public async Task<List<Dto.ServiceModel>> GetList(Core.Types.ApplicationEnvironmentName environment, CancellationToken cancellationToken)
     {
         return await WithConnection(async c => (await c.QueryAsync<Dto.ServiceModel>("SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE EnvironmentName=@name", new { name = environment.ToString() }))
-            .AsList());
+            .AsList(), cancellationToken);
     }
 }

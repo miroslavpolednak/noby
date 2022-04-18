@@ -9,19 +9,9 @@ public class LoanKindsHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.ItemFoundInCache(_cacheKey);
-                return await _cache.GetAllAsync<LoanKindsItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<LoanKindsItem>(_sqlQuery, cancellationToken);
-                await _cache.SetAllAsync(_cacheKey, result);
-                return result;
-            }
+            return await FastMemoryCache.GetOrCreate<LoanKindsItem>(nameof(LoanKindsHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<LoanKindsItem>(_sqlQuery, cancellationToken)
+            );
         }
         catch (Exception ex)
         {
@@ -34,17 +24,12 @@ public class LoanKindsHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<LoanKindsHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public LoanKindsHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
         ILogger<LoanKindsHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "LoanKinds";
 }

@@ -1,14 +1,13 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ProtoBuf.Grpc.Server;
 using System.IO.Compression;
-using CIS.Infrastructure.Caching;
 using System.Reflection;
 
 namespace DomainServices.CodebookService.Api;
 
 internal static class StartupExtensions
 {
-    public static WebApplicationBuilder AddCodebookService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
+    public static WebApplicationBuilder AddCodebookService(this WebApplicationBuilder builder)
     {
         // add grpc
         builder.Services.AddCodeFirstGrpc(config => {
@@ -18,24 +17,6 @@ internal static class StartupExtensions
 
         // add current user context
         builder.AddCisCurrentUser();
-
-        // add inmem cache
-        builder.Services.AddInMemoryGlobalCache<Endpoints.ISharedInMemoryCache>();
-
-        // add distributed cache
-        switch (appConfiguration.CacheType)
-        {
-            case CacheTypes.InMemory:
-                builder.Services.AddInMemoryGlobalCache("CodebookCache");
-                break;
-
-            case CacheTypes.Redis:
-                if (string.IsNullOrEmpty(appConfiguration.CacheConnectionString))
-                    throw new ArgumentNullException("CacheConnectionString", "Redis connection string for Codebook Service Global Cache must be defined");
-
-                builder.Services.AddRedisGlobalCache(appConfiguration.CacheConnectionString);
-                break;
-        }
 
         return builder;
     }

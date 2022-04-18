@@ -9,19 +9,9 @@ public class LoanPurposesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.ItemFoundInCache(_cacheKey);
-                return await _cache.GetAllAsync<LoanPurposesItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItem>(_sqlQuery, cancellationToken);
-                await _cache.SetAllAsync(_cacheKey, result);
-                return result;
-            }
+            return await FastMemoryCache.GetOrCreate<LoanPurposesItem>(nameof(LoanPurposesHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItem>(_sqlQuery, cancellationToken)
+            );
         }
         catch (Exception ex)
         {
@@ -37,17 +27,12 @@ FROM SBR.CIS_UCEL_UVERU_INT1
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<LoanPurposesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public LoanPurposesHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
         ILogger<LoanPurposesHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "LoanPurposes";
 }

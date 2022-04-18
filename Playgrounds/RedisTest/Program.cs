@@ -4,7 +4,7 @@ using CIS.Infrastructure.Caching;
 Console.WriteLine("Setting up DI...");
 
 //setup our DI
-var serviceProvider = new ServiceCollection()
+/*var serviceProvider = new ServiceCollection()
     .AddLogging()
     .AddSingleton<CIS.Core.Configuration.ICisEnvironmentConfiguration>(new CIS.Infrastructure.Configuration.CisEnvironmentConfiguration
     {
@@ -25,3 +25,4 @@ cache.Set(args[0] + "test1", "moje_hodnota");
 
 var value = cache.GetString(args.Length == 0 ? "MPSS:FAT:" : args[0] + "test1");
 Console.WriteLine($"Retrieved value: {value}");
+*/

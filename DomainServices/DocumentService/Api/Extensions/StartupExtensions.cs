@@ -35,7 +35,6 @@ internal static class StartupExtensions
         //string connectionString = builder.Configuration.GetConnectionString("default");
         //builder.Services.AddDbContext<Repositories.DocumentServiceDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
 
-        builder.Services.AddHttpContextAccessor();
         builder.AddCisCurrentUser();
             
         return builder;

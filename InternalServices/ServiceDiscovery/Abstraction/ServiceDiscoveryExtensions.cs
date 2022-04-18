@@ -38,6 +38,8 @@ public static class ServiceDiscoveryExtensions
     {
         // exception handling
         services.TryAddSingleton<GenericClientExceptionInterceptor>();
+        // cache
+        services.TryAddTransient<ServicesMemoryCache>();
         // abstraction svc
         services.TryAddTransient<IDiscoveryServiceAbstraction, DiscoveryService>();
         // def environment name

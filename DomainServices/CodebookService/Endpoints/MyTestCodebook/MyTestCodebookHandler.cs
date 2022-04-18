@@ -1,4 +1,7 @@
-﻿namespace DomainServices.CodebookService.Endpoints.MyTestCodebook;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using CIS.Infrastructure.Caching;
+
+namespace DomainServices.CodebookService.Endpoints.MyTestCodebook;
 
 public class MyTestCodebookHandler // nazev handleru musi byt ve formatu "{nazev_endpointu_z_Contracts.ICodebookService}Handler"
     : IRequestHandler<Contracts.Endpoints.MyTestCodebook.MyTestCodebookRequest, List<Contracts.GenericCodebookItem>> // TRequest a TResponse musi souhlasit se signaturou endpointu z Contracts.ICodebookService
@@ -14,28 +17,19 @@ public class MyTestCodebookHandler // nazev handleru musi byt ve formatu "{nazev
         _logger.LogInformation("Testovaci endpoint");
 
         // je ciselnik jiz v kesi?
-        if (_cache.Exists(_cacheKey))
+        var cachedItems = await _cache.GetObjectAsync<List<Contracts.GenericCodebookItem>>(nameof(MyTestCodebookHandler), SerializationTypes.Protobuf, cancellationToken);
+        if (cachedItems != null)
         {
-            _logger.LogInformation("Cache key {key} found", _cacheKey);
-
-            // vytahnout existujici data z kese
-            data = await _cache.GetAllAsync<Contracts.GenericCodebookItem>(_cacheKey, CIS.Infrastructure.Caching.SerializationTypes.Protobuf);
-
             _logger.LogInformation("Data downloaded from cache");
+            return cachedItems;
         }
-        else
-        {
-            // data z repository
-            data = _repository.GetList();
-            //data = await _repository.GetListFromDatabase();
 
-            _logger.LogInformation("Creating cache key {key}", _cacheKey);
+        // data z repository
+        data = _repository.GetList();
+        //data = await _repository.GetListFromDatabase();
 
-            // ulozit data do cache
-            await _cache.SetAllAsync(_cacheKey, data, CIS.Infrastructure.Caching.SerializationTypes.Protobuf);
-
-            _logger.LogInformation("New cache key added");
-        }
+        // ulozit data do cache
+        await _cache.SetObjectAsync(nameof(MyTestCodebookHandler), data, new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(1) }, SerializationTypes.Protobuf, cancellationToken);
 
         return data;
     }
@@ -50,20 +44,18 @@ public class MyTestCodebookHandler // nazev handleru musi byt ve formatu "{nazev
     private readonly MyTestCodebookRepository _repository;
     
     // distribuovana cache
-    private readonly CIS.Infrastructure.Caching.IGlobalCache _cache;
+    private readonly IDistributedCache _cache;
 
     //ctr
     public MyTestCodebookHandler(
         MyTestCodebookRepository repository,
         MyTestCodebookConfiguration configuration, 
         ILogger<MyTestCodebookHandler> logger,
-        CIS.Infrastructure.Caching.IGlobalCache cache)
+        IDistributedCache cache)
     {
         _repository = repository;
         _cache = cache;
         _logger = logger;
         _configuration = configuration;
     }
-
-    private const string _cacheKey = "MyTestCodebookList";
 }

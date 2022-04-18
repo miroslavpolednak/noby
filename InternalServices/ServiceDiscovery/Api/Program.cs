@@ -1,6 +1,5 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.InternalServices.ServiceDiscovery.Api;
 using CIS.Infrastructure.Telemetry;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
@@ -13,37 +12,25 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-#endregion strongly typed configuration
-
 #region register builder.Services
-// strongly-typed konfigurace aplikace
-builder.Services.AddSingleton(appConfiguration);
-
 // globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
-
-// logging 
-//builder.Host.UseAppLogging();
+builder
+    .AddCisEnvironmentConfiguration()
+    .AddCisCoreFeatures();
+builder.Services.AddAttributedServices(typeof(Program));
 
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // health checks
 builder.AddCisHealthChecks();
-builder.AddCisLogging();
-builder.AddCisTracing();
-builder.AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program));
+// logging, tracing
+builder
+    .AddCisLogging()
+    .AddCisTracing();
 
 // add general Dapper repository
 builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
-
-// current project related
-// add cache
-builder.Services.AddServiceDiscoveryCache(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {

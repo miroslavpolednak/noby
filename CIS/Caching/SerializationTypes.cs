@@ -2,7 +2,7 @@
 
 public enum SerializationTypes
 {
-    None = 0,
-    Protobuf = 1,
-    Json = 2
+    Default = 0,
+    Json = 1,
+    Protobuf = 2
 }

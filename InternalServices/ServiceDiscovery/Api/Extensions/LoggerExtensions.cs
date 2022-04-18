@@ -4,8 +4,8 @@ internal static class LoggerExtensions
 {
     private static readonly Action<ILogger, string, Exception> _noServicesForEnvironment;
     private static readonly Action<ILogger, int, string, Exception> _foundServices;
-    private static readonly Action<ILogger, string, Contracts.ServiceTypes, string, Exception> _serviceFoundInCache;
-    private static readonly Action<ILogger, string, Contracts.ServiceTypes, string, Exception> _serviceNotFound;
+    private static readonly Action<ILogger, string, Exception> _servicesFoundInCache;
+    private static readonly Action<ILogger, string, Exception> _servicesNotFoundInCache;
 
     static LoggerExtensions()
     {
@@ -19,15 +19,15 @@ internal static class LoggerExtensions
             new EventId(157, nameof(FoundServices)),
             "Database: found {Count} services in {EnvironmentName}");
 
-        _serviceFoundInCache = LoggerMessage.Define<string, Contracts.ServiceTypes, string>(
+        _servicesFoundInCache = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(154, nameof(ServiceFoundInCache)),
-            "Service {ServiceName}:{ServiceType} from {EnvironmentName} FOUND in cache");
+            new EventId(154, nameof(ServicesFoundInCache)),
+            "Services for {EnvironmentName} FOUND in cache");
 
-        _serviceNotFound = LoggerMessage.Define<string, Contracts.ServiceTypes, string>(
-            LogLevel.Warning,
-            new EventId(158, nameof(ServiceNotFound)),
-            "Service {ServiceName}:{ServiceType} from {EnvironmentName} FOUND in cache");
+        _servicesNotFoundInCache = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            new EventId(152, nameof(ServicesNotFoundInCache)),
+            "Services for {EnvironmentName} NOT found in cache");
     }
 
     public static void NoServicesForEnvironment(this ILogger logger, string environmentName)
@@ -36,9 +36,9 @@ internal static class LoggerExtensions
     public static void FoundServices(this ILogger logger, int count, string environmentName)
         => _foundServices(logger, count, environmentName, null!);
 
-    public static void ServiceFoundInCache(this ILogger logger, string serviceName, Contracts.ServiceTypes serviceType, string environmentName)
-        => _serviceFoundInCache(logger, serviceName, serviceType, environmentName, null!);
+    public static void ServicesNotFoundInCache(this ILogger logger, string environmentName)
+        => _servicesNotFoundInCache(logger, environmentName, null!);
 
-    public static void ServiceNotFound(this ILogger logger, string serviceName, Contracts.ServiceTypes serviceType, string environmentName)
-        => _serviceNotFound(logger, serviceName, serviceType, environmentName, null!);
+    public static void ServicesFoundInCache(this ILogger logger, string environmentName)
+        => _servicesFoundInCache(logger, environmentName, null!);
 }

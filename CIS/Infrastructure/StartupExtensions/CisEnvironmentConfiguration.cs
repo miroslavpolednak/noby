@@ -12,6 +12,9 @@ public static class CisEnvironmentConfiguration
 
         CheckAndRegisterConfiguration(builder, cisConfiguration);
 
+        // distributed cache
+        registerDistributedCache(builder);
+
         return builder;
     }
 
@@ -23,6 +26,9 @@ public static class CisEnvironmentConfiguration
         options.Invoke(cisConfiguration);
 
         CheckAndRegisterConfiguration(builder, cisConfiguration);
+
+        // distributed cache
+        registerDistributedCache(builder);
 
         return builder;
     }
@@ -39,5 +45,14 @@ public static class CisEnvironmentConfiguration
         builder.Services.TryAddSingleton(cisConfiguration);
     }
 
+    private static void registerDistributedCache(WebApplicationBuilder builder)
+    {
+        var cacheConfiguration = new Configuration.CisEnvironmentDistributedCacheConfiguration();
+        builder.Configuration.GetSection(JsonConfigurationKey).GetSection(JsonCacheConfigurationKey).Bind(cacheConfiguration);
+
+        builder.Services.TryAddSingleton<ICisEnvironmentDistributedCacheConfiguration>(cacheConfiguration);
+    }
+
     private const string JsonConfigurationKey = "CisEnvironmentConfiguration";
+    private const string JsonCacheConfigurationKey = "DistributedCache";
 }

@@ -1,17 +1,18 @@
 ﻿using CIS.Core.Types;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 
 namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
-internal class ServicesMemoryCache
+internal sealed class ServicesMemoryCache
 {
-    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 50 });
+    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
 
-    public async Task<IReadOnlyCollection<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        IReadOnlyCollection<DiscoverableService> cacheEntry;
+        ImmutableList<DiscoverableService> cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry))
         {
             _logger.ServicesNotFoundInCache(environmentName);
@@ -39,10 +40,8 @@ internal class ServicesMemoryCache
         return cacheEntry;
     }
 
-    private async Task<IReadOnlyCollection<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    private async Task<ImmutableList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStarted(nameof(GetServices));
-
         var result = await _userContext.AddUserContext(async () => await _service.GetServicesAsync(
             new Contracts.GetServicesRequest
             {
@@ -52,8 +51,8 @@ internal class ServicesMemoryCache
         
         return result
             .Services
-            .Select(t => new DiscoverableService(t.ServiceName, t.ServiceUrl, t.ServiceType)).ToList()
-            .AsReadOnly();
+            .Select(t => new DiscoverableService(t.ServiceName, t.ServiceUrl, t.ServiceType))
+            .ToImmutableList();
     }
 
     private readonly ILogger<ServicesMemoryCache> _logger;

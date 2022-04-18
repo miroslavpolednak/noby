@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
+﻿namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 internal static class LoggerExtensions
 {
