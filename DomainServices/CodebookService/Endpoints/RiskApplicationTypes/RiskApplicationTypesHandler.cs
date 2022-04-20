@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 
 namespace DomainServices.CodebookService.Endpoints.RiskApplicationTypes;
 
@@ -10,33 +9,18 @@ public class RiskApplicationTypesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
+            return await FastMemoryCache.GetOrCreate<RiskApplicationTypeItem>(nameof(RiskApplicationTypesHandler), async () =>
             {
-                _logger.LogDebug("Found in cache");
-
-                return await _cache.GetAllAsync<RiskApplicationTypeItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.LogDebug("Reading from database");
-
-                await using (var connection = _connectionProvider.Create())
+                var result = await _connectionProvider.ExecuteDapperRawSqlToList<RiskApplicationTypeItem>(_sqlQuery, cancellationToken);
+                result.ForEach(t =>
                 {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<RiskApplicationTypeItem>(_sqlQuery)).ToList();
-                    result.ForEach(t =>
-                    {
-                        if (!string.IsNullOrEmpty(t.MA))
-                            t.MarketingActions = t.MA.Split(",").Select(t => Convert.ToInt32(t)).ToList();
-                        if (!string.IsNullOrEmpty(t.ProductId))
-                            t.ProductTypeId = t.ProductId.Split(",").Select(t => Convert.ToInt32(t)).ToList();
-                    });
-
-                    await _cache.SetAllAsync(_cacheKey, result);
-
-                    return result;
-                }
-            }
+                    if (!string.IsNullOrEmpty(t.MA))
+                        t.MarketingActions = t.MA.Split(",").Select(t => Convert.ToInt32(t)).ToList();
+                    if (!string.IsNullOrEmpty(t.ProductId))
+                        t.ProductTypeId = t.ProductId.Split(",").Select(t => Convert.ToInt32(t)).ToList();
+                });
+                return result;
+            });
         }
         catch (Exception ex)
         {
@@ -50,17 +34,12 @@ FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<RiskApplicationTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public RiskApplicationTypesHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
         ILogger<RiskApplicationTypesHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "RiskApplicationTypes";
 }
