@@ -622,7 +622,7 @@ internal class SendToCmpHandler
             {
                 role = i.CustomerRoleId.ToJsonString(),                     // CustomerOnSA
                 //zmocnenec =                                               // CustomerOnSA ???
-                cislo_domacnosti = household.HouseholdId.ToJsonString(),    // CustomerOnSA ??? brát Houshold.CustomerOnSAId (1 nebo 2)
+                cislo_domacnosti = household.HouseholdTypeId.ToJsonString(),// CustomerOnSA ??? brát Houshold.CustomerOnSAId (1 nebo 2)
                 klient = MapCustomer(i),
             };
         }
