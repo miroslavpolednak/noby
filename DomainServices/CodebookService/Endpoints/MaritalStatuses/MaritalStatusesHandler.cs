@@ -16,7 +16,7 @@ public class MaritalStatusesHandler
                 var result = await _connectionProvider.ExecuteDapperRawSqlToList<MaritalStatusItem>(_sqlQuery, cancellationToken);
 
                 result.ForEach(t => {
-                    t.RDMCode = extMapper.FirstOrDefault(s => s.MaritalStatusId == t.Id)?.RDMCode;
+                    t.RdmMaritalStatusCode = extMapper.FirstOrDefault(s => s.MaritalStatusId == t.Id)?.RDMCode;
                 });
 
                 return result;
