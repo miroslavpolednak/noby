@@ -9,24 +9,17 @@ public class ProductTypesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
+            return await FastMemoryCache.GetOrCreate<ProductTypeItem>(nameof(ProductTypesHandler), async () =>
             {
-                _logger.ItemFoundInCache(_cacheKey);
-                return await _cache.GetAllAsync<ProductTypeItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
                 // vytahnout druhy uveru pro naparovani do kolekci
                 var loanKinds = await _mediator.Send(new Contracts.Endpoints.LoanKinds.LoanKindsRequest(), cancellationToken);
-                
+
                 // vytahnout mapovani na product category
                 var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlCodebooks, cancellationToken);
 
                 // vytahnout vlastni ciselnik z XXD
                 var result = await _connectionProviderXxd.ExecuteDapperRawSqlToList<ProductTypeItem>(_sql, cancellationToken);
-                
+
                 // namapovat kategorie z extensions tabulky
                 result.ForEach(t =>
                 {
@@ -42,7 +35,7 @@ public class ProductTypesHandler
                         t.MpHomeApiLoanType = null;
                         t.KonsDbLoanType = null;
                     }
-                        
+
                     // rozsirena nastaveni z extension tabulky
                     var item = extMapper.FirstOrDefault(x => x.ProductTypeId == t.Id);
                     if (item is not null)
@@ -51,13 +44,11 @@ public class ProductTypesHandler
                         t.MpHomeApiLoanType = item.MpHomeApiLoanType;
                         t.KonsDbLoanType = item.KonsDbLoanType;
                     }
-                        
+
                 });
 
-                await _cache.SetAllAsync(_cacheKey, result);
-
                 return result;
-            }
+            });
         }
         catch (Exception ex)
         {
@@ -86,22 +77,17 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProviderXxd;
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
     private readonly ILogger<ProductTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
     private readonly MediatR.IMediator _mediator;
     
     public ProductTypesHandler(
         MediatR.IMediator mediator,
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider connectionProviderCodebooks,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProviderXxd,
         ILogger<ProductTypesHandler> logger)
     {
         _mediator = mediator;
-        _cache = cache;
         _logger = logger;
         _connectionProviderCodebooks = connectionProviderCodebooks;
         _connectionProviderXxd = connectionProviderXxd;
     }
-
-    private const string _cacheKey = "ProductTypes";
 }

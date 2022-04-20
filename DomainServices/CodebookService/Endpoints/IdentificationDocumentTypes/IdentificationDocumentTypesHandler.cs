@@ -9,16 +9,8 @@ public class IdentificationDocumentTypesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
+            return await FastMemoryCache.GetOrCreate<IdentificationDocumentTypesItem>(nameof(IdentificationDocumentTypesHandler), async () =>
             {
-                _logger.ItemFoundInCache(_cacheKey);
-
-                return await _cache.GetAllAsync<IdentificationDocumentTypesItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
                 var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
 
                 var result = await _connectionProvider.ExecuteDapperRawSqlToList<IdentificationDocumentTypesItem>(_sqlQuery, cancellationToken);
@@ -26,10 +18,8 @@ public class IdentificationDocumentTypesHandler
                 result.ForEach(t => {
                     t.RDMCode = extMapper.FirstOrDefault(s => s.IdentificationDocumentTypeId == t.Id)?.RDMCode;
                 });
-
-                await _cache.SetAllAsync(_cacheKey, result);
                 return result;
-            }
+            });
         }
         catch (Exception ex)
         {
@@ -49,16 +39,13 @@ public class IdentificationDocumentTypesHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<IdentificationDocumentTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
 
     public IdentificationDocumentTypesHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
         ILogger<IdentificationDocumentTypesHandler> logger,
         CIS.Core.Data.IConnectionProvider connectionProviderCodebooks)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
         _connectionProviderCodebooks = connectionProviderCodebooks;

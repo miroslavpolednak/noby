@@ -1,24 +1,18 @@
-﻿using CIS.Infrastructure.gRPC;
-using Grpc.Core;
+﻿using CIS.InternalServices.ServiceDiscovery.Api.Repositories;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Handlers;
 
 internal class GetServiceQueryHandler 
-    : BaseGetQueryHandler, IRequestHandler<Dto.GetServiceRequest, Contracts.GetServiceResponse>
+    : IRequestHandler<Dto.GetServiceRequest, Contracts.GetServiceResponse>
 {
     public async Task<Contracts.GetServiceResponse> Handle(Dto.GetServiceRequest request, CancellationToken cancellation)
     {
-        // query from cache
-        if (!_cache.Exists(request.Environment))
-            FillCache(await LoadFromDatabase(request.Environment), request.Environment);
+        _logger.RequestHandlerStarted(nameof(GetServiceQueryHandler));
 
-        if (!_cache.TryGetHashset(request.Environment, new ServiceNameCacheKey(request.ServiceType, request.ServiceName), out string? url))
-        {
-            _logger.ServiceNotFound(request.ServiceName, request.ServiceType, request.Environment);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Service '{request.ServiceName}' not found for environment '{request.Environment}'", 103);
-        }
-        
-        _logger.ServiceFoundInCache(request.ServiceName, request.ServiceType, request.Environment);
+        // query from cache
+        var foundServices = await _cache.GetServices(request.Environment, cancellation);
+        var service = foundServices.FirstOrDefault(t => t.ServiceType == request.ServiceType && t.ServiceName == request.ServiceName)
+            ?? throw new CIS.Core.Exceptions.CisNotFoundException(0, nameof(Contracts.DiscoverableService));
 
         return new Contracts.GetServiceResponse
         {
@@ -27,15 +21,19 @@ internal class GetServiceQueryHandler
             {
                 ServiceType = request.ServiceType,
                 ServiceName = request.ServiceName,
-                ServiceUrl = url
+                ServiceUrl = service.ServiceUrl
             }
         };
     }
 
+    private readonly ILogger<GetServiceQueryHandler> _logger;
+    private readonly ServicesMemoryCache _cache;
+
     public GetServiceQueryHandler(
-        ILogger<GetServicesQueryHandler> logger,
-        ServiceDiscoveryRepository repository,
-        Infrastructure.Caching.IGlobalCache cache)
-        : base(logger, repository, cache) 
-    { }
+        ILogger<GetServiceQueryHandler> logger,
+        ServicesMemoryCache cache)
+    {
+        _logger = logger;
+        _cache = cache;
+    }
 }

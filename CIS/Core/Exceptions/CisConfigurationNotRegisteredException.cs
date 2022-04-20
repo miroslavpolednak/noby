@@ -1,5 +1,8 @@
 ﻿namespace CIS.Core.Exceptions
 {
+    /// <summary>
+    /// Chyba v pripade, kdy nelze v DI najit instanci konfigurace CIS
+    /// </summary>
     public sealed class CisConfigurationNotRegisteredException : BaseCisException
     {
         public CisConfigurationNotRegisteredException(string parameter)

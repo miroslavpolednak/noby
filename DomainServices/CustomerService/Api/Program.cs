@@ -49,8 +49,6 @@ builder.AddCisServiceAuthentication();
 // add storage services
 builder.AddCutomerService(appConfiguration);
 
-builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();

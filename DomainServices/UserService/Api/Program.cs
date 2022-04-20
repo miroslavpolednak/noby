@@ -15,34 +15,30 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-#endregion strongly typed configuration
-
 #region register builder.Services
-// strongly-typed konfigurace aplikace
-builder.Services.AddSingleton(appConfiguration);
-
 // globalni nastaveni prostredi
-builder.AddCisEnvironmentConfiguration();
+builder
+    .AddCisEnvironmentConfiguration()
+    .AddCisCoreFeatures();
+builder.Services.AddAttributedServices(typeof(Program));
+builder.Services.AddCisDistributedCache();
 
 // logging 
-builder.AddCisLogging();
-builder.AddCisTracing();
+builder
+    .AddCisLogging()
+    .AddCisTracing();
 
 // health checks
 builder.AddCisHealthChecks();
 
-builder.AddCisCoreFeatures();
-builder.Services.AddAttributedServices(typeof(Program));
-
 // authentication
-builder.AddCisServiceAuthentication();
+builder
+    .AddCisServiceAuthentication()
+    .AddCisCurrentUser();
 
 // add services
 builder.Services.AddCisServiceDiscovery(true);
-builder.AddUserService(appConfiguration);
+builder.AddUserService();
 
 builder.Services.AddGrpc(options =>
 {

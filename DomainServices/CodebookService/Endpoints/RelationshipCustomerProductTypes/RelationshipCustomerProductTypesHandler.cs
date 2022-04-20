@@ -11,26 +11,16 @@ public class RelationshipCustomerRelationshipCustomerProductTypesHandler
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProviderXxd;
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
     private readonly ILogger<RelationshipCustomerRelationshipCustomerProductTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
-    private readonly MediatR.IMediator _mediator;
 
     public RelationshipCustomerRelationshipCustomerProductTypesHandler(
-        MediatR.IMediator mediator,
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider connectionProviderCodebooks,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProviderXxd,
         ILogger<RelationshipCustomerRelationshipCustomerProductTypesHandler> logger)
     {
-        _mediator = mediator;
-        _cache = cache;
         _logger = logger;
         _connectionProviderCodebooks = connectionProviderCodebooks;
         _connectionProviderXxd = connectionProviderXxd;
     }
-
-    private const string _cacheKey = "RelationshipCustomerProductTypes";
-
-
     #endregion
 
     #region Extension
@@ -54,15 +44,8 @@ public class RelationshipCustomerRelationshipCustomerProductTypesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
+            return await FastMemoryCache.GetOrCreate<RelationshipCustomerProductTypeItem>(nameof(RelationshipCustomerRelationshipCustomerProductTypesHandler), async () =>
             {
-                _logger.ItemFoundInCache(_cacheKey);
-                return await _cache.GetAllAsync<RelationshipCustomerProductTypeItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
                 // load codebook items from XXD
                 var items = await _connectionProviderXxd.ExecuteDapperRawSqlToList<RelationshipCustomerProductTypeItem>(_sql, cancellationToken);
 
@@ -73,10 +56,8 @@ public class RelationshipCustomerRelationshipCustomerProductTypesHandler
                 // assign MpHome mapping to items
                 items.ForEach(item => item.MpHomeContractRelationshipType = dictExtensions[item.Id]);
 
-                await _cache.SetAllAsync(_cacheKey, items);
-
                 return items;
-            }
+            });
         }
         catch (Exception ex)
         {

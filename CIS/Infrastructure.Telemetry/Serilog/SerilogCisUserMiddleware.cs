@@ -25,5 +25,7 @@ public class SerilogCisUserMiddleware
                 await _next.Invoke(context);
             }
         }
+        else
+            await _next.Invoke(context);
     }
 }

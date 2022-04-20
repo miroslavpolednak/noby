@@ -18,7 +18,6 @@ internal static class StartupExtensions
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-        builder.Services.AddHttpContextAccessor();
         builder.AddCisCurrentUser();
             
         return builder;

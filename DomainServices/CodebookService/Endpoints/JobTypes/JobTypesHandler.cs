@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.JobTypes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.JobTypes;
 
 namespace DomainServices.CodebookService.Endpoints.JobTypes
 {
@@ -10,26 +9,9 @@ namespace DomainServices.CodebookService.Endpoints.JobTypes
         {
             try
             {
-                if (_cache.Exists(_cacheKey))
-                {
-                    _logger.LogDebug("Found JobTypes in cache");
-
-                    return await _cache.GetAllAsync<JobTypeItem>(_cacheKey);
-                }
-                else
-                {
-                    _logger.LogDebug("Reading JobTypes from database");
-
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<JobTypeItem>("SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_PRACOVNI_POZICE] ORDER BY KOD ASC")).ToList();
-
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
-                    }
-                }
+                return await FastMemoryCache.GetOrCreate<JobTypeItem>(nameof(JobTypesHandler), async () =>
+                    await _connectionProvider.ExecuteDapperRawSqlToList<JobTypeItem>(_sqlQuery, cancellationToken)
+                );
             }
             catch (Exception ex)
             {
@@ -38,20 +20,18 @@ namespace DomainServices.CodebookService.Endpoints.JobTypes
             }
         }
 
+        private const string _sqlQuery =
+            "SELECT KOD 'Id', TEXT 'Name', DEF 'IsDefault' FROM [SBR].[CIS_PRACOVNI_POZICE] ORDER BY KOD ASC";
+
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<JobTypesHandler> _logger;
-        private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
         public JobTypesHandler(
-            CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
             ILogger<JobTypesHandler> logger)
         {
-            _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
-
-        private const string _cacheKey = "JobTypes";
     }
 }

@@ -1,1 +1,0 @@
-grpcurl -insecure -d "{\"UserId\":99,\"State\":1,\"Pagination\":{\"recordOffset\":1,\"pageSize\":2,\"sorting\":[{\"field\":\"Name\",\"descending\":false}]}}" -H "Authorization: Basic YTph" 127.0.0.1:5080 DomainServices.CaseService.v1.CaseService/SearchCases

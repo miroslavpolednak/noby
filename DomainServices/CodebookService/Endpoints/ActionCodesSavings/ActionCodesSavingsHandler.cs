@@ -10,19 +10,9 @@ public class ActionCodesSavingsLoanHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.ItemFoundInCache(_cacheKey);
-                return await _cache.GetAllAsync<GenericCodebookItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.TryAddItemToCache(_cacheKey);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken);
-                await _cache.SetAllAsync(_cacheKey, result);
-                return result;
-            }
+            return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ActionCodesSavingsLoanHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
+            );
         }
         catch (Exception ex)
         {
@@ -36,17 +26,12 @@ public class ActionCodesSavingsLoanHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<ActionCodesSavingsLoanHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public ActionCodesSavingsLoanHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
         ILogger<ActionCodesSavingsLoanHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "ActionCodesSavingsLoan";
 }

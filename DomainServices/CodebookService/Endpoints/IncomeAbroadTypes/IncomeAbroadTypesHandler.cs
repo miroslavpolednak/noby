@@ -8,30 +8,7 @@ public class IncomeAbroadTypesHandler
 {
     public async Task<List<GenericCodebookItem>> Handle(IncomeAbroadTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.LogDebug("Found IncomeAbroadTypes in cache");
-
-                return await _cache.GetAllAsync<GenericCodebookItem>(_cacheKey);
-            }
-            else
-            {
-                _logger.LogDebug("Reading IncomeAbroadTypes from database");
-
-                return GetMockData(); // TODO: Redirect to real data source!                    
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            throw;
-        }
-    }
-
-    private List<GenericCodebookItem> GetMockData()
-    {
+        // TODO: Redirect to real data source!      
         return new List<GenericCodebookItem>
         {
             new GenericCodebookItem() { Id = 1, Name = "expat" },
@@ -43,17 +20,12 @@ public class IncomeAbroadTypesHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<IncomeAbroadTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public IncomeAbroadTypesHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
         ILogger<IncomeAbroadTypesHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "IncomeAbroadTypes";
 }

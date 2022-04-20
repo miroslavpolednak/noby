@@ -9,19 +9,9 @@ namespace DomainServices.CodebookService.Endpoints.Countries
         {
             try
             {
-                if (_cache.Exists(_cacheKey))
-                {
-                    _logger.ItemFoundInCache(_cacheKey);
-                    return await _cache.GetAllAsync<CountriesItem>(_cacheKey);
-                }
-                else
-                {
-                    _logger.TryAddItemToCache(_cacheKey);
-
-                    var result = await _connectionProvider.ExecuteDapperRawSqlToList<CountriesItem>(_sqlQuery, cancellationToken);
-                    await _cache.SetAllAsync(_cacheKey, result);
-                    return result;
-                }
+                return await FastMemoryCache.GetOrCreate<CountriesItem>(nameof(CountriesHandler), async () =>
+                    await _connectionProvider.ExecuteDapperRawSqlToList<CountriesItem>(_sqlQuery, cancellationToken)
+                );
             }
             catch (Exception ex)
             {
@@ -34,18 +24,13 @@ namespace DomainServices.CodebookService.Endpoints.Countries
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<CountriesHandler> _logger;
-        private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
         public CountriesHandler(
-            CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
             ILogger<CountriesHandler> logger)
         {
-            _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
-
-        private const string _cacheKey = "Countries";
     }
 }

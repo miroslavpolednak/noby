@@ -2,13 +2,13 @@
 
 public interface ICisEnvironmentConfiguration
 {
-    string? DefaultApplicationKey { get; set; }
+    string? DefaultApplicationKey { get; }
 
-    string? EnvironmentName { get; set; }
+    string? EnvironmentName { get; }
 
-    string? ServiceDiscoveryUrl { get; set; }
+    string? ServiceDiscoveryUrl { get; }
 
-    string? InternalServicesLogin { get; set; }
+    string? InternalServicesLogin { get; }
 
-    string? InternalServicePassword { get; set; }
+    string? InternalServicePassword { get; }
 }

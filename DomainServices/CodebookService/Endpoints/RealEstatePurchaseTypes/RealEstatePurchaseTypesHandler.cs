@@ -10,26 +10,9 @@ namespace DomainServices.CodebookService.Endpoints.RealEstatePurchaseTypes
         {
             try
             {
-                if (_cache.Exists(_cacheKey))
-                {
-                    _logger.LogDebug("Found RealEstatePurchaseTypes in cache");
-
-                    return await _cache.GetAllAsync<RealEstatePurchaseTypeItem>(_cacheKey);
-                }
-                else
-                {
-                    _logger.LogDebug("Reading RealEstatePurchaseTypes from database");
-
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<RealEstatePurchaseTypeItem>("SELECT KOD 'Id', POPIS 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid', DEF 'IsDefault', PORADI 'ORDER' FROM [SBR].[CIS_UCEL_PORIZENI_UV] ORDER BY PORADI ASC")).ToList();
-
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
-                    }
-                }
+                return await FastMemoryCache.GetOrCreate<RealEstatePurchaseTypeItem>(nameof(RealEstatePurchaseTypesHandler), async () =>
+                    await _connectionProvider.ExecuteDapperRawSqlToList<RealEstatePurchaseTypeItem>(_sqlQuery, cancellationToken)
+                );
             }
             catch (Exception ex)
             {
@@ -38,20 +21,18 @@ namespace DomainServices.CodebookService.Endpoints.RealEstatePurchaseTypes
             }
         }
 
+        private const string _sqlQuery =
+            "SELECT KOD 'Id', POPIS 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid', DEF 'IsDefault', PORADI 'ORDER' FROM [SBR].[CIS_UCEL_PORIZENI_UV] ORDER BY PORADI ASC";
+
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<RealEstatePurchaseTypesHandler> _logger;
-        private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
         public RealEstatePurchaseTypesHandler(
-            CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
             ILogger<RealEstatePurchaseTypesHandler> logger)
         {
-            _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
-
-        private const string _cacheKey = "RealEstatePurchaseTypes";
     }
 }

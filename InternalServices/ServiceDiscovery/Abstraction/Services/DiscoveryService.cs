@@ -1,32 +1,44 @@
 ﻿using CIS.Core.Types;
+using System.Collections.Immutable;
 
 namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
-internal partial class DiscoveryService : IDiscoveryServiceAbstraction
+internal sealed class DiscoveryService : IDiscoveryServiceAbstraction
 {
-    public async Task<List<Contracts.DiscoverableService>> GetServices()
-        => await GetServices(getEnvName());
-    
-    public async Task<List<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName)
-        => await _mediator.Send(new Dto.GetServicesRequest(environmentName));
-    
-    public async Task<Contracts.DiscoverableService> GetService(ServiceName serviceName, Contracts.ServiceTypes serviceType)
-        => await GetService(getEnvName(), serviceName, serviceType);
+    public async Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
+        => await GetServices(getEnvName(), cancellationToken);
 
-    public async Task<Contracts.DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType)
-        => await _mediator.Send(new Dto.GetServiceRequest(environmentName, serviceName, serviceType));
-}
+    // get services nekesujeme, nemel by to byt casty dotaz
+    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStarted(nameof(GetServices));
 
-internal partial class DiscoveryService
-{
-    private readonly IMediator _mediator;
+        return await _cache.GetServices(environmentName, cancellationToken);
+    }
+    
+    public async Task<DiscoverableService> GetService(ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken))
+        => await GetService(getEnvName(), serviceName, serviceType, cancellationToken);
+
+    public async Task<DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.GetServiceStarted(serviceName, serviceType, environmentName.Name);
+
+        var services = await _cache.GetServices(environmentName, cancellationToken);
+        return services.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType) 
+            ?? throw new CIS.Core.Exceptions.CisNotFoundException(0, $"Service {serviceName}:{serviceType} not found");
+    }
+
+    private readonly ServicesMemoryCache _cache;
+    private readonly ILogger<DiscoveryService> _logger;
     private readonly EnvironmentNameProvider _envName;
 
     public DiscoveryService(
-        IMediator mediator,
+        ServicesMemoryCache cache,
+        ILogger<DiscoveryService> logger,
         EnvironmentNameProvider envName)
     {
-        _mediator = mediator;
+        _logger = logger;
+        _cache = cache;
         _envName = envName;
     }
 

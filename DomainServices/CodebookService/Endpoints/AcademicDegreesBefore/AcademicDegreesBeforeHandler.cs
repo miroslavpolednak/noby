@@ -11,26 +11,14 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesBefore
         {
             try
             {
-                if (_cache.Exists(_cacheKey))
+                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(AcademicDegreesBeforeHandler), async () =>
                 {
-                    _logger.LogDebug("Found AcademicDegreesBefore in cache");
-
-                    return await _cache.GetAllAsync<GenericCodebookItem>(_cacheKey);
-                }
-                else
-                {
-                    _logger.LogDebug("Reading AcademicDegreesBefore from database");
-
                     await using (var connection = _connectionProvider.Create())
                     {
                         await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<GenericCodebookItem>("SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY] WHERE KOD>0 ORDER BY TEXT ASC")).ToList();
-                        
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
+                        return (await connection.QueryAsync<GenericCodebookItem>("SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY] WHERE KOD>0 ORDER BY TEXT ASC")).ToList();
                     }
-                }
+                });
             }
             catch (Exception ex)
             {
@@ -41,18 +29,13 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesBefore
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<AcademicDegreesBeforeHandler> _logger;
-        private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
         public AcademicDegreesBeforeHandler(
-            CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
             ILogger<AcademicDegreesBeforeHandler> logger)
         {
-            _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
-
-        private const string _cacheKey = "AcademicDegreesBefore";
     }
 }
