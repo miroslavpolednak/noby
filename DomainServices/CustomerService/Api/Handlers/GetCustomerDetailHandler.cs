@@ -51,7 +51,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                 BirthName = np.BirthName ?? "",
                 PlaceOfBirth = np.BirthPlace ?? "",
                 BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
-                MaritalStatusStateId = maritals.FirstOrDefault(t => t.RDMCode == np.MaritalStatusCode)?.Id ?? 0,
+                MaritalStatusStateId = maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
                 DegreeBeforeId = titles.FirstOrDefault(t => String.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id
             };
 

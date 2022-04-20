@@ -5,6 +5,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<GenericCodebookItem>> LegalCapacities(Endpoints.IncomeTypes.IncomeTypesRequest request, CallContext context = default);
+        Task<List<GenericCodebookItemWithCode>> LegalCapacities(Endpoints.LegalCapacities.LegalCapacitiesRequest request, CallContext context = default);
     }
 }

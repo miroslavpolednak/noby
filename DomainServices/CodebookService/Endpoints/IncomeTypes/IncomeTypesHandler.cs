@@ -1,12 +1,13 @@
-﻿using DomainServices.CodebookService.Contracts;
+﻿using Dapper;
+using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.IncomeTypes;
 
 namespace DomainServices.CodebookService.Endpoints.IncomeTypes;
 
 public class IncomeTypesHandler
-    : IRequestHandler<IncomeTypesRequest, List<GenericCodebookItem>>
+    : IRequestHandler<IncomeTypesRequest, List<GenericCodebookItemWithCode>>
 {
-    public async Task<List<GenericCodebookItem>> Handle(IncomeTypesRequest request, CancellationToken cancellationToken)
+    public async Task<List<GenericCodebookItemWithCode>> Handle(IncomeTypesRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -14,13 +15,21 @@ public class IncomeTypesHandler
             {
                 _logger.LogDebug("Found IncomeTypes in cache");
 
-                return await _cache.GetAllAsync<GenericCodebookItem>(_cacheKey);
+                return await _cache.GetAllAsync<GenericCodebookItemWithCode>(_cacheKey);
             }
             else
             {
                 _logger.LogDebug("Reading IncomeTypes from database");
 
-                return GetMockData(); // TODO: Redirect to real data source!                    
+                await using (var connection = _connectionProvider.Create())
+                {
+                    await connection.OpenAsync();
+                    var result = (await connection.QueryAsync<GenericCodebookItemWithCode>(_sqlQuery)).ToList();
+
+                    await _cache.SetAllAsync(_cacheKey, result);
+
+                    return result;
+                }
             }
         }
         catch (Exception ex)
@@ -30,16 +39,7 @@ public class IncomeTypesHandler
         }
     }
 
-    private List<GenericCodebookItem> GetMockData()
-    {
-        return new List<GenericCodebookItem>
-        {
-            new GenericCodebookItem() { Id = 1, Name = "Ze zaměstnání" },
-            new GenericCodebookItem() { Id = 2, Name = "Z podnikání" },
-            new GenericCodebookItem() { Id = 3, Name = "Z pronájmu" },
-            new GenericCodebookItem() { Id = 4, Name = "Ostatní" },
-        };
-    }
+    const string _sqlQuery = @"SELECT KOD 'Id', CODE 'Code', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_ZDROJ_PRIJMU_HLAVNI] WHERE KOD > 0 ORDER BY KOD ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<IncomeTypesHandler> _logger;
