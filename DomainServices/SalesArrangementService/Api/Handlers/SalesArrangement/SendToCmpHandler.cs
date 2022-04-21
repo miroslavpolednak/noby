@@ -80,6 +80,9 @@ internal class SendToCmpHandler
             throw new CisArgumentException(1, $"SalesArrangementTypeId '{arrangement.SalesArrangementTypeId}' doesn't match ProductTypeCategory '{ProductTypeCategory.Mortgage}'.", nameof(request));
         }
 
+        // check mandatory fields of SalesArrangement
+        CheckSA(arrangement);
+
         // check if Offer exists
         if (!arrangement.OfferId.HasValue)
             throw new CisNotFoundException(16000, $"Sales Arrangement #{request.SalesArrangementId} is not linked to Offer");
@@ -94,6 +97,10 @@ internal class SendToCmpHandler
         var households = (await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Households.ToList();
         var householdTypesById = (await _codebookService.HouseholdTypes(cancellation)).ToDictionary(i => i.Id);
         CheckHouseholds(households, householdTypesById, customersOnSA);
+
+        // load incomes
+        var incomesById = await GetIncomesById(customersOnSA, cancellation);
+        CheckIncomes(incomesById);
 
         // load case
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
@@ -116,12 +123,9 @@ internal class SendToCmpHandler
         // User load (by arrangement.Created.UserId)
         var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId, cancellation))
             ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
-        
+
         // load customers
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
-
-        // load incomes
-        var incomesById = await GetIncomesById(customersOnSA, cancellation);
 
         // Load codebooks
         var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).ToDictionary(i => i.Id);
@@ -137,6 +141,50 @@ internal class SendToCmpHandler
     }
 
     #region Data (loading & modifications)
+
+    private static void CheckSA(Contracts.SalesArrangement arrangement)
+    {
+        // check mandatory fields of SalesArrangement
+        var saMandatoryFields = new List<(string Field, bool Valid)>
+        {
+            ("IncomeCurrencyCode", !String.IsNullOrEmpty(arrangement.Mortgage?.IncomeCurrencyCode)  ),
+            ("ResidencyCurrencyCode", !String.IsNullOrEmpty(arrangement.Mortgage?.ResidencyCurrencyCode) ),
+            ("SignatureTypeId", (arrangement.Mortgage?.SignatureTypeId).HasValue ),
+        };
+
+        var invalidSaMandatoryFields = saMandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
+
+        if (invalidSaMandatoryFields.Length > 0)
+        {
+            throw new CisValidationException(99999, $"Sales arrangement mandatory fields not provided [{ String.Join(StringJoinSeparator, invalidSaMandatoryFields) }]."); //TODO: ErrorCode
+        }
+    }
+
+    private static void CheckIncomes(Dictionary<int, Income> incomesById)
+    {
+        // check mandatory fields of Incomes
+        string[] FindInvalidFields(Income income)
+        {
+            var mandatoryFields = new List<(string Field, bool Valid)>
+            {
+                ("EmploymentTypeId", (income.Employement?.Job?.EmploymentTypeId).HasValue  ),
+                ("JobNoticePeriod", (income.Employement?.Job?.JobNoticePeriod).HasValue ),
+                ("JobTrialPeriod", (income.Employement?.Job?.JobTrialPeriod).HasValue ),
+                ("IsDomicile", (income.Employement?.IsDomicile).HasValue ),
+                ("SensitiveSector", (income.Employement?.Employer?.SensitiveSector).HasValue ),
+                ("JobType", (income.Employement?.Job?.JobType).HasValue ),
+            };
+
+            return mandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
+        }
+
+        var invalidIncomes = incomesById.Select(i => new { Id = i.Key, InvalidFields = FindInvalidFields(i.Value) }).Where(i=> i.InvalidFields.Length > 0).ToArray();
+        if (invalidIncomes.Length > 0)
+        {
+            var details = invalidIncomes.Select(i => $"{i.Id}[{String.Join(StringJoinSeparator, i.InvalidFields)}]");
+            throw new CisValidationException(99999, $"Income mandatory fields not provided [{ String.Join(StringJoinSeparator, details) }]."); //TODO: ErrorCode
+        }
+    }
 
     private static void CheckCustomersOnSA(List<Contracts.CustomerOnSA> customersOnSa)
     {
@@ -595,16 +643,16 @@ internal class SendToCmpHandler
                 statni_prislusnost = cCitizenshipCountriesId.ToJsonString(),                    // vzít první
                 zamestnanec = 0.ToJsonString(),                                                 // [MOCK] OfferInstance (default 0)
                 rezident = 0.ToJsonString(),                                                    // [MOCK] OfferInstance (default 0)
-                // PEP =                                                                        // OP! Neposílat, není definováno ve starbuild.
+                PEP = 0.ToJsonString(),                                                         // [MOCK] (default 0) OP!
                 seznam_adres = c.Addresses?.Select(i => MapAddress(i)).ToArray() ?? Array.Empty<object>(),
                 seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
                 seznam_kontaktu = c.Contacts?.Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
                 rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
                 druh_druzka = i.HasPartner.ToJsonString(),
-                // vzdelani =                                                                   // ??? OP!
+                vzdelani = 3.ToJsonString(),                                                    // [MOCK] (default 3) OP!
                 prijmy = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                 zavazky = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
-                // prijem_sbiran =                                                              // ??? out of scope
+                prijem_sbiran = 0.ToJsonString(),                                               // [MOCK] (default 0) out of scope
                 uzamcene_prijmy = false.ToJsonString(),                                         // [MOCK] (default 0) jinak z c.LockedIncomeDateTime.HasValue.ToJsonString(),
                 // datum_posledniho_uzam_prijmu = c.LockedIncomeDateTime.ToJsonString(),        // ??? chybí implementace!
             };
@@ -621,11 +669,12 @@ internal class SendToCmpHandler
             return new
             {
                 role = i.CustomerRoleId.ToJsonString(),                     // CustomerOnSA
-                //zmocnenec =                                               // CustomerOnSA ???
+                zmocnenec = 0.ToJsonString(),                               // [MOCK] CustomerOnSA (default 0)
                 cislo_domacnosti = household.HouseholdTypeId.ToJsonString(),// CustomerOnSA ??? brát Houshold.CustomerOnSAId (1 nebo 2)
                 klient = MapCustomer(i),
             };
         }
+
 
         // root
         
@@ -657,7 +706,8 @@ internal class SendToCmpHandler
             anuitni_splatka = offer.Outputs.LoanPaymentAmount.ToJsonString(),                                                       // OfferInstance
             splatnost_uv_mesice = offer.Outputs.LoanDuration.ToJsonString(),                                                        // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
             fixace_uv_mesice = offer.Inputs.FixedRatePeriod.ToJsonString(),                                                         // OfferInstance - na FE je to v rocích a je to číselník ?
-            predp_termin_cerpani = arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement
+            //predp_termin_cerpani = arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                    // SalesArrangement 
+            predp_termin_cerpani =  actualDate.AddDays(1).ToJsonString(),                                                           // [MOCK] (currentDate + 1D)
             den_splaceni = offer.Outputs.PaymentDayOfTheMonth.ToJsonString(),                                                       // OfferInstance default=15
             forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
             seznam_poplatku = Array.Empty<object>(),                                                                                // [MOCK] OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci 
@@ -668,6 +718,7 @@ internal class SendToCmpHandler
             zprostredkovano_3_stranou = false.ToJsonString(),                                                                       // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
             sjednal_CPM = user!.CPM,                                                                                                // User
             sjednal_ICP = user!.ICP,                                                                                                // User
+            VIP_makler = 0.ToJsonString(),                                                                                          // [MOCK] User (default 0)
             mena_prijmu = arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
             mena_bydliste = arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
 
@@ -678,6 +729,12 @@ internal class SendToCmpHandler
             fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                              // OfferInstance
             zpusob_podpisu_smluv_dok = arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
             seznam_domacnosti = households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
+
+            // other mandatory fields in JSON:
+            parametr_domicilace = 1.ToJsonString(),
+            parametr_RZP = 1.ToJsonString(),
+            parametr_pojisteni_nem = 1.ToJsonString(),
+            parametr_vyse_prijmu_uveru = 1.ToJsonString(),
         };
 
         var options = new JsonSerializerOptions { DefaultIgnoreCondition = ignoreNullValues ? System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull : System.Text.Json.Serialization.JsonIgnoreCondition.Never };
@@ -686,6 +743,7 @@ internal class SendToCmpHandler
         return json;
 
         #region JSON example
+
         /*
         {
     "cislo_smlouvy": "HF00000000055", //SalesArrangement
