@@ -245,6 +245,16 @@
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID prijmu</param>
         </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.GetIncome.GetIncomeResponse.IncomeTypeId">
+            <summary>
+            Druh prijmu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.GetIncome.GetIncomeResponse.Data">
+            <summary>
+            Detail prijmu na L2
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.CustomerIncome.UpdateIncomes.UpdateIncomesRequest.Incomes">
             <summary>
             Seznam prijmu (novych, existujicich) pro daneho customera

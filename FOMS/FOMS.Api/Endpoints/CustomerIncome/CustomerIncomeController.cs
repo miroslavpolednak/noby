@@ -58,8 +58,8 @@ public class CustomerIncomeController : ControllerBase
     [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
-    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
-    public async Task<object> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(GetIncome.GetIncomeResponse), StatusCodes.Status200OK)]
+    public async Task<GetIncome.GetIncomeResponse> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetIncome.GetIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
