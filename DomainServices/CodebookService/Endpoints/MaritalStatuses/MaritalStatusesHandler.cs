@@ -9,7 +9,7 @@ public class MaritalStatusesHandler
     {
         try
         {
-            return await FastMemoryCache.GetOrCreate<MaritalStatusItem>(nameof(MaritalStatusesHandler), async () =>
+            return await FastMemoryCache.GetOrCreate(nameof(MaritalStatusesHandler), async () =>
             {
                 var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
 

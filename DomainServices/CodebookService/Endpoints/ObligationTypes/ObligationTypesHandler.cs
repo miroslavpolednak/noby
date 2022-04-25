@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes;
 
 namespace DomainServices.CodebookService.Endpoints.ObligationTypes
@@ -11,26 +10,9 @@ namespace DomainServices.CodebookService.Endpoints.ObligationTypes
         {
             try
             {
-                if (_cache.Exists(_cacheKey))
-                {
-                    _logger.LogDebug("Found ObligationTypes in cache");
-
-                    return await _cache.GetAllAsync<GenericCodebookItemWithCode>(_cacheKey);
-                }
-                else
-                {
-                    _logger.LogDebug("Reading ObligationTypes from database");
-
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync();
-                        var result = (await connection.QueryAsync<GenericCodebookItemWithCode>(_sqlQuery)).ToList();
-
-                        await _cache.SetAllAsync(_cacheKey, result);
-
-                        return result;
-                    }
-                }
+                return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(ObligationTypesHandler), async () =>
+                   await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken)
+                );
             }
             catch (Exception ex)
             {
@@ -43,18 +25,13 @@ namespace DomainServices.CodebookService.Endpoints.ObligationTypes
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<ObligationTypesHandler> _logger;
-        private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
         public ObligationTypesHandler(
-            CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
             ILogger<ObligationTypesHandler> logger)
         {
-            _cache = cache;
             _logger = logger;
             _connectionProvider = connectionProvider;
         }
-
-        private const string _cacheKey = "ObligationTypes";
     }
 }

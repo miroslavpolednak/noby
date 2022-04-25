@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.IncomeTypes;
 
 namespace DomainServices.CodebookService.Endpoints.IncomeTypes;
@@ -11,26 +10,9 @@ public class IncomeTypesHandler
     {
         try
         {
-            if (_cache.Exists(_cacheKey))
-            {
-                _logger.LogDebug("Found IncomeTypes in cache");
-
-                return await _cache.GetAllAsync<GenericCodebookItemWithCode>(_cacheKey);
-            }
-            else
-            {
-                _logger.LogDebug("Reading IncomeTypes from database");
-
-                await using (var connection = _connectionProvider.Create())
-                {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<GenericCodebookItemWithCode>(_sqlQuery)).ToList();
-
-                    await _cache.SetAllAsync(_cacheKey, result);
-
-                    return result;
-                }
-            }
+            return await FastMemoryCache.GetOrCreate(nameof(IncomeTypesHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken)
+            );
         }
         catch (Exception ex)
         {
@@ -43,17 +25,12 @@ public class IncomeTypesHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<IncomeTypesHandler> _logger;
-    private readonly CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> _cache;
 
     public IncomeTypesHandler(
-        CIS.Infrastructure.Caching.IGlobalCache<ISharedInMemoryCache> cache,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
         ILogger<IncomeTypesHandler> logger)
     {
-        _cache = cache;
         _logger = logger;
         _connectionProvider = connectionProvider;
     }
-
-    private const string _cacheKey = "IncomeTypes";
 }

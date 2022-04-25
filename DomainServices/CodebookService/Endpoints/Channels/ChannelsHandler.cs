@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.Channels;
 
 namespace DomainServices.CodebookService.Endpoints.Channels
@@ -11,7 +10,7 @@ namespace DomainServices.CodebookService.Endpoints.Channels
         {
             try
             {
-                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ChannelsHandler), async () =>
+                return await FastMemoryCache.GetOrCreate(nameof(ChannelsHandler), async () =>
                     await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
                 );
             }
