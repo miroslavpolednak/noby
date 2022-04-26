@@ -19,13 +19,6 @@ steps:
     version: '6.0.x'
     includePreviewVersions: true
 
-# NuGet tool installer
-# Acquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: 6.1.0
-    checkLatest: false
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
@@ -34,32 +27,23 @@ steps:
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
-#- task: NuGetCommand@2
-#  inputs:
-#    command: 'restore'
-#    restoreSolution: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
-#    feedsToUse: 'config'
-#    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
-#    noCache: true
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'DomainServices\UserService\Api\DomainServices.UserService.Api.csproj'
-    arguments: '--output $(Build.BinariesDirectory) --no-restore'
-
+    arguments: '--output $(Build.BinariesDirectory)'
 
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/UserService_$(Build.BuildNumber).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/UserService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/UserService_$(Build.BuildNumber).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/UserService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\'
