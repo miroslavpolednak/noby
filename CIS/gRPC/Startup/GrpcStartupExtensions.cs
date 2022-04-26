@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -28,10 +29,32 @@ public static class GrpcStartupExtensions
         {
             serverOptions.ConfigureEndpointDefaults(opts =>
             {
+                // pouzit k vytvoreni SSL certifikat
                 if (kestrelConfiguration.Certificate != null)
-                    opts.UseHttps(kestrelConfiguration.Certificate?.Path ?? throw new Core.Exceptions.CisConfigurationNotFound("CustomKestrel.Certificate.Path"), kestrelConfiguration.Certificate.Password);
+                {
+                    switch (kestrelConfiguration.Certificate.Location)
+                    {
+                        // ulozen na filesystemu
+                        case Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.FileSystem:
+                            opts.UseHttps(kestrelConfiguration.Certificate?.Path ?? throw new Core.Exceptions.CisConfigurationNotFound("CustomKestrel.Certificate.Path"), kestrelConfiguration.Certificate.Password);
+                            break;
+
+                        // ulozen v certstore
+                        case Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.CertStore:
+                            using (var store = new X509Store(kestrelConfiguration.Certificate.CertStoreName, kestrelConfiguration.Certificate.CertStoreLocation, OpenFlags.ReadOnly))
+                            {
+                                var cert = store.Certificates
+                                    .FirstOrDefault(x => x.Thumbprint.Equals(kestrelConfiguration.Certificate.Thumbprint, StringComparison.OrdinalIgnoreCase))
+                                    ?? throw new Core.Exceptions.CisConfigurationException(0, $"Kestrel certifikate '{kestrelConfiguration.Certificate.Thumbprint}' not found in '{kestrelConfiguration.Certificate.CertStoreName}' / 'kestrelConfiguration.Certificate.CertStoreLocation'");
+                                opts.UseHttps(cert);
+                            }
+
+                            break;
+                    }
+                }
             });
 
+            // pridat endpointy kde kestrel bude poslouchat
             kestrelConfiguration.Endpoints?.ForEach(endpoint =>
             {
                 serverOptions.ListenAnyIP(endpoint.Port, listenOptions =>

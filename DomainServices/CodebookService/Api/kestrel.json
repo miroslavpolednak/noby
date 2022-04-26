@@ -11,8 +11,10 @@
       }
     ],
     "Certificate": {
-      "Path": "d:\\app\\DS-FAT\\adpra191.vsskb.cz.pfx",
-      "Password": "mpss123"
+      "Location": "CertStore",
+      "CertStoreName": "My",
+      "CertStoreLocation": "LocalMachine",
+      "Thumbprint": "2694C47172A2BB49985259915B747C2A2B3B8C1F"
     }
   }
 }

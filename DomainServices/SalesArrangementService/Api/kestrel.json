@@ -7,8 +7,10 @@
       }
     ],
     "Certificate": {
-      "Path": "d:\\app\\DS-FAT\\FAT.pfx",
-      "Password": "mpss123"
+      "Location": "CertStore",
+      "CertStoreName": "My",
+      "CertStoreLocation": "LocalMachine",
+      "Thumbprint": "2694C47172A2BB49985259915B747C2A2B3B8C1F"
     }
   }
 }
