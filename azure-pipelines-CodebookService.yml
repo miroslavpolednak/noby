@@ -19,11 +19,12 @@ steps:
     version: '6.0.x'
     includePreviewVersions: true
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    restoreSolution: 'DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj'
+    projects: 'DomainServices/CodebookService/Api/DomainServices.CodebookService.Api.csproj'
     feedsToUse: 'config'
+    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
 - task: DotNetCoreCLI@2
