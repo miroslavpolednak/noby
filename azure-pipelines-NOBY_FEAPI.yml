@@ -8,7 +8,6 @@ trigger:
 
 pool:
   name: MPSS Common
-  vmImage: 'windows-2022'
 
 variables:
   buildConfiguration: 'Release'
@@ -21,27 +20,6 @@ steps:
     packageType: 'sdk'
     version: '6.0.x'
     includePreviewVersions: true
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-
-# Add a Command To List the Current .NET SDKs (Sanity Check)
-- task: CmdLine@2
-  inputs:
-    script: 'dotnet --list-sdks'
-
-# NuGet tool installer
-# Acquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: 6.1.0
-    checkLatest: false
-
-#- task: NuGetCommand@2
-#  inputs:
-#    command: 'restore'
-#    restoreSolution: '$(solution)'
-#    feedsToUse: 'config'
-#    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
-#    noCache: true
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -51,19 +29,11 @@ steps:
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: false
 
-#- task: VSBuild@1
-#  inputs:
-#    solution: '$(solution)'
-#    msbuildArchitecture: x86
-#    msbuildArgs: '/p:OutputPath=$(Build.BinariesDirectory) /p:SkipInvalidConfigurations=true'
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) --no-restore --output $(Build.BinariesDirectory)'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)'
     noCache: false
 
 - task: ArchiveFiles@2
