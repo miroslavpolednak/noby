@@ -19,14 +19,6 @@ steps:
     version: '6.0.x'
     includePreviewVersions: true
 
-#- task: NuGetCommand@2
-#  inputs:
-#    command: 'restore'
-#    restoreSolution: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
-#    feedsToUse: 'config'
-#    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
-#    noCache: true
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
@@ -46,12 +38,12 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\'
