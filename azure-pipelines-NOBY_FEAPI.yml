@@ -46,7 +46,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/FEAPI_$(Build.BuildNumber).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/FEAPI_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\'
