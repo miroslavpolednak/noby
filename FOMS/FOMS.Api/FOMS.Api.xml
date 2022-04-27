@@ -260,6 +260,11 @@
             Seznam prijmu (novych, existujicich) pro daneho customera
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest.Data">
+            <summary>
+            Detailni informace o prijmu
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.CustomerIncome.Dto.BaseIncome.Sum">
             <summary>
             Celkova castka prijmu

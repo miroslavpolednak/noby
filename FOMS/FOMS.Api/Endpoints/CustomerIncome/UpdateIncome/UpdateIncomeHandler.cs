@@ -9,7 +9,9 @@ internal class UpdateIncomeHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeHandler), request.IncomeId);
 
-        ServiceCallResult.Resolve(await _customerService.UpdateIncome(new DomainServices.SalesArrangementService.Contracts.UpdateIncomeRequest
+        var incomeInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
+
+        var model = new DomainServices.SalesArrangementService.Contracts.UpdateIncomeRequest
         {
             IncomeId = request.IncomeId,
             BaseData = new DomainServices.SalesArrangementService.Contracts.IncomeBaseData
@@ -17,7 +19,27 @@ internal class UpdateIncomeHandler
                 CurrencyCode = request.CurrencyCode,
                 Sum = request.Sum
             }
-        }, cancellationToken));
+        };
+
+        // detail prijmu
+        if (request.Data is not null)
+        {
+            string dataString = ((System.Text.Json.JsonElement)request.Data).GetRawText();
+
+            switch ((CIS.Foms.Enums.CustomerIncomeTypes)incomeInstance.IncomeTypeId)
+            {
+                case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
+                    var o = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString);
+                    if (o is not null) //TODO kdyz je to null, mam resit nejakou validaci?
+                        model.Employement = o.ToDomainServiceRequest();
+                    break;
+
+                default:
+                    throw new NotImplementedException($"IncomeType {incomeInstance.IncomeTypeId} cast to domain service is not implemented");
+            }
+        }
+
+        ServiceCallResult.Resolve(await _customerService.UpdateIncome(model, cancellationToken));
     }
 
     private readonly ICustomerOnSAServiceAbstraction _customerService;

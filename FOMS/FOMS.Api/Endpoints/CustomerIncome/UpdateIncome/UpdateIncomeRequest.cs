@@ -11,6 +11,11 @@ public class UpdateIncomeRequest
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }
 
+    /// <summary>
+    /// Detailni informace o prijmu
+    /// </summary>
+    public object? Data { get; set; }
+
     internal UpdateIncomeRequest InfuseId(int customerOnSAId, int incomeId)
     {
         this.CustomerOnSAId = customerOnSAId;

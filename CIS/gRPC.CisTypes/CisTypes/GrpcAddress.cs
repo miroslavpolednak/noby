@@ -22,11 +22,11 @@ public sealed partial class GrpcAddress
         return new GrpcAddress
         {
             BuildingIdentificationNumber = address.BuildingIdentificationNumber,
-            Street = address.Street,
-            City = address.City,
+            Street = address.Street ?? "",
+            City = address.City ?? "",
             CountryId = address.CountryId,
             LandRegistryNumber = address.LandRegistryNumber,
-            Postcode = address.Postcode
+            Postcode = address.Postcode ?? ""
         };
     }
 }

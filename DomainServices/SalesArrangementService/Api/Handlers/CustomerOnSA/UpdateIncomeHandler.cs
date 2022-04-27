@@ -17,7 +17,7 @@ internal class UpdateIncomeHandler
         
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
-        entity.Data = JsonSerializer.Serialize(getDataObject(entity.IncomeTypeId, request.Request), GrpcHelpers.GrpcJsonSerializerOptions);
+        entity.Data = JsonSerializer.Serialize(getDataObject(entity.IncomeTypeId, request.Request));
 
         await _dbContext.SaveChangesAsync(cancellation);
         
