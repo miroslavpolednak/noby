@@ -79,6 +79,7 @@ internal class SimulateMortgageHandler
         {
             ProductTypeId = input.ProductTypeId,
             LoanInterestRate = 0.02m,                       //mock: 0.02
+            InterestRateAnnounced = 1,                      //mock: 1 (povinné v DV)
             LoanAmount = input.LoanAmount,                  //mock: ze vstupu
             LoanDuration = loanDuration,                    //mock: 0 (pokud na vstupu nezadáno)
                                                             //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
