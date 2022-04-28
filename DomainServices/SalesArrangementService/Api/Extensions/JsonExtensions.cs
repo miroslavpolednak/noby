@@ -38,7 +38,7 @@ internal static class JsonExtensions
 
     public static string ToJsonString(this decimal value)
     {
-        return value.ToString(FormatDecimal, CultureInfo.InvariantCulture);
+        return value.ToString(FormatDecimal, CultureInfo.GetCultureInfo("cs-CZ"));
     }
 
     public static string? ToJsonString(this decimal? value)
@@ -70,4 +70,22 @@ internal static class JsonExtensions
         return $"{identity.IdentityScheme}|{identity.IdentityId}";
     }
 
+    public static string? ToPostCodeJsonString(this string value)
+    {
+        if (String.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var valueWithoutSpaces = new string(value.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+
+        var isNumber = Int64.TryParse(valueWithoutSpaces, out var num);
+
+        if (!isNumber)
+        {
+            throw new CisArgumentException(99999, $"PostCode value '{value}' isn't covertable to number.", nameof(value));  //TODO: ErrorCode
+        }
+
+        return valueWithoutSpaces;
+    }
 }
