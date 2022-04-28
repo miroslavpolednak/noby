@@ -486,7 +486,7 @@ internal class SendToCmpHandler
                 cislo_popisne = i.BuildingIdentificationNumber,
                 cislo_orientacni = i.LandRegistryNumber,
                 // ulice_dodatek =                                  // ??? OP!
-                psc = i.Postcode,
+                psc = i.Postcode.ToPostCodeJsonString(),
                 misto = i.City,
                 stat = i.CountryId.ToJsonString(),
             };
@@ -569,7 +569,7 @@ internal class SendToCmpHandler
             {
                 prvni_pracovni_sml_od = i.Employement?.Job?.FirstWorkContractSince.ToJsonString(),
                 posledni_zamestnani_od = actualDate.ToJsonString(),                         // [MOCK] aktuální datum (relevantní v tomto DROPu, poté bude ´posledni_zamestnani_od´ zrušeno)
-                poradi_prijmu = rowNumber.ToJsonString(),                                                          
+                poradi_prijmu = rowNumber.ToJsonString(),
                 zdroj_prijmu_hlavni = iil.IncomeTypeId.ToJsonString(),
                 typ_pracovniho_pomeru = i.Employement?.Job?.EmploymentTypeId.ToJsonString(),
                 klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),
@@ -583,7 +583,7 @@ internal class SendToCmpHandler
                 zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
                 zamestnavatel_sidlo_cislo_popisne_orientacni = GetAddressNumber(i.Employement?.Employer?.Address),  //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
                 zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
-                zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode,
+                zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode.ToPostCodeJsonString(),
                 zamestnavatel_sidlo_stat = i.Employement?.Employer?.Address?.CountryId.ToJsonString(),
                 zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
                 zamestnavatel_okec = i.Employement?.Employer?.ClassficationOfEconomicActivities,
