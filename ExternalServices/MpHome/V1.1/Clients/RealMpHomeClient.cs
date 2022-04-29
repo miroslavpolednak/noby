@@ -69,8 +69,8 @@ namespace ExternalServices.MpHome.V1._1
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
-                throw;
+                return new ErrorServiceCallResult(99999, $"Error occured during call external service MpHome [{e.Message}]"); //TODO: error code
             }
         }
-        }
+    }
 }
