@@ -8,13 +8,13 @@ internal sealed class CisUserIdentity
     private readonly int _id;
     private readonly string _name;
 
-    public CisUserIdentity(int id, string name, string displayName)
+    public CisUserIdentity(int id, string displayName)
         : base("CisContextUser", ClaimTypes.NameIdentifier, ClaimTypes.Role)
     {
-        this.AddClaim(new Claim(ClaimTypes.NameIdentifier, name));
+        this.AddClaim(new Claim(ClaimTypes.NameIdentifier, id.ToString(System.Globalization.CultureInfo.InvariantCulture)));
         this.AddClaim(new Claim(ClaimTypes.Name, displayName));
 
-        _name = name;
+        _name = displayName;
         _id = id;
     }
 

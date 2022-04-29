@@ -1,14 +1,13 @@
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Security;
 using DomainServices.SalesArrangementService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Abstraction;
-
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
+using CIS.Security.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -45,6 +44,7 @@ builder
 
 // authentication
 builder.AddCisServiceAuthentication();
+builder.Services.AddCisContextUser();
 
 // add services
 builder.Services
@@ -75,6 +75,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCisContextUser();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

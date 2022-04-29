@@ -3,7 +3,7 @@
 internal static class UsersLoggerExtensions
 {
     private static readonly Action<ILogger, string?, Exception> _userSigningInAs;
-    private static readonly Action<ILogger, string?, Exception> _userGetCurrentUserInfo;
+    private static readonly Action<ILogger, int, Exception> _userGetCurrentUserInfo;
 
     static UsersLoggerExtensions()
     {
@@ -12,15 +12,15 @@ internal static class UsersLoggerExtensions
             new EventId(LoggerEventIdCodes.Endpoints_Users_SigningInAs, nameof(UserSigningInAs)),
             "Signing in as '{Username}'");
 
-        _userGetCurrentUserInfo = LoggerMessage.Define<string?>(
+        _userGetCurrentUserInfo = LoggerMessage.Define<int>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.Endpoints_Users_SigningInAs, nameof(UserGetCurrentUserInfo)),
-            "Try to retrieve info for '{Username}'");
+            new EventId(LoggerEventIdCodes.Endpoints_Users_GetCurrentUser, nameof(UserGetCurrentUserInfo)),
+            "Try to retrieve info for '{Id}'");
     }
 
     public static void UserSigningInAs(this ILogger logger, string? username)
         => _userSigningInAs(logger, username, null!);
 
-    public static void UserGetCurrentUserInfo(this ILogger logger, string? username)
-        => _userGetCurrentUserInfo(logger, username, null!);
+    public static void UserGetCurrentUserInfo(this ILogger logger, int id)
+        => _userGetCurrentUserInfo(logger, id, null!);
 }

@@ -11,7 +11,7 @@ public static class LoggerExtensions
     private static readonly Action<ILogger, Exception> _authIncorrectAuthHeader;
     private static readonly Action<ILogger, string, Exception> _authParsedLogin;
     private static readonly Action<ILogger, string, Exception> _adConnectionFailed;
-    private static readonly Action<ILogger, string, Exception> _contextUserAdded;
+    private static readonly Action<ILogger, int, Exception> _contextUserAdded;
 
     static LoggerExtensions()
     {
@@ -45,7 +45,7 @@ public static class LoggerExtensions
            new EventId(526, nameof(AdConnectionFailed)),
            "AD connection failed for '{Login}'");
 
-        _contextUserAdded = LoggerMessage.Define<string>(
+        _contextUserAdded = LoggerMessage.Define<int>(
            LogLevel.Debug,
            new EventId(526, nameof(ContextUserAdded)),
            "Context user identity {PartyId} added");
@@ -69,6 +69,6 @@ public static class LoggerExtensions
     public static void AdConnectionFailed(this ILogger logger, string login, Exception? ex)
         => _adConnectionFailed(logger, login, ex!);
 
-    public static void ContextUserAdded(this ILogger logger, string partyId)
+    public static void ContextUserAdded(this ILogger logger, int partyId)
         => _contextUserAdded(logger, partyId, null!);
 }

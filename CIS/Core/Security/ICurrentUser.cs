@@ -8,11 +8,6 @@ public interface ICurrentUser
     int Id { get; }
 
     /// <summary>
-    /// Login uzivatele
-    /// </summary>
-    string? Name { get; }
-
-    /// <summary>
     /// Cele jmeno uzivatele
     /// </summary>
     string? DisplayName { get; }

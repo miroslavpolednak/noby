@@ -1,11 +1,11 @@
 using CIS.Infrastructure.StartupExtensions;
 using ProtoBuf.Grpc.Server;
-using CIS.Security;
 using DomainServices.CodebookService.Api;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
 using CIS.Infrastructure.Caching;
+using CIS.Security.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);

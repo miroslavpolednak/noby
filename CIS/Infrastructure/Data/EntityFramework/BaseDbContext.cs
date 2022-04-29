@@ -77,23 +77,23 @@ public abstract class BaseDbContext<TDbContext>
                     {
                         if (CurrentUser is not null)
                         {
-                            obj1.CreatedUserId = CurrentUser.User.Id;
-                            obj1.CreatedUserName = CurrentUser.User.Name;
+                            obj1.CreatedUserId = CurrentUser.User!.Id;
+                            obj1.CreatedUserName = CurrentUser.User!.DisplayName;
                         }
                         obj1.CreatedTime = CisDateTime.Now;
                     }
                     if (CurrentUser is not null && entry.Entity is IModifiedUser obj2)
                     {
-                        obj2.ModifiedUserId = CurrentUser.User.Id;
-                        obj2.ModifiedUserName = CurrentUser.User.Name;
+                        obj2.ModifiedUserId = CurrentUser?.User?.Id;
+                        obj2.ModifiedUserName = CurrentUser?.User?.DisplayName;
                     }
                     break;
 
                 case EntityState.Modified:
                     if (CurrentUser is not null && entry.Entity is IModifiedUser obj3)
                     {
-                        obj3.ModifiedUserId = CurrentUser.User.Id;
-                        obj3.ModifiedUserName = CurrentUser.User.Name;
+                        obj3.ModifiedUserId = CurrentUser?.User?.Id;
+                        obj3.ModifiedUserName = CurrentUser?.User?.DisplayName;
                     }
                     break;
             }

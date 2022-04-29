@@ -1,8 +1,8 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.Storage.Api;
-using CIS.Security;
 using CIS.Infrastructure.Telemetry;
+using CIS.Security.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 

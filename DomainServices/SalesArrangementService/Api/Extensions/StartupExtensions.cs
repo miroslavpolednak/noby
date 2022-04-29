@@ -42,8 +42,6 @@ internal static class StartupExtensions
         builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();
         builder.AddEntityFramework<Repositories.NobyDbContext>("nobyDb");
 
-        builder.AddCisCurrentUser();
-            
         return builder;
     }
 }

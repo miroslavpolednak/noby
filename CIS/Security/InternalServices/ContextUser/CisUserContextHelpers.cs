@@ -2,30 +2,28 @@
 
 namespace CIS.Security.InternalServices.ContextUser;
 
-public class CisUserContextHelpers : ICisUserContextHelpers
+public sealed class CisUserContextHelpers 
+    : ICisUserContextHelpers
 {
     public const string ContextUserBaggageKey = "MpPartyId";
 
-    private readonly IHttpContextAccessor _context;
+    private readonly Core.Security.ICurrentUserAccessor _userAccessor;
 
-    public CisUserContextHelpers(IHttpContextAccessor context)
+    public CisUserContextHelpers(Core.Security.ICurrentUserAccessor userAccessor)
     {
-        if (context is null)
-            throw new ArgumentNullException(nameof(context), "IHttpContextAccessor is not registered in DI container, use services.AddHttpContextAccessor()");
+        if (userAccessor is null)
+            throw new ArgumentNullException(nameof(userAccessor), "ICurrentUserAccessor is not registered in DI container");
 
-        _context = context;
+        _userAccessor = userAccessor;
     }
 
     public async Task<TResult> AddUserContext<TResult>(Func<Task<TResult>> serviceCall)
     {
-        var userId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value;
-        if (string.IsNullOrEmpty(userId))
-            userId = _context?.HttpContext?.User?.Identity?.Name;
-
-        if (!string.IsNullOrEmpty(userId))
+        int? userId = getUserId();
+        if (userId.HasValue)
         {
             var activity = new Activity("CisContextUser")
-                .AddBaggage(ContextUserBaggageKey, userId)
+                .AddBaggage(ContextUserBaggageKey, userId.ToString())
                 .Start();
 
             var result = await serviceCall();
@@ -40,14 +38,11 @@ public class CisUserContextHelpers : ICisUserContextHelpers
 
     public async Task AddUserContext(Func<Task> serviceCall)
     {
-        var userId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value;
-        if (string.IsNullOrEmpty(userId))
-            userId = _context?.HttpContext?.User?.Identity?.Name;
-
-        if (!string.IsNullOrEmpty(userId))
+        int? userId = getUserId();
+        if (userId.HasValue)
         {
             var activity = new Activity("CisContextUser")
-                .AddBaggage(ContextUserBaggageKey, userId)
+                .AddBaggage(ContextUserBaggageKey, userId.ToString())
                 .Start();
 
             await serviceCall();
@@ -56,5 +51,13 @@ public class CisUserContextHelpers : ICisUserContextHelpers
         }
         else
             await serviceCall();
+    }
+
+    private int? getUserId()
+    {
+        if (!int.TryParse(Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value, out int i))
+            return _userAccessor.User?.Id;
+        else
+            return i;
     }
 }

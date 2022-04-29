@@ -9,4 +9,5 @@ public struct LoggerEventIdCodes
     public const int Endpoints_Codebooks_GetAllStarted = 99005;
     public const int Endpoints_Case_SearchPaginableSettings = 99006;
     public const int Endpoints_Users_SigningInAs = 99007;
+    public const int Endpoints_Users_GetCurrentUser = 99008;
 }

@@ -5,6 +5,7 @@ using DomainServices.OfferService.Api;
 using DomainServices.CodebookService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
+using CIS.Security.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -41,6 +42,8 @@ builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
+builder.Services.AddCisContextUser();
+
 builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS
 
 builder.Services.AddCodebookService(true);
@@ -71,6 +74,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCisContextUser();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

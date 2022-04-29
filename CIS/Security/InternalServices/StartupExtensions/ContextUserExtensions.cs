@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using CIS.Security.InternalServices.ContextUser;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Security.InternalServices;
 

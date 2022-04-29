@@ -17,7 +17,7 @@ internal sealed class SignInHandler
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, userInstance.FullName),
-            new Claim(ClaimTypes.Sid, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new Claim(ClaimTypes.NameIdentifier, userInstance.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)),
             new Claim(ClaimTypes.Spn, userInstance.CPM),
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

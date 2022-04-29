@@ -18,8 +18,6 @@ internal static class StartupExtensions
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-        builder.AddCisCurrentUser();
-            
         return builder;
     }
 }

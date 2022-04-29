@@ -39,8 +39,6 @@ internal static class StartupExtensions
         // CodebookService
         builder.Services.AddCodebookService(true);
 
-        builder.AddCisCurrentUser();
-
         // add validators
         builder.Services.Scan(selector => selector
                 .FromAssembliesOf(typeof(IApiAssembly))

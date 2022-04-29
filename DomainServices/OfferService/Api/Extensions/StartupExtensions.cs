@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.Eas;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api;
 
@@ -37,8 +36,6 @@ internal static class StartupExtensions
         // dbcontext
         builder.AddEntityFramework<Repositories.OfferServiceDbContext>();
 
-        builder.AddCisCurrentUser();
-            
         return builder;
     }
 }

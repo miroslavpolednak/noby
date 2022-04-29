@@ -22,14 +22,11 @@ internal class GetCaseCountsHandler
 
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<GetCaseCountsHandler> _logger;
-    private readonly CIS.Core.Security.IServiceUserAccessor _userAccessor;
     
     public GetCaseCountsHandler(
-        CIS.Core.Security.IServiceUserAccessor userAccessor,
         Repositories.CaseServiceRepository repository,
         ILogger<GetCaseCountsHandler> logger)
     {
-        _userAccessor = userAccessor;
         _repository = repository;
         _logger = logger;
     }

@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.StartupExtensions;
-using ProtoBuf.Grpc.Server;
+﻿using ProtoBuf.Grpc.Server;
 using System.IO.Compression;
 using System.Reflection;
 
@@ -14,9 +13,6 @@ internal static class StartupExtensions
             config.ResponseCompressionLevel = CompressionLevel.Optimal;
             config.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
         });
-
-        // add current user context
-        builder.AddCisCurrentUser();
 
         return builder;
     }
