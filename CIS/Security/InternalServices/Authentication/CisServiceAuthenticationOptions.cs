@@ -2,7 +2,8 @@
 
 namespace CIS.Security.InternalServices;
 
-public class CisServiceAuthenticationOptions : AuthenticationSchemeOptions
+public sealed class CisServiceAuthenticationOptions 
+    : AuthenticationSchemeOptions
 {
     /// <summary>
     /// Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"

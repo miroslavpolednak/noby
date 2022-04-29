@@ -3,20 +3,17 @@ using Microsoft.AspNetCore.Http;
 
 namespace FOMS.Infrastructure.Security;
 
-public class FomsCurrentUserAccessor : ICurrentUserAccessor
+public sealed class FomsCurrentUserAccessor 
+    : ICurrentUserAccessor
 {
-    private readonly IHttpContextAccessor? _httpContext;
+    private readonly ICurrentUser? _user;
 
     public FomsCurrentUserAccessor(IHttpContextAccessor? httpContext)
     {
-        _httpContext = httpContext;
+        _user = httpContext?.HttpContext?.User as ICurrentUser;
     }
 
-    public ICurrentUser? User
-    {
-        get
-        {
-            return _httpContext?.HttpContext?.User as ICurrentUser;
-        }
-    }
+    public bool IsAuthenticated => _user is not null;
+
+    public ICurrentUser? User => _user;
 }

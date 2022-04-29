@@ -1,10 +1,6 @@
-﻿using CIS.Security.InternalServices;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace CIS.Security;
+namespace CIS.Security.InternalServices;
 
 public static class AuthenticationExtensions
 {
@@ -46,6 +42,9 @@ public static class AuthenticationExtensions
             });
 
         builder.Services.AddAuthorization();
+
+        // helper pro ziskani instance technickeho uzivatele
+        builder.Services.AddScoped<Core.Security.IServiceUserAccessor, ServiceUser.CisServiceUserAccessor>();
 
         return builder;
     }

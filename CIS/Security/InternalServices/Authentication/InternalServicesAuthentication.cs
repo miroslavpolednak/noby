@@ -1,9 +1,8 @@
-﻿namespace CIS.Security
-{
-    public struct InternalServicesAuthentication
-    {
-        public const string DefaultSchemeName = "CISInternalService";
+﻿namespace CIS.Security.InternalServices;
 
-        public const string ContextUserSchemeName = "CISInternalServiceContext";
-    }
+public struct InternalServicesAuthentication
+{
+    public const string DefaultSchemeName = "CISInternalService";
+
+    public const string ContextUserSchemeName = "CISInternalServiceContext";
 }

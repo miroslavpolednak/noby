@@ -1,13 +1,19 @@
-﻿using System;
+﻿namespace CIS.Core.Security;
 
-namespace CIS.Core.Security
+public interface ICurrentUser
 {
-    public interface ICurrentUser
-    {
-        int Id { get; }
+    /// <summary>
+    /// v33id
+    /// </summary>
+    int Id { get; }
 
-        string Name { get; }
+    /// <summary>
+    /// Login uzivatele
+    /// </summary>
+    string? Name { get; }
 
-        string Login { get; }
-    }
+    /// <summary>
+    /// Cele jmeno uzivatele
+    /// </summary>
+    string? DisplayName { get; }
 }

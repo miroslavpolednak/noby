@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿namespace CIS.Security.InternalServices;
 
-namespace CIS.Security.InternalServices
+public interface ICisUserContextHelpers
 {
-    public interface ICisUserContextHelpers
-    {
-        Task<TResult> AddUserContext<TResult>(Func<Task<TResult>> serviceCall);
+    Task<TResult> AddUserContext<TResult>(Func<Task<TResult>> serviceCall);
 
-        Task AddUserContext(Func<Task> serviceCall);
-    }
+    Task AddUserContext(Func<Task> serviceCall);
 }

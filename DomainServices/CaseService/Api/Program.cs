@@ -1,6 +1,6 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Security;
+using CIS.Security.InternalServices;
 using DomainServices.CaseService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.UserService.Abstraction;
@@ -43,6 +43,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
+builder.Services.AddCisContextUser();
 
 // add this service
 builder.AddCaseService(appConfiguration);
@@ -71,6 +72,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCisContextUser();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

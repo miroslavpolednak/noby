@@ -1,11 +1,6 @@
-﻿using CIS.Security.InternalServices.Identities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-namespace CIS.Security.InternalServices;
+namespace CIS.Security.InternalServices.ContextUser;
 
 public sealed class CisUserContextMiddleware
 {
@@ -25,10 +20,8 @@ public sealed class CisUserContextMiddleware
         {
             _logger.ContextUserAdded(partyId);
 
-            // vytvorit identity
-            var identity = new CisUserContextIdentity(partyId);
-            if (httpContext.User != null)
-                httpContext.User.AddIdentity(identity);
+            // pridat identitu
+            httpContext.User.AddIdentity(new CisUserIdentity(1, "", ""));
         }
 
         await _next(httpContext);

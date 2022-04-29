@@ -22,7 +22,6 @@ builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructur
 builder
     .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures()
-    .AddCisCurrentUser()
     .AddCisWebApiCors()
     .AddCisLogging()
     .AddCisTracing()

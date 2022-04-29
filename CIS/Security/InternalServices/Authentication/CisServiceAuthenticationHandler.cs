@@ -1,11 +1,8 @@
-﻿using CIS.Security.InternalServices.Identities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace CIS.Security.InternalServices;
 
@@ -55,7 +52,7 @@ public sealed class CisServiceAuthenticationHandler : AuthenticationHandler<CisS
         else
         {
             // vytvorit identity
-            var claimsIdentity = new CisServiceIdentity(loginResult.Login);
+            var claimsIdentity = new ServiceUser.CisServiceIdentity(loginResult.Login);
 
             // vratit autentizacni ticket
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), InternalServicesAuthentication.DefaultSchemeName);

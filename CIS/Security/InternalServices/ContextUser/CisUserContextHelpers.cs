@@ -1,64 +1,60 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-namespace CIS.Security.InternalServices
+namespace CIS.Security.InternalServices.ContextUser;
+
+public class CisUserContextHelpers : ICisUserContextHelpers
 {
-    public class CisUserContextHelpers : ICisUserContextHelpers
+    public const string ContextUserBaggageKey = "MpPartyId";
+
+    private readonly IHttpContextAccessor _context;
+
+    public CisUserContextHelpers(IHttpContextAccessor context)
     {
-        public const string ContextUserBaggageKey = "MpPartyId";
-        private readonly IHttpContextAccessor _context;
+        if (context is null)
+            throw new ArgumentNullException(nameof(context), "IHttpContextAccessor is not registered in DI container, use services.AddHttpContextAccessor()");
 
-        public CisUserContextHelpers(IHttpContextAccessor context)
+        _context = context;
+    }
+
+    public async Task<TResult> AddUserContext<TResult>(Func<Task<TResult>> serviceCall)
+    {
+        var userId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value;
+        if (string.IsNullOrEmpty(userId))
+            userId = _context?.HttpContext?.User?.Identity?.Name;
+
+        if (!string.IsNullOrEmpty(userId))
         {
-            if (context is null)
-                throw new ArgumentNullException(nameof(context), "IHttpContextAccessor is not registered in DI container, use services.AddHttpContextAccessor()");
+            var activity = new Activity("CisContextUser")
+                .AddBaggage(ContextUserBaggageKey, userId)
+                .Start();
 
-            _context = context;
+            var result = await serviceCall();
+
+            activity.Stop();
+
+            return result;
         }
+        else
+            return await serviceCall();
+    }
 
-        public async Task<TResult> AddUserContext<TResult>(Func<Task<TResult>> serviceCall)
+    public async Task AddUserContext(Func<Task> serviceCall)
+    {
+        var userId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value;
+        if (string.IsNullOrEmpty(userId))
+            userId = _context?.HttpContext?.User?.Identity?.Name;
+
+        if (!string.IsNullOrEmpty(userId))
         {
-            var userId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value;
-            if (string.IsNullOrEmpty(userId))
-                userId = _context?.HttpContext?.User?.Identity?.Name;
+            var activity = new Activity("CisContextUser")
+                .AddBaggage(ContextUserBaggageKey, userId)
+                .Start();
 
-            if (!string.IsNullOrEmpty(userId))
-            {
-                var activity = new Activity("CisContextUser")
-                    .AddBaggage(ContextUserBaggageKey, userId)
-                    .Start();
+            await serviceCall();
 
-                var result = await serviceCall();
-
-                activity.Stop();
-
-                return result;
-            }
-            else
-                return await serviceCall();
+            activity.Stop();
         }
-
-        public async Task AddUserContext(Func<Task> serviceCall)
-        {
-            var userId = Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value;
-            if (string.IsNullOrEmpty(userId))
-                userId = _context?.HttpContext?.User?.Identity?.Name;
-
-            if (!string.IsNullOrEmpty(userId))
-            {
-                var activity = new Activity("CisContextUser")
-                    .AddBaggage(ContextUserBaggageKey, userId)
-                    .Start();
-
-                await serviceCall();
-
-                activity.Stop();
-            }
-            else
-                await serviceCall();
-        }
+        else
+            await serviceCall();
     }
 }
