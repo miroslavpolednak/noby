@@ -70,8 +70,7 @@ internal sealed class RealEasClient
 
             _logger.LogSerializedObject("S_KLIENTDATA[]", request);
             var result = await client.GetKlientData_NewKlientAsync(request);
-            _logger.LogSerializedObject("GetKlientData_NewKlientResponse", result);
-
+            
             if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
                 return new ErrorServiceCallResult(0, "EAS GetKlientData_NewKlientResult is empty");
 
@@ -84,6 +83,8 @@ internal sealed class RealEasClient
             }
             else
             {
+                _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
+
                 return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
                 {
                     Id = r.klient_id,

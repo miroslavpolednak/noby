@@ -12,7 +12,8 @@ public sealed partial class GrpcAddress
             BuildingIdentificationNumber = address.BuildingIdentificationNumber,
             CountryId = address.CountryId,
             LandRegistryNumber = address.LandRegistryNumber,
-            Postcode = address.Postcode
+            Postcode = address.Postcode,
+            AddressTypeId = address.AddressTypeId
         };
     }
 
@@ -26,7 +27,8 @@ public sealed partial class GrpcAddress
             City = address.City ?? "",
             CountryId = address.CountryId,
             LandRegistryNumber = address.LandRegistryNumber,
-            Postcode = address.Postcode ?? ""
+            Postcode = address.Postcode ?? "",
+            AddressTypeId = address.AddressTypeId
         };
     }
 }

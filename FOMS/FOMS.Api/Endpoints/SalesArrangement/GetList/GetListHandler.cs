@@ -19,18 +19,27 @@ internal class GetListHandler
 
         // seznam typu k doplneni nazvu SA
         var saTypeList = await _codebookService.SalesArrangementTypes(cancellationToken);
-        
-        return result.SalesArrangements.Select(t => new Dto.SalesArrangementListItem
+        var productTypes = await _codebookService.ProductTypes(cancellationToken);
+
+        var model = result.SalesArrangements.Select(t => new Dto.SalesArrangementListItem
         {
             SalesArrangementId = t.SalesArrangementId,
             SalesArrangementTypeId = t.SalesArrangementTypeId,
-            SalesArrangementTypeText = saTypeList.First(x => x.Id == t.SalesArrangementTypeId).Name,
             State = (CIS.Foms.Enums.SalesArrangementStates)t.State,
             StateText = ((CIS.Foms.Enums.SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
             OfferId = t.OfferId,
             CreatedBy = t.Created.UserName,
             CreatedTime = t.Created.DateTime
         }).ToList();
+
+        model.ForEach(t =>
+        {
+            var saType = saTypeList.First(x => x.Id == t.SalesArrangementTypeId);
+            t.ProductName = productTypes.First(t => t.Id == saType.ProductTypeId).Name;
+            t.SalesArrangementTypeText = saType.Name;
+        });
+
+        return model;
     }
 
     private readonly ICodebookServiceAbstraction _codebookService;

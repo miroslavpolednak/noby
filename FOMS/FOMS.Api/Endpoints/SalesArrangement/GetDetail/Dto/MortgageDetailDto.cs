@@ -2,6 +2,8 @@
 
 public class MortgageDetailDto
 {
+    public int LoanKindId { get; set; }
+
     /// <summary>
     /// ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
     /// </summary>

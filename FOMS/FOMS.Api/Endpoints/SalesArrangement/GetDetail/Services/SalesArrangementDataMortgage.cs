@@ -7,15 +7,18 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail.Services;
 
 internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 {
+    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private CIS.Core.Data.IConnectionProvider<IKonsdbDapperConnectionProvider> _connectionProvider;
 
     public SalesArrangementDataMortgage(
+        DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService, 
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         CIS.Core.Data.IConnectionProvider<IKonsdbDapperConnectionProvider> connectionProvider)
     {
+        _codebookService = codebookService;
         _connectionProvider = connectionProvider;
         _caseService = caseService;
         _offerService = offerService;
@@ -34,8 +37,14 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 
     async Task<Dto.MortgageDetailDto> getDataKonsDb(long caseId, CancellationToken cancellationToken)
     {
-        return await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<Dto.MortgageDetailDto>(_konsDbSqlQuery, new {id = caseId}, cancellationToken)
+        var model = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<Dto.MortgageDetailDto>(_konsDbSqlQuery, new {id = caseId}, cancellationToken)
             ?? throw new CisNotFoundException(ErrorCodes.CaseNotFoundInKonsDb, $"Case #{caseId} not found in KonsDb");
+
+        model.ProductName = (await _codebookService.LoanKinds(cancellationToken))
+            .FirstOrDefault(t => t.Id == model.LoanKindId)?
+            .Name ?? "-";
+
+        return model;
     }
 
     async Task<Dto.MortgageDetailDto> getDataInternal(long caseId, int? offerId, CancellationToken cancellationToken)
@@ -48,18 +57,23 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         
         // get mortgage data
         var offerInstance = ServiceCallResult.Resolve<OfferContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellationToken));
+
+        var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.Inputs.LoanKindId)?.Name ?? "-";
         
         // create response object
         return new Dto.MortgageDetailDto()
         {
+            MonthlyPayment = offerInstance.Inputs.LoanPaymentAmount,
+            LoanKindId = offerInstance.Inputs.LoanKindId,
             ContractNumber = saCase.Data.ContractNumber,
             LoanInterestRate = offerInstance.Outputs.LoanInterestRate,
             LoanAmount = offerInstance.Outputs.LoanAmount,
-            ProductName = "co tady ma byt?"
+            ProductName = loanKindName
         };
     }
 
     private const string _konsDbSqlQuery = @"SELECT
+    A.AkceUveruId 'LoanKindId',
 	A.CisloSmlouvy 'ContractNumber',
 	B.Text 'ProductName',
 	A.VyseUveru 'LoanAmount',

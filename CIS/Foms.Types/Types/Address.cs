@@ -2,11 +2,13 @@
 
 public class Address
 {
+    public int? AddressTypeId { get; set; }
+
     public string? Street { get; set; }
     
-    public int? BuildingIdentificationNumber { get; set; }
+    public string? BuildingIdentificationNumber { get; set; }
     
-    public int? LandRegistryNumber { get; set; }
+    public string? LandRegistryNumber { get; set; }
     
     public string? Postcode { get; set; }
     

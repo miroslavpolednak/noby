@@ -43,19 +43,44 @@ internal class GetCustomersHandler
                 };
                 var customerDetail = ServiceCallResult.Resolve<CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}, cancellationToken));
 
+                // doplnit detail customera
+                c.BirthNumber = customerDetail.NaturalPerson.BirthNumber;
+                c.PlaceOfBirth = customerDetail.NaturalPerson.PlaceOfBirth;
+
                 // adresa
                 //TODO kterou adresu brat?
-                var address = customerDetail.Addresses?.FirstOrDefault();
+                var address = customerDetail.Addresses?.FirstOrDefault(t => t.AddressTypeId == 1);
                 if (address is not null)
                 {
-                    c.City = address.City;
-                    c.Street = address.Street;
+                    c.MainAddress = new CIS.Foms.Types.Address
+                    {
+                        Street = address.Street,
+                        City = address.City,
+                        BuildingIdentificationNumber = address.BuildingIdentificationNumber,
+                        CountryId = address.CountryId,
+                        LandRegistryNumber = address.LandRegistryNumber,
+                        Postcode = address.Postcode
+                    };
+                }
+                // kontaktni adresa
+                var address2 = customerDetail.Addresses?.FirstOrDefault(t => t.AddressTypeId == 2);
+                if (address2 is not null)
+                {
+                    c.ContactAddress = new CIS.Foms.Types.Address
+                    {
+                        Street = address2.Street,
+                        City = address2.City,
+                        BuildingIdentificationNumber = address2.BuildingIdentificationNumber,
+                        CountryId = address2.CountryId,
+                        LandRegistryNumber = address2.LandRegistryNumber,
+                        Postcode = address2.Postcode
+                    };
                 }
 
                 // kontakty
                 //TODO jak poznam jake kontakty se maji naplnit?
                 c.Phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 1)?.Value;
-                c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 2)?.Value;
+                c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 5)?.Value;
             }
 
             model.Add(c);

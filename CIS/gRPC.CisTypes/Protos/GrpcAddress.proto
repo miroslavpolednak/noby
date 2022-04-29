@@ -7,13 +7,15 @@ import "google/protobuf/wrappers.proto";
 message GrpcAddress {
   string Street = 1;
   
-  google.protobuf.Int32Value BuildingIdentificationNumber = 2;
+  string BuildingIdentificationNumber = 2;
   
-  google.protobuf.Int32Value LandRegistryNumber = 3;
+  string LandRegistryNumber = 3;
   
   string Postcode = 4;
   
   string City = 5;
   
   google.protobuf.Int32Value CountryId = 6;
+
+  google.protobuf.Int32Value AddressTypeId = 7;
 }

@@ -508,9 +508,9 @@ internal class SendToCmpHandler
                 }
 
                 //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
-                var parts = new int?[] { address.BuildingIdentificationNumber, address.LandRegistryNumber };
+                var parts = new string?[] { address.BuildingIdentificationNumber, address.LandRegistryNumber };
 
-                var number = String.Join("/", parts.Where(i => i.HasValue));
+                var number = String.Join("/", parts.Where(i => !string.IsNullOrEmpty(i)));
 
                 return String.IsNullOrEmpty(number) ? null : number;
             }
