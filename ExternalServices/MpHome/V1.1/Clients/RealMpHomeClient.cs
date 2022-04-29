@@ -66,25 +66,10 @@ namespace ExternalServices.MpHome.V1._1
             {
                 return await fce(CreateClient());
             }
-            catch (ApiException<ModelErrorWrapper> ex)
+            catch (Exception e)
             {
-                _logger.LogError(ex, ex.Message);
-                return new SuccessfulServiceCallResult<ApiException<ModelErrorWrapper>>(ex);
-            }
-            catch (ApiException<Error> ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return new SuccessfulServiceCallResult<ApiException<Error>>(ex);
-            }
-            catch (ApiException<ProblemDetails> ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return new SuccessfulServiceCallResult<ApiException<ProblemDetails>>(ex);
-            }
-            catch (ApiException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return new SuccessfulServiceCallResult<ApiException>(ex);
+                _logger.LogError(e, e.Message);
+                return new ErrorServiceCallResult(99999, $"Error occured during call external service MpHome [{e.Message}]"); //TODO: error code
             }
         }
     }
