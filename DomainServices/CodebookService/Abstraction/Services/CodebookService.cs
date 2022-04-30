@@ -1,4 +1,4 @@
-﻿using CIS.DomainServices.Security.Abstraction;
+﻿using CIS.DomainServicesSecurity.Abstraction;
 using DomainServices.CodebookService.Contracts;
 
 namespace DomainServices.CodebookService.Abstraction;

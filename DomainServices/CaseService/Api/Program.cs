@@ -5,7 +5,7 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.UserService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServices.Security;
+using CIS.DomainServicesSecurity;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 

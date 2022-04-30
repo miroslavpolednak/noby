@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Security;
 using Microsoft.AspNetCore.Http;
 using Serilog.Context;
+using System.Diagnostics;
 
 namespace CIS.Infrastructure.Telemetry.Serilog;
 
@@ -9,6 +10,8 @@ namespace CIS.Infrastructure.Telemetry.Serilog;
 /// </summary>
 public class SerilogCisUserMiddleware
 {
+    const string ContextUserBaggageKey = "MpPartyId";
+
     private readonly RequestDelegate _next;
 
     public SerilogCisUserMiddleware(RequestDelegate next)
@@ -16,16 +19,29 @@ public class SerilogCisUserMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, ICurrentUserAccessor userAccessor)
+    public async Task Invoke(HttpContext context)
     {
-        if (userAccessor?.User is not null)
+        // pokud se posila v ramci headeru requestu
+        if (int.TryParse(Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value, out int id))
         {
-            using (LogContext.PushProperty("CisUserId", userAccessor.User.Id))
+            using (LogContext.PushProperty("CisUserId", id))
             {
                 await _next.Invoke(context);
             }
         }
+        // jinak pokud je v httpContextu
         else
-            await _next.Invoke(context);
+        {
+            var userAccessor = context.RequestServices.GetService(typeof(ICurrentUserAccessor)) as ICurrentUserAccessor;
+            if (userAccessor is not null && userAccessor.IsAuthenticated)
+            {
+                using (LogContext.PushProperty("CisUserId", userAccessor.User!.Id))
+                {
+                    await _next.Invoke(context);
+                }
+            }
+            else
+                await _next.Invoke(context);
+        }
     }
 }

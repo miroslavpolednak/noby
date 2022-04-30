@@ -3,7 +3,7 @@ using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.DomainServices.Security.Abstraction;
+using CIS.DomainServicesSecurity.Abstraction;
 
 namespace DomainServices.CodebookService.Abstraction;
 

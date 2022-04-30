@@ -4,7 +4,7 @@ using DomainServices.ProductService.Api;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServices.Security;
+using CIS.DomainServicesSecurity;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 

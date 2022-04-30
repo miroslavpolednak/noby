@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Results;
-using CIS.DomainServices.Security.Abstraction;
+using CIS.DomainServicesSecurity.Abstraction;
 using DomainServices.CustomerService.Contracts;
 using Microsoft.Extensions.Logging;
 

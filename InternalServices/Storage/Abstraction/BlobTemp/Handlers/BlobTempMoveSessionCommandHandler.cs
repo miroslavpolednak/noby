@@ -1,4 +1,4 @@
-﻿using CIS.DomainServices.Security.Abstraction;
+﻿using CIS.DomainServicesSecurity.Abstraction;
 
 namespace CIS.InternalServices.Storage.Abstraction.BlobStorageTemp.Handlers;
 

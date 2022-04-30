@@ -4,7 +4,7 @@ using DomainServices.OfferService.Contracts;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
-using CIS.DomainServices.Security.Abstraction;
+using CIS.DomainServicesSecurity.Abstraction;
 
 namespace DomainServices.OfferService.Abstraction;
 

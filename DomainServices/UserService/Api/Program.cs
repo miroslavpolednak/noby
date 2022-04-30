@@ -3,7 +3,7 @@ using CIS.Infrastructure.StartupExtensions;
 using DomainServices.UserService.Api;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServices.Security;
+using CIS.DomainServicesSecurity;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -56,7 +56,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCisServiceUserContext();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

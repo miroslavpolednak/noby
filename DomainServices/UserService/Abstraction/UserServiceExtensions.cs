@@ -1,8 +1,8 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.DomainServices.Security.Abstraction;
+using CIS.DomainServicesSecurity.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 namespace DomainServices.UserService.Abstraction;
 
