@@ -1,15 +1,17 @@
-﻿namespace CIS.InternalServices.Storage.Abstraction.BlobStorageTemp.Handlers;
+﻿using CIS.DomainServices.Security.Abstraction;
+
+namespace CIS.InternalServices.Storage.Abstraction.BlobStorageTemp.Handlers;
 
 internal class BlobTempMoveCommandHandler : AsyncRequestHandler<Dto.BlobTempMoveRequest>
 {
     private readonly ILogger<BlobTempMoveCommandHandler> _logger;
     private readonly Contracts.v1.BlobTemp.BlobTempClient _service;
-    private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public BlobTempMoveCommandHandler(
         ILogger<BlobTempMoveCommandHandler> logger,
         Contracts.v1.BlobTemp.BlobTempClient service,
-        Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

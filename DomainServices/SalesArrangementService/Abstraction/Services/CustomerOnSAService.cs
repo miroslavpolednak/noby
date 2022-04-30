@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.DomainServices.Security.Abstraction;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
@@ -122,12 +123,12 @@ internal class CustomerOnSAService : ICustomerOnSAServiceAbstraction
 
     private readonly ILogger<CustomerOnSAService> _logger;
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public CustomerOnSAService(
         ILogger<CustomerOnSAService> logger,
         Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

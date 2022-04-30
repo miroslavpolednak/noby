@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.DomainServices.Security.Abstraction;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
@@ -69,12 +70,12 @@ internal class HouseholdService : IHouseholdServiceAbstraction
 
     private readonly ILogger<HouseholdService> _logger;
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public HouseholdService(
         ILogger<HouseholdService> logger,
         Contracts.v1.HouseholdService.HouseholdServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

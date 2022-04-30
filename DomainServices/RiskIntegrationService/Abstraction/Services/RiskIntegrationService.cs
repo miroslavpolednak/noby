@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.DomainServices.Security.Abstraction;
 using CIS.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
 
@@ -15,12 +16,12 @@ internal class RiskIntegrationService : IRiskIntegrationServiceAbstraction
 
     private readonly ILogger<RiskIntegrationService> _logger;
     private readonly Contracts.v1.RiskIntegrationService.RiskIntegrationServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public RiskIntegrationService(
         ILogger<RiskIntegrationService> logger,
         Contracts.v1.RiskIntegrationService.RiskIntegrationServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

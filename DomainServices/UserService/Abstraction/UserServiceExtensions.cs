@@ -1,10 +1,8 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
-using CIS.Security.gRPC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.Security.InternalServices;
-using CIS.Infrastructure.Caching;
+using CIS.DomainServices.Security.Abstraction;
 
 namespace DomainServices.UserService.Abstraction;
 
@@ -42,7 +40,7 @@ public static class UserServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisContextUser();
+        services.AddCisUserContextHelpers();
 
         // register storage services
         services.TryAddTransient<IUserServiceAbstraction, Services.UserService>();

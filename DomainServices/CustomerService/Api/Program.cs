@@ -1,9 +1,8 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Security;
 using DomainServices.CustomerService.Api;
 using CIS.Infrastructure.Telemetry;
-using CIS.Security.InternalServices;
+using CIS.DomainServices.Security;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -46,7 +45,6 @@ builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
-builder.Services.AddCisContextUser();
 
 // add storage services
 builder.AddCutomerService(appConfiguration);
@@ -69,7 +67,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCisContextUser();
+app.UseCisServiceUserContext();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

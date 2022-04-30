@@ -5,7 +5,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Telemetry;
 using Microsoft.OpenApi.Models;
 using CIS.Infrastructure.Caching;
-using CIS.Security.InternalServices;
+using CIS.DomainServices.Security;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 var endpointsType = typeof(DomainServices.CodebookService.Endpoints.IEndpointsAssembly);

@@ -14,6 +14,7 @@
 	
   <ItemGroup>
     <PackageReference Include="Grpc.Net.Client" Version="2.45.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
@@ -23,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\Security\CIS.Security.csproj" />
   </ItemGroup>
 
 </Project>

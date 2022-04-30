@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <ProjectReference Include="..\..\..\CIS\DomainServices.Security.Abstraction\CIS.DomainServices.Security.Abstraction.csproj" />
     <ProjectReference Include="..\..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
     <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
   </ItemGroup>
 

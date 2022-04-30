@@ -22,9 +22,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\CIS\DomainServices.Security.Abstraction\CIS.DomainServices.Security.Abstraction.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-		<ProjectReference Include="..\..\..\CIS\Security\CIS.Security.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.SalesArrangementService.Contracts.csproj" />
 	</ItemGroup>

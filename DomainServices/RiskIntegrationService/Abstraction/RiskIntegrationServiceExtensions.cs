@@ -1,7 +1,6 @@
-﻿using CIS.Infrastructure.gRPC;
+﻿using CIS.DomainServices.Security.Abstraction;
+using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
-using CIS.Security.gRPC;
-using CIS.Security.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -41,7 +40,7 @@ public static class RiskIntegrationServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisContextUser();
+        services.AddCisUserContextHelpers();
 
         // register storage services
         services.TryAddTransient<IRiskIntegrationServiceAbstraction, Services.RiskIntegrationService>();

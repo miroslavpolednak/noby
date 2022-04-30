@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.DomainServices.Security.Abstraction;
 using Microsoft.Extensions.Logging;
 
 namespace DomainServices.UserService.Abstraction.Services;
@@ -45,12 +46,12 @@ internal class UserService : IUserServiceAbstraction
 
     private readonly ILogger<UserService> _logger;
     private readonly Contracts.v1.UserService.UserServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public UserService(
         ILogger<UserService> logger,
         Contracts.v1.UserService.UserServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

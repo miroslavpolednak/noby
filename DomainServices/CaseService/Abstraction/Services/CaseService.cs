@@ -108,12 +108,12 @@ internal class CaseService : ICaseServiceAbstraction
 
     private readonly ILogger<CaseService> _logger;
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly CIS.DomainServices.Security.Abstraction.ICisUserContextHelpers _userContext;
 
     public CaseService(
         ILogger<CaseService> logger,
         Contracts.v1.CaseService.CaseServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        CIS.DomainServices.Security.Abstraction.ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

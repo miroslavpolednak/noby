@@ -4,6 +4,7 @@ using DomainServices.OfferService.Contracts;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
+using CIS.DomainServices.Security.Abstraction;
 
 namespace DomainServices.OfferService.Abstraction;
 
@@ -14,12 +15,12 @@ internal class OfferService : IOfferServiceAbstraction
 
     private readonly ILogger<OfferService> _logger;
     private readonly Contracts.v1.OfferService.OfferServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public OfferService(
         ILogger<OfferService> logger,
         Contracts.v1.OfferService.OfferServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

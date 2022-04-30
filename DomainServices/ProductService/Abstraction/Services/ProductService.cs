@@ -1,11 +1,8 @@
 ﻿using CIS.Core.Results;
-//using CIS.Infrastructure.gRPC;
-//using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
-
 using DomainServices.ProductService.Contracts;
-
+using CIS.DomainServices.Security.Abstraction;
 
 namespace DomainServices.ProductService.Abstraction.Services;
 
@@ -16,14 +13,14 @@ internal class ProductService : IProductServiceAbstraction
 
     private readonly ILogger<ProductService> _logger;
     private readonly Contracts.v1.ProductService.ProductServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public ProductService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ILogger<ProductService> logger,
         Contracts.v1.ProductService.ProductServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userAccessor = userAccessor;
         _userContext = userContext;

@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.Storage.Abstraction.BlobStorage.Dto;
+﻿using CIS.DomainServices.Security.Abstraction;
+using CIS.InternalServices.Storage.Abstraction.BlobStorage.Dto;
 
 namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
 
@@ -6,12 +7,12 @@ internal class BlobDeleteCommandHandler : AsyncRequestHandler<BlobDeleteRequest>
 {
     private readonly ILogger<BlobDeleteCommandHandler> _logger;
     private readonly Contracts.v1.Blob.BlobClient _service;
-    private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public BlobDeleteCommandHandler(
         ILogger<BlobDeleteCommandHandler> logger,
         Contracts.v1.Blob.BlobClient service,
-        Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

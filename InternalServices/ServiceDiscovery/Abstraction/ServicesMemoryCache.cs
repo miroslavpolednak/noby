@@ -56,12 +56,12 @@ internal sealed class ServicesMemoryCache
     }
 
     private readonly ILogger<ServicesMemoryCache> _logger;
-    private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly DomainServices.Security.Abstraction.ICisUserContextHelpers _userContext;
     private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;
 
     public ServicesMemoryCache(
         Contracts.v1.DiscoveryService.DiscoveryServiceClient service,
-        Security.InternalServices.ICisUserContextHelpers userContext,
+        DomainServices.Security.Abstraction.ICisUserContextHelpers userContext,
         ILogger<ServicesMemoryCache> logger)
     {
         _logger = logger;

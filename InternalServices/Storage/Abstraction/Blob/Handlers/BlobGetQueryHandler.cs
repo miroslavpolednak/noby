@@ -1,15 +1,17 @@
-﻿namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
+﻿using CIS.DomainServices.Security.Abstraction;
+
+namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
 
 internal class BlobGetQueryHandler : IRequestHandler<Dto.BlobGetRequest, Contracts.BlobGetResponse>
 {
     private readonly ILogger<BlobGetQueryHandler> _logger;
     private readonly Contracts.v1.Blob.BlobClient _service;
-    private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public BlobGetQueryHandler(
         ILogger<BlobGetQueryHandler> logger,
         Contracts.v1.Blob.BlobClient service,
-        Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

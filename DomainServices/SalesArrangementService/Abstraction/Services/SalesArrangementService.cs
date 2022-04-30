@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.DomainServices.Security.Abstraction;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
@@ -126,12 +127,12 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 
     private readonly ILogger<SalesArrangementService> _logger;
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
-    private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public SalesArrangementService(
         ILogger<SalesArrangementService> logger,
         Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service,
-        CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

@@ -1,17 +1,19 @@
-﻿namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
+﻿using CIS.DomainServices.Security.Abstraction;
+
+namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
 
 internal class BlobSaveCommandHandler : IRequestHandler<Dto.BlobSaveRequest, string>
 {
     private readonly ILogger<BlobSaveCommandHandler> _logger;
     private readonly Core.Configuration.ICisEnvironmentConfiguration _configuration;
     private readonly Contracts.v1.Blob.BlobClient _service;
-    private readonly Security.InternalServices.ICisUserContextHelpers _userContext;
+    private readonly ICisUserContextHelpers _userContext;
 
     public BlobSaveCommandHandler(
         ILogger<BlobSaveCommandHandler> logger,
         Contracts.v1.Blob.BlobClient service, 
         Core.Configuration.ICisEnvironmentConfiguration configuration,
-        Security.InternalServices.ICisUserContextHelpers userContext)
+        ICisUserContextHelpers userContext)
     {
         _userContext = userContext;
         _service = service;

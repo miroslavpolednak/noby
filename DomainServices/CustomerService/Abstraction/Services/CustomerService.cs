@@ -1,9 +1,7 @@
 ﻿using CIS.Core.Results;
-using CIS.Infrastructure.gRPC;
+using CIS.DomainServices.Security.Abstraction;
 using DomainServices.CustomerService.Contracts;
-using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using ProtoBuf.Grpc;
 
 namespace DomainServices.CustomerService.Abstraction
 {
@@ -11,12 +9,12 @@ namespace DomainServices.CustomerService.Abstraction
     {
         private readonly ILogger<CustomerService> _logger;
         private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
-        private readonly CIS.Security.InternalServices.ICisUserContextHelpers _userContext;
+        private readonly ICisUserContextHelpers _userContext;
 
         public CustomerService(
             ILogger<CustomerService> logger,
             Contracts.V1.CustomerService.CustomerServiceClient service,
-            CIS.Security.InternalServices.ICisUserContextHelpers userContext)
+            ICisUserContextHelpers userContext)
         {
             _userContext = userContext;
             _service = service;

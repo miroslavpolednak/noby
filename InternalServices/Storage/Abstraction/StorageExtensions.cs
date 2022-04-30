@@ -1,8 +1,7 @@
 ﻿using CIS.InternalServices.ServiceDiscovery.Abstraction;
-using CIS.Security.gRPC;
 using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.Security.InternalServices;
+using CIS.DomainServices.Security.Abstraction;
 
 namespace CIS.InternalServices.Storage.Abstraction;
 
@@ -72,7 +71,7 @@ public static class StorageExtensions
         // mediatr
         services.AddMediatR(typeof(StorageExtensions).Assembly);
 
-        services.AddCisContextUser();
+        services.AddCisUserContextHelpers();
 
         // register storage services
         services.TryAddTransient<IBlobServiceAbstraction, BlobStorage.BlobService>();

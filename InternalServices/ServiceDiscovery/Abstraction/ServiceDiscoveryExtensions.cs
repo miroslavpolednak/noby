@@ -1,7 +1,7 @@
-﻿using CIS.Infrastructure.gRPC;
+﻿using CIS.DomainServices.Security.Abstraction;
+using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.Security.InternalServices;
 
 namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
@@ -49,7 +49,7 @@ public static class ServiceDiscoveryExtensions
             return new EnvironmentNameProvider(configuration?.EnvironmentName);
         });
         // context user
-        services.AddCisContextUser();
+        services.AddCisUserContextHelpers();
 
         return services;
     }

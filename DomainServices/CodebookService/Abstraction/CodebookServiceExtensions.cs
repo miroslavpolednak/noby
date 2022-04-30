@@ -1,10 +1,9 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
-using CIS.Security.gRPC;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.Security.InternalServices;
+using CIS.DomainServices.Security.Abstraction;
 
 namespace DomainServices.CodebookService.Abstraction;
 
@@ -55,7 +54,7 @@ public static class CodebookServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisContextUser();
+        services.AddCisUserContextHelpers();
 
         // register services
         services.TryAddTransient<ICodebookServiceAbstraction, CodebookService>();
