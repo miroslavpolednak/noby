@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
+using DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
+
 
 namespace DomainServices.CodebookService.Endpoints.RiskApplicationTypes;
 
