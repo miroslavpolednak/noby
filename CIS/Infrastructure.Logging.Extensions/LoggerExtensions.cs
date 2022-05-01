@@ -23,7 +23,7 @@ public static class LoggerExtensions
         _logSerializedObject = LoggerMessage.Define<string, object>(
             LogLevel.Debug,
             new EventId(EventIdCodes.LogSerializedObject, nameof(LogSerializedObject)),
-            "{Name} serialized to: {SerializedObject}");
+            "{Name} serialized to: {@Object}");
     }
 
     public static void FoundItems(this ILogger logger, int count)
@@ -34,5 +34,5 @@ public static class LoggerExtensions
 
     //TODO dodelat ostatni log levels
     public static void LogSerializedObject(this ILogger logger, string name, object objectToLog, LogLevel logLevel = LogLevel.Debug)
-        => _logSerializedObject(logger, name, System.Text.Json.JsonSerializer.Serialize(objectToLog), null!);
+        => _logSerializedObject(logger, name, objectToLog, null!);
 }

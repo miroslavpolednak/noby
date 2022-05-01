@@ -14,7 +14,7 @@ public static class LoggingExtensions
 {
     public static IApplicationBuilder UseCisLogging(this IApplicationBuilder webApplication)
     {
-        webApplication.UseMiddleware<Serilog.SerilogCisUserMiddleware>();
+        webApplication.UseMiddleware<LoggerCisUserMiddleware>();
         return webApplication;
     }
 
@@ -73,7 +73,7 @@ public static class LoggingExtensions
 
             // logovani do databaze
             //TODO tohle poradne dodelat nebo uplne vyhodit - moc se mi do DB logovat nechce, ale jestli nebude nic jinyho nez Logman, tak asi nutnost
-            if (configuration.Logging?.Database is not null)
+            if (!string.IsNullOrEmpty(configuration.Logging?.Database?.ConnectionString))
             {
                 MSSqlServerSinkOptions sqlOptions = new()
                 {
@@ -95,8 +95,7 @@ public static class LoggingExtensions
             // console output
             if (configuration.Logging?.UseConsole ?? false)
             {
-                loggerConfiguration
-                    .WriteTo.Console();
+                loggerConfiguration.WriteTo.Console();
             }
         });
 

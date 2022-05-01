@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Serilog.Context;
 using System.Diagnostics;
 
-namespace CIS.Infrastructure.Telemetry.Serilog;
+namespace CIS.Infrastructure.Telemetry;
 
 /// <summary>
 /// Middleware, ktery pridava do kontextu logu (serilogu) informace o aktualnim CIS uzivateli
 /// </summary>
-public class SerilogCisUserMiddleware
+internal sealed class LoggerCisUserMiddleware
 {
     const string ContextUserBaggageKey = "MpPartyId";
 
     private readonly RequestDelegate _next;
 
-    public SerilogCisUserMiddleware(RequestDelegate next)
+    public LoggerCisUserMiddleware(RequestDelegate next)
     {
         _next = next;
     }
