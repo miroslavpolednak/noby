@@ -5,6 +5,7 @@
 	  <Product>Common Infrastructure Solution</Product>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
 	<PropertyGroup>
