@@ -121,7 +121,7 @@ internal class SendToCmpHandler
             ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
 
         // User load (by arrangement.Created.UserId)
-        var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId, cancellation))
+        var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))
             ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
 
         // load customers

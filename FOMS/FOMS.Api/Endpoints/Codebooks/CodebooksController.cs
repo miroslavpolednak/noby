@@ -41,7 +41,6 @@ public class CodebooksController : ControllerBase
     /// - PostCodes
     /// - ProductTypes
     /// - PropertySettlement
-    /// - PropertySettlement
     /// - RealEstateTypes
     /// - RealEstatePurchaseTypes
     /// - SalesArrangementStates

@@ -73,27 +73,32 @@ public abstract class BaseDbContext<TDbContext>
             switch (entry.State)
             {
                 case EntityState.Added:
-                    if (entry.Entity is ICreated obj1 && obj1.CreatedUserId == 0)
+                    if (entry.Entity is ICreated obj1 && obj1.CreatedUserId.GetValueOrDefault(0) == 0)
                     {
-                        if (CurrentUser is not null)
+                        if (CurrentUser is not null && CurrentUser.IsAuthenticated)
                         {
                             obj1.CreatedUserId = CurrentUser.User!.Id;
                             obj1.CreatedUserName = CurrentUser.User!.DisplayName;
                         }
+                        else //TODO workaround nez bude upravena struktura DB, odstranit!
+                        {
+                            obj1.CreatedUserId = 0;
+                            obj1.CreatedUserName = "";
+                        }
                         obj1.CreatedTime = CisDateTime.Now;
                     }
-                    if (CurrentUser is not null && entry.Entity is IModifiedUser obj2)
+                    if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj2)
                     {
-                        obj2.ModifiedUserId = CurrentUser?.User?.Id;
-                        obj2.ModifiedUserName = CurrentUser?.User?.DisplayName;
+                        obj2.ModifiedUserId = CurrentUser.User!.Id;
+                        obj2.ModifiedUserName = CurrentUser.User!.DisplayName;
                     }
                     break;
 
                 case EntityState.Modified:
-                    if (CurrentUser is not null && entry.Entity is IModifiedUser obj3)
+                    if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj3)
                     {
-                        obj3.ModifiedUserId = CurrentUser?.User?.Id;
-                        obj3.ModifiedUserName = CurrentUser?.User?.DisplayName;
+                        obj3.ModifiedUserId = CurrentUser.User!.Id;
+                        obj3.ModifiedUserName = CurrentUser.User!.DisplayName;
                     }
                     break;
             }

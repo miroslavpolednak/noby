@@ -2,12 +2,13 @@ syntax = "proto3";
 package cis.types;
 option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
 
+import "google/protobuf/wrappers.proto";
 import "GrpcDateTime.proto";
 
 // Informace o tom kdo a kdy menil/zalozil danou entitu.
 message ModificationStamp {
 	// v33id uzivatele
-	int32 userId = 1;
+	google.protobuf.Int32Value userId = 1;
 
 	// Cas zmeny
 	cis.types.GrpcDateTime dateTime = 2;

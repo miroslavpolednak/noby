@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Sinks.MSSqlServer;
@@ -45,12 +46,13 @@ public static class LoggingExtensions
                 .Enrich.WithProperty("Version", $"{assembly.Version}");
 
             // enrich from CIS env
-            var cisEnvConfiguration = serviceProvider.GetService(typeof(ICisEnvironmentConfiguration)) as ICisEnvironmentConfiguration;
+            var cisEnvConfiguration = serviceProvider.GetService<ICisEnvironmentConfiguration>();
             if (cisEnvConfiguration is not null)
             {
-                loggerConfiguration
-                    .Enrich.WithProperty("CisEnvironment", cisEnvConfiguration.EnvironmentName)
-                    .Enrich.WithProperty("CisAppKey", cisEnvConfiguration.DefaultApplicationKey);
+                if (!string.IsNullOrEmpty(cisEnvConfiguration.EnvironmentName))
+                    loggerConfiguration.Enrich.WithProperty("CisEnvironment", cisEnvConfiguration.EnvironmentName);
+                if (!string.IsNullOrEmpty(cisEnvConfiguration.DefaultApplicationKey))
+                    loggerConfiguration.Enrich.WithProperty("CisAppKey", cisEnvConfiguration.DefaultApplicationKey);
             }
 
             // seq

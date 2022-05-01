@@ -4,14 +4,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP TABLE [dbo].[Offer]
+GO
+
 CREATE TABLE [dbo].[Offer](
 	[OfferId] [int] IDENTITY(1,1) NOT NULL,
 	[ProductTypeId] [int] NOT NULL,
 	[ResourceProcessId] [uniqueidentifier] NOT NULL,
 	[Inputs] [nvarchar](max) NOT NULL,
 	[Outputs] [nvarchar](max) NOT NULL,
-	[CreatedUserName] [nvarchar](100) NOT NULL,
-	[CreatedUserId] [int] NOT NULL,
+	[CreatedUserName] [nvarchar](100) NULL,
+	[CreatedUserId] [int] NULL,
 	[CreatedTime] [datetime] NOT NULL,
  CONSTRAINT [PK_Offer] PRIMARY KEY CLUSTERED 
 (

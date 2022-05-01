@@ -25,7 +25,8 @@ public class GrpcValidationBehaviour<TRequest, TResponse>
         if (validationFailures.Any())
         {
             var collection = new GrpcErrorCollection(validationFailures.Select(t => new GrpcErrorCollection.GrpcErrorCollectionItem(t.ErrorCode, t.ErrorMessage)));
-            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "Validation errors occured", collection);
+            string message = string.Join("; ", collection.Select(t => t.Message));
+            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, message, collection);
         }
         
         return next();

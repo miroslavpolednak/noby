@@ -6,14 +6,26 @@ namespace FOMS.Infrastructure.Security;
 public sealed class FomsCurrentUserAccessor 
     : ICurrentUserAccessor
 {
-    private readonly ICurrentUser? _user;
+    private readonly IHttpContextAccessor _httpContext;
+    private ICurrentUser? _user;
 
-    public FomsCurrentUserAccessor(IHttpContextAccessor? httpContext)
+    public FomsCurrentUserAccessor(IHttpContextAccessor httpContext)
     {
-        _user = httpContext?.HttpContext?.User as ICurrentUser;
+        _httpContext = httpContext;
     }
 
-    public bool IsAuthenticated => _user is not null;
+    public ICurrentUser? User
+    {
+        get
+        {
+            if (_user is null)
+                _user = _httpContext.HttpContext?.User as ICurrentUser;
+            return _user;
+        }
+    }
 
-    public ICurrentUser? User => _user;
+    public bool IsAuthenticated
+    {
+        get => User is not null;
+    }
 }

@@ -5,20 +5,26 @@ namespace CIS.DomainServicesSecurity.ContextUser;
 internal class CisCurrentUserAccessor 
     : ICurrentUserAccessor
 {
-    private readonly ICurrentUser? _user;
+    private readonly IHttpContextAccessor _httpContext;
+    private ICurrentUser? _user;
 
     public CisCurrentUserAccessor(IHttpContextAccessor httpContext)
     {
-        _user = httpContext.HttpContext?.User?.Identities?.FirstOrDefault(t => t is ICurrentUser) as ICurrentUser;
+        _httpContext = httpContext;
     }
 
     public ICurrentUser? User
     {
-        get => _user;
+        get 
+        {
+            if (_user is null)
+                _user = _httpContext.HttpContext?.User?.Identities?.FirstOrDefault(t => t is ICurrentUser) as ICurrentUser;
+            return _user;
+        }
     }
 
     public bool IsAuthenticated
     {
-        get => _user is not null;
+        get => User is not null;
     }
 }
