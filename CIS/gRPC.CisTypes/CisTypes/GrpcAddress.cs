@@ -22,11 +22,11 @@ public sealed partial class GrpcAddress
         if (address is null) return null;
         return new GrpcAddress
         {
-            BuildingIdentificationNumber = address.BuildingIdentificationNumber,
+            BuildingIdentificationNumber = address.BuildingIdentificationNumber ?? "",
             Street = address.Street ?? "",
             City = address.City ?? "",
             CountryId = address.CountryId,
-            LandRegistryNumber = address.LandRegistryNumber,
+            LandRegistryNumber = address.LandRegistryNumber ?? "",
             Postcode = address.Postcode ?? "",
             AddressTypeId = address.AddressTypeId
         };

@@ -29,7 +29,7 @@ internal class UpdateIncomeHandler
             switch ((CIS.Foms.Enums.CustomerIncomeTypes)incomeInstance.IncomeTypeId)
             {
                 case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
-                    var o = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString);
+                    var o = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString, _jsonSerializerOptions);
                     if (o is not null) //TODO kdyz je to null, mam resit nejakou validaci?
                         model.Employement = o.ToDomainServiceRequest();
                     break;
@@ -41,6 +41,12 @@ internal class UpdateIncomeHandler
 
         ServiceCallResult.Resolve(await _customerService.UpdateIncome(model, cancellationToken));
     }
+
+    static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+    {
+        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
+        PropertyNameCaseInsensitive = true
+    };
 
     private readonly ICustomerOnSAServiceAbstraction _customerService;
     private readonly ILogger<UpdateIncomeHandler> _logger;

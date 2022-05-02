@@ -24,8 +24,5 @@ public sealed class FomsCurrentUserAccessor
         }
     }
 
-    public bool IsAuthenticated
-    {
-        get => User is not null;
-    }
+    public bool IsAuthenticated => User is not null;
 }
