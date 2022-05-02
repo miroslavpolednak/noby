@@ -6,14 +6,17 @@ public static class ServiceCallResult
         result switch
         {
             SuccessfulServiceCallResult => true,
-            _ => throw new NotImplementedException()
+            ErrorServiceCallResult => false,
+            _ => throw new NotImplementedException("ServiceCallResult type unknown (Resolve)")
         };
 
-    public static TModel Resolve<TModel>(IServiceCallResult result) =>
+    public static TModel ResolveAndThrowIfError<TModel>(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<TModel> r => r.Model,
-            _ => throw new NotImplementedException()
+            EmptyServiceCallResult => throw new Exceptions.CisArgumentNullException(0, $"ServiceCallResult is empty but should be instance of {typeof(TModel)}", nameof(result)),
+            ErrorServiceCallResult r2 => throw new Exceptions.ServiceCallResultErrorException(r2),
+            _ => throw new NotImplementedException("ServiceCallResult type unknown (Resolve<>)")
         };
 
     public static TModel? ResolveToDefault<TModel>(IServiceCallResult result) =>

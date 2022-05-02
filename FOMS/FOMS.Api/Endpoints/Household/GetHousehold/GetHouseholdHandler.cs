@@ -11,7 +11,7 @@ internal class GetHouseholdHandler
         _logger.RequestHandlerStartedWithId(nameof(GetHouseholdHandler), request.HouseholdId);
 
         // nacist ulozenou domacnost
-        var household = ServiceCallResult.Resolve<contracts.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        var household = ServiceCallResult.ResolveAndThrowIfError<contracts.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
         GetHouseholdResponse response = household.ToApiResponse();
 
         // nacist klienty
@@ -38,7 +38,7 @@ internal class GetHouseholdHandler
 
     private async Task<CustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)
     {
-        var customer = ServiceCallResult.Resolve<contracts.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAId, cancellationToken));
+        var customer = ServiceCallResult.ResolveAndThrowIfError<contracts.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAId, cancellationToken));
         return customer?.ToApiResponse();
     }
 

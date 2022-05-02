@@ -7,7 +7,7 @@ internal class GetCurrentUserHandler
     {
         _logger.UserGetCurrentUserInfo(_userAccessor.User!.Id);
 
-        var userInstance = ServiceCallResult.Resolve<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
+        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
 
         return new GetCurrentUserResponse
         {

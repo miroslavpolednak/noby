@@ -21,7 +21,7 @@ internal class SearchHandler
         _logger.LogSerializedObject(nameof(dsRequest), dsRequest);
 
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = ServiceCallResult.Resolve<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
         _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomerResult));
 
         // transform

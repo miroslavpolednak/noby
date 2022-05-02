@@ -35,6 +35,12 @@ public class ApiExceptionMiddleware
         {
             await Results.Problem(ex.MethodName, $"Service '{ex.ServiceName}' unavailable", statusCode: (int)HttpStatusCode.ServiceUnavailable).ExecuteAsync(context);
         }
+        // serviceCallResult error
+        catch (Core.Exceptions.ServiceCallResultErrorException ex)
+        {
+            var result = Results.ValidationProblem(ex.Errors.ToDictionary(k => k.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), v => new[] { v.Message }));
+            await result.ExecuteAsync(context);
+        }
         // object not found
         catch (Core.Exceptions.CisNotFoundException ex)
         {

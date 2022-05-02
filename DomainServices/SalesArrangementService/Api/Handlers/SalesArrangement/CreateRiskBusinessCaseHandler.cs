@@ -31,7 +31,7 @@ internal class CreateRiskBusinessCaseHandler
         };
         */
 
-        var riskBusinessCaseId = saInstance.SalesArrangementId.ToString(System.Globalization.CultureInfo.InvariantCulture); //TODO: ServiceCallResult.Resolve<string>(await _ripClient.CreateRiskBusinesCase(ripCreateRequest));
+        var riskBusinessCaseId = saInstance.SalesArrangementId.ToString(System.Globalization.CultureInfo.InvariantCulture); //TODO: ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(ripCreateRequest));
 
         // ulozit ho do DB
         saInstance.RiskBusinessCaseId = riskBusinessCaseId;

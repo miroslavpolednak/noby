@@ -12,7 +12,7 @@ internal class SendToCmpHandler
         _logger.RequestHandlerStartedWithId(nameof(SendToCmpHandler), request.SalesArrangementId);
 
         // instance SA
-        var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // odeslat do SB
         await _salesArrangementService.SendToCmp(request.SalesArrangementId, cancellationToken);

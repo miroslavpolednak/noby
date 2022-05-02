@@ -10,7 +10,7 @@ internal class GetIncomeHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetIncomeHandler), request.IncomeId);
 
-        var incomeInstance = ServiceCallResult.Resolve<_SA.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
+        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 
         return new GetIncomeResponse
         {

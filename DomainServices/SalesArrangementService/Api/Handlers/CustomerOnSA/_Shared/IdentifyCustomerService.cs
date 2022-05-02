@@ -18,7 +18,7 @@ internal class IdentifyCustomerService
 
             //TODO nepotrebuju asi cely detail, tak by stacila nejaka metoda CustomerExists? Nebo mam propsat udaje z CM nize do CustomerOnSA?
             // pokud klient neexistuje, mela by CustomerService vyhodit vyjimku
-            var customerInstance = ServiceCallResult.Resolve<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new() { Identity = ident }, cancellation));
+            var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new() { Identity = ident }, cancellation));
 
             // propsat udaje do customerOnSA
             entity.DateOfBirthNaturalPerson = customerInstance.NaturalPerson?.DateOfBirth;
@@ -57,7 +57,7 @@ internal class IdentifyCustomerService
 
     public async Task<int?> TryCreateMpIdentity(Identity identity, CancellationToken cancellation)
     {
-        var customerInstance = ServiceCallResult.Resolve<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new() { Identity = identity }, cancellation));
+        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new() { Identity = identity }, cancellation));
 
         // zavolat EAS
         var newMpIdentityId = await createMpIdWithEas(customerInstance);

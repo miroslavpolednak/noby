@@ -33,7 +33,7 @@ internal class SimulateMortgageHandler
     {
         try
         {
-            return ServiceCallResult.Resolve<DSContract.SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
+            return ServiceCallResult.ResolveAndThrowIfError<DSContract.SimulateMortgageResponse>(await _offerService.SimulateMortgage(model, cancellationToken));
         }
         catch (CisArgumentException ex)
         {

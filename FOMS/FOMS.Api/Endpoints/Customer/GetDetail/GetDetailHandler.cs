@@ -11,7 +11,7 @@ internal class GetDetailHandler
         _logger.RequestHandlerStarted(nameof(GetDetailHandler));
 
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = ServiceCallResult.Resolve<contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new contracts.CustomerRequest()
+        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new contracts.CustomerRequest()
         {
             Identity = new Identity(request.Id, request.Schema)
         }, cancellationToken));

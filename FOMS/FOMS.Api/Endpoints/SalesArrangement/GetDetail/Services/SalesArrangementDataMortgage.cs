@@ -53,10 +53,10 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
             throw new CisArgumentNullException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{caseId}", nameof(offerId));
         
         // instance Case
-        var saCase = ServiceCallResult.Resolve<CaseContracts.Case>(await _caseService.GetCaseDetail(caseId, cancellationToken));
+        var saCase = ServiceCallResult.ResolveAndThrowIfError<CaseContracts.Case>(await _caseService.GetCaseDetail(caseId, cancellationToken));
         
         // get mortgage data
-        var offerInstance = ServiceCallResult.Resolve<OfferContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<OfferContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellationToken));
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.Inputs.LoanKindId)?.Name ?? "-";
         

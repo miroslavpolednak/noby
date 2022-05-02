@@ -10,7 +10,7 @@ internal class LinkModelationHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(LinkModelationHandler), request.SalesArrangementId);
 
-        var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // nalinkovat novou simulaci
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);

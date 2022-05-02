@@ -11,7 +11,7 @@ internal class GetMortgageBySalesArrangementHandler
         _logger.RequestHandlerStartedWithId(nameof(GetMortgageBySalesArrangementHandler), request.SalesArrangementId);
 
         // ziskat offerId z SA
-        var salesArrangementInstance = ServiceCallResult.Resolve<DSContracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var salesArrangementInstance = ServiceCallResult.ResolveAndThrowIfError<DSContracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         
         // kontrola, zda ma SA OfferId
         if (!salesArrangementInstance.OfferId.HasValue)

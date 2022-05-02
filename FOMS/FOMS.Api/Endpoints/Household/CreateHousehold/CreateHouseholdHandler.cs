@@ -20,7 +20,7 @@ internal class CreateHouseholdHandler
             SalesArrangementId = request.SalesArrangementId,
             HouseholdTypeId = request.HouseholdTypeId
         };
-        int householdId = ServiceCallResult.Resolve<int>(await _householdService.CreateHousehold(requestModel, cancellationToken));
+        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(requestModel, cancellationToken));
 
         return new Dto.HouseholdInList
         {

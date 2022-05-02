@@ -8,7 +8,7 @@ internal class GetDashboardFiltersHandler
         _logger.RequestHandlerStartedWithId(nameof(GetDashboardFiltersHandler), _userAccessor.User!.Id);
 
         // zavolat BE sluzbu
-        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.GetCaseCountsResponse>(await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.GetCaseCountsResponse>(await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken));
 
         // rucne vytvorena kolekce podle Motalika
         return new List<GetDashboardFiltersResponse>

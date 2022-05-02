@@ -14,7 +14,7 @@ internal class CreateMortgageCaseHandler
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
-        var offerInstance = ServiceCallResult.Resolve<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
         // chyba pokud simulace je uz nalinkovana na jiny SA
         if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken)))
@@ -27,16 +27,16 @@ internal class CreateMortgageCaseHandler
 
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);
-        long caseId = ServiceCallResult.Resolve<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User.Id, offerInstance.Inputs), cancellationToken));
+        long caseId = ServiceCallResult.ResolveAndThrowIfError<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User.Id, offerInstance.Inputs), cancellationToken));
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 
         // vytvorit zadost
         _logger.SharedCreateSalesArrangementStarted(salesArrangementTypeId, caseId, request.OfferId);
-        int salesArrangementId = ServiceCallResult.Resolve<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
+        int salesArrangementId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
         // create customer on SA
-        var createCustomerResult = ServiceCallResult.Resolve<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
+        var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
         if (createCustomerResult.PartnerId.HasValue)
         {
             var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
@@ -44,7 +44,7 @@ internal class CreateMortgageCaseHandler
         }
 
         // create household
-        int householdId = ServiceCallResult.Resolve<int>(await _householdService.CreateHousehold(new _SA.CreateHouseholdRequest
+        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _SA.CreateHouseholdRequest
         {
             HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,

@@ -9,7 +9,18 @@ public static class GrpcExceptionHelpers
 {
     private const string _errorMessageFromRpcExceptionRegex = "Detail=\"(?<error>.*)\"\\)";
 
-    public static RpcException CreateRpcException(StatusCode statusCode, string message, int exceptionCode, List<(string Key, string Value)>? trailers, Exception? baseException = null)
+    public static RpcException CreateRpcExceptionFromServiceCall(ServiceCallResultErrorException exception)
+    {
+        Metadata trailersCollection = new();
+        trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exception.ExceptionCode.ToString(System.Globalization.CultureInfo.InvariantCulture));
+
+        foreach (var item in exception.Errors.Where(t => !string.IsNullOrEmpty(t.Message)))
+            trailersCollection.Add(new(item.Key + "-bin", TryConvertStringToTrailerValue(item.Message)));
+
+        return new RpcException(new Status(StatusCode.InvalidArgument, exception.Message, exception), trailersCollection, exception.Message);
+    }
+
+    public static RpcException CreateRpcException(StatusCode statusCode, string message, int exceptionCode, List<(string Key, string Message)>? trailers, Exception? baseException = null)
     {
         //TODO nejsem si jisty, ze lze toto vyzadovat vzdy - napr. pri prekladu error kodu z ext systemu
         /*if (exceptionCode <= 0)
@@ -20,8 +31,8 @@ public static class GrpcExceptionHelpers
 
         if (trailers != null)
         {
-            foreach (var item in trailers.Where(t => !string.IsNullOrEmpty(t.Value)))
-                trailersCollection.Add(new(item.Key + "-bin", TryConvertStringToTrailerValue(item.Value)));
+            foreach (var item in trailers.Where(t => !string.IsNullOrEmpty(t.Message)))
+                trailersCollection.Add(new(item.Key + "-bin", TryConvertStringToTrailerValue(item.Message)));
         }
 
         return new RpcException(new Status(statusCode, message, baseException), trailersCollection, message);

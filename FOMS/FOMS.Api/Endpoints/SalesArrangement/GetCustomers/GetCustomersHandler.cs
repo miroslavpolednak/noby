@@ -12,7 +12,7 @@ internal class GetCustomersHandler
         _logger.RequestHandlerStartedWithId(nameof(GetCustomersHandler), request.SalesArrangementId);
 
         // najit existujici customeryOnSA
-        var customersOnSA = ServiceCallResult.Resolve<List<CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
+        var customersOnSA = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
 
         _logger.FoundItems(customersOnSA.Count, nameof(CustomerOnSA));
 
@@ -41,7 +41,7 @@ internal class GetCustomersHandler
                     IdentityId = t.CustomerIdentifiers[0].IdentityId,
                     IdentityScheme = t.CustomerIdentifiers[0].IdentityScheme
                 };
-                var customerDetail = ServiceCallResult.Resolve<CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}, cancellationToken));
+                var customerDetail = ServiceCallResult.ResolveAndThrowIfError<CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest() {Identity = identity}, cancellationToken));
 
                 // doplnit detail customera
                 c.BirthNumber = customerDetail.NaturalPerson.BirthNumber;

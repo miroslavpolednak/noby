@@ -7,7 +7,7 @@ internal class GetByIdHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetByIdHandler), request.CaseId);
 
-        var result = ServiceCallResult.Resolve<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
         
         return await _converter.FromContract(result);
     }

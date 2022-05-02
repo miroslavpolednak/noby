@@ -9,7 +9,7 @@ internal class UpdateIncomeHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeHandler), request.IncomeId);
 
-        var incomeInstance = ServiceCallResult.Resolve<DomainServices.SalesArrangementService.Contracts.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
+        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 
         var model = new DomainServices.SalesArrangementService.Contracts.UpdateIncomeRequest
         {

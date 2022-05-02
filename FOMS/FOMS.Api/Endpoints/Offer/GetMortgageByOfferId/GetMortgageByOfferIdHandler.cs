@@ -10,7 +10,7 @@ internal class GetMortgageByOfferIdHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgageByOfferIdHandler), request.OfferId);
 
-        var result = ServiceCallResult.Resolve<DSContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
 
         _logger.RequestHandlerFinished(nameof(GetMortgageByOfferIdHandler));
 

@@ -16,7 +16,7 @@ internal class UpdateIncomesHandler
         var responseModel = requestIncomes.Select(t => t.IncomeId.GetValueOrDefault()).ToArray();
 
         // vytahnout jiz ulozene prijmy
-        var existingIncomes = ServiceCallResult.Resolve<List<_SA.IncomeInList>>(await _customerService.GetIncomeList(request.CustomerOnSAId, cancellationToken));
+        var existingIncomes = ServiceCallResult.ResolveAndThrowIfError<List<_SA.IncomeInList>>(await _customerService.GetIncomeList(request.CustomerOnSAId, cancellationToken));
 
         // smazat smazane prijmy
         foreach (var incomeToDelete in existingIncomes.Where(t => !requestIncomes.Any(x => x.IncomeId == t.IncomeId)))
@@ -31,7 +31,7 @@ internal class UpdateIncomesHandler
             // zalozeni novych
             if (income.IncomeId.GetValueOrDefault() == 0)
             {
-                responseModel[i] = ServiceCallResult.Resolve<int>(await _customerService.CreateIncome(new()
+                responseModel[i] = ServiceCallResult.ResolveAndThrowIfError<int>(await _customerService.CreateIncome(new()
                 {
                     IncomeTypeId = (int)income.IncomeTypeId,
                     CustomerOnSAId = request.CustomerOnSAId,

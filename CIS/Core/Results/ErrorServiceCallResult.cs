@@ -1,26 +1,27 @@
-﻿namespace CIS.Core.Results
+﻿using System.Collections.Immutable;
+
+namespace CIS.Core.Results;
+
+public class ErrorServiceCallResult 
+    : IServiceCallResult
 {
-    public class ErrorServiceCallResult : IServiceCallResult
+    public IImmutableList<(int Key, string Message)> Errors { get; init; }
+    public bool Success => false;
+    public bool IsMultiError { get; init; }
+
+    public ErrorServiceCallResult(int key, string message)
     {
-        public IReadOnlyCollection<(int Key, string Message)> Errors { get; init; }
-        public bool Success => false;
+        Errors = ImmutableList.Create<(int Key, string Message)>((key, message));
+    }
 
-        public ErrorServiceCallResult(int key, string message)
-        {
-            Errors = new List<(int Key, string Message)>(1)
-            {
-                (key, message)
-            };
-        }
+    public ErrorServiceCallResult(IEnumerable<(int Key, string Message)> errors)
+    {
+        Errors = ImmutableList.CreateRange<(int Key, string Message)>(errors);
+        IsMultiError = true;
+    }
 
-        public ErrorServiceCallResult(IEnumerable<(int Key, string Message)> errors)
-        {
-            Errors = errors.ToList().AsReadOnly();
-        }
-
-        public override string ToString()
-        {
-            return Errors.Any() ? Errors.First().Message : "";
-        }
+    public override string ToString()
+    {
+        return Errors.Any() ? Errors[0].Message : "";
     }
 }

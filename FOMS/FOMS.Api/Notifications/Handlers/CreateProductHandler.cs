@@ -17,7 +17,7 @@ internal class CreateProductHandler
         if (!notification.NewMpCustomerId.HasValue) return;
 
         // detail SA
-        var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
         
         // get product type
         var productType = (await _codebookService.SalesArrangementTypes(cancellationToken))
@@ -42,14 +42,14 @@ internal class CreateProductHandler
 
     private async Task<long> createMortgage(long caseId, int offerId, int partnerId, CancellationToken cancellationToken)
     {
-        var offerInstance = ServiceCallResult.Resolve<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId, cancellationToken));
 
         var request = new _Product.CreateMortgageRequest
         {
             CaseId = caseId,
             Mortgage = offerInstance.ToDomainServiceRequest(partnerId)
         };
-        var result = ServiceCallResult.Resolve<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
         return result.ProductId;
     }
 

@@ -12,7 +12,7 @@ internal class UpdateCustomersHandler
         _logger.RequestHandlerStartedWithId(nameof(UpdateCustomersHandler), request.HouseholdId);
 
         // detail domacnosti
-        var householdInstance = ServiceCallResult.Resolve<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
 
         // Honza chtel Obligations v rootu requestu
         if (request.Obligations is not null && request.Customer1 is not null)
@@ -101,7 +101,7 @@ internal class UpdateCustomersHandler
             {
                 try
                 {
-                    newMpId = ServiceCallResult.Resolve<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                    newMpId = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
                     {
                         CustomerOnSAId = customer.CustomerOnSAId!.Value,
                         Customer = customer.ToDomainServiceRequest()
@@ -115,7 +115,7 @@ internal class UpdateCustomersHandler
             }
             else // vytvoreni noveho
             {
-                var createResult = ServiceCallResult.Resolve<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _SA.CreateCustomerRequest
+                var createResult = ServiceCallResult.ResolveAndThrowIfError<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _SA.CreateCustomerRequest
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
                     CustomerRoleId = (int)customerRole,

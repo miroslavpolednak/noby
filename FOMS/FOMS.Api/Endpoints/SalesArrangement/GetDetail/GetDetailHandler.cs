@@ -13,7 +13,7 @@ internal class GetDetailHandler
         _logger.RequestHandlerStartedWithId(nameof(GetDetailHandler), request.SalesArrangementId);
 
         // instance SA
-        var saInstance = ServiceCallResult.Resolve<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // kategorie produktu
         int? productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId).ProductTypeId

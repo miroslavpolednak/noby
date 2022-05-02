@@ -12,7 +12,7 @@ internal class GetHouseholdsHandler
         _logger.RequestHandlerStartedWithId(nameof(GetHouseholdsHandler), request.SalesArrangementId);
 
         // vsechny households
-        var households = ServiceCallResult.Resolve<List<contracts.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
+        var households = ServiceCallResult.ResolveAndThrowIfError<List<contracts.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
         _logger.FoundItems(households.Count, nameof(Household));
 
         var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);

@@ -13,7 +13,7 @@ internal class GetListHandler
     {
         _logger.RequestHandlerStartedWithId(nameof(GetListHandler), request.CaseId);
 
-        var result = ServiceCallResult.Resolve<DSContracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
 
         _logger.FoundItems(result.SalesArrangements.Count);
 
