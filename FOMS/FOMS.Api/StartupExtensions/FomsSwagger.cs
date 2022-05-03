@@ -19,6 +19,7 @@ internal static class FomsSwagger
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
+            //x.UseOneOfForPolymorphism();
 
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
