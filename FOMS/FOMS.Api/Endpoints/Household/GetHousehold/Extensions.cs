@@ -1,6 +1,4 @@
-﻿using Google.Protobuf.Collections;
-using System.Linq.Expressions;
-using contracts = DomainServices.SalesArrangementService.Contracts;
+﻿using contracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.GetHousehold;
 
@@ -33,10 +31,13 @@ internal static class Extensions
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => new Dto.CustomerObligation
             {
                 CreditCardLimit = x.CreditCardLimit,
-                LoanPaymentAmount = x.LoanPaymentAmount,
+                CreditCardLimitConsolidated = x.CreditCardLimitConsolidated,
                 IsObligationCreditorExternal = x.IsObligationCreditorExternal,
                 ObligationTypeId = x.ObligationTypeId,
-                RemainingLoanPrincipal = x.RemainingLoanPrincipal
+                LoanPrincipalAmountConsolidated = x.LoanPrincipalAmountConsolidated,
+                InstallmentAmount = x.InstallmentAmount,
+                InstallmentAmountConsolidated = x.InstallmentAmountConsolidated,
+                LoanPrincipalAmount = x.LoanPrincipalAmount
             }).ToList()
         };
 

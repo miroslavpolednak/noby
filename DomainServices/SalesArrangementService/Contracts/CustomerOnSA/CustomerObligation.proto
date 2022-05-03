@@ -3,18 +3,23 @@ package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "Mandants.proto";
 
 message CustomerObligation {
     google.protobuf.Int32Value ObligationTypeId = 1;
 
-    google.protobuf.Int32Value LoanPaymentAmount = 2;
+    google.protobuf.Int32Value InstallmentAmount = 2;
 
-    google.protobuf.Int32Value RemainingLoanPrincipal = 3;
+    google.protobuf.Int32Value InstallmentAmountConsolidated = 3;
 
-    google.protobuf.Int32Value CreditCardLimit = 4;
+    google.protobuf.Int32Value LoanPrincipalAmount = 4;
 
-    bool IsObligationCreditorExternal = 5;
+    google.protobuf.Int32Value LoanPrincipalAmountConsolidated = 5;
 
-    int32 ObligationState  = 6;
+    google.protobuf.Int32Value CreditCardLimit = 6;
+
+    google.protobuf.Int32Value CreditCardLimitConsolidated = 7;
+
+    bool IsObligationCreditorExternal = 8;
+
+    int32 ObligationState = 9;
 }

@@ -8,10 +8,13 @@ internal static class Extensions
         => obligations.Select(t => new CustomerObligation
         {
             CreditCardLimit = t.CreditCardLimit,
-            LoanPaymentAmount = t.LoanPaymentAmount,
+            CreditCardLimitConsolidated = t.CreditCardLimitConsolidated,
             IsObligationCreditorExternal = t.IsObligationCreditorExternal,
             ObligationTypeId = t.ObligationTypeId,
-            RemainingLoanPrincipal = t.RemainingLoanPrincipal,
+            LoanPrincipalAmount = t.LoanPrincipalAmount,
+            LoanPrincipalAmountConsolidated = t.LoanPrincipalAmountConsolidated,
+            InstallmentAmount = t.InstallmentAmount,
+            InstallmentAmountConsolidated = t.InstallmentAmountConsolidated,
             ObligationState = 1
         })
         .ToList();
@@ -28,4 +31,18 @@ internal static class Extensions
             model.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.Identity));
         return model;
     }
+
+    public static List<Dto.CustomerObligation>? CastToCustomerObligations(this List<Dto.HouseholdCustomerObligation>? list, int index)
+        => list?.Where(t => t.CustomerIndex == index)
+        .Select(t => new Dto.CustomerObligation
+        {
+            CreditCardLimit = t.CreditCardLimit,
+            CreditCardLimitConsolidated = t.CreditCardLimitConsolidated,
+            IsObligationCreditorExternal = t.IsObligationCreditorExternal,
+            ObligationTypeId = t.ObligationTypeId,
+            LoanPrincipalAmount = t.LoanPrincipalAmount,
+            InstallmentAmount = t.InstallmentAmount,
+            InstallmentAmountConsolidated = t.InstallmentAmountConsolidated,
+            LoanPrincipalAmountConsolidated = t.LoanPrincipalAmountConsolidated
+        }).ToList();
 }

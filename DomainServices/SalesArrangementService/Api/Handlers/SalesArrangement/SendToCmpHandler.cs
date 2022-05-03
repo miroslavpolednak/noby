@@ -534,8 +534,8 @@ internal class SendToCmpHandler
             {
                 cislo_zavazku = rowNumber.ToJsonString(),
                 druh_zavazku = i.ObligationTypeId.ToJsonString(),
-                vyse_splatky = i.LoanPaymentAmount.ToJsonString(),
-                vyse_nesplacene_jistiny = i.RemainingLoanPrincipal.ToJsonString(),
+                vyse_splatky = i.InstallmentAmount.ToJsonString(),
+                vyse_nesplacene_jistiny = i.LoanPrincipalAmount.ToJsonString(),
                 vyse_limitu = i.CreditCardLimit.ToJsonString(),
                 mimo_entitu_mandanta = i.IsObligationCreditorExternal.ToJsonString()
             };
