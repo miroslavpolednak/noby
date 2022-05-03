@@ -34,7 +34,8 @@ internal class LoggerBootstraper
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
-            .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
+            .Enrich.WithProperty("Version", $"{_assemblyName!.Version}")
+            .Enrich.WithProperty("ThreadId", $"{Environment.CurrentManagedThreadId}");
 
         // enrich from CIS env
         if (_cisConfiguration is not null)
@@ -59,11 +60,12 @@ internal class LoggerBootstraper
         // logovani do souboru
         if (configuration.File is not null)
         {
+            var path = Path.Combine(configuration.File.Path, configuration.File.Filename);
+            var template = @"{Timestamp: yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
+
             loggerConfiguration
                 .WriteTo
-                .Async(a =>
-                    a.File(Path.Combine(configuration.File.Path, configuration.File.Filename), buffered: true, rollingInterval: RollingInterval.Day),
-                bufferSize: 1000);
+                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: template), bufferSize: 1000);
         }
 
         // logovani do databaze
