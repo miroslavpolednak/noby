@@ -6,6 +6,13 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 [Route("api/sales-arrangement")]
 public class SalesArrangementController : ControllerBase
 {
+    [HttpGet("{salesArrangementId:int}/credit-worhiness")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
+    public async Task<GetCreditWorthiness.GetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCreditWorthiness.GetCreditWorthinessRequest(salesArrangementId), cancellationToken);
+
     /// <summary>
     /// Seznam Sales Arrangements pro Case.
     /// </summary>
