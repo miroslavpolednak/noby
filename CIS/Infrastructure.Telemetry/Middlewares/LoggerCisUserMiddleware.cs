@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Serilog.Context;
 using System.Diagnostics;
 
-namespace CIS.Infrastructure.Telemetry;
+namespace CIS.Infrastructure.Telemetry.Middlewares;
 
 /// <summary>
 /// Middleware, ktery pridava do kontextu logu (serilogu) informace o aktualnim CIS uzivateli

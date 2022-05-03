@@ -76,7 +76,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGrpcReflectionService();
 });
 
-app.Run();
+try
+{
+    app.Run();
+}
+finally
+{
+    LoggingExtensions.CloseAndFlush();
+}
 
 public partial class Program
 {

@@ -83,7 +83,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGrpcReflectionService();
 });
 
-app.Run();
+try
+{
+    app.Run();
+}
+finally
+{
+    LoggingExtensions.CloseAndFlush();
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

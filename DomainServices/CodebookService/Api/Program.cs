@@ -103,7 +103,14 @@ app.UseEndpoints(endpoints =>
 // print gRPC PROTO file
 //CIS.Infrastructure.gRPC.GrpcHelpers.CreateProtoFileFromContract<Contracts.ICodebookService("d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\CodebookService\\Contracts\\protos\\CodebookService.proto");
 
-app.Run();
+try
+{
+    app.Run();
+}
+finally
+{
+    LoggingExtensions.CloseAndFlush();
+}
 
 public partial class Program
 {

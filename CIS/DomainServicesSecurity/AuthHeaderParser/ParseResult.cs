@@ -1,6 +1,6 @@
 ﻿namespace CIS.DomainServicesSecurity;
 
-public sealed class ParseResult
+internal sealed class ParseResult
 {
     public bool Success { get; init; }
     public string ErrorMessage { get; init; } = "";

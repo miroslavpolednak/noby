@@ -6,6 +6,13 @@ public sealed class CisTelemetryConfiguration
 
     public sealed class LoggingConfiguration
     {
+        public LogConfiguration? Application { get; set; }
+
+        public LogConfiguration? Audit { get; set; }
+    }
+
+    public sealed class LogConfiguration
+    {
         /// <summary>
         /// Logovani do souboru
         /// </summary>

@@ -1,12 +1,8 @@
-﻿using CIS.Core.Configuration;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Enrichers.Span;
-using Serilog.Sinks.MSSqlServer;
-using System.Reflection;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -14,91 +10,53 @@ public static class LoggingExtensions
 {
     public static IApplicationBuilder UseCisLogging(this IApplicationBuilder webApplication)
     {
-        webApplication.UseMiddleware<LoggerCisUserMiddleware>();
+        webApplication.UseMiddleware<Middlewares.LoggerCisUserMiddleware>();
         return webApplication;
     }
 
     public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
     {
+        // auditni log
+        builder.Services.AddSingleton<IAuditLogger>(new AuditLogger());
+
         builder.Host.AddCisLogging();
+        
         return builder;
     }
 
-    public static IHostBuilder AddCisLogging(this IHostBuilder builder)
+    private static IHostBuilder AddCisLogging(this IHostBuilder builder)
     {
         builder.UseSerilog((hostingContext, serviceProvider, loggerConfiguration) =>
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference. 
-            var assembly = Assembly.GetEntryAssembly().GetName();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
             // get configuration from json file
             var configSection = hostingContext.Configuration.GetSection("CisTelemetry");
-            CisTelemetryConfiguration configuration = new();
-            configSection.Bind(configuration);
+            CisTelemetryConfiguration _configuration = new();
+            configSection.Bind(_configuration);
 
-            loggerConfiguration
-                .ReadFrom.Configuration(hostingContext.Configuration)
-                .Enrich.WithSpan()
-                .Enrich.FromLogContext()
-                .Enrich.WithMachineName()
-                .Enrich.WithProperty("Assembly", $"{assembly.Name}")
-                .Enrich.WithProperty("Version", $"{assembly.Version}");
+            var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider);
 
-            // enrich from CIS env
-            var cisEnvConfiguration = serviceProvider.GetService<ICisEnvironmentConfiguration>();
-            if (cisEnvConfiguration is not null)
+            // general log setup
+            if (_configuration?.Logging?.Application is not null)
             {
-                if (!string.IsNullOrEmpty(cisEnvConfiguration.EnvironmentName))
-                    loggerConfiguration.Enrich.WithProperty("CisEnvironment", cisEnvConfiguration.EnvironmentName);
-                if (!string.IsNullOrEmpty(cisEnvConfiguration.DefaultApplicationKey))
-                    loggerConfiguration.Enrich.WithProperty("CisAppKey", cisEnvConfiguration.DefaultApplicationKey);
+                bootstrapper.EnrichLogger(loggerConfiguration);
+                bootstrapper.AddOutputs(loggerConfiguration, _configuration.Logging.Application);
             }
 
-            // seq
-            if (configuration.Logging?.Seq is not null)
+            // audit log setup
+            if (_configuration?.Logging?.Audit is not null)
             {
-                loggerConfiguration.WriteTo.Seq(configuration.Logging.Seq.ServerUrl);
-            }
-
-            // logovani do souboru
-            if (configuration.Logging?.File is not null)
-            {
-                loggerConfiguration
-                    .WriteTo
-                    .Async(a =>
-                        a.File(Path.Combine(configuration.Logging.File.Path, configuration.Logging.File.Filename), buffered: true, rollingInterval: RollingInterval.Day),
-                    bufferSize: 1000);
-            }
-
-            // logovani do databaze
-            //TODO tohle poradne dodelat nebo uplne vyhodit - moc se mi do DB logovat nechce, ale jestli nebude nic jinyho nez Logman, tak asi nutnost
-            if (!string.IsNullOrEmpty(configuration.Logging?.Database?.ConnectionString))
-            {
-                MSSqlServerSinkOptions sqlOptions = new()
-                {
-                    AutoCreateSqlTable = true,
-                    SchemaName = "dbo",
-                    TableName = "CisLog"
-                };
-                ColumnOptions sqlColumns = new();
-
-                loggerConfiguration
-                    .WriteTo
-                    .MSSqlServer(
-                        connectionString: configuration.Logging.Database.ConnectionString,
-                        sinkOptions: sqlOptions,
-                        columnOptions: sqlColumns
-                    );
-            }
-
-            // console output
-            if (configuration.Logging?.UseConsole ?? false)
-            {
-                loggerConfiguration.WriteTo.Console();
+                AuditLogger.SetupLogger(bootstrapper, _configuration.Logging.Audit);
             }
         });
 
         return builder;
+    }
+
+    public static void CloseAndFlush()
+    {
+        Log.CloseAndFlush();
+        AuditLogger.CloseAndFlush();
+
+        Thread.Sleep(2000);
     }
 }

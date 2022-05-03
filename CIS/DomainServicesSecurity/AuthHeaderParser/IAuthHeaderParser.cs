@@ -1,6 +1,6 @@
 ﻿namespace CIS.DomainServicesSecurity;
 
-public interface IAuthHeaderParser
+internal interface IAuthHeaderParser
 {
     ParseResult Parse(string authHeaderContent);
 }

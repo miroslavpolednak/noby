@@ -71,4 +71,11 @@ app
 if (appConfiguration.EnableSwaggerUi)
     app.UseFomsSwagger();
 
-app.Run();
+try
+{
+    app.Run();
+}
+finally
+{
+    LoggingExtensions.CloseAndFlush();
+}
