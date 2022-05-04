@@ -22,7 +22,23 @@ namespace ExternalServices.Rip.V1
             });
         }
 
-      
+        public async Task<IServiceCallResult> ComputeCreditWorthiness(CreditWorthinessCalculationArguments arguments)
+        {
+            _logger.LogDebug("Run inputs: Rip ComputeCreditWorthiness with Arguments {arguments}", System.Text.Json.JsonSerializer.Serialize(arguments));
+
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    var result = await c.ComputeCreditWorthinessAsync(arguments);
+
+                    return new SuccessfulServiceCallResult<CreditWorthinessCalculation>(result);
+                });
+
+            });
+        }
+
+
         private Client CreateClient()
             => new(_httpClient?.BaseAddress?.ToString(), _httpClient);
 
@@ -35,7 +51,7 @@ namespace ExternalServices.Rip.V1
             catch (ApiException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new SuccessfulServiceCallResult<ApiException>(ex);
+                return new ErrorServiceCallResult(99999, $"Error occured during call external service RIP [{ex.Message}]"); //TODO: error code
             }
         }
     }

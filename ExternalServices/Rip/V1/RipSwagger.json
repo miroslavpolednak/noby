@@ -53,7 +53,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoanApplication.LOanApplication"
+                "$ref": "#/components/schemas/LoanApplication.LoanApplicationRequest"
               }
             }
           }
@@ -77,51 +77,35 @@
         }
       }
     },
-    "/v1/loan-application-assessment/{loanApplicationAssessmentId}": {
-      "get": {
+    "/v1/loan-application-exposure-calculation": {
+      "put": {
         "tags": [
-          "LoanApplicationAssessment"
+          "LoanApplication"
         ],
-        "summary": "Vrátí LoanApplicationAssessment podle ID",
-        "operationId": "GetLoanApplicationAssessment",
-        "parameters": [
-          {
-            "name": "loanApplicationAssessmentId",
-            "in": "path",
-            "description": "loanApplicationAssessmentId",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "loanApplicationAssessmentId",
-              "nullable": true
-            }
-          },
-          {
-            "name": "expand",
-            "in": "query",
-            "description": "vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky |assessmentDetail|householdAssessmentDetail|counterpartyAssessmentDetail|loanApplicationApprovalPossibilities|collateralRiskCharacteristics",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "description": "vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky |assessmentDetail|householdAssessmentDetail|counterpartyAssessmentDetail|loanApplicationApprovalPossibilities|collateralRiskCharacteristics",
-              "nullable": true
+        "summary": "Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti(Loan Applicaiton).",
+        "operationId": "LoanApplicationExposure",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanApplicationExposure.LoanApplicationRelatedExposure"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessment"
+                  "$ref": "#/components/schemas/LoanApplicationExposure.LoanApplicationRelatedExposureResult"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessment"
+                  "$ref": "#/components/schemas/LoanApplicationExposure.LoanApplicationRelatedExposureResult"
                 }
               }
             }
@@ -134,7 +118,7 @@
         "tags": [
           "RiskBusinessCase"
         ],
-        "summary": "Business case - Assessment (Asynchronous)",
+        "summary": "Risk Business Case - Assessment (Asynchronous)",
         "operationId": "RiskBusinessCaseAssessment",
         "parameters": [
           {
@@ -183,7 +167,7 @@
         "tags": [
           "RiskBusinessCase"
         ],
-        "summary": "Business case - Create",
+        "summary": "Risk Business Case - Create",
         "operationId": "RiskBusinessCaseCreate",
         "requestBody": {
           "description": "",
@@ -219,7 +203,7 @@
         "tags": [
           "RiskBusinessCase"
         ],
-        "summary": "Business case - Commit",
+        "summary": "Risk Business Case - Commit",
         "operationId": "RiskBusinessCaseCommit",
         "parameters": [
           {
@@ -401,6 +385,9 @@
         "description": "Household Credit Liabilities OutHomeCompany."
       },
       "CreditWorthiness.LoanApplicationCounterParty": {
+        "required": [
+          "maritalStatusMp"
+        ],
         "type": "object",
         "properties": {
           "idMp": {
@@ -584,7 +571,7 @@
         "properties": {
           "rent": {
             "type": "number",
-            "description": "Kategorie.",
+            "description": "Rent.",
             "format": "double"
           },
           "saving": {
@@ -609,19 +596,29 @@
       "LoanApplication.PrimaryAddress": {
         "type": "object",
         "properties": {
-          "streetNameMp": {
+          "streetName": {
             "type": "string",
-            "description": "Ulice.",
+            "description": "název ulice",
             "nullable": true
           },
-          "houseNumberMp": {
+          "houseNumber": {
+            "type": "integer",
+            "description": "číslo popisné",
+            "format": "int32"
+          },
+          "streetNumber": {
             "type": "string",
-            "description": "Cislo popisne.",
+            "description": "číslo orientační",
+            "nullable": true
+          },
+          "evidenceNumber": {
+            "type": "string",
+            "description": "číslo evidenční",
             "nullable": true
           },
           "city": {
             "type": "string",
-            "description": "Město.",
+            "description": "město primární adresy",
             "nullable": true
           },
           "countryCode": {
@@ -631,15 +628,13 @@
           },
           "postCode": {
             "type": "integer",
-            "description": "Směrovací číslo.",
-            "format": "int64",
-            "nullable": true
+            "description": "PSČ primární adresy",
+            "format": "int32"
           },
           "regionCode": {
             "type": "integer",
-            "description": "Region.",
-            "format": "int64",
-            "nullable": true
+            "description": "kód regionu primární adresy",
+            "format": "int32"
           }
         },
         "additionalProperties": false,
@@ -742,9 +737,14 @@
             "description": "ulice sídla zaměstnání.",
             "nullable": true
           },
-          "landRegisterNumber": {
+          "houseNumber": {
+            "type": "integer",
+            "description": "číslo popisné sídla zaměstnavatele",
+            "format": "int32"
+          },
+          "streetNumber": {
             "type": "string",
-            "description": "číslo katastru nemovitostí.",
+            "description": "číslo orientační sídla zaměstnavatele",
             "nullable": true
           },
           "phoneNumber": {
@@ -755,19 +755,24 @@
           "monthlyIncomeAmount": {
             "$ref": "#/components/schemas/LoanApplication.Amount"
           },
-          "accountNumberMp": {
+          "accountNumberPrefix": {
             "type": "string",
-            "description": "Číslo účtu, ze kterého od daného zaměstnavatele chodí mzda.",
+            "description": "předčíslí čísla účtu zaměstnavatele, z kterého klientovi chodí mzda",
+            "nullable": true
+          },
+          "accountNumberCore": {
+            "type": "string",
+            "description": "číslo účtu zaměstnavatele (bez předčíslí), z kterého klientovi chodí mzda",
             "nullable": true
           },
           "accountBankCode": {
             "type": "string",
-            "description": "Kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda.",
+            "description": "kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda",
             "nullable": true
           },
           "domiciled": {
             "type": "boolean",
-            "description": "Je příjem domicilován?.",
+            "description": "příznak domicilace příjmu",
             "nullable": true
           },
           "proofType": {
@@ -777,7 +782,7 @@
           },
           "foreignEmploymentType": {
             "type": "string",
-            "description": "Typ zaměstnání.",
+            "description": "typ zaměstnání v zahraničí",
             "nullable": true
           },
           "grossAnnualIncome": {
@@ -841,12 +846,7 @@
             "nullable": true
           },
           "incomeDeduction": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplication.IncomeDeduction"
-            },
-            "description": "Z příjmu Zaměstnance  jsou/nejsou prováděny srážky.",
-            "nullable": true
+            "$ref": "#/components/schemas/LoanApplication.IncomeDeduction"
           }
         },
         "additionalProperties": false,
@@ -914,19 +914,29 @@
       "LoanApplication.LoanApplicationRentIncome": {
         "type": "object",
         "properties": {
-          "accountNumber": {
+          "accountNumberPrefix": {
             "type": "string",
-            "description": "accountNumber.",
+            "description": "předčíslí čísla účtu, ze kterého příjem přichází",
+            "nullable": true
+          },
+          "accountNumberCore": {
+            "type": "string",
+            "description": "číslo účtu (bez předčíslí), ze kterého příjem přichází",
+            "nullable": true
+          },
+          "accountBankCode": {
+            "type": "string",
+            "description": "kód banky čísla účtu, ze kterého příjem přichází",
             "nullable": true
           },
           "domiciled": {
             "type": "boolean",
-            "description": "domiciled.",
+            "description": "příznak domicilace",
             "nullable": true
           },
           "proofType": {
             "type": "string",
-            "description": "proofType.",
+            "description": "dokument dokládající příjem z pronájmu",
             "nullable": true
           },
           "monthlyIncomeAmount": {
@@ -945,14 +955,21 @@
             "nullable": true
           },
           "monthlyIncomeAmount": {
-            "type": "number",
-            "description": "Částka  vedlejšího prokazatelného příjmu. Opakující se atribut podle počtu vedeljších prokazatelných příjmů příjmů.",
-            "format": "double",
+            "$ref": "#/components/schemas/LoanApplication.Amount"
+          },
+          "accountNumberPrefix": {
+            "type": "string",
+            "description": "předčíslí čísla účtu, ze kterého příjem přichází",
             "nullable": true
           },
-          "accountNumber": {
+          "accountNumberCore": {
             "type": "string",
             "description": "číslo účtu, z kterého příjem přichází.",
+            "nullable": true
+          },
+          "accountBankCode": {
+            "type": "string",
+            "description": "kód banky čísla účtu, ze kterého příjem přichází",
             "nullable": true
           },
           "domiciled": {
@@ -974,12 +991,12 @@
         "properties": {
           "incomeConfirmed": {
             "type": "boolean",
-            "description": "Product group.",
+            "description": "příznak uzamčení příjmů",
             "nullable": true
           },
           "lastConfirmedDate": {
             "type": "string",
-            "description": "Product group.",
+            "description": "datum posledního uzamčení příjmů",
             "format": "date-time",
             "nullable": true
           },
@@ -988,16 +1005,11 @@
             "items": {
               "$ref": "#/components/schemas/LoanApplication.LoanApplicationEmploymentIncome"
             },
-            "description": "Product group.",
+            "description": "příjmy ze zaměstnání",
             "nullable": true
           },
           "entrepreneurIncome": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplication.LoanApplicationEntrepreneurIncome"
-            },
-            "description": "Product group.",
-            "nullable": true
+            "$ref": "#/components/schemas/LoanApplication.LoanApplicationEntrepreneurIncome"
           },
           "rentIncome": {
             "$ref": "#/components/schemas/LoanApplication.LoanApplicationRentIncome"
@@ -1007,7 +1019,7 @@
             "items": {
               "$ref": "#/components/schemas/LoanApplication.LoanApplicationOtherIncome"
             },
-            "description": "Product group.",
+            "description": "ostatní příjmy",
             "nullable": true
           }
         },
@@ -1048,27 +1060,32 @@
         "properties": {
           "liabilityType": {
             "type": "integer",
+            "description": "Typ závazku klienta",
             "format": "int32"
           },
           "amount": {
             "type": "number",
+            "description": "Výše závazku v JPÚ - splátkové operace (spotřebiteslé úvěry, hypotéky)",
             "format": "double"
           },
           "limit": {
             "type": "number",
-            "description": "Výše limitu v JPÚ",
+            "description": "Výše limitu v JPÚ -  esplátkové operace (kreditní karty, povolené debety)",
             "format": "double"
           },
           "amountConsolidated": {
             "type": "number",
+            "description": "Výše konsolidace u nesplátkových operací (u daného závazku (zrušení/snížení))",
             "format": "double"
           },
           "installment": {
             "type": "number",
+            "description": "Výše splátky (splátkové operace)",
             "format": "double"
           },
           "installmentConsolidated": {
             "type": "number",
+            "description": "Výše konsolidace u splátkových operací",
             "format": "double"
           }
         },
@@ -1206,14 +1223,13 @@
         "properties": {
           "id": {
             "type": "integer",
-            "description": "LoanApplicationHousehold identity",
-            "format": "int64",
-            "nullable": true
+            "description": "ID domácnosti přidělené volajícím systémem",
+            "format": "int32"
           },
-          "roleCode": {
-            "type": "string",
-            "description": "počet vyživovaných dětí do 10 let (včetně).",
-            "nullable": true
+          "roleCodeMp": {
+            "type": "integer",
+            "description": "kód role domácnosti",
+            "format": "int32"
           },
           "childrenUnderAnd10": {
             "type": "integer",
@@ -1228,16 +1244,11 @@
             "nullable": true
           },
           "householdExpensesSummary": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplication.ExpensesSummary"
-            },
-            "description": "Household Expenses Summary",
-            "nullable": true
+            "$ref": "#/components/schemas/LoanApplication.ExpensesSummary"
           },
           "settlementTypeCode": {
             "type": "string",
-            "description": "Shrnutí splátek mimo domácnosti",
+            "description": "kód vypořádání majetku (manželů)",
             "nullable": true
           },
           "counterParty": {
@@ -1245,7 +1256,7 @@
             "items": {
               "$ref": "#/components/schemas/LoanApplication.LoanApplicationCounterParty"
             },
-            "description": "Shrnutí splátek domácnosti",
+            "description": "údaje o klientech",
             "nullable": true
           }
         },
@@ -1302,19 +1313,21 @@
         "description": "Parametry domácnosti."
       },
       "LoanApplication.LoanApplicationProduct": {
+        "required": [
+          "loanType",
+          "product"
+        ],
         "type": "object",
         "properties": {
           "product": {
             "type": "integer",
             "description": "kód produktového shluku (shluk jednoho produktu).",
-            "format": "int64",
-            "nullable": true
+            "format": "int32"
           },
           "loanType": {
             "type": "integer",
             "description": "LoanType",
-            "format": "int64",
-            "nullable": true
+            "format": "int32"
           },
           "marketingActions": {
             "type": "array",
@@ -1386,10 +1399,10 @@
             "format": "int64",
             "nullable": true
           },
-          "repaymentScheduleType": {
-            "type": "string",
+          "repaymentScheduleTypeMp": {
+            "type": "integer",
             "description": "typ splátkového kalendáře.",
-            "nullable": true
+            "format": "int32"
           },
           "installmentPeriod": {
             "type": "string",
@@ -1428,7 +1441,7 @@
           },
           "homeCurrencyIncome": {
             "type": "string",
-            "description": "vnitrobankovní úroková sazba.",
+            "description": "domácí měna dle příjmu žadatelů.",
             "nullable": true
           },
           "homeCurrencyResidence": {
@@ -1440,27 +1453,28 @@
         "additionalProperties": false,
         "description": "Parametry domácnosti."
       },
-      "Shared.CompanyId": {
-        "type": "object",
-        "properties": {
-          "company": {
-            "type": "string",
-            "description": "Company (eg. MP, KB)",
-            "nullable": true
-          },
-          "id": {
-            "type": "string",
-            "description": "Id",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "LoanApplication.LoanApplicationProductRelation": {
         "type": "object",
         "properties": {
-          "productId": {
-            "$ref": "#/components/schemas/Shared.CompanyId"
+          "cbcbContractIdMp": {
+            "type": "string",
+            "description": "jiné závazky zohledněné při poskytování úvěru - ID kontraktu z CBCB",
+            "nullable": true
+          },
+          "accountNumberPrefix": {
+            "type": "string",
+            "description": "jiné závazky zohledněné při poskytování úvěru - číslo účtu z KB/MPSS -  předčíslí\r\nplní se pouze tehdy, pokud se jedná o číslo účtu z entity poskytující úvěr",
+            "nullable": true
+          },
+          "accountNumberCore": {
+            "type": "string",
+            "description": "jiné závazky zohledněné při poskytování úvěru - číslo účtu z KB/MPSS (bez předčíslí)\r\nplní se pouze tehdy, pokud se jedná o číslo účtu z entity poskytující úvěr",
+            "nullable": true
+          },
+          "accountBankCode": {
+            "type": "string",
+            "description": "jiné závazky zohledněné při poskytování úvěru - číslo účtu z KB nebo MPSS -  kód banky\r\nplní se pouze tehdy, pokud se jedná o číslo účtu z entity poskytující úvěr",
+            "nullable": true
           },
           "productType": {
             "type": "string",
@@ -1481,7 +1495,7 @@
         "additionalProperties": false,
         "description": "Parametry domácnosti."
       },
-      "LoanApplication.LOanApplication": {
+      "LoanApplication.LoanApplicationRequest": {
         "type": "object",
         "properties": {
           "id": {
@@ -1505,7 +1519,7 @@
           },
           "loanApplicationDataVersion": {
             "type": "string",
-            "description": "loan application verze",
+            "description": "loan application verze (verze dat - timestamp)",
             "nullable": true
           },
           "loanApplicationHousehold": {
@@ -1545,127 +1559,38 @@
         },
         "additionalProperties": false
       },
-      "LoanApplicationAssessment.ResourceIdentifier": {
+      "LoanApplicationExposure.LoanApplicationRelatedExposure": {
         "type": "object",
         "properties": {
-          "instance": {
-            "type": "string",
-            "description": "The resource instance code, eg. 'KBCZ'",
-            "nullable": true
+          "loanApplicationIdMp": {
+            "$ref": "#/components/schemas/Shared.SystemId"
           },
-          "domain": {
+          "riskBusinessCaseIdMp": {
             "type": "string",
-            "description": "The resource domain code, eg. 'CFLM'",
+            "description": "riskBusinessCaseId",
             "nullable": true
-          },
-          "resource": {
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationRelatedExposur"
+      },
+      "Shared.CompanyId": {
+        "type": "object",
+        "properties": {
+          "company": {
             "type": "string",
-            "description": "The resource code (the in-domain resource code, eg. 'LimitModel')",
+            "description": "Company (eg. MP, KB)",
             "nullable": true
           },
           "id": {
             "type": "string",
-            "description": "ID",
-            "nullable": true
-          },
-          "variant": {
-            "type": "string",
-            "description": "The variant of the resource, eg. distinguishing the origin of the source",
+            "description": "Id",
             "nullable": true
           }
         },
-        "additionalProperties": false,
-        "description": "ResourceIdentifier"
+        "additionalProperties": false
       },
-      "LoanApplicationAssessment.Resource": {
-        "type": "object",
-        "properties": {
-          "entity": {
-            "type": "string",
-            "description": "Entity",
-            "nullable": true
-          },
-          "id": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.ResourceIdentifier"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Resource"
-      },
-      "LoanApplicationAssessment.AssessmentReasonDetail": {
-        "type": "object",
-        "properties": {
-          "target": {
-            "type": "string",
-            "description": "Target",
-            "nullable": true
-          },
-          "desc": {
-            "type": "string",
-            "description": "Desc",
-            "nullable": true
-          },
-          "riskScaleValue": {
-            "type": "string",
-            "description": "RiskScaleValue",
-            "nullable": true
-          },
-          "resource": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplicationAssessment.Resource"
-            },
-            "description": "Target",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "AssessmentReasonDetail"
-      },
-      "LoanApplicationAssessment.LoanApplicationAssessmentReason": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "Code",
-            "nullable": true
-          },
-          "level": {
-            "type": "string",
-            "description": "Level",
-            "nullable": true
-          },
-          "weight": {
-            "type": "integer",
-            "description": "Weight",
-            "format": "int64",
-            "nullable": true
-          },
-          "detail": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentReasonDetail"
-          }
-        },
-        "additionalProperties": false,
-        "description": "LoanApplicationAssessmentReason"
-      },
-      "LoanApplicationAssessment.LoanApplicationScore": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "description": "Value",
-            "nullable": true
-          },
-          "scale": {
-            "type": "string",
-            "description": "Scale",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "LoanApplicationScore"
-      },
-      "LoanApplicationAssessment.Amount": {
+      "LoanApplicationExposure.Amount": {
         "type": "object",
         "properties": {
           "value": {
@@ -1683,327 +1608,346 @@
         "additionalProperties": false,
         "description": "Amount"
       },
-      "LoanApplicationAssessment.LoanApplicationLimit": {
+      "LoanApplicationExposure.ExistingKBGroupExposureItem": {
         "type": "object",
         "properties": {
-          "_LoanApplicationLimit": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          "productIdMp": {
+            "$ref": "#/components/schemas/Shared.CompanyId"
           },
-          "loanApplicationInstallmentLimit": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          "loanType": {
+            "type": "string",
+            "description": "loanType",
+            "nullable": true
           },
-          "loanApplicationCollateralLimit": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          "loanTypeCategory": {
+            "type": "string",
+            "description": "loanTypeCategory",
+            "nullable": true
           },
-          "remainingAnnuityLivingAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
+          "customerRoleCodeMp": {
+            "type": "integer",
+            "description": "customerRoleCode",
+            "format": "int32"
           },
-          "calculationIrStressed": {
+          "loanAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "drawingAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "contractDate": {
+            "type": "string",
+            "description": "contractDate",
+            "format": "date-time",
+            "nullable": true
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "maturityDate",
+            "format": "date-time",
+            "nullable": true
+          },
+          "loanBalanceAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "loanOnBalanceAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "loanOffBalanceAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "noOfDaysPastDue": {
+            "type": "integer",
+            "description": "noOfDaysPastDue",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanAmountPastDue": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "exposureAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "isSecured": {
             "type": "boolean",
-            "description": "Remaining Annuity Living Amount",
-            "nullable": true
-          },
-          "iir": {
-            "type": "integer",
-            "description": "iir",
-            "format": "int64",
-            "nullable": true
-          },
-          "cir": {
-            "type": "integer",
-            "description": "cir",
-            "format": "int64",
-            "nullable": true
-          },
-          "dti": {
-            "type": "integer",
-            "description": "dti",
-            "format": "int64",
-            "nullable": true
-          },
-          "dsti": {
-            "type": "integer",
-            "description": "dsti",
-            "format": "int64",
+            "description": "isSecured",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "LoanApplicationLimit"
+        "description": "ExistingKBGroupExposureItem"
       },
-      "LoanApplicationAssessment.RiskCharacteristics": {
+      "LoanApplicationExposure.RequestedKBGroupExposureItem": {
         "type": "object",
         "properties": {
-          "monthlyIncomeAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          },
-          "monthlyCostsWithoutInstAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          },
-          "monthlyInstallmentsInKBAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          },
-          "monthlyEntrepreneurInstallmentsInKBAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          },
-          "monthlyInstallmentsInMPSSAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          },
-          "monthlyInstallmentsInOFIAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          },
-          "monthlyInstallmentsInCBCBAmount": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Amount"
-          }
-        },
-        "additionalProperties": false,
-        "description": "RiskCharacteristics"
-      },
-      "LoanApplicationAssessment.AssessmentDetail": {
-        "type": "object",
-        "properties": {
-          "loanApplicationScore": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationScore"
-          },
-          "loanApplicationLimit": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationLimit"
-          },
-          "loanApplicationRiskCharacteristics": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplicationAssessment.RiskCharacteristics"
-            },
-            "description": "Assessment detail",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "AssessmentDetail"
-      },
-      "LoanApplicationAssessment.HouseholdAssessmentDetail": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Id",
-            "format": "int64",
-            "nullable": true
-          },
-          "householdId": {
-            "type": "integer",
-            "description": "Household id",
-            "format": "int64",
-            "nullable": true
-          },
-          "householdIndex": {
-            "type": "integer",
-            "description": "Household index",
-            "format": "int64",
-            "nullable": true
-          },
-          "assessmentDetail": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentDetail"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Household Assessment detail"
-      },
-      "LoanApplicationAssessment.CounterpartyAssessmentDetail": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Id",
-            "format": "int64",
-            "nullable": true
-          },
-          "counterPartyId": {
-            "type": "integer",
-            "description": "Counterparty id",
-            "format": "int64",
-            "nullable": true
-          },
-          "customerId": {
+          "riskBusinessCaseIdMp": {
             "type": "string",
-            "description": "Customer id",
+            "description": "riskBusinessCaseId",
             "nullable": true
           },
-          "assessmentDetail": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentDetail"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Counterparty Assessment Detail"
-      },
-      "LoanApplicationAssessment.CollateralRiskCharacteristics": {
-        "type": "object",
-        "properties": {
-          "ltv": {
-            "type": "integer",
-            "description": "Ltv",
-            "format": "int64",
-            "nullable": true
-          },
-          "ltfv": {
-            "type": "integer",
-            "description": "Ltfv",
-            "format": "int64",
-            "nullable": true
-          },
-          "ltp": {
-            "type": "integer",
-            "description": "Ltp",
-            "format": "int64",
-            "nullable": true
-          },
-          "sumAppraisedValue": {
-            "type": "integer",
-            "description": "SumAppraisedValue",
-            "format": "int64",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "CollateralRiskCharacteristics"
-      },
-      "LoanApplicationAssessment.SemanticVersion": {
-        "type": "object",
-        "properties": {
-          "major": {
-            "type": "integer",
-            "description": "Major part of a version",
-            "format": "int32",
-            "nullable": true
-          },
-          "minor": {
-            "type": "integer",
-            "description": "Minor part of a version",
-            "format": "int32",
-            "nullable": true
-          },
-          "bugfix": {
-            "type": "integer",
-            "description": "Bugfix part of a version",
-            "format": "int32",
-            "nullable": true
-          },
-          "nonSemanticPart": {
+          "loanType": {
             "type": "string",
-            "description": "A non-semantic part of a version",
+            "description": "loanType",
+            "nullable": true
+          },
+          "loanTypeCategory": {
+            "type": "string",
+            "description": "loanTypeCategory",
+            "nullable": true
+          },
+          "customerRoleCodeMp": {
+            "type": "integer",
+            "description": "customerRoleCode",
+            "format": "int32"
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "isSecured": {
+            "type": "boolean",
+            "description": "isSecured",
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "description": "statusCode",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "SemanticVersion"
+        "description": "RequestedKBGroupExposureItem"
       },
-      "LoanApplicationAssessment.Change": {
+      "LoanApplicationExposure.ExistingCBCBExposureItem": {
         "type": "object",
         "properties": {
-          "identityId": {
+          "cbcbContractIdMp": {
+            "$ref": "#/components/schemas/Shared.CompanyId"
+          },
+          "customerRoleCodeMp": {
+            "type": "integer",
+            "description": "customerRoleCode",
+            "format": "int32"
+          },
+          "loanType": {
             "type": "string",
-            "description": "Identita actora/uživatele",
+            "description": "loanType",
             "nullable": true
           },
-          "date": {
+          "loanTypeCategory": {
             "type": "string",
-            "description": "Datum změny",
+            "description": "loanTypeCategory",
+            "nullable": true
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "maturityDate",
+            "format": "date-time",
+            "nullable": true
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "exposureAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "contractDate": {
+            "type": "string",
+            "description": "contractDate",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cbcbDataLastUpdate": {
+            "type": "string",
+            "description": "cbcbDataLastUpdate",
             "format": "date-time",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "Change"
+        "description": "ExistingCBCBExposureItem"
       },
-      "LoanApplicationAssessment.LoanApplicationAssessment": {
+      "LoanApplicationExposure.RequestedCBCBExposureItem": {
         "type": "object",
         "properties": {
-          "id": {
+          "cbcbContractIdMp": {
+            "$ref": "#/components/schemas/Shared.CompanyId"
+          },
+          "customerRoleCodeMp": {
+            "type": "integer",
+            "description": "customerRoleCode",
+            "format": "int32"
+          },
+          "loanType": {
             "type": "string",
-            "description": "ID",
+            "description": "loanType",
             "nullable": true
           },
-          "loanApplicationId": {
-            "$ref": "#/components/schemas/Shared.SystemId"
-          },
-          "riskBusinesscaseId": {
+          "loanTypeCategory": {
             "type": "string",
-            "description": "Risk BusinessCase resource-identifier",
+            "description": "loanTypeCategory",
             "nullable": true
           },
-          "riskBusinesscaseExpirationDate": {
+          "maturityDate": {
             "type": "string",
-            "description": "Gets or Sets RiskBusinesscaseExpirationDate",
+            "description": "maturityDate",
             "format": "date-time",
             "nullable": true
           },
-          "assessmentResult": {
-            "type": "integer",
-            "description": "Assessment result",
-            "format": "int64",
+          "loanAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "cbcbDataLastUpdate": {
+            "type": "string",
+            "description": "cbcbDataLastUpdate",
+            "format": "date-time",
             "nullable": true
-          },
-          "standardRiskCosts": {
-            "type": "number",
-            "description": "Gets or Sets StandardRiskCosts",
-            "format": "float",
-            "nullable": true
-          },
-          "glTableCode": {
-            "type": "integer",
-            "description": "Gets or Sets GlTableCode",
-            "format": "int64",
-            "nullable": true
-          },
-          "loanApplicationAssessmentReason": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessmentReason"
-            },
-            "description": "LoanApplicationAssessment resource-identifier",
-            "nullable": true
-          },
-          "assessmentDetail": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.AssessmentDetail"
-          },
-          "householdAssessmentDetail": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplicationAssessment.HouseholdAssessmentDetail"
-            },
-            "description": "HouseholdAssessmentDetail",
-            "nullable": true
-          },
-          "counterpartyAssessmentDetail": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplicationAssessment.CounterpartyAssessmentDetail"
-            },
-            "description": "HouseholdAssessmentDetail",
-            "nullable": true
-          },
-          "collateralRiskCharacteristics": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplicationAssessment.CollateralRiskCharacteristics"
-            },
-            "description": "CollateralRiskCharacteristics",
-            "nullable": true
-          },
-          "version": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.SemanticVersion"
-          },
-          "created": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Change"
-          },
-          "updated": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.Change"
-          },
-          "resourceIdentifier": {
-            "$ref": "#/components/schemas/LoanApplicationAssessment.ResourceIdentifier"
           }
         },
         "additionalProperties": false,
-        "description": "LoanApplicationAssessment"
+        "description": "RequestedCBCBExposureItem"
+      },
+      "LoanApplicationExposure.LoanApplicationCounterparty": {
+        "type": "object",
+        "properties": {
+          "loanApplicationCounterpartyId": {
+            "type": "integer",
+            "description": "loanApplicationCounterpartyId",
+            "format": "int32",
+            "nullable": true
+          },
+          "customerIdMp": {
+            "type": "string",
+            "description": "customerId",
+            "nullable": true
+          },
+          "roleCodeMp": {
+            "type": "integer",
+            "description": "roleCode",
+            "format": "int32"
+          },
+          "cbcbRegisterCalled": {
+            "type": "boolean",
+            "description": "cbcbRegiterCalled",
+            "nullable": true
+          },
+          "cbcbReportIdMp": {
+            "$ref": "#/components/schemas/Shared.CompanyId"
+          },
+          "existingKBGroupNaturalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.ExistingKBGroupExposureItem"
+            },
+            "description": "existingKBGroupNaturalPersonExposureItem",
+            "nullable": true
+          },
+          "existingKBGroupJuridicalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.ExistingKBGroupExposureItem"
+            },
+            "description": "existingKBGroupJuridicalPersonExposureItem",
+            "nullable": true
+          },
+          "requestedKBGroupNaturalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.RequestedKBGroupExposureItem"
+            },
+            "description": "requestedKBGroupNaturalPersonExposureItem",
+            "nullable": true
+          },
+          "requestedKBGroupJuridicalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.RequestedKBGroupExposureItem"
+            },
+            "description": "requestedKBGroupJuridicalPersonExposureItem",
+            "nullable": true
+          },
+          "existingCBCBNaturalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.ExistingCBCBExposureItem"
+            },
+            "description": "existingCBCBNaturalPersonExposureItem",
+            "nullable": true
+          },
+          "existingCBCBJuridicalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.ExistingCBCBExposureItem"
+            },
+            "description": "existingCBCBJuridicalPersonExposureItem",
+            "nullable": true
+          },
+          "requestedCBCBNaturalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.RequestedCBCBExposureItem"
+            },
+            "description": "requestedCBCBNaturalPersonExposureItem",
+            "nullable": true
+          },
+          "requestedCBCBJuridicalPersonExposureItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.RequestedCBCBExposureItem"
+            },
+            "description": "requestedCBCBJuridicalPersonExposureItem",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationCounterparty"
+      },
+      "LoanApplicationExposure.ExposureSummaryForApproval": {
+        "type": "object",
+        "properties": {
+          "totalExistingExposureKB": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          },
+          "totalExistingExposureKBNaturalPerson": {
+            "$ref": "#/components/schemas/LoanApplicationExposure.Amount"
+          }
+        },
+        "additionalProperties": false,
+        "description": "ExposureSummaryForApproval"
+      },
+      "LoanApplicationExposure.LoanApplicationRelatedExposureResult": {
+        "type": "object",
+        "properties": {
+          "loanApplicationCounterparty": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.LoanApplicationCounterparty"
+            },
+            "description": "loanApplicationCounterparty",
+            "nullable": true
+          },
+          "exposureSummary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationExposure.ExposureSummaryForApproval"
+            },
+            "description": "exposureSummary",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "LoanApplicationRelatedExposureResult"
       },
       "RiskBusinessCase.LoanApplicationException": {
         "type": "object",
@@ -2025,7 +1969,7 @@
       "RiskBusinessCase.AssessmentRequest": {
         "type": "object",
         "properties": {
-          "loanApplicationId": {
+          "loanApplicationIdMp": {
             "$ref": "#/components/schemas/Shared.SystemId"
           },
           "itChannel": {

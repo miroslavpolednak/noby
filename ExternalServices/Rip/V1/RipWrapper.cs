@@ -17,7 +17,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Client 
+    public partial class Client
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -139,7 +139,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LoanApplicationResponse> CreateLoanApplicationAsync(LOanApplication body)
+        public virtual System.Threading.Tasks.Task<LoanApplicationResponse> CreateLoanApplicationAsync(LoanApplicationRequest body)
         {
             return CreateLoanApplicationAsync(body, System.Threading.CancellationToken.None);
         }
@@ -150,7 +150,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LoanApplicationResponse> CreateLoanApplicationAsync(LOanApplication body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LoanApplicationResponse> CreateLoanApplicationAsync(LoanApplicationRequest body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v1/loan-application");
@@ -218,35 +218,25 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Vrátí LoanApplicationAssessment podle ID
+        /// Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti(Loan Applicaiton).
         /// </summary>
-        /// <param name="loanApplicationAssessmentId">loanApplicationAssessmentId</param>
-        /// <param name="expand">vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky |assessmentDetail|householdAssessmentDetail|counterpartyAssessmentDetail|loanApplicationApprovalPossibilities|collateralRiskCharacteristics</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LoanApplicationAssessment> GetLoanApplicationAssessmentAsync(string loanApplicationAssessmentId, System.Collections.Generic.IEnumerable<string> expand)
+        public virtual System.Threading.Tasks.Task<LoanApplicationRelatedExposureResult> LoanApplicationExposureAsync(LoanApplicationRelatedExposure body)
         {
-            return GetLoanApplicationAssessmentAsync(loanApplicationAssessmentId, expand, System.Threading.CancellationToken.None);
+            return LoanApplicationExposureAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Vrátí LoanApplicationAssessment podle ID
+        /// Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti(Loan Applicaiton).
         /// </summary>
-        /// <param name="loanApplicationAssessmentId">loanApplicationAssessmentId</param>
-        /// <param name="expand">vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky |assessmentDetail|householdAssessmentDetail|counterpartyAssessmentDetail|loanApplicationApprovalPossibilities|collateralRiskCharacteristics</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LoanApplicationAssessment> GetLoanApplicationAssessmentAsync(string loanApplicationAssessmentId, System.Collections.Generic.IEnumerable<string> expand, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LoanApplicationRelatedExposureResult> LoanApplicationExposureAsync(LoanApplicationRelatedExposure body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v1/loan-application-assessment/{loanApplicationAssessmentId}?");
-            urlBuilder_.Replace("{loanApplicationAssessmentId}", System.Uri.EscapeDataString(ConvertToString(loanApplicationAssessmentId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (expand != null)
-            {
-                foreach (var item_ in expand) { urlBuilder_.Append(System.Uri.EscapeDataString("expand") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
-            }
-            urlBuilder_.Length--;
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v1/loan-application-exposure-calculation");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -254,7 +244,10 @@ namespace ExternalServices.Rip.V1.RipWrapper
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    var content_ = new System.Net.Http.StringContent(System.Text.Json.JsonSerializer.Serialize(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -280,7 +273,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<LoanApplicationAssessment>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<LoanApplicationRelatedExposureResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -308,7 +301,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Business case - Assessment (Asynchronous)
+        /// Risk Business Case - Assessment (Asynchronous)
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -319,7 +312,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Business case - Assessment (Asynchronous)
+        /// Risk Business Case - Assessment (Asynchronous)
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -392,7 +385,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Business case - Create
+        /// Risk Business Case - Create
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -403,7 +396,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Business case - Create
+        /// Risk Business Case - Create
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -475,7 +468,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Business case - Commit
+        /// Risk Business Case - Commit
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -486,7 +479,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Business case - Commit
+        /// Risk Business Case - Commit
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -627,7 +620,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -639,17 +632,17 @@ namespace ExternalServices.Rip.V1.RipWrapper
                     return converted == null ? string.Empty : converted;
                 }
             }
-            else if (value is bool) 
+            else if (value is bool)
             {
                 return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
             else if (value is byte[])
             {
-                return System.Convert.ToBase64String((byte[]) value);
+                return System.Convert.ToBase64String((byte[])value);
             }
             else if (value.GetType().IsArray)
             {
-                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                var array = System.Linq.Enumerable.OfType<object>((System.Array)value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
 
@@ -1054,7 +1047,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class ExpensesSummary2
     {
         /// <summary>
-        /// Kategorie.
+        /// Rent.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("rent")]
@@ -1090,21 +1083,35 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class PrimaryAddress
     {
         /// <summary>
-        /// Ulice.
+        /// název ulice
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("streetNameMp")]
-        public string StreetNameMp { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("streetName")]
+        public string StreetName { get; set; }
 
         /// <summary>
-        /// Cislo popisne.
+        /// číslo popisné
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("houseNumberMp")]
-        public string HouseNumberMp { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("houseNumber")]
+        public int HouseNumber { get; set; }
 
         /// <summary>
-        /// Město.
+        /// číslo orientační
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("streetNumber")]
+        public string StreetNumber { get; set; }
+
+        /// <summary>
+        /// číslo evidenční
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("evidenceNumber")]
+        public string EvidenceNumber { get; set; }
+
+        /// <summary>
+        /// město primární adresy
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("city")]
@@ -1118,18 +1125,18 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Směrovací číslo.
+        /// PSČ primární adresy
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("postCode")]
-        public long? PostCode { get; set; }
+        public int PostCode { get; set; }
 
         /// <summary>
-        /// Region.
+        /// kód regionu primární adresy
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("regionCode")]
-        public long? RegionCode { get; set; }
+        public int RegionCode { get; set; }
 
     }
 
@@ -1261,11 +1268,18 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public string Street { get; set; }
 
         /// <summary>
-        /// číslo katastru nemovitostí.
+        /// číslo popisné sídla zaměstnavatele
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("landRegisterNumber")]
-        public string LandRegisterNumber { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("houseNumber")]
+        public int HouseNumber { get; set; }
+
+        /// <summary>
+        /// číslo orientační sídla zaměstnavatele
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("streetNumber")]
+        public string StreetNumber { get; set; }
 
         /// <summary>
         /// Telefonní kontakt.
@@ -1278,21 +1292,28 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public Amount MonthlyIncomeAmount { get; set; }
 
         /// <summary>
-        /// Číslo účtu, ze kterého od daného zaměstnavatele chodí mzda.
+        /// předčíslí čísla účtu zaměstnavatele, z kterého klientovi chodí mzda
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumberMp")]
-        public string AccountNumberMp { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
+        public string AccountNumberPrefix { get; set; }
 
         /// <summary>
-        /// Kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda.
+        /// číslo účtu zaměstnavatele (bez předčíslí), z kterého klientovi chodí mzda
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberCore")]
+        public string AccountNumberCore { get; set; }
+
+        /// <summary>
+        /// kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("accountBankCode")]
         public string AccountBankCode { get; set; }
 
         /// <summary>
-        /// Je příjem domicilován?.
+        /// příznak domicilace příjmu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("domiciled")]
@@ -1306,7 +1327,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public string ProofType { get; set; }
 
         /// <summary>
-        /// Typ zaměstnání.
+        /// typ zaměstnání v zahraničí
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("foreignEmploymentType")]
@@ -1389,12 +1410,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
         [System.Text.Json.Serialization.JsonPropertyName("issuedByExternalAccountant")]
         public bool? IssuedByExternalAccountant { get; set; }
 
-        /// <summary>
-        /// Z příjmu Zaměstnance  jsou/nejsou prováděny srážky.
-        /// </summary>
-
         [System.Text.Json.Serialization.JsonPropertyName("incomeDeduction")]
-        public System.Collections.Generic.ICollection<IncomeDeduction> IncomeDeduction { get; set; }
+        public IncomeDeduction IncomeDeduction { get; set; }
 
     }
 
@@ -1479,21 +1496,35 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class LoanApplicationRentIncome
     {
         /// <summary>
-        /// accountNumber.
+        /// předčíslí čísla účtu, ze kterého příjem přichází
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        public string AccountNumber { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
+        public string AccountNumberPrefix { get; set; }
 
         /// <summary>
-        /// domiciled.
+        /// číslo účtu (bez předčíslí), ze kterého příjem přichází
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberCore")]
+        public string AccountNumberCore { get; set; }
+
+        /// <summary>
+        /// kód banky čísla účtu, ze kterého příjem přichází
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountBankCode")]
+        public string AccountBankCode { get; set; }
+
+        /// <summary>
+        /// příznak domicilace
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("domiciled")]
         public bool? Domiciled { get; set; }
 
         /// <summary>
-        /// proofType.
+        /// dokument dokládající příjem z pronájmu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("proofType")]
@@ -1517,19 +1548,29 @@ namespace ExternalServices.Rip.V1.RipWrapper
         [System.Text.Json.Serialization.JsonPropertyName("type")]
         public string Type { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyIncomeAmount")]
+        public Amount MonthlyIncomeAmount { get; set; }
+
         /// <summary>
-        /// Částka  vedlejšího prokazatelného příjmu. Opakující se atribut podle počtu vedeljších prokazatelných příjmů příjmů.
+        /// předčíslí čísla účtu, ze kterého příjem přichází
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyIncomeAmount")]
-        public double? MonthlyIncomeAmount { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
+        public string AccountNumberPrefix { get; set; }
 
         /// <summary>
         /// číslo účtu, z kterého příjem přichází.
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        public string AccountNumber { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberCore")]
+        public string AccountNumberCore { get; set; }
+
+        /// <summary>
+        /// kód banky čísla účtu, ze kterého příjem přichází
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountBankCode")]
+        public string AccountBankCode { get; set; }
 
         /// <summary>
         /// Příznak, zdali je příjem domicilován.
@@ -1554,38 +1595,34 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class LoanApplicationIncome2
     {
         /// <summary>
-        /// Product group.
+        /// příznak uzamčení příjmů
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("incomeConfirmed")]
         public bool? IncomeConfirmed { get; set; }
 
         /// <summary>
-        /// Product group.
+        /// datum posledního uzamčení příjmů
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("lastConfirmedDate")]
         public System.DateTime? LastConfirmedDate { get; set; }
 
         /// <summary>
-        /// Product group.
+        /// příjmy ze zaměstnání
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("employmentIncome")]
         public System.Collections.Generic.ICollection<LoanApplicationEmploymentIncome> EmploymentIncome { get; set; }
 
-        /// <summary>
-        /// Product group.
-        /// </summary>
-
         [System.Text.Json.Serialization.JsonPropertyName("entrepreneurIncome")]
-        public System.Collections.Generic.ICollection<LoanApplicationEntrepreneurIncome> EntrepreneurIncome { get; set; }
+        public LoanApplicationEntrepreneurIncome EntrepreneurIncome { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rentIncome")]
         public LoanApplicationRentIncome RentIncome { get; set; }
 
         /// <summary>
-        /// Product group.
+        /// ostatní příjmy
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("otherIncome")]
@@ -1632,25 +1669,44 @@ namespace ExternalServices.Rip.V1.RipWrapper
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreditLiability2
     {
+        /// <summary>
+        /// Typ závazku klienta
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("liabilityType")]
         public int LiabilityType { get; set; }
+
+        /// <summary>
+        /// Výše závazku v JPÚ - splátkové operace (spotřebiteslé úvěry, hypotéky)
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
         public double Amount { get; set; }
 
         /// <summary>
-        /// Výše limitu v JPÚ
+        /// Výše limitu v JPÚ -  esplátkové operace (kreditní karty, povolené debety)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("limit")]
         public double Limit { get; set; }
 
+        /// <summary>
+        /// Výše konsolidace u nesplátkových operací (u daného závazku (zrušení/snížení))
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("amountConsolidated")]
         public double AmountConsolidated { get; set; }
 
+        /// <summary>
+        /// Výše splátky (splátkové operace)
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("installment")]
         public double Installment { get; set; }
+
+        /// <summary>
+        /// Výše konsolidace u splátkových operací
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("installmentConsolidated")]
         public double InstallmentConsolidated { get; set; }
@@ -1828,18 +1884,18 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class LoanApplicationHousehold2
     {
         /// <summary>
-        /// LoanApplicationHousehold identity
+        /// ID domácnosti přidělené volajícím systémem
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public long? Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// počet vyživovaných dětí do 10 let (včetně).
+        /// kód role domácnosti
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("roleCode")]
-        public string RoleCode { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("roleCodeMp")]
+        public int RoleCodeMp { get; set; }
 
         /// <summary>
         /// počet vyživovaných dětí do 10 let (včetně).
@@ -1855,22 +1911,18 @@ namespace ExternalServices.Rip.V1.RipWrapper
         [System.Text.Json.Serialization.JsonPropertyName("childrenOver10")]
         public long? ChildrenOver10 { get; set; }
 
-        /// <summary>
-        /// Household Expenses Summary
-        /// </summary>
-
         [System.Text.Json.Serialization.JsonPropertyName("householdExpensesSummary")]
-        public System.Collections.Generic.ICollection<ExpensesSummary2> HouseholdExpensesSummary { get; set; }
+        public ExpensesSummary2 HouseholdExpensesSummary { get; set; }
 
         /// <summary>
-        /// Shrnutí splátek mimo domácnosti
+        /// kód vypořádání majetku (manželů)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("settlementTypeCode")]
         public string SettlementTypeCode { get; set; }
 
         /// <summary>
-        /// Shrnutí splátek domácnosti
+        /// údaje o klientech
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("counterParty")]
@@ -1945,14 +1997,14 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("product")]
-        public long? Product { get; set; }
+        public int Product { get; set; }
 
         /// <summary>
         /// LoanType
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("loanType")]
-        public long? LoanType { get; set; }
+        public int LoanType { get; set; }
 
         /// <summary>
         /// MarketingActions
@@ -2033,8 +2085,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// typ splátkového kalendáře.
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("repaymentScheduleType")]
-        public string RepaymentScheduleType { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentScheduleTypeMp")]
+        public int RepaymentScheduleTypeMp { get; set; }
 
         /// <summary>
         /// periodicity splátek.
@@ -2079,7 +2131,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public System.DateTime? RepaymentPeriodEnd { get; set; }
 
         /// <summary>
-        /// vnitrobankovní úroková sazba.
+        /// domácí měna dle příjmu žadatelů.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("homeCurrencyIncome")]
@@ -2094,34 +2146,42 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CompanyId
-    {
-        /// <summary>
-        /// Company (eg. MP, KB)
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("company")]
-        public string Company { get; set; }
-
-        /// <summary>
-        /// Id
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public string Id { get; set; }
-
-    }
-
     /// <summary>
     /// Parametry domácnosti.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoanApplicationProductRelation
     {
+        /// <summary>
+        /// jiné závazky zohledněné při poskytování úvěru - ID kontraktu z CBCB
+        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("productId")]
-        public CompanyId ProductId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbContractIdMp")]
+        public string CbcbContractIdMp { get; set; }
+
+        /// <summary>
+        /// jiné závazky zohledněné při poskytování úvěru - číslo účtu z KB/MPSS -  předčíslí
+        /// <br/>plní se pouze tehdy, pokud se jedná o číslo účtu z entity poskytující úvěr
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
+        public string AccountNumberPrefix { get; set; }
+
+        /// <summary>
+        /// jiné závazky zohledněné při poskytování úvěru - číslo účtu z KB/MPSS (bez předčíslí)
+        /// <br/>plní se pouze tehdy, pokud se jedná o číslo účtu z entity poskytující úvěr
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberCore")]
+        public string AccountNumberCore { get; set; }
+
+        /// <summary>
+        /// jiné závazky zohledněné při poskytování úvěru - číslo účtu z KB nebo MPSS -  kód banky
+        /// <br/>plní se pouze tehdy, pokud se jedná o číslo účtu z entity poskytující úvěr
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountBankCode")]
+        public string AccountBankCode { get; set; }
 
         /// <summary>
         /// kód produktového shluku (shluk jednoho produktu).
@@ -2150,7 +2210,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
     /// LoanApplication
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LOanApplication
+    public partial class LoanApplicationRequest
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
@@ -2178,7 +2238,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public string SignatureType { get; set; }
 
         /// <summary>
-        /// loan application verze
+        /// loan application verze (verze dat - timestamp)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDataVersion")]
@@ -2219,153 +2279,40 @@ namespace ExternalServices.Rip.V1.RipWrapper
     }
 
     /// <summary>
-    /// ResourceIdentifier
+    /// LoanApplicationRelatedExposur
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ResourceIdentifier
+    public partial class LoanApplicationRelatedExposure
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationIdMp")]
+        public SystemId LoanApplicationIdMp { get; set; }
+
+        /// <summary>
+        /// riskBusinessCaseId
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseIdMp")]
+        public string RiskBusinessCaseIdMp { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CompanyId
     {
         /// <summary>
-        /// The resource instance code, eg. 'KBCZ'
+        /// Company (eg. MP, KB)
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("instance")]
-        public string Instance { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("company")]
+        public string Company { get; set; }
 
         /// <summary>
-        /// The resource domain code, eg. 'CFLM'
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("domain")]
-        public string Domain { get; set; }
-
-        /// <summary>
-        /// The resource code (the in-domain resource code, eg. 'LimitModel')
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("resource")]
-        public string Resource { get; set; }
-
-        /// <summary>
-        /// ID
+        /// Id
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public string Id { get; set; }
-
-        /// <summary>
-        /// The variant of the resource, eg. distinguishing the origin of the source
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("variant")]
-        public string Variant { get; set; }
-
-    }
-
-    /// <summary>
-    /// Resource
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Resource
-    {
-        /// <summary>
-        /// Entity
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("entity")]
-        public string Entity { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public ResourceIdentifier Id { get; set; }
-
-    }
-
-    /// <summary>
-    /// AssessmentReasonDetail
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AssessmentReasonDetail
-    {
-        /// <summary>
-        /// Target
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("target")]
-        public string Target { get; set; }
-
-        /// <summary>
-        /// Desc
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("desc")]
-        public string Desc { get; set; }
-
-        /// <summary>
-        /// RiskScaleValue
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("riskScaleValue")]
-        public string RiskScaleValue { get; set; }
-
-        /// <summary>
-        /// Target
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("resource")]
-        public System.Collections.Generic.ICollection<Resource> Resource { get; set; }
-
-    }
-
-    /// <summary>
-    /// LoanApplicationAssessmentReason
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LoanApplicationAssessmentReason
-    {
-        /// <summary>
-        /// Code
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Level
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("level")]
-        public string Level { get; set; }
-
-        /// <summary>
-        /// Weight
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("weight")]
-        public long? Weight { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("detail")]
-        public AssessmentReasonDetail Detail { get; set; }
-
-    }
-
-    /// <summary>
-    /// LoanApplicationScore
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LoanApplicationScore
-    {
-        /// <summary>
-        /// Value
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public string Value { get; set; }
-
-        /// <summary>
-        /// Scale
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("scale")]
-        public string Scale { get; set; }
 
     }
 
@@ -2392,364 +2339,391 @@ namespace ExternalServices.Rip.V1.RipWrapper
     }
 
     /// <summary>
-    /// LoanApplicationLimit
+    /// ExistingKBGroupExposureItem
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LoanApplicationLimit
+    public partial class ExistingKBGroupExposureItem
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("_LoanApplicationLimit")]
-        public Amount2 _LoanApplicationLimit { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationInstallmentLimit")]
-        public Amount2 LoanApplicationInstallmentLimit { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationCollateralLimit")]
-        public Amount2 LoanApplicationCollateralLimit { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("remainingAnnuityLivingAmount")]
-        public Amount2 RemainingAnnuityLivingAmount { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("productIdMp")]
+        public CompanyId ProductIdMp { get; set; }
 
         /// <summary>
-        /// Remaining Annuity Living Amount
+        /// loanType
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("calculationIrStressed")]
-        public bool? CalculationIrStressed { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+        public string LoanType { get; set; }
 
         /// <summary>
-        /// iir
+        /// loanTypeCategory
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("iir")]
-        public long? Iir { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanTypeCategory")]
+        public string LoanTypeCategory { get; set; }
 
         /// <summary>
-        /// cir
+        /// customerRoleCode
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("cir")]
-        public long? Cir { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("customerRoleCodeMp")]
+        public int CustomerRoleCodeMp { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public Amount2 LoanAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingAmount")]
+        public Amount2 DrawingAmount { get; set; }
 
         /// <summary>
-        /// dti
+        /// contractDate
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("dti")]
-        public long? Dti { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("contractDate")]
+        public System.DateTime? ContractDate { get; set; }
 
         /// <summary>
-        /// dsti
+        /// maturityDate
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("dsti")]
-        public long? Dsti { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("maturityDate")]
+        public System.DateTime? MaturityDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanBalanceAmount")]
+        public Amount2 LoanBalanceAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanOnBalanceAmount")]
+        public Amount2 LoanOnBalanceAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanOffBalanceAmount")]
+        public Amount2 LoanOffBalanceAmount { get; set; }
+
+        /// <summary>
+        /// noOfDaysPastDue
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("noOfDaysPastDue")]
+        public int? NoOfDaysPastDue { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmountPastDue")]
+        public Amount2 LoanAmountPastDue { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("exposureAmount")]
+        public Amount2 ExposureAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmount")]
+        public Amount2 InstallmentAmount { get; set; }
+
+        /// <summary>
+        /// isSecured
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSecured")]
+        public bool? IsSecured { get; set; }
 
     }
 
     /// <summary>
-    /// RiskCharacteristics
+    /// RequestedKBGroupExposureItem
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RiskCharacteristics
+    public partial class RequestedKBGroupExposureItem
     {
+        /// <summary>
+        /// riskBusinessCaseId
+        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyIncomeAmount")]
-        public Amount2 MonthlyIncomeAmount { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseIdMp")]
+        public string RiskBusinessCaseIdMp { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyCostsWithoutInstAmount")]
-        public Amount2 MonthlyCostsWithoutInstAmount { get; set; }
+        /// <summary>
+        /// loanType
+        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInKBAmount")]
-        public Amount2 MonthlyInstallmentsInKBAmount { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+        public string LoanType { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyEntrepreneurInstallmentsInKBAmount")]
-        public Amount2 MonthlyEntrepreneurInstallmentsInKBAmount { get; set; }
+        /// <summary>
+        /// loanTypeCategory
+        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInMPSSAmount")]
-        public Amount2 MonthlyInstallmentsInMPSSAmount { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanTypeCategory")]
+        public string LoanTypeCategory { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInOFIAmount")]
-        public Amount2 MonthlyInstallmentsInOFIAmount { get; set; }
+        /// <summary>
+        /// customerRoleCode
+        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInCBCBAmount")]
-        public Amount2 MonthlyInstallmentsInCBCBAmount { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("customerRoleCodeMp")]
+        public int CustomerRoleCodeMp { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public Amount2 LoanAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmount")]
+        public Amount2 InstallmentAmount { get; set; }
+
+        /// <summary>
+        /// isSecured
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSecured")]
+        public bool? IsSecured { get; set; }
+
+        /// <summary>
+        /// statusCode
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("statusCode")]
+        public string StatusCode { get; set; }
 
     }
 
     /// <summary>
-    /// AssessmentDetail
+    /// ExistingCBCBExposureItem
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AssessmentDetail
+    public partial class ExistingCBCBExposureItem
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationScore")]
-        public LoanApplicationScore LoanApplicationScore { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationLimit")]
-        public LoanApplicationLimit LoanApplicationLimit { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbContractIdMp")]
+        public CompanyId CbcbContractIdMp { get; set; }
 
         /// <summary>
-        /// Assessment detail
+        /// customerRoleCode
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationRiskCharacteristics")]
-        public System.Collections.Generic.ICollection<RiskCharacteristics> LoanApplicationRiskCharacteristics { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("customerRoleCodeMp")]
+        public int CustomerRoleCodeMp { get; set; }
+
+        /// <summary>
+        /// loanType
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+        public string LoanType { get; set; }
+
+        /// <summary>
+        /// loanTypeCategory
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanTypeCategory")]
+        public string LoanTypeCategory { get; set; }
+
+        /// <summary>
+        /// maturityDate
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("maturityDate")]
+        public System.DateTime? MaturityDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public Amount2 LoanAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmount")]
+        public Amount2 InstallmentAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("exposureAmount")]
+        public Amount2 ExposureAmount { get; set; }
+
+        /// <summary>
+        /// contractDate
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractDate")]
+        public System.DateTime? ContractDate { get; set; }
+
+        /// <summary>
+        /// cbcbDataLastUpdate
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbDataLastUpdate")]
+        public System.DateTime? CbcbDataLastUpdate { get; set; }
 
     }
 
     /// <summary>
-    /// Household Assessment detail
+    /// RequestedCBCBExposureItem
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class HouseholdAssessmentDetail
+    public partial class RequestedCBCBExposureItem
     {
-        /// <summary>
-        /// Id
-        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public long? Id { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbContractIdMp")]
+        public CompanyId CbcbContractIdMp { get; set; }
 
         /// <summary>
-        /// Household id
+        /// customerRoleCode
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("householdId")]
-        public long? HouseholdId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("customerRoleCodeMp")]
+        public int CustomerRoleCodeMp { get; set; }
 
         /// <summary>
-        /// Household index
+        /// loanType
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("householdIndex")]
-        public long? HouseholdIndex { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+        public string LoanType { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("assessmentDetail")]
-        public AssessmentDetail AssessmentDetail { get; set; }
+        /// <summary>
+        /// loanTypeCategory
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanTypeCategory")]
+        public string LoanTypeCategory { get; set; }
+
+        /// <summary>
+        /// maturityDate
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("maturityDate")]
+        public System.DateTime? MaturityDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public Amount2 LoanAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmount")]
+        public Amount2 InstallmentAmount { get; set; }
+
+        /// <summary>
+        /// cbcbDataLastUpdate
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbDataLastUpdate")]
+        public System.DateTime? CbcbDataLastUpdate { get; set; }
 
     }
 
     /// <summary>
-    /// Counterparty Assessment Detail
+    /// LoanApplicationCounterparty
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CounterpartyAssessmentDetail
+    public partial class LoanApplicationCounterparty
     {
         /// <summary>
-        /// Id
+        /// loanApplicationCounterpartyId
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public long? Id { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationCounterpartyId")]
+        public int? LoanApplicationCounterpartyId { get; set; }
 
         /// <summary>
-        /// Counterparty id
+        /// customerId
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("counterPartyId")]
-        public long? CounterPartyId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("customerIdMp")]
+        public string CustomerIdMp { get; set; }
 
         /// <summary>
-        /// Customer id
+        /// roleCode
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("customerId")]
-        public string CustomerId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("roleCodeMp")]
+        public int RoleCodeMp { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("assessmentDetail")]
-        public AssessmentDetail AssessmentDetail { get; set; }
+        /// <summary>
+        /// cbcbRegiterCalled
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbRegisterCalled")]
+        public bool? CbcbRegisterCalled { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbReportIdMp")]
+        public CompanyId CbcbReportIdMp { get; set; }
+
+        /// <summary>
+        /// existingKBGroupNaturalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("existingKBGroupNaturalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<ExistingKBGroupExposureItem> ExistingKBGroupNaturalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// existingKBGroupJuridicalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("existingKBGroupJuridicalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<ExistingKBGroupExposureItem> ExistingKBGroupJuridicalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// requestedKBGroupNaturalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestedKBGroupNaturalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<RequestedKBGroupExposureItem> RequestedKBGroupNaturalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// requestedKBGroupJuridicalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestedKBGroupJuridicalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<RequestedKBGroupExposureItem> RequestedKBGroupJuridicalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// existingCBCBNaturalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("existingCBCBNaturalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<ExistingCBCBExposureItem> ExistingCBCBNaturalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// existingCBCBJuridicalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("existingCBCBJuridicalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<ExistingCBCBExposureItem> ExistingCBCBJuridicalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// requestedCBCBNaturalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestedCBCBNaturalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<RequestedCBCBExposureItem> RequestedCBCBNaturalPersonExposureItem { get; set; }
+
+        /// <summary>
+        /// requestedCBCBJuridicalPersonExposureItem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestedCBCBJuridicalPersonExposureItem")]
+        public System.Collections.Generic.ICollection<RequestedCBCBExposureItem> RequestedCBCBJuridicalPersonExposureItem { get; set; }
 
     }
 
     /// <summary>
-    /// CollateralRiskCharacteristics
+    /// ExposureSummaryForApproval
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CollateralRiskCharacteristics
+    public partial class ExposureSummaryForApproval
     {
-        /// <summary>
-        /// Ltv
-        /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("ltv")]
-        public long? Ltv { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("totalExistingExposureKB")]
+        public Amount2 TotalExistingExposureKB { get; set; }
 
-        /// <summary>
-        /// Ltfv
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("ltfv")]
-        public long? Ltfv { get; set; }
-
-        /// <summary>
-        /// Ltp
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("ltp")]
-        public long? Ltp { get; set; }
-
-        /// <summary>
-        /// SumAppraisedValue
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("sumAppraisedValue")]
-        public long? SumAppraisedValue { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("totalExistingExposureKBNaturalPerson")]
+        public Amount2 TotalExistingExposureKBNaturalPerson { get; set; }
 
     }
 
     /// <summary>
-    /// SemanticVersion
+    /// LoanApplicationRelatedExposureResult
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SemanticVersion
+    public partial class LoanApplicationRelatedExposureResult
     {
         /// <summary>
-        /// Major part of a version
+        /// loanApplicationCounterparty
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("major")]
-        public int? Major { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationCounterparty")]
+        public System.Collections.Generic.ICollection<LoanApplicationCounterparty> LoanApplicationCounterparty { get; set; }
 
         /// <summary>
-        /// Minor part of a version
+        /// exposureSummary
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("minor")]
-        public int? Minor { get; set; }
-
-        /// <summary>
-        /// Bugfix part of a version
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bugfix")]
-        public int? Bugfix { get; set; }
-
-        /// <summary>
-        /// A non-semantic part of a version
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("nonSemanticPart")]
-        public string NonSemanticPart { get; set; }
-
-    }
-
-    /// <summary>
-    /// Change
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Change
-    {
-        /// <summary>
-        /// Identita actora/uživatele
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("identityId")]
-        public string IdentityId { get; set; }
-
-        /// <summary>
-        /// Datum změny
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("date")]
-        public System.DateTime? Date { get; set; }
-
-    }
-
-    /// <summary>
-    /// LoanApplicationAssessment
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LoanApplicationAssessment
-    {
-        /// <summary>
-        /// ID
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public string Id { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
-        public SystemId LoanApplicationId { get; set; }
-
-        /// <summary>
-        /// Risk BusinessCase resource-identifier
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseId")]
-        public string RiskBusinesscaseId { get; set; }
-
-        /// <summary>
-        /// Gets or Sets RiskBusinesscaseExpirationDate
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
-        public System.DateTime? RiskBusinesscaseExpirationDate { get; set; }
-
-        /// <summary>
-        /// Assessment result
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("assessmentResult")]
-        public long? AssessmentResult { get; set; }
-
-        /// <summary>
-        /// Gets or Sets StandardRiskCosts
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("standardRiskCosts")]
-        public float? StandardRiskCosts { get; set; }
-
-        /// <summary>
-        /// Gets or Sets GlTableCode
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("glTableCode")]
-        public long? GlTableCode { get; set; }
-
-        /// <summary>
-        /// LoanApplicationAssessment resource-identifier
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationAssessmentReason")]
-        public System.Collections.Generic.ICollection<LoanApplicationAssessmentReason> LoanApplicationAssessmentReason { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("assessmentDetail")]
-        public AssessmentDetail AssessmentDetail { get; set; }
-
-        /// <summary>
-        /// HouseholdAssessmentDetail
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("householdAssessmentDetail")]
-        public System.Collections.Generic.ICollection<HouseholdAssessmentDetail> HouseholdAssessmentDetail { get; set; }
-
-        /// <summary>
-        /// HouseholdAssessmentDetail
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("counterpartyAssessmentDetail")]
-        public System.Collections.Generic.ICollection<CounterpartyAssessmentDetail> CounterpartyAssessmentDetail { get; set; }
-
-        /// <summary>
-        /// CollateralRiskCharacteristics
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("collateralRiskCharacteristics")]
-        public System.Collections.Generic.ICollection<CollateralRiskCharacteristics> CollateralRiskCharacteristics { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("version")]
-        public SemanticVersion Version { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("created")]
-        public Change Created { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("updated")]
-        public Change Updated { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("resourceIdentifier")]
-        public ResourceIdentifier ResourceIdentifier { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("exposureSummary")]
+        public System.Collections.Generic.ICollection<ExposureSummaryForApproval> ExposureSummary { get; set; }
 
     }
 
@@ -2782,8 +2756,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class AssessmentRequest
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
-        public SystemId LoanApplicationId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationIdMp")]
+        public SystemId LoanApplicationIdMp { get; set; }
 
         /// <summary>
         /// IT Channel.
@@ -3114,7 +3088,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
 #pragma warning restore 1591
 #pragma warning restore 1573
-#pragma warning restore  472
-#pragma warning restore  114
-#pragma warning restore  108
+#pragma warning restore 472
+#pragma warning restore 114
+#pragma warning restore 108
 #pragma warning restore 3016
