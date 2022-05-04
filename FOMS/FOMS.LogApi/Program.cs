@@ -1,34 +1,50 @@
-var builder = WebApplication.CreateBuilder(args);
+using CIS.Infrastructure.StartupExtensions;
+using CIS.Infrastructure.Telemetry;
+using Microsoft.AspNetCore.Mvc;
 
-// Add services to the container.
+namespace FOMS.LogApi;
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
+public class Program
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-       new WeatherForecast
-       (
-           DateTime.Now.AddDays(index),
-           Random.Shared.Next(-20, 55),
-           summaries[Random.Shared.Next(summaries.Length)]
-       ))
-        .ToArray();
-    return forecast;
-});
+        builder
+            .AddCisEnvironmentConfiguration()
+            .AddCisWebApiCors()
+            .AddCisLogging()
+            .AddCisHealthChecks();
 
-app.Run();
+        var app = builder.Build();
 
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        // logovani standardniho logu
+        app.MapPost("/log", (LogModel model, [FromServices] ILogger<Program> logger) =>
+        {
+#pragma warning disable CA2254 // Template should be a static expression
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+            logger.Log(model.Level.ToLogLevel(), model.Message);
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
+#pragma warning restore CA2254 // Template should be a static expression
+        });
+
+        // logovani auditniho logu
+        app.MapPost("/audit", (LogModel model, [FromServices] IAuditLogger logger) =>
+        {
+#pragma warning disable CA2254 // Template should be a static expression
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+            logger.Log(model.Message ?? "");
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
+#pragma warning restore CA2254 // Template should be a static expression
+        });
+
+        try
+        {
+            app.Run();
+        }
+        finally
+        {
+            LoggingExtensions.CloseAndFlush();
+        }
+    }
 }
