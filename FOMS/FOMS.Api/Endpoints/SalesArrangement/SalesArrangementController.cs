@@ -7,6 +7,22 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>
+    /// Vypocet rozsirene bonity
+    /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> HouseholdService<br/>
+    /// <i>DS:</i> CustomerOnSaService
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales arrangement</param>
+    /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
+    [HttpGet("{salesArrangementId:int}/credit-worhiness")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
+    public async Task<GetCreditWorthiness.GetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCreditWorthiness.GetCreditWorthinessRequest(salesArrangementId), cancellationToken);
+
+    /// <summary>
     /// Seznam Sales Arrangements pro Case.
     /// </summary>
     /// <remarks>
