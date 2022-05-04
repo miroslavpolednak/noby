@@ -32,6 +32,9 @@ public static class RequestLoggerExtensions
     public static void RequestHandlerStartedWithId(this ILogger logger, string handlerName, long id)
         => _requestHandlerStartedWithId(logger, handlerName, id, null!);
 
+    public static void RequestHandlerStartedWithId(this ILogger logger, string handlerName, int id)
+        => _requestHandlerStartedWithId(logger, handlerName, id, null!);
+
     public static void RequestHandlerFinished(this ILogger logger, string handlerName)
     => _requestHandlerFinished(logger, handlerName, null!);
 }

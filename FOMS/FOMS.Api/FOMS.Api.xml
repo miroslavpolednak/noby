@@ -996,6 +996,17 @@
             )
             </remarks>
         </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCreditWorthiness(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vypocet rozsirene bonity
+            </summary>
+            <remarks>
+            <i>DS:</i> HouseholdService<br/>
+            <i>DS:</i> CustomerOnSaService
+            </remarks>
+            <param name="salesArrangementId">Sales arrangement</param>
+            <returns><see cref="T:FOMS.Api.Endpoints.SalesArrangement.GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
+        </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetList(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Seznam Sales Arrangements pro Case.

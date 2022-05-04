@@ -6,6 +6,15 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 [Route("api/sales-arrangement")]
 public class SalesArrangementController : ControllerBase
 {
+    /// <summary>
+    /// Vypocet rozsirene bonity
+    /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> HouseholdService<br/>
+    /// <i>DS:</i> CustomerOnSaService
+    /// </remarks>
+    /// <param name="salesArrangementId">Sales arrangement</param>
+    /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
     [HttpGet("{salesArrangementId:int}/credit-worhiness")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
