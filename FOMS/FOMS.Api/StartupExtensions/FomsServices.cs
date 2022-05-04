@@ -1,4 +1,5 @@
-﻿using FluentValidation.AspNetCore;
+﻿using ExternalServices.Rip;
+using FluentValidation.AspNetCore;
 
 namespace FOMS.Api.StartupExtensions;
 
@@ -27,7 +28,10 @@ internal static class FomsServices
                 fv.RegisterValidatorsFromAssemblyContaining<IApiAssembly>(includeInternalTypes: true);
                 fv.DisableDataAnnotationsValidation = true;
             });
-        
+
+        // RIP
+        builder.Services.AddExternalServiceRip(appConfiguration.Rip);
+
         return builder;
     }
 }

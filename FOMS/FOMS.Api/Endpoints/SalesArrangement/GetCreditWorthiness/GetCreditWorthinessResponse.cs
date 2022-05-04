@@ -2,11 +2,11 @@
 
 public sealed class GetCreditWorthinessResponse
 {
-    public string? WorthinessResult { get; set; }
-    public int LoanAmount { get; set; }
+    public int WorthinessResult { get; set; }
     public int MaxAmount { get; set; }
-    public int LoanPaymentAmount { get; set; }
     public int InstallmentLimit { get; set; }
     public int RemainsLivingAnnuity { get; set; }
     public int RemainsLivingInst { get; set; }
+    public string? ResultReasonCode { get; set; }
+    public string? ResultReasonDescription { get; set; }
 }

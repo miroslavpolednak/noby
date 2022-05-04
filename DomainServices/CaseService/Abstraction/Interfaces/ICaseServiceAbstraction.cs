@@ -35,7 +35,7 @@ public interface ICaseServiceAbstraction
     /// <summary>
     /// Vraci detail Case
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Case" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>

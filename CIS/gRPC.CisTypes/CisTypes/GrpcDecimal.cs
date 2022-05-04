@@ -15,6 +15,12 @@ public sealed partial class GrpcDecimal
         return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
     }
 
+    public static explicit operator double(GrpcDecimal grpcDecimal)
+    {
+        if (grpcDecimal == null) return 0;
+        return Convert.ToDouble(grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor);
+    }
+
     public static implicit operator GrpcDecimal(decimal value)
     {
         var units = decimal.ToInt64(value);

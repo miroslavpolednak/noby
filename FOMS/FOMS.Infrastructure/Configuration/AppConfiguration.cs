@@ -12,4 +12,9 @@ public class AppConfiguration
     /// When set to false, Swagger middleware is not added to pipeline.
     /// </summary>
     public bool EnableSwaggerUi { get; set; }
+
+    /// <summary>
+    /// Konfigurace Rip sluzby (Risk Integration Platform)
+    /// </summary>
+    public ExternalServices.Rip.RipConfiguration? Rip { get; set; }
 }
