@@ -586,7 +586,7 @@ internal class SendToCmpHandler
                 zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode.ToPostCodeJsonString(),
                 zamestnavatel_sidlo_stat = i.Employement?.Employer?.Address?.CountryId.ToJsonString(),
                 zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
-                zamestnavatel_okec = i.Employement?.Employer?.ClassificationOfEconomicActivities,
+                zamestnavatel_okec = i.Employement?.Employer?.ClassificationOfEconomicActivitiesId.ToJsonString(),
                 zamestnavatel_pracovni_sektor =  i.Employement?.Employer?.WorkSectorId.ToJsonString(),
                 zamestnavatel_senzitivni_sektor =  i.Employement?.Employer?.SensitiveSector.ToJsonString(),
                 povolani = i.Employement?.Job?.JobType.ToJsonString(),

@@ -18,7 +18,7 @@ message EmployerData {
     string Cin = 3;
     cis.types.GrpcAddress Address = 4;
     string PhoneNumber = 5;
-    string ClassificationOfEconomicActivities = 6;
+    google.protobuf.Int32Value ClassificationOfEconomicActivitiesId = 6;
     google.protobuf.Int32Value WorkSectorId = 7;
     bool SensitiveSector = 8;
 }

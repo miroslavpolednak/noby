@@ -26,7 +26,7 @@ internal static class Extensions
             WorkSectorId = contract.WorkSectorId,
             BirthNumber = contract.BirthNumber ?? "",
             Cin = contract.Cin ?? "",
-            ClassificationOfEconomicActivities = contract.ClassificationOfEconomicActivities ?? "",
+            ClassificationOfEconomicActivitiesId = contract.ClassificationOfEconomicActivitiesId,
             Name = contract.Name ?? "",
             PhoneNumber = contract.PhoneNumber ?? ""
         };

@@ -7,7 +7,7 @@ public class EmployerDataDto
     public string? Cin { get; set; }
     public CIS.Foms.Types.Address? Address { get; set; }
     public string? PhoneNumber { get; set; }
-    public string? ClassificationOfEconomicActivities { get; set; }
+    public int? ClassificationOfEconomicActivitiesId { get; set; }
     public int? WorkSectorId { get; set; }
     public bool SensitiveSector { get; set; }
 }
