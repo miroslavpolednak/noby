@@ -26,7 +26,7 @@ internal class GetAllHandler
             "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings(cancellationToken)).Where(t => t.IsValid)),
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan(cancellationToken)).Where(t => t.IsValid)),
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
-            "classficationofeconomicactivities" => new(original, await _codebooks.ClassficationOfEconomicActivities(cancellationToken)),
+            "classificationofeconomicactivities" => new(original, await _codebooks.ClassificationOfEconomicActivities(cancellationToken)),
             "contacttypes" => new(original, await _codebooks.ContactTypes(cancellationToken)),
             "countries" => new(original, (await _codebooks.Countries(cancellationToken)).OrderByDescending(t => t.IsDefault).ToList()),
             "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),

@@ -1,5 +1,5 @@
 ﻿
-namespace DomainServices.CodebookService.Contracts.Endpoints.ClassficationOfEconomicActivities;
+namespace DomainServices.CodebookService.Contracts.Endpoints.ClassificationOfEconomicActivities;
 
 [DataContract]
-public sealed class ClassficationOfEconomicActivitiesRequest : IRequest<List<GenericCodebookItem>> { }
+public sealed class ClassificationOfEconomicActivitiesRequest : IRequest<List<GenericCodebookItem>> { }

@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.ClassficationOfEconomicActivities;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.ClassificationOfEconomicActivities;
 using ProtoBuf.Grpc;
 
 namespace DomainServices.CodebookService.Contracts;
@@ -6,5 +6,5 @@ namespace DomainServices.CodebookService.Contracts;
 public partial interface ICodebookService
 {
     [OperationContract]
-    Task<List<GenericCodebookItem>> ClassficationOfEconomicActivities(ClassficationOfEconomicActivitiesRequest request, CallContext context = default);
+    Task<List<GenericCodebookItem>> ClassificationOfEconomicActivities(ClassificationOfEconomicActivitiesRequest request, CallContext context = default);
 }

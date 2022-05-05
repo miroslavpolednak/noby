@@ -19,7 +19,7 @@ public class CodebooksController : ControllerBase
     /// - ActionCodesSavings
     /// - ActionCodesSavingsLoan
     /// - CaseStates
-    /// - ClassficationOfEconomicActivities
+    /// - ClassificationOfEconomicActivities
     /// - ContactTypes
     /// - Countries
     /// - Currencies

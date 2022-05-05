@@ -1,16 +1,16 @@
 ﻿using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.ClassficationOfEconomicActivities;
+using DomainServices.CodebookService.Contracts.Endpoints.ClassificationOfEconomicActivities;
 
-namespace DomainServices.CodebookService.Endpoints.ClassficationOfEconomicActivities
+namespace DomainServices.CodebookService.Endpoints.ClassificationOfEconomicActivities
 {
-    public class ClassficationOfEconomicActivitiesHandler
-        : IRequestHandler<ClassficationOfEconomicActivitiesRequest, List<GenericCodebookItem>>
+    public class ClassificationOfEconomicActivitiesHandler
+        : IRequestHandler<ClassificationOfEconomicActivitiesRequest, List<GenericCodebookItem>>
     {
-        public async Task<List<GenericCodebookItem>> Handle(ClassficationOfEconomicActivitiesRequest request, CancellationToken cancellationToken)
+        public async Task<List<GenericCodebookItem>> Handle(ClassificationOfEconomicActivitiesRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ClassficationOfEconomicActivitiesHandler), async () =>
+                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ClassificationOfEconomicActivitiesHandler), async () =>
                     await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
                 );
             }
@@ -25,11 +25,11 @@ namespace DomainServices.CodebookService.Endpoints.ClassficationOfEconomicActivi
             "SELECT KOD 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_OKEC] ORDER BY KOD ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
-        private readonly ILogger<ClassficationOfEconomicActivitiesHandler> _logger;
+        private readonly ILogger<ClassificationOfEconomicActivitiesHandler> _logger;
 
-        public ClassficationOfEconomicActivitiesHandler(
+        public ClassificationOfEconomicActivitiesHandler(
             CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
-            ILogger<ClassficationOfEconomicActivitiesHandler> logger)
+            ILogger<ClassificationOfEconomicActivitiesHandler> logger)
         {
             _logger = logger;
             _connectionProvider = connectionProvider;
