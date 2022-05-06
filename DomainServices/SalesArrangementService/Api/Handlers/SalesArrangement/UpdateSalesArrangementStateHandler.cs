@@ -5,8 +5,6 @@ internal class UpdateSalesArrangementStateHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementStateMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.UpdateStateStarted(request.SalesArrangementId, request.State);
-
         // kontrola existence noveho stavu
         _ = (await _codebookService.SalesArrangementStates(cancellation)).FirstOrDefault(t => t.Id == request.State)
             ?? throw new CisNotFoundException(16006, $"SalesArrangementState #{request.State} does not exist.");

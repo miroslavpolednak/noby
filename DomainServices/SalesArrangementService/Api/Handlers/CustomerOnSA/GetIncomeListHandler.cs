@@ -8,8 +8,6 @@ internal class GetIncomeListHandler
 {
     public async Task<Contracts.GetIncomeListResponse> Handle(Dto.GetIncomeListMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncomeListHandler), request.CustomerOnSAId);
-
         var list = await _dbContext.CustomersIncomes
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)

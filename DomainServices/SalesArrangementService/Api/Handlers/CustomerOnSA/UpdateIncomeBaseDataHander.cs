@@ -8,8 +8,6 @@ internal class UpdateIncomeBaseDataHander
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateIncomeBaseDataMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeBaseDataHander), request.Request.IncomeId);
-
         var entity = (await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.Request.IncomeId)
             .FirstOrDefaultAsync(cancellation)) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");

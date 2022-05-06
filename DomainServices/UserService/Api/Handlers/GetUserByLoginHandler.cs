@@ -5,9 +5,6 @@ internal class GetUserByLoginHandler
 {
     public async Task<Contracts.User> Handle(Dto.GetUserByLoginMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LogInformation("Get user {login}", request.Login);
-        _audit.Log($"prave se prihlasil {request.Login}");
-
         string cacheKey = Contracts.Helpers.GetUserCacheKey(request.Login);
         var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
 

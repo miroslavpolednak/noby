@@ -20,8 +20,6 @@ internal class GetProductListHandler
 
     public async Task<GetProductListResponse> Handle(Dto.GetProductListMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(GetProductListHandler));
-
         // create response
         var model = new GetProductListResponse();
 

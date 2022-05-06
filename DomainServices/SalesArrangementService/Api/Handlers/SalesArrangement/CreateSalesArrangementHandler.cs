@@ -7,8 +7,6 @@ internal class CreateSalesArrangementHandler
 {
     public async Task<CreateSalesArrangementResponse> Handle(Dto.CreateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.CreateSalesArrangementStarted(request.Request.SalesArrangementTypeId, request.Request.CaseId, request.Request.OfferId);
-
         // validace product instance type
         _ = (await _codebookService.SalesArrangementTypes(cancellation)).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
             ?? throw new CisNotFoundException(16005, $"SalesArrangementTypeId {request.Request.SalesArrangementTypeId} does not exist.");

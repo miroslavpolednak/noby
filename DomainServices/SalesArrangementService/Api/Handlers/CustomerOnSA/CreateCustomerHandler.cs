@@ -8,8 +8,6 @@ internal class CreateCustomerHandler
 {
     public async Task<_SA.CreateCustomerResponse> Handle(Dto.CreateCustomerMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateCustomerHandler), request.Request.SalesArrangementId);
-
         // check existing SalesArrangementId
         await _saRepository.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
 

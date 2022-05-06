@@ -8,8 +8,6 @@ internal class UpdateObligationsHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateObligationsMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateObligationsHandler), request.Request.CustomerOnSAId);
-
         // overit ciselniky
         if (request.Request.Obligations is not null)
         {

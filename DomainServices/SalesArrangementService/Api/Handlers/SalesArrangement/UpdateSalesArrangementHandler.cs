@@ -5,8 +5,6 @@ internal class UpdateSalesArrangementDataHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementDataHandler), request.Request.SalesArrangementId);
-
         await _repository.UpdateSalesArrangement(request.Request.SalesArrangementId, request.Request.ContractNumber, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();

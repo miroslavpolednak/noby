@@ -41,7 +41,7 @@ internal static class FomsAppBuilder
 
             // autentizace a autorizace
             appBuilder.UseAuthentication();
-            //appBuilder.UseCisLogging();
+            appBuilder.UseCisLogging();
             appBuilder.UseMiddleware<Infrastructure.Security.AppSecurityMiddleware>();
 
             // namapovani API modulu

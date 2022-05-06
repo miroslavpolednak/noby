@@ -7,8 +7,6 @@ internal class GetSalesArrangementByOfferIdHandler
 {
     public async Task<GetSalesArrangementByOfferIdResponse> Handle(Dto.GetSalesArrangementByOfferIdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementByOfferIdHandler), request.OfferId);
-
         var instance = await _repository.GetSalesArrangementByOfferId(request.OfferId, cancellation);
 
         return new GetSalesArrangementByOfferIdResponse

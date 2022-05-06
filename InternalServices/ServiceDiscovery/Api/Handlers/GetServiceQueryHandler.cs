@@ -7,8 +7,6 @@ internal class GetServiceQueryHandler
 {
     public async Task<Contracts.GetServiceResponse> Handle(Dto.GetServiceRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(GetServiceQueryHandler));
-
         // query from cache
         var foundServices = await _cache.GetServices(request.Environment, cancellation);
         var service = foundServices.FirstOrDefault(t => t.ServiceType == request.ServiceType && t.ServiceName == request.ServiceName)

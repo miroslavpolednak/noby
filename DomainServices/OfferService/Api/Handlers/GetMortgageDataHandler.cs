@@ -23,8 +23,6 @@ internal class GetMortgageDataHandler
 
     public async Task<GetMortgageDataResponse> Handle(Dto.GetMortgageDataMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(GetMortgageDataHandler));
-
         var entity = await _repository.Get(request.OfferId, cancellation);
 
         // kontrola ProductTypeId (zda je typu Mortgage)

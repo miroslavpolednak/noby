@@ -7,8 +7,6 @@ internal class GetCaseCountsHandler
 {
     public async Task<GetCaseCountsResponse> Handle(Dto.GetCaseCountsMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCaseCountsHandler), request.CaseOwnerUserId);
-        
         // vytahnout data z DB
         var model = await _repository.GetCounts(request.CaseOwnerUserId, cancellation);
 

@@ -19,8 +19,6 @@ internal class GetMortgageHandler
 
     public async Task<GetMortgageResponse> Handle(Dto.GetMortgageMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(GetMortgageHandler));
-
         var loan = await _repository.GetLoan(request.Request.ProductId, cancellation);
 
         if (loan == null)

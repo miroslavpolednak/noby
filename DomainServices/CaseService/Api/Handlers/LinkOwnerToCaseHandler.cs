@@ -7,8 +7,6 @@ internal class LinkOwnerToCaseHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkOwnerToCaseMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LinkCaseToOwnerStart(request.CaseOwnerUserId, request.CaseId);
-
         // zjistit zda existuje case
         await _repository.EnsureExistingCase(request.CaseId, cancellation);
 

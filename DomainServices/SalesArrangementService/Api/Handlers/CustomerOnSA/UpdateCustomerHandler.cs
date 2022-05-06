@@ -8,8 +8,6 @@ internal class UpdateCustomerHandler
 {
     public async Task<_SA.UpdateCustomerResponse> Handle(Dto.UpdateCustomerMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(UpdateCustomerHandler));
-
         // vytahnout stavajici entitu z DB
         var entity = await _dbContext.Customers
             .Include(t => t.Identities)

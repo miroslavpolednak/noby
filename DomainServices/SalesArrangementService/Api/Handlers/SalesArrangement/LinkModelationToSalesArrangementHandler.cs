@@ -9,8 +9,6 @@ internal class LinkModelationToSalesArrangementHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkModelationToSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.LinkToModelationStarted(request.OfferId, request.SalesArrangementId);
-
         // overit existenci SA
         var salesArrangementInstance = await _dbContext.SalesArrangements.FindAsync(new object[] { request.SalesArrangementId }, cancellation) 
             ?? throw new CisNotFoundException(16000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");

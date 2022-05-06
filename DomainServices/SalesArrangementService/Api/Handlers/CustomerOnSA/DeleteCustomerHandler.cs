@@ -5,8 +5,6 @@ internal class DeleteCustomerHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteCustomerMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteCustomerHandler), request.CustomerOnSAId);
-        
         await _repository.DeleteCustomer(request.CustomerOnSAId, cancellation);
         
         return new Google.Protobuf.WellKnownTypes.Empty();

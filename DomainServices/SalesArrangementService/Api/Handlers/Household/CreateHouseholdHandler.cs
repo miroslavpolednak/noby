@@ -7,8 +7,6 @@ internal class CreateHouseholdHandler
 {
     public async Task<CreateHouseholdResponse> Handle(Dto.CreateHouseholdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(CreateHouseholdHandler));
-        
         // check existing SalesArrangementId
         var saInstance = await _saRepository.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
 

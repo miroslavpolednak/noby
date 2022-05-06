@@ -5,8 +5,6 @@ internal class GetHouseholdListHandler
 {
     public async Task<Contracts.Household> Handle(Dto.GetHouseholdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetHouseholdListHandler), request.HouseholdId);
-        
         var model = await _repository.GetHousehold(request.HouseholdId, cancellation);
         
         return model;

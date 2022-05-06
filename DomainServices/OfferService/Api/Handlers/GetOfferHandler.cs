@@ -22,8 +22,6 @@ internal class GetOfferHandler
 
     public async Task<GetOfferResponse> Handle(Dto.GetOfferMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(GetOfferHandler));
-
         var entity = await _repository.Get(request.OfferId, cancellation);
 
         var model = new GetOfferResponse

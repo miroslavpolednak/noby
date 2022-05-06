@@ -9,8 +9,6 @@ internal class GetSalesArrangementsListHandler
 {
     public async Task<GetSalesArrangementListResponse> Handle(Dto.GetSalesArrangementListMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementsListHandler), request.Request.CaseId);
-
         // vsechny SA states
         var availableStates = await _codebookService.SalesArrangementStates(cancellation);
 

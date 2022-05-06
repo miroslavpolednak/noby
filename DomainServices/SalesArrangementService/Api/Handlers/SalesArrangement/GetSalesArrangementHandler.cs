@@ -9,8 +9,6 @@ internal class GetSalesArrangementHandler
 {
     public async Task<_SA.SalesArrangement> Handle(Dto.GetSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementHandler), request.SalesArrangementId);
-
         // detail SA
         var model = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
 

@@ -9,8 +9,6 @@ internal class CreateRiskBusinessCaseHandler
 {
     public async Task<CreateRiskBusinessCaseResponse> Handle(Dto.CreateRiskBusinessCaseMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateRiskBusinessCaseHandler), request.SalesArrangementId);
-
         // instance SA
         var saInstance = await _repository.GetSalesArrangementEntity(request.SalesArrangementId, cancellation);
 

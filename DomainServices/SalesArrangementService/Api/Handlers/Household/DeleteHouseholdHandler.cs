@@ -6,8 +6,6 @@ internal class DeleteHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteHouseholdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteHouseholdHandler), request.HouseholdId);
-        
         var householdInstance = await _repository.GetHousehold(request.HouseholdId, cancellation);
         if (householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main)
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly

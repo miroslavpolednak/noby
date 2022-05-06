@@ -9,8 +9,6 @@ internal class CreateIncomeHandler
 {
     public async Task<CreateIncomeResponse> Handle(Dto.CreateIncomeMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(CreateIncomeHandler));
-
         // check customer existence
         if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
             throw new CisNotFoundException(16020, "CustomerOnSA", request.Request.CustomerOnSAId);

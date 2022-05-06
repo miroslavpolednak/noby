@@ -7,8 +7,6 @@ internal class GetHouseholdHandler
 {
     public async Task<Contracts.GetHouseholdListResponse> Handle(Dto.GetHouseholdListMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetHouseholdHandler), request.SalesArrangementId);
-        
         // check existing SalesArrangementId
         await _saRepository.GetSalesArrangement(request.SalesArrangementId, cancellation);
         

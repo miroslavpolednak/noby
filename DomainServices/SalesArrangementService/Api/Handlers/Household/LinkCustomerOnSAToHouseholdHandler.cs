@@ -7,8 +7,6 @@ internal class LinkCustomerOnSAToHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.LinkCustomerOnSAToHouseholdMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(LinkCustomerOnSAToHouseholdHandler), request.Request.HouseholdId);
-
         // domacnost
         var householdEntity = await _dbContext.Households
             .FirstOrDefaultAsync(t => t.HouseholdId == request.Request.HouseholdId, cancellation) 

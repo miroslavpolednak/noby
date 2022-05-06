@@ -18,8 +18,6 @@ internal class UpdateMortgageHandler
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateMortgageMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(UpdateMortgageHandler));
-
         await UpdateLoan(request.Request.ProductId, request.Request.Mortgage, false, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();

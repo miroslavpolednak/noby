@@ -10,8 +10,6 @@ internal class GetCustomerHandler
 {
     public async Task<Contracts.CustomerOnSA> Handle(Dto.GetCustomerMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCustomerHandler), request.CustomerOnSAId);
-        
         var customerInstance = await _dbContext.Customers
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .AsNoTracking()

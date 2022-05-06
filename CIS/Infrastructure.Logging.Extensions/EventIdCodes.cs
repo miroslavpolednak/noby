@@ -4,6 +4,7 @@ public sealed class EventIdCodes
 {
     public const int RequestHandlerStarted = 501;
     public const int RequestHandlerStartedWithId = 502;
+    public const int RequestHandlerStartedWithRequest = 517;
     public const int RequestHandlerFinished = 503;
     public const int EntityAlreadyExist = 504;
     public const int EntityNotFound = 505;

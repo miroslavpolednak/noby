@@ -5,8 +5,6 @@ internal class GetCustomerListHandler
 {
     public async Task<Contracts.GetCustomerListResponse> Handle(Dto.GetCustomerListMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCustomerListHandler), request.SalesArrangementId);
-
         var model = new Contracts.GetCustomerListResponse();
         model.Customers.AddRange(await _repository.GetList(request.SalesArrangementId, cancellation));
 

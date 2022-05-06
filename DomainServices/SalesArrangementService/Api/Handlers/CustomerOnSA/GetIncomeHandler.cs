@@ -9,8 +9,6 @@ internal class GetIncomeHandler
 {
     public async Task<Income> Handle(Dto.GetIncomeMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncomeHandler), request.IncomeId);
-
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");

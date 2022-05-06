@@ -12,8 +12,6 @@ internal class GetCaseDetailHandler
     /// </summary>
     public async Task<Case> Handle(Dto.GetCaseDetailMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCaseDetailHandler), request.CaseId);
-
         // vytahnout Case z DB
         var caseInstance = await _repository.GetCaseDetail(request.CaseId, cancellation);
 

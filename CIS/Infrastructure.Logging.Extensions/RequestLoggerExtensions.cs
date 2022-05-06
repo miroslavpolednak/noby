@@ -5,6 +5,7 @@ namespace CIS.Infrastructure.Logging;
 public static class RequestLoggerExtensions
 {
     private static readonly Action<ILogger, string, Exception> _requestHandlerStarted;
+    private static readonly Action<ILogger, string, object?, Exception> _requestHandlerStartedWithRequest;
     private static readonly Action<ILogger, string, long, Exception> _requestHandlerStartedWithId;
     private static readonly Action<ILogger, string, Exception> _requestHandlerFinished;
 
@@ -20,6 +21,11 @@ public static class RequestLoggerExtensions
             new EventId(EventIdCodes.RequestHandlerStartedWithId, nameof(RequestHandlerStartedWithId)),
             "Request in {HandlerName} started with ID {Id}");
 
+        _requestHandlerStartedWithRequest = LoggerMessage.Define<string, object?>(
+            LogLevel.Debug,
+            new EventId(EventIdCodes.RequestHandlerStartedWithRequest, nameof(RequestHandlerStartedWithId)),
+            "Request in {HandlerName} started with {@Request}");
+
         _requestHandlerFinished = LoggerMessage.Define<string>(
             LogLevel.Debug,
             new EventId(EventIdCodes.RequestHandlerFinished, nameof(RequestHandlerFinished)),
@@ -28,6 +34,9 @@ public static class RequestLoggerExtensions
 
     public static void RequestHandlerStarted(this ILogger logger, string handlerName)
         => _requestHandlerStarted(logger, handlerName, null!);
+
+    public static void RequestHandlerStarted(this ILogger logger, string handlerName, object? request)
+        => _requestHandlerStartedWithRequest(logger, handlerName, request, null!);
 
     public static void RequestHandlerStartedWithId(this ILogger logger, string handlerName, long id)
         => _requestHandlerStartedWithId(logger, handlerName, id, null!);

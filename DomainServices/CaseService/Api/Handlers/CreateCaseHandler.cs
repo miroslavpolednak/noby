@@ -10,8 +10,6 @@ internal class CreateCaseHandler
 {
     public async Task<CreateCaseResponse> Handle(Dto.CreateCaseMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(CreateCaseHandler));
-
         // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
         var productTypeCategory = await getProductCategory(request.Request.Data.ProductTypeId);
         

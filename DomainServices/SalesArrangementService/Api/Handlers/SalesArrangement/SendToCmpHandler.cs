@@ -68,8 +68,6 @@ internal class SendToCmpHandler
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(SendToCmpHandler), request.SalesArrangementId);
-
         // load SalesArrangement
         var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new GetSalesArrangementRequest { SalesArrangementId = request.SalesArrangementId }), cancellation);
 

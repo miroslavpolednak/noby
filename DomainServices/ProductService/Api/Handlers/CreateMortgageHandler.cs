@@ -28,8 +28,6 @@ internal class CreateMortgageHandler
 
     public async Task<ProductIdReqRes> Handle(Dto.CreateMortgageMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStarted(nameof(CreateMortgageHandler));
-
         _ = ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
           ?? throw new CisNotFoundException(16002, $"Case ID #{request.Request.CaseId} does not exist.");
 

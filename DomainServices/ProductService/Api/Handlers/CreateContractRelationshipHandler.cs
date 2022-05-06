@@ -22,9 +22,6 @@ internal class CreateContractRelationshipHandler
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.CreateContractRelationshipMediatrRequest request, CancellationToken cancellation)
     {
-        
-        _logger.RequestHandlerStarted(nameof(CreateContractRelationshipHandler));
-
         // check if relationship not exists
         var relationshipExists = await _repository.ExistsRelationship(request.Request.ProductId, request.Request.Relationship.PartnerId, cancellation);
         if (relationshipExists)

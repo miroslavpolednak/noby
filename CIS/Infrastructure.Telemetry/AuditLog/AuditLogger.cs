@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using CIS.Infrastructure.Telemetry.Configuration;
+using Serilog;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -13,7 +14,7 @@ internal sealed class AuditLogger
             _logger.Information(message);
     }
 
-    internal static void SetupLogger(LoggerBootstraper bootstrapper, CisTelemetryConfiguration.LogConfiguration configuration)
+    internal static void SetupLogger(LoggerBootstraper bootstrapper, LogConfiguration configuration)
     {
         var logger = new LoggerConfiguration();
 

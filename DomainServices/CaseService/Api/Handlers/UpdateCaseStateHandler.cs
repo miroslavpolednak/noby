@@ -5,8 +5,6 @@ internal class UpdateCaseStateHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateCaseStateMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.UpdateCaseStateStart(request.CaseId, request.State);
-
         // zjistit zda existuje case
         await _repository.EnsureExistingCase(request.CaseId, cancellation);
 
@@ -16,8 +14,6 @@ internal class UpdateCaseStateHandler
 
         // update v DB
         await _repository.UpdateCaseState(request.CaseId, request.State, cancellation);
-
-        _logger.RequestHandlerFinished(nameof(UpdateCaseStateHandler));
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

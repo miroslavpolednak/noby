@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Configuration;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
@@ -48,13 +47,15 @@ internal class LoggerBootstraper
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    public void AddOutputs(LoggerConfiguration loggerConfiguration, CisTelemetryConfiguration.LogConfiguration configuration)
+    public void AddOutputs(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
 #pragma warning restore CA1822 // Mark members as static
     {
         // seq
         if (configuration.Seq is not null)
         {
-            loggerConfiguration.WriteTo.Seq(configuration.Seq.ServerUrl);
+            loggerConfiguration
+                .WriteTo
+                .Seq(configuration.Seq.ServerUrl);
         }
 
         // logovani do souboru
@@ -88,11 +89,13 @@ internal class LoggerBootstraper
                     columnOptions: sqlColumns
                 );
         }
-
+        
         // console output
         if (configuration.UseConsole)
         {
-            loggerConfiguration.WriteTo.Console();
+            loggerConfiguration
+                .WriteTo
+                .Console();
         }
     }
 }

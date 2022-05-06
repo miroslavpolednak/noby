@@ -9,8 +9,6 @@ internal class UpdateIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateIncomeMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeHandler), request.Request.IncomeId);
-
         var entity = (await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.Request.IncomeId)
             .FirstOrDefaultAsync(cancellation)) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");

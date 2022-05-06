@@ -7,8 +7,6 @@ internal class DeleteIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteIncomeMediatrRequest request, CancellationToken cancellation)
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteIncomeHandler), request.IncomeId);
-
         //TODO kontrola zda muze smazat?
 
         var entity = await _dbContext.CustomersIncomes
