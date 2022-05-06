@@ -54,12 +54,9 @@ public static class LoggingExtensions
 
             if (_configuration.Logging is not null)
             {
-                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider);
+                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, _configuration.Logging.LogType);
 
-                // global filter to exclude GRPC reflection
-                if (_configuration.Logging.LogType == LogBehaviourTypes.Grpc)
-                    loggerConfiguration
-                        .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
+                bootstrapper.SetupFilters(loggerConfiguration);
 
                 // general log setup
                 if (_configuration?.Logging?.Application is not null)

@@ -7,6 +7,7 @@ internal class LoggingBehaviour<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
+    static Type _unitType = typeof(MediatR.Unit);
     private readonly ILogger<LoggingBehaviour<TRequest, TResponse>> _logger;
     
     public LoggingBehaviour(ILogger<LoggingBehaviour<TRequest, TResponse>> logger)
@@ -22,7 +23,10 @@ internal class LoggingBehaviour<TRequest, TResponse>
 
         var response = await next();
 
-        _logger.RequestHandlerFinished(requestName, response);
+        if (response is null || response is MediatR.Unit)
+            _logger.RequestHandlerFinished(requestName);
+        else
+            _logger.RequestHandlerFinished(requestName, response);
         
         return response;
     }

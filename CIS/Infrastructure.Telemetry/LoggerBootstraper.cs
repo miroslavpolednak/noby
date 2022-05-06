@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
+using Serilog.Filters;
 using Serilog.Sinks.MSSqlServer;
 using System.Reflection;
 
@@ -13,16 +14,33 @@ internal class LoggerBootstraper
     private readonly AssemblyName? _assemblyName;
     private readonly ICisEnvironmentConfiguration? _cisConfiguration;
     private readonly IConfiguration? _generalConfiguration;
+    private readonly LogBehaviourTypes _logType;
 
-    public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider)
+    public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LogBehaviourTypes logType)
     {
 #pragma warning disable CS8602 // Dereference of a possibly null reference. 
         _assemblyName = Assembly.GetEntryAssembly().GetName();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+        _logType = logType;
         _generalConfiguration = hostingContext.Configuration;
-
         _cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
+    }
+
+    public void SetupFilters(LoggerConfiguration loggerConfiguration)
+    {
+        // global filter to exclude GRPC reflection
+        if (_logType == LogBehaviourTypes.Grpc)
+        {
+            loggerConfiguration
+                .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
+        }
+        else if (_logType == LogBehaviourTypes.WebApi)
+        {
+            // cokoliv jineho nez /api zahazovat
+            loggerConfiguration
+                .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => !t.StartsWith("/api/", StringComparison.OrdinalIgnoreCase)));
+        }
     }
 
     public void EnrichLogger(LoggerConfiguration loggerConfiguration)
