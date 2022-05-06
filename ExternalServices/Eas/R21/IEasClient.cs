@@ -48,4 +48,12 @@ public interface IEasClient
     /// SuccessfulServiceCallResult[ContractNrResponse]
     /// </returns>
     Task<IServiceCallResult> GetContractNumber(int clientId, int caseId);
+
+    /// <summary>
+    /// Přidání data prvního podpisu
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[]
+    /// </returns>
+    Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate);
 }
