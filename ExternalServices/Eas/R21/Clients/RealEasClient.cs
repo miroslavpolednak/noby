@@ -96,7 +96,7 @@ internal sealed class RealEasClient
 
     public async Task<IServiceCallResult> GetContractNumber(int clientId, int caseId)
     {
-        _logger.LogDebug("Run inputs: {clientId}, {caseId}", caseId);
+        _logger.LogDebug("Run inputs: {clientId}, {caseId}", clientId, caseId);
 
         return await callMethod(async () =>
         {
@@ -109,6 +109,21 @@ internal sealed class RealEasClient
             _logger.LogSerializedObject("ContractNrResponse", result);
 
             return new SuccessfulServiceCallResult<string>(result.contractNumber);
+        });
+    }
+
+    public async Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
+    {
+        _logger.LogDebug("Run inputs: {caseId}, {loanId}, {firstSignatureDate}", caseId, loanId, firstSignatureDate);
+
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            var response = await client.Add_FirstSignatureDateAsync(caseId, loanId, firstSignatureDate);
+            _logger.LogSerializedObject("AddFirstSignatureDate response", response);
+
+            return new SuccessfulServiceCallResult();
         });
     }
 
