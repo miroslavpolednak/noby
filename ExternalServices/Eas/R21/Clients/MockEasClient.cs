@@ -64,4 +64,9 @@ internal sealed class MockEasClient : IEasClient
     {
         return new SuccessfulServiceCallResult<string>( $"{clientId}_{caseId}");
     }
+
+    public async Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
+    {
+        return new SuccessfulServiceCallResult();
+    }
 }

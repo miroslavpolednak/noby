@@ -116,6 +116,9 @@ internal class SendToCmpHandler
             await UpdateCase(_case, contractNumber, cancellation);
         }
 
+        // Add first signature date (pro KB produkty caseId = UverID)
+        ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now));
+
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageDataResponse>(await _offerService.GetMortgageData(arrangement.OfferId!.Value, cancellation))
             ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
@@ -335,9 +338,18 @@ internal class SendToCmpHandler
         result switch
         {
             SuccessfulServiceCallResult<string> r => r.Model,
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors.First().Message, err.Errors.First().Key),
+            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
             _ => throw new NotImplementedException()
         };
+
+    private void ResolveAddFirstSignatureDate(IServiceCallResult result)
+    {
+        switch (result)
+        {
+            case ErrorServiceCallResult err:
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key);
+        }
+    }
 
     private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
