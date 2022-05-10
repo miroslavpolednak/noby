@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints;
 
 [Authorize]
-public class TestServiceGrpc
+internal class TestServiceGrpc
     : v1.ITestService
 {
     private readonly IMediator _mediator;

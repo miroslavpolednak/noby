@@ -9,6 +9,13 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints;
 public class TestServiceController
     : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public TestServiceController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     /// <summary>
     /// Nazdar endpoint
     /// </summary>
@@ -19,8 +26,6 @@ public class TestServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Test" })]
     [ProducesResponseType(typeof(Contracts.HalloWorldResponse), StatusCodes.Status200OK)]
-    public Task<Contracts.HalloWorldResponse> HalloWorld([FromBody] Contracts.HalloWorldRequest request, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(new Contracts.HalloWorldResponse { Name = $"My name is {request.Name}" });
-    }
+    public async Task<Contracts.HalloWorldResponse> HalloWorld([FromBody] Contracts.HalloWorldRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
 }

@@ -7,6 +7,10 @@ internal static class StartupExtensions
 {
     public static WebApplicationBuilder AddRipService(this WebApplicationBuilder builder)
     {
+        // add general Dapper repository
+        builder.Services
+            .AddDapper<Shared.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
+
         builder.Services
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
