@@ -1,7 +1,9 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
-namespace DomainServices.RiskIntegrationService.Api.Services;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints;
 
+[Authorize]
 [ApiController]
 [Route("api/testservice")]
 public class TestServiceController
@@ -11,7 +13,6 @@ public class TestServiceController
     /// Nazdar endpoint
     /// </summary>
     /// <remarks>Tady mohou byt dalsi poznamky</remarks>
-    /// <param name="id">Nejake ID</param>
     /// <param name="request">Telo requestu</param>
     /// <returns>Vraci krasny text</returns>
     [HttpPost("hallo-world")]

@@ -16,6 +16,29 @@ internal static class SwaggerExtensions
         {
             x.SwaggerDoc("v1", new OpenApiInfo { Title = "Risk Integration Platform API", Version = "v1" });
 
+            x.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "basic",
+                In = ParameterLocation.Header,
+                Description = "CIS service user login"
+            });
+            x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "basic"
+                                }
+                            },
+                            new string[] {}
+                    }
+                });
+
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
             //x.UseOneOfForPolymorphism();

@@ -5,6 +5,7 @@
 /// </summary>
 [DataContract]
 public class HalloWorldRequest
+    : IRequest<HalloWorldResponse>
 {
     /// <summary>
     /// Ukazka komentare - ID requestu
