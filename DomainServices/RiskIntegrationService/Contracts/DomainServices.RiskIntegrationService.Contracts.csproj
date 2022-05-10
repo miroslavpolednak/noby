@@ -13,20 +13,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.20.1" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.45.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.45.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+	  <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="RiskIntegrationService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="MyTest.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>
