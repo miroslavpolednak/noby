@@ -10,6 +10,8 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>DomainServices.RiskIntegrationService.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,5 +20,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="DomainServices.RiskIntegrationService.Contracts.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

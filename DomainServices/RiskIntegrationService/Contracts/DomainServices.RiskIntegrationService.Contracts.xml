@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DomainServices.RiskIntegrationService.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest">
+            <summary>
+            Request pro endpoint HalloWorld
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest.Id">
+            <summary>
+            Ukazka komentare - ID requestu
+            </summary>
+            <remarks>Tohle idcko ted nepouzivam</remarks>
+            <example>11</example>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest.Name">
+            <summary>
+            Nazev osoby
+            </summary>
+            <example>John Doe</example>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.HalloWorldResponse">
+            <summary>
+            Response pro endpoint HalloWorld
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.HalloWorldResponse.Name">
+            <summary>
+            Nazev osoby
+            </summary>
+        </member>
+    </members>
+</doc>

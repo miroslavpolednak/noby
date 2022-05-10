@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DomainServices.RiskIntegrationService.Api</name>
+    </assembly>
+    <members>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Services.TestServiceController.HalloWorld(DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest,System.Threading.CancellationToken)">
+            <summary>
+            Nazdar endpoint
+            </summary>
+            <remarks>Tady mohou byt dalsi poznamky</remarks>
+            <param name="id">Nejake ID</param>
+            <param name="request">Telo requestu</param>
+            <returns>Vraci krasny text</returns>
+        </member>
+    </members>
+</doc>

@@ -1,8 +1,9 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts;
+﻿using DomainServices.RiskIntegrationService.Contracts;
 
-[ServiceContract(Name = "Test")]
+namespace DomainServices.RiskIntegrationService.v1;
+
+[ServiceContract(Name = "DomainServices.RiskIntegrationService.v1.TestService")]
 public interface ITestService
 {
-    [OperationContract]
-    Task<HalloWorldResponse> HalloWorld(HalloWorldRequest request, CancellationToken cancellationToken = default);
+    ValueTask<HalloWorldResponse> HalloWorld(HalloWorldRequest request, CancellationToken cancellationToken = default);
 }
