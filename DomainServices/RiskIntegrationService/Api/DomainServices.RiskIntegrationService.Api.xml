@@ -4,6 +4,154 @@
         <name>DomainServices.RiskIntegrationService.Api</name>
     </assembly>
     <members>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation">
+            <summary>
+            Request transformation (RIP->C4M)
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.HouseholdLiabilitySummaryTableItem">
+            <summary>
+            Household (CreditLiabilitiesSummary, InstallmentsSummary)
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.CounterpartyIncomeTableItem.Id">
+            <summary>
+            NOBY code
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.CounterpartyIncomeTableItem.Code">
+            <summary>
+            C4M code
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.Transform(DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest)">
+            <summary>
+            Create C4M request (transformation, validation)
+            </summary>
+            <param name=""></param>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddRootRiskBusinessCaseId">
+            <summary>
+            Add RiskBusinessaseId
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddRootResourceProcessId">
+            <summary>
+            Add ResourceProcessId
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.GetDealerOrPersonResourceIdentifier(System.SByte)">
+            <summary>
+            Return ResourceIdentifier for Dealer or Person
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.GetCompanyResourceIdentifier">
+            <summary>
+            Company resource identifier
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddRootLoanApplicationProduct">
+            <summary>
+            Loan Application Product
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.GetRiskApplicationTypeItem(System.Int32)">
+            <summary>
+            Překlady pomocí číselníku RiskApplicationType
+            </summary>
+            <param name="product"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddRootHouseholds">
+            <summary>
+            Households
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.GetHousehold(DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold)">
+            <summary>
+            Household
+            </summary>
+            <param name="ripHousehold"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddHouseholdExpensesSummary(DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold,Mpss.Rip.Infrastructure.RemoteServices.IC4M.Models.CreditWorthiness.LoanApplicationHousehold)">
+            <summary>
+            Household expenses
+            </summary>
+            <param name="ripHousehold"></param>
+            <param name="c4mHousehold"></param>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.GetHouseholdExpensesSummary(System.String,DomainServices.RiskIntegrationService.Contracts.ExpensesSummary)">
+            <summary>
+            Get Household expenses
+            </summary>
+            <param name="category"></param>
+            <param name="ripExpenses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.InitHouseholdLiabilitySummaryTable">
+            <summary>
+            Init summary table
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddHouseholdClients(DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold,Mpss.Rip.Infrastructure.RemoteServices.IC4M.Models.CreditWorthiness.LoanApplicationHousehold)">
+            <summary>
+            Household clients
+            </summary>
+            <param name="ripHousehold"></param>
+            <param name="c4mHousehold"></param>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddCounterPartyIncome(DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty,Mpss.Rip.Infrastructure.RemoteServices.IC4M.Models.CreditWorthiness.LoanApplicationCounterParty)">
+            <summary>
+            Counterparty Income
+            </summary>
+            <param name="ripCounterparty"></param>
+            <param name="c4mCounterParty"></param>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.InitCounterpartyIncomeTable">
+            <summary>
+            Init Counterparty Income table
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.GetCounterpartyIncomeMonth(System.Int32)">
+            <summary>
+            Get Counterparty Income Month
+            </summary>
+            <param name="categoryMp"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.SumHouseholdLiabilities(DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty)">
+            <summary>
+            Sum Household Liabilities
+            </summary>
+            <param name="ripCounterparty"></param>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeRequestTransformation.AddHouseholdLiabilities(Mpss.Rip.Infrastructure.RemoteServices.IC4M.Models.CreditWorthiness.LoanApplicationHousehold)">
+            <summary>
+            Household Liabilities
+            </summary>
+            <param name="c4mHousehold"></param>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeResponseTransformation">
+            <summary>
+            Response transformation (C4M->RIP)
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness.CreditWorthinessComputeResponseTransformation.Transform(Mpss.Rip.Infrastructure.RemoteServices.IC4M.Models.CreditWorthiness.CreditWorthinessCalculation,DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest)">
+            <summary>
+            Transform response (C4M->RIP)
+            </summary>
+            <param name="c4mResponse"></param>
+            <returns>RIP.LoanApplicationCreate</returns>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RipServiceController.CreditWorthiness(DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest,System.Threading.CancellationToken)">
+            <summary>
+            Výpoèet rozšíøené bonity
+            </summary>
+        </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceController.HalloWorld(DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest,System.Threading.CancellationToken)">
             <summary>
             Nazdar endpoint
@@ -11,6 +159,11 @@
             <remarks>Tady mohou byt dalsi poznamky</remarks>
             <param name="request">Telo requestu</param>
             <returns>Vraci krasny text</returns>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.CustomRemoteServiceC4m">
+            <summary>
+            Registrace API klienta
+            </summary>
         </member>
         <member name="T:Mpss.Rip.Infrastructure.RemoteServices.IC4M.ICreditWorthinessServices">
             <summary>

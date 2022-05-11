@@ -313,7 +313,7 @@ public class CreditWorthinessComputeRequestTransformation
 
         if (item == null)
         {
-            _logger.Error(null, $"Product {product} nenalezen v číselníku RiskApplicationType!");
+            _logger.LogError(null, $"Product {product} nenalezen v číselníku RiskApplicationType!");
             throw new CisValidationException($"Product {product} nenalezen v číselníku RiskApplicationType!");
         }
         return item;

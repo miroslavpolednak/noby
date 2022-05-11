@@ -56,6 +56,8 @@ builder.AddRipSwagger();
 
 // add grpc
 builder.AddRipGrpc();
+
+builder.Services.AddCustomRemoteServiceC4m(builder.Configuration);
 #endregion register builder
 
 // kestrel configuration

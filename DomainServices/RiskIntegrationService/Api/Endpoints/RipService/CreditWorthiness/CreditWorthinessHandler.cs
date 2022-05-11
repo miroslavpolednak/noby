@@ -1,29 +1,28 @@
-﻿using Refit;
+﻿using C4M = Mpss.Rip.Infrastructure.RemoteServices.IC4M.Models.CreditWorthiness;
+using Refit;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RipService.CreditWorthiness;
 
 internal class CreditWorthinessHandler
     : IRequestHandler<Contracts.CreditWorthinessRequest, Contracts.CreditWorthinessResponse>
 {
-    private readonly ICreditWorthinessServices _c4MService;
+    private readonly Mpss.Rip.Infrastructure.RemoteServices.IC4M.ICreditWorthinessServices _c4MService;
     private readonly ILogger<CreditWorthinessHandler> _logger;
     private readonly ICreditWorthinessComputeRequestTransformation _requestTransformation;
     private readonly ICreditWorthinessComputeResponseTransformation _responseTransformation;
-    private readonly IHttpClientFactory _clientFactory;
 
-    public CreditWorthinessHandler(ICreditWorthinessServices c4MService, ILogger<CreditWorthinessHandler> logger, ICreditWorthinessComputeRequestTransformation requestTransformation, ICreditWorthinessComputeResponseTransformation responseTransformation, IHttpClientFactory clientFactory)
+    public CreditWorthinessHandler(Mpss.Rip.Infrastructure.RemoteServices.IC4M.ICreditWorthinessServices c4MService, ILogger<CreditWorthinessHandler> logger, ICreditWorthinessComputeRequestTransformation requestTransformation, ICreditWorthinessComputeResponseTransformation responseTransformation)
     {
         _c4MService = c4MService;
         _logger = logger;
         _requestTransformation = requestTransformation;
         _responseTransformation = responseTransformation;
-        _clientFactory = clientFactory;
     }
 
     public async Task<Contracts.CreditWorthinessResponse> Handle(Contracts.CreditWorthinessRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Request před transformací = {@Request}", request);
-        var c4mRequest = _requestTransformation.Transform(command.CreditWorthinessCalculationArguments);
+        var c4mRequest = await _requestTransformation.Transform(request);
         _logger.LogInformation("Volání C4M start. Request = {@Request}", c4mRequest);
 
         try
@@ -35,7 +34,7 @@ internal class CreditWorthinessHandler
                 throw new Exception($"Chyba={apiResponse.Error} Reason={apiResponse.ReasonPhrase}");
             }
             _logger.LogInformation("Volání C4M end. OK. Response = {@Response}", apiResponse.Content);
-            var ripResponse = _responseTransformation.Transform(apiResponse.Content, command.CreditWorthinessCalculationArguments);
+            var ripResponse = _responseTransformation.Transform(apiResponse.Content, request);
             _logger.LogInformation("Response po transformaci = {@Response}", ripResponse);
 
             return ripResponse;
