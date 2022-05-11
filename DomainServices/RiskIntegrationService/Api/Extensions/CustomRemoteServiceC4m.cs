@@ -12,7 +12,7 @@ public static class CustomRemoteServiceC4m
 {
     public static IServiceCollection AddCustomRemoteServiceC4m(this IServiceCollection services, IConfiguration configuration)
     {
-        string section = "ApiKbC4m:CreditWorthiness";
+        string section = "AppConfiguration:ApiKbC4m:CreditWorthiness";
         string baseUrl = configuration.GetValue<string>($"{section}:BaseUrl");
         string userName = configuration.GetValue<string>($"{section}:UserName");
         string password = configuration.GetValue<string>($"{section}:Password");
