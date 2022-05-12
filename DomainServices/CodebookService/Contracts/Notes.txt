@@ -63,7 +63,10 @@ SigningMethodsForNaturalPerson		-
 StatementType						-
 Tariff								-
 WorkSector							WorkSectors
+
+* HousingCondition                  HousingConditions [mock]
 -----------------------------------------------------------------------------------------------------------------
+
 -									MktActionCodesSavings   
 [{ Id = 1, Name = "Efekt" }, { Id = 2, Name = "Efekt Plus" }]
 
