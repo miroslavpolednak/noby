@@ -67,6 +67,7 @@ WorkSector							WorkSectors
 * HousingCondition                  HousingConditions [mock]
 ProofType                           ProofTypes
 IncomeOtherType                     IncomeOtherTypes
+CollateralType                      CollateralTypes
 -----------------------------------------------------------------------------------------------------------------
 
 -									MktActionCodesSavings   
