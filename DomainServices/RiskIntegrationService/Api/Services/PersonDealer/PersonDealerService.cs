@@ -28,7 +28,7 @@ internal class PersonDealerService : IPersonDealerService
     /// <param name="identityScheme"></param>
     public async Task<PersonDealerExtension> GetUserData(string identity, string identityScheme)
     {
-        var user = (await _connectionProvider.ExecuteDapperRawSqlToList<PersonDealerExtension>("SELECT * FROM dbo.fceGetPersonHF_RIP(@identity, @identityScheme)", new { identity = identity, identityScheme = identityScheme }))
+        var user = (await _connectionProvider.ExecuteDapperRawSqlToList<PersonDealerExtension>("SELECT *, 1 'PersonDealerExists' FROM dbo.fceGetPersonHF_RIP(@identity, @identityScheme)", new { identity = identity, identityScheme = identityScheme }))
             ?.FirstOrDefault();
 
         if (identityScheme.Equals(PersonKbIdentityScheme) || identityScheme.Equals(PersonMpIdentityScheme))
