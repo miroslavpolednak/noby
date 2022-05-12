@@ -65,6 +65,7 @@ Tariff								-
 WorkSector							WorkSectors
 
 * HousingCondition                  HousingConditions [mock]
+ProofType                           ProofTypes
 -----------------------------------------------------------------------------------------------------------------
 
 -									MktActionCodesSavings   
