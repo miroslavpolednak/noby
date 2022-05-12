@@ -68,6 +68,7 @@ WorkSector							WorkSectors
 ProofType                           ProofTypes
 IncomeOtherType                     IncomeOtherTypes
 CollateralType                      CollateralTypes
+* RepaymentScheduleType             RepaymentScheduleTypes [mock]
 -----------------------------------------------------------------------------------------------------------------
 
 -									MktActionCodesSavings   
