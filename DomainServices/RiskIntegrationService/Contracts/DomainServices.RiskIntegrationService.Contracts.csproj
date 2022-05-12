@@ -10,15 +10,13 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>DomainServices.RiskIntegrationService.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.20.1" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.45.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.45.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+	  <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
+	  <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,7 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="RiskIntegrationService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="MyTest.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+	  <None Update="DomainServices.RiskIntegrationService.Contracts.xml">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

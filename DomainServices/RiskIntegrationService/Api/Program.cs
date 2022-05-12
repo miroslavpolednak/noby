@@ -5,6 +5,7 @@ using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.RiskIntegrationService.Api;
 using CIS.DomainServicesSecurity;
+using ProtoBuf.Grpc.Server;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -43,18 +44,20 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 
 // add this service
-builder.AddRiskIntegrationService(appConfiguration);
+builder.AddRipService();
 
 // add BE services
 builder.Services
     .AddCodebookService(true)
     .AddCisServiceDiscovery(true);
 
-builder.Services.AddGrpc(options =>
-{
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
-});
-builder.Services.AddGrpcReflection();
+// swagger
+builder.AddRipSwagger();
+
+// add grpc
+builder.AddRipGrpc();
+
+builder.Services.AddCustomRemoteServiceC4m(builder.Configuration);
 #endregion register builder
 
 // kestrel configuration
@@ -75,10 +78,16 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Services.RiskIntegrationService>();
+    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RipServiceGrpc>();
+    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceGrpc>();
 
-    endpoints.MapGrpcReflectionService();
+    endpoints.MapCodeFirstGrpcReflectionService();
+
+    endpoints.MapControllers();
 });
+
+// swagger
+app.UseRipSwagger();
 
 try
 {

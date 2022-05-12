@@ -1,9 +1,0 @@
-﻿syntax = "proto3";
-package DomainServices.RiskIntegrationService.v1;
-option csharp_namespace = "DomainServices.RiskIntegrationService.Contracts.v1";
-
-import "MyTest.proto";
-
-service RiskIntegrationService {
-   rpc MyTest (DomainServices.RiskIntegrationService.MyTestRequest) returns (DomainServices.RiskIntegrationService.MyTestResponse);
-}
