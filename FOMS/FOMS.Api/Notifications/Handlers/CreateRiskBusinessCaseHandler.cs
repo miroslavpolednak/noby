@@ -10,7 +10,6 @@ internal class CreateRiskBusinessCaseHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateRiskBusinessCaseHandler), notification.SalesArrangementId);
         if (!notification.NewMpCustomerId.HasValue) return;
 
         await _salesArrangementService.CreateRiskBusinessCase(notification.SalesArrangementId, cancellationToken);

@@ -8,7 +8,6 @@ internal class GetCreditWorthinessHandler
 {
     public async Task<GetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCreditWorthinessHandler), request.SalesArrangementId);
         CreditWorthinessCalculationArguments ripRequest = new();
 
         // SA instance

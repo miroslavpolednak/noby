@@ -9,8 +9,6 @@ internal class UpdateCustomersHandler
 {
     public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateCustomersHandler), request.HouseholdId);
-
         // detail domacnosti
         var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
 

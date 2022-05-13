@@ -8,8 +8,6 @@ internal class GetIncomeHandler
 {
     public async Task<GetIncomeResponse?> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncomeHandler), request.IncomeId);
-
         var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 
         return new GetIncomeResponse

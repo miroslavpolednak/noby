@@ -7,8 +7,6 @@ internal class DeleteHouseholdHandler
 {
     public async Task<int> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteHouseholdHandler), request.HouseholdId);
-
         ServiceCallResult.Resolve(await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken));
 
         return request.HouseholdId;

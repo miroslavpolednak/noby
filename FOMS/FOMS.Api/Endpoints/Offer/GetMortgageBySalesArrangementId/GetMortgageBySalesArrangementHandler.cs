@@ -8,8 +8,6 @@ internal class GetMortgageBySalesArrangementHandler
 {
     public async Task<Dto.GetMortgageResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetMortgageBySalesArrangementHandler), request.SalesArrangementId);
-
         // ziskat offerId z SA
         var salesArrangementInstance = ServiceCallResult.ResolveAndThrowIfError<DSContracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         

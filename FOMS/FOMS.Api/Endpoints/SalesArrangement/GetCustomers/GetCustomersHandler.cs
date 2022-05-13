@@ -9,8 +9,6 @@ internal class GetCustomersHandler
     //TODO tohle se bude nejspis cele predelavat, nema smysl to moc resit
     public async Task<List<Dto.CustomerListItem>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCustomersHandler), request.SalesArrangementId);
-
         // najit existujici customeryOnSA
         var customersOnSA = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
 

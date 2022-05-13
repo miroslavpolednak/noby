@@ -9,8 +9,6 @@ internal class UpdateIncomesHandler
 {
     public async Task<int[]> Handle(UpdateIncomesRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomesHandler), request.CustomerOnSAId);
-
         // at se mi s tim lepe pracuje
         var requestIncomes = request.Incomes ?? new List<Dto.IncomeBaseData>(0);
         var responseModel = requestIncomes.Select(t => t.IncomeId.GetValueOrDefault()).ToArray();
