@@ -8,8 +8,6 @@ internal class UpdateHouseholdHandler
 {
     protected override async Task Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateHouseholdHandler), request.HouseholdId);
-
         // update domacnosti
         var householdRequest = new _SA.UpdateHouseholdRequest
         {

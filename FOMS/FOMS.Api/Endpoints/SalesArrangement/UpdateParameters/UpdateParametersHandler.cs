@@ -8,8 +8,6 @@ internal class UpdateParametersHandler
 {
     protected override async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateParametersHandler), request.SalesArrangementId);
-
         var model = new _SA.UpdateSalesArrangementParametersRequest
         {
             SalesArrangementId = request.SalesArrangementId,

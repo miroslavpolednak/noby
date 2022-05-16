@@ -7,8 +7,6 @@ internal class UpdateIncomeHandler
 {
     protected override async Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeHandler), request.IncomeId);
-
         var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 
         var model = new DomainServices.SalesArrangementService.Contracts.UpdateIncomeRequest

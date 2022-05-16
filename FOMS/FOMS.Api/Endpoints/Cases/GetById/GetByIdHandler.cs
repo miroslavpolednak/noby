@@ -5,8 +5,6 @@ internal class GetByIdHandler
 {
     public async Task<Dto.CaseModel> Handle(GetByIdRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetByIdHandler), request.CaseId);
-
         var result = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
         
         return await _converter.FromContract(result);

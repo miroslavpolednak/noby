@@ -9,8 +9,6 @@ internal class SendToCmpHandler
 {
     protected override async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(SendToCmpHandler), request.SalesArrangementId);
-
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 

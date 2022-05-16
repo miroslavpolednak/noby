@@ -10,8 +10,6 @@ internal class UpdateCustomerOnCaseHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateCustomerOnCaseHandler), notification.SalesArrangementId);
-
         // detail customera
         var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken));
 

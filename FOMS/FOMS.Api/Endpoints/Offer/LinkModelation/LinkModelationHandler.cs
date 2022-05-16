@@ -8,8 +8,6 @@ internal class LinkModelationHandler
 {
     protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(LinkModelationHandler), request.SalesArrangementId);
-
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // nalinkovat novou simulaci

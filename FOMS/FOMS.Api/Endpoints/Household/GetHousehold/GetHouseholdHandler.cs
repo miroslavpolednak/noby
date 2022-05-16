@@ -8,8 +8,6 @@ internal class GetHouseholdHandler
 {
     public async Task<GetHouseholdResponse> Handle(GetHouseholdRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetHouseholdHandler), request.HouseholdId);
-
         // nacist ulozenou domacnost
         var household = ServiceCallResult.ResolveAndThrowIfError<contracts.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
         GetHouseholdResponse response = household.ToApiResponse();

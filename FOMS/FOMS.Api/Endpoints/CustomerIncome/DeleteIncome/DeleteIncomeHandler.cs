@@ -7,8 +7,6 @@ internal class DeleteIncomeHandler
 {
     protected override async Task Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteIncomeHandler), request.IncomeId);
-
         ServiceCallResult.Resolve(await _customerService.DeleteIncome(request.IncomeId, cancellationToken));
     }
 

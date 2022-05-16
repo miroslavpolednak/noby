@@ -13,7 +13,6 @@ internal class CreateProductHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateProductHandler), notification.SalesArrangementId);
         if (!notification.NewMpCustomerId.HasValue) return;
 
         // detail SA
