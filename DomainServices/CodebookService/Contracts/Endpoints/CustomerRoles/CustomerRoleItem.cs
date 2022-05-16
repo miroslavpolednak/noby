@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.CustomerRoles;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.CustomerRoles;
 
 [DataContract]
 public class CustomerRoleItem

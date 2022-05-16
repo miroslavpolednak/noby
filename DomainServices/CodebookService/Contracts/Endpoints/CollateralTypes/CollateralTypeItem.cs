@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes
 {
     [DataContract]
     public class CollateralTypeItem

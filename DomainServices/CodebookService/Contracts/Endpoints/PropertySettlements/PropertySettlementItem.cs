@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.PropertySettlements
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.PropertySettlements
 {
     [DataContract]
     public class PropertySettlementItem
@@ -9,18 +7,15 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.PropertySettlements
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        [JsonIgnore]
         public string Code { get; set; }
 
         [DataMember(Order = 3)]
         public string Name { get; set; }
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
         public string NameEng { get; set; }
 
         [DataMember(Order = 5)]
-        [JsonIgnore]
         public bool IsValid { get; set; }
     }
 }

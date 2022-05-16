@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.IncomeForeignTypes
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.IncomeForeignTypes
 {
     [DataContract]
     public class IncomeForeignTypeItem
@@ -9,14 +7,12 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.IncomeForeignTypes
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        [JsonIgnore]
         public string Code { get; set; }
 
         [DataMember(Order = 3)]
         public string Name { get; set; }
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
         public bool IsValid { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.HousingConditions
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.HousingConditions
 {
     [DataContract]
     public class HousingConditionItem
@@ -12,11 +10,9 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.HousingConditions
         public string Name { get; set; }
         
         [DataMember(Order = 3)]
-        [JsonIgnore]
         public string Code { get; set; }
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
         public bool IsValid { get; set; }
     }
 }

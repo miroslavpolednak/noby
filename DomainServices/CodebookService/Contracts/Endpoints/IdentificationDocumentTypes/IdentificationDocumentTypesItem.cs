@@ -1,7 +1,4 @@
 ﻿
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-
 namespace DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocumentTypes
 {
     [DataContract]
@@ -17,7 +14,6 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocum
         public string ShortName { get; set; }
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
         public string RDMCode { get; set; }
 
         [DataMember(Order = 5)]
