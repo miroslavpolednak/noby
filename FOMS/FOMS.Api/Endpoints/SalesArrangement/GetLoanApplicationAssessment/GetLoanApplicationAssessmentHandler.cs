@@ -19,25 +19,55 @@ internal class GetLoanApplicationAssessmentHandler
 
         GetLoanApplicationAssessmentResponse model = new()
         {
-            AssessmentResult = 501,
-            LoanApplicationLimit = 9862532,
-            LoanAmount = offerInstance.Outputs.LoanAmount,
-            LoanApplicationInstallmentLimit = 26825,
-            LoanPaymentAmount = offerInstance.Outputs.LoanPaymentAmount,
-            RemainingAnnuityLivingAmount = 8652,
-            MonthlyIncomeAmount = 56200,
-            MonthlyCostsWithoutInstAmount = 13200,
-            MonthlyInstallmentsInKBAmount = 5200,
-            MonthlyEntrepreneurInstallmentsInKBAmount = 0,
-            MonthlyInstallmentsInMPSSAmount = 0,
-            MonthlyInstallmentsInOFIAmount = 6526,
-            MonthlyInstallmentsInCBCBAmount = 11487,
-            CIR = 2,
-            DTI = 4,
-            DSTI = 52,
-            LTC = 12,
-            LFTV = 52,
-            LTV = 79
+            Application = new()
+            {
+                LoanApplicationLimit = 9862532,
+                LoanAmount = offerInstance.Outputs.LoanAmount,
+                LoanApplicationInstallmentLimit = 26825,
+                LoanPaymentAmount = offerInstance.Outputs.LoanPaymentAmount,
+                RemainingAnnuityLivingAmount = 8652,
+                MonthlyIncomeAmount = 56200,
+                MonthlyCostsWithoutInstAmount = 13200,
+                MonthlyInstallmentsInKBAmount = 5200,
+                MonthlyEntrepreneurInstallmentsInKBAmount = 0,
+                MonthlyInstallmentsInMPSSAmount = 0,
+                MonthlyInstallmentsInOFIAmount = 6526,
+                MonthlyInstallmentsInCBCBAmount = 11487,
+                CIR = 2,
+                DTI = 4,
+                DSTI = 52,
+                LTC = 12,
+                LFTV = 52,
+                LTV = 79
+            },
+            Households = new()
+            {
+                new Dto.Household
+                {
+                    HouseholdId = 2,
+                    MonthlyIncomeAmount = 25852,
+                    MonthlyCostsWithoutInstAmount = 3652,
+                    MonthlyInstallmentsInMPSSAmount = 2400,
+                    MonthlyInstallmentsInOFIAmount = 7825,
+                    MonthlyInstallmentsInCBCBAmount = 12935,
+                    CIR = 2,
+                    DTI = 4,
+                    DSTI = 48
+                }
+            },
+            AssessmentResult = 504,
+            Reasons = new()
+            {
+                new Dto.AssessmentReason
+                {
+                    Desc = "Úvěrový obchod nelze samoschválit, postupujte dle standardních schvalovacích pravomocí"
+                },
+                new Dto.AssessmentReason
+                {
+                    Desc = "Negativní záznam v SOLUSu",
+                    Result = "Black"
+                }
+            }
         };
 
         return model;
