@@ -17,7 +17,7 @@ ContractSegment						-
 ContractSigningMethods				-
 Country								Countries
 * Currency							Currencies (příznak IsDefault se bere ze sloupce DEF, totožně jako u Countries)
-CustomerRole						CustomerRoles
+* CustomerRole						CustomerRoles [enum]
 DocumentRelationType				-
 DocumentState						-
 DocumentType						-

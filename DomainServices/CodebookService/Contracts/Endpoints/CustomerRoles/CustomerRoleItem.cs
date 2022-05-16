@@ -9,8 +9,7 @@ public class CustomerRoleItem
     public int Id { get; set; }
 
     [DataMember(Order = 2)]
-    [JsonIgnore]
-    public CIS.Foms.Enums.CustomerRoles Value { get; set; }
+    public string RdmCode { get; set; }
     
     [DataMember(Order = 3)]
     public string Name { get; set; }
