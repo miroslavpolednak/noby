@@ -30,7 +30,7 @@ EmploymentType						EmploymentTypes
 FormType							-
 * Gender							Genders
 * HouseholdType						-
-* IdentificationDocumentType		IdentificationDocumentTypes
+* IdentificationDocumentType		IdentificationDocumentTypes [mock]
 * IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
 IncomeAbroadType					IncomeAbroadTypes !!! přejmenováno na IncomeForeignTypes
 IncomeForeignType                   IncomeForeignTypes
