@@ -3,6 +3,8 @@ using System.Runtime.Serialization;
 
 namespace CIS.Foms.Enums;
 
+// Pokud budes menit, upravit handler pro číselník (CustomerRolesHandler)
+
 [DataContract]
 public enum CustomerRoles : byte
 {
@@ -20,5 +22,5 @@ public enum CustomerRoles : byte
     
     [Display(Name = "Ručitel")]
     [EnumMember]
-    Garantor = 3
+    Garantor = 128,
 }

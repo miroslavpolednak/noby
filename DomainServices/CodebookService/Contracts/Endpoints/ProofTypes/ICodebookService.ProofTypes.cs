@@ -5,6 +5,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<GenericCodebookItem>> PropertySettlement(Endpoints.PropertySettlement.PropertySettlementRequest request, CallContext context = default);
+        Task<List<Endpoints.ProofTypes.ProofTypeItem>> ProofTypes(Endpoints.ProofTypes.ProofTypesRequest request, CallContext context = default);
     }
 }

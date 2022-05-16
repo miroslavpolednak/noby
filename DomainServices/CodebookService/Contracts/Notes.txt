@@ -9,7 +9,7 @@ ActionCodeSavings					ActionCodesSavings
 ActionCodeSavingsLoan				ActionCodesSavingsLoan
 * AddressType						AddressTypes
 * CaseState							CaseStates
-* Channel							Channels	
+* Channel							Channels [mock]
 ClassificationOfEconomicActivities	ClassificationOfEconomicActivities
 ConsentType							-
 ContactType							ContactTypes
@@ -17,7 +17,7 @@ ContractSegment						-
 ContractSigningMethods				-
 Country								Countries
 * Currency							Currencies (příznak IsDefault se bere ze sloupce DEF, totožně jako u Countries)
-CustomerRole						CustomerRoles
+* CustomerRole						CustomerRoles [enum]
 DocumentRelationType				-
 DocumentState						-
 DocumentType						-
@@ -30,9 +30,10 @@ EmploymentType						EmploymentTypes
 FormType							-
 * Gender							Genders
 * HouseholdType						-
-* IdentificationDocumentType		IdentificationDocumentTypes
+* IdentificationDocumentType		IdentificationDocumentTypes [mock]
 * IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
-IncomeAbroadType					IncomeAbroadTypes
+IncomeAbroadType					IncomeAbroadTypes !!! přejmenováno na IncomeForeignTypes
+IncomeForeignType                   IncomeForeignTypes
 * IncomeType						IncomeTypes [mock]
 JobType								JobTypes
 LegalCapacity						-
@@ -62,7 +63,14 @@ SigningMethodsForNaturalPerson		-
 StatementType						-
 Tariff								-
 WorkSector							WorkSectors
+
+* HousingCondition                  HousingConditions [mock]
+ProofType                           ProofTypes
+IncomeOtherType                     IncomeOtherTypes
+CollateralType                      CollateralTypes
+* RepaymentScheduleType             RepaymentScheduleTypes [mock]
 -----------------------------------------------------------------------------------------------------------------
+
 -									MktActionCodesSavings   
 [{ Id = 1, Name = "Efekt" }, { Id = 2, Name = "Efekt Plus" }]
 
