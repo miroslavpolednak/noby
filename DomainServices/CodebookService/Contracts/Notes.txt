@@ -9,7 +9,7 @@ ActionCodeSavings					ActionCodesSavings
 ActionCodeSavingsLoan				ActionCodesSavingsLoan
 * AddressType						AddressTypes
 * CaseState							CaseStates
-* Channel							Channels	
+* Channel							Channels [mock]
 ClassificationOfEconomicActivities	ClassificationOfEconomicActivities
 ConsentType							-
 ContactType							ContactTypes
