@@ -48,7 +48,7 @@ internal class GetAllHandler
             "postcodes" => new(original, await _codebooks.PostCodes(cancellationToken)),
             "producttypes" => new(original, await _codebooks.ProductTypes(cancellationToken)),
             "propertysettlements" => new(original, await _codebooks.PropertySettlements(cancellationToken)),
-            "salesarrangementstates" => new(original, await _codebooks.SalesArrangementStates(cancellationToken)),
+            "salesarrangementstates" => new(original, (await _codebooks.SalesArrangementStates(cancellationToken)).Where(t => t.Id > 0).ToList()),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes(cancellationToken)),
             "signaturetypes" => new(original, await _codebooks.SignatureTypes(cancellationToken)),
             "realestatetypes" => new(original, await _codebooks.RealEstateTypes(cancellationToken)),

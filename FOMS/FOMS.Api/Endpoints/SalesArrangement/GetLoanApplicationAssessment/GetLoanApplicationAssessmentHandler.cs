@@ -17,6 +17,10 @@ internal class GetLoanApplicationAssessmentHandler
         // instance Offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(saInstance.OfferId!.Value, cancellationToken));
 
+        int[] codes = new[] { 501, 502 };
+        Random random = new Random();
+        int randomNumber1 = random.Next(0, codes.Length);
+
         GetLoanApplicationAssessmentResponse model = new()
         {
             Application = new()
@@ -55,7 +59,7 @@ internal class GetLoanApplicationAssessmentHandler
                     DSTI = 48
                 }
             },
-            AssessmentResult = 504,
+            AssessmentResult = codes[randomNumber1],
             Reasons = new()
             {
                 new Dto.AssessmentReason
