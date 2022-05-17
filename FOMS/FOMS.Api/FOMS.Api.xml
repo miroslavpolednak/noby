@@ -996,6 +996,13 @@
             )
             </remarks>
         </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetLoanApplicationAssessment(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Jak se to jmenuje?
+            </summary>
+            <param name="salesArrangementId">Sales arrangement</param>
+            <returns><see cref="T:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
+        </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCreditWorthiness(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Vypocet rozsirene bonity

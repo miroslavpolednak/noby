@@ -7,6 +7,18 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>
+    /// Jak se to jmenuje?
+    /// </summary>
+    /// <param name="salesArrangementId">Sales arrangement</param>
+    /// <returns><see cref="GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
+    [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
+    [Produces("application/json")]
+    //[SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [ProducesResponseType(typeof(GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
+    public async Task<GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId), cancellationToken);
+
+    /// <summary>
     /// Vypocet rozsirene bonity
     /// </summary>
     /// <remarks>
