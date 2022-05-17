@@ -35,7 +35,7 @@ public class MaritalStatusesHandler
         public string? RDMCode { get; set; }
     }
 
-    const string _sqlQuery = "SELECT KOD As ID, [TEXT] As [Name], Cast(1 As bit) As IsValid FROM [xxd0vss].[SBR].[CIS_RODINNE_STAVY] Order By [TEXT]";
+    const string _sqlQuery = "SELECT KOD As ID, [TEXT] As [Name], Cast(1 As bit) As IsValid FROM [SBR].[CIS_RODINNE_STAVY] Order By [TEXT]";
     const string _sqlQueryExtension = "Select * From MaritalStatusExtension";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
