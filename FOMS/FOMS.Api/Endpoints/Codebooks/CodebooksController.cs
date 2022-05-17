@@ -30,7 +30,7 @@ public class CodebooksController : ControllerBase
     /// - Genders
     /// - IdentificationDocumentTypes
     /// - IncomeTypes
-    /// - IncomeAbroadTypes
+    /// - IncomeForeignTypes
     /// - JobTypes
     /// - LegalCapacities
     /// - LoanPurposes
@@ -40,7 +40,7 @@ public class CodebooksController : ControllerBase
     /// - ObligationTypes
     /// - PostCodes
     /// - ProductTypes
-    /// - PropertySettlement
+    /// - PropertySettlements
     /// - RealEstateTypes
     /// - RealEstatePurchaseTypes
     /// - SalesArrangementStates

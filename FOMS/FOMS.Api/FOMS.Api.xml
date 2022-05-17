@@ -157,7 +157,7 @@
             - Genders
             - IdentificationDocumentTypes
             - IncomeTypes
-            - IncomeAbroadTypes
+            - IncomeForeignTypes
             - JobTypes
             - LegalCapacities
             - LoanPurposes
@@ -167,7 +167,7 @@
             - ObligationTypes
             - PostCodes
             - ProductTypes
-            - PropertySettlement
+            - PropertySettlements
             - RealEstateTypes
             - RealEstatePurchaseTypes
             - SalesArrangementStates
