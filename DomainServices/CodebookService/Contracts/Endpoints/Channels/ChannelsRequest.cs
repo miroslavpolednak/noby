@@ -1,8 +1,6 @@
-﻿
-namespace DomainServices.CodebookService.Contracts.Endpoints.Channels
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.Channels;
+
+[DataContract]
+public class ChannelsRequest : IRequest<List<ChannelItem>>
 {
-    [DataContract]
-    public class ChannelsRequest : IRequest<List<GenericCodebookItem>>
-    {
-    }
 }
