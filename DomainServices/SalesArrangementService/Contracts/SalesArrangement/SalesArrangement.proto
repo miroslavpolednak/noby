@@ -31,6 +31,10 @@ message SalesArrangement {
 
 	string RiskBusinessCaseId = 9;
 
+	google.protobuf.Int32Value LoanApplicationAssessmentId = 11;
+
+	string RiskSegment = 12;
+
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 20;
     }

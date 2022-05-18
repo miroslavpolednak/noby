@@ -29,7 +29,6 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     // byznys data
     public string? ContractNumber { get; set; }
     public decimal TargetAmount { get; set; }
-    public bool IsActionRequired { get; set; }
 
     /// <summary>
     /// Vytvoreni entity z Create Requestu

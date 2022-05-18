@@ -29,7 +29,6 @@ internal class CasesModelConverter
 			State = (CIS.Foms.Enums.CaseStates)model.State,
 			StateName = caseStates.First(x => x.Id == model.State).Name,
 			StateUpdated = model.StateUpdatedOn,
-			ActionRequired = model.ActionRequired,
 			ContractNumber = model.Data.ContractNumber,
 			TargetAmount = model.Data.TargetAmount,
 			CreatedBy = model.Created.UserName,
