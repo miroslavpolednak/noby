@@ -24,12 +24,15 @@ public class CodebooksController : ControllerBase
     /// - Countries
     /// - Currencies
     /// - CustomerRoles
+    /// - Developers
+    /// - DeveloperProjects
     /// - EducationLevels
     /// - EmploymentTypes
+    /// - Fees
     /// - FixedRatePeriods
     /// - Genders
     /// - IdentificationDocumentTypes
-    /// - IncomeTypes
+    /// - IncomeMainTypes
     /// - IncomeForeignTypes
     /// - JobTypes
     /// - LegalCapacities
@@ -38,6 +41,7 @@ public class CodebooksController : ControllerBase
     /// - Mandants
     /// - MaritalStatuses
     /// - ObligationTypes
+    /// - PaymentDays
     /// - PostCodes
     /// - ProductTypes
     /// - PropertySettlements
