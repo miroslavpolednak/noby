@@ -528,7 +528,7 @@ public class CreditWorthinessComputeRequestTransformation
     {
         _logger.LogInformation("InitCounterpartyIncomeTable start.");
         CounterpartyIncomeTable = new List<CounterpartyIncomeTableItem>();
-        var cb = await _codebookService.IncomeTypes();
+        var cb = await _codebookService.IncomeMainTypes();
         foreach (var item in cb)
         {
             CounterpartyIncomeTable.Add(new CounterpartyIncomeTableItem { Id = item.Id, Code = item.Code });

@@ -10,7 +10,7 @@ public class CaseStateItem
 
     [DataMember(Order = 2)]
     [JsonIgnore]
-    public CIS.Foms.Enums.CaseStates Value { get; set; }
+    public CIS.Foms.Enums.CaseStates Code { get; set; }
     
     [DataMember(Order = 3)]
     public string Name { get; set; }
