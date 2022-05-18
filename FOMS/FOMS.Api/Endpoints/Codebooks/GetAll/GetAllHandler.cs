@@ -36,7 +36,7 @@ internal class GetAllHandler
             "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
-            "incometypes" => new(original, await _codebooks.IncomeTypes(cancellationToken)),
+            "incomemaintypes" => new(original, await _codebooks.IncomeMainTypes(cancellationToken)),
             "incomeroreigntypes" => new(original, await _codebooks.IncomeForeignTypes(cancellationToken)),
             "jobtypes" => new(original, await _codebooks.JobTypes(cancellationToken)),
             "legalcapacities" => new(original, await _codebooks.LegalCapacities(cancellationToken)),
