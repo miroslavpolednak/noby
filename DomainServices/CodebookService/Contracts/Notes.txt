@@ -34,7 +34,8 @@ FormType							-
 * IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
 IncomeAbroadType					IncomeAbroadTypes !!! přejmenováno na IncomeForeignTypes
 IncomeForeignType                   IncomeForeignTypes
-* IncomeType						IncomeTypes [mock]
+IncomeType  						IncomeTypes [mock] !!! přejmenováno na IncomeMainTypes
+* IncomeMainType                    IncomeMainTypes  [mock]
 JobType								JobTypes
 LegalCapacity						-
 * LoanKind							LoanKinds
@@ -69,6 +70,15 @@ ProofType                           ProofTypes
 IncomeOtherType                     IncomeOtherTypes
 CollateralType                      CollateralTypes
 * RepaymentScheduleType             RepaymentScheduleTypes [mock]
+
+WorkflowTaskState                   WorkflowTaskStates
+WorkflowTaskType                    WorkflowTaskTypes
+WorkflowTaskCategory                WorkflowTaskCategories [enum]
+Fee                                 Fees
+PaymentDay                          PaymentDays
+DeveloperProject                    DeveloperProjects
+Developer                           Developers
+
 -----------------------------------------------------------------------------------------------------------------
 
 -									MktActionCodesSavings   

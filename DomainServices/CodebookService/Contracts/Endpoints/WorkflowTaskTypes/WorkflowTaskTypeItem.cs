@@ -1,4 +1,6 @@
-﻿namespace DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskTypes
+﻿using System.Text.Json.Serialization;
+
+namespace DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskTypes
 {
     [DataContract]
     public class WorkflowTaskTypeItem
@@ -10,6 +12,7 @@
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
+        [JsonIgnore]
         public int? CategoryId { get; set; }
     }
 }

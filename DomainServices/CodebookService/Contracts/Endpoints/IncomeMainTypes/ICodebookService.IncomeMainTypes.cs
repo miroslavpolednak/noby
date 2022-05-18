@@ -5,6 +5,6 @@ namespace DomainServices.CodebookService.Contracts
     public partial interface ICodebookService
     {
         [OperationContract]
-        Task<List<GenericCodebookItemWithCode>> IncomeTypes(Endpoints.IncomeTypes.IncomeTypesRequest request, CallContext context = default);
+        Task<List<GenericCodebookItemWithCode>> IncomeMainTypes(Endpoints.IncomeMainTypes.IncomeMainTypesRequest request, CallContext context = default);
     }
 }
