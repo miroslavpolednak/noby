@@ -12,7 +12,7 @@ public class CaseStatesHandler
             .Select(t => new CaseStateItem
             {
                 Id = (int)t,
-                Value = t,
+                Code = t,
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                 IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
             })
