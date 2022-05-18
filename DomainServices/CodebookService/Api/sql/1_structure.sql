@@ -39,6 +39,32 @@ CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
 ) ON [PRIMARY]
 GO
 
+-- table 'WorkflowTaskTypeExtension'
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'WorkflowTaskTypeExtension')
+BEGIN
+    CREATE TABLE [dbo].[WorkflowTaskTypeExtension](
+    [WorkflowTaskTypeId] [int] NOT NULL,
+    [CategoryId] [int] NOT NULL,
+    CONSTRAINT [PK_WorkflowTaskTypeExtension] PRIMARY KEY CLUSTERED
+    (
+    [WorkflowTaskTypeId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY];
+
+	INSERT INTO [dbo].[WorkflowTaskTypeExtension]([WorkflowTaskTypeId],[CategoryId])
+    VALUES
+    (4220, 1),
+	(42210, 1),
+	(42220, 1),
+	(4245, 2),
+	(4246, 2),
+	(42461, 2),
+	(4247, 2),
+	(42471, 2),
+	(4250, 3),
+	(4251, 3);
+END
+
 /*
 TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
 GO
