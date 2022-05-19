@@ -12,6 +12,8 @@ internal class UpdateCaseStateHandler
         if (!(await _codebookService.CaseStates(cancellation)).Any(t => t.Id == request.State))
             throw new CisNotFoundException(13011, nameof(request.State), request.State);
 
+        /*if (caseInstance.State == request.State)
+            throw new CisValidationException(0, "Case state already set to the same value");*/
         // Zakázané přechody mezi stavy
         if (caseInstance.State == 6 || (caseInstance.State == 2 && request.State == 1))
             throw new CisValidationException(0, "Case state change not allowed");

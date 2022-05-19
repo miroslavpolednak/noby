@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.ServiceDiscovery.Abstraction;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,21 +22,7 @@ public static class StartupExtensions
         if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new Core.Exceptions.CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
 
-        builder.Services.AddSingleton(provider =>
-        {
-            // pokud se ma hledat URL v service discovery
-            if (configuration.UseServiceDiscovery)
-            {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}:{serviceName}"), InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
-                configuration.ServiceUrl = url ?? throw new ArgumentNullException("url", $"Service Discovery can not find {Constants.ExternalServicesServiceDiscoveryKeyPrefix}:{serviceName} Proprietary service URL");
-            }
-            return configuration;
-        });
-
+        builder.Services.AddSingleton(configuration);
 
         return configuration;
     }

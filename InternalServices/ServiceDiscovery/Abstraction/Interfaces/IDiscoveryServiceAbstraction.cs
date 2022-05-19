@@ -12,4 +12,6 @@ public interface IDiscoveryServiceAbstraction
     Task<DiscoverableService> GetService(ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
+
+    string GetServiceUrlSynchronously(ServiceName serviceName, Contracts.ServiceTypes serviceType);
 }

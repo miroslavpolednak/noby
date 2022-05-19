@@ -28,6 +28,8 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     // byznys data
     public string? ContractNumber { get; set; }
+
+    [DataType("decimal(12,2)")]
     public decimal TargetAmount { get; set; }
 
     /// <summary>

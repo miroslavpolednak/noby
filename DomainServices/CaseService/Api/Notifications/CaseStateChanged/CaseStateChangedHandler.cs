@@ -27,7 +27,9 @@ internal class CaseStateChangedHandler
             rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
         }
 
-        var request = new ExternalServices.SbWebApi.Shared.CaseStateChangedRequest(
+        //TODO login
+        var request = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
+            "990614w",
             notification.CaseId,
             notification.ContractNumber, 
             notification.ClientName ?? "", 

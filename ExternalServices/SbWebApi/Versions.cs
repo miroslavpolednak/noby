@@ -1,8 +1,7 @@
-﻿namespace ExternalServices.SbWebApi
+﻿namespace ExternalServices.SbWebApi;
+
+public enum Versions
 {
-    public enum Versions
-    {
-        Unknown,
-        V1
-    }
+    Unknown,
+    V1
 }
