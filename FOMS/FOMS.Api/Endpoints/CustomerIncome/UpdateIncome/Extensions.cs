@@ -8,9 +8,9 @@ internal static class Extensions
     {
         return new _SA.IncomeDataEmployement
         {
-            AbroadIncomeTypeId = request.AbroadIncomeTypeId,
+            ForeignIncomeTypeId = request.ForeignIncomeTypeId,
             IsDomicile = request.IsDomicile,
-            IsAbroadIncome = request.IsAbroadIncome,
+            IsForeignIncome = request.IsForeignIncome,
             Employer = request.Employer?.ToDomainServiceRequest(),
             IncomeConfirmation = request.IncomeConfirmation?.ToDomainServiceRequest(),
             Job = request.Job?.ToDomainServiceRequest(),

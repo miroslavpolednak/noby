@@ -584,7 +584,7 @@ internal class SendToCmpHandler
                 typ_pracovniho_pomeru = i.Employement?.Job?.EmploymentTypeId.ToJsonString(),
                 klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),
                 klient_ve_zkusebni_lhute = i.Employement?.Job?.JobTrialPeriod.ToJsonString(),
-                prijem_ze_zahranici = i.Employement?.IsAbroadIncome.ToJsonString(),
+                prijem_ze_zahranici = i.Employement?.IsForeignIncome.ToJsonString(),
                 domicilace_prijmu_ze_zamestnani = i.Employement?.IsDomicile.ToJsonString(),
                 pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                 pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
