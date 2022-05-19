@@ -10,6 +10,15 @@ internal sealed class ServicesMemoryCache
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
 
+    public static DiscoverableService? GetServiceFromCache(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType)
+    {
+        if (_cache.TryGetValue(environmentName, out ImmutableList<DiscoverableService> cacheEntry))
+        {
+            return cacheEntry.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType);
+        }
+        return null;
+    }
+
     public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
         ImmutableList<DiscoverableService> cacheEntry;

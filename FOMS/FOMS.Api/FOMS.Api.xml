@@ -101,11 +101,6 @@
             Slovne nazev stavu Case.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ActionRequired">
-            <summary>
-            Reprezentuje, zda existuje úkol na dealera na casu, který je třeba splnit.
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ContractNumber">
             <summary>
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.

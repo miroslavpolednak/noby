@@ -5,7 +5,7 @@ namespace DomainServices.CodebookService.Endpoints.IdentificationDocumentTypes;
 public class IdentificationDocumentTypesHandler
     : IRequestHandler<IdentificationDocumentTypesRequest, List<IdentificationDocumentTypesItem>>
 {
-    public async Task<List<IdentificationDocumentTypesItem>> Handle(IdentificationDocumentTypesRequest request, CancellationToken cancellationToken)
+    public Task<List<IdentificationDocumentTypesItem>> Handle(IdentificationDocumentTypesRequest request, CancellationToken cancellationToken)
     {
         //try
         //{
@@ -29,13 +29,13 @@ public class IdentificationDocumentTypesHandler
         //}
 
         // TODO: Redirect to real data source! Extension table (IdentificationDocumentTypeExtension) can be removed (Sloupec CODE pro mapování na KB/C4M hodnotu bude do číselníku ve SB bude přidán v dropu 1.2.)     
-        return new List<IdentificationDocumentTypesItem>
+        return Task.FromResult(new List<IdentificationDocumentTypesItem>
             {
                 new IdentificationDocumentTypesItem() { Id = 0, Name = "Nedefinovaný", ShortName = "ND", RDMCode = null },
                 new IdentificationDocumentTypesItem() { Id = 1, Name = "Občanský průkaz", ShortName = "OP", RDMCode = "A" },
                 new IdentificationDocumentTypesItem() { Id = 2, Name = "Pas", ShortName = "PS", RDMCode = "B" },
                 new IdentificationDocumentTypesItem() { Id = 3, Name = "Průkaz k povolení k pobytu", ShortName = "PP", RDMCode = "F" },
-            };
+            });
     }
 
     private class ExtensionMapper

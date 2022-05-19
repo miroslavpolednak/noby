@@ -23,7 +23,6 @@ CREATE TABLE [dbo].[Case](
     [Cin] [varchar](10) NULL,
     [ContractNumber] [varchar](20) NULL,
     [TargetAmount] decimal(12,2) NULL,
-    [IsActionRequired] [bit] NOT NULL,
     [ProductTypeId] [int] NOT NULL,
     [State] [int] NOT NULL,
     [StateUpdateTime] [datetime] NOT NULL,
@@ -44,9 +43,6 @@ CREATE TABLE [dbo].[Case](
       (
       SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[CaseHistory] )
     )
-GO
-
-ALTER TABLE [dbo].[Case] ADD  CONSTRAINT [DF_Case_ActionRequired]  DEFAULT ((0)) FOR [IsActionRequired]
 GO
 
 

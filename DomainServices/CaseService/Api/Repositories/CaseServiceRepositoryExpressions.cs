@@ -11,7 +11,6 @@ internal static class CaseServiceRepositoryExpressions
             CaseId = t.CaseId,
             State = t.State,
             StateUpdatedOn = t.StateUpdateTime,
-            ActionRequired = t.IsActionRequired,
             CaseOwner = new CIS.Infrastructure.gRPC.CisTypes.UserInfo(t.OwnerUserId, t.OwnerUserName),
             Data = new Contracts.CaseData
             {

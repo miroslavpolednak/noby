@@ -1,6 +1,7 @@
 ﻿namespace CIS.Core.Results;
 
-public class SuccessfulServiceCallResult : IServiceCallResult
+public class SuccessfulServiceCallResult 
+    : IServiceCallResult
 {
     public bool Success => true;
 }

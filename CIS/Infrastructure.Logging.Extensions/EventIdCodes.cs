@@ -19,4 +19,6 @@ public sealed class EventIdCodes
     public const int ItemFoundInCache = 514;
     public const int TryAddItemToCache = 515;
     public const int LogSerializedObject = 516;
+    public const int ExtServiceRetryCall = 517;
+    public const int ExtServiceRequest = 518;
 }

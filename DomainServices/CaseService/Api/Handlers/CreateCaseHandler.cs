@@ -47,6 +47,16 @@ internal class CreateCaseHandler
             throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.Case), newCaseId);
         }
 
+        // fire notification
+        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        {
+            CaseId = newCaseId,
+            CaseStateId = defaultCaseState,
+            ClientName = $"{request.Request.Customer?.FirstNameNaturalPerson} {request.Request.Customer?.Name}",
+            ProductTypeId = request.Request.Data.ProductTypeId,
+            CaseOwnerUserId = request.Request.CaseOwnerUserId
+        }, cancellation);
+
         return new CreateCaseResponse() 
         {
             CaseId = newCaseId 
@@ -80,6 +90,7 @@ internal class CreateCaseHandler
             _ => throw new NotImplementedException()
         };
 
+    private readonly IMediator _mediator;
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<CreateCaseHandler> _logger;
@@ -88,6 +99,7 @@ internal class CreateCaseHandler
     private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
 
     public CreateCaseHandler(
+        IMediator mediator,
         CIS.Core.IDateTime dateTime,
         UserService.Abstraction.IUserServiceAbstraction userService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
@@ -95,6 +107,7 @@ internal class CreateCaseHandler
         Repositories.CaseServiceRepository repository,
         ILogger<CreateCaseHandler> logger)
     {
+        _mediator = mediator;
         _dateTime = dateTime;
         _userService = userService;
         _easClient = easClient;

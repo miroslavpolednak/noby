@@ -77,7 +77,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 	A.CisloSmlouvy 'ContractNumber',
 	B.Text 'ProductName',
 	A.VyseUveru 'LoanAmount',
-	A.RadnaSazba 'InterestRate',
+	A.RadnaSazba 'LoanInterestRate',
 	A.DatumUzavreniSmlouvy 'ContractStartDate',
 	A.DatumFixaceUrokoveSazby 'FixationDate',
 	A.ZustatekCelkem 'AccountBalance',
@@ -85,7 +85,14 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 	A.DatumKonceCerpani 'DateOfDrawing',
 	A.MesicniSplatka 'MonthlyPayment',
 	null 'LoanTermsValidFrom',
-	null 'YearlyAccountStatement'
+	null 'YearlyAccountStatement',
+
+    A.Jistina 'Jistina',
+    A.DruhUveru 'DruhUveru',
+    A.DelkaFixaceUrokoveSazby 'DelkaFixaceUrokoveSazby',
+    A.UcelUveru 'UcelUveru',
+    A.DatumPrvniVyplatyZUveru 'DatumPrvniVyplatyZUveru',
+    A.DatumPredpSplatnosti 'DatumPredpSplatnosti'
 FROM dbo.Uver A
 INNER JOIN cis.AkceUveru B ON A.AkceUveruId=B.Id
 WHERE A.Id=@id";

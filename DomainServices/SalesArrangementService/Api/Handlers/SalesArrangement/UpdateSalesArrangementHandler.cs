@@ -11,13 +11,10 @@ internal class UpdateSalesArrangementDataHandler
     }
 
     private readonly Repositories.SalesArrangementServiceRepository _repository;
-    private readonly ILogger<UpdateSalesArrangementDataHandler> _logger;
-
+    
     public UpdateSalesArrangementDataHandler(
-        Repositories.SalesArrangementServiceRepository repository,
-        ILogger<UpdateSalesArrangementDataHandler> logger)
+        Repositories.SalesArrangementServiceRepository repository)
     {
         _repository = repository;
-        _logger = logger;
     }
 }
