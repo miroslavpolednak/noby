@@ -64,10 +64,18 @@ internal class GetLoanApplicationAssessmentHandler
             {
                 new Dto.AssessmentReason
                 {
+                    Code = "SOLUS",
+                    Level = "ERROR",
+                    Weight = 1,
+                    Target = "R",
                     Desc = "Úvěrový obchod nelze samoschválit, postupujte dle standardních schvalovacích pravomocí"
                 },
                 new Dto.AssessmentReason
                 {
+                    Code = "SOLUS",
+                    Level = "ERROR",
+                    Weight = 1,
+                    Target = "R",
                     Desc = "Negativní záznam v SOLUSu",
                     Result = "Black"
                 }

@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 	  <None Remove="CustomerOnSA\IncomeInList.proto" />
+	  <None Remove="SalesArrangement\UpdateLoanAssessmentParameters.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -74,6 +75,7 @@
 		<Protobuf Include="SalesArrangement/CreateRiskBusinessCase.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/SalesArrangementParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangement/UpdateSalesArrangementParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangement/UpdateLoanAssessmentParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 </Project>

@@ -14,6 +14,7 @@ import "UpdateSalesArrangement.proto";
 import "SendToCmp.proto";
 import "CreateRiskBusinessCase.proto";
 import "UpdateSalesArrangementParameters.proto";
+import "UpdateLoanAssessmentParameters.proto";
 
 service SalesArrangementService {
 	// RIP
@@ -44,4 +45,6 @@ service SalesArrangementService {
 	rpc SendToCmp (DomainServices.SalesArrangementService.SendToCmpRequest) returns (google.protobuf.Empty);
 
 	rpc UpdateSalesArrangementParameters (DomainServices.SalesArrangementService.UpdateSalesArrangementParametersRequest) returns (google.protobuf.Empty);
+
+	rpc UpdateLoanAssessmentParameters (DomainServices.SalesArrangementService.UpdateLoanAssessmentParametersRequest) returns (google.protobuf.Empty);
 }
