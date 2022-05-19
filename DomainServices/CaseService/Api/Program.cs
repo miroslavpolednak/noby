@@ -6,6 +6,7 @@ using DomainServices.UserService.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
+using DomainServices.SalesArrangementService.Abstraction;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -49,6 +50,7 @@ builder.AddCaseService(appConfiguration);
 
 // add BE services
 builder.Services
+    .AddSalesArrangementService(true)
     .AddCodebookService(true)
     .AddUserService(true)
     .AddCisServiceDiscovery(true);

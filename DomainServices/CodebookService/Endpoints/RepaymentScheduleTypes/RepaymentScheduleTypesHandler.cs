@@ -1,16 +1,14 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.RepaymentScheduleTypes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.RepaymentScheduleTypes;
 
 namespace DomainServices.CodebookService.Endpoints.RepaymentScheduleTypes;
 
 public class RepaymentScheduleTypesHandler
     : IRequestHandler<RepaymentScheduleTypesRequest, List<RepaymentScheduleTypeItem>>
 {
-    public async Task<List<RepaymentScheduleTypeItem>> Handle(RepaymentScheduleTypesRequest request, CancellationToken cancellationToken)
+    public Task<List<RepaymentScheduleTypeItem>> Handle(RepaymentScheduleTypesRequest request, CancellationToken cancellationToken)
     {
         // TODO: Redirect to real data source!     
-        return new List<RepaymentScheduleTypeItem>
+        return Task.FromResult(new List<RepaymentScheduleTypeItem>
         {
             new RepaymentScheduleTypeItem() { Id = 1, Name = "Anuitní", Code = "A" },
             new RepaymentScheduleTypeItem() { Id = 2, Name = "Postupné", Code = "P" },
@@ -18,7 +16,7 @@ public class RepaymentScheduleTypesHandler
             new RepaymentScheduleTypeItem() { Id = 4, Name = "Jednorázové - více splátek", Code = "OM" },
             new RepaymentScheduleTypeItem() { Id = 5, Name = "Anuitní s mimořádnými splátkami", Code = "AX" },
             new RepaymentScheduleTypeItem() { Id = 6, Name = "Postupné s mimořádnými splátkami", Code = "PX" },
-        };
+        });
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

@@ -6,7 +6,7 @@ namespace DomainServices.CodebookService.Endpoints.Channels
     public class ChannelsHandler
         : IRequestHandler<ChannelsRequest, List<ChannelItem>>
     {
-        public async Task<List<ChannelItem>> Handle(ChannelsRequest request, CancellationToken cancellationToken)
+        public Task<List<ChannelItem>> Handle(ChannelsRequest request, CancellationToken cancellationToken)
         {
             //try
             //{
@@ -21,7 +21,7 @@ namespace DomainServices.CodebookService.Endpoints.Channels
             //}
 
             // TODO: Redirect to real data source!     
-            return new List<ChannelItem>
+            return Task.FromResult(new List<ChannelItem>
             {
                 new ChannelItem() { Id = 1, Mandant = 1, Name = "Interní síť MP", Code = null, IsValid = true },
                 new ChannelItem() { Id = 2, Mandant = 1, Name = "Hypocentrum MP", Code = null, IsValid = true },
@@ -29,7 +29,7 @@ namespace DomainServices.CodebookService.Endpoints.Channels
                 new ChannelItem() { Id = 4, Mandant = 2, Name = "Interní síť KB", Code = "BR", IsValid = true },
                 new ChannelItem() { Id = 6, Mandant = 2, Name = "Agentury KB", Code = "MC", IsValid = true },
                 new ChannelItem() { Id = 10, Mandant = 1, Name = "POS MP", Code = null, IsValid = true },
-            };
+            });
         }
 
         private const string _sqlQuery =
