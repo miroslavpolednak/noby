@@ -17,7 +17,7 @@ internal static class SalesArrangementServiceRepositoryExpressions
             RiskBusinessCaseId = t.RiskBusinessCaseId ?? "",
             ChannelId = t.ChannelId,
             LoanApplicationAssessmentId = t.LoanApplicationAssessmentId,
-            RiskSegment = t.RiskSegment,
+            RiskSegment = t.RiskSegment ?? "",
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
         };
     }
