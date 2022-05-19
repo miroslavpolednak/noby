@@ -89,5 +89,11 @@ public interface ISalesArrangementServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update LAID
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, int loanApplicationAssessmentId, string? riskSegment, CancellationToken cancellationToken = default(CancellationToken));
 }
 

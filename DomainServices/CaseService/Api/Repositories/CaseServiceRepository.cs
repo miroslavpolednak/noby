@@ -20,6 +20,13 @@ internal class CaseServiceRepository
         await getCaseEntity(caseId, cancellation);
     }
 
+    public async Task DeleteCase(long caseId, CancellationToken cancellation)
+    {
+        var entity = await getCaseEntity(caseId, cancellation);
+        _dbContext.Cases.Remove(entity);
+        await _dbContext.SaveChangesAsync(cancellation);
+    }
+
     public async Task CreateCase(Entities.Case entity, CancellationToken cancellation)
     {
         _dbContext.Cases.Add(entity);
