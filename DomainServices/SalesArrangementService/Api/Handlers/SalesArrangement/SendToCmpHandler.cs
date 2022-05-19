@@ -483,7 +483,7 @@ internal class SendToCmpHandler
             };
         }
 
-        object? MapAddress(Address i)
+        object? MapAddress(GrpcAddress i)
         {
             if (i == null)
             {

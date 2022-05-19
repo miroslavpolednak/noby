@@ -2,7 +2,7 @@
 
 public class AddressModel
 {
-    public int AddressTypeId { get; set; }
+    public int? AddressTypeId { get; set; }
     public bool IsPrimary { get; set; }
     public string? Street { get; set; }
     public string? BuildingIdentificationNumber { get; set; }
