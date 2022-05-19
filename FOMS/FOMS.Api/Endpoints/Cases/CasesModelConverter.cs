@@ -16,7 +16,15 @@ internal class CasesModelConverter
 		var productTypes = await _codebookService.ProductTypes();
 		var caseStates = await _codebookService.CaseStates();
 
-		return models.Select(t => convert(t, productTypes, caseStates)).ToList();
+		var list = models.Select(t => convert(t, productTypes, caseStates)).ToList();
+
+		//TODO docasne mock
+		list.ForEach(t => t.ActiveTasks = new List<Dto.TaskModel>
+		{
+			new Dto.TaskModel { CategoryId = 1, Name = "Dozadani" }
+		});
+
+		return list;
 	}
 
 	static Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model, 

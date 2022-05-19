@@ -19,16 +19,30 @@ internal class UpdateCaseStateHandler
         // update v DB
         await _repository.UpdateCaseState(request.CaseId, request.State, cancellation);
 
+        // fire notification
+        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        {
+            CaseId = request.CaseId,
+            CaseStateId = request.State,
+            ClientName = $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
+            ProductTypeId = caseInstance.Data.ProductTypeId,
+            CaseOwnerUserId = caseInstance.CaseOwner.UserId,
+            ContractNumber = caseInstance.Data.ContractNumber
+        }, cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly IMediator _mediator;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.CaseServiceRepository _repository;
 
     public UpdateCaseStateHandler(
+        IMediator mediator,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Repositories.CaseServiceRepository repository)
     {
+        _mediator = mediator;
         _codebookService = codebookService;
         _repository = repository;
     }

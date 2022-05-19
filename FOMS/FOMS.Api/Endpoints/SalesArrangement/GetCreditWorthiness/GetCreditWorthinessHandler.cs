@@ -82,7 +82,9 @@ internal class GetCreditWorthinessHandler
             RemainsLivingInst = Convert.ToInt32(ripResult.RemainsLivingInst),
             WorthinessResult = ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
-            ResultReasonDescription = ripResult.ResultReason?.Description
+            ResultReasonDescription = ripResult.ResultReason?.Description,
+            LoanAmount = offerInstance.Inputs.LoanAmount,
+            LoanPaymentAmount = offerInstance.Inputs.LoanPaymentAmount
         };
     }
 

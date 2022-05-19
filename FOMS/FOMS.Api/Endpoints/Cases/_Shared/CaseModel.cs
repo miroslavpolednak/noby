@@ -66,4 +66,6 @@ public class CaseModel
 	/// Datum a cas posledni zmeny Case.
 	/// </summary>
 	public DateTime StateUpdated { get; set; }
+
+	public List<TaskModel>? ActiveTasks { get; set; }
 }

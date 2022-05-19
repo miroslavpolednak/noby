@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using ExternalServices.Eas;
+using ExternalServices.SbWebApi;
 
 namespace DomainServices.CaseService.Api;
 
@@ -32,7 +32,7 @@ internal static class StartupExtensions
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
-        //TODO
+        builder.AddExternalServiceSbWebApi();
 
         // dbcontext
         builder.AddEntityFramework<Repositories.CaseServiceDbContext>();
