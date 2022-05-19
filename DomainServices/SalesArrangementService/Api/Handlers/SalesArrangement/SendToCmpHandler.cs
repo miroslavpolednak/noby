@@ -589,7 +589,7 @@ internal class SendToCmpHandler
                 pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                 pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
                 zamestnavatel_nazov = i.Employement?.Employer?.Name,
-                zamestnavatel_rc_ico = i.Employement?.Employer?.BirthNumber,
+                zamestnavatel_rc_ico = i.Employement?.Employer?.Cin,
                 zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
                 zamestnavatel_sidlo_cislo_popisne_orientacni = GetAddressNumber(i.Employement?.Employer?.Address),  //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
                 zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
@@ -609,7 +609,7 @@ internal class SendToCmpHandler
                 prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.ConfirmationByCompany.ToJsonString(),
                 prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
                 prijem_potvrzeni_datum =  i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
-                prijem_potvrzení_osoba =  i.Employement?.IncomeConfirmation?.ConfirmationPerson,
+                prijem_potvrzeni_osoba =  i.Employement?.IncomeConfirmation?.ConfirmationPerson,
                 prijem_potvrzeni_kontakt =  i.Employement?.IncomeConfirmation?.ConfirmationContact,
             };
         }
