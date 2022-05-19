@@ -18,4 +18,8 @@ message GrpcAddress {
   google.protobuf.Int32Value CountryId = 6;
 
   google.protobuf.Int32Value AddressTypeId = 7;
+  
+  string EvidenceNumber = 8;
+   
+  bool IsPrimary = 9;
 }

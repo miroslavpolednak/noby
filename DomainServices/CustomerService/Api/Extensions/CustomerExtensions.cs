@@ -1,4 +1,5 @@
-﻿using DomainServices.CustomerService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Api
 {
@@ -52,7 +53,7 @@ namespace DomainServices.CustomerService.Api
             {
                 if (!string.IsNullOrEmpty(street) || !string.IsNullOrEmpty(nr4) || !string.IsNullOrEmpty(nr2) || !string.IsNullOrEmpty(city) || !string.IsNullOrEmpty(zip))
                 {
-                    model.Addresses.Add(new Address
+                    model.Addresses.Add(new GrpcAddress
                     {
                         BuildingIdentificationNumber = nr4 ?? "",
                         City = city ?? "",

@@ -6,7 +6,7 @@ import "Identity.proto";
 import "Mandants.proto";
 import "NaturalPerson.proto";
 import "IdentificationDocument.proto";
-import "Address.proto";
+import "GrpcAddress.proto";
 import "Contact.proto";
 
 import "google/protobuf/wrappers.proto";
@@ -63,7 +63,7 @@ message CustomerListResult {
 
     IdentificationDocument IdentificationDocument = 3;
 
-    repeated Address Addresses = 4;
+    repeated cis.types.GrpcAddress Addresses = 4;
 
     repeated Contact Contacts = 5;
 
@@ -89,7 +89,7 @@ message CustomerResponse {
 
     IdentificationDocument IdentificationDocument = 3;
 
-    repeated Address Addresses = 4;
+    repeated cis.types.GrpcAddress Addresses = 4;
 
     repeated Contact Contacts = 5;
 
