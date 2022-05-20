@@ -50,6 +50,9 @@ public class CodebooksController : ControllerBase
     /// - SalesArrangementStates
     /// - SalesArrangementTypes
     /// - SignatureTypes
+    /// - WorkflowTaskCategories
+    /// - WorkflowTaskStates
+    /// - WorkflowTaskTypes
     /// - WorkSectors
     /// </remarks>
     /// <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>

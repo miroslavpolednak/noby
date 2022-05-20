@@ -18,7 +18,7 @@ public interface IProductServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[GetProductListResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetProductList(int caseId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetProductList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Detail produktu KB Hypotéky
@@ -26,7 +26,7 @@ public interface IProductServiceAbstraction
     /// <returns>
     /// SuccessfulServiceCallResult[GetMortgageResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetMortgage(int productId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetMortgage(long productId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vytvoření produktu KB Hypotéky

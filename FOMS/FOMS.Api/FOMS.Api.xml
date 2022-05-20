@@ -172,6 +172,9 @@
             - SalesArrangementStates
             - SalesArrangementTypes
             - SignatureTypes
+            - WorkflowTaskCategories
+            - WorkflowTaskStates
+            - WorkflowTaskTypes
             - WorkSectors
             </remarks>
             <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
@@ -1093,12 +1096,6 @@
             Cele jmeno uzivatele
             </summary>
             <example>John Doe</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Username">
-            <summary>
-            Login
-            </summary>
-            <example>990614w</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.CPM">
             <summary>

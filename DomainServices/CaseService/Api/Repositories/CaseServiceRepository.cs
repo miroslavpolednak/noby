@@ -81,6 +81,27 @@ internal class CaseServiceRepository
             .Select(CaseServiceRepositoryExpressions.CaseDetail()
         ).ToListAsync(cancellation);
 
+        // get active tasks - nejde delat pres EF kvuli Grpc kolekci
+        var caseIds = data.Select(t => t.CaseId).ToArray();
+        var tasksCollection = await _dbContext.ActiveTasks
+            .Where(t => caseIds.Contains(t.CaseId))
+            .AsNoTracking()
+            .Select(t => new
+            {
+                CaseId = t.CaseId,
+                TaskId = t.TaskId,
+                TaskTypeId = t.TaskTypeId
+            })
+            .ToListAsync(cancellation);
+
+        // rozsekat na jednotlive cases
+        data.ForEach(t => t.ActiveTasks.AddRange(
+            tasksCollection
+                .Where(x => x.CaseId == t.CaseId)
+                .Select(x => new Contracts.ActiveTask { TaskId = x.TaskId, TaskTypeId = x.TaskTypeId })
+                .ToList()
+        ));
+
         return (recordsTotalSize, data);
     }
 

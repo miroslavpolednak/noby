@@ -17,10 +17,10 @@ internal class GetUserHandler
             CPM = userInstance.v33cpm ?? "",
             ICP = userInstance.v33icp ?? "",
             FullName = $"{userInstance.v33jmeno} {userInstance.v33prijmeni}".Trim(),
-            Login = "",
             Email = "",
             Phone = ""
         };
+        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
 
         return model;
     }

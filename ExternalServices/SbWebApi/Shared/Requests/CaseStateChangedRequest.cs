@@ -4,10 +4,10 @@
 internal sealed class CaseStateChangedRequest
 {
     [DataMember]
-    public HeaderModel header { get; set; }
+    public HeaderModel? header { get; set; }
 
     [DataMember]
-    public MessageModel message { get; set; }
+    public MessageModel? message { get; set; }
 
     [DataContract]
     public class HeaderModel
@@ -16,7 +16,7 @@ internal sealed class CaseStateChangedRequest
         public string system { get; set; } = "NOBY";
 
         [DataMember]
-        public string login { get; set; }
+        public string? login { get; set; }
     }
 
     [DataContract]
