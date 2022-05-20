@@ -23,7 +23,7 @@ internal class GetUserByLoginHandler
             throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User '{request.Login}' not found", 1);
 
         // vytvorit finalni model
-        return new Contracts.User
+        var model = new Contracts.User
         {
             Id = cachedUser!.v33id,
             CPM = cachedUser.v33cpm ?? "",
@@ -32,6 +32,10 @@ internal class GetUserByLoginHandler
             Email = "",
             Phone = ""
         };
+
+        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
+
+        return model;
     }
 
     private readonly Repositories.XxvRepository _repository;
