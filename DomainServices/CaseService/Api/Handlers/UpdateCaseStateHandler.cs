@@ -12,8 +12,8 @@ internal class UpdateCaseStateHandler
         if (!(await _codebookService.CaseStates(cancellation)).Any(t => t.Id == request.State))
             throw new CisNotFoundException(13011, nameof(request.State), request.State);
 
-        /*if (caseInstance.State == request.State)
-            throw new CisValidationException(0, "Case state already set to the same value");*/
+        if (caseInstance.State == request.State)
+            throw new CisValidationException(0, "Case state already set to the same value");
         // Zakázané přechody mezi stavy
         if (caseInstance.State == 6 || (caseInstance.State == 2 && request.State == 1))
             throw new CisValidationException(0, "Case state change not allowed");
@@ -22,15 +22,16 @@ internal class UpdateCaseStateHandler
         await _repository.UpdateCaseState(request.CaseId, request.State, cancellation);
 
         // fire notification
-        await _mediator.Publish(new Notifications.CaseStateChangedNotification
-        {
-            CaseId = request.CaseId,
-            CaseStateId = request.State,
-            ClientName = $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
-            ProductTypeId = caseInstance.Data.ProductTypeId,
-            CaseOwnerUserId = caseInstance.CaseOwner.UserId,
-            ContractNumber = caseInstance.Data.ContractNumber
-        }, cancellation);
+        if (caseInstance.State == 1)
+            await _mediator.Publish(new Notifications.CaseStateChangedNotification
+            {
+                CaseId = request.CaseId,
+                CaseStateId = request.State,
+                ClientName = $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
+                ProductTypeId = caseInstance.Data.ProductTypeId,
+                CaseOwnerUserId = caseInstance.CaseOwner.UserId,
+                ContractNumber = caseInstance.Data.ContractNumber
+            }, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

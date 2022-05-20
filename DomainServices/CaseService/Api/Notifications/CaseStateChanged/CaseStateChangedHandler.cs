@@ -23,12 +23,8 @@ internal class CaseStateChangedHandler
             .ToList();
 
         // get rbcid
-        string? rbcId = null;
-        if (notification.CaseStateId != 1)
-        {
-            var saList = ServiceCallResult.ResolveAndThrowIfError<_SA.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(notification.CaseId, cancellationToken: cancellationToken));
-            rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
-        }
+        var saList = ServiceCallResult.ResolveAndThrowIfError<_SA.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(notification.CaseId, cancellationToken: cancellationToken));
+        string? rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
 
         //TODO login
         var request = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
