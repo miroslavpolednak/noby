@@ -20,6 +20,7 @@ internal class GetUserHandler
             Email = "",
             Phone = ""
         };
+        model.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity(string.IsNullOrEmpty(model.ICP) ? model.CPM : $"{model.CPM}_{model.ICP}", CIS.Foms.Enums.UserIdentitySchemes.Mpad));
 
         return model;
     }
