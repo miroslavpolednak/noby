@@ -78,7 +78,7 @@ internal class CreateCaseHandler
         {
             SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
             SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "Unable to get CaseId from SB", 13004),
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors.First().Message, err.Errors.First().Key),
+            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
             _ => throw new NotImplementedException()
         };
 
@@ -86,7 +86,7 @@ internal class CreateCaseHandler
         result switch
         {
             SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new CisNotFoundException(13017, $"User not found: {err.Errors.First().Message}"),
+            ErrorServiceCallResult err => throw new CisNotFoundException(13017, $"User not found: {err.Errors[0].Message}"),
             _ => throw new NotImplementedException()
         };
 

@@ -34,7 +34,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     [Precision(12, 2)]
     public decimal TargetAmount { get; set; }
 
-    public CaseActiveTasks? ActiveTasks { get; set; }
+    public List<ActiveTask>? ActiveTasks { get; set; }
 
     /// <summary>
     /// Vytvoreni entity z Create Requestu

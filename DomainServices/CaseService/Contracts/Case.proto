@@ -30,11 +30,11 @@ message Case {
 	cis.types.ModificationStamp Created = 8;
 
 	// Aktivni tasky workflow na danem Case
-	repeated GroupedTask ActiveTasks = 9;
+	repeated ActiveTask ActiveTasks = 9;
 }
 
-message GroupedTask{
-	int32 CategoryId = 1;
+message ActiveTask {
+	int32 TaskTypeId = 1;
 
-	int32 TaskCount = 2;
+	int32 TaskId = 2;
 }

@@ -7,7 +7,7 @@ internal class CaseStateChangedResponse
     public int request_id { get; set; }
 
     [DataMember]
-    public ResultModel result { get; set; }
+    public ResultModel? result { get; set; }
 
     [DataContract]
     public class ResultModel
