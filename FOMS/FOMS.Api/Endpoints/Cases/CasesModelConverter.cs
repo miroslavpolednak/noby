@@ -21,7 +21,7 @@ internal class CasesModelConverter
 		//TODO docasne mock
 		list.ForEach(t => t.ActiveTasks = new List<Dto.TaskModel>
 		{
-			new Dto.TaskModel { CategoryId = 1, Name = "Dozadani" }
+			new Dto.TaskModel { CategoryId = 1, TaskCount = 2 }
 		});
 
 		return list;
@@ -45,7 +45,8 @@ internal class CasesModelConverter
 			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
 			CustomerIdentity = model.Customer?.Identity,
 			FirstName = model.Customer?.FirstNameNaturalPerson,
-			LastName = model.Customer?.Name
+			LastName = model.Customer?.Name,
+			ActiveTasks = model.ActiveTasks is null || !model.ActiveTasks.Any() ? null : model.ActiveTasks.Select(x => new Dto.TaskModel { CategoryId = x.CategoryId, TaskCount = x.TaskCount }).ToList()
 		};
 
 	private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;

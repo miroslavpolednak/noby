@@ -13,7 +13,6 @@ internal class GetCurrentUserHandler
         {
             Id = userInstance.Id,
             Name = userInstance.FullName,
-            Username = userInstance.Login,
             CPM = userInstance.CPM,
             ICP = userInstance.ICP
         };

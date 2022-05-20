@@ -29,7 +29,6 @@ internal class GetUserByLoginHandler
             CPM = cachedUser.v33cpm ?? "",
             ICP = cachedUser.v33icp ?? "",
             FullName = $"{cachedUser.v33jmeno} {cachedUser.v33prijmeni}".Trim(),
-            Login = request.Login,
             Email = "",
             Phone = ""
         };

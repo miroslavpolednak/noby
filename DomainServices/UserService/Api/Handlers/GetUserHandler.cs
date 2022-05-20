@@ -17,7 +17,6 @@ internal class GetUserHandler
             CPM = userInstance.v33cpm ?? "",
             ICP = userInstance.v33icp ?? "",
             FullName = $"{userInstance.v33jmeno} {userInstance.v33prijmeni}".Trim(),
-            Login = "",
             Email = "",
             Phone = ""
         };

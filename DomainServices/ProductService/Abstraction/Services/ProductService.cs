@@ -30,7 +30,7 @@ internal class ProductService : IProductServiceAbstraction
 
     #endregion
 
-    public async Task<IServiceCallResult> GetProductList(int caseId, CancellationToken cancellationToken = default)
+    public async Task<IServiceCallResult> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetProductList), caseId);
 
@@ -39,7 +39,7 @@ internal class ProductService : IProductServiceAbstraction
         return new SuccessfulServiceCallResult<GetProductListResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetMortgage(int productId, CancellationToken cancellationToken = default)
+    public async Task<IServiceCallResult> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgage), productId);
 

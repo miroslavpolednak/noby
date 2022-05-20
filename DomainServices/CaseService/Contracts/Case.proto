@@ -28,4 +28,13 @@ message Case {
 
 	// Uzivatel, ktery Case vytvoril
 	cis.types.ModificationStamp Created = 8;
+
+	// Aktivni tasky workflow na danem Case
+	repeated GroupedTask ActiveTasks = 9;
+}
+
+message GroupedTask{
+	int32 CategoryId = 1;
+
+	int32 TaskCount = 2;
 }
