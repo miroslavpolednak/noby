@@ -26,7 +26,7 @@ internal class RealSbWebApiClient
         var result = await response.Content.ReadFromJsonAsync<CaseStateChangedResponse>() 
             ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, _caseStateChangedUrl, nameof(CaseStateChangedResponse));
         
-        _logger.ExtServiceResponse(StartupExtensions.ServiceName, _caseStateChangedUrl, response);
+        _logger.ExtServiceResponse(StartupExtensions.ServiceName, _caseStateChangedUrl, result);
 
         if (result.result.return_val == 0)
             return new SuccessfulServiceCallResult();
