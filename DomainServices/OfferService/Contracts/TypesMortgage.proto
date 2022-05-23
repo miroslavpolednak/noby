@@ -10,18 +10,22 @@ import "GrpcDate.proto";
 import "NullableGrpcDate.proto";
 
 
-message getMortgageOfferDetailResponse {
-	string ResourceProcessId = 1;
-	BasicParameters BasicParameters = 2;
-	SimulationInputs SimulationInputs = 3;
-	SimulationResults SimulationResults = 4;
+message GetMortgageOfferDetailResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	SimulationInputs SimulationInputs = 5;
+	SimulationResults SimulationResults = 6;
 }
 
-message getMortgageOfferResponse {
-	string ResourceProcessId = 1;
-	BasicParameters BasicParameters = 2;
-	SimulationInputs SimulationInputs = 3;
-	BaseSimulationResults SimulationResults = 4;
+message GetMortgageOfferResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	SimulationInputs SimulationInputs = 5;
+	BaseSimulationResults SimulationResults = 6;
 }
 
 message SimulateMortgageRequest {
@@ -31,10 +35,12 @@ message SimulateMortgageRequest {
 }
 
 message SimulateMortgageResponse {
-	string ResourceProcessId = 1;
-	BasicParameters BasicParameters = 2;
-	SimulationInputs SimulationInputs = 3;
-	SimulationResults SimulationResults = 4;
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	SimulationInputs SimulationInputs = 5;
+	SimulationResults SimulationResults = 6;
 }
 
 message BasicParameters {

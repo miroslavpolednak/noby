@@ -38,13 +38,22 @@ internal class OfferService : IOfferServiceAbstraction
         return new SuccessfulServiceCallResult<GetOfferResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetMortgageData(int offerId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetMortgageData), offerId);
+        _logger.RequestHandlerStartedWithId(nameof(GetMortgageOffer), offerId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageDataAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
+        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
 
-        return new SuccessfulServiceCallResult<GetMortgageDataResponse>(result);
+        return new SuccessfulServiceCallResult<GetMortgageOfferResponse>(result);
+    }
+
+    public async Task<IServiceCallResult> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetMortgageOfferDetail), offerId);
+
+        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageOfferDetailAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
+
+        return new SuccessfulServiceCallResult<GetMortgageOfferDetailResponse>(result);
     }
 
     public async Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken))

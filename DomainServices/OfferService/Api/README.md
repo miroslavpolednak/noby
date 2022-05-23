@@ -7,13 +7,13 @@
         grpcurl -insecure 172.30.35.51:5003 list DomainServices.OfferService.v1.OfferService
        
         grpcurl -insecure -d "{\"OfferId\":2}" -H "Authorization: Basic YTph" 172.30.35.51:5003 DomainServices.OfferService.v1.OfferService/GetOffer
-        grpcurl -insecure -d "{\"OfferId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetMortgageData
+        grpcurl -insecure -d "{\"OfferId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetMortgageOffer
         grpcurl -insecure -d "{\"Inputs\":{\"ProductTypeId\":20001},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 172.30.35.51:5003 DomainServices.OfferService.v1.OfferService/SimulateMortgage
         grpcurl -insecure -d "{\"Inputs\":{\"SimulationToggleSettings\":1,\"ProductTypeId\":20001,\"LoanKindId\":1,\"LoanAmount\":{\"units\":5000000},\"LoanDuration\":120,\"LoanPaymentAmount\":{\"units\":15000},\"FixedRatePeriod\":2,\"EmployeeBonusLoanCode\":5,\"CollateralAmount\":{\"units\":2000000},\"LoanToValue\":{\"units\":3000000},\"PaymentDayOfTheMonth\":20 },\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
         grpcurl -insecure -d "{\"Inputs\":{\"ProductTypeId\":20001,\"LoanPurpose\":[{\"ProductLoanPurposeId\":1,\"Sum\":{\"units\":1000000}}, {\"ProductLoanPurposeId\":2,\"Sum\":{\"units\":2000000}}]},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 172.30.35.51:5003 DomainServices.OfferService.v1.OfferService/SimulateMortgage
 
         grpcurl -insecure -d "{\"OfferId\":15}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetOffer
-        grpcurl -insecure -d "{\"OfferId\":7}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetMortgageData
+        grpcurl -insecure -d "{\"OfferId\":7}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetMortgageOffer
         grpcurl -insecure -d "{\"Inputs\":{\"ProductTypeId\":20001},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
         grpcurl -insecure -d "{\"Inputs\":{\"ProductTypeId\":20001,\"LoanKindId\":1,\"LoanAmount\":{\"units\":5000000},\"LoanDuration\":120,\"LoanPaymentAmount\":{\"units\":15000},\"FixedRatePeriod\":2,\"EmployeeBonusLoanCode\":5,\"CollateralAmount\":{\"units\":2000000},\"LoanToValue\":{\"units\":3000000},\"PaymentDayOfTheMonth\":20 },\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
         grpcurl -insecure -d "{\"Inputs\":{\"ProductTypeId\":20001,\"LoanPurpose\":[{\"ProductLoanPurposeId\":1,\"Sum\":{\"units\":1000000}}, {\"ProductLoanPurposeId\":2,\"Sum\":{\"units\":2000000}}]},\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\"}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
@@ -23,3 +23,16 @@
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\OfferService\Api\DomainServices.OfferService.Api.csproj"
+
+
+
+Definition of done:
+
+Jsou zapracované změny z
+https://wiki.kb.cz/confluence/display/HT/Offer+object
+https://wiki.kb.cz/confluence/display/HT/SalesArrangement+object
+Byli provedeny přípravné práce pro přepojení na simulační službu tak, aby po nasazení Asseco jsme měli co nejméně práce.
+Byly zapracovány změny v metodách, viz:
+https://wiki.kb.cz/confluence/display/HT/getMortgageOffer
+https://wiki.kb.cz/confluence/display/HT/getMortgageOfferDetail
+https://wiki.kb.cz/confluence/display/HT/simulateMortgage

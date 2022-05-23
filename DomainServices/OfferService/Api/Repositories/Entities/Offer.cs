@@ -11,9 +11,10 @@ internal class Offer : CIS.Core.Data.BaseCreated
 
     public Guid ResourceProcessId { get; set; }
 
-    public int ProductTypeId { get; set; }
+    public string BasicParameters { get; set; } = default!;
 
-    public string? Inputs { get; set; }
+    public string SimulationInputs { get; set; } = default!;
 
-    public string? Outputs { get; set; }
+    public string SimulationResults { get; set; } = default!;
+
 }

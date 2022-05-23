@@ -10,7 +10,6 @@ message OfferIdRequest {
 
 message GetOfferResponse {
 	int32 OfferId = 1;
-	int32 ProductTypeId = 2;
-	string ResourceProcessId = 3;
-	cis.types.ModificationStamp Created = 4;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
 }
