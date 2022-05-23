@@ -51,6 +51,7 @@ public class CasesController : ControllerBase
     /// - nastavit razeni [stateUpdated]
     /// <i>DS:</i> CaseService/SearchCases<br/>
     /// https://wiki.kb.cz/confluence/display/HT/searchCases
+    /// - <i>test commit FF</i>
     /// </remarks>
     /// <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
     /// <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
