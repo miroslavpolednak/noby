@@ -12,6 +12,7 @@
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"ContractNumber\":\"123456789\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangement
         grpcurl -insecure -d "{\"SalesArrangementId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/SendToCmp
         grpcurl -insecure -d "{\"SalesArrangementId\":2,\"Mortgage\":{\"IncomeCurrencyCode\":\"CZK\",\"ResidencyCurrencyCode\":\"CZK\",\"SignatureTypeId\":1,\"LoanRealEstates\":[{\"RealEstateTypeId\":1,\"RealEstatePurchaseTypeId\":1}]}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateSalesArrangementParameters
+        grpcurl -insecure -d "{\"SalesArrangementId\":2,\"LoanApplicationAssessmentId\":222,\"RiskSegment\":\"xxxxx\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateLoanAssessmentParameters
 
         grpcurl -insecure -d "{\"SalesArrangementId\":1,\"CustomerRoleId\":1,\"Customer\":{\"CustomerIdentifiers\":[{\"identityId\":1,\"identityScheme\":1}],\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/CreateCustomer
         grpcurl -insecure -d "{\"CustomerOnSAId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/DeleteCustomer
@@ -29,9 +30,9 @@
 
         grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/CreateIncome
         grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"BaseData\":{\"Sum\":20000,\"CurrencyCode\":\"CZK\"}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/CreateIncome
-        grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"Employement\":{\"IsAbroadIncome\":true,\"AbroadIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/CreateIncome
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"Employement\":{\"IsForeignIncome\":true,\"ForeignIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/CreateIncome
         grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/DeleteIncome
-        grpcurl -insecure -d "{\"IncomeId\":2,\"BaseData\":{\"Sum\":2000},\"Employement\":{\"IsAbroadIncome\":true,\"AbroadIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/UpdateIncome
+        grpcurl -insecure -d "{\"IncomeId\":2,\"BaseData\":{\"Sum\":2000},\"Employement\":{\"IsForeignIncome\":true,\"ForeignIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/UpdateIncome
         grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.HouseholdService/GetIncomeList
 
 ## run batch

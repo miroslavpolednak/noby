@@ -38,11 +38,6 @@ public class CaseModel
 	public string? StateName { get; set; }
 	
 	/// <summary>
-	/// Reprezentuje, zda existuje úkol na dealera na casu, který je třeba splnit.
-	/// </summary>
-	public bool ActionRequired { get; set; }
-	
-	/// <summary>
 	/// ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
 	/// </summary>
 	public string? ContractNumber { get; set; }
@@ -71,4 +66,6 @@ public class CaseModel
 	/// Datum a cas posledni zmeny Case.
 	/// </summary>
 	public DateTime StateUpdated { get; set; }
+
+	public List<TaskModel>? ActiveTasks { get; set; }
 }

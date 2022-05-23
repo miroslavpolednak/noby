@@ -1,7 +1,8 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
-using CaseContracts = DomainServices.CaseService.Contracts;
-using OfferContracts = DomainServices.OfferService.Contracts;
+using _Case = DomainServices.CaseService.Contracts;
+using _Offer = DomainServices.OfferService.Contracts;
+using _Prod = DomainServices.ProductService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail.Services;
 
@@ -10,6 +11,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
     private CIS.Core.Data.IConnectionProvider<IKonsdbDapperConnectionProvider> _connectionProvider;
 
     public SalesArrangementDataMortgage(
@@ -47,16 +49,26 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         return model;
     }
 
+    /*async Task<Dto.MortgageDetailDto> getDataFromProductService(long caseId, CancellationToken cancellationToken)
+    {
+        var data = ServiceCallResult.ResolveAndThrowIfError<_Prod.GetMortgageResponse>(await _productService.GetMortgage(caseId, cancellationToken));
+        return new Dto.MortgageDetailDto
+        {
+            ContractNumber = data.Mortgage.ContractNumber,
+            DateOfDrawing = data.Mortgage.DrawingMaxOn
+        };
+    }*/
+
     async Task<Dto.MortgageDetailDto> getDataInternal(long caseId, int? offerId, CancellationToken cancellationToken)
     {
         if (!offerId.HasValue)
             throw new CisArgumentNullException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{caseId}", nameof(offerId));
         
         // instance Case
-        var saCase = ServiceCallResult.ResolveAndThrowIfError<CaseContracts.Case>(await _caseService.GetCaseDetail(caseId, cancellationToken));
+        var saCase = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(caseId, cancellationToken));
         
         // get mortgage data
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<OfferContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellationToken));
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.Inputs.LoanKindId)?.Name ?? "-";
         
@@ -77,7 +89,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 	A.CisloSmlouvy 'ContractNumber',
 	B.Text 'ProductName',
 	A.VyseUveru 'LoanAmount',
-	A.RadnaSazba 'InterestRate',
+	A.RadnaSazba 'LoanInterestRate',
 	A.DatumUzavreniSmlouvy 'ContractStartDate',
 	A.DatumFixaceUrokoveSazby 'FixationDate',
 	A.ZustatekCelkem 'AccountBalance',
@@ -85,7 +97,14 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 	A.DatumKonceCerpani 'DateOfDrawing',
 	A.MesicniSplatka 'MonthlyPayment',
 	null 'LoanTermsValidFrom',
-	null 'YearlyAccountStatement'
+	null 'YearlyAccountStatement',
+
+    A.Jistina 'Jistina',
+    A.DruhUveru 'DruhUveru',
+    A.DelkaFixaceUrokoveSazby 'DelkaFixaceUrokoveSazby',
+    A.UcelUveru 'UcelUveru',
+    A.DatumPrvniVyplatyZUveru 'DatumPrvniVyplatyZUveru',
+    A.DatumPredpSplatnosti 'DatumPredpSplatnosti'
 FROM dbo.Uver A
 INNER JOIN cis.AkceUveru B ON A.AkceUveruId=B.Id
 WHERE A.Id=@id";

@@ -17,6 +17,8 @@ CREATE TABLE [dbo].[SalesArrangement](
 	[OfferId] [int] NULL,
 	[ResourceProcessId] [uniqueidentifier] NULL,
 	[RiskBusinessCaseId] [varchar](50) NULL,
+    [LoanApplicationAssessmentId] int NULL,
+    [RiskSegment] varchar(50) NULL,
 	[ContractNumber] [varchar](20) NULL,
 	[SalesArrangementTypeId] [int] NOT NULL,
 	[State] [int] NOT NULL,

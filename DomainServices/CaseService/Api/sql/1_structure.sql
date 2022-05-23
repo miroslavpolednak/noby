@@ -23,7 +23,6 @@ CREATE TABLE [dbo].[Case](
     [Cin] [varchar](10) NULL,
     [ContractNumber] [varchar](20) NULL,
     [TargetAmount] decimal(12,2) NULL,
-    [IsActionRequired] [bit] NOT NULL,
     [ProductTypeId] [int] NOT NULL,
     [State] [int] NOT NULL,
     [StateUpdateTime] [datetime] NOT NULL,
@@ -46,7 +45,30 @@ CREATE TABLE [dbo].[Case](
     )
 GO
 
-ALTER TABLE [dbo].[Case] ADD  CONSTRAINT [DF_Case_ActionRequired]  DEFAULT ((0)) FOR [IsActionRequired]
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ActiveTask](
+	[ActiveTaskId] [int] IDENTITY(1,1) NOT NULL,
+	[CaseId] [bigint] NOT NULL,
+	[TaskTypeId] [int] NOT NULL,
+	[TaskId] [int] NOT NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+ CONSTRAINT [PK_ActiveTask] PRIMARY KEY CLUSTERED 
+(
+	[ActiveTaskId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [PRIMARY]
+WITH
+(
+SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[ActiveTaskHistory] )
+)
 GO
 
 

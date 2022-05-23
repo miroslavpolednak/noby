@@ -47,6 +47,16 @@ internal class CreateCaseHandler
             throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.Case), newCaseId);
         }
 
+        // fire notification
+        await _mediator.Publish(new Notifications.CaseStateChangedNotification
+        {
+            CaseId = newCaseId,
+            CaseStateId = defaultCaseState,
+            ClientName = $"{request.Request.Customer?.FirstNameNaturalPerson} {request.Request.Customer?.Name}",
+            ProductTypeId = request.Request.Data.ProductTypeId,
+            CaseOwnerUserId = request.Request.CaseOwnerUserId
+        }, cancellation);
+
         return new CreateCaseResponse() 
         {
             CaseId = newCaseId 
@@ -68,7 +78,7 @@ internal class CreateCaseHandler
         {
             SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
             SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "Unable to get CaseId from SB", 13004),
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors.First().Message, err.Errors.First().Key),
+            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
             _ => throw new NotImplementedException()
         };
 
@@ -76,10 +86,11 @@ internal class CreateCaseHandler
         result switch
         {
             SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new CisNotFoundException(13017, $"User not found: {err.Errors.First().Message}"),
+            ErrorServiceCallResult err => throw new CisNotFoundException(13017, $"User not found: {err.Errors[0].Message}"),
             _ => throw new NotImplementedException()
         };
 
+    private readonly IMediator _mediator;
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<CreateCaseHandler> _logger;
@@ -88,6 +99,7 @@ internal class CreateCaseHandler
     private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
 
     public CreateCaseHandler(
+        IMediator mediator,
         CIS.Core.IDateTime dateTime,
         UserService.Abstraction.IUserServiceAbstraction userService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
@@ -95,6 +107,7 @@ internal class CreateCaseHandler
         Repositories.CaseServiceRepository repository,
         ILogger<CreateCaseHandler> logger)
     {
+        _mediator = mediator;
         _dateTime = dateTime;
         _userService = userService;
         _easClient = easClient;

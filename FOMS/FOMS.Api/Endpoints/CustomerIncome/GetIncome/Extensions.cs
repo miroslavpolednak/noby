@@ -7,9 +7,9 @@ internal static class Extensions
     public static Dto.IncomeDataEmployement ToApiResponse(this _SA.IncomeDataEmployement contract)
         => new Dto.IncomeDataEmployement
         {
-            AbroadIncomeTypeId = contract.AbroadIncomeTypeId,
+            ForeignIncomeTypeId = contract.ForeignIncomeTypeId,
             IsDomicile = contract.IsDomicile,
-            IsAbroadIncome = contract.IsAbroadIncome,
+            IsForeignIncome = contract.IsForeignIncome,
             Employer = contract.Employer?.ToApiResponse(),
             IncomeConfirmation = contract.IncomeConfirmation?.ToApiResponse(),
             Job = contract.Job?.ToApiResponse(),

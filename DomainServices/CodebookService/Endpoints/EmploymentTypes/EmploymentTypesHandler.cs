@@ -6,10 +6,10 @@ namespace DomainServices.CodebookService.Endpoints.EmploymentTypes;
 public class EmploymentTypesHandler
     : IRequestHandler<EmploymentTypesRequest, List<GenericCodebookItem>>
 {
-    public async Task<List<GenericCodebookItem>> Handle(EmploymentTypesRequest request, CancellationToken cancellationToken)
+    public Task<List<GenericCodebookItem>> Handle(EmploymentTypesRequest request, CancellationToken cancellationToken)
     {
         // TODO: Redirect to real data source!           
-        return new List<GenericCodebookItem>
+        return Task.FromResult(new List<GenericCodebookItem>
         {
             new GenericCodebookItem() { Id = 1, Name = "pronájem existující" },
             new GenericCodebookItem() { Id = 2, Name = "pronájem budoucí" },
@@ -17,7 +17,7 @@ public class EmploymentTypesHandler
             new GenericCodebookItem() { Id = 4, Name = "prac.poměr - doba neurčitá" },
             new GenericCodebookItem() { Id = 5, Name = "prac.poměr - dpp" },
             new GenericCodebookItem() { Id = 6, Name = "prac.poměr - dpc" },
-        };
+        });
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

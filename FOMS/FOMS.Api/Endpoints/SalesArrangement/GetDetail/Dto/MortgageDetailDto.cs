@@ -63,4 +63,12 @@ public class MortgageDetailDto
     /// Rocni vypis z uctu
     /// </summary>
     public bool YearlyAccountStatement { get; set; }
+
+    //TODO tohle musi nekdo prelozit
+    public int? Jistina { get; set; }
+    public int? DruhUveru { get; set; }
+    public int? DelkaFixaceUrokoveSazby { get; set; }
+    public string? UcelUveru { get; set; }
+    public DateTime? DatumPrvniVyplatyZUveru { get; set; }
+    public DateTime? DatumPredpSplatnosti { get; set; }
 }

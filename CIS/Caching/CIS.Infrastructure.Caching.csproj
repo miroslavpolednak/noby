@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\CIS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

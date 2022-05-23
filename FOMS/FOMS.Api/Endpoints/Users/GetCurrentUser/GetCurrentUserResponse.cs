@@ -14,12 +14,6 @@ public class GetCurrentUserResponse
     public string Name { get; set; } = null!;
 
     /// <summary>
-    /// Login
-    /// </summary>
-    /// <example>990614w</example>
-    public string? Username { get; set; }
-
-    /// <summary>
     /// CPM uzivatele
     /// </summary>
     /// <example>99800001</example>

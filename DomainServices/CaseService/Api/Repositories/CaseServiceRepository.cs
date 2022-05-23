@@ -20,6 +20,13 @@ internal class CaseServiceRepository
         await getCaseEntity(caseId, cancellation);
     }
 
+    public async Task DeleteCase(long caseId, CancellationToken cancellation)
+    {
+        var entity = await getCaseEntity(caseId, cancellation);
+        _dbContext.Cases.Remove(entity);
+        await _dbContext.SaveChangesAsync(cancellation);
+    }
+
     public async Task CreateCase(Entities.Case entity, CancellationToken cancellation)
     {
         _dbContext.Cases.Add(entity);
@@ -73,6 +80,27 @@ internal class CaseServiceRepository
             .AsNoTracking()
             .Select(CaseServiceRepositoryExpressions.CaseDetail()
         ).ToListAsync(cancellation);
+
+        // get active tasks - nejde delat pres EF kvuli Grpc kolekci
+        var caseIds = data.Select(t => t.CaseId).ToArray();
+        var tasksCollection = await _dbContext.ActiveTasks
+            .Where(t => caseIds.Contains(t.CaseId))
+            .AsNoTracking()
+            .Select(t => new
+            {
+                CaseId = t.CaseId,
+                TaskId = t.TaskId,
+                TaskTypeId = t.TaskTypeId
+            })
+            .ToListAsync(cancellation);
+
+        // rozsekat na jednotlive cases
+        data.ForEach(t => t.ActiveTasks.AddRange(
+            tasksCollection
+                .Where(x => x.CaseId == t.CaseId)
+                .Select(x => new Contracts.ActiveTask { TaskId = x.TaskId, TaskTypeId = x.TaskTypeId })
+                .ToList()
+        ));
 
         return (recordsTotalSize, data);
     }

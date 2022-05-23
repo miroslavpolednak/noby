@@ -2,6 +2,8 @@
 package DomainServices.UserService;
 option csharp_namespace = "DomainServices.UserService.Contracts";
 
+import "UserIdentity.proto";
+
 message GetUserByLoginRequest {
    string Login = 1;
 }
@@ -11,11 +13,12 @@ message GetUserRequest {
 }
 
 message User {
-	string Login = 1;
+	int32 Id = 1;
 	string CPM = 2;
 	string ICP = 3;
-	int32 Id = 4;
-	string FullName = 5;
-	string Phone = 6;
-	string Email = 7;
+	string FullName = 4;
+	string Phone = 5;
+	string Email = 6;
+
+	repeated cis.types.UserIdentity UserIdentifiers = 7;
 }

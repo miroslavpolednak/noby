@@ -28,6 +28,20 @@ internal sealed class DiscoveryService : IDiscoveryServiceAbstraction
             ?? throw new CIS.Core.Exceptions.CisNotFoundException(0, $"Service {serviceName}:{serviceType} not found");
     }
 
+    public string GetServiceUrlSynchronously(ServiceName serviceName, Contracts.ServiceTypes serviceType)
+    {
+        var serviceFromCache = ServicesMemoryCache.GetServiceFromCache(getEnvName(), serviceName, serviceType);
+        if (serviceFromCache is null)
+        {
+            var url = GetService(serviceName, serviceType).GetAwaiter().GetResult()?.ServiceUrl;
+            if (string.IsNullOrEmpty(url))
+                throw new CIS.Core.Exceptions.CisNotFoundException(0, $"Service Discovery can not find {serviceName}{serviceType} service URL");
+            return url;
+        }
+        else
+            return serviceFromCache.ServiceUrl;
+    }
+
     private readonly ServicesMemoryCache _cache;
     private readonly ILogger<DiscoveryService> _logger;
     private readonly EnvironmentNameProvider _envName;

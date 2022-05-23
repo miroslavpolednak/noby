@@ -49,8 +49,8 @@ message IncomeConfirmationData {
 }
 
 message IncomeDataEmployement {
-    bool IsAbroadIncome = 1;
-    google.protobuf.Int32Value AbroadIncomeTypeId = 2;
+    bool IsForeignIncome = 1;
+    google.protobuf.Int32Value ForeignIncomeTypeId = 2;
     bool IsDomicile = 3;
     DomainServices.SalesArrangementService.EmployerData Employer = 4;
     DomainServices.SalesArrangementService.JobData Job = 5;

@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Results;
 using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.gRPC.CisTypes;
 using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api;
@@ -9,19 +10,20 @@ internal static class CMExtension
     public static string? ToCMstring(this string value)
         => string.IsNullOrEmpty(value) ? null : value;
 
-    public static CIS.Infrastructure.gRPC.CisTypes.Identity ToIdentity(this long customerId)
+    public static Identity ToIdentity(this long customerId)
         => new()
         {
             IdentityId = (int)customerId,
-            IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
+            IdentityScheme = Identity.Types.IdentitySchemes.Kb
         };
 
-    public static Contracts.Address ToAddress(this CustomerManagement.CMWrapper.Address model, CustomerManagement.CMWrapper.ComponentAddress componentAddress, CIS.Foms.Enums.AddressTypes addressType, bool isPrimary, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries)
+    public static GrpcAddress ToAddress(this CustomerManagement.CMWrapper.Address model, CustomerManagement.CMWrapper.ComponentAddress componentAddress, CIS.Foms.Enums.AddressTypes addressType, bool isPrimary, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries)
         => new ()
         {
             AddressTypeId = (int)addressType,
             BuildingIdentificationNumber = componentAddress?.HouseNumber ?? "",
-            LandRegistryNumber = componentAddress?.EvidenceNumber ?? "",
+            LandRegistryNumber = componentAddress?.StreetNumber ?? "",
+            EvidenceNumber = componentAddress?.EvidenceNumber ?? "",
             City = model.City ?? "",
             IsPrimary = isPrimary,
             CountryId = countries.FirstOrDefault(t => t.ShortName == model.CountryCode)?.Id,

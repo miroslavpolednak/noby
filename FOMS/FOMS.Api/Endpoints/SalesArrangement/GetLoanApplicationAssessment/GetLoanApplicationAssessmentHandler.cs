@@ -62,12 +62,57 @@ internal class GetLoanApplicationAssessmentHandler
             AssessmentResult = codes[randomNumber1],
             Reasons = new()
             {
-                new Dto.AssessmentReason
+                new()
                 {
-                    Desc = "Úvěrový obchod nelze samoschválit, postupujte dle standardních schvalovacích pravomocí"
+                    Code = "SOLUS",
+                    Level = "ERROR",
+                    Weight = 100,
+                    Target = "R",
+                    Desc = "Negativní záznam v SOLUSu",
+                    Result = "Black"
                 },
-                new Dto.AssessmentReason
+                new()
                 {
+                    Code = "FRAUD",
+                    Level = "WARNING",
+                    Weight = 11,
+                    Target = "R",
+                    Desc = "3x Usvědčený podvodník",
+                    Result = "Black"
+                },
+                new()
+                {
+                    Code = "SOLUS",
+                    Level = "ERROR",
+                    Weight = 200,
+                    Target = "R",
+                    Desc = "Nesplacené závazky",
+                    Result = "Black"
+                },
+                new()
+                {
+                    Code = "FRAUD",
+                    Level = "WARNING",
+                    Weight = 1,
+                    Target = "R",
+                    Desc = "Podvody u mobilních operátorů",
+                    Result = "Black"
+                },
+                new()
+                {
+                    Code = "ID",
+                    Level = "PROBLEM",
+                    Weight = 1,
+                    Target = "R",
+                    Desc = "Prošlé doklady",
+                    Result = "Black"
+                },
+                new()
+                {
+                    Code = "SOLUS",
+                    Level = "INFO",
+                    Weight = 100,
+                    Target = "R",
                     Desc = "Negativní záznam v SOLUSu",
                     Result = "Black"
                 }

@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package cis.types;
+option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
+
+// Jednoznacna identifikace uzivatele
+message UserIdentity {
+	// login uzivatele
+	string identity = 1;
+
+	enum UserIdentitySchemes {
+		Unknown = 0;
+		KbUId = 4;
+		M04Id = 5;
+		M17Id = 6;
+		BrokerId = 7;
+		Mpad = 8;
+	}
+
+	UserIdentitySchemes identityScheme = 2;
+}

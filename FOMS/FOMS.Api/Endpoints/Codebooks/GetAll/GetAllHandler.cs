@@ -40,7 +40,7 @@ internal class GetAllHandler
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
             "incomemaintypes" => new(original, await _codebooks.IncomeMainTypes(cancellationToken)),
-            "incomeroreigntypes" => new(original, await _codebooks.IncomeForeignTypes(cancellationToken)),
+            "incomeforeigntypes" => new(original, await _codebooks.IncomeForeignTypes(cancellationToken)),
             "jobtypes" => new(original, await _codebooks.JobTypes(cancellationToken)),
             "legalcapacities" => new(original, await _codebooks.LegalCapacities(cancellationToken)),
             "loanpurposes" => new(original, await _codebooks.LoanPurposes(cancellationToken)),
@@ -57,6 +57,9 @@ internal class GetAllHandler
             "signaturetypes" => new(original, (await _codebooks.SignatureTypes(cancellationToken)).Where(t => t.Id > 0).ToList()),
             "realestatetypes" => new(original, await _codebooks.RealEstateTypes(cancellationToken)),
             "realestatepurchasetypes" => new(original, await _codebooks.RealEstatePurchaseTypes(cancellationToken)),
+            "workflowtaskcategories" => new(original, await _codebooks.WorkflowTaskCategories(cancellationToken)),
+            "workflowtaskstates" => new(original, await _codebooks.WorkflowTaskStates(cancellationToken)),
+            "workflowtasktypes" => new(original, await _codebooks.WorkflowTaskTypes(cancellationToken)),
             "worksectors" => new(original, await _codebooks.WorkSectors(cancellationToken)),
 
             //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!

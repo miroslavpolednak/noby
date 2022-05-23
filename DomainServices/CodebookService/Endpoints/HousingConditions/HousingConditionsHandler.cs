@@ -7,10 +7,10 @@ namespace DomainServices.CodebookService.Endpoints.HousingConditions;
 public class HousingConditionsHandler
     : IRequestHandler<HousingConditionsRequest, List<HousingConditionItem>>
 {
-    public async Task<List<HousingConditionItem>> Handle(HousingConditionsRequest request, CancellationToken cancellationToken)
+    public Task<List<HousingConditionItem>> Handle(HousingConditionsRequest request, CancellationToken cancellationToken)
     {
         // TODO: Redirect to real data source!     
-        return new List<HousingConditionItem>
+        return Task.FromResult(new List<HousingConditionItem>
         {
             new HousingConditionItem() { Id = 1, Name = "6 - vlastník domu", Code = "OW", IsValid = true },
             new HousingConditionItem() { Id = 2, Name = "5 - vlastník bytu", Code = "OW", IsValid = true },
@@ -19,7 +19,7 @@ public class HousingConditionsHandler
             new HousingConditionItem() { Id = 5, Name = "4 - ostatní", Code = "OT", IsValid = true },
             new HousingConditionItem() { Id = 6, Name = "7 - vlastník domu/bytu", Code = "OW", IsValid = true },
             new HousingConditionItem() { Id = 8, Name = "8 - bydlení u rodičů", Code = "PA", IsValid = true },
-        };
+        });
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

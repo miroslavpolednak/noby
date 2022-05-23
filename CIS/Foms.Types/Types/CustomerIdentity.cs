@@ -3,7 +3,7 @@ using CIS.Foms.Enums;
 
 namespace CIS.Foms.Types;
 
-public class CustomerIdentity
+public sealed class CustomerIdentity
 {
     public int Id { get; init; }
     public IdentitySchemes Scheme { get; init; }

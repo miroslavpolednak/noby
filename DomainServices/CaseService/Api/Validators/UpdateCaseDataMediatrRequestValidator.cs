@@ -2,7 +2,8 @@
 
 namespace DomainServices.CaseService.Api.Validators;
 
-internal class UpdateCaseDataMediatrRequestValidator : AbstractValidator<Dto.UpdateCaseDataMediatrRequest>
+internal class UpdateCaseDataMediatrRequestValidator 
+    : AbstractValidator<Dto.UpdateCaseDataMediatrRequest>
 {
     public UpdateCaseDataMediatrRequestValidator()
     {

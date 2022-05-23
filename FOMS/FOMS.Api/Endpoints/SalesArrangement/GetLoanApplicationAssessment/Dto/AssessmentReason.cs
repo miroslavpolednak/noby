@@ -2,6 +2,10 @@
 
 public class AssessmentReason
 {
+    public string Code { get; set; }
+    public string Level { get; set; }
+    public int Weight { get; set; }
+    public string Target { get; set; }
     public string Desc { get; set; }
     public string Result { get; set; }
 }

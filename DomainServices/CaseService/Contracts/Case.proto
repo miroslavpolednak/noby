@@ -20,9 +20,6 @@ message Case {
 	// Cas posledni zmeny stavu Case
 	cis.types.GrpcDateTime StateUpdatedOn = 4;
 	
-	// Indikace zda je na Case nejaka nevyresena udalost
-	bool ActionRequired = 5;
-
 	// Hlavni klient Case
 	CustomerData Customer = 6;
 
@@ -31,4 +28,13 @@ message Case {
 
 	// Uzivatel, ktery Case vytvoril
 	cis.types.ModificationStamp Created = 8;
+
+	// Aktivni tasky workflow na danem Case
+	repeated ActiveTask ActiveTasks = 9;
+}
+
+message ActiveTask {
+	int32 TaskTypeId = 1;
+
+	int32 TaskId = 2;
 }

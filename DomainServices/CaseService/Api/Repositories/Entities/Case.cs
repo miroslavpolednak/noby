@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,8 +29,12 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     // byznys data
     public string? ContractNumber { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
     public decimal TargetAmount { get; set; }
-    public bool IsActionRequired { get; set; }
+
+    public List<ActiveTask>? ActiveTasks { get; set; }
 
     /// <summary>
     /// Vytvoreni entity z Create Requestu

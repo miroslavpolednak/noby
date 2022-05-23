@@ -16,13 +16,10 @@ internal class UpdateCaseCustomerHandler
     }
 
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly ILogger<UpdateCaseCustomerHandler> _logger;
-
+    
     public UpdateCaseCustomerHandler(
-        Repositories.CaseServiceRepository repository,
-        ILogger<UpdateCaseCustomerHandler> logger)
+        Repositories.CaseServiceRepository repository)
     {
         _repository = repository;
-        _logger = logger;
     }
 }

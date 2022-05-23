@@ -1,6 +1,9 @@
 ﻿using ExternalServices.Rip.V1.RipWrapper;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
+using CIS.Core;
+using System.ComponentModel.DataAnnotations;
+
 namespace FOMS.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
 internal class GetCreditWorthinessHandler
@@ -16,6 +19,8 @@ internal class GetCreditWorthinessHandler
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
         // offer instance
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(saInstance.OfferId!.Value, cancellationToken));
+        // user instance
+        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
         // seznam domacnosti na SA
         var households = ServiceCallResult.ResolveAndThrowIfError<List<_SA.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
         if (!households.Any())
@@ -28,8 +33,8 @@ internal class GetCreditWorthinessHandler
         ripRequest.ItChannel = "NOBY";
         ripRequest.HumanUser = new HumanUser
         {
-            IdentityScheme = "MPAD",
-            Identity = _userAccessor.User!.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)
+            IdentityScheme = ((CIS.Foms.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
+            Identity = userInstance.UserIdentifiers[0].Identity
         };
         // modelace
         ripRequest.LoanApplicationProduct = new LoanApplicationProduct
@@ -82,7 +87,9 @@ internal class GetCreditWorthinessHandler
             RemainsLivingInst = Convert.ToInt32(ripResult.RemainsLivingInst),
             WorthinessResult = ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
-            ResultReasonDescription = ripResult.ResultReason?.Description
+            ResultReasonDescription = ripResult.ResultReason?.Description,
+            LoanAmount = offerInstance.Inputs.LoanAmount,
+            LoanPaymentAmount = offerInstance.Inputs.LoanPaymentAmount
         };
     }
 
@@ -122,6 +129,7 @@ internal class GetCreditWorthinessHandler
     private readonly ILogger<GetCreditWorthinessHandler> _logger;
     private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
@@ -132,6 +140,7 @@ internal class GetCreditWorthinessHandler
         ILogger<GetCreditWorthinessHandler> logger,
         ExternalServices.Rip.V1.IRipClient ripClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
@@ -139,6 +148,7 @@ internal class GetCreditWorthinessHandler
         DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
     {
         _ripClient = ripClient;
+        _userService = userService;
         _caseService = caseService;
         _userAccessor = userAccessor;
         _offerService = offerService;

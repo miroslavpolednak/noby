@@ -101,11 +101,6 @@
             Slovne nazev stavu Case.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ActionRequired">
-            <summary>
-            Reprezentuje, zda existuje úkol na dealera na casu, který je třeba splnit.
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Dto.CaseModel.ContractNumber">
             <summary>
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
@@ -177,6 +172,9 @@
             - SalesArrangementStates
             - SalesArrangementTypes
             - SignatureTypes
+            - WorkflowTaskCategories
+            - WorkflowTaskStates
+            - WorkflowTaskTypes
             - WorkSectors
             </remarks>
             <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
@@ -1098,12 +1096,6 @@
             Cele jmeno uzivatele
             </summary>
             <example>John Doe</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Username">
-            <summary>
-            Login
-            </summary>
-            <example>990614w</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.CPM">
             <summary>
