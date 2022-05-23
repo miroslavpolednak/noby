@@ -16,7 +16,7 @@ public class CasesController : ControllerBase
     /// <i>DS:</i> CaseService/GetCaseDetail<br/>
     /// https://wiki.kb.cz/confluence/display/HT/getCaseDetail
     /// </remarks>
-    /// <param name="caseId">ID Case-u</param>
+    /// <param name="caseId">ID Case-u.</param>
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
     [Produces("application/json")]
