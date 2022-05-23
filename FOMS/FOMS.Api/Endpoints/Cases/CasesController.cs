@@ -16,7 +16,7 @@ public class CasesController : ControllerBase
     /// <i>DS:</i> CaseService/GetCaseDetail<br/>
     /// https://wiki.kb.cz/confluence/display/HT/getCaseDetail
     /// </remarks>
-    /// <param name="caseId">ID Case-u.</param>
+    /// <param name="caseId">ID Case-u</param>
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
     [Produces("application/json")]
@@ -51,7 +51,6 @@ public class CasesController : ControllerBase
     /// - nastavit razeni [stateUpdated]
     /// <i>DS:</i> CaseService/SearchCases<br/>
     /// https://wiki.kb.cz/confluence/display/HT/searchCases
-    /// - <i>test commit FF</i>
     /// </remarks>
     /// <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
     /// <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
