@@ -21,9 +21,8 @@ public class LoanPurposesHandler
     }
 
     const string _sqlQuery = @"
-SELECT KOD 'Id', TEXT 'Name', 2 'Mandant', CAST(CASE WHEN DATUM_PLATNOSTI_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsValid' 
-FROM SBR.CIS_UCEL_UVERU_INT1
-";
+SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId' , MANDANT 'Mandant', CAST(CASE WHEN DATUM_PLATNOSTI_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsValid' 
+FROM SBR.CIS_UCEL_UVERU_INT1 WHERE MANDANT = 2 ORDER BY KOD";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<LoanPurposesHandler> _logger;
