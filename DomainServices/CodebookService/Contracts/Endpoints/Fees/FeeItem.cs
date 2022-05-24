@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.Fees
 
         [DataMember(Order = 3)]
         [JsonIgnore]
-        public string Mandant { get; set; }
+        public int MandantId { get; set; }
 
         [DataMember(Order = 4)]
         [JsonIgnore]

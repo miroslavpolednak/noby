@@ -11,17 +11,7 @@ public class PaymentDaysHandler
         {
             return await FastMemoryCache.GetOrCreate<PaymentDayItem>(nameof(PaymentDaysHandler), async () =>
             {
-                var items = await _connectionProvider.ExecuteDapperRawSqlToList<PaymentDayItem>(_sqlQuery, cancellationToken);
-
-                var result = items.Select(i => new PaymentDayItem
-                {
-                    PaymentDay = i.PaymentDay,
-                    PaymentAccountDay = i.PaymentAccountDay,
-                    MandantId = i.MandantId,
-                    IsDefault = i.IsDefault,
-                }).ToList();
-
-                return result;
+                return await _connectionProvider.ExecuteDapperRawSqlToList<PaymentDayItem>(_sqlQuery, cancellationToken);
             });
         }
         catch (Exception ex)
