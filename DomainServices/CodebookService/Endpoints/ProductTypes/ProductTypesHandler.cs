@@ -70,7 +70,7 @@ public class ProductTypesHandler
 
     // dotaz na codebook do SB
     const string _sql = @"
-SELECT KOD_PRODUKTU 'Id', NAZOV_PRODUKTU 'Name', null 'Description', MANDANT 'Mandant', null 'ProductCategory', PORADIE_ZOBRAZENIA 'Order', MIN_VYSKA_UV 'LoanAmountMin', MAX_VYSKA_UV 'LoanAmountMax', MIN_SPLATNOST_V_ROKOCH 'LoanDurationMin', MAX_SPLATNOST_V_ROKOCH 'LoanDurationMax', MIN_VYSKA_LTV 'LtvMin', MAX_VYSKA_LTV 'LtvMax', CAST(CASE WHEN PLATNOST_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsActual', DRUH_UV_POVOLENY 'MpHomeApiLoanType', CAST(CASE WHEN GETDATE() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO,'2099-01-01') THEN 1 ELSE 0 END as bit) 'IsValid' 
+SELECT KOD_PRODUKTU 'Id', NAZOV_PRODUKTU 'Name', null 'Description', MANDANT 'MandantId', MANDANT 'Mandant', null 'ProductCategory', PORADIE_ZOBRAZENIA 'Order', MIN_VYSKA_UV 'LoanAmountMin', MAX_VYSKA_UV 'LoanAmountMax', MIN_SPLATNOST_V_ROKOCH 'LoanDurationMin', MAX_SPLATNOST_V_ROKOCH 'LoanDurationMax', MIN_VYSKA_LTV 'LtvMin', MAX_VYSKA_LTV 'LtvMax', CAST(CASE WHEN PLATNOST_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsActual', DRUH_UV_POVOLENY 'MpHomeApiLoanType', CAST(CASE WHEN GETDATE() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO,'2099-01-01') THEN 1 ELSE 0 END as bit) 'IsValid' 
 FROM SBR.CIS_PRODUKTY_UV
 ORDER BY PORADIE_ZOBRAZENIA ASC";
 
