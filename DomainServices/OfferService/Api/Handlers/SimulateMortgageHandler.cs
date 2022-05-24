@@ -45,10 +45,16 @@ internal class SimulateMortgageHandler
 
         // get simulation outputs
         //var result = getEasResult(await _easClient.RunSimulation(inputs));
-        var results = this.GenerateFakeSimulationResults(inputs);
+        //var results = this.GenerateFakeSimulationResults(inputs);
 
-        var easInputs = ToEasInput(inputs);
-        var easSimulation = ResolveRunSimulation(await _easClient.RunSimulation(easInputs));
+
+        var easInputs = inputs.ToEasSimulationInputParameters();
+
+        var easResults = ResolveRunSimulation(await _easClient.RunSimulation(easInputs));
+
+        var results = easResults.ToSimulationResults();
+
+
 
         // save to DB
         var entity = await _repository.SaveOffer(resourceProcessId, basicParameters, inputs, results, cancellation);
@@ -107,53 +113,14 @@ internal class SimulateMortgageHandler
         return results;
     }
 
-    private ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS ToEasInput(SimulationInputs inputs)
-    {
-        return new ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_INPUT_PARAMETERS
-        {
-            
-            
-        };
-    }
 
-    private static object ResolveRunSimulation(IServiceCallResult result) =>
+    private static ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS ResolveRunSimulation(IServiceCallResult result) =>
         result switch
         {
-            SuccessfulServiceCallResult<ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse> r => r.Model,
-            ErrorServiceCallResult r => default(int?), //TODO co se ma v tomhle pripade delat?
+            SuccessfulServiceCallResult<ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS> r => r.Model,
+            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
             _ => throw new NotImplementedException("RunSimulation")
         };
-
-
-
-
-    //static int? resolveCreateEasClient(IServiceCallResult result) =>
-    //    result switch
-    //    {
-    //        SuccessfulServiceCallResult<ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse> r => r.Model.Id,
-    //        ErrorServiceCallResult r => default(int?), //TODO co se ma v tomhle pripade delat?
-    //        _ => throw new NotImplementedException("resolveCreateEasClient")
-    //    };
-
-
-    //private void ResolveAddFirstSignatureDate(IServiceCallResult result)
-    //{
-    //    switch (result)
-    //    {
-    //        case ErrorServiceCallResult err:
-    //            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key);
-    //    }
-    //}
-
-    //private void CheckMpHomeResult(IServiceCallResult result)
-    //{
-    //    switch (result)
-    //    {
-    //        case ErrorServiceCallResult err:
-    //            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key);
-    //    }
-    //}
-
 
 }
 
