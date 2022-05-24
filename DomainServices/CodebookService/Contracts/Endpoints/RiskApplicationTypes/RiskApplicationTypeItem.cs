@@ -9,33 +9,36 @@ public class RiskApplicationTypeItem
     public int Id { get; set; }
 
     [DataMember(Order = 2)]
-    public CIS.Foms.Enums.Mandants Mandant { get; set; }
+    public int MandantId { get; set; }
 
     [DataMember(Order = 3)]
-    public List<int> ProductTypeId { get; set; }
+    public CIS.Foms.Enums.Mandants Mandant { get; set; }
 
     [DataMember(Order = 4)]
-    public int? LoanKindId { get; set; }
+    public List<int> ProductTypeId { get; set; }
 
     [DataMember(Order = 5)]
-    public string Name { get; set; }
+    public int? LoanKindId { get; set; }
 
     [DataMember(Order = 6)]
-    public int? LtvFrom { get; set; }
+    public string Name { get; set; }
 
     [DataMember(Order = 7)]
-    public int? LtvTo { get; set; }
+    public int? LtvFrom { get; set; }
 
     [DataMember(Order = 8)]
-    public string C4mAplCode { get; set; }
+    public int? LtvTo { get; set; }
 
     [DataMember(Order = 9)]
-    public string C4mAplTypeId { get; set; }
+    public string C4mAplCode { get; set; }
 
     [DataMember(Order = 10)]
-    public List<int> MarketingActions { get; set; }
+    public string C4mAplTypeId { get; set; }
 
     [DataMember(Order = 11)]
+    public List<int> MarketingActions { get; set; }
+
+    [DataMember(Order = 12)]
     public bool IsValid { get; set; }
 
     [JsonIgnore]
