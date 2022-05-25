@@ -2,6 +2,7 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "NullableGrpcDate.proto";
 
 message SalesArrangementParametersMortgage {
@@ -10,6 +11,7 @@ message SalesArrangementParametersMortgage {
 	string ResidencyCurrencyCode = 3;
 	int32 SignatureTypeId = 4;
 	repeated LoanRealEstate LoanRealEstates = 5;
+	google.protobuf.Int32Value Agent = 6;
 
 	message LoanRealEstate {
 		int32 RealEstateTypeId = 1;

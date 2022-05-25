@@ -6,7 +6,7 @@ namespace FOMS.Api.Endpoints.CustomerIncome.GetIncome;
 internal class GetIncomeHandler
     : IRequestHandler<GetIncomeRequest, GetIncomeResponse>
 {
-    public async Task<GetIncomeResponse?> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
+    public async Task<GetIncomeResponse> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
         var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 

@@ -2,6 +2,8 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "NullableGrpcDecimal.proto";
+import "NullableGrpcDate.proto";
 import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
 import "SalesArrangementParameters.proto";
@@ -34,6 +36,12 @@ message SalesArrangement {
 	google.protobuf.Int32Value LoanApplicationAssessmentId = 11;
 
 	string RiskSegment = 12;
+
+	cis.types.NullableGrpcDate OfferGuaranteeDateFrom = 13;
+
+	cis.types.NullableGrpcDate OfferGuaranteeDateTo = 14;
+
+	cis.types.NullableGrpcDecimal LoanToCost = 15;
 
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 20;

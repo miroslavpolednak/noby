@@ -30,4 +30,10 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public int? LoanApplicationAssessmentId { get; set; }
     
     public string? RiskSegment { get; set; }
+
+    public DateTime? OfferGuaranteeDateFrom { get; set; }
+
+    public DateTime? OfferGuaranteeDateTo { get; set; }
+
+    public decimal? LoanToCost { get; set; }
 }

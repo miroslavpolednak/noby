@@ -29,7 +29,7 @@ internal class CustomerOnSAServiceRepository
         return model;
     }
 
-    public async Task DeleteCustomer(int customerOnSAId, CancellationToken cancellation)
+    public async Task<int> DeleteCustomer(int customerOnSAId, CancellationToken cancellation)
     {
         var entity = await _dbContext.Customers
             .Where(t => t.CustomerOnSAId == customerOnSAId)
@@ -40,6 +40,8 @@ internal class CustomerOnSAServiceRepository
         await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={customerOnSAId}", cancellation);
         
         await _dbContext.SaveChangesAsync(cancellation);
+
+        return entity.SalesArrangementId;
     }
     
     private readonly SalesArrangementServiceDbContext _dbContext;

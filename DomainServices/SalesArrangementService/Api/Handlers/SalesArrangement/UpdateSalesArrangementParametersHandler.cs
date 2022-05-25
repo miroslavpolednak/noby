@@ -12,6 +12,16 @@ internal class UpdateSalesArrangementParametersHandler
         if (!await _dbContext.SalesArrangements.AnyAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation))
             throw new CisNotFoundException(16000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
 
+        // kontrolovat pokud je zmocnenec, tak zda existuje?
+        if (request.Request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage)
+        {
+            if (request.Request.Mortgage.Agent.HasValue)
+            {
+                if (!_dbContext.Customers.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId && t.CustomerOnSAId == request.Request.Mortgage.Agent))
+                    throw new CisNotFoundException(16000, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
+            }
+        }
+
         // instance parametru, pokud existuje
         var entity = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation);
         if (entity is null)
@@ -33,18 +43,15 @@ internal class UpdateSalesArrangementParametersHandler
     static string? serializeParameters(Contracts.UpdateSalesArrangementParametersRequest request)
         => request.DataCase switch
         {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : JsonSerializer.Serialize(request.Mortgage, options: GrpcHelpers.GrpcJsonSerializerOptions),
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : JsonSerializer.Serialize(request.Mortgage),
             _ => throw new NotImplementedException()
         };
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<UpdateSalesArrangementParametersHandler> _logger;
-
+    
     public UpdateSalesArrangementParametersHandler(
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<UpdateSalesArrangementParametersHandler> logger)
+        Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-        _logger = logger;
     }
 }
