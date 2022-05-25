@@ -37,9 +37,9 @@ public class WorkflowTaskTypesHandler
         public int CategoryId { get; set; }
     }
 
-    const string _sqlQuery = @"SELECT TYP_UKOLU 'Id', NAZEV_UKOLU 'Name' FROM [SBR].[CIS_WFL_UKOLY] ORDER BY TYP_UKOLU ASC";
+    const string _sqlQuery = @"SELECT UKOL_TYP 'Id', UKOL_NAZOV 'Name' FROM [SBR].[CIS_WFL_UKOLY] ORDER BY UKOL_TYP ASC";
     const string _sqlQueryExtension = "SELECT [WorkflowTaskTypeId], [CategoryId] FROM WorkflowTaskTypeExtension";
-
+    
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<WorkflowTaskTypesHandler> _logger;
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
