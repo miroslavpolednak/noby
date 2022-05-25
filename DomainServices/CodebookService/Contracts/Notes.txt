@@ -31,7 +31,7 @@ FormType							-
 * Gender							Genders
 * HouseholdType						-
 * IdentificationDocumentType		IdentificationDocumentTypes [mock]
-* IdentityScheme					- ? (v kódu se používá enum, není však jako číselník) přidat jako číselník
+* IdentityScheme					IdentitySchemes
 IncomeAbroadType					IncomeAbroadTypes !!! přejmenováno na IncomeForeignTypes
 IncomeForeignType                   IncomeForeignTypes
 IncomeType  						IncomeTypes [mock] !!! přejmenováno na IncomeMainTypes
@@ -70,6 +70,7 @@ ProofType                           ProofTypes
 IncomeOtherType                     IncomeOtherTypes
 CollateralType                      CollateralTypes
 * RepaymentScheduleType             RepaymentScheduleTypes [mock]
+RiskApplicationType                 RiskApplicationTypes
 
 WorkflowTaskState                   WorkflowTaskStates
 WorkflowTaskType                    WorkflowTaskTypes
@@ -79,6 +80,8 @@ PaymentDay                          PaymentDays
 DeveloperProject                    DeveloperProjects
 Developer                           Developers
 
+MarketingAction                     MarketingActions
+StatementType                       StatementTypes
 -----------------------------------------------------------------------------------------------------------------
 
 -									MktActionCodesSavings   
@@ -96,3 +99,19 @@ SELECT Id, NazevStatniPrislusnost 'Name' FROM [cis].[Zeme] WHERE Id>0 ORDER BY N
                 new() { Id = 24, Name = "24 - občan 3. státu bez trvalého pobytu na území ČR" }
 -----------------------------------------------------------------------------------------------------------------
 MktActionCodesSavings, Nationalities, ResidencyTypes
+
+
+-----------------------------------------------------------------------------------------------------------------
+Codebooks with MandantId:
+-----------------------------------------------------------------------------------------------------------------
+RiskApplicationType (CIS_APL_TYPE)
+ProductType (CIS_PRODUKTY_UV)
+LoanPurpose (Účel úvěru - CIS_UCEL_UVERU_INT1)
+LoanKind (Druh úvěru - CIS_DRUH_UVERU)
+PaymentDay (CIS_DEN_SPLACENI)
+IdentityScheme
+Channel - MOCK (CIS_ALT_KANALY)
+Fee (CIS_POPLATKY_UV_DEF)
+CollateralType (CIS_VAHY_ZABEZPECENI)
+MarketingAction (CIS_MA_AKCIE)
+FixedRatePeriod (CIS_PERIODY_FIXACE_V)
