@@ -12,9 +12,12 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
-        public CIS.Foms.Enums.Mandants Mandant { get; set; }
+        public int MandantId { get; set; }
 
         [DataMember(Order = 4)]
+        public CIS.Foms.Enums.Mandants Mandant { get; set; }
+
+        [DataMember(Order = 5)]
         [JsonIgnore]
         public bool IsValid { get; set; }
     }

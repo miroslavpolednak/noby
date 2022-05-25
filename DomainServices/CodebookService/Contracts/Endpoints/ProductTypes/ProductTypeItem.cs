@@ -17,49 +17,52 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         public string Description { get; set; }
 
         [DataMember(Order = 4)]
+        public int MandantId { get; set; }
+
+        [DataMember(Order = 5)]
         [DefaultValue(CIS.Foms.Enums.Mandants.Unknown)]
         public CIS.Foms.Enums.Mandants Mandant { get; set; }
 
         [JsonIgnore]
-        [DataMember(Order = 5)]
+        [DataMember(Order = 6)]
         [DefaultValue(ProductTypeCategory.Unknown)]
         public ProductTypeCategory ProductCategory { get; set; }
 
         [JsonIgnore]
-        [DataMember(Order = 6)]
+        [DataMember(Order = 7)]
         public int Order { get; set; }
 
-        [DataMember(Order = 7)]
+        [DataMember(Order = 8)]
         public int? LoanAmountMin { get; set; }
 
-        [DataMember(Order = 8)]
+        [DataMember(Order = 9)]
         public int? LoanAmountMax { get; set; }
 
-        [DataMember(Order = 9)]
+        [DataMember(Order = 10)]
         public int? LoanDurationMin { get; set; }
 
-        [DataMember(Order = 10)]
+        [DataMember(Order = 11)]
         public int? LoanDurationMax { get; set; }
 
-        [DataMember(Order = 11)]
+        [DataMember(Order = 12)]
         public int? LtvMin { get; set; }
 
-        [DataMember(Order = 12)]
+        [DataMember(Order = 13)]
         public int? LtvMax { get; set; }
 
         [JsonIgnore]
-        [DataMember(Order = 13)]
+        [DataMember(Order = 14)]
         public string MpHomeApiLoanType { get; set; }
 
-        [DataMember(Order = 14)]
+        [DataMember(Order = 15)]
         public List<Contracts.Endpoints.LoanKinds.LoanKindsItem> LoanKinds { get; set; }
         
         [JsonIgnore]
-        [DataMember(Order = 15)]
+        [DataMember(Order = 16)]
         public bool IsValid { get; set; }
 
         [JsonIgnore]
-        [DataMember(Order = 16)]
+        [DataMember(Order = 17)]
         public int? KonsDbLoanType { get; set; }
     }
 }

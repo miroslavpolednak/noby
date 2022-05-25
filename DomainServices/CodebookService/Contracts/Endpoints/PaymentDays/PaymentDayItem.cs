@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.PaymentDays
 
         [DataMember(Order = 3)]
         [JsonIgnore]
-        public string Mandant { get; set; }
+        public int MandantId { get; set; }
 
         [DataMember(Order = 4)]
         public bool IsDefault { get; set; }

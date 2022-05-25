@@ -23,12 +23,12 @@ namespace DomainServices.CodebookService.Endpoints.Channels
             // TODO: Redirect to real data source!     
             return Task.FromResult(new List<ChannelItem>
             {
-                new ChannelItem() { Id = 1, Mandant = 1, Name = "Interní síť MP", Code = null, IsValid = true },
-                new ChannelItem() { Id = 2, Mandant = 1, Name = "Hypocentrum MP", Code = null, IsValid = true },
-                new ChannelItem() { Id = 3, Mandant = 1, Name = "Agentury MP", Code = null, IsValid = true },
-                new ChannelItem() { Id = 4, Mandant = 2, Name = "Interní síť KB", Code = "BR", IsValid = true },
-                new ChannelItem() { Id = 6, Mandant = 2, Name = "Agentury KB", Code = "MC", IsValid = true },
-                new ChannelItem() { Id = 10, Mandant = 1, Name = "POS MP", Code = null, IsValid = true },
+                new ChannelItem() { Id = 1, MandantId = 1, Mandant = 1, Name = "Interní síť MP", Code = null, IsValid = true },
+                new ChannelItem() { Id = 2, MandantId = 1 , Mandant = 1, Name = "Hypocentrum MP", Code = null, IsValid = true },
+                new ChannelItem() { Id = 3, MandantId = 1 , Mandant = 1, Name = "Agentury MP", Code = null, IsValid = true },
+                new ChannelItem() { Id = 4, MandantId = 2 , Mandant = 2, Name = "Interní síť KB", Code = "BR", IsValid = true },
+                new ChannelItem() { Id = 6, MandantId = 2 , Mandant = 2, Name = "Agentury KB", Code = "MC", IsValid = true },
+                new ChannelItem() { Id = 10, MandantId = 1 , Mandant = 1, Name = "POS MP", Code = null, IsValid = true },
             });
         }
 

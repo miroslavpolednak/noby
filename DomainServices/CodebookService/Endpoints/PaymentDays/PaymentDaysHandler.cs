@@ -11,17 +11,7 @@ public class PaymentDaysHandler
         {
             return await FastMemoryCache.GetOrCreate<PaymentDayItem>(nameof(PaymentDaysHandler), async () =>
             {
-                var items = await _connectionProvider.ExecuteDapperRawSqlToList<PaymentDayItemSB>(_sqlQuery, cancellationToken);
-
-                var result = items.Select(i => new PaymentDayItem
-                {
-                    PaymentDay = i.PaymentDay,
-                    PaymentAccountDay = i.PaymentAccountDay,
-                    Mandant = ((CIS.Foms.Enums.Mandants)i.MandantId).ToString(),
-                    IsDefault = i.IsDefault,
-                }).ToList();
-
-                return result;
+                return await _connectionProvider.ExecuteDapperRawSqlToList<PaymentDayItem>(_sqlQuery, cancellationToken);
             });
         }
         catch (Exception ex)
@@ -29,11 +19,6 @@ public class PaymentDaysHandler
             _logger.GeneralException(ex);
             throw;
         }
-    }
-
-    private class PaymentDayItemSB : PaymentDayItem
-    {
-        public int MandantId { get; set; }
     }
 
     const string _sqlQuery = @"SELECT DEN_SPLACENI 'PaymentDay', DEN_ZAPOCTENI_SPLATKY 'PaymentAccountDay', MANDANT 'MandantId', DEF 'IsDefault'
