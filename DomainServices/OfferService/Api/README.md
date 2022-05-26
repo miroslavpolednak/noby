@@ -2,6 +2,7 @@
 
 ## Vygenerování EAS wrapperu
         dotnet-svcutil "d:\...\DomainServices\OfferService\EAS_WS_SB_Services.xml" -o c:/EasWrapper.cs -i -n *,DomainServices.OfferService.Api.Eas.EasWrapper
+        dotnet-svcutil "d:\...\DomainServices\OfferService\EAS_WS_SB_Services.xml" -o c:/EasWrapper.cs -i -n *,DomainServices.OfferService.Api.Eas.EasWrapper
 
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5003 list DomainServices.OfferService.v1.OfferService

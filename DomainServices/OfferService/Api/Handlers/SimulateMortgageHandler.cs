@@ -13,22 +13,28 @@ internal class SimulateMortgageHandler
 
     private readonly ILogger<SimulateMortgageHandler> _logger;
     private readonly Eas.IEasClient _easClient;
+    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
     public SimulateMortgageHandler(
         Repositories.OfferRepository repository,
         ILogger<SimulateMortgageHandler> logger,
         ICodebookServiceAbstraction codebookService,
-        Eas.IEasClient easClient
+        Eas.IEasClient easClient,
+        EasSimulationHT.IEasSimulationHTClient easSimulationHTClient
         ) : base(repository, codebookService)
     {
         _logger = logger;
         _easClient = easClient;
+        _easSimulationHTClient = easSimulationHTClient;
     }
 
     #endregion
 
     public async Task<SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
     {
+        var easSimulationReq = new EasSimulationHT.EasSimulationHTWrapper.SimulationHTRequest { };
+        var easSimulationRes = ResolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
+
         // kontrola ProductTypeId (zda je typu Mortgage)
         await CheckProductTypeCategory(
             request.Request.SimulationInputs.ProductTypeId,
@@ -113,6 +119,13 @@ internal class SimulateMortgageHandler
         return results;
     }
 
+    private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse ResolveRunSimulationHT(IServiceCallResult result) =>
+       result switch
+       {
+           SuccessfulServiceCallResult<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
+           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
+           _ => throw new NotImplementedException("RunSimulationHT")
+       };
 
     private static ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS ResolveRunSimulation(IServiceCallResult result) =>
         result switch
