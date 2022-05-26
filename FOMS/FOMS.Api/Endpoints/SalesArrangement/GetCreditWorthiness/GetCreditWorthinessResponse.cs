@@ -10,8 +10,8 @@ public sealed class GetCreditWorthinessResponse
     public string? ResultReasonCode { get; set; }
     public string? ResultReasonDescription { get; set; }
 
-    public decimal LoanAmount { get; set; }
-    public decimal LoanPaymentAmount { get; set; }
+    public decimal? LoanAmount { get; set; }
+    public decimal? LoanPaymentAmount { get; set; }
     public int DTI { get; set; }
     public int DSTI { get; set; }
 }

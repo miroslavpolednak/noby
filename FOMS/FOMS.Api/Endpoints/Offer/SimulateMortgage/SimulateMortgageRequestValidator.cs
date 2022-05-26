@@ -17,7 +17,7 @@ internal class SimulateMortgageRequestValidator
         RuleFor(t => t.LoanAmount)
             .GreaterThan(0).WithMessage("Částka úvěru = 0");
 
-        RuleFor(t => t.PaymentDayOfTheMonth)
+        RuleFor(t => t.PaymentDay)
             .GreaterThan(0).WithMessage("PaymentDayOfTheMonth = 0");
     }
 }

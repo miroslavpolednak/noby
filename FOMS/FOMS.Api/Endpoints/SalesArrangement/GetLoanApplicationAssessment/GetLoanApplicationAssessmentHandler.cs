@@ -15,7 +15,7 @@ internal class GetLoanApplicationAssessmentHandler
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, "Offer not found for SA");
         // instance Offer
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(saInstance.OfferId!.Value, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
 
         int[] codes = new[] { 501, 502 };
         Random random = new Random();
@@ -26,9 +26,9 @@ internal class GetLoanApplicationAssessmentHandler
             Application = new()
             {
                 LoanApplicationLimit = 9862532,
-                LoanAmount = offerInstance.Outputs.LoanAmount,
+                LoanAmount = offerInstance.SimulationResults.LoanAmount ?? 0,
                 LoanApplicationInstallmentLimit = 26825,
-                LoanPaymentAmount = offerInstance.Outputs.LoanPaymentAmount,
+                LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0,
                 RemainingAnnuityLivingAmount = 8652,
                 MonthlyIncomeAmount = 56200,
                 MonthlyCostsWithoutInstAmount = 13200,

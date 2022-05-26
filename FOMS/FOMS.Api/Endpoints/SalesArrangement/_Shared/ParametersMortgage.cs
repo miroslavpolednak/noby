@@ -14,5 +14,10 @@ public class ParametersMortgage
 	public int SignatureTypeId { get; set; }
 	
 	public List<LoanRealEstateDto>? LoanRealEstates { get; set; }
+
+	/// <summary>
+	/// Zmocnenec - CustomerOnSAId
+	/// </summary>
+	public int? Agent { get; set; }
 }
 

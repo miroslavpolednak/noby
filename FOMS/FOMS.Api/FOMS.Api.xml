@@ -692,7 +692,7 @@
             ID noveho klienta
             </summary>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageInput)">
+        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.SimulationInputs)">
             <summary>
             Vytvoreni requestu pro zalozeni CASE
             </summary>
@@ -846,13 +846,13 @@
             </summary>
             <example>300000</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.PaymentDayOfTheMonth">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.PaymentDay">
             <summary>
             Den splátky úvěru
             </summary>
             <example></example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.EmployeeBonusRequested">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.IsEmployeeBonusRequested">
             <summary>
             Je žádáno zaměstnanecké zvýhodnění?
             </summary>
@@ -873,11 +873,6 @@
             Cizí zdroje
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.SimulationToggleSettings">
-            <summary>
-            Nastavení toggle na FE pro počítání LTV. Na zadost FE se tvari jako bool.
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
             <summary>
             Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
@@ -893,7 +888,7 @@
             Výše úvěru
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.PaymentDayOfTheMonth">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.PaymentDay">
             <summary>
             Den splátky úvěru
             </summary>
@@ -1085,6 +1080,11 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SignatureTypeId">
             <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.Agent">
+            <summary>
+            Zmocnenec - CustomerOnSAId
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>

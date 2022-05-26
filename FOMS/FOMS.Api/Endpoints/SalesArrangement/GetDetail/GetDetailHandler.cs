@@ -45,6 +45,7 @@ internal class GetDetailHandler
                 ExpectedDateOfDrawing = saInstance.Mortgage.ExpectedDateOfDrawing,
                 IncomeCurrencyCode = saInstance.Mortgage.IncomeCurrencyCode,
                 ResidencyCurrencyCode = saInstance.Mortgage.ResidencyCurrencyCode,
+                Agent = saInstance.Mortgage.Agent,
                 LoanRealEstates = saInstance.Mortgage.LoanRealEstates is null ? null : saInstance.Mortgage.LoanRealEstates.Select(x => new SalesArrangement.Dto.LoanRealEstateDto
                 {
                     IsCollateral = x.IsCollateral,

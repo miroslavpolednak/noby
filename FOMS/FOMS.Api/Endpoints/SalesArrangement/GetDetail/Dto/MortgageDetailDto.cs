@@ -17,7 +17,7 @@ public class MortgageDetailDto
     /// <summary>
     /// Výše úvěru
     /// </summary>
-    public decimal LoanAmount { get; set; }
+    public decimal? LoanAmount { get; set; }
     
     /// <summary>
     /// Skládačková úroková sazba 
@@ -47,7 +47,7 @@ public class MortgageDetailDto
     /// <summary>
     /// Mesicni splatka
     /// </summary>
-    public decimal MonthlyPayment { get; set; }
+    public decimal? MonthlyPayment { get; set; }
 
     /// <summary>
     /// Datum cerpani

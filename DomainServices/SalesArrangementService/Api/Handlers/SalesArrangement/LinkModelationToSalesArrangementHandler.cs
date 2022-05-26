@@ -20,15 +20,15 @@ internal class LinkModelationToSalesArrangementHandler
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}", 16012);
 
         // validace na existenci offer
-        var offerInstance = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellation))
+        var offerInstance = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(request.OfferId, cancellation))
             ?? throw new CisNotFoundException(16001, $"Offer ID #{request.OfferId} does not exist.");
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Offer {request.OfferId} is already linked to another SA", 16012);
 
-        if (offerInstance.Inputs.LoanKindId == 2001 || 
-            (offerInstance.Inputs.LoanPurpose is not null && offerInstance.Inputs.LoanPurpose.Any(t => t.LoanPurposeId == 201)))
+        if (offerInstance.SimulationInputs.LoanKindId == 2001 || 
+            (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201)))
         {
             var saParameters = (await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation));
             if (!string.IsNullOrEmpty(saParameters?.Parameters))
@@ -43,15 +43,15 @@ internal class LinkModelationToSalesArrangementHandler
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (salesArrangementInstance.OfferId.HasValue)
         {
-            var offerInstanceOld = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(salesArrangementInstance.OfferId.Value, cancellation))
+            var offerInstanceOld = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation))
                 ?? throw new CisNotFoundException(16001, $"Offer ID #{salesArrangementInstance.OfferId} does not exist.");
-            if (offerInstance.Inputs.GuaranteeDateFrom < offerInstanceOld.Inputs.GuaranteeDateFrom)
+            if ((DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
                 throw new CisValidationException(16000, $"Old offer GuaranteeDateFrom > than new GuaranteeDateFrom");
         }
 
         // update linku v DB
-        salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.Inputs.GuaranteeDateFrom;
-        salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.Outputs.OfferGuaranteeDateTo;
+        salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.SimulationInputs.GuaranteeDateFrom;
+        salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.BasicParameters.GuaranteeDateTo;
         salesArrangementInstance.OfferId = request.OfferId;
         salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.ResourceProcessId);
 

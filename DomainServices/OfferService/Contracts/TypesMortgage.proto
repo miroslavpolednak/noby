@@ -46,7 +46,7 @@ message SimulateMortgageResponse {
 message BasicParameters {
 	cis.types.NullableGrpcDecimal FinancialResourcesOwn  = 1;
 	cis.types.NullableGrpcDecimal FinancialResourcesOther  = 2;
-	cis.types.NullableGrpcDate GuranteeDateTo  = 3;
+	cis.types.NullableGrpcDate GuaranteeDateTo = 3;
 }
 
 message SimulationInputs {

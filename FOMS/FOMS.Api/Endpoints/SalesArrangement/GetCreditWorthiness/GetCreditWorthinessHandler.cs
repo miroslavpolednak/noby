@@ -18,7 +18,7 @@ internal class GetCreditWorthinessHandler
         // case instance
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
         // offer instance
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(saInstance.OfferId!.Value, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
         // user instance
         var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
         // seznam domacnosti na SA
@@ -31,21 +31,25 @@ internal class GetCreditWorthinessHandler
         ripRequest.ResourceProcessIdMp = offerInstance.ResourceProcessId;
         ripRequest.RiskBusinessCaseIdMp = saInstance.RiskBusinessCaseId;
         ripRequest.ItChannel = "NOBY";
+#pragma warning disable CA1305 // Specify IFormatProvider
         ripRequest.HumanUser = new HumanUser
         {
             IdentityScheme = ((CIS.Foms.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
             Identity = userInstance.UserIdentifiers[0].Identity
         };
+
         // modelace
         ripRequest.LoanApplicationProduct = new LoanApplicationProduct
         {
             Product = caseInstance.Data.ProductTypeId,
-            Maturity = offerInstance.Outputs.LoanDuration,
-            InterestRate = (double)offerInstance.Outputs.LoanInterestRate,
-            AmountRequired = Convert.ToInt32(offerInstance.Outputs.LoanAmount),
-            Annuity = Convert.ToInt32(offerInstance.Outputs.LoanPaymentAmount),
-            FixationPeriod = offerInstance.Inputs.FixedRatePeriod
+            Maturity = offerInstance.SimulationResults.LoanDuration ?? 0,
+            InterestRate = (double)offerInstance.SimulationResults.LoanInterestRate,
+            AmountRequired = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
+            Annuity = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
+            FixationPeriod = offerInstance.SimulationInputs.FixedRatePeriod
         };
+#pragma warning restore CA1305
+        
         // domacnosti
         ripRequest.Households = new List<LoanApplicationHousehold>();
         foreach (var household in households)
@@ -81,15 +85,15 @@ internal class GetCreditWorthinessHandler
 
         return new GetCreditWorthinessResponse
         {
-            InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit),
-            MaxAmount = Convert.ToInt32(ripResult.MaxAmount),
-            RemainsLivingAnnuity = Convert.ToInt32(ripResult.RemainsLivingAnnuity),
-            RemainsLivingInst = Convert.ToInt32(ripResult.RemainsLivingInst),
+            InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit ?? 0),
+            MaxAmount = Convert.ToInt32(ripResult.MaxAmount ?? 0),
+            RemainsLivingAnnuity = Convert.ToInt32(ripResult.RemainsLivingAnnuity ?? 0),
+            RemainsLivingInst = Convert.ToInt32(ripResult.RemainsLivingInst ?? 0),
             WorthinessResult = ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
-            LoanAmount = offerInstance.Inputs.LoanAmount,
-            LoanPaymentAmount = offerInstance.Inputs.LoanPaymentAmount
+            LoanAmount = offerInstance.SimulationInputs.LoanAmount,
+            LoanPaymentAmount = offerInstance.SimulationInputs.LoanPaymentAmount
         };
     }
 

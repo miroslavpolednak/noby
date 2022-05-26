@@ -3,9 +3,9 @@
 public class LoanApplication
 {
     public int LoanApplicationLimit { get; set; }
-    public decimal LoanAmount { get; set; }
+    public decimal? LoanAmount { get; set; }
     public int LoanApplicationInstallmentLimit { get; set; }
-    public decimal LoanPaymentAmount { get; set; }
+    public decimal? LoanPaymentAmount { get; set; }
     public int RemainingAnnuityLivingAmount { get; set; }
     public int MonthlyIncomeAmount { get; set; }
     public int MonthlyCostsWithoutInstAmount { get; set; }

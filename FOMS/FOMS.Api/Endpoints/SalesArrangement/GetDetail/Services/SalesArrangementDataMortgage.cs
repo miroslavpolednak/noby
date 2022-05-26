@@ -68,18 +68,18 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         var saCase = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(caseId, cancellationToken));
         
         // get mortgage data
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId.Value, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(offerId.Value, cancellationToken));
 
-        var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.Inputs.LoanKindId)?.Name ?? "-";
+        var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
         
         // create response object
         return new Dto.MortgageDetailDto()
         {
-            MonthlyPayment = offerInstance.Inputs.LoanPaymentAmount,
-            LoanKindId = offerInstance.Inputs.LoanKindId,
+            MonthlyPayment = offerInstance.SimulationInputs.LoanPaymentAmount,
+            LoanKindId = offerInstance.SimulationInputs.LoanKindId,
             ContractNumber = saCase.Data.ContractNumber,
-            LoanInterestRate = offerInstance.Outputs.LoanInterestRate,
-            LoanAmount = offerInstance.Outputs.LoanAmount,
+            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+            LoanAmount = offerInstance.SimulationResults.LoanAmount,
             ProductName = loanKindName
         };
     }

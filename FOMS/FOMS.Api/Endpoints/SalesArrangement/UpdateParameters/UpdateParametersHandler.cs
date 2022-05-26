@@ -16,7 +16,8 @@ internal class UpdateParametersHandler
                 SignatureTypeId = request.Parameters?.SignatureTypeId ?? 0,
                 ExpectedDateOfDrawing = request.Parameters?.ExpectedDateOfDrawing,
                 IncomeCurrencyCode = request.Parameters?.IncomeCurrencyCode,
-                ResidencyCurrencyCode = request.Parameters?.ResidencyCurrencyCode
+                ResidencyCurrencyCode = request.Parameters?.ResidencyCurrencyCode,
+                Agent = request.Parameters?.Agent
             }
         };
 
