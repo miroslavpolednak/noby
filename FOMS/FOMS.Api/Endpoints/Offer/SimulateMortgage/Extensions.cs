@@ -1,4 +1,6 @@
-﻿namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
+﻿using DomainServices.OfferService.Contracts;
+
+namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
 internal static class Extensions
 {
@@ -7,7 +9,7 @@ internal static class Extensions
         var model = new DomainServices.OfferService.Contracts.SimulateMortgageRequest()
         {
             ResourceProcessId = request.ResourceProcessId,
-            Inputs = new()
+            SimulationInputs = new()
             {
                 ProductTypeId = request.ProductTypeId,
                 LoanKindId = request.LoanKindId,
@@ -15,23 +17,40 @@ internal static class Extensions
                 LoanDuration = request.LoanDuration,
                 LoanPaymentAmount = request.LoanPaymentAmount,
                 FixedRatePeriod = request.FixedRatePeriod,
-                EmployeeBonusLoanCode = request.EmployeeBonusLoanCode,
                 CollateralAmount = request.CollateralAmount,
                 LoanToValue = request.LoanToValue,
-                PaymentDayOfTheMonth = request.PaymentDayOfTheMonth,
-                EmployeeBonusRequested = request.EmployeeBonusRequested,
+                PaymentDay = request.PaymentDay,
+                IsEmployeeBonusRequested = request.IsEmployeeBonusRequested,
+                ExpectedDateOfDrawing = request.ExpectedDateOfDrawing
+            },
+            BasicParameters = new()
+            {
                 FinancialResourcesOwn = request.FinancialResourcesOwn,
                 FinancialResourcesOther = request.FinancialResourcesOther,
-                ExpectedDateOfDrawing = request.ExpectedDateOfDrawing,
-                SimulationToggleSettings = request.SimulationToggleSettings ? DomainServices.OfferService.Contracts.SimulationToggleSettings.LoanAmount : DomainServices.OfferService.Contracts.SimulationToggleSettings.InvestmentAmount
             }
         };
         
-        if (request.LoanPurpose is not null && request.LoanPurpose.Any())
-            model.Inputs.LoanPurpose.AddRange(
-                request.LoanPurpose.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
+        if (request.LoanPurposes is not null && request.LoanPurposes.Any())
+            model.SimulationInputs.LoanPurposes.AddRange(
+                request.LoanPurposes.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
                 );
 
         return model;
     }
+
+    public static Dto.MortgageOutputs ToApiResponse(this SimulationResults result, SimulationInputs inputs)
+        => new()
+        {
+            Aprc = result.Aprc,
+            EmployeeBonusLoanCode = result.EmployeeBonusLoanCode,
+            InterestRate = result.LoanInterestRate,
+            InterestRateAnnounced = result.LoanInterestRateAnnounced,
+            LoanDuration = result.LoanDuration,
+            LoanTotalAmount = result.LoanTotalAmount,
+            LoanToValue = result.LoanToValue,
+            LoanAmount = result.LoanAmount,
+            LoanPaymentAmount = result.LoanPaymentAmount,
+            LoanPurpose = inputs.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
+            PaymentDay = inputs.PaymentDay
+        };
 }

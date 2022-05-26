@@ -15,21 +15,19 @@ public class MortgageOutputs
     /// <summary>
     /// Výše úvěru
     /// </summary>
-    public decimal LoanAmount { get; set; }
+    public decimal? LoanAmount { get; set; }
     
-    public int LoanDuration { get; set; }
-    public decimal LoanPaymentAmount { get; set; }
+    public int? LoanDuration { get; set; }
+    public decimal? LoanPaymentAmount { get; set; }
     public int? EmployeeBonusLoanCode { get; set; }
     public decimal LoanToValue { get; set; }
-    public decimal LoanToCost { get; set; }
     public decimal Aprc { get; set; }
     public decimal LoanTotalAmount { get; set; }
-    public int StatementTypeId { get; set; }
 
     /// <summary>
     /// Den splátky úvěru
     /// </summary>
-    public int? PaymentDayOfTheMonth { get; set; }
+    public int? PaymentDay { get; set; }
 
     public List<LoanPurposeItem>? LoanPurpose { get; set; }
 }

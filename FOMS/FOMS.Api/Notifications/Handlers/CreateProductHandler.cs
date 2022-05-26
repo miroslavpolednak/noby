@@ -41,7 +41,7 @@ internal class CreateProductHandler
 
     private async Task<long> createMortgage(long caseId, int offerId, int partnerId, CancellationToken cancellationToken)
     {
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(offerId, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(offerId, cancellationToken));
 
         var request = new _Product.CreateMortgageRequest
         {

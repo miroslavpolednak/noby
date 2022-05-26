@@ -83,7 +83,7 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetService<DomainServices.OfferService.Abstraction.IOfferServiceAbstraction>();
 
-var inputData = new SimulateMortgageRequest
+/*var inputData = new SimulateMortgageRequest
 {
     Inputs = new MortgageInput
     {
@@ -95,5 +95,5 @@ var result = await service.SimulateMortgage(inputData);
 
 Console.WriteLine($"{result.Success}");
 Console.WriteLine(((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.OfferService.Contracts.SimulateMortgageResponse>)result).Model.OfferId);
-
+*/
 //System.IO.File.WriteAllBytes("d:/test.pdf", filedata.ToByteArray());

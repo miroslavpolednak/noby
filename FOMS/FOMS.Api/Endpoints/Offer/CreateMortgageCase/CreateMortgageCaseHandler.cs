@@ -14,7 +14,7 @@ internal class CreateMortgageCaseHandler
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
+        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(request.OfferId, cancellationToken));
 
         // chyba pokud simulace je uz nalinkovana na jiny SA
         if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken)))
@@ -22,12 +22,12 @@ internal class CreateMortgageCaseHandler
         
         // get default saTypeId from productTypeId
         int salesArrangementTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .FirstOrDefault(t => t.ProductTypeId == offerInstance.ProductTypeId && t.IsDefault)
-            ?.Id ?? throw new CisNotFoundException(ErrorCodes.OfferDefaultSalesArrangementTypeIdNotFound, $"Default SalesArrangementTypeId for ProductTypeId {offerInstance.ProductTypeId} not found");
+            .FirstOrDefault(t => t.ProductTypeId == offerInstance.SimulationInputs.ProductTypeId && t.IsDefault)
+            ?.Id ?? throw new CisNotFoundException(ErrorCodes.OfferDefaultSalesArrangementTypeIdNotFound, $"Default SalesArrangementTypeId for ProductTypeId {offerInstance.SimulationInputs.ProductTypeId} not found");
 
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);
-        long caseId = ServiceCallResult.ResolveAndThrowIfError<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User.Id, offerInstance.Inputs), cancellationToken));
+        long caseId = ServiceCallResult.ResolveAndThrowIfError<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.SimulationInputs), cancellationToken));
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 
         // vytvorit zadost

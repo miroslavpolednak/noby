@@ -8,7 +8,7 @@ internal class GetMortgageByOfferIdHandler
 {
     public async Task<Dto.GetMortgageResponse> Handle(GetMortgageByOfferIdRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageDataResponse>(await _offerService.GetMortgageData(request.OfferId, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(request.OfferId, cancellationToken));
 
         _logger.RequestHandlerFinished(nameof(GetMortgageByOfferIdHandler));
 
@@ -17,8 +17,8 @@ internal class GetMortgageByOfferIdHandler
         {
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
-            Inputs = result.Inputs.ToApiResponse(),
-            Outputs = result.Outputs.ToApiResponse()
+            Inputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
+            Outputs = result.SimulationResults.ToApiResponse(result.SimulationInputs)
         };
     }
 

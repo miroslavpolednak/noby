@@ -18,7 +18,7 @@ public class MortgageInputs
     /// Výše úvěru
     /// </summary>
     /// <example>1000000</example>
-    public decimal LoanAmount { get; set; }
+    public decimal? LoanAmount { get; set; }
     
     /// <summary>
     /// Splatnost úvěru
@@ -30,15 +30,13 @@ public class MortgageInputs
     /// Splátka úvěru
     /// </summary>
     /// <example>15000</example>
-    public decimal LoanPaymentAmount { get; set; }
+    public decimal? LoanPaymentAmount { get; set; }
     
     /// <summary>
     /// Délka fixace úrokové sazby
     /// </summary>
     /// <example>48</example>
     public int FixedRatePeriod { get; set; }
-    
-    public int? EmployeeBonusLoanCode { get; set; }
     
     /// <summary>
     /// Předpokládáné hodnoty zajištění
@@ -56,12 +54,12 @@ public class MortgageInputs
     /// Den splátky úvěru
     /// </summary>
     /// <example></example>
-    public int? PaymentDayOfTheMonth { get; set; }
+    public int? PaymentDay { get; set; }
 
     /// <summary>
     /// Je žádáno zaměstnanecké zvýhodnění?
     /// </summary>
-    public bool EmployeeBonusRequested { get; set; }
+    public bool? IsEmployeeBonusRequested { get; set; }
 
     /// <summary>
     /// Předpokládané datum čerpání
@@ -79,10 +77,5 @@ public class MortgageInputs
     /// </summary>
     public decimal? FinancialResourcesOther { get; set; }
 
-    /// <summary>
-    /// Nastavení toggle na FE pro počítání LTV. Na zadost FE se tvari jako bool.
-    /// </summary>
-    public bool SimulationToggleSettings { get; set; }
-
-    public List<LoanPurposeItem>? LoanPurpose { get; set; }
+    public List<LoanPurposeItem>? LoanPurposes { get; set; }
 }
