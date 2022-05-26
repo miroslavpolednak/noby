@@ -5,48 +5,54 @@ namespace DomainServices.OfferService.Api;
 
 internal static class MortgageExtensions
 {
-    //TODO: move to custom json deserializer
-
+    // TODO: move to custom json deserializer
 
     /// <summary>
-    /// Parses data from json string to MortgageInput object.
+    /// Parses data from json string to BasicParameters object.
     /// </summary>
-    public static MortgageInput ToMortgageInput(this string inputs)
+    public static BasicParameters ToBasicParameters(this string json)
     {
-        var input = JsonSerializer.Deserialize<MortgageInput>(inputs);
+        var basicParameters = JsonSerializer.Deserialize<BasicParameters>(json)!;
 
-        var jsonLoanPurpose = System.Text.Json.Nodes.JsonNode.Parse(inputs)?["LoanPurpose"];
-
-        if (jsonLoanPurpose != null )
-        {
-            var loanPurposeItems = JsonSerializer.Deserialize<List<LoanPurpose>>(jsonLoanPurpose.ToJsonString());
-            input?.LoanPurpose.AddRange(loanPurposeItems);
-        }
-
-#pragma warning disable CS8603 // Possible null reference return.
-        return input;
-#pragma warning restore CS8603 // Possible null reference return.
+        return basicParameters;
     }
 
-
     /// <summary>
-    /// Parses data from json string to MortgageOutput object.
+    /// Parses data from json string to SimulationInputs object.
     /// </summary>
-    public static MortgageOutput ToMortgageOutput(this string outputs)
+    public static SimulationInputs ToSimulationInputs(this string json)
     {
-        var output = JsonSerializer.Deserialize<MortgageOutput>(outputs);
+        var inputs = JsonSerializer.Deserialize<SimulationInputs>(json);
 
-        var jsonLoanPurpose = System.Text.Json.Nodes.JsonNode.Parse(outputs)?["LoanPurpose"];
+        var jsonLoanPurpose = System.Text.Json.Nodes.JsonNode.Parse(json)?["LoanPurposes"];
 
         if (jsonLoanPurpose != null)
         {
             var loanPurposeItems = JsonSerializer.Deserialize<List<LoanPurpose>>(jsonLoanPurpose.ToJsonString());
-            output?.LoanPurpose.AddRange(loanPurposeItems);
+            inputs?.LoanPurposes.AddRange(loanPurposeItems);
         }
 
-#pragma warning disable CS8603 // Possible null reference return.
-        return output;
-#pragma warning restore CS8603 // Possible null reference return.
+        return inputs!;
+    }
+
+    /// <summary>
+    /// Parses data from json string to BaseSimulationResults object.
+    /// </summary>
+    public static BaseSimulationResults ToBaseSimulationResults(this string json)
+    {
+        var results = JsonSerializer.Deserialize<BaseSimulationResults>(json);
+
+        return results!;
+    }
+
+    /// <summary>
+    /// Parses data from json string to SimulationResults object.
+    /// </summary>
+    public static SimulationResults ToSimulationResults(this string json)
+    {
+        var results = JsonSerializer.Deserialize<SimulationResults>(json);
+
+        return results!;
     }
 
 }

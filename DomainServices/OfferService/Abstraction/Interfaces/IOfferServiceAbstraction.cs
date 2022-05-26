@@ -15,12 +15,20 @@ public interface IOfferServiceAbstraction
     Task<IServiceCallResult> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Detail simulace KB Hypotéky
+    /// Získání základních informací o simulaci KB Hypotéky
     /// </summary>
     /// <returns>
-    /// SuccessfulServiceCallResult[GetMortgageDataResponse] - OK
+    /// SuccessfulServiceCallResult[GetMortgageOfferResponse] - OK
     /// </returns>
-    Task<IServiceCallResult> GetMortgageData(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Získání detailních informací o simulaci KB Hypotéky
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[GetMortgageOfferDetailResponse] - OK
+    /// </returns>
+    Task<IServiceCallResult> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Simulace KB Hypotéky

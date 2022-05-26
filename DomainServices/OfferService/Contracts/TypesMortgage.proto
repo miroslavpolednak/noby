@@ -5,77 +5,178 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
 import "GrpcDecimal.proto";
-import "NullableGrpcDate.proto";
+import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+
+
+message GetMortgageOfferDetailResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	SimulationInputs SimulationInputs = 5;
+	SimulationResults SimulationResults = 6;
+}
+
+message GetMortgageOfferResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	SimulationInputs SimulationInputs = 5;
+	BaseSimulationResults SimulationResults = 6;
+}
 
 message SimulateMortgageRequest {
-   MortgageInput Inputs = 1;
-   string ResourceProcessId = 2;
+	string ResourceProcessId = 1;
+	BasicParameters BasicParameters = 2;
+	SimulationInputs SimulationInputs = 3;
 }
 
 message SimulateMortgageResponse {
-  int32 OfferId = 1;
-  int32 ProductTypeId = 2;
-  string ResourceProcessId = 3;
-  cis.types.ModificationStamp Created = 4;
-  MortgageInput Inputs = 5;
-  MortgageOutput Outputs = 6;
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	SimulationInputs SimulationInputs = 5;
+	SimulationResults SimulationResults = 6;
 }
 
-message GetMortgageDataResponse {
-  int32 OfferId = 1;
-  int32 ProductTypeId = 2;
-  string ResourceProcessId = 3;
-  cis.types.ModificationStamp Created = 4;
-  MortgageInput Inputs = 5;
-  MortgageOutput Outputs = 6;
+message BasicParameters {
+	cis.types.NullableGrpcDecimal FinancialResourcesOwn  = 1;
+	cis.types.NullableGrpcDecimal FinancialResourcesOther  = 2;
+	cis.types.NullableGrpcDate GuranteeDateTo  = 3;
 }
 
-enum SimulationToggleSettings {
-	Unknown = 0;
-	LoanAmount = 1;
-	InvestmentAmount = 2;
+message SimulationInputs {
+	cis.types.NullableGrpcDate ExpectedDateOfDrawing = 1;
+	int32 ProductTypeId = 2;
+	int32 LoanKindId = 3;
+	cis.types.NullableGrpcDecimal LoanAmount = 4;
+	google.protobuf.Int32Value LoanDuration = 5;
+	cis.types.NullableGrpcDecimal LoanPaymentAmount = 6;
+	cis.types.GrpcDate GuaranteeDateFrom = 7;
+	cis.types.GrpcDecimal InterestRateDeviation = 8;
+	int32 FixedRatePeriod = 9;			
+    cis.types.GrpcDecimal CollateralAmount = 10;
+	cis.types.GrpcDecimal LoanToValue = 11;
+	int32 DrawingType = 12; 
+	google.protobuf.Int32Value DrawingDuration = 13;
+	google.protobuf.Int32Value PaymentDay = 14;
+	google.protobuf.BoolValue IsEmployeeBonusRequested = 15;
+	Developer Developer = 16;
+	repeated LoanPurpose LoanPurposes = 17;
+	FeeSettings FeeSettings = 18;
+	InputMarketingAction MarketingActions = 19;
+	repeated InputFee Fees = 20;
 }
 
-message MortgageInput {
-   int32 ProductTypeId = 1;
-   int32 LoanKindId = 2;
-   cis.types.GrpcDecimal LoanAmount = 3;
-   google.protobuf.Int32Value LoanDuration = 4;
-   cis.types.GrpcDecimal LoanPaymentAmount = 5;
-   int32 FixedRatePeriod = 6;					
-   google.protobuf.Int32Value EmployeeBonusLoanCode = 7;
-   cis.types.GrpcDecimal CollateralAmount = 8;
-   cis.types.GrpcDecimal LoanToValue = 9;
-   google.protobuf.Int32Value PaymentDayOfTheMonth = 10;
-   bool EmployeeBonusRequested = 11;
-   repeated LoanPurpose LoanPurpose = 12;
-   int32 StatementTypeId = 13;
-   cis.types.NullableGrpcDate ExpectedDateOfDrawing = 14;
-   cis.types.GrpcDecimal FinancialResourcesOwn = 15;
-   cis.types.GrpcDecimal FinancialResourcesOther = 16;
-   SimulationToggleSettings SimulationToggleSettings = 17;
-}
-
-message MortgageOutput {
-	cis.types.GrpcDecimal LoanInterestRate  = 1;
-	cis.types.GrpcDecimal InterestRateAnnounced = 2;
-	cis.types.GrpcDecimal LoanAmount = 3;
-    int32 LoanDuration = 4;
-    cis.types.GrpcDecimal LoanPaymentAmount = 5;
-	int32 EmployeeBonusLoanCode = 6;
+message SimulationResults {
+	cis.types.NullableGrpcDecimal LoanAmount = 1;
+	google.protobuf.Int32Value LoanDuration = 2;
+	cis.types.NullableGrpcDate LoanDueDate = 3;
+	cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
+	cis.types.GrpcDecimal LoanInterestRateProvided = 5;
+	google.protobuf.Int32Value EmployeeBonusLoanCode = 6;
 	cis.types.GrpcDecimal LoanToValue = 7;
-	cis.types.GrpcDecimal LoanToCost = 8;
-	cis.types.GrpcDecimal Aprc = 9;
-	cis.types.GrpcDecimal LoanTotalAmount = 10;
-	int32 PaymentDayOfTheMonth = 11;
-	repeated LoanPurpose LoanPurpose = 12;
-	int32 StatementTypeId = 13;
-	cis.types.GrpcDate ExpectedDateOfDrawing = 14;
-	int32 ProductTypeId = 15;
+	cis.types.NullableGrpcDate ContractSignedDate = 8;
+	cis.types.GrpcDate DrawingDateTo = 9;
+	cis.types.NullableGrpcDate AnnuityPaymentsDateFrom = 10;
+	google.protobuf.Int32Value AnnuityPaymentsCount = 11;
+	cis.types.GrpcDecimal Aprc = 12;
+	cis.types.GrpcDecimal LoanTotalAmount = 13;
+	cis.types.GrpcDecimal LoanInterestRate  = 14;
+	cis.types.GrpcDecimal LoanInterestRateAnnounced = 15;
+	int32 LoanInterestRateAnnouncedType = 16;
+	cis.types.GrpcDecimal EmployeeBonusDeviation = 17;
+	cis.types.GrpcDecimal MarketingActionsDeviation = 18;
+	repeated PaymentScheduleSimple PaymentScheduleSimple = 19;
+	repeated ResultMarketingAction MarketingActions = 20;
+	repeated ResultFee Fees = 21;
+}
+
+message BaseSimulationResults {
+	cis.types.NullableGrpcDecimal LoanAmount = 1;
+	google.protobuf.Int32Value LoanDuration = 2;
+	cis.types.NullableGrpcDate LoanDueDate = 3;
+	cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
+	cis.types.GrpcDecimal LoanInterestRateProvided = 5;
+	google.protobuf.Int32Value EmployeeBonusLoanCode = 6;
+	cis.types.GrpcDecimal LoanToValue = 7;
+	cis.types.NullableGrpcDate ContractSignedDate = 8;
+	cis.types.GrpcDate DrawingDateTo = 9;
+	cis.types.NullableGrpcDate AnnuityPaymentsDateFrom = 10;
+	google.protobuf.Int32Value AnnuityPaymentsCount = 11;
+	cis.types.GrpcDecimal Aprc = 12;
+	cis.types.GrpcDecimal LoanTotalAmount = 13;
+	cis.types.GrpcDecimal LoanInterestRate  = 14;
+	cis.types.GrpcDecimal LoanInterestRateAnnounced = 15;
+	int32 LoanInterestRateAnnouncedType = 16;
+	cis.types.GrpcDecimal EmployeeBonusDeviation = 17;
+	cis.types.GrpcDecimal MarketingActionsDeviation = 18;
 }
 
 message LoanPurpose {
 	int32 LoanPurposeId = 1;
 	cis.types.GrpcDecimal Sum = 2;
+}
+
+message FeeSettings {
+	int32 FeeTariffPurpose = 1;
+	int32 StatementTypeId = 2;
+	bool IsStatementCharged = 3;
+}
+
+message InputMarketingAction {
+	bool Domicile = 1;
+	bool HealthRiskInsurance = 2;
+	bool RealEstateInsurance = 3;
+	bool IncomeLoanRatioDiscount = 4;
+	bool UserVip = 5;
+}
+
+message ResultMarketingAction {
+	string Code = 1;
+	int32 Requested = 2;
+	google.protobuf.Int32Value Applied = 3;
+	google.protobuf.Int32Value MarketingActionId = 4;
+	cis.types.NullableGrpcDecimal Deviation = 5;
+}
+
+message InputFee {
+	int32 FeeId = 1;
+	cis.types.GrpcDecimal DiscountPercentage = 2;
+}
+
+message ResultFee {
+	int32 FeeId = 1;
+	cis.types.GrpcDecimal DiscountPercentage = 2;
+	cis.types.NullableGrpcDecimal TariffSum = 3;
+	cis.types.NullableGrpcDecimal ComposedSum = 4;
+	cis.types.NullableGrpcDecimal FinalSum = 5;
+	google.protobuf.Int32Value MarketingActionId = 6;
+	string Name = 7;
+	string ShortNameForExample = 8;
+	string TariffName = 9;
+	string UsageText = 10;
+	string TariffTextWithAmount = 11;
+	string CodeKB = 12;
+	bool DisplayAsFreeOfCharge = 13;
+	bool IncludeInRPSN = 14;
+	string Periodicity = 15;
+	cis.types.NullableGrpcDate AccountDateFrom = 16;
+}
+
+message Developer {
+	google.protobuf.Int32Value DeveloperId = 1;
+	google.protobuf.Int32Value ProjectId = 2;
+}
+
+message PaymentScheduleSimple {
+	int32 PaymentIndex = 1;
+	string PaymentNumber = 2;
+	cis.types.GrpcDate Date = 3;
+	string Type = 4;
+	cis.types.GrpcDecimal Amount = 5;
 }

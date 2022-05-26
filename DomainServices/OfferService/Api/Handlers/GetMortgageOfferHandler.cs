@@ -4,16 +4,16 @@ using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
-internal class GetMortgageDataHandler
-    : BaseHandler, IRequestHandler<Dto.GetMortgageDataMediatrRequest, GetMortgageDataResponse>
+internal class GetMortgageOfferHandler
+    : BaseHandler, IRequestHandler<Dto.GetMortgageOfferMediatrRequest, GetMortgageOfferResponse>
 {
     #region Construction
 
-    private readonly ILogger<GetMortgageDataHandler> _logger;
+    private readonly ILogger<GetMortgageOfferHandler> _logger;
 
-    public GetMortgageDataHandler(
+    public GetMortgageOfferHandler(
         Repositories.OfferRepository repository,
-        ILogger<GetMortgageDataHandler> logger,
+        ILogger<GetMortgageOfferHandler> logger,
         ICodebookServiceAbstraction codebookService) : base(repository, codebookService)
     {
         _logger = logger;
@@ -21,24 +21,27 @@ internal class GetMortgageDataHandler
 
     #endregion
 
-    public async Task<GetMortgageDataResponse> Handle(Dto.GetMortgageDataMediatrRequest request, CancellationToken cancellation)
+    public async Task<GetMortgageOfferResponse> Handle(Dto.GetMortgageOfferMediatrRequest request, CancellationToken cancellation)
     {
         var entity = await _repository.Get(request.OfferId, cancellation);
 
-        // kontrola ProductTypeId (zda je typu Mortgage)
+        var simulationInputs = entity.SimulationInputs.ToSimulationInputs();
+
+        // kontrola ProductTypeId (zda je typu Mortgage)d
         await CheckProductTypeCategory(
-            entity.ProductTypeId,
+            simulationInputs.ProductTypeId,
             CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage
+
         );
 
-        var model = new GetMortgageDataResponse
+        var model = new GetMortgageOfferResponse
         {
             OfferId = entity.OfferId,
-            ProductTypeId = entity.ProductTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            Inputs = entity.Inputs?.ToMortgageInput(),
-            Outputs = entity.Outputs?.ToMortgageOutput(),            
+            BasicParameters = entity.BasicParameters.ToBasicParameters(),
+            SimulationInputs = simulationInputs,
+            SimulationResults = entity.SimulationResults.ToBaseSimulationResults(),
         };
 
         return model;
