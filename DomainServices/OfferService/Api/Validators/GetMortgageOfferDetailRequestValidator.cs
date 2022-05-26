@@ -2,9 +2,9 @@
 
 namespace DomainServices.OfferService.Api.Validators;
 
-internal class GetMortgageDataRequestValidator : AbstractValidator<Dto.GetMortgageDataMediatrRequest>
+internal class GetMortgageOfferDetailRequestValidator : AbstractValidator<Dto.GetMortgageOfferDetailMediatrRequest>
 {
-    public GetMortgageDataRequestValidator()
+    public GetMortgageOfferDetailRequestValidator()
     {
         RuleFor(t => t.OfferId)
             .GreaterThan(0)

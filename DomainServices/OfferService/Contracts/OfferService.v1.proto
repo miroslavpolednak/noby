@@ -8,7 +8,8 @@ import "TypesMortgage.proto";
 service OfferService {
 
 	rpc GetOffer (DomainServices.OfferService.OfferIdRequest) returns (DomainServices.OfferService.GetOfferResponse);
-	rpc GetMortgageData (DomainServices.OfferService.OfferIdRequest) returns (DomainServices.OfferService.GetMortgageDataResponse);
+	rpc GetMortgageOffer (DomainServices.OfferService.OfferIdRequest) returns (DomainServices.OfferService.GetMortgageOfferResponse);
+	rpc GetMortgageOfferDetail (DomainServices.OfferService.OfferIdRequest) returns (DomainServices.OfferService.GetMortgageOfferDetailResponse);
 	rpc SimulateMortgage (DomainServices.OfferService.SimulateMortgageRequest) returns (DomainServices.OfferService.SimulateMortgageResponse);
    
 }

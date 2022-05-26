@@ -25,7 +25,7 @@ internal class BaseHandler
     /// <summary>
     /// Checks if ProductTypeId matches ProductTypeCategory (Hypo, SS, ...)
     /// </summary>
-    protected async Task CheckProductTypeCategory(long id, ProductTypeCategory category)
+    protected async Task CheckProductTypeCategory(int id, ProductTypeCategory category)
     {
         var list = await _codebookService.ProductTypes();
         var item = list.FirstOrDefault(t => t.Id == id);

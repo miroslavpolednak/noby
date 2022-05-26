@@ -51,10 +51,14 @@ internal sealed class RealEasClient
 
             _logger.LogSerializedObject("ESBI_SIMULATION_INPUT_PARAMETERS", input);
             var result = await client.SimulationAsync(input);
-            _logger.LogSerializedObject("ESBI_SIMULATION_RESULT", result);
+            _logger.LogSerializedObject("ESBI_SIMULATION_RESULTS", result);
 
             if (result.SIM_error != 0)
-                _logger.LogInformation("Incorrect inputs to EAS Simulation {error}: {errorText}", result.SIM_error, result.SIM_error_text);
+            {
+                var message = $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]";
+                _logger.LogWarning(message);
+                return new ErrorServiceCallResult(99999, message); //TODO: error code
+            }
 
             return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
         });

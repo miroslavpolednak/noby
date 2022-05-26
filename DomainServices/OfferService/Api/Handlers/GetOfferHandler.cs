@@ -27,7 +27,6 @@ internal class GetOfferHandler
         var model = new GetOfferResponse
         {
             OfferId = entity.OfferId,
-            ProductTypeId = entity.ProductTypeId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
         };

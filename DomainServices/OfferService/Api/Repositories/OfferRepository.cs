@@ -13,14 +13,14 @@ internal class OfferRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Entities.Offer> SaveOffer(Guid resourceProcessId, int productTypeId, object inputs, object outputs, CancellationToken cancellation)
+    public async Task<Entities.Offer> SaveOffer(Guid resourceProcessId,object basicParameters, object simulationInputs, object simulationResults, CancellationToken cancellation)
     {
         var entity = new Entities.Offer
         {
             ResourceProcessId = resourceProcessId,
-            ProductTypeId = productTypeId,
-            Outputs = JsonSerializer.Serialize(outputs),
-            Inputs = JsonSerializer.Serialize(inputs)
+            BasicParameters = JsonSerializer.Serialize(basicParameters),
+            SimulationInputs = JsonSerializer.Serialize(simulationInputs),
+            SimulationResults = JsonSerializer.Serialize(simulationResults),
         };
 
         _dbContext.Offers.Add(entity);
