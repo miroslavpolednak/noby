@@ -32,8 +32,6 @@ internal class SimulateMortgageHandler
 
     public async Task<SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
     {
-        var easSimulationReq = new EasSimulationHT.EasSimulationHTWrapper.SimulationHTRequest { };
-        var easSimulationRes = ResolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
 
         // kontrola ProductTypeId (zda je typu Mortgage)
         await CheckProductTypeCategory(
@@ -45,22 +43,12 @@ internal class SimulateMortgageHandler
 
         var basicParameters = request.Request.BasicParameters;
 
-        // setup input default values
-        // var inputs = SetUpInputDefaults(request.Request.SimulationInputs);
         var inputs = request.Request.SimulationInputs;
 
         // get simulation outputs
-        //var result = getEasResult(await _easClient.RunSimulation(inputs));
-        //var results = this.GenerateFakeSimulationResults(inputs);
-
-
-        var easInputs = inputs.ToEasSimulationInputParameters();
-
-        var easResults = ResolveRunSimulation(await _easClient.RunSimulation(easInputs));
-
-        var results = easResults.ToSimulationResults();
-
-
+        var easSimulationReq = inputs.ToEasSimulationRequest();
+        var easSimulationRes = ResolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
+        var results = easSimulationRes.ToSimulationResults();
 
         // save to DB
         var entity = await _repository.SaveOffer(resourceProcessId, basicParameters, inputs, results, cancellation);
@@ -80,45 +68,6 @@ internal class SimulateMortgageHandler
 
     }
 
-    private SimulationInputs SetUpInputDefaults(SimulationInputs inputs)
-    {
-        inputs.ExpectedDateOfDrawing = inputs.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
-        inputs.PaymentDay = inputs.PaymentDay ?? 15;
-
-        return inputs;
-    }
-
-    // TODO: redirect to EAS
-    private SimulationResults GenerateFakeSimulationResults(SimulationInputs input)
-    {
-
-        int loanDuration = (input.LoanDuration ?? 0);
-
-        var results = new SimulationResults
-        {
-            //ProductTypeId = input.ProductTypeId,
-            LoanInterestRate = 0.02m,                       //mock: 0.02
-            //InterestRateAnnounced = 1,                      //mock: 1 (povinné v DV)
-            LoanAmount = input.LoanAmount,                  //mock: ze vstupu
-            LoanDuration = loanDuration,                    //mock: 0 (pokud na vstupu nezadáno)
-                                                            //mock: (náhodné číslo generované např. jako výše úvěru / splatností)
-            LoanPaymentAmount = loanDuration == 0 ? 0 : input.LoanAmount / loanDuration,
-            LoanToValue = input.LoanToValue,                //mock: ze vstupu
-            //LoanToCost = 0.0m,                               //mock: (celková výše investice / celková výše vlastních zdrojů) ... neznáme vlastní zdroje
-            Aprc = 0.25m,                                    //mock: 0.25
-            LoanTotalAmount = (input.LoanAmount + 1000000), //mock: (vstupní hodnota výše úvěru + 1 000 000)
-                                                            //StatementTypeId = 1,                            //mock: 1
-                                                            //mock: currentDate + 1D je defaultní hodnota při nezadání
-                                                            //ExpectedDateOfDrawing = (input.ExpectedDateOfDrawing == null) ? new GrpcDate(DateTime.Now.AddDays(1)) : new GrpcDate(input.ExpectedDateOfDrawing.Year, input.ExpectedDateOfDrawing.Month, input.ExpectedDateOfDrawing.Day),
-                                                            //mock: 15 je defaultní hodnota při nezadání
-                                                            //PaymentDayOfTheMonth = input.PaymentDayOfTheMonth ?? 15,
-        };
-
-        //output.LoanPurpose.AddRange(input.LoanPurpose);     //mock: ze vstupu
-
-        return results;
-    }
-
     private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse ResolveRunSimulationHT(IServiceCallResult result) =>
        result switch
        {
@@ -126,14 +75,5 @@ internal class SimulateMortgageHandler
            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
            _ => throw new NotImplementedException("RunSimulationHT")
        };
-
-    private static ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS ResolveRunSimulation(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<ExternalServices.Eas.R21.EasWrapper.ESBI_SIMULATION_RESULTS> r => r.Model,
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
-            _ => throw new NotImplementedException("RunSimulation")
-        };
-
 }
 
