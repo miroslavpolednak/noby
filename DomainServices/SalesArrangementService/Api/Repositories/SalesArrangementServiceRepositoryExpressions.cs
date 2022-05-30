@@ -18,6 +18,7 @@ internal static class SalesArrangementServiceRepositoryExpressions
             ChannelId = t.ChannelId,
             LoanApplicationAssessmentId = t.LoanApplicationAssessmentId,
             RiskSegment = t.RiskSegment ?? "",
+            CommandId = t.CommandId ?? "",
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
             LoanToCost = t.LoanToCost,
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,

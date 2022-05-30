@@ -31,6 +31,8 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
     
     public string? RiskSegment { get; set; }
 
+    public string? CommandId { get; set; }
+
     public DateTime? OfferGuaranteeDateFrom { get; set; }
 
     public DateTime? OfferGuaranteeDateTo { get; set; }

@@ -5,7 +5,7 @@ internal class UpdateLoanAssessmentParametersHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateLoanAssessmentParametersMediatrRequest request, CancellationToken cancellation)
     {
-        await _repository.UpdateLoanAssessment(request.Request.SalesArrangementId, request.Request.LoanApplicationAssessmentId, request.Request.RiskSegment, cancellation);
+        await _repository.UpdateLoanAssessment(request.Request.SalesArrangementId, request.Request.LoanApplicationAssessmentId, request.Request.RiskSegment, request.Request.CommandId, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

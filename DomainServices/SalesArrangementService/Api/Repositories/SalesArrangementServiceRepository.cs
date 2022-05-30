@@ -33,11 +33,12 @@ internal class SalesArrangementServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task UpdateLoanAssessment(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, CancellationToken cancellation)
+    public async Task UpdateLoanAssessment(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.LoanApplicationAssessmentId = loanApplicationAssessmentId;
         entity.RiskSegment = riskSegment;
+        entity.CommandId = commandId;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 

@@ -8,4 +8,6 @@ message UpdateLoanAssessmentParametersRequest {
 	int32 LoanApplicationAssessmentId = 2;
 
 	string RiskSegment = 3;
+
+	string CommandId = 4;
 }
