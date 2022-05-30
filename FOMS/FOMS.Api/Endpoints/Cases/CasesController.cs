@@ -66,13 +66,13 @@ public class CasesController : ControllerBase
     /// Seznam workflow tasku dotazeny z SB.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CseService/GetTaskList<br/>
+    /// <i>DS:</i> CaseService/GetTaskList<br/>
     /// </remarks>
     /// <returns>Seznam wf tasks z SB.</returns>
-    [HttpGet("{long:id}/tasks")]
+    [HttpGet("{caseId:long}/tasks")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Case" })]
+    [SwaggerOperation(Tags = new[] { "UC: Case Detail" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
-    public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long id, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetTaskList.GetTaskListRequest(id), cancellationToken);
+    public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetTaskList.GetTaskListRequest(caseId), cancellationToken);
 }
