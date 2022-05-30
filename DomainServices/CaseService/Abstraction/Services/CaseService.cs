@@ -118,6 +118,18 @@ internal class CaseService : ICaseServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
+    public async Task<IServiceCallResult> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetTaskList), caseId);
+        var result = await _userContext.AddUserContext(async () => await _service.GetTaskListAsync(
+            new()
+            {
+                CaseId = caseId
+            }, cancellationToken: cancellationToken)
+        );
+        return new SuccessfulServiceCallResult<GetTaskListResponse>(result);
+    }
+
     private readonly ILogger<CaseService> _logger;
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
     private readonly CIS.DomainServicesSecurity.Abstraction.ICisUserContextHelpers _userContext;

@@ -105,4 +105,6 @@ public interface ICaseServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task<IServiceCallResult> DeleteCase(long caseId, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task<IServiceCallResult> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 }

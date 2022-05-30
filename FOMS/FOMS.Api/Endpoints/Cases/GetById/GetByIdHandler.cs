@@ -10,17 +10,14 @@ internal class GetByIdHandler
         return await _converter.FromContract(result);
     }
 
-    private readonly ILogger<GetByIdHandler> _logger;
     private readonly CasesModelConverter _converter;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public GetByIdHandler(
         CasesModelConverter converter,
-        ILogger<GetByIdHandler> logger,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {
         _converter = converter;
-        _logger = logger;
         _caseService = caseService;
     }
 }

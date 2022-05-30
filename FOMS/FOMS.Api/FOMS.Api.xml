@@ -41,6 +41,15 @@
             <param name="request">Nastaveni moznosti filtrovani, strankovani a razeni.</param>
             <returns>Seznam Cases + informace o pouzitem strankovani/razeni.</returns>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetTaskList(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Seznam workflow tasku dotazeny z SB.
+            </summary>
+            <remarks>
+            <i>DS:</i> CseService/GetTaskList<br/>
+            </remarks>
+            <returns>Seznam wf tasks z SB.</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
