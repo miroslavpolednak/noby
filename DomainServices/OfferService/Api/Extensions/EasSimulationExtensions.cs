@@ -50,7 +50,7 @@ internal static class EasSimulationExtensions
             uver.datumZalozeni = inputs.GuaranteeDateFrom;
         }
 
-        uver.kanal = 6; // ??? pokud se nezadá, simulace vyhodí chybu: -4005 : (kanal) neplatny k (datumZalozeni)
+        uver.kanal = 6; // [MOCK] (default 6)
 
         return uver;
     }
@@ -127,9 +127,6 @@ internal static class EasSimulationExtensions
             if (inputs.MarketingActions.UserVip)
                 list.Add(EEasSimulationMarketingActionType.VIP_MAKLER);
         }
-
-        if (inputs.InterestRateDeviation != 0)
-            list.Add(EEasSimulationMarketingActionType.INDIVIDUALNI_SLEVA);
 
         var marketingoveAkce = list.Select(i => new EasWrapper.MarketingovaAkce { typMaAkce = i.ToString(), zaskrtnuto = 1 });
         return marketingoveAkce.ToArray();
@@ -264,9 +261,9 @@ internal static class EasSimulationExtensions
         var items = res.Select(i => new PaymentScheduleSimple {
             PaymentIndex = i.n,
             PaymentNumber = i.cisloSplatky,
-            // Date = i.datumSplatky,   ??? string
+            Date = i.datumSplatky,  // ´string´ field - SimulationService is responsible for correct formating
             Type = i.typSplatky,
-            // Amount = i.vyseSplatky   ??? string
+            Amount = i.vyseSplatky  // ´string´ field - SimulationService is responsible for correct formating
         });
 
         results.PaymentScheduleSimple.AddRange(items);

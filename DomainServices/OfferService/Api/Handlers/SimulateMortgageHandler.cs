@@ -36,14 +36,15 @@ internal class SimulateMortgageHandler
         // kontrola ProductTypeId (zda je typu Mortgage)
         await CheckProductTypeCategory(
             request.Request.SimulationInputs.ProductTypeId,
-            CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage
+            CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage,
+            cancellation
         );
 
         var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
 
-        var basicParameters = request.Request.BasicParameters;
-
-        var inputs = request.Request.SimulationInputs;
+        // setup input default values
+        var basicParameters = SetUpDefaults(request.Request.BasicParameters, request.Request.SimulationInputs.GuaranteeDateFrom);
+        var inputs = await SetUpDefaults(request.Request.SimulationInputs, cancellation);
 
         // get simulation outputs
         var easSimulationReq = inputs.ToEasSimulationRequest();
@@ -66,6 +67,25 @@ internal class SimulateMortgageHandler
             SimulationResults = results,
         };
 
+    }
+
+    private async Task<SimulationInputs> SetUpDefaults(SimulationInputs input, CancellationToken cancellation)
+    {
+        input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
+
+        if (!input.PaymentDay.HasValue)
+        {
+            input.PaymentDay = await GetDefaultPaymentDay(cancellation);
+        }
+      
+        return input;
+    }
+
+    private BasicParameters SetUpDefaults(BasicParameters parameters, DateTime guaranteeDateFrom)
+    {
+        parameters = parameters ?? new BasicParameters();
+        parameters.GuaranteeDateTo = guaranteeDateFrom.AddDays(AppDefaults.MaxGuaranteeInDays);
+        return parameters;
     }
 
     private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse ResolveRunSimulationHT(IServiceCallResult result) =>

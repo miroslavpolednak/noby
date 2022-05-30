@@ -7,6 +7,6 @@
         POJIST_NEM,
         VYSE_PRIJMU_UVERU,
         VIP_MAKLER,
-        INDIVIDUALNI_SLEVA,
+        // INDIVIDUALNI_SLEVA,
     }
 }
