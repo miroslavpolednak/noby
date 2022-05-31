@@ -10,8 +10,21 @@ public class LoanPurposesHandler
         try
         {
             return await FastMemoryCache.GetOrCreate<LoanPurposesItem>(nameof(LoanPurposesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItem>(_sqlQuery, cancellationToken)
-            );
+            {
+                var items = await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItemExt>(_sqlQuery, cancellationToken);
+
+                return items.Select(i => new LoanPurposesItem
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    MandantId = i.MandantId,
+                    Mandant = i.Mandant,
+                    ProductTypeIds = i.ProductTypeId?.ParseIDs(),
+                    Order = i.Order,
+                    IsValid = i.IsValid,
+
+                }).ToList();
+            });
         }
         catch (Exception ex)
         {
@@ -20,9 +33,13 @@ public class LoanPurposesHandler
         }
     }
 
-    const string _sqlQuery = @"
-SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId' , MANDANT 'Mandant', CAST(CASE WHEN DATUM_PLATNOSTI_DO IS NULL THEN 1 ELSE 0 END as bit) 'IsValid' 
-FROM SBR.CIS_UCEL_UVERU_INT1 WHERE MANDANT = 2 ORDER BY KOD";
+    private class LoanPurposesItemExt : LoanPurposesItem
+    {
+        public string? ProductTypeId { get; set; }
+    }
+
+    const string _sqlQuery = @"SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId', MANDANT 'Mandant', KOD_UVER 'ProductTypeId', PORADI 'Order', CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
+                                FROM SBR.CIS_UCEL_UVERU_INT1 ORDER BY KOD";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<LoanPurposesHandler> _logger;
