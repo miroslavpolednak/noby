@@ -21,7 +21,7 @@ public class DevelopersHandler
     }
 
     const string _sqlQuery = @"SELECT DEVELOPER_ID 'Id', NAZEV 'Name', ICO_RC 'Cin', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
-                               FROM [SBR].[CIS_DEVELOPER] WHERE [PRIZNAK_OK] = 1 ORDER BY DEVELOPER_ID ASC";
+                               FROM [SBR].[CIS_DEVELOPER] ORDER BY DEVELOPER_ID ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<DevelopersHandler> _logger;
