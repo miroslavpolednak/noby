@@ -42,9 +42,6 @@ internal class CreateRiskBusinessCaseHandler
         // get rbcId
         string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
         
-        
-        
-        await _salesArrangementService.CreateRiskBusinessCase(notification.SalesArrangementId, cancellationToken);
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)
