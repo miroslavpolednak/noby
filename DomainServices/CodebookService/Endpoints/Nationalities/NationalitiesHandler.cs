@@ -22,7 +22,7 @@ namespace DomainServices.CodebookService.Endpoints.Nationalities
         }
 
         private const string _sqlQuery =
-            "SELECT Id, NazevStatniPrislusnost 'Name' FROM [cis].[Zeme] WHERE Id>0 ORDER BY NazevStatniPrislusnost ASC";
+            "SELECT Id, NazevStatniPrislusnost 'Name' FROM [cis].[Zeme] ORDER BY NazevStatniPrislusnost ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IKonsdbDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<NationalitiesHandler> _logger;
