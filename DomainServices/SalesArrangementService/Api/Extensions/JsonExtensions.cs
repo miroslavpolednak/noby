@@ -11,6 +11,11 @@ internal static class JsonExtensions
         return value == null ? null : (decimal)value;
     }
 
+    public static decimal? ToDecimal(this CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimal value)
+    {
+        return value == null ? null : (decimal)value!;
+    }
+
     public static string? ToJsonString(this CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimal value)
     {
         return ((decimal?)value).ToJsonString();

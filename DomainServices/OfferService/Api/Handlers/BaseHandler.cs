@@ -21,13 +21,13 @@ internal class BaseHandler
     }
 
     #endregion
-        
+
     /// <summary>
     /// Checks if ProductTypeId matches ProductTypeCategory (Hypo, SS, ...)
     /// </summary>
-    protected async Task CheckProductTypeCategory(int id, ProductTypeCategory category)
+    protected async Task CheckProductTypeCategory(int id, ProductTypeCategory category, CancellationToken cancellation)
     {
-        var list = await _codebookService.ProductTypes();
+        var list = await _codebookService.ProductTypes(cancellation);
         var item = list.FirstOrDefault(t => t.Id == id);
 
         if (item == null)
@@ -39,6 +39,23 @@ internal class BaseHandler
         {
             throw new CisArgumentException(1, $"ProductTypeId '{id}' doesn't match ProductTypeCategory '{category}'.", "ProductTypeId");
         }
+    }
+
+    /// <summary>
+    /// Searchs for default 'PaymentDay' value
+    /// </summary>
+    protected async Task<int> GetDefaultPaymentDay(CancellationToken cancellation)
+    {
+        var list = await _codebookService.PaymentDays(cancellation);
+
+        var itemDefault = list.FirstOrDefault(i=>i.IsDefault);
+
+        if (itemDefault == null)
+        {
+            throw new CisNotFoundException(99999, $"Default 'PaymentDay' not found.");
+        }
+
+        return itemDefault.PaymentDay;
     }
 
 }

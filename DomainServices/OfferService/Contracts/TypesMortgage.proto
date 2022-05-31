@@ -176,7 +176,7 @@ message Developer {
 message PaymentScheduleSimple {
 	int32 PaymentIndex = 1;
 	string PaymentNumber = 2;
-	cis.types.GrpcDate Date = 3;
+	string Date = 3;
 	string Type = 4;
-	cis.types.GrpcDecimal Amount = 5;
+	string Amount = 5;
 }

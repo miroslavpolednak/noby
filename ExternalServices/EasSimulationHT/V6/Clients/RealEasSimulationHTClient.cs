@@ -20,9 +20,16 @@ internal sealed class RealEasSimulationHTClient : Shared.BaseClient<RealEasSimul
             var result = await client.SimulationHTAsync(request);
             _logger.LogSerializedObject("SimulationHTResponse", result);
 
-            if (result.errorInfo != null)
+            //if (result.errorInfo != null)
+            //{
+            //    var message = $"Error occured during call external service EAS [{result.errorInfo.kodChyby} : {result.errorInfo.textChyby}]";
+            //    _logger.LogWarning(message);
+            //    return new ErrorServiceCallResult(99999, message); //TODO: error code
+            //}
+
+            if ((result.errorInfo?.kodChyby ?? 0) != 0)
             {
-                var message = $"Error occured during call external service EAS [{result.errorInfo.kodChyby} : {result.errorInfo.textChyby}]";
+                var message = $"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]";
                 _logger.LogWarning(message);
                 return new ErrorServiceCallResult(99999, message); //TODO: error code
             }

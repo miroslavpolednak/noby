@@ -52,6 +52,28 @@ internal static class MortgageExtensions
     {
         var results = JsonSerializer.Deserialize<SimulationResults>(json);
 
+        var jsonPaymentScheduleSimple = System.Text.Json.Nodes.JsonNode.Parse(json)?["PaymentScheduleSimple"];
+        var jsonMarketingActions = System.Text.Json.Nodes.JsonNode.Parse(json)?["MarketingActions"];
+        var jsonFees = System.Text.Json.Nodes.JsonNode.Parse(json)?["Fees"];
+
+        if (jsonPaymentScheduleSimple != null)
+        {
+            var itemsPaymentScheduleSimple = JsonSerializer.Deserialize<List<PaymentScheduleSimple>>(jsonPaymentScheduleSimple.ToJsonString());
+            results?.PaymentScheduleSimple.AddRange(itemsPaymentScheduleSimple);
+        }
+
+        if (jsonMarketingActions != null)
+        {
+            var itemsMarketingActions = JsonSerializer.Deserialize<List<ResultMarketingAction>>(jsonMarketingActions.ToJsonString());
+            results?.MarketingActions.AddRange(itemsMarketingActions);
+        }
+
+        if (jsonFees != null)
+        {
+            var itemsFees = JsonSerializer.Deserialize<List<ResultFee>>(jsonFees.ToJsonString());
+            results?.Fees.AddRange(itemsFees);
+        }
+
         return results!;
     }
 
