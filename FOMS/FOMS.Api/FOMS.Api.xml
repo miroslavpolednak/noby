@@ -202,6 +202,12 @@
             </summary>
             <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
+            <summary>
+            FixedRatePeriod s filtraci na product
+            </summary>
+            <param name="productTypeId">ID typu produktu</param>
+        </member>
         <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Smazani prijmu customera

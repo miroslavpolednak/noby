@@ -91,4 +91,17 @@ public class CodebooksController : ControllerBase
             .LoanKinds
             .Where(t => t.IsValid)
             .ToList();
+
+    /// <summary>
+    /// FixedRatePeriod s filtraci na product
+    /// </summary>
+    /// <param name="productTypeId">ID typu produktu</param>
+    [HttpGet("fixed-rate-periods")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
+    public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+        => (await svc.FixedRatePeriods(cancellationToken))
+            .Where(t => t.ProductTypeId == productTypeId)
+            .DistinctBy(t => new { t.FixedRatePeriod, t.IsNewProduct, t.MandantId, t.IsValid })
+            .ToList();
 }
