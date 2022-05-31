@@ -10,14 +10,32 @@ public class LoanPurposesHandler
         try
         {
             return await FastMemoryCache.GetOrCreate<LoanPurposesItem>(nameof(LoanPurposesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItem>(_sqlQuery, cancellationToken)
-            );
+            {
+                var items = await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItemExt>(_sqlQuery, cancellationToken);
+
+                return items.Select(i => new LoanPurposesItem
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    MandantId = i.MandantId,
+                    Mandant = i.Mandant,
+                    ProductTypeIds = i.ProductTypeId?.ParseIDs(),
+                    Order = i.Order,
+                    IsValid = i.IsValid,
+
+                }).ToList();
+            });
         }
         catch (Exception ex)
         {
             _logger.GeneralException(ex);
             throw;
         }
+    }
+
+    private class LoanPurposesItemExt : LoanPurposesItem
+    {
+        public string? ProductTypeId { get; set; }
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId', MANDANT 'Mandant', KOD_UVER 'ProductTypeId', PORADI 'Order', CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'

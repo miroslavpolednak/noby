@@ -3,7 +3,7 @@
 namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
 {
     [DataContract]
-    public sealed class LoanPurposesItem
+    public class LoanPurposesItem
     {
         [DataMember(Order = 1)]
         public int Id { get; set; }
@@ -18,7 +18,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
         public CIS.Foms.Enums.Mandants Mandant { get; set; }
 
         [DataMember(Order = 5)]
-        public string ProductTypeId { get; set; }
+        public List<int> ProductTypeIds { get; set; }
 
         [DataMember(Order = 6)]
         public int Order { get; set; }
