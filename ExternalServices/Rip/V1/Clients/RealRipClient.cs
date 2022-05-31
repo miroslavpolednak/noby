@@ -1,4 +1,5 @@
 ﻿using ExternalServices.Rip.V1.RipWrapper;
+using CIS.Infrastructure.Logging;
 
 namespace ExternalServices.Rip.V1
 {
@@ -6,17 +7,26 @@ namespace ExternalServices.Rip.V1
     {
         public RealRipClient(HttpClient httpClient, ILogger<RealRipClient> logger) : base(httpClient, logger) { }
 
-        public async Task<IServiceCallResult> CreateRiskBusinesCase(CreateRequest createRequest)
+        public async Task<IServiceCallResult> CreateRiskBusinesCase(int salesArrangementId, string resourceProcessId)
         {
-            _logger.LogDebug("Run inputs: Rip CreateRiskBusinesCase with CreateRequest {createRequest}", System.Text.Json.JsonSerializer.Serialize(createRequest));
+            _logger.LogDebug("Run inputs: Rip CreateRiskBusinesCase with {SAid} {RpId}", salesArrangementId, resourceProcessId);
 
             return await WithClient(async c => {
 
                 return await callMethod(async () => {
 
-                    var result = await c.RiskBusinessCaseCreateAsync(createRequest);
-
-                    return new SuccessfulServiceCallResult<LoanApplicationCreate>(result);
+                    var result = await c.RiskBusinessCaseCreateAsync(new CreateRequest
+                    {
+                        LoanApplicationIdMp = new SystemId
+                        {
+                            Id = salesArrangementId.ToString(),
+                            System = "NOBY"
+                        },
+                        ItChannel = "NOBY",
+                        ResourceProcessIdMp = resourceProcessId
+                    });
+                    
+                    return new SuccessfulServiceCallResult<string>(result.RiskBusinessCaseIdMp);
                 });
 
             });
@@ -33,6 +43,21 @@ namespace ExternalServices.Rip.V1
                     var result = await c.ComputeCreditWorthinessAsync(arguments);
 
                     return new SuccessfulServiceCallResult<CreditWorthinessCalculation>(result);
+                });
+
+            });
+        }
+
+        public async Task<IServiceCallResult> CreateLoanApplication(LoanApplicationRequest arguments)
+        {
+            _logger.LogSerializedObject("CreateLoanApplication", arguments);
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    var result = await c.CreateLoanApplicationAsync(arguments);
+
+                    return new SuccessfulServiceCallResult<string>(result.RiskSegment);
                 });
 
             });
