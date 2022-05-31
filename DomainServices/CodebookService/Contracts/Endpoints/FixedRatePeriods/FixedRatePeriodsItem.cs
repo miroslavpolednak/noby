@@ -10,5 +10,17 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods
 
         [DataMember(Order = 2)]
         public int FixedRatePeriod { get; set; }
+
+        [DataMember(Order = 3)]
+        public int MandantId { get; set; }
+
+        [DataMember(Order = 4)]
+        public bool IsNewProduct { get; set; }
+
+        [DataMember(Order = 5)]
+        public int InterestRateAlgorithm { get; set; }
+
+        [DataMember(Order = 6)]
+        public bool IsValid { get; set; }
     }
 }
