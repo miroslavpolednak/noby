@@ -882,6 +882,26 @@
             Cizí zdroje
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.GuaranteeDateFrom">
+            <summary>
+            uver.rozhodnyDenSazby
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.InterestRateDeviation">
+            <summary>
+            uver.indCenotvorbaOdchylka
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingType">
+            <summary>
+            uver.typCerpani
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDuration">
+            <summary>
+            uver.lhutaDocerpani
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
             <summary>
             Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 

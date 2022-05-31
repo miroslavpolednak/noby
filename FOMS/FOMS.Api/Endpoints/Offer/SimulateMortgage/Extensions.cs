@@ -11,6 +11,10 @@ internal static class Extensions
             ResourceProcessId = request.ResourceProcessId,
             SimulationInputs = new()
             {
+                GuaranteeDateFrom = request.GuaranteeDateFrom,
+                InterestRateDeviation = request.InterestRateDeviation,
+                DrawingType = request.DrawingType,
+                DrawingDuration = request.DrawingDuration,
                 ProductTypeId = request.ProductTypeId,
                 LoanKindId = request.LoanKindId,
                 LoanAmount = request.LoanAmount,

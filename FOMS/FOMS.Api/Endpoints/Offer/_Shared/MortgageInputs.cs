@@ -77,5 +77,25 @@ public class MortgageInputs
     /// </summary>
     public decimal? FinancialResourcesOther { get; set; }
 
+    /// <summary>
+    /// uver.rozhodnyDenSazby
+    /// </summary>
+    public DateTime GuaranteeDateFrom { get; set; }
+
+    /// <summary>
+    /// uver.indCenotvorbaOdchylka
+    /// </summary>
+    public decimal? InterestRateDeviation { get; set; }
+
+    /// <summary>
+    /// uver.typCerpani
+    /// </summary>
+    public int DrawingType { get; set; }
+
+    /// <summary>
+    /// uver.lhutaDocerpani
+    /// </summary>
+    public int? DrawingDuration { get; set; }
+
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
 }
