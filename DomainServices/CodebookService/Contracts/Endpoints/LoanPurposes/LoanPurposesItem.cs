@@ -18,6 +18,12 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
         public CIS.Foms.Enums.Mandants Mandant { get; set; }
 
         [DataMember(Order = 5)]
+        public string ProductTypeId { get; set; }
+
+        [DataMember(Order = 6)]
+        public int Order { get; set; }
+
+        [DataMember(Order = 7)]
         [JsonIgnore]
         public bool IsValid { get; set; }
     }
