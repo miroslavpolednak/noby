@@ -26,19 +26,21 @@ internal class SalesArrangementServiceRepository
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
             .FirstOrDefaultAsync(cancellation);
 
-    public async Task UpdateSalesArrangement(int salesArrangementId, string contractNumber, CancellationToken cancellation)
+    public async Task UpdateSalesArrangement(int salesArrangementId, string contractNumber, string eaCode, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.ContractNumber = contractNumber;
+        entity.EaCode = eaCode;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task UpdateLoanAssessment(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellation)
+    public async Task UpdateLoanAssessment(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.LoanApplicationAssessmentId = loanApplicationAssessmentId;
         entity.RiskSegment = riskSegment;
         entity.CommandId = commandId;
+        entity.RiskBusinessCaseExpirationDate = riskBusinessCaseExpirationDate;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 

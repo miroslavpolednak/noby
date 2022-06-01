@@ -45,6 +45,10 @@ message SalesArrangement {
 
 	string CommandId = 16;
 
+	cis.types.NullableGrpcDate RiskBusinessCaseExpirationDate = 17;
+
+	string EaCode = 18;
+
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 20;
     }

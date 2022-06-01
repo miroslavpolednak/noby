@@ -28,6 +28,8 @@ CREATE TABLE [dbo].[SalesArrangement](
     [OfferGuaranteeDateFrom] date NULL,
 	[OfferGuaranteeDateTo] date NULL,
     [LoanToCost] decimal(5,2) NULL,
+    RiskBusinessCaseExpirationDate date NULL,
+    EaCode varchar(50) NULL,
 	[CreatedUserName] [nvarchar](100) NULL,
 	[CreatedUserId] [int] NULL,
 	[CreatedTime] [datetime] NOT NULL,

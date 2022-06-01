@@ -1,7 +1,7 @@
 ﻿namespace CIS.Core.Attributes;
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-public class CisDefaultValueAttribute : Attribute
+public sealed class CisDefaultValueAttribute : Attribute
 {
     public string IsDefaultFor { get; init; } = "";
 

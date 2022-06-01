@@ -14,6 +14,7 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementStates
                     Id = (int)t,
                     Value = t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                    StarbuildId = t.GetAttribute<CIS.Core.Attributes.CisStarbuildIdAttribute>()?.StarbuildId,
                     IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
                 })
                 .ToList();

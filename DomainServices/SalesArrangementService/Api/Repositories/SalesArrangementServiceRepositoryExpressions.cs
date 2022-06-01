@@ -22,7 +22,9 @@ internal static class SalesArrangementServiceRepositoryExpressions
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
             LoanToCost = t.LoanToCost,
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
-            OfferGuaranteeDateTo = t.OfferGuaranteeDateTo
+            OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
+            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
+            EaCode = t.EaCode ?? ""
         };
     }
 }

@@ -4,5 +4,8 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 message UpdateSalesArrangementRequest {
 	int32 SalesArrangementId = 1;
+	
 	string ContractNumber = 2;
+
+	string EaCode = 3;
 }

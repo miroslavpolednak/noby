@@ -14,13 +14,16 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "Rozpracováno")]
     [CisDefaultValue]
+    [CisStarbuildId(1)]
     InProgress = 1,
         
     [EnumMember]
     [Display(Name = "Předáno ke zpracování")]
+    [CisStarbuildId(1)]
     InApproval = 2,
         
     [EnumMember]
     [Display(Name = "Zrušeno")]
+    [CisStarbuildId(2)]
     Cancelled = 3
 }
