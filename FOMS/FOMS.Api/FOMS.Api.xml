@@ -788,7 +788,7 @@
             Unikatni identifikator pro session simulace.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.Outputs">
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.SimulationResults">
             <summary>
             Vysledky simulace.
             </summary>

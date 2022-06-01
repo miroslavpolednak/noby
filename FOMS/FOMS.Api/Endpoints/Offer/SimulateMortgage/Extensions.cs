@@ -55,6 +55,17 @@ internal static class Extensions
             LoanAmount = result.LoanAmount,
             LoanPaymentAmount = result.LoanPaymentAmount,
             LoanPurpose = inputs.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
-            PaymentDay = inputs.PaymentDay
+            PaymentDay = inputs.PaymentDay,
+            LoanDueDate = result.LoanDueDate,
+            LoanInterestRateProvided = result.LoanInterestRateProvided,
+            ContractSignedDate = result.ContractSignedDate,
+            DrawingDateTo = result.DrawingDateTo,
+            AnnuityPaymentsDateFrom = result.AnnuityPaymentsDateFrom,
+            AnnuityPaymentsCount = result.AnnuityPaymentsCount,
+            LoanInterestRate = result.LoanInterestRate,
+            LoanInterestRateAnnounced = result.LoanInterestRateAnnounced,
+            LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
+            EmployeeBonusDeviation = result.EmployeeBonusDeviation,
+            MarketingActionsDeviation = result.MarketingActionsDeviation
         };
 }

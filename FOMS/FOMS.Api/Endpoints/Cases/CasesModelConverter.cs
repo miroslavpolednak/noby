@@ -49,6 +49,12 @@ internal class CasesModelConverter
 				})
 				.ToList();
 		}
+		//MOCK
+		model.ActiveTasks.AddRange(new Google.Protobuf.Collections.RepeatedField<DomainServices.CaseService.Contracts.ActiveTask>
+		{
+			new DomainServices.CaseService.Contracts.ActiveTask { TaskId = 1, TaskTypeId = 1 },
+			new DomainServices.CaseService.Contracts.ActiveTask { TaskId = 2, TaskTypeId = 2 }
+		});
 
 		return converted;
 	}

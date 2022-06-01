@@ -15,5 +15,5 @@ public sealed class SimulateMortgageResponse
     /// <summary>
     /// Vysledky simulace.
     /// </summary>
-    public Dto.MortgageOutputs? Outputs { get; set; }
+    public Dto.MortgageOutputs? SimulationResults { get; set; }
 }
