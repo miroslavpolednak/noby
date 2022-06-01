@@ -1,10 +1,18 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using System.Reflection;
 
 namespace FOMS.Api.StartupExtensions;
 
 internal static class FomsAppBuilder
 {
+    static string _appVersion = "";
+
+    static FomsAppBuilder()
+    {
+        _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
+    }
+
     public static IApplicationBuilder UseFomsSpa(this IApplicationBuilder app)
         => app.MapWhen(_isSpaCall, appBuilder => 
         {
@@ -24,6 +32,13 @@ internal static class FomsAppBuilder
     public static IApplicationBuilder UseFomsApi(this WebApplication app)
         => app.MapWhen(_isApiCall, appBuilder =>
         {
+            // version header
+            appBuilder.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("foms-ver", _appVersion);
+                await next();
+            });
+
             // error middlewares
             /*if (app.Environment.IsProduction())
                 appBuilder.UseExceptionHandler("/error");
