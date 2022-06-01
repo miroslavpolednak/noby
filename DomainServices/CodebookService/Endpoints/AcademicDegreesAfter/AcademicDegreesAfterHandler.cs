@@ -22,7 +22,7 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesAfter
         }
 
         private const string _sqlQuery =
-            "SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY_ZA] WHERE KOD>0 ORDER BY TEXT ASC";
+            "SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY_ZA] ORDER BY TEXT ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<AcademicDegreesAfterHandler> _logger;
