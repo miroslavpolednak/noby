@@ -19,7 +19,8 @@ internal static class HouseholdRepositoryExpressions
             {
                 ChildrenOverTenYearsCount = t.ChildrenOverTenYearsCount,
                 ChildrenUpToTenYearsCount = t.ChildrenUpToTenYearsCount,
-                PropertySettlementId = t.PropertySettlementId
+                PropertySettlementId = t.PropertySettlementId,
+                AreBothPartnersDeptors = t.AreBothPartnersDeptors
             },
             Expenses = new Expenses
             {

@@ -17,7 +17,8 @@ internal class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public int? ChildrenUpToTenYearsCount { get; set; }
     public int? ChildrenOverTenYearsCount { get; set; }
     public int? PropertySettlementId { get; set; }
-    
+    public bool AreBothPartnersDeptors { get; set; }
+
     public int? SavingExpenseAmount { get; set; }
     public int? InsuranceExpenseAmount { get; set; }
     public int? HousingExpenseAmount { get; set; }

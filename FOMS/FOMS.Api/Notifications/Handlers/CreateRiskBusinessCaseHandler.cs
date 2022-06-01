@@ -16,13 +16,10 @@ internal class CreateRiskBusinessCaseHandler
     }
 
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly ILogger<CreateRiskBusinessCaseHandler> _logger;
 
     public CreateRiskBusinessCaseHandler(
-        ISalesArrangementServiceAbstraction salesArrangementService,
-        ILogger<CreateRiskBusinessCaseHandler> logger)
+        ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
-        _logger = logger;
     }
 }

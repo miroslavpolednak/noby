@@ -2,6 +2,8 @@
 
 public class GetLoanApplicationAssessmentResponse
 {
+    public DateTime RiskBusinesscaseExpirationDate { get; set; }
+
     public int AssessmentResult { get; set; }
 
     public List<Dto.AssessmentReason>? Reasons { get; set; }

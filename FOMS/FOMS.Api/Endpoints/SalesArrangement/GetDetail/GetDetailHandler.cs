@@ -59,17 +59,14 @@ internal class GetDetailHandler
     
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly ILogger<GetDetailHandler> _logger;
     private readonly Services.SalesArrangementDataFactory _dataFactory;
     
     public GetDetailHandler(
         Services.SalesArrangementDataFactory dataFactory,
         ISalesArrangementServiceAbstraction salesArrangementService, 
-        ICodebookServiceAbstraction codebookService, 
-        ILogger<GetDetailHandler> logger)
+        ICodebookServiceAbstraction codebookService)
     {
         _dataFactory = dataFactory;
-        _logger = logger;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
     }

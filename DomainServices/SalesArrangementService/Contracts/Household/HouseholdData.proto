@@ -10,4 +10,6 @@ message HouseholdData {
     google.protobuf.Int32Value ChildrenOverTenYearsCount = 2;
     
     google.protobuf.Int32Value PropertySettlementId = 3;
+
+    bool AreBothPartnersDeptors = 4;
 }

@@ -13,6 +13,7 @@ internal class HouseholdTypesHandler
             {
                 Id = (int)t,
                 Value = t,
+                RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
             })
             .ToList();

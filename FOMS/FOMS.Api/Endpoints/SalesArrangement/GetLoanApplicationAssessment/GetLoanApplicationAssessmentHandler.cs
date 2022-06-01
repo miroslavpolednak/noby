@@ -59,6 +59,7 @@ internal class GetLoanApplicationAssessmentHandler
                     DSTI = 48
                 }
             },
+            RiskBusinesscaseExpirationDate = DateTime.Now,
             AssessmentResult = codes[randomNumber1],
             Reasons = new()
             {

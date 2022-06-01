@@ -53,6 +53,7 @@ internal static class Extensions
     static Dto.HouseholdData? mapData(this contracts.HouseholdData model)
         => new Dto.HouseholdData()
             {
+                AreBothPartnersDeptors = model.AreBothPartnersDeptors,
                 PropertySettlementId = model.PropertySettlementId,
                 ChildrenOverTenYearsCount = model.ChildrenOverTenYearsCount,
                 ChildrenUpToTenYearsCount = model.ChildrenUpToTenYearsCount

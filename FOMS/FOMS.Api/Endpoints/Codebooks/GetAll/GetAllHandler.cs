@@ -55,7 +55,7 @@ internal class GetAllHandler
             "salesarrangementstates" => new(original, (await _codebooks.SalesArrangementStates(cancellationToken)).Where(t => t.Id > 0).ToList()),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes(cancellationToken)),
             "signaturetypes" => new(original, (await _codebooks.SignatureTypes(cancellationToken)).Where(t => t.Id > 0).ToList()),
-            "realestatetypes" => new(original, await _codebooks.RealEstateTypes(cancellationToken)),
+            "realestatetypes" => new(original, (await _codebooks.RealEstateTypes(cancellationToken)).Where(t => t.Id > 0).ToList()),
             "realestatepurchasetypes" => new(original, await _codebooks.RealEstatePurchaseTypes(cancellationToken)),
             "workflowtaskcategories" => new(original, await _codebooks.WorkflowTaskCategories(cancellationToken)),
             "workflowtaskstates" => new(original, await _codebooks.WorkflowTaskStates(cancellationToken)),

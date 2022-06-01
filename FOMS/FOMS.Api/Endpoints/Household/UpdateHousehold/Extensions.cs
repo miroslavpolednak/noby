@@ -11,7 +11,8 @@ internal static class Extensions
         {
             ChildrenOverTenYearsCount = model.ChildrenOverTenYearsCount,
             ChildrenUpToTenYearsCount = model.ChildrenUpToTenYearsCount,
-            PropertySettlementId = model.PropertySettlementId
+            PropertySettlementId = model.PropertySettlementId,
+            AreBothPartnersDeptors = model.AreBothPartnersDeptors
         };
     }
 

@@ -182,6 +182,7 @@ CREATE TABLE [dbo].[Household](
       InsuranceExpenseAmount [int] NULL,
       HousingExpenseAmount [int] NULL,
       OtherExpenseAmount [int] NULL,
+      AreBothPartnersDeptors bit NULL,
       [CustomerOnSAId1] [int] NULL,
       [CustomerOnSAId2] [int] NULL,
       [CreatedUserName] [nvarchar](100) NULL,

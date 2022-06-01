@@ -20,4 +20,6 @@ public class HouseholdData
     /// Vypořádání majetku. Ciselnik ???
     /// </summary>
     public int? PropertySettlementId { get; set; }
+
+    public bool AreBothPartnersDeptors { get; set; }
 }

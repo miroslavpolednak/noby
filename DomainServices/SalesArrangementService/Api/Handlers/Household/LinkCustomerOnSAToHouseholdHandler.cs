@@ -20,6 +20,7 @@ internal class LinkCustomerOnSAToHouseholdHandler
             && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId2, cancellation))?.SalesArrangementId != householdEntity.SalesArrangementId)
             throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId2} does not exist in this SA.");
 
+
         householdEntity.CustomerOnSAId1 = request.Request.CustomerOnSAId1;
         householdEntity.CustomerOnSAId2 = request.Request.CustomerOnSAId2;
 
