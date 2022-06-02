@@ -13,13 +13,7 @@ internal class LinkCustomerOnSAToHouseholdHandler
             ?? throw new CisNotFoundException(16022, $"Household ID {request.Request.HouseholdId} does not exist.");
 
         // overeni existence customeru
-        if (request.Request.CustomerOnSAId1.HasValue 
-            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId1, cancellation))?.SalesArrangementId != householdEntity.SalesArrangementId)
-            throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId1} does not exist in this SA.");
-        if (request.Request.CustomerOnSAId2.HasValue
-            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId2, cancellation))?.SalesArrangementId != householdEntity.SalesArrangementId)
-            throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId2} does not exist in this SA.");
-
+        await _repository.CheckCustomers(householdEntity.SalesArrangementId, request.Request.CustomerOnSAId1, request.Request.CustomerOnSAId2, cancellation);
 
         householdEntity.CustomerOnSAId1 = request.Request.CustomerOnSAId1;
         householdEntity.CustomerOnSAId2 = request.Request.CustomerOnSAId2;
@@ -30,13 +24,13 @@ internal class LinkCustomerOnSAToHouseholdHandler
     }
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<LinkCustomerOnSAToHouseholdHandler> _logger;
-
+    private readonly Repositories.HouseholdRepository _repository;
+    
     public LinkCustomerOnSAToHouseholdHandler(
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<LinkCustomerOnSAToHouseholdHandler> logger)
+        Repositories.HouseholdRepository repository,
+        Repositories.SalesArrangementServiceDbContext dbContext)
     {
+        _repository = repository;
         _dbContext = dbContext;
-        _logger = logger;
     }
 }

@@ -95,6 +95,7 @@ CREATE TABLE [dbo].[CustomerOnSA](
      [FirstNameNaturalPerson] [nvarchar](100) NULL,
      [Name] [nvarchar](100) NULL,
      [DateOfBirthNaturalPerson] [datetime] NULL,
+     LockedIncomeDateTime datetime NULL,
      [CreatedUserName] [nvarchar](100) NULL,
      [CreatedUserId] [int] NULL,
      [CreatedTime] [datetime] NOT NULL,

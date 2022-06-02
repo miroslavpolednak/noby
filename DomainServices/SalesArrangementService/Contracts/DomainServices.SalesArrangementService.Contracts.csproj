@@ -17,6 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="CustomerOnSA\CustomerOnSABase.proto" />
 	  <None Remove="CustomerOnSA\IncomeInList.proto" />
 	  <None Remove="SalesArrangement\UpdateLoanAssessmentParameters.proto" />
 	</ItemGroup>
@@ -51,6 +52,7 @@
 		<Protobuf Include="CustomerOnSA/UpdateIncome.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/Income.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/IncomeInList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CustomerOnSABase.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 
 		<Protobuf Include="Household/HouseholdService.v1.proto" GrpcServices="Both" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/HouseholdExpenses.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

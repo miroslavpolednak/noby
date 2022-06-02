@@ -5,7 +5,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
-import "CustomerOnSA.proto";
+import "CustomerOnSABase.proto";
 
 message CreateCustomerRequest {
     int32 SalesArrangementId = 1;

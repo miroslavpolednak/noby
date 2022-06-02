@@ -18,5 +18,10 @@ internal class CreateHouseholdMediatrRequestValidator
         RuleFor(t => t.Request.HouseholdTypeId)
             .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
             .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
+
+        RuleFor(t => t.Request.CustomerOnSAId1)
+            .NotNull()
+            .When(t => t.Request.CustomerOnSAId2.HasValue)
+            .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16000");
     }
 }

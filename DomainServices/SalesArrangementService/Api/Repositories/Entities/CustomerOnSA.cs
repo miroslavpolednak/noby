@@ -22,6 +22,8 @@ internal class CustomerOnSA
     
     public DateTime? DateOfBirthNaturalPerson { get; set; }
 
+    public DateTime? LockedIncomeDateTime { get; set; }
+
     // kdyby me to nekdy v budoucnu napadlo - EF neumoznuje linka na jinou entitu pro temporal tables
     public virtual List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
 }

@@ -24,6 +24,7 @@ internal class UpdateObligationsHandler
         if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
             throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId} does not exist.");
 
+        // obligations
         var obligationEntity = await _dbContext.CustomersObligations.FirstOrDefaultAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation);
         if (obligationEntity is null)
         {
@@ -42,15 +43,12 @@ internal class UpdateObligationsHandler
 
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<UpdateObligationsHandler> _logger;
-
+    
     public UpdateObligationsHandler(
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<UpdateObligationsHandler> logger)
+        Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _codebookService = codebookService;
         _dbContext = dbContext;
-        _logger = logger;
     }
 }
