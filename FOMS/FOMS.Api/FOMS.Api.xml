@@ -803,12 +803,12 @@
             Unikatni identifikator pro session simulace.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.Inputs">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.SimulationInputs">
             <summary>
             Zadani simulace.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.Outputs">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.SimulationResults">
             <summary>
             Vysledky simulace.
             </summary>

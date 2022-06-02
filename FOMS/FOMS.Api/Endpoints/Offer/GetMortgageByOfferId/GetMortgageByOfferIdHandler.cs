@@ -17,8 +17,8 @@ internal class GetMortgageByOfferIdHandler
         {
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
-            Inputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
-            Outputs = result.SimulationResults.ToApiResponse(result.SimulationInputs)
+            SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
+            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs)
         };
     }
 
