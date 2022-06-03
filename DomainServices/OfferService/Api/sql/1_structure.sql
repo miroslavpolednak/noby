@@ -4,6 +4,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP TABLE [dbo].[Offer]
+GO
+
 CREATE TABLE [dbo].[Offer](
 	[OfferId] [int] IDENTITY(1,1) NOT NULL,
 	[ResourceProcessId] [uniqueidentifier] NOT NULL,

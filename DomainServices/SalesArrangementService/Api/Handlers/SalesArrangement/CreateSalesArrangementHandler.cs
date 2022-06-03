@@ -37,20 +37,20 @@ internal class CreateSalesArrangementHandler
         // nalinkovani offer
         if (request.Request.OfferId.HasValue)
         {
-            await _mediator.Send(new LinkModelationToSalesArrangementRequest
+            await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(new()
             {
                 SalesArrangementId = salesArrangementId,
                 OfferId = request.Request.OfferId.Value
-            }, cancellation);
+            }), cancellation);
         }
 
         // params
         if (request.Request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
-            await _mediator.Send(new UpdateSalesArrangementParametersRequest
+            await _mediator.Send(new Dto.UpdateSalesArrangementParametersMediatrRequest(new()
             {
                 SalesArrangementId = salesArrangementId,
                 Mortgage = request.Request.Mortgage
-            }, cancellation);
+            }), cancellation);
 
         _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);
 

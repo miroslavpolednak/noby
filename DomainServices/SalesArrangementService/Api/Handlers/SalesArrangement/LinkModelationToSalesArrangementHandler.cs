@@ -62,15 +62,12 @@ internal class LinkModelationToSalesArrangementHandler
 
     private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<LinkModelationToSalesArrangementHandler> _logger;
 
     public LinkModelationToSalesArrangementHandler(
         Repositories.SalesArrangementServiceDbContext dbContext,
-        OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        ILogger<LinkModelationToSalesArrangementHandler> logger)
+        OfferService.Abstraction.IOfferServiceAbstraction offerService)
     {
         _dbContext = dbContext;
         _offerService = offerService;
-        _logger = logger;
     }
 }
