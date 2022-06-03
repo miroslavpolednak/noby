@@ -1,7 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CaseService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
 using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
@@ -38,10 +37,13 @@ internal class CreateRiskBusinessCaseHandler
             offerInstance.SimulationInputs.LoanKindId,
             notification.CustomerOnSAId,
             notification.NewMpCustomerId.Value);
-        
+
+        bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, cancellationToken));
+
         // get rbcId
         string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
-        
+
+        //bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement());
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)
