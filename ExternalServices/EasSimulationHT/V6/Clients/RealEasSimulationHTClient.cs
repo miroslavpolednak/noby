@@ -38,6 +38,19 @@ internal sealed class RealEasSimulationHTClient : Shared.BaseClient<RealEasSimul
         });
     }
 
+    public async Task<IServiceCallResult> FindTasks(WFS_Header header, WFS_Find_ByCaseId message)
+    {
+        return await callMethod(async () =>
+        {
+            using HT_WS_SB_ServicesClient client = createClient();
+
+            _logger.LogSerializedObject("FindTasksRequest", new { header, message });
+            var result = await client.WFS_FindTasksAsync(header, message);
+            _logger.LogSerializedObject("FindTasksResponse", result);
+
+            return new SuccessfulServiceCallResult<WFS_FindItem[]>(result.tasks);
+        });
+    }
 
     private HT_WS_SB_ServicesClient createClient()
       => new HT_WS_SB_ServicesClient(createHttpBinding(), createEndpoint());

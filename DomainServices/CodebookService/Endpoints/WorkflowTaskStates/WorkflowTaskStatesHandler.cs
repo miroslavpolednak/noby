@@ -21,7 +21,7 @@ public class WorkflowTaskStatesHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_WFL_UKOLY_STAVY] ORDER BY KOD ASC";
+    const string _sqlQuery = @"SELECT KOD 'Id', TEXT 'Name', 1 'IsValid' FROM [SBR].[CIS_WFL_UKOLY_STAVY] ORDER BY KOD ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<WorkflowTaskStatesHandler> _logger;

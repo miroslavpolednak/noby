@@ -14,4 +14,12 @@ public interface IEasSimulationHTClient
     /// </returns>
     Task<IServiceCallResult> RunSimulationHT(SimulationHTRequest request);
 
+    /// <summary>
+    /// Call method to find tasks by CaseId
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[WFS_FindItem[]]
+    /// </returns>
+    Task<IServiceCallResult> FindTasks(WFS_Header header, WFS_Find_ByCaseId message);
+
 }
