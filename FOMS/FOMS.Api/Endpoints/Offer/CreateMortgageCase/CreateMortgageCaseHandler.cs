@@ -37,12 +37,7 @@ internal class CreateMortgageCaseHandler
 
         // create customer on SA
         var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
-        if (createCustomerResult.PartnerId.HasValue)
-        {
-            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
-            await _mediator.Publish(notification, cancellationToken);
-        }
-
+        
         // create household
         int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _SA.CreateHouseholdRequest
         {
@@ -51,6 +46,13 @@ internal class CreateMortgageCaseHandler
             SalesArrangementId = salesArrangementId
         }, cancellationToken));
         _logger.EntityCreated(nameof(Household), householdId);
+
+        // mam identifikovaneho customera
+        if (createCustomerResult.PartnerId.HasValue)
+        {
+            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
+            await _mediator.Publish(notification, cancellationToken);
+        }
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 

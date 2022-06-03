@@ -28,6 +28,8 @@ internal class CreateRiskBusinessCaseHandler
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
         // household
         var households = ServiceCallResult.ResolveAndThrowIfError<List<_SA.Household>>(await _householdService.GetHouseholdList(notification.SalesArrangementId, cancellationToken));
+        if (!households.Any())
+            throw new CisValidationException("CreateRiskBusinessCase: household does not exist");
 
         // ziskat segment
         string riskSegment = await getRiskSegment(
@@ -46,7 +48,7 @@ internal class CreateRiskBusinessCaseHandler
         // ulozit na SA
         bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, cancellationToken));
 
-        ServiceCallResult.ResolveAndThrowIfError<string>(await _sbWebApiClient.InputRequest(notification.CaseId, riskBusinessId, cancellationToken));
+        bool sbNotified = ServiceCallResult.Resolve(await _sbWebApiClient.InputRequest(notification.CaseId, riskBusinessId, cancellationToken));
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)

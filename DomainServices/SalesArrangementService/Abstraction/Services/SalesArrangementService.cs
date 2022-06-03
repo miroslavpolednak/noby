@@ -74,8 +74,8 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             new()
             {
                 SalesArrangementId = salesArrangementId,
-                ContractNumber = contractNumber,
-                RiskBusinessCaseId = riskBusinessCaseId
+                ContractNumber = contractNumber ?? "",
+                RiskBusinessCaseId = riskBusinessCaseId ?? ""
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
@@ -121,8 +121,8 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             {
                 SalesArrangementId = salesArrangementId,
                 LoanApplicationAssessmentId = loanApplicationAssessmentId,
-                RiskSegment = riskSegment,
-                CommandId = commandId
+                RiskSegment = riskSegment ?? "",
+                CommandId = commandId ?? ""
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
