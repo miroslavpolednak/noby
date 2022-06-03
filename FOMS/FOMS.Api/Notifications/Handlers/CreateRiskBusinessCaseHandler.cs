@@ -44,7 +44,7 @@ internal class CreateRiskBusinessCaseHandler
         string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
 
         // ulozit na SA
-        //bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId));
+        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, cancellationToken));
 
         ServiceCallResult.ResolveAndThrowIfError<string>(await _sbWebApiClient.InputRequest(notification.CaseId, riskBusinessId, cancellationToken));
     }

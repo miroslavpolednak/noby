@@ -2,6 +2,7 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "NullableGrpcDate.proto";
 import "google/protobuf/wrappers.proto";
 
 message UpdateLoanAssessmentParametersRequest {
@@ -12,4 +13,6 @@ message UpdateLoanAssessmentParametersRequest {
 	string RiskSegment = 3;
 
 	string CommandId = 4;
+
+	cis.types.NullableGrpcDate RiskBusinessCaseExpirationDate = 5;
 }

@@ -26,11 +26,12 @@ internal class SalesArrangementServiceRepository
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
             .FirstOrDefaultAsync(cancellation);
 
-    public async Task UpdateSalesArrangement(int salesArrangementId, string contractNumber, string eaCode, CancellationToken cancellation)
+    public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? eaCode, string? riskBusinessCaseId, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
         entity.ContractNumber = contractNumber;
         entity.EaCode = eaCode;
+        entity.RiskBusinessCaseId = riskBusinessCaseId;
         await _dbContext.SaveChangesAsync(cancellation);
     }
 

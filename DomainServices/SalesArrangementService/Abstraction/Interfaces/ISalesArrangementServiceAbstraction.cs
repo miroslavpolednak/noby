@@ -62,7 +62,7 @@ public interface ISalesArrangementServiceAbstraction
     /// Update obsahu SA
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update parametru SA
