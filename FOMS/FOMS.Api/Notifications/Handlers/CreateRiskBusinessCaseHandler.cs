@@ -43,7 +43,10 @@ internal class CreateRiskBusinessCaseHandler
         // get rbcId
         string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
 
-        //bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement());
+        // ulozit na SA
+        //bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId));
+
+        ServiceCallResult.ResolveAndThrowIfError<string>(await _sbWebApiClient.InputRequest(notification.CaseId, riskBusinessId, cancellationToken));
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)
@@ -81,6 +84,7 @@ internal class CreateRiskBusinessCaseHandler
         return ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateLoanApplication(loanApplicationRequest));
     }
 
+    private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
     private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly IOfferServiceAbstraction _offerService;
@@ -88,12 +92,14 @@ internal class CreateRiskBusinessCaseHandler
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public CreateRiskBusinessCaseHandler(
+        ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         ExternalServices.Rip.V1.IRipClient ripClient,
         IHouseholdServiceAbstraction householdService,
         IOfferServiceAbstraction offerService,
         ICaseServiceAbstraction caseService,
         ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _sbWebApiClient = sbWebApiClient;
         _ripClient = ripClient;
         _householdService = householdService;
         _offerService = offerService;

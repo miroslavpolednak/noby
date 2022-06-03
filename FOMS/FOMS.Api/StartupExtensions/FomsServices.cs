@@ -1,4 +1,5 @@
 ﻿using ExternalServices.Rip;
+using ExternalServices.SbWebApi;
 using FluentValidation.AspNetCore;
 
 namespace FOMS.Api.StartupExtensions;
@@ -30,6 +31,7 @@ internal static class FomsServices
 
         // RIP
         builder.Services.AddExternalServiceRip(appConfiguration.Rip);
+        builder.AddExternalServiceSbWebApi();
 
         return builder;
     }
