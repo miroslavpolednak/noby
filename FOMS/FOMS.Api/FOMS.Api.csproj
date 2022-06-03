@@ -49,6 +49,7 @@
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
     <ProjectReference Include="..\..\ExternalServices\Rip\ExternalServices.Rip.csproj" />
+    <ProjectReference Include="..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
     <ProjectReference Include="..\FOMS.Services\FOMS.Services.csproj" />
   </ItemGroup>

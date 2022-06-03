@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using CIS.ExternalServicesHelpers;
-using Polly;
-using Polly.Extensions.Http;
-using Microsoft.Net.Http.Headers;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 namespace ExternalServices.SbWebApi;
@@ -22,11 +19,8 @@ public static class StartupExtensions
                 if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
                     builder.Services.AddScoped<V1.ISbWebApiClient, V1.MockSbWebApiClient>();
                 else
-                    builder.Services.AddHttpClient<V1.ISbWebApiClient, V1.Clients.RealSbWebApiClient>((services, client) =>
+                    builder.Services.AddHttpClient<V1.ISbWebApiClient, V1.RealSbWebApiClient>((services, client) =>
                     {
-                        client.Timeout = TimeSpan.FromSeconds(configuration.RequestTimeout ?? 10);
-                        client.DefaultRequestHeaders.TryAddWithoutValidation(HeaderNames.ContentType, "application/json");
-
                         // service url
                         if (configuration.UseServiceDiscovery)
                         {
@@ -36,19 +30,7 @@ public static class StartupExtensions
                         }
                         else
                             client.BaseAddress = new Uri(configuration.ServiceUrl);
-                    })
-                        .AddPolicyHandler((services, request) => HttpPolicyExtensions
-                            .HandleTransientHttpError()
-                            .WaitAndRetryAsync(new[]
-                            {
-                                TimeSpan.FromSeconds(1),
-                                TimeSpan.FromSeconds(2)
-                            },
-                            onRetry: (outcome, timespan, retryAttempt, context) =>
-                            {
-                                services.GetService<ILogger<V1.ISbWebApiClient>>()?.ExtServiceRetryCall(ServiceName, retryAttempt, timespan.TotalMilliseconds);
-                            }
-                            ));
+                    });
                 break;
 
             default:
