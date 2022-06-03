@@ -41,5 +41,8 @@ internal class CaseService : Contracts.v1.CaseService.CaseServiceBase
 
     public override async Task<GetTaskListResponse> GetTaskList(GetTaskListRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetTaskListMediatrRequest(request.CaseId), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateActiveTasks(UpdateActiveTasksRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateActiveTasksMediatrRequest(request), context.CancellationToken);
 }
 

@@ -19,6 +19,7 @@
 	<ItemGroup>
 	  <None Remove="DeleteCase.proto" />
 	  <None Remove="GetTaskList.proto" />
+	  <None Remove="UpdateActiveTasks.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -42,6 +43,10 @@
 		<Protobuf Include="Case.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CreateCase.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="GetCaseCounts.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="UpdateActiveTasks.proto" GrpcServices="None">
+		  <ProtoRoot>./</ProtoRoot>
+		  <AdditionalImportDirs>../../../CIS/gRPC.CisTypes/Protos</AdditionalImportDirs>
+		</Protobuf>
 		<Protobuf Include="GetTaskList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="GetCaseDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="LinkOwnerToCase.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

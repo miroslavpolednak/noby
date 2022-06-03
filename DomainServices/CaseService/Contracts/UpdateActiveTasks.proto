@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "GrpcDate.proto";
+
+message UpdateTaskItem {
+	int32 TaskId = 1;
+	int32 TypeId = 2;
+}
+
+message UpdateActiveTasksRequest {
+	int64 CaseId = 1;
+	repeated UpdateTaskItem Tasks = 2;
+}
