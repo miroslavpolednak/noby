@@ -9,9 +9,4 @@ internal sealed class MockSbWebApiClient
     {
         return Task.FromResult((IServiceCallResult)new SuccessfulServiceCallResult());
     }
-
-    public Task<IServiceCallResult> InputRequest(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken)
-    {
-        return Task.FromResult((IServiceCallResult)new SuccessfulServiceCallResult());
-    }
 }

@@ -50,7 +50,7 @@ internal class CreateMortgageCaseHandler
         // mam identifikovaneho customera
         if (createCustomerResult.PartnerId.HasValue)
         {
-            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
+            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value, _userAccessor.User?.Id);
             await _mediator.Publish(notification, cancellationToken);
         }
 

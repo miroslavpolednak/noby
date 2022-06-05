@@ -4,7 +4,8 @@ internal record MainCustomerUpdatedNotification(
     long CaseId, 
     int SalesArrangementId, 
     int CustomerOnSAId,
-    int? NewMpCustomerId)
+    int? NewMpCustomerId,
+    int? CurrentUserId)
     : INotification
 {
 }

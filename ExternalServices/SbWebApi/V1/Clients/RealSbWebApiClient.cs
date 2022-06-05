@@ -47,11 +47,6 @@ internal class RealSbWebApiClient
         });
     }
 
-    public Task<IServiceCallResult> InputRequest(long caseId, string riskBusinessCaseId, CancellationToken cancellationToken)
-    {
-        return Task.FromResult((IServiceCallResult)new SuccessfulServiceCallResult());
-    }
-
     private EventReportClient CreateClient()
         => new(_httpClient?.BaseAddress?.ToString(), _httpClient);
 

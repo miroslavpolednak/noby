@@ -4,7 +4,12 @@ using DomainServices.CaseService.Abstraction;
 using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
+using _Usr = DomainServices.UserService.Contracts;
 using CIS.Foms.Enums;
+using System.ComponentModel.DataAnnotations;
+using CIS.Core;
+using DomainServices.UserService.Abstraction;
+using DomainServices.CodebookService.Abstraction;
 
 namespace FOMS.Api.Notifications.Handlers;
 
@@ -48,7 +53,29 @@ internal class CreateRiskBusinessCaseHandler
         // ulozit na SA
         bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, cancellationToken));
 
-        bool sbNotified = ServiceCallResult.Resolve(await _sbWebApiClient.InputRequest(notification.CaseId, riskBusinessId, cancellationToken));
+        // notifikovat SB
+        // get current user's login
+        string? userLogin = null;
+        if (notification.CurrentUserId.HasValue)
+            userLogin = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(notification.CurrentUserId.Value, cancellationToken)).UserIdentifiers.First().Identity;
+        
+        // get case owner
+        var ownerInstance = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellationToken));
+        var productType = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == caseInstance.Data.ProductTypeId);
+
+        var sbNotifyModel = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
+            userLogin ?? "anonymous",
+            notification.CaseId,
+            saInstance.ContractNumber ?? "",
+            $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
+            ((CaseStates)caseInstance.State).GetAttribute<DisplayAttribute>()!.Name!,
+            caseInstance.Data.ProductTypeId,
+            ownerInstance.CPM,
+            ownerInstance.ICP,
+            productType.Mandant,
+            riskBusinessId);
+        
+        bool sbNotified = ServiceCallResult.Resolve(await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellationToken));
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)
@@ -91,16 +118,22 @@ internal class CreateRiskBusinessCaseHandler
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICaseServiceAbstraction _caseService;
+    private readonly IUserServiceAbstraction _userService;
+    private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public CreateRiskBusinessCaseHandler(
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
         ExternalServices.Rip.V1.IRipClient ripClient,
+        ICodebookServiceAbstraction codebookService,
+        IUserServiceAbstraction userService,
         IHouseholdServiceAbstraction householdService,
         IOfferServiceAbstraction offerService,
         ICaseServiceAbstraction caseService,
         ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _codebookService = codebookService;
+        _userService = userService;
         _sbWebApiClient = sbWebApiClient;
         _ripClient = ripClient;
         _householdService = householdService;
