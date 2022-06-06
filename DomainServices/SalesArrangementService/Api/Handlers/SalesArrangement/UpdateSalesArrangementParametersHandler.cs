@@ -43,7 +43,7 @@ internal class UpdateSalesArrangementParametersHandler
     static string? serializeParameters(Contracts.UpdateSalesArrangementParametersRequest request)
         => request.DataCase switch
         {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : JsonSerializer.Serialize(request.Mortgage),
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : Google.Protobuf.JsonFormatter.Default.Format(request.Mortgage),
             _ => throw new NotImplementedException()
         };
 

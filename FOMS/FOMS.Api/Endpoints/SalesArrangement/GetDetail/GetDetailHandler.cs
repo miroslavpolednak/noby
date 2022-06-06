@@ -14,9 +14,13 @@ internal class GetDetailHandler
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         // kategorie produktu
-        int? productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId).ProductTypeId
+        int? productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
+            .First(t => t.Id == saInstance.SalesArrangementTypeId)
+            .ProductTypeId
             ?? throw new CisNotFoundException(ErrorCodes.SalesArrangementProductCategoryNotFound, $"ProductCategory for SalesArrangementTypeId={saInstance.SalesArrangementTypeId} not found");
-        var productCategory = (await _codebookService.ProductTypes(cancellationToken)).FirstOrDefault(t => t.Id == productTypeId)?.ProductCategory
+        var productCategory = (await _codebookService.ProductTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == productTypeId)
+            ?.ProductCategory
             ?? throw new CisNotFoundException(ErrorCodes.SalesArrangementProductCategoryNotFound, $"ProductCategory for ProductTypeId={productTypeId} not found");
 
         // data o SA
