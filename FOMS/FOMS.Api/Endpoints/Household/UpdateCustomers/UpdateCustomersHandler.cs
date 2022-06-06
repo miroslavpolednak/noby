@@ -116,7 +116,7 @@ internal class UpdateCustomersHandler
             // hlavni domacnost - hlavni klient ma modre ID
             if (newMpId.HasValue && customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
             {
-                var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customerId!.Value, newMpId, _userAccessor.User?.Id);
+                var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customerId!.Value, newMpId);
                 await _mediator.Publish(notification, cancellationToken);
             }
 
@@ -125,22 +125,16 @@ internal class UpdateCustomersHandler
         return default(int?);
     }
 
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
-    private readonly ILogger<UpdateCustomersHandler> _logger;
     private readonly IMediator _mediator;
 
     public UpdateCustomersHandler(
         IMediator mediator,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
         IHouseholdServiceAbstraction householdService,
-        ICustomerOnSAServiceAbstraction customerOnSAService,
-        ILogger<UpdateCustomersHandler> logger)
+        ICustomerOnSAServiceAbstraction customerOnSAService)
     {
-        _userAccessor = userAccessor;
         _mediator = mediator;
-        _logger = logger;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
     }

@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ExternalServices.Eas;
 using ExternalServices.Rip;
+using ExternalServices.SbWebApi;
 
 namespace DomainServices.SalesArrangementService.Api;
 
@@ -37,6 +38,8 @@ internal static class StartupExtensions
 
         // Rip svc
         builder.Services.AddExternalServiceRip(appConfiguration.Rip);
+        // sb web api
+        builder.AddExternalServiceSbWebApi();
 
         // dbcontext
         builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();
