@@ -54,7 +54,6 @@ internal class UpdateActiveTasksHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    
     private static void CheckTasks(UpdateTaskItem[] tasks, int[] taskTypeIds)
     {
         var tasksWithInvalidTypeId = tasks.Where(t => !taskTypeIds.Contains(t.TypeId));

@@ -27,4 +27,14 @@ internal static class CaseExtensions
         return task;
     }
 
+    public static UpdateTaskItem ToUpdateTaskItem(this WorkflowTask workflowTask)
+    {
+        return new UpdateTaskItem
+        {
+            TaskId = workflowTask.TaskId,
+            TypeId = workflowTask.TypeId
+
+        };
+    }
+
 }

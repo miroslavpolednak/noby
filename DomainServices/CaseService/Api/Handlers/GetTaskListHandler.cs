@@ -17,6 +17,7 @@ internal class GetTaskListHandler
     private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly IMediator _mediator;
 
     public GetTaskListHandler(
         ILogger<GetTaskListHandler> logger,
@@ -24,7 +25,8 @@ internal class GetTaskListHandler
         ICodebookServiceAbstraction codebookService,
         UserService.Abstraction.IUserServiceAbstraction userService,
         EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor
+        CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        IMediator mediator
         )
     {
         _logger = logger;
@@ -33,14 +35,17 @@ internal class GetTaskListHandler
         _userService = userService;
         _easSimulationHTClient = easSimulationHTClient;
         _userAccessor = userAccessor;
+        _mediator = mediator;
     }
 
     #endregion
 
     public async Task<GetTaskListResponse> Handle(Dto.GetTaskListMediatrRequest request, CancellationToken cancellation)
     {
+        var caseId = (int)request.CaseId;
+
         // check if case exists
-        await _repository.EnsureExistingCase(request.CaseId, cancellation);
+        await _repository.EnsureExistingCase(caseId, cancellation);
 
         // TODO: _userAccessor.User = NULL !!!
         var userId = 1; //_userAccessor.User!.Id;
@@ -57,7 +62,7 @@ internal class GetTaskListHandler
         var header = new EasSimulationHT.EasSimulationHTWrapper.WFS_Header { system = "NOBY", login = GetLogin(user) };
         var messsage = new EasSimulationHT.EasSimulationHTWrapper.WFS_Find_ByCaseId
         {
-            case_id = (int)request.CaseId,
+            case_id = caseId,
             task_state = taskStateIds, // new int[] { 0, 10, 20, 22, 24, 26 },
         };
 
@@ -69,7 +74,8 @@ internal class GetTaskListHandler
         CheckTasks(tasks, taskTypeIds, taskStateIds);
 
         // update active tasks
-        // TODO
+        var items = tasks.Select(i => i.ToUpdateTaskItem()).ToArray();
+        await _mediator.Send(new Dto.UpdateActiveTasksMediatrRequest(caseId, items), cancellation);
 
         // response
         var response = new GetTaskListResponse();
@@ -105,7 +111,6 @@ internal class GetTaskListHandler
         throw new CisValidationException(99999, message); //TODO: ErrorCode
     }
 
-
     private static string GetLogin(UserService.Contracts.User user)
     {
         if (!String.IsNullOrWhiteSpace(user.CPM) && !String.IsNullOrWhiteSpace(user.ICP))
@@ -118,19 +123,6 @@ internal class GetTaskListHandler
         return identity ?? String.Empty;
     }
 
-    //private (EasSimulationHT.EasSimulationHTWrapper.WFS_Header, EasSimulationHT.EasSimulationHTWrapper.WFS_Find_ByCaseId) GetRequest(int caseId)
-    //{
-    //    var header = new EasSimulationHT.EasSimulationHTWrapper.WFS_Header { system = "NOBY", login = "ABC" };
-
-    //    var messsage = new EasSimulationHT.EasSimulationHTWrapper.WFS_Find_ByCaseId
-    //    {
-    //        case_id = caseId,
-    //        task_state = Array.Empty<int>(),
-    //    };
-
-    //    return (header, messsage);
-    //}
-
     private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_FindItem[] ResolveFindTasks (IServiceCallResult result) =>
      result switch
      {
@@ -140,10 +132,3 @@ internal class GetTaskListHandler
      };
 
 }
-
-
-//.TaskId tasks.task.mtdt_val kde mtdt_def = ukol_id  int 1..1	Id úkolu generované Starbuildem
-//    .TypeId tasks.task.mtdt_val kde mtdt_def = ukol_typ int 1..1	Typ úkolu odpovídající WorkflowTaskType (CIS_WFL_UKOLY)
-//    .Name tasks.task.mtdt_val kde mtdt_def = ukol_nazov   String  1..1	Jméno úkolu
-//    .CreatedOn tasks.task.mtdt_val kde mtdt_def = ukol_dat_start_proces    DateTime    1..1	Datum vytvoření úkolu
-//    .StateId
