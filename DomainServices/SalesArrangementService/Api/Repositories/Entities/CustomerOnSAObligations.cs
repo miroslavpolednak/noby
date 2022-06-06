@@ -12,5 +12,7 @@ internal class CustomerOnSAObligations
 
     public int CustomerOnSAId { get; set; }
 
-    public string? Obligations { get; set; }
+    public string? Data { get; set; }
+    
+    public byte[]? DataBin { get; set; }
 }

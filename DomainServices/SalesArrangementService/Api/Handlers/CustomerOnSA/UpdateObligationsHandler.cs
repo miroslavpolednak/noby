@@ -34,7 +34,7 @@ internal class UpdateObligationsHandler
             };
             _dbContext.CustomersObligations.Add(obligationEntity);
         }
-        obligationEntity.Obligations = request.Request.Obligations is null ? null : JsonSerializer.Serialize(request.Request.Obligations!.ToList());
+        obligationEntity.Data = request.Request.Obligations is null ? null : JsonSerializer.Serialize(request.Request.Obligations!.ToList());
 
         await _dbContext.SaveChangesAsync(cancellation);
 

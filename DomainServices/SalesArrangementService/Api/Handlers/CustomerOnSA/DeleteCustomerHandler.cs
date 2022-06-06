@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Google.Protobuf;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
@@ -15,9 +16,9 @@ internal class DeleteCustomerHandler
         
         var saParameterInstance = await _dbContext.SalesArrangementsParameters
             .FirstOrDefaultAsync(t => t.SalesArrangementId == entity.SalesArrangementId, cancellation);
-        if (!string.IsNullOrEmpty(saParameterInstance?.Parameters))
+        if (saParameterInstance?.ParametersBin is not null)
         {
-            var parameter = JsonSerializer.Deserialize<_SA.SalesArrangementParametersMortgage>(saParameterInstance.Parameters!)!;
+            var parameter = _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameterInstance.ParametersBin);
             if (parameter.Agent == request.CustomerOnSAId)
             {
                 // ziskat caseId
@@ -29,6 +30,7 @@ internal class DeleteCustomerHandler
                 
                 parameter.Agent = mainCustomerOnSAId;
                 saParameterInstance.Parameters = JsonSerializer.Serialize(parameter);
+                saParameterInstance.ParametersBin = parameter.ToByteArray();
             }
         }
 

@@ -33,7 +33,7 @@ internal class CreateCustomerHandler
             var obligationEntity = new CustomerOnSAObligations
             {
                 CustomerOnSAId = customerId,
-                Obligations = JsonSerializer.Serialize(request.Request.Customer.Obligations!.ToList())
+                Data = JsonSerializer.Serialize(request.Request.Customer.Obligations!.ToList())
             };
             _dbContext.CustomersObligations.Add(obligationEntity);
             await _dbContext.SaveChangesAsync(cancellation);

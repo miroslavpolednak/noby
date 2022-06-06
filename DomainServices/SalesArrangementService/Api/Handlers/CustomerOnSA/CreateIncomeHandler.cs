@@ -1,6 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Google.Protobuf;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -18,9 +19,15 @@ internal class CreateIncomeHandler
             CustomerOnSAId = request.Request.CustomerOnSAId,
             Sum = request.Request.BaseData?.Sum,
             CurrencyCode = request.Request.BaseData?.CurrencyCode,
-            IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)request.Request.IncomeTypeId,
-            Data = JsonSerializer.Serialize(getDataObject(request.Request), GrpcHelpers.GrpcJsonSerializerOptions)
+            IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)request.Request.IncomeTypeId
         };
+
+        var dataObject = getDataObject(request.Request);
+        if (dataObject != null)
+        {
+            entity.Data = JsonSerializer.Serialize(dataObject);
+            entity.DataBin = dataObject.ToByteArray();
+        }
 
         _dbContext.CustomersIncomes.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
@@ -33,7 +40,7 @@ internal class CreateIncomeHandler
         };
     }
 
-    static object getDataObject(CreateIncomeRequest request)
+    static IMessage? getDataObject(CreateIncomeRequest request)
         => (CIS.Foms.Enums.CustomerIncomeTypes)request.IncomeTypeId switch
         {
             CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement,

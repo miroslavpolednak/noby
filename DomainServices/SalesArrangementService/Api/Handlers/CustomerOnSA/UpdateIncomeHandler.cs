@@ -1,6 +1,7 @@
 ﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Google.Protobuf;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -12,17 +13,19 @@ internal class UpdateIncomeHandler
         var entity = (await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.Request.IncomeId)
             .FirstOrDefaultAsync(cancellation)) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");
-        
+
+        var dataObject = getDataObject(entity.IncomeTypeId, request.Request);
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
-        entity.Data = JsonSerializer.Serialize(getDataObject(entity.IncomeTypeId, request.Request));
+        entity.Data = JsonSerializer.Serialize((object)dataObject);
+        entity.DataBin = dataObject?.ToByteArray();
 
         await _dbContext.SaveChangesAsync(cancellation);
         
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    static object getDataObject(CIS.Foms.Enums.CustomerIncomeTypes incomeType, _SA.UpdateIncomeRequest request)
+    static IMessage getDataObject(CIS.Foms.Enums.CustomerIncomeTypes incomeType, _SA.UpdateIncomeRequest request)
         => incomeType switch
         {
             CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement,

@@ -27,7 +27,7 @@ internal class GetCustomerHandler
         var obligations = await _dbContext.CustomersObligations
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .Select(t => t.Obligations)
+            .Select(t => t.Data)
             .FirstOrDefaultAsync(cancellation);
         if (!string.IsNullOrEmpty(obligations))
             customerInstance.Obligations.AddRange(JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations));

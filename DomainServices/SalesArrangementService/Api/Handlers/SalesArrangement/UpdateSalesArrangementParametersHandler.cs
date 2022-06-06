@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Google.Protobuf;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement;
 
@@ -21,7 +21,7 @@ internal class UpdateSalesArrangementParametersHandler
                     throw new CisNotFoundException(16000, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
             }
         }
-
+        
         // instance parametru, pokud existuje
         var entity = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation);
         if (entity is null)
@@ -32,19 +32,22 @@ internal class UpdateSalesArrangementParametersHandler
             };
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
-        // naplnit parametry serializovanym objektem
-        entity.Parameters = serializeParameters(request.Request);
 
+        // naplnit parametry serializovanym objektem
+        var dataObject = getDataObject(request.Request);
+        entity.Parameters = dataObject is null ? null : JsonFormatter.Default.Format(dataObject);
+        entity.ParametersBin = dataObject is null ? null : dataObject.ToByteArray();
+        
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    static string? serializeParameters(Contracts.UpdateSalesArrangementParametersRequest request)
+    static IMessage? getDataObject(Contracts.UpdateSalesArrangementParametersRequest request)
         => request.DataCase switch
         {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage is null ? null : Google.Protobuf.JsonFormatter.Default.Format(request.Mortgage),
-            _ => throw new NotImplementedException()
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage,
+            _ => null
         };
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
