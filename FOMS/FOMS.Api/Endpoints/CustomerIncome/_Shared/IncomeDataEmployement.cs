@@ -2,9 +2,9 @@
 
 public class IncomeDataEmployement
 {
-    public bool IsForeignIncome { get; set; }
     public int? ForeignIncomeTypeId { get; set; }
-    public bool IsDomicile { get; set; }
+    public bool ProofOfIncomeToggle { get; set; }
+    public bool WageDeductionToggle { get; set; }
     public EmployerDataDto? Employer { get; set; }
     public JobDataDto? Job { get; set; }
     public WageDeductionDataDto? WageDeduction { get; set; }

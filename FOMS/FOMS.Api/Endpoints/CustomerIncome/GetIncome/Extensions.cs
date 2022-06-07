@@ -8,8 +8,8 @@ internal static class Extensions
         => new Dto.IncomeDataEmployement
         {
             ForeignIncomeTypeId = contract.ForeignIncomeTypeId,
-            IsDomicile = contract.IsDomicile,
-            IsForeignIncome = contract.IsForeignIncome,
+            ProofOfIncomeToggle = contract.ProofOfIncomeToggle,
+            WageDeductionToggle = contract.WageDeductionToggle,
             Employer = contract.Employer?.ToApiResponse(),
             IncomeConfirmation = contract.IncomeConfirmation?.ToApiResponse(),
             Job = contract.Job?.ToApiResponse(),
@@ -19,14 +19,10 @@ internal static class Extensions
     public static Dto.EmployerDataDto ToApiResponse(this _SA.EmployerData contract)
         => new Dto.EmployerDataDto
         {
-            Address = contract.Address,
-            SensitiveSector = contract.SensitiveSector,
-            WorkSectorId = contract.WorkSectorId,
             BirthNumber = contract.BirthNumber,
             Cin = contract.Cin,
-            ClassificationOfEconomicActivitiesId = contract.ClassificationOfEconomicActivitiesId,
             Name = contract.Name,
-            PhoneNumber = contract.PhoneNumber
+            CountryId = contract.CountryId
         };
 
     public static Dto.IncomeConfirmationDataDto ToApiResponse(this _SA.IncomeConfirmationData contract)
@@ -35,8 +31,7 @@ internal static class Extensions
             ConfirmationByCompany = contract.ConfirmationByCompany,
             ConfirmationContact = contract.ConfirmationContact,
             ConfirmationDate = contract.ConfirmationDate,
-            ConfirmationPerson = contract.ConfirmationPerson,
-            ConfirmationPlace = contract.ConfirmationPlace
+            ConfirmationPerson = contract.ConfirmationPerson
         };
 
     public static Dto.JobDataDto ToApiResponse(this _SA.JobData contract)
@@ -49,7 +44,7 @@ internal static class Extensions
             JobDescription = contract.JobDescription,
             JobNoticePeriod = contract.JobNoticePeriod,
             JobTrialPeriod = contract.JobTrialPeriod,
-            JobType = contract.JobType
+            GrossAnnualIncome = contract.GrossAnnualIncome
         };
 
     public static Dto.WageDeductionDataDto ToApiResponse(this _SA.WageDeductionData contract)

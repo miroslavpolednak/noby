@@ -13,8 +13,9 @@ internal class CustomerOnSAIncome
     public int CustomerOnSAId { get; set; }
     
     public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
-    
-    public int? Sum { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    public decimal? Sum { get; set; }
     
     public string? CurrencyCode { get; set; }
     

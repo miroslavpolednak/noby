@@ -6,7 +6,7 @@ public abstract class BaseIncome
     /// Celkova castka prijmu
     /// </summary>
     /// <example>25000</example>
-    public int? Sum { get; set; }
+    public decimal? Sum { get; set; }
 
     /// <summary>
     /// Kod meny

@@ -5,9 +5,5 @@ public class EmployerDataDto
     public string? Name { get; set; }
     public string? BirthNumber { get; set; }
     public string? Cin { get; set; }
-    public CIS.Foms.Types.Address? Address { get; set; }
-    public string? PhoneNumber { get; set; }
-    public int? ClassificationOfEconomicActivitiesId { get; set; }
-    public int? WorkSectorId { get; set; }
-    public bool SensitiveSector { get; set; }
+    public int? CountryId { get; set; }
 }

@@ -219,7 +219,7 @@ CREATE TABLE [dbo].[CustomerOnSAIncome](
 	[CustomerOnSAIncomeId] [int] IDENTITY(1,1) NOT NULL,
 	[CustomerOnSAId] [int] NOT NULL,
 	[IncomeTypeId] [int] NOT NULL,
-	[Sum] [int] NULL,
+	[Sum] decimal(12,2) NULL,
 	[CurrencyCode] [varchar](3) NULL,
 	[Data] [nvarchar](max) NULL,
     [DataBin] [varbinary](max) NULL,
