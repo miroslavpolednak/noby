@@ -20,7 +20,7 @@ internal class RealSbWebApiClient
                 {
                     Header = new WFS_Header
                     {
-                        System = "NOBY",
+                        Systemx = "NOBY",
                         Login = request.Login
                     },
                     Message = new WFS_Event_CaseStateChanged
