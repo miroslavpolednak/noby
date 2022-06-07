@@ -42,28 +42,33 @@ internal class GetTaskListHandler
 
     public async Task<GetTaskListResponse> Handle(Dto.GetTaskListMediatrRequest request, CancellationToken cancellation)
     {
+        // check if user is authenticated
+        if (!_userAccessor.IsAuthenticated)
+        {
+            throw new CisValidationException(99999, $"User is not authenticated."); //TODO: ErrorCode
+        }
+
         var caseId = (int)request.CaseId;
 
         // check if case exists
         await _repository.EnsureExistingCase(caseId, cancellation);
 
-        // TODO: _userAccessor.User = NULL !!!
-        var userId = 1; //_userAccessor.User!.Id;
-        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(userId, cancellation));
+        // load user
+        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation));
 
         // load codebooks
         var taskTypes = await _codebookService.WorkflowTaskTypes(cancellation);
         var taskStates = await _codebookService.WorkflowTaskStates(cancellation);
 
         var taskTypeIds = taskTypes.Select(i => i.Id).ToArray();
-        var taskStateIds = taskStates.Select(i => i.Id).Where(i => i < 30).ToArray(); // ??? //TODO: impelement codebook extension by flag
+        var taskStateIds = taskStates.Where(i => !i.Flag.HasFlag(CodebookService.Contracts.Endpoints.WorkflowTaskStates.EWorkflowTaskStateFlag.Inactive)).Select(i => i.Id).ToArray();
 
         // request data
         var header = new EasSimulationHT.EasSimulationHTWrapper.WFS_Header { system = "NOBY", login = GetLogin(user) };
         var messsage = new EasSimulationHT.EasSimulationHTWrapper.WFS_Find_ByCaseId
         {
             case_id = caseId,
-            task_state = taskStateIds, // new int[] { 0, 10, 20, 22, 24, 26 },
+            task_state = taskStateIds,
         };
 
         // load tasks

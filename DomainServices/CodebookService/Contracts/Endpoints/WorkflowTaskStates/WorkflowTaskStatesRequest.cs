@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates
 {
     [DataContract]
-    public class WorkflowTaskStatesRequest : IRequest<List<GenericCodebookItem>>
+    public class WorkflowTaskStatesRequest : IRequest<List<WorkflowTaskStateItem>>
     {
     }
 }
