@@ -4,17 +4,28 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[SalesArrangementType](
-    [Id] [int] NOT NULL,
-    [Name] [nvarchar](150) NOT NULL,
-    [ProductTypeId] [int] NULL,
-    [IsDefault] [bit] NOT NULL,
-    CONSTRAINT [PK_SalesArrangementType] PRIMARY KEY CLUSTERED
-    (
-    [Id] ASC
-    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+-- table 'SalesArrangementType'
+-- DROP TABLE IF EXISTS [dbo].[SalesArrangementType];
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'SalesArrangementType')
+BEGIN
+	CREATE TABLE [dbo].[SalesArrangementType](
+		[Id] [int] NOT NULL,
+		[Name] [nvarchar](150) NOT NULL,
+		[ProductTypeId] [int] NULL
+		CONSTRAINT [PK_SalesArrangementType] PRIMARY KEY CLUSTERED
+		(
+		[Id] ASC
+		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY];
+
+	INSERT INTO [dbo].[SalesArrangementType]([Id],[Name],[ProductTypeId])
+   VALUES
+    (1, 'Žádost o hypotéční úvěr', 20001),
+	(2, 'Žádost o hypoteční překlenovací úvěry', 20002),
+	(3, 'Žádost o hypoteční úvěr bez příjmu', 20003),
+	(4, 'Žádost o doprodej neúčelové části', 20004),
+	(5, 'Žádost o americkou hypotéku', 20010);
+END
 
 CREATE TABLE [dbo].[ProductTypeExtension](
     [ProductTypeId] [int] NOT NULL,

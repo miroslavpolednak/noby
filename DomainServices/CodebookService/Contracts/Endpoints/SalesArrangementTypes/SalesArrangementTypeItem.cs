@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes
 {
     [DataContract]
     public class SalesArrangementTypeItem
@@ -14,7 +12,5 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTyp
         [DataMember(Order = 3)]
         public int? ProductTypeId { get; set; }
         
-        [DataMember(Order = 4)]
-        public bool IsDefault { get; set; }
     }
 }
