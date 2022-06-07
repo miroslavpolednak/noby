@@ -46,17 +46,18 @@ CREATE TABLE [dbo].[Case](
 GO
 
 
-SET ANSI_NULLS ON
+ALTER TABLE [dbo].[ActiveTask] SET ( SYSTEM_VERSIONING = OFF)
 GO
-
-SET QUOTED_IDENTIFIER ON
+DROP TABLE [dbo].[ActiveTask]
+GO
+DROP TABLE [dbo].[ActiveTaskHistory]
 GO
 
 CREATE TABLE [dbo].[ActiveTask](
 	[ActiveTaskId] [int] IDENTITY(1,1) NOT NULL,
 	[CaseId] [bigint] NOT NULL,
 	[TaskTypeId] [int] NOT NULL,
-	[TaskId] [int] NOT NULL,
+	[TaskProcessId] [int] NOT NULL,
 	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
 	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
  CONSTRAINT [PK_ActiveTask] PRIMARY KEY CLUSTERED 
