@@ -26,14 +26,6 @@ internal class SalesArrangementServiceRepository
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
             .FirstOrDefaultAsync(cancellation);
 
-    public async Task UpdateSalesArrangement(int salesArrangementId, string contractNumber, string eaCode, CancellationToken cancellation)
-    {
-        var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);
-        entity.ContractNumber = contractNumber;
-        entity.EaCode = eaCode;
-        await _dbContext.SaveChangesAsync(cancellation);
-    }
-
     public async Task UpdateLoanAssessment(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellation)
     {
         var entity = await GetSalesArrangementEntity(salesArrangementId, cancellation);

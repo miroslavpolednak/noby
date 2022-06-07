@@ -11,6 +11,9 @@ internal class IdentifyCustomerService
     {
         int? newMpIdentityId = null;
 
+        entity.LockedIncomeDateTime = customer?.LockedIncomeDateTime;
+        entity.HasPartner = customer?.HasPartner ?? false;
+
         // pokud se jedna o existujici identitu v KB
         if (customer?.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
         {
@@ -24,6 +27,7 @@ internal class IdentifyCustomerService
             entity.DateOfBirthNaturalPerson = customerInstance.NaturalPerson?.DateOfBirth;
             entity.FirstNameNaturalPerson = customerInstance.NaturalPerson?.FirstName;
             entity.Name = customerInstance.NaturalPerson?.LastName ?? "";
+            
             if (entity.Identities is null)
                 entity.Identities = new() { new(ident) };
             else if (!entity.Identities.Any(t => (int)t.IdentityScheme == (int)ident.IdentityScheme))

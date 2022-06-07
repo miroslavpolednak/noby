@@ -127,17 +127,14 @@ internal class UpdateCustomersHandler
 
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
-    private readonly ILogger<UpdateCustomersHandler> _logger;
     private readonly IMediator _mediator;
 
     public UpdateCustomersHandler(
         IMediator mediator,
         IHouseholdServiceAbstraction householdService,
-        ICustomerOnSAServiceAbstraction customerOnSAService,
-        ILogger<UpdateCustomersHandler> logger)
+        ICustomerOnSAServiceAbstraction customerOnSAService)
     {
         _mediator = mediator;
-        _logger = logger;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
     }

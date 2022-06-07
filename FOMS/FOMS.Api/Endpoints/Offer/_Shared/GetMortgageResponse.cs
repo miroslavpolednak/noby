@@ -15,10 +15,10 @@ public sealed class GetMortgageResponse
     /// <summary>
     /// Zadani simulace.
     /// </summary>
-    public Dto.MortgageInputs SimulationInputs { get; set; } = null!;
+    public MortgageInputs SimulationInputs { get; set; } = null!;
     
     /// <summary>
     /// Vysledky simulace.
     /// </summary>
-    public Dto.MortgageOutputs SimulationResults { get; set; } = null!;
+    public MortgageOutputs SimulationResults { get; set; } = null!;
 }

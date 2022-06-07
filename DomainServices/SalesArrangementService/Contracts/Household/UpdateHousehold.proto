@@ -2,6 +2,7 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "HouseholdExpenses.proto";
 import "HouseholdData.proto";
 
@@ -11,4 +12,8 @@ message UpdateHouseholdRequest {
     DomainServices.SalesArrangementService.HouseholdData Data = 2;
     
     DomainServices.SalesArrangementService.Expenses Expenses = 3;
+
+    google.protobuf.Int32Value CustomerOnSAId1 = 4;
+    
+    google.protobuf.Int32Value CustomerOnSAId2 = 5;
 }

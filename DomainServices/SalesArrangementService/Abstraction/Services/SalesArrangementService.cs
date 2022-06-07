@@ -5,18 +5,6 @@ namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateRiskBusinessCase(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(CreateRiskBusinessCase), salesArrangementId);
-        var result = await _userContext.AddUserContext(async () => await _service.CreateRiskBusinessCaseAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId,
-            }, cancellationToken: cancellationToken)
-        );
-        return new SuccessfulServiceCallResult();
-    }
-
     public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateSalesArrangement), caseId);
@@ -79,14 +67,15 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult<GetSalesArrangementListResponse>(result);
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangement), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
-                ContractNumber = contractNumber
+                ContractNumber = contractNumber ?? "",
+                RiskBusinessCaseId = riskBusinessCaseId ?? ""
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();
@@ -124,7 +113,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, int loanApplicationAssessmentId, string? riskSegment, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateLoanAssessmentParameters), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateLoanAssessmentParametersAsync(
@@ -132,7 +121,8 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             {
                 SalesArrangementId = salesArrangementId,
                 LoanApplicationAssessmentId = loanApplicationAssessmentId,
-                RiskSegment = riskSegment
+                RiskSegment = riskSegment ?? "",
+                CommandId = commandId ?? ""
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();

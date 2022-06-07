@@ -5,8 +5,11 @@ internal class UpdateHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateHouseholdMediatrRequest request, CancellationToken cancellation)
     {
+        var household = await _repository.GetHousehold(request.Request.HouseholdId, cancellation);
+
         //TODO nejake kontroly?
-        
+        await _repository.CheckCustomers(household.SalesArrangementId, request.Request.CustomerOnSAId1, request.Request.CustomerOnSAId2, cancellation);
+
         await _repository.Update(request.Request, cancellation);
         
         return new Google.Protobuf.WellKnownTypes.Empty();

@@ -2,6 +2,8 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "SalesArrangementParameters.proto";
+import "NullableGrpcDecimal.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateSalesArrangementRequest {
@@ -15,6 +17,14 @@ message CreateSalesArrangementRequest {
 	google.protobuf.Int32Value OfferId = 3;
 	
 	string ContractNumber = 4;
+	
+	string EaCode = 5;
+
+	cis.types.NullableGrpcDecimal LoanToCost = 6;
+
+	oneof Data {
+        SalesArrangementParametersMortgage Mortgage = 20;
+    }
 }
 
 message CreateSalesArrangementResponse {

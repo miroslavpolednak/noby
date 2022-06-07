@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using _Offer = DomainServices.OfferService.Contracts;
@@ -31,11 +32,12 @@ internal class LinkModelationToSalesArrangementHandler
             (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201)))
         {
             var saParameters = (await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation));
-            if (!string.IsNullOrEmpty(saParameters?.Parameters))
+            if (saParameters?.ParametersBin is not null)
             {
-                var parametersModel = JsonSerializer.Deserialize<_SA.SalesArrangementParametersMortgage>(saParameters.Parameters!)!;
+                var parametersModel = _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin);
                 parametersModel.LoanRealEstates.Clear();
                 saParameters.Parameters = JsonSerializer.Serialize(parametersModel);
+                saParameters.ParametersBin = parametersModel.ToByteArray();
                 await _dbContext.SaveChangesAsync(cancellation); //ma se to ulozit hned
             }
         }
@@ -62,15 +64,12 @@ internal class LinkModelationToSalesArrangementHandler
 
     private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<LinkModelationToSalesArrangementHandler> _logger;
 
     public LinkModelationToSalesArrangementHandler(
         Repositories.SalesArrangementServiceDbContext dbContext,
-        OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        ILogger<LinkModelationToSalesArrangementHandler> logger)
+        OfferService.Abstraction.IOfferServiceAbstraction offerService)
     {
         _dbContext = dbContext;
         _offerService = offerService;
-        _logger = logger;
     }
 }

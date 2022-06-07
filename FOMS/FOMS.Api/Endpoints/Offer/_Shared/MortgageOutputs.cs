@@ -41,5 +41,5 @@ public class MortgageOutputs
     /// </summary>
     public int? PaymentDay { get; set; }
 
-    public List<LoanPurposeItem>? LoanPurpose { get; set; }
+    public List<LoanPurposeItem>? LoanPurposes { get; set; }
 }

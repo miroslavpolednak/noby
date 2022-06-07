@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Api.Repositories.Entities;
+using System.Text.Json;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
@@ -25,7 +26,19 @@ internal class CreateCustomerHandler
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
         int customerId = entity.CustomerOnSAId;
-        
+
+        // obligations
+        if (request.Request.Customer?.Obligations is not null && request.Request.Customer.Obligations.Any())
+        {
+            var obligationEntity = new CustomerOnSAObligations
+            {
+                CustomerOnSAId = customerId,
+                Data = JsonSerializer.Serialize(request.Request.Customer.Obligations!.ToList())
+            };
+            _dbContext.CustomersObligations.Add(obligationEntity);
+            await _dbContext.SaveChangesAsync(cancellation);
+        }
+
         _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSA), customerId);
         
         var model = new _SA.CreateCustomerResponse()

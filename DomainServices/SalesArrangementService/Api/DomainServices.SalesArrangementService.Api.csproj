@@ -34,6 +34,7 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Rip\ExternalServices.Rip.csproj" />
+		<ProjectReference Include="..\..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />

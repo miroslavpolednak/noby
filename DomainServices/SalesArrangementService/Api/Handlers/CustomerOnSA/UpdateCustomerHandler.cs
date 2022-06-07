@@ -17,14 +17,21 @@ internal class UpdateCustomerHandler
         // jestlize uz ma MP identitu, neni co menit - asi vyhod chybu? Nebo ne?
         if (entity.Identities is not null && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
             throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 16033);
+
+        var model = new _SA.UpdateCustomerResponse();
+
         // uz ma KB identitu, ale jeste nema MP identitu
-        else if (entity.Identities is not null && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
+        if (entity.Identities is not null && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
         {
             var identity = entity.Identities.First(t => t.IdentityScheme != CIS.Foms.Enums.IdentitySchemes.Mp);
             int? newMpId = await _identifyCustomerService.TryCreateMpIdentity(new CIS.Infrastructure.gRPC.CisTypes.Identity(identity.IdentityId, identity.IdentityScheme), cancellation);
 
             if (newMpId.HasValue)
             {
+                // update zakladnich dat
+                entity.HasPartner = request.Request.Customer.HasPartner;
+                entity.LockedIncomeDateTime = request.Request.Customer.LockedIncomeDateTime;
+
                 // ulozit do DB
                 _dbContext.CustomersIdentities.Add(new Repositories.Entities.CustomerOnSAIdentity
                 {
@@ -35,13 +42,9 @@ internal class UpdateCustomerHandler
                 await _dbContext.SaveChangesAsync(cancellation);
 
                 // vratit vysledek
-                var model = new _SA.UpdateCustomerResponse
-                {
-                    PartnerId = newMpId
-                };
+                model.PartnerId = newMpId;
                 model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity(t.IdentityId, t.IdentityScheme)));
                 model.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(newMpId.Value, CIS.Foms.Enums.IdentitySchemes.Mp));
-                return model;
             }
             else
                 throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains KB Identity and create MP Identity failed", 16033);
@@ -53,14 +56,12 @@ internal class UpdateCustomerHandler
 
             await _dbContext.SaveChangesAsync(cancellation);
 
-            var model = new _SA.UpdateCustomerResponse
-            {
-                PartnerId = result.PartnerId
-            };
+            model.PartnerId = result.PartnerId;
             if (result.Identities is not null)
                 model.CustomerIdentifiers.AddRange(result.Identities);
-            return model;
         }
+
+        return model;
     }
 
     private readonly Shared.IdentifyCustomerService _identifyCustomerService;

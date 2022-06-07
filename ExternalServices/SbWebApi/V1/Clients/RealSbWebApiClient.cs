@@ -1,36 +1,65 @@
 ﻿using ExternalServices.SbWebApi.Shared;
-using ExternalServices.SbWebApi.Shared.Responses;
+using ExternalServices.SbWebApi.V1.SbWebApiWrapper;
 
-namespace ExternalServices.SbWebApi.V1.Clients;
+namespace ExternalServices.SbWebApi.V1;
 
 internal class RealSbWebApiClient
-    : ISbWebApiClient
+    : BaseClient<EventReportClient>, ISbWebApiClient
 {
-    private readonly HttpClient _client;
-    private readonly ILogger<RealSbWebApiClient> _logger;
-
-    const string _caseStateChangedUrl = "/wfs/eventreport/casestatechanged";
-
-    public RealSbWebApiClient(HttpClient client, ILogger<RealSbWebApiClient> logger)
-    {
-        _client = client;
-        _logger = logger;
-    }
+    public RealSbWebApiClient(HttpClient httpClient, ILogger<EventReportClient> logger) : base(httpClient, logger) { }
 
     public async Task<IServiceCallResult> CaseStateChanged(CaseStateChangedModel request, CancellationToken cancellationToken)
     {
-        var transformedRequest = (Shared.Requests.CaseStateChangedRequest)request;
-        _logger.ExtServiceRequest(StartupExtensions.ServiceName, _caseStateChangedUrl, transformedRequest);
-        
-        var response = await _client.PostAsJsonAsync(_client.BaseAddress + _caseStateChangedUrl, transformedRequest, cancellationToken);
-        var result = await response.Content.ReadFromJsonAsync<CaseStateChangedResponse>() 
-            ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, _caseStateChangedUrl, nameof(CaseStateChangedResponse));
-        
-        _logger.ExtServiceResponse(StartupExtensions.ServiceName, _caseStateChangedUrl, result);
+        _logger.LogSerializedObject("CaseStateChanged", request);
 
-        if (result.result.return_val == 0)
-            return new SuccessfulServiceCallResult();
-        else
-            return new ErrorServiceCallResult(result.result.return_val, result.result.return_text ?? "");
+        return await WithClient(async c => {
+
+            return await callMethod(async () => {
+
+                var result = await c.CaseStateChangedAsync(new WFS_Request_CaseStateChanged 
+                {
+                    Header = new WFS_Header
+                    {
+                        System = "NOBY",
+                        Login = request.Login
+                    },
+                    Message = new WFS_Event_CaseStateChanged
+                    {
+                        Case_id = request.CaseId,
+                        Uver_id = request.CaseId,
+                        Contract_no = request.ContractNumber,
+                        Jmeno_prijmeni = request.ClientFullName,
+                        Case_state = request.CaseStateName,
+                        Product_type = request.ProductTypeId,
+                        Owner_cpm = request.OwnerUserCpm,
+                        Owner_icp = request.OwnerUserIcp,
+                        Mandant = (int)request.Mandant,
+                        Risk_business_case_id = request.RiskBusinessCaseId
+                    }
+                });
+
+                if (result.Result.Return_val.GetValueOrDefault() == 0)
+                    return new SuccessfulServiceCallResult();
+                else
+                    return new ErrorServiceCallResult(result.Result.Return_val.GetValueOrDefault(), result.Result.Return_text ?? "");
+            });
+
+        });
+    }
+
+    private EventReportClient CreateClient()
+        => new(_httpClient?.BaseAddress?.ToString(), _httpClient);
+
+    private async Task<IServiceCallResult> WithClient(Func<EventReportClient, Task<IServiceCallResult>> fce)
+    {
+        try
+        {
+            return await fce(CreateClient());
+        }
+        catch (ApiException ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return new ErrorServiceCallResult(0, $"Error occured during call external service RIP [{ex.Message}]");
+        }
     }
 }

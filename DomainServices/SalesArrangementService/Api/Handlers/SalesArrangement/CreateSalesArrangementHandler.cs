@@ -23,23 +23,34 @@ internal class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             StateUpdateTime = _dateTime.Now,
             ContractNumber = request.Request.ContractNumber,
-            OfferId = request.Request.OfferId,
+            EaCode = request.Request.EaCode,
+            LoanToCost = request.Request.LoanToCost,
             ChannelId = 1 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss...
         };
-
-        // validace na existenci offer
-        if (request.Request.OfferId.HasValue)
-        {
-            var offerInstance = ServiceCallResult.ResolveToDefault<DomainServices.OfferService.Contracts.GetOfferResponse>(await _offerService.GetOffer(request.Request.OfferId.Value, cancellation))
-                ?? throw new CisNotFoundException(16001, $"Offer ID #{request.Request.OfferId} does not exist.");
-            saEntity.ResourceProcessId = Guid.Parse(offerInstance.ResourceProcessId);
-        }
 
         // get default SA state
         saEntity.State = (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ulozit do DB
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
+
+        // nalinkovani offer
+        if (request.Request.OfferId.HasValue)
+        {
+            await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(new()
+            {
+                SalesArrangementId = salesArrangementId,
+                OfferId = request.Request.OfferId.Value
+            }), cancellation);
+        }
+
+        // params
+        if (request.Request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
+            await _mediator.Send(new Dto.UpdateSalesArrangementParametersMediatrRequest(new()
+            {
+                SalesArrangementId = salesArrangementId,
+                Mortgage = request.Request.Mortgage
+            }), cancellation);
 
         _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);
 
@@ -52,8 +63,10 @@ internal class CreateSalesArrangementHandler
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
     private readonly CIS.Core.IDateTime _dateTime;
+    private readonly IMediator _mediator;
     
     public CreateSalesArrangementHandler(
+        IMediator mediator,
         CIS.Core.IDateTime dateTime,
         OfferService.Abstraction.IOfferServiceAbstraction offerService,
         CaseService.Abstraction.ICaseServiceAbstraction caseService,
@@ -61,6 +74,7 @@ internal class CreateSalesArrangementHandler
         Repositories.SalesArrangementServiceRepository repository,
         ILogger<CreateSalesArrangementHandler> logger)
     {
+        _mediator = mediator;
         _dateTime = dateTime;
         _offerService = offerService;
         _caseService = caseService;

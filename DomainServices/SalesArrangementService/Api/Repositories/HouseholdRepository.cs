@@ -11,7 +11,9 @@ internal class HouseholdRepository
         var entity = await _dbContext.Households
             .Where(t => t.HouseholdId == model.HouseholdId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {model.HouseholdId} does not exist.");
-        
+
+        entity.CustomerOnSAId1 = model.CustomerOnSAId1;
+        entity.CustomerOnSAId2 = model.CustomerOnSAId2;
         entity.ChildrenOverTenYearsCount = model.Data?.ChildrenOverTenYearsCount;
         entity.ChildrenUpToTenYearsCount = model.Data?.ChildrenUpToTenYearsCount;
         entity.PropertySettlementId = model.Data?.PropertySettlementId;
@@ -46,6 +48,16 @@ internal class HouseholdRepository
         _dbContext.Households.Remove(entity);
         
         await _dbContext.SaveChangesAsync(cancellation);
+    }
+
+    public async Task CheckCustomers(int salesArrangementId, int? customerId1, int? customerId2, CancellationToken cancellation)
+    {
+        if (customerId1.HasValue
+            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == customerId1, cancellation))?.SalesArrangementId != salesArrangementId)
+            throw new CisNotFoundException(16020, $"CustomerOnSA ID {customerId1} does not exist in this SA.");
+        if (customerId2.HasValue
+            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == customerId2, cancellation))?.SalesArrangementId != salesArrangementId)
+            throw new CisNotFoundException(16020, $"CustomerOnSA ID {customerId2} does not exist in this SA.");
     }
     
     private readonly SalesArrangementServiceDbContext _dbContext;

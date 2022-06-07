@@ -12,4 +12,5 @@ internal class SalesArrangementParameters
 
     public int SalesArrangementId { get; set; }
     public string? Parameters { get; set; }
+    public byte[]? ParametersBin { get; set; }
 }

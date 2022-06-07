@@ -89,7 +89,7 @@ internal class CaseServiceRepository
             .Select(t => new
             {
                 CaseId = t.CaseId,
-                TaskId = t.TaskId,
+                TaskProcessId = t.TaskProcessId,
                 TaskTypeId = t.TaskTypeId
             })
             .ToListAsync(cancellation);
@@ -98,7 +98,7 @@ internal class CaseServiceRepository
         data.ForEach(t => t.ActiveTasks.AddRange(
             tasksCollection
                 .Where(x => x.CaseId == t.CaseId)
-                .Select(x => new Contracts.ActiveTask { TaskId = x.TaskId, TaskTypeId = x.TaskTypeId })
+                .Select(x => new Contracts.ActiveTask { TaskProcessId = x.TaskProcessId, TaskTypeId = x.TaskTypeId })
                 .ToList()
         ));
 

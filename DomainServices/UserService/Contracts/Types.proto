@@ -4,6 +4,8 @@ option csharp_namespace = "DomainServices.UserService.Contracts";
 
 import "UserIdentity.proto";
 
+message FetchUserRequest {}
+
 message GetUserByLoginRequest {
    string Login = 1;
 }

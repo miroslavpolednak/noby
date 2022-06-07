@@ -2,15 +2,22 @@
 
 namespace DomainServices.UserService.Api.Handlers;
 
-internal class GetUserHandler
-    : IRequestHandler<Dto.GetUserMediatrRequest, Contracts.User>
+internal sealed class FetchUserHandler
+    : IRequestHandler<Dto.FetchUserMediatrRequest, Contracts.User>
 {
-    public async Task<Contracts.User> Handle(Dto.GetUserMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.User> Handle(Dto.FetchUserMediatrRequest request, CancellationToken cancellation)
     {
+        int? partyId = null;
+        if (int.TryParse(Activity.Current?.Baggage.FirstOrDefault(b => b.Key == "MpPartyId").Value, out int i))
+            partyId = i;
+
+        if (partyId is null)
+            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User not logged in", 1);
+
         // vytahnout info o uzivateli z DB
-        var userInstance = await _repository.GetUser(request.UserId);
+        var userInstance = await _repository.GetUser(partyId.Value);
         if (userInstance is null)
-            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User #{request.UserId} not found", 1);
+            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User #{partyId.Value} not found", 1);
 
         // vytvorit finalni model
         var model = new Contracts.User
@@ -28,13 +35,9 @@ internal class GetUserHandler
     }
 
     private readonly Repositories.XxvRepository _repository;
-    private readonly ILogger<GetUserByLoginHandler> _logger;
 
-    public GetUserHandler(
-        Repositories.XxvRepository repository,
-        ILogger<GetUserByLoginHandler> logger)
+    public FetchUserHandler(Repositories.XxvRepository repository)
     {
         _repository = repository;
-        _logger = logger;
     }
 }
