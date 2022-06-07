@@ -9,9 +9,9 @@ internal static class Extensions
         return new _SA.IncomeDataEmployement
         {
             ForeignIncomeTypeId = request.ForeignIncomeTypeId,
-            IsDomicile = request.IsDomicile,
-            IsForeignIncome = request.IsForeignIncome,
             Employer = request.Employer?.ToDomainServiceRequest(),
+            ProofOfIncomeToggle = request.ProofOfIncomeToggle,
+            WageDeductionToggle = request.WageDeductionToggle,
             IncomeConfirmation = request.IncomeConfirmation?.ToDomainServiceRequest(),
             Job = request.Job?.ToDomainServiceRequest(),
             WageDeduction = request.WageDeduction?.ToDomainServiceRequest()
@@ -21,14 +21,10 @@ internal static class Extensions
     public static _SA.EmployerData ToDomainServiceRequest(this Dto.EmployerDataDto contract)
         => new _SA.EmployerData
         {
-            Address = contract.Address ?? new CIS.Foms.Types.Address(),
-            SensitiveSector = contract.SensitiveSector,
-            WorkSectorId = contract.WorkSectorId,
+            CountryId = contract.CountryId,
             BirthNumber = contract.BirthNumber ?? "",
             Cin = contract.Cin ?? "",
-            ClassificationOfEconomicActivitiesId = contract.ClassificationOfEconomicActivitiesId,
-            Name = contract.Name ?? "",
-            PhoneNumber = contract.PhoneNumber ?? ""
+            Name = contract.Name ?? ""
         };
 
     public static _SA.IncomeConfirmationData ToDomainServiceRequest(this Dto.IncomeConfirmationDataDto contract)
@@ -37,8 +33,7 @@ internal static class Extensions
             ConfirmationByCompany = contract.ConfirmationByCompany,
             ConfirmationContact = contract.ConfirmationContact ?? "",
             ConfirmationDate = contract.ConfirmationDate,
-            ConfirmationPerson = contract.ConfirmationPerson ?? "",
-            ConfirmationPlace = contract.ConfirmationPlace ?? ""
+            ConfirmationPerson = contract.ConfirmationPerson ?? ""
         };
 
     public static _SA.JobData ToDomainServiceRequest(this Dto.JobDataDto contract)
@@ -51,7 +46,7 @@ internal static class Extensions
             JobDescription = contract.JobDescription ?? "",
             JobNoticePeriod = contract.JobNoticePeriod,
             JobTrialPeriod = contract.JobTrialPeriod,
-            JobType = contract.JobType
+            GrossAnnualIncome = contract.GrossAnnualIncome
         };
 
     public static _SA.WageDeductionData ToDomainServiceRequest(this Dto.WageDeductionDataDto contract)

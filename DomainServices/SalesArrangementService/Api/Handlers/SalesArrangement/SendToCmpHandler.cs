@@ -170,11 +170,8 @@ internal class SendToCmpHandler
             {
                 ("EmploymentTypeId", (income.Employement?.Job?.EmploymentTypeId).HasValue  ),
                 ("JobNoticePeriod", (income.Employement?.Job?.JobNoticePeriod).HasValue ),
-                ("JobTrialPeriod", (income.Employement?.Job?.JobTrialPeriod).HasValue ),
-                ("IsDomicile", (income.Employement?.IsDomicile).HasValue ),
-                ("SensitiveSector", (income.Employement?.Employer?.SensitiveSector).HasValue ),
-                ("JobType", (income.Employement?.Job?.JobType).HasValue ),
-            };
+                ("JobTrialPeriod", (income.Employement?.Job?.JobTrialPeriod).HasValue )
+           };
 
             return mandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
         }
@@ -600,22 +597,22 @@ internal class SendToCmpHandler
                 typ_pracovniho_pomeru = i.Employement?.Job?.EmploymentTypeId.ToJsonString(),
                 klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),
                 klient_ve_zkusebni_lhute = i.Employement?.Job?.JobTrialPeriod.ToJsonString(),
-                prijem_ze_zahranici = i.Employement?.IsForeignIncome.ToJsonString(),
-                domicilace_prijmu_ze_zamestnani = i.Employement?.IsDomicile.ToJsonString(),
+                //prijem_ze_zahranici = i.Employement?.IsForeignIncome.ToJsonString(),
+                //domicilace_prijmu_ze_zamestnani = i.Employement?.IsDomicile.ToJsonString(),
                 pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                 pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
                 zamestnavatel_nazov = i.Employement?.Employer?.Name,
                 zamestnavatel_rc_ico = i.Employement?.Employer?.Cin,
-                zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
-                zamestnavatel_sidlo_cislo_popisne_orientacni = GetAddressNumber(i.Employement?.Employer?.Address),  //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
-                zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
-                zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode.ToPostCodeJsonString(),
-                zamestnavatel_sidlo_stat = i.Employement?.Employer?.Address?.CountryId.ToJsonString(),
-                zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
-                zamestnavatel_okec = i.Employement?.Employer?.ClassificationOfEconomicActivitiesId.ToJsonString(),
-                zamestnavatel_pracovni_sektor =  i.Employement?.Employer?.WorkSectorId.ToJsonString(),
-                zamestnavatel_senzitivni_sektor =  i.Employement?.Employer?.SensitiveSector.ToJsonString(),
-                povolani = i.Employement?.Job?.JobType.ToJsonString(),
+                //zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
+                //zamestnavatel_sidlo_cislo_popisne_orientacni = GetAddressNumber(i.Employement?.Employer?.Address),  //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
+                //zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
+                //zamestnavatel_sidlo_psc = i.Employement?.Employer?.Address?.Postcode.ToPostCodeJsonString(),
+                zamestnavatel_sidlo_stat = i.Employement?.Employer?.CountryId?.ToJsonString(),
+                //zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
+                //zamestnavatel_okec = i.Employement?.Employer?.ClassificationOfEconomicActivitiesId.ToJsonString(),
+                //zamestnavatel_pracovni_sektor =  i.Employement?.Employer?.WorkSectorId.ToJsonString(),
+                //zamestnavatel_senzitivni_sektor =  i.Employement?.Employer?.SensitiveSector.ToJsonString(),
+                //povolani = i.Employement?.Job?.JobType.ToJsonString(),
                 zamestnan_jako = i.Employement?.Job?.JobDescription,
                 prijem_vyse = iil.Sum.ToJsonString(),
                 prijem_mena = iil.CurrencyCode,
@@ -623,7 +620,7 @@ internal class SendToCmpHandler
                 zrazky_ze_mzdy_splatky = i.Employement?.WageDeduction?.DeductionPayments.ToJsonString(),
                 zrazky_ze_mzdy_ostatni = i.Employement?.WageDeduction?.DeductionOther.ToJsonString(),
                 prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.ConfirmationByCompany.ToJsonString(),
-                prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
+                //prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
                 prijem_potvrzeni_datum =  i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
                 prijem_potvrzeni_osoba =  i.Employement?.IncomeConfirmation?.ConfirmationPerson,
                 prijem_potvrzeni_kontakt =  i.Employement?.IncomeConfirmation?.ConfirmationContact,

@@ -112,7 +112,7 @@ internal class GetCreditWorthinessHandler
         if (customer.Incomes is not null && customer.Incomes.Any())
             c.LoanApplicationIncome = customer.Incomes.Select(t => new LoanApplicationIncome
             {
-                Amount = t.Sum.GetValueOrDefault(),
+                Amount = Convert.ToDouble(t.Sum),
                 CategoryMp = t.IncomeTypeId
             }).ToList();
 

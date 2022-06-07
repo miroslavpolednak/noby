@@ -2,7 +2,7 @@
 
 public class JobDataDto
 {
-    public int? JobType { get; set; }
+    public decimal? GrossAnnualIncome  { get; set; }
     public string? JobDescription { get; set; }
     public bool JobNoticePeriod { get; set; }
     public bool JobTrialPeriod { get; set; }
