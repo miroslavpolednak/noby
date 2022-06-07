@@ -1,16 +1,17 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.IncomeOtherTypes;
+﻿using DomainServices.CodebookService.Contracts;
+using DomainServices.CodebookService.Contracts.Endpoints.IncomeOtherTypes;
 
 namespace DomainServices.CodebookService.Endpoints.IncomeOtherTypes;
 
 public class IncomeOtherTypesHandler
-    : IRequestHandler<IncomeOtherTypesRequest, List<IncomeOtherTypeItem>>
+    : IRequestHandler<IncomeOtherTypesRequest, List<GenericCodebookItemWithCode>>
 {
-    public async Task<List<IncomeOtherTypeItem>> Handle(IncomeOtherTypesRequest request, CancellationToken cancellationToken)
+    public async Task<List<GenericCodebookItemWithCode>> Handle(IncomeOtherTypesRequest request, CancellationToken cancellationToken)
     {
         try
         {
-            return await FastMemoryCache.GetOrCreate<IncomeOtherTypeItem>(nameof(IncomeOtherTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<IncomeOtherTypeItem>(_sqlQuery, cancellationToken)
+            return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(IncomeOtherTypesHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken)
             );
         }
         catch (Exception ex)
