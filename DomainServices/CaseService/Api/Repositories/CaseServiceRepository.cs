@@ -151,36 +151,36 @@ internal class CaseServiceRepository
 
     public async Task ReplaceActiveTasks(long caseId, Contracts.UpdateTaskItem[] tasks, CancellationToken cancellation)
     {
-        var taskIds = tasks.Select(i => i.TaskId);
+        var taskProcessIds = tasks.Select(i => i.TaskProcessId);
 
         var entities = _dbContext.ActiveTasks.Where(i => i.CaseId == caseId);
-        var entitiesIds = entities.Select(i => i.TaskId);
+        var entitiesIds = entities.Select(i => i.TaskProcessId);
 
-        var idsToAdd = taskIds.Where(id => !entitiesIds.Contains(id)).ToList();
-        var idsToRemove = entitiesIds.Where(id => !taskIds.Contains(id)).ToList();
+        var idsToAdd = taskProcessIds.Where(id => !entitiesIds.Contains(id)).ToList();
+        var idsToRemove = entitiesIds.Where(id => !taskProcessIds.Contains(id)).ToList();
         var idsToUpdate = entitiesIds.Where(id => !idsToAdd.Contains(id) && !idsToRemove.Contains(id)).ToList();
 
         // remove
         if (idsToRemove.Any())
         {
-            _dbContext.ActiveTasks.RemoveRange(entities.Where(e => idsToRemove.Contains(e.TaskId)));
+            _dbContext.ActiveTasks.RemoveRange(entities.Where(e => idsToRemove.Contains(e.TaskProcessId)));
         }
 
         // add
         if (idsToAdd.Any())
         {
             _dbContext.ActiveTasks.AddRange(
-            tasks.Where(t => idsToAdd.Contains(t.TaskId)).Select(t => new Entities.ActiveTask { CaseId = caseId, TaskId = t.TaskId, TaskTypeId = t.TypeId })
+            tasks.Where(t => idsToAdd.Contains(t.TaskProcessId)).Select(t => new Entities.ActiveTask { CaseId = caseId, TaskProcessId = t.TaskProcessId, TaskTypeId = t.TypeId })
             );
         }
 
         // update
         if (idsToUpdate.Any())
         {
-            var tasksToUpdateById = tasks.Where(t => idsToUpdate.Contains(t.TaskId)).ToDictionary(t => t.TaskId);
-            entities.Where(e => idsToUpdate.Contains(e.TaskId)).ToList().ForEach(e =>
+            var tasksToUpdateById = tasks.Where(t => idsToUpdate.Contains(t.TaskProcessId)).ToDictionary(t => t.TaskProcessId);
+            entities.Where(e => idsToUpdate.Contains(e.TaskProcessId)).ToList().ForEach(e =>
             {
-                e.TaskTypeId = tasksToUpdateById[e.TaskId].TypeId;
+                e.TaskTypeId = tasksToUpdateById[e.TaskProcessId].TypeId;
             });
         }
 

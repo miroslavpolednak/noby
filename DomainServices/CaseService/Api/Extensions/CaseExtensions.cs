@@ -18,6 +18,7 @@ internal static class CaseExtensions
         var task = new WorkflowTask
         {
             TaskId = int.Parse(dict["ukol_id"]),
+            TaskProcessId = int.Parse(dict["ukol_sada"]),
             TypeId = dict.ContainsKey("ukol_typ") ? int.Parse(dict["ukol_typ"]) : mockTypeId,
             Name = dict["ukol_nazov"],
             CreatedOn = dict.ContainsKey("ukol_dat_start_proces") ? DateTime.Parse(dict["ukol_dat_start_proces"]) : mockCreatedOn,
@@ -31,7 +32,7 @@ internal static class CaseExtensions
     {
         return new UpdateTaskItem
         {
-            TaskId = workflowTask.TaskId,
+            TaskProcessId = workflowTask.TaskProcessId,
             TypeId = workflowTask.TypeId
 
         };

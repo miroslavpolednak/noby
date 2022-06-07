@@ -11,7 +11,7 @@ internal class UpdateActiveTasksMediatrRequestValidator : AbstractValidator<Dto.
             .WithMessage("Case Id must be > 0").WithErrorCode("13016");
 
         RuleFor(t => t.Tasks)
-          .Must(tasks => !tasks.GroupBy(t => t.TaskId).Any(i => i.Count() > 1))     
-          .WithMessage($"TaskId must be unique").WithErrorCode("99999"); //TODO: ErrorCode
+          .Must(tasks => !tasks.GroupBy(t => t.TaskProcessId).Any(i => i.Count() > 1))     
+          .WithMessage($"TaskProcessId must be unique").WithErrorCode("99999"); //TODO: ErrorCode
     }
 }
