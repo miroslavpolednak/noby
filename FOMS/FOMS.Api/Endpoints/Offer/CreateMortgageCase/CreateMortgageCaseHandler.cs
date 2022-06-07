@@ -22,7 +22,7 @@ internal class CreateMortgageCaseHandler
         
         // get default saTypeId from productTypeId
         int salesArrangementTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
-            .FirstOrDefault(t => t.ProductTypeId == offerInstance.SimulationInputs.ProductTypeId && t.IsDefault)
+            .FirstOrDefault(t => t.ProductTypeId == offerInstance.SimulationInputs.ProductTypeId)
             ?.Id ?? throw new CisNotFoundException(ErrorCodes.OfferDefaultSalesArrangementTypeIdNotFound, $"Default SalesArrangementTypeId for ProductTypeId {offerInstance.SimulationInputs.ProductTypeId} not found");
 
         // vytvorit case
