@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
 using ExternalServices.Eas;
+using ExternalServices.EasSimulationHT;
 using ExternalServices.SbWebApi;
 
 namespace DomainServices.CaseService.Api;
@@ -31,6 +32,10 @@ internal static class StartupExtensions
 
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
+
+        // EAS EasSimulationHT svc
+        builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);
+
         // MpHome svc
         builder.AddExternalServiceSbWebApi();
 

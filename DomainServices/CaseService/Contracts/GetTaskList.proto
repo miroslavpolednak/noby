@@ -6,10 +6,11 @@ import "GrpcDate.proto";
 
 message WorkflowTask {
 	int32 TaskId = 1;
-	int32 TypeId = 2;
-	string Name = 3;
-	int32 StateId = 4;
-	cis.types.GrpcDate CreatedOn = 5;
+	int32 TaskProcessId = 2;
+	int32 TypeId = 3;
+	string Name = 4;
+	int32 StateId = 5;
+	cis.types.GrpcDate CreatedOn = 6;
 }
 
 message GetTaskListRequest {

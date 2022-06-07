@@ -65,6 +65,25 @@ BEGIN
 	(4251, 3);
 END
 
+
+-- table 'WorkflowTaskStateExtension'
+-- DROP TABLE IF EXISTS [dbo].[WorkflowTaskStateExtension];
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'WorkflowTaskStateExtension')
+BEGIN
+    CREATE TABLE [dbo].[WorkflowTaskStateExtension](
+    [WorkflowTaskStateId] [int] NOT NULL,
+    [Flag] [tinyint] NOT NULL,
+    CONSTRAINT [PK_WorkflowTaskStateExtension] PRIMARY KEY CLUSTERED
+    (
+    [WorkflowTaskStateId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY];
+
+	INSERT INTO [dbo].[WorkflowTaskStateExtension]([WorkflowTaskStateId],[Flag])
+    VALUES (30, 1);
+END
+
+
 /*
 TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
 GO

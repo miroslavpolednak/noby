@@ -149,6 +149,44 @@ internal class CaseServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
+    public async Task ReplaceActiveTasks(long caseId, Contracts.UpdateTaskItem[] tasks, CancellationToken cancellation)
+    {
+        var taskProcessIds = tasks.Select(i => i.TaskProcessId);
+
+        var entities = _dbContext.ActiveTasks.Where(i => i.CaseId == caseId);
+        var entitiesIds = entities.Select(i => i.TaskProcessId);
+
+        var idsToAdd = taskProcessIds.Where(id => !entitiesIds.Contains(id)).ToList();
+        var idsToRemove = entitiesIds.Where(id => !taskProcessIds.Contains(id)).ToList();
+        var idsToUpdate = entitiesIds.Where(id => !idsToAdd.Contains(id) && !idsToRemove.Contains(id)).ToList();
+
+        // remove
+        if (idsToRemove.Any())
+        {
+            _dbContext.ActiveTasks.RemoveRange(entities.Where(e => idsToRemove.Contains(e.TaskProcessId)));
+        }
+
+        // add
+        if (idsToAdd.Any())
+        {
+            _dbContext.ActiveTasks.AddRange(
+            tasks.Where(t => idsToAdd.Contains(t.TaskProcessId)).Select(t => new Entities.ActiveTask { CaseId = caseId, TaskProcessId = t.TaskProcessId, TaskTypeId = t.TypeId })
+            );
+        }
+
+        // update
+        if (idsToUpdate.Any())
+        {
+            var tasksToUpdateById = tasks.Where(t => idsToUpdate.Contains(t.TaskProcessId)).ToDictionary(t => t.TaskProcessId);
+            entities.Where(e => idsToUpdate.Contains(e.TaskProcessId)).ToList().ForEach(e =>
+            {
+                e.TaskTypeId = tasksToUpdateById[e.TaskProcessId].TypeId;
+            });
+        }
+
+        await _dbContext.SaveChangesAsync(cancellation);
+    }
+
     private async Task<Entities.Case> getCaseEntity(long caseId, CancellationToken cancellation)
         => await _dbContext.Cases.FindAsync(new object[] { caseId }, cancellation) ?? throw new CisNotFoundException(13000, $"Case #{caseId} not found");
 
