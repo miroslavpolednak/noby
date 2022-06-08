@@ -71,13 +71,6 @@ internal class SendToCmpHandler
         // load SalesArrangement
         var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new GetSalesArrangementRequest { SalesArrangementId = request.SalesArrangementId }), cancellation);
 
-        // check if SalesArrangementType is Mortgage
-        var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);
-        if (productType.ProductCategory != ProductTypeCategory.Mortgage)
-        {
-            throw new CisArgumentException(1, $"SalesArrangementTypeId '{arrangement.SalesArrangementTypeId}' doesn't match ProductTypeCategory '{ProductTypeCategory.Mortgage}'.", nameof(request));
-        }
-
         // check mandatory fields of SalesArrangement
         CheckSA(arrangement);
 
@@ -116,6 +109,9 @@ internal class SendToCmpHandler
 
         // Add first signature date (pro KB produkty caseId = UverID)
         ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now));
+
+        // ProductType load
+        var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);
 
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))

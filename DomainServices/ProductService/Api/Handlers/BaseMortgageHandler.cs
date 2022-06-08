@@ -33,24 +33,6 @@ internal class BaseMortgageHandler
 
     #endregion
 
-    /// <summary>
-    /// Checks if ProductTypeId matches ProductTypeCategory Mortgage
-    /// </summary>
-    private async Task CheckProductTypeCategory(long productTypeId)
-    {
-        var list = await _codebookService.ProductTypes();
-        var item = list.FirstOrDefault(t => t.Id == productTypeId);
-
-        if (item == null)
-        {
-            throw new CisNotFoundException(13014, nameof(ProductTypeItem), productTypeId);
-        }
-
-        if (item.ProductCategory != ProductTypeCategory.Mortgage)
-        {
-            throw new CisArgumentException(1, $"ProductTypeId '{productTypeId}' doesn't match ProductTypeCategory '{ProductTypeCategory.Mortgage}'.", "ProductTypeId");
-        }
-    }
 
     /// <summary>
     /// Calls MpHome.UpdateMortgage endpoint according to params
@@ -68,9 +50,6 @@ internal class BaseMortgageHandler
         {
             throw new CisNotFoundException(13014, nameof(Loan), loanId); //TODO: error code
         }
-
-        // validate ProductTypeId
-        await CheckProductTypeCategory(mortgage.ProductTypeId);
 
         // create request
         var mortgageRequest = mortgage.ToMortgageRequest();

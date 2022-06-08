@@ -32,14 +32,6 @@ internal class SimulateMortgageHandler
 
     public async Task<SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
     {
-
-        // kontrola ProductTypeId (zda je typu Mortgage)
-        await CheckProductTypeCategory(
-            request.Request.SimulationInputs.ProductTypeId,
-            CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage,
-            cancellation
-        );
-
         var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
 
         // setup input default values

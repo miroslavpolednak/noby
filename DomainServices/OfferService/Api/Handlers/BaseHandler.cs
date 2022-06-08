@@ -22,24 +22,6 @@ internal class BaseHandler
 
     #endregion
 
-    /// <summary>
-    /// Checks if ProductTypeId matches ProductTypeCategory (Hypo, SS, ...)
-    /// </summary>
-    protected async Task CheckProductTypeCategory(int id, ProductTypeCategory category, CancellationToken cancellation)
-    {
-        var list = await _codebookService.ProductTypes(cancellation);
-        var item = list.FirstOrDefault(t => t.Id == id);
-
-        if (item == null)
-        {
-            throw new CisNotFoundException(13014, nameof(ProductTypeItem), id);
-        }
-
-        if (item.ProductCategory != category)
-        {
-            throw new CisArgumentException(1, $"ProductTypeId '{id}' doesn't match ProductTypeCategory '{category}'.", "ProductTypeId");
-        }
-    }
 
     /// <summary>
     /// Searchs for default 'PaymentDay' value

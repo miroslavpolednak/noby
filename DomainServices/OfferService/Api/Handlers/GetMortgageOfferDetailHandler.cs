@@ -26,13 +26,6 @@ internal class GetMortgageOfferDetailHandler
 
         var simulationInputs = entity.SimulationInputs.ToSimulationInputs();
 
-        // kontrola ProductTypeId (zda je typu Mortgage)d
-        await CheckProductTypeCategory(
-            simulationInputs.ProductTypeId,
-            CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage,
-            cancellation
-        );
-
         var model = new GetMortgageOfferDetailResponse
         {
             OfferId = entity.OfferId,
