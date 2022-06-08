@@ -4,7 +4,8 @@ namespace DomainServices.CaseService.Api;
 
 internal static class CaseExtensions
 {
-   
+    //private static readonly string[] EasTaskMandatoryFields = new string[] {"ukol_id", "ukol_sada", "ukol_typ", "ukol_nazov", "ukol_dat_start_proces", "ukol_stav_poz"};
+
     public static WorkflowTask ToWorkflowTask(this ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_FindItem easTask)
     {
         var dict = easTask.task.ToDictionary(i => i.mtdt_def, i => i.mtdt_val);
@@ -22,7 +23,7 @@ internal static class CaseExtensions
             TypeId = dict.ContainsKey("ukol_typ") ? int.Parse(dict["ukol_typ"]) : mockTypeId,
             Name = dict["ukol_nazov"],
             CreatedOn = dict.ContainsKey("ukol_dat_start_proces") ? DateTime.Parse(dict["ukol_dat_start_proces"]) : mockCreatedOn,
-            StateId = dict.ContainsKey("ukol_stav") ? int.Parse(dict["ukol_stav"]) : mockStateId,
+            StateId = dict.ContainsKey("ukol_stav_poz") ? int.Parse(dict["ukol_stav_poz"]) : mockStateId,
         };
 
         return task;
