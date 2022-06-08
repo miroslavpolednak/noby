@@ -999,11 +999,6 @@
             Druh zadosti. Ciselnik SalesArrangementTypes.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.ProductCategory">
-            <summary>
-            Kategorie produktu - hypoteka, SS, SS uver
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.CreatedTime">
             <summary>
             Datum vytvoreni SA

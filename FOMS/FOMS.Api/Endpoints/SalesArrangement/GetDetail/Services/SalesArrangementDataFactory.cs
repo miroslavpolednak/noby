@@ -21,11 +21,15 @@ internal sealed class SalesArrangementDataFactory
         _caseService = caseService;
         _offerService = offerService;
     }
-    
-    public ISalesArrangementDataService GetService(ProductTypeCategory productTypeCategory)
+
+    // zde puvodne bylo rozdeleni podle kategorie produktu - uz to nechteji, vse je jen hypo. Casem budou chtit upravit?
+    public ISalesArrangementDataService GetService()
+        => new SalesArrangementDataMortgage(_codebookService, _offerService, _caseService, _connectionProvider);
+
+    /*public ISalesArrangementDataService GetService(ProductTypeCategory productTypeCategory)
         => productTypeCategory switch
         {
             ProductTypeCategory.Mortgage => new SalesArrangementDataMortgage(_codebookService, _offerService, _caseService, _connectionProvider),
             _ => throw new NotImplementedException($"Product category {productTypeCategory} not implemented")
-        };
+        };*/
 }
