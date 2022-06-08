@@ -27,17 +27,29 @@ BEGIN
 	(5, 'Žádost o americkou hypotéku', 20010);
 END
 
-CREATE TABLE [dbo].[ProductTypeExtension](
-    [ProductTypeId] [int] NOT NULL,
-    [ProductCategory] [tinyint] NOT NULL,
-    [MpHomeApiLoanType] [varchar](50) NULL,
-    [KonsDbLoanType] [tinyint] NOT NULL,
-    CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED
-    (
-    [ProductTypeId] ASC
-     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+
+-- table 'ProductTypeExtension'
+-- DROP TABLE IF EXISTS [dbo].[ProductTypeExtension];
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ProductTypeExtension')
+BEGIN
+	CREATE TABLE [dbo].[ProductTypeExtension](
+		[ProductTypeId] [int] NOT NULL,
+		[MpHomeApiLoanType] [varchar](50) NULL,
+		[KonsDbLoanType] [tinyint] NOT NULL,
+	 CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED 
+	(
+		[ProductTypeId] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY];
+
+	INSERT INTO [dbo].[ProductTypeExtension]([ProductTypeId],[MpHomeApiLoanType],[KonsDbLoanType])
+    VALUES
+    (20001, 'KBMortgage', 3),
+	(20002, 'KBBridgingMortgageLoan', 4),
+	(20003, 'KBMortgageWithoutIncome', 5),
+	(20004, 'KBMortgageLoanNonPurposePart', 6),
+	(20010, 'KBAmericanMortgage', 7);
+END
 
 
 CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
