@@ -165,6 +165,7 @@
             - IdentificationDocumentTypes
             - IncomeMainTypes
             - IncomeForeignTypes
+            - IncomeOtherTypes
             - JobTypes
             - LegalCapacities
             - LoanPurposes

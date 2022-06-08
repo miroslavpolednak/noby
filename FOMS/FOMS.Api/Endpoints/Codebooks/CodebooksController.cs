@@ -34,6 +34,7 @@ public class CodebooksController : ControllerBase
     /// - IdentificationDocumentTypes
     /// - IncomeMainTypes
     /// - IncomeForeignTypes
+    /// - IncomeOtherTypes
     /// - JobTypes
     /// - LegalCapacities
     /// - LoanPurposes
