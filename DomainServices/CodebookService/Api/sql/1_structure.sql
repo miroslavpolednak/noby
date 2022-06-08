@@ -103,7 +103,9 @@ BEGIN
 	) ON [PRIMARY];
 
 	INSERT INTO [dbo].[WorkflowTaskStateExtension]([WorkflowTaskStateId],[Flag])
-    VALUES (30, 1);
+    VALUES
+	(0, 1),
+	(30, 1);
 END
 
 
