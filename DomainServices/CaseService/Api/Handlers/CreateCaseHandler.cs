@@ -10,19 +10,12 @@ internal class CreateCaseHandler
 {
     public async Task<CreateCaseResponse> Handle(Dto.CreateCaseMediatrRequest request, CancellationToken cancellation)
     {
-        // zjistit o jakou kategorii produktu se jedna z daneho typu produktu - SS, Uver SS, Hypoteka
-        var productTypeCategory = await getProductCategory(request.Request.Data.ProductTypeId);
-        
-        // kontrola, zda se jedna jen o SS nebo Hypo (uver SS nema nove CaseId - to uz existuje na sporeni)
-        if (productTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.BuildingSavingsLoan)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"ProductTypeId {request.Request.Data.ProductTypeId} is not valid for this operation", 13013);
-
         // overit existenci ownera
         var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId, cancellation));
         //TODO zkontrolovat existenci klienta?
 
         // pro jakou spolecnost
-        var mandant = productTypeCategory == CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory.Mortgage ? CIS.Foms.Enums.IdentitySchemes.Kb : CIS.Foms.Enums.IdentitySchemes.Mp;
+        var mandant = CIS.Foms.Enums.IdentitySchemes.Kb;
 
         // get default case state
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
@@ -61,16 +54,6 @@ internal class CreateCaseHandler
         {
             CaseId = newCaseId 
         };
-    }
-
-    /// <summary>
-    /// Zjistit typ produktu - Hypo, SS atd.
-    /// </summary>
-    private async Task<CodebookService.Contracts.Endpoints.ProductTypes.ProductTypeCategory> getProductCategory(long productTypeId)
-    {  
-        var item = (await _codebookService.ProductTypes())
-            .FirstOrDefault(t => t.Id == productTypeId) ?? throw new CisNotFoundException(13014, nameof(productTypeId), productTypeId);
-        return item.ProductCategory;
     }
     
     private static long resolveCaseIdResult(IServiceCallResult result) =>
