@@ -20,7 +20,6 @@ internal static class EasSimulationExtensions
     };
 
 
-
     // loan
     private static EasWrapper.SimSettingsUver ToReqLoan(this SimulationInputs inputs)
     {
@@ -30,19 +29,16 @@ internal static class EasSimulationExtensions
             druhUveru = inputs.LoanKindId,
             vyseUveru = inputs.LoanAmount,
             splatnostUveru = inputs.LoanDuration,
-            splatkaUveru = inputs.LoanPaymentAmount,
             rozhodnyDenSazby = inputs.GuaranteeDateFrom,
             datumZalozeni = inputs.GuaranteeDateFrom,
-            indCenotvorbaOdchylka = inputs.InterestRateDeviation,
+            indCenotvorbaOdchylka = -1 * ((decimal)inputs.InterestRateDiscount!),
             periodaFixace = inputs.FixedRatePeriod,
             predpokladanaHodnotaZajisteni = inputs.CollateralAmount,
-            LTV = inputs.LoanToValue,
-            typCerpani = inputs.DrawingType,
+            typCerpani = inputs.DrawingType!.Value,
             lhutaDocerpani = inputs.DrawingDuration,
         };
 
-        if (inputs.PaymentDay.HasValue)
-            uver.denSplatky = inputs.PaymentDay.Value;  // ??? na vstupu je povinný ale my jej máme nullable ... nějaký default?
+        uver.denSplatky = inputs.PaymentDay!.Value;
 
         if (inputs.GuaranteeDateFrom != null)
         {
@@ -96,8 +92,10 @@ internal static class EasSimulationExtensions
 
         var nastaveniPoplatku = new EasWrapper.SimSettingsPoplatky
         {
-            dokument = inputs.FeeSettings.FeeTariffPurpose,
-            vypisHu = inputs.FeeSettings.StatementTypeId,
+            // dokument = inputs.FeeSettings.FeeTariffPurpose,
+            // vypisHu = inputs.FeeSettings.StatementTypeId,
+            dokument = inputs.FeeSettings.FeeTariffPurpose!.Value,
+            vypisHu = inputs.FeeSettings.StatementTypeId!.Value,
             vypisBu = inputs.FeeSettings.IsStatementCharged ? 1 : 0,
         };
 
