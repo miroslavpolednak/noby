@@ -34,7 +34,7 @@ namespace ExternalServices.Rip.V1
 
         public async Task<IServiceCallResult> ComputeCreditWorthiness(CreditWorthinessCalculationArguments arguments)
         {
-            _logger.LogDebug("Run inputs: Rip ComputeCreditWorthiness with Arguments {arguments}", System.Text.Json.JsonSerializer.Serialize(arguments));
+            _logger.LogSerializedObject("ComputeCreditWorthiness", arguments);
 
             return await WithClient(async c => {
 

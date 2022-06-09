@@ -1,3 +1,6 @@
+// 20220609155704
+// http://rip-sit1.vsskb.cz/swagger/v1/swagger.json
+
 {
   "openapi": "3.0.1",
   "info": {
@@ -83,7 +86,7 @@
           "LoanApplication"
         ],
         "summary": "Vrátí LoanApplicationAssessment podle ID",
-        "operationId": "GetLoanApplicationAssessment",
+        "operationId": "LoanApplicationAssessment",
         "parameters": [
           {
             "name": "loanApplicationAssessmentId",
@@ -116,12 +119,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessment"
+                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessmentResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessment"
+                  "$ref": "#/components/schemas/LoanApplicationAssessment.LoanApplicationAssessmentResponse"
                 }
               }
             }
@@ -509,7 +512,6 @@
       "CreditWorthiness.CreditWorthinessCalculationArguments": {
         "required": [
           "households",
-          "humanUser",
           "itChannel",
           "loanApplicationProduct",
           "resourceProcessIdMp"
@@ -674,9 +676,10 @@
             "description": "město primární adresy",
             "nullable": true
           },
-          "countryCode": {
-            "type": "string",
+          "countryCodeMp": {
+            "type": "integer",
             "description": "Země.",
+            "format": "int32",
             "nullable": true
           },
           "postCode": {
@@ -719,17 +722,20 @@
           "execution": {
             "type": "number",
             "description": "Execution",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "installments": {
             "type": "number",
             "description": "Installments",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "other": {
             "type": "number",
             "description": "Other",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -777,9 +783,10 @@
             "description": "město sídla zaměstnání.",
             "nullable": true
           },
-          "countryCode": {
-            "type": "string",
+          "countryCodeMp": {
+            "type": "integer",
             "description": "Stát sídla zaměstnání.",
+            "format": "int32",
             "nullable": true
           },
           "jobTitle": {
@@ -830,9 +837,10 @@
             "description": "příznak domicilace příjmu",
             "nullable": true
           },
-          "proofType": {
-            "type": "string",
+          "proofTypeMp": {
+            "type": "integer",
             "description": "typ dokumentu dokládajícího příjmy (\\\"PNZ\\\"=příjem není zadán).",
+            "format": "int32",
             "nullable": true
           },
           "foreignEmploymentType": {
@@ -875,7 +883,8 @@
           "employmentTypeMp": {
             "type": "integer",
             "description": "Je pracovní poměr sjednán na dobu určitou?.",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "firstContractFrom": {
             "type": "string",
@@ -938,9 +947,10 @@
             "description": "město sídla podnikání.",
             "nullable": true
           },
-          "countryCode": {
-            "type": "string",
+          "countryCodeMp": {
+            "type": "integer",
             "description": "země sídla podnikání.",
+            "format": "int32",
             "nullable": true
           },
           "establishedOn": {
@@ -954,9 +964,10 @@
             "description": "Příznak, zdali je příjem domicilován.",
             "nullable": true
           },
-          "proofType": {
-            "type": "string",
+          "proofTypeMp": {
+            "type": "integer",
             "description": "dokument dokládající příjem z pronájmu.",
+            "format": "int32",
             "nullable": true
           },
           "annualIncomeAmount": {
@@ -989,9 +1000,10 @@
             "description": "příznak domicilace",
             "nullable": true
           },
-          "proofType": {
-            "type": "string",
+          "proofTypeMp": {
+            "type": "integer",
             "description": "dokument dokládající příjem z pronájmu",
+            "format": "int32",
             "nullable": true
           },
           "monthlyIncomeAmount": {
@@ -1004,9 +1016,10 @@
       "LoanApplication.LoanApplicationOtherIncome": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
+          "typeMp": {
+            "type": "integer",
             "description": "Typ  vedlejšího prokazatelného příjmu. Opakující se atribut podle počtu vedeljších prokazatelných příjmů příjmů.",
+            "format": "int32",
             "nullable": true
           },
           "monthlyIncomeAmount": {
@@ -1032,9 +1045,10 @@
             "description": "Příznak, zdali je příjem domicilován.",
             "nullable": true
           },
-          "proofType": {
-            "type": "string",
+          "proofTypeMp": {
+            "type": "integer",
             "description": "dokument dokládající příjem z pronájmu.",
+            "format": "int32",
             "nullable": true
           }
         },
@@ -1064,12 +1078,7 @@
             "nullable": true
           },
           "entrepreneurIncome": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LoanApplication.LoanApplicationEntrepreneurIncome"
-            },
-            "description": "Příjmy z podnikání",
-            "nullable": true
+            "$ref": "#/components/schemas/LoanApplication.LoanApplicationEntrepreneurIncome"
           },
           "rentIncome": {
             "$ref": "#/components/schemas/LoanApplication.LoanApplicationRentIncome"
@@ -1095,8 +1104,9 @@
             "nullable": true
           },
           "typeMp": {
-            "type": "string",
+            "type": "integer",
             "description": "Product group.",
+            "format": "int32",
             "nullable": true
           },
           "issuedOn": {
@@ -1153,15 +1163,16 @@
       },
       "LoanApplication.LoanApplicationCounterParty": {
         "required": [
-          "customerId"
+          "customerId",
+          "id",
+          "roleCodeMp"
         ],
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "description": "LoanApplication identity",
-            "format": "int64",
-            "nullable": true
+            "format": "int32"
           },
           "isPartner": {
             "type": "boolean",
@@ -1253,9 +1264,10 @@
             "description": "LoanApplication identity",
             "nullable": true
           },
-          "housingCondition": {
-            "type": "string",
-            "description": "LoanApplication identity",
+          "housingConditionMp": {
+            "type": "integer",
+            "description": "Clients housing conditions",
+            "format": "int32",
             "nullable": true
           },
           "income": {
@@ -1292,7 +1304,8 @@
           "roleCodeMp": {
             "type": "integer",
             "description": "kód role domácnosti",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "childrenUnderAnd10": {
             "type": "integer",
@@ -1309,9 +1322,10 @@
           "householdExpensesSummary": {
             "$ref": "#/components/schemas/LoanApplication.ExpensesSummary"
           },
-          "settlementTypeCode": {
-            "type": "string",
+          "settlementTypeCodeMp": {
+            "type": "integer",
             "description": "kód vypořádání majetku (manželů)",
+            "format": "int32",
             "nullable": true
           },
           "counterParty": {
@@ -1363,9 +1377,10 @@
             "description": "ID zajištění v dané evidenci (Bagman,StarBuild, atd.).",
             "nullable": true
           },
-          "categoryCode": {
-            "type": "string",
+          "categoryCodeMp": {
+            "type": "integer",
             "description": "Kategorie zajištění.",
+            "format": "int32",
             "nullable": true
           },
           "appraisedValue": {
@@ -1457,9 +1472,9 @@
             "nullable": true
           },
           "interestRate": {
-            "type": "integer",
+            "type": "number",
             "description": "žádaná roční úroková sazba.",
-            "format": "int64",
+            "format": "double",
             "nullable": true
           },
           "repaymentScheduleTypeMp": {
@@ -1561,7 +1576,6 @@
       },
       "LoanApplication.LoanApplicationRequest": {
         "required": [
-          "humanUser",
           "id",
           "loanApplicationHousehold",
           "loanApplicationProduct"
@@ -1574,15 +1588,16 @@
           "appendixCode": {
             "type": "integer",
             "description": "rozlišení nového obchodu a typu dodatku",
-            "format": "int64",
+            "format": "int32",
             "nullable": true
           },
-          "distributionChannelCode": {
-            "type": "string",
+          "distributionChannelCodeMp": {
+            "type": "integer",
             "description": "distribuční kanál vzniku žádosti",
+            "format": "int32",
             "nullable": true
           },
-          "signatureType": {
+          "signatureTypeMp": {
             "type": "string",
             "description": "Způsob podpisu žádosti",
             "nullable": true
@@ -1979,7 +1994,7 @@
         "additionalProperties": false,
         "description": "Change"
       },
-      "LoanApplicationAssessment.LoanApplicationAssessment": {
+      "LoanApplicationAssessment.LoanApplicationAssessmentResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -2737,6 +2752,20 @@
         "additionalProperties": false,
         "description": "Response"
       }
+    },
+    "securitySchemes": {
+      "basic": {
+        "type": "http",
+        "description": "Basic Authorization header using the Bearer scheme.",
+        "scheme": "basic"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "basic": [
+        
+      ]
+    }
+  ]
 }
