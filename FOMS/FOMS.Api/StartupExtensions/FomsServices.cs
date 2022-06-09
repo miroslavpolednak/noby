@@ -5,7 +5,7 @@ namespace FOMS.Api.StartupExtensions;
 
 internal static class FomsServices
 {
-    public static WebApplicationBuilder AddFomsServices(this WebApplicationBuilder builder, Infrastructure.Configuration.AppConfiguration appConfiguration)
+    public static WebApplicationBuilder AddFomsServices(this WebApplicationBuilder builder)
     {
         // mediatr
         builder.Services.AddMediatR(typeof(IApiAssembly).Assembly);
@@ -29,7 +29,7 @@ internal static class FomsServices
             });
 
         // RIP
-        builder.Services.AddExternalServiceRip(appConfiguration.Rip);
+        builder.AddExternalServiceRip();
 
         return builder;
     }

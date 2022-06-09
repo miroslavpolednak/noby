@@ -8,8 +8,6 @@ internal class SimulateMortgageHandler
 {
     public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
-        _logger.OfferSimulateMortgageStarted(request);
-
         // predelat na DS request
         var model = request.ToDomainServiceRequest();
         
@@ -23,8 +21,6 @@ internal class SimulateMortgageHandler
             ResourceProcessId = result.ResourceProcessId,
             SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs)
         };
-        
-        _logger.OfferSimulateMortgageResult(responseModel);
 
         return responseModel;
     }

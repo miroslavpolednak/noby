@@ -39,7 +39,7 @@ builder.Services
 
 // FOMS services
 builder
-    .AddFomsServices(appConfiguration)
+    .AddFomsServices()
     .AddFomsDatabase();
 // authentication
 builder.AddFomsAuthentication(appConfiguration);

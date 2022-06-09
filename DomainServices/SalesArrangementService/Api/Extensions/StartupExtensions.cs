@@ -16,8 +16,6 @@ internal static class StartupExtensions
     {
         if (configuration?.EAS is null)
             throw new CisConfigurationNotFound("AppConfiguration");
-        if (configuration?.Rip == null)
-            throw new ArgumentNullException("AppConfiguration.Rip", nameof(configuration.Rip));
     }
 
     public static WebApplicationBuilder AddSalesArrangementService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
@@ -37,7 +35,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 
         // Rip svc
-        builder.Services.AddExternalServiceRip(appConfiguration.Rip);
+        builder.AddExternalServiceRip();
         // sb web api
         builder.AddExternalServiceSbWebApi();
 
