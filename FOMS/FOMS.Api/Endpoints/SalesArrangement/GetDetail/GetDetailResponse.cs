@@ -15,11 +15,6 @@ public sealed class GetDetailResponse
     public int SalesArrangementTypeId { get; set; }
     
     /// <summary>
-    /// Kategorie produktu - hypoteka, SS, SS uver
-    /// </summary>
-    public ProductTypeCategory ProductCategory { get; set; }
-    
-    /// <summary>
     /// Datum vytvoreni SA
     /// </summary>
     public DateTime CreatedTime { get; set; }
