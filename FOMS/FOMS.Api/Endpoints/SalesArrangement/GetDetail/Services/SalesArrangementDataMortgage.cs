@@ -75,7 +75,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         // create response object
         return new Dto.MortgageDetailDto()
         {
-            MonthlyPayment = offerInstance.SimulationInputs.LoanPaymentAmount,
+            LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
             LoanKindId = offerInstance.SimulationInputs.LoanKindId,
             ContractNumber = saCase.Data.ContractNumber,
             LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
@@ -95,7 +95,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 	A.ZustatekCelkem 'AccountBalance',
 	A.ZbyvaCerpat 'AmountToWithdraw',
 	A.DatumKonceCerpani 'DateOfDrawing',
-	A.MesicniSplatka 'MonthlyPayment',
+	A.MesicniSplatka 'LoanPaymentAmount',
 	null 'LoanTermsValidFrom',
 	null 'YearlyAccountStatement',
 

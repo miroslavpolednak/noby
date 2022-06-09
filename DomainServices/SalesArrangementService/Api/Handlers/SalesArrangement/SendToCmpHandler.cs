@@ -724,7 +724,7 @@ internal class SendToCmpHandler
             anuitni_splatka = offer.SimulationResults.LoanPaymentAmount.ToJsonString(),                                             // OfferInstance
             splatnost_uv_mesice = offer.SimulationResults.LoanDuration.ToJsonString(),                                              // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
             fixace_uv_mesice = offer.SimulationInputs.FixedRatePeriod.ToJsonString(),                                               // OfferInstance - na FE je to v rocích a je to číselník ?
-            individualni_cenotvorba_odchylka = offer.SimulationInputs.InterestRateDeviation.ToJsonString(),
+            individualni_cenotvorba_odchylka = offer.SimulationInputs.InterestRateDiscount.ToJsonString(),
             predp_termin_cerpani = arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
             den_splaceni = offer.SimulationInputs.PaymentDay.ToJsonString(),                                                        // OfferInstance
             forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  

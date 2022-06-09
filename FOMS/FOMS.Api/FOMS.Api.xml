@@ -838,12 +838,6 @@
             </summary>
             <example>10</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanPaymentAmount">
-            <summary>
-            Splátka úvěru
-            </summary>
-            <example>15000</example>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.FixedRatePeriod">
             <summary>
             Délka fixace úrokové sazby
@@ -855,12 +849,6 @@
             Předpokládáné hodnoty zajištění
             </summary>
             <example>5000000</example>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.LoanToValue">
-            <summary>
-            Předpokládáné výše úvěru
-            </summary>
-            <example>300000</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.PaymentDay">
             <summary>
@@ -894,7 +882,7 @@
             uver.rozhodnyDenSazby
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.InterestRateDeviation">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.InterestRateDiscount">
             <summary>
             uver.indCenotvorbaOdchylka
             </summary>
@@ -969,7 +957,7 @@
             Zbyva cerpat
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.MonthlyPayment">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.LoanPaymentAmount">
             <summary>
             Mesicni splatka
             </summary>

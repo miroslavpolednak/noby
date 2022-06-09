@@ -27,12 +27,6 @@ public class MortgageInputs
     public int? LoanDuration { get; set; }
     
     /// <summary>
-    /// Splátka úvěru
-    /// </summary>
-    /// <example>15000</example>
-    public decimal? LoanPaymentAmount { get; set; }
-    
-    /// <summary>
     /// Délka fixace úrokové sazby
     /// </summary>
     /// <example>48</example>
@@ -43,12 +37,6 @@ public class MortgageInputs
     /// </summary>
     /// <example>5000000</example>
     public decimal CollateralAmount { get; set; }
-
-    /// <summary>
-    /// Předpokládáné výše úvěru
-    /// </summary>
-    /// <example>300000</example>
-    public decimal LoanToValue { get; set; }
 
     /// <summary>
     /// Den splátky úvěru
@@ -85,7 +73,7 @@ public class MortgageInputs
     /// <summary>
     /// uver.indCenotvorbaOdchylka
     /// </summary>
-    public decimal? InterestRateDeviation { get; set; }
+    public decimal? InterestRateDiscount { get; set; }
 
     /// <summary>
     /// uver.typCerpani

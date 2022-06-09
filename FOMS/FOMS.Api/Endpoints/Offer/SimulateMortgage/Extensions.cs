@@ -12,17 +12,15 @@ internal static class Extensions
             SimulationInputs = new()
             {
                 GuaranteeDateFrom = request.GuaranteeDateFrom,
-                InterestRateDeviation = request.InterestRateDeviation,
+                InterestRateDiscount = request.InterestRateDiscount,
                 DrawingType = request.DrawingType,
                 DrawingDuration = request.DrawingDuration,
                 ProductTypeId = request.ProductTypeId,
                 LoanKindId = request.LoanKindId,
                 LoanAmount = request.LoanAmount,
-                LoanDuration = request.LoanDuration,
-                LoanPaymentAmount = request.LoanPaymentAmount,
+                LoanDuration = request.LoanDuration.GetValueOrDefault(),
                 FixedRatePeriod = request.FixedRatePeriod,
                 CollateralAmount = request.CollateralAmount,
-                LoanToValue = request.LoanToValue,
                 PaymentDay = request.PaymentDay,
                 IsEmployeeBonusRequested = request.IsEmployeeBonusRequested,
                 ExpectedDateOfDrawing = request.ExpectedDateOfDrawing

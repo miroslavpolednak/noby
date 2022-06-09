@@ -45,7 +45,7 @@ internal class GetCreditWorthinessHandler
         ripRequest.LoanApplicationProduct = new LoanApplicationProduct
         {
             Product = caseInstance.Data.ProductTypeId,
-            Maturity = offerInstance.SimulationResults.LoanDuration ?? 0,
+            Maturity = offerInstance.SimulationResults.LoanDuration,
             InterestRate = (double)offerInstance.SimulationResults.LoanInterestRate,
             AmountRequired = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
             Annuity = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
@@ -96,7 +96,7 @@ internal class GetCreditWorthinessHandler
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
             LoanAmount = offerInstance.SimulationInputs.LoanAmount,
-            LoanPaymentAmount = offerInstance.SimulationInputs.LoanPaymentAmount
+            LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount
         };
     }
 

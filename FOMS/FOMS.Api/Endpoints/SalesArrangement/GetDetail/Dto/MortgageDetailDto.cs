@@ -47,7 +47,7 @@ public class MortgageDetailDto
     /// <summary>
     /// Mesicni splatka
     /// </summary>
-    public decimal? MonthlyPayment { get; set; }
+    public decimal? LoanPaymentAmount { get; set; }
 
     /// <summary>
     /// Datum cerpani
