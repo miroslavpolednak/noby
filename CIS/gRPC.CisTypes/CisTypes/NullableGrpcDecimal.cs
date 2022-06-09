@@ -53,7 +53,7 @@ public sealed partial class NullableGrpcDecimal
     long IConvertible.ToInt64(IFormatProvider? provider) => this.Units;
     ulong IConvertible.ToUInt64(IFormatProvider? provider) => ThrowNotSupported<ulong>();
     float IConvertible.ToSingle(IFormatProvider? provider) => ThrowNotSupported<float>();
-    double IConvertible.ToDouble(IFormatProvider? provider) => ThrowNotSupported<double>();
+    double IConvertible.ToDouble(IFormatProvider? provider) => Convert.ToDouble((decimal)this!);
     decimal IConvertible.ToDecimal(IFormatProvider? provider) => (decimal)this!;
     DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ThrowNotSupported<DateTime>();
     string IConvertible.ToString(IFormatProvider? provider) => ThrowNotSupported<string>();

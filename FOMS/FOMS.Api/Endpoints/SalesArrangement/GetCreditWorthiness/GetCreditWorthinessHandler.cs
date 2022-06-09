@@ -59,8 +59,8 @@ internal class GetCreditWorthinessHandler
         {
             var h = new LoanApplicationHousehold
             {
-                ChildrenUnderAnd10 = household.Data.ChildrenUpToTenYearsCount,
-                ChildrenOver10 = household.Data.ChildrenOverTenYearsCount,
+                ChildrenUnderAnd10 = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
+                ChildrenOver10 = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
                 Clients = new List<LoanApplicationCounterParty>()
             };
             
