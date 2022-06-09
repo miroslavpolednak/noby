@@ -53,28 +53,26 @@ message SimulationInputs {
 	cis.types.NullableGrpcDate ExpectedDateOfDrawing = 1;
 	int32 ProductTypeId = 2;
 	int32 LoanKindId = 3;
-	cis.types.NullableGrpcDecimal LoanAmount = 4;
-	google.protobuf.Int32Value LoanDuration = 5;
-	cis.types.NullableGrpcDecimal LoanPaymentAmount = 6;
-	cis.types.GrpcDate GuaranteeDateFrom = 7;
-	cis.types.GrpcDecimal InterestRateDeviation = 8;
-	int32 FixedRatePeriod = 9;			
-    cis.types.GrpcDecimal CollateralAmount = 10;
-	cis.types.GrpcDecimal LoanToValue = 11;
-	int32 DrawingType = 12; 
-	google.protobuf.Int32Value DrawingDuration = 13;
-	google.protobuf.Int32Value PaymentDay = 14;
-	google.protobuf.BoolValue IsEmployeeBonusRequested = 15;
-	Developer Developer = 16;
-	repeated LoanPurpose LoanPurposes = 17;
-	FeeSettings FeeSettings = 18;
-	InputMarketingAction MarketingActions = 19;
-	repeated InputFee Fees = 20;
+	cis.types.GrpcDecimal LoanAmount = 4;
+	int32 LoanDuration = 5;
+	cis.types.GrpcDate GuaranteeDateFrom = 6;
+	cis.types.NullableGrpcDecimal InterestRateDiscount = 7;
+	int32 FixedRatePeriod = 8;			
+    cis.types.GrpcDecimal CollateralAmount = 9;
+	google.protobuf.Int32Value DrawingType = 10; 
+	google.protobuf.Int32Value DrawingDuration = 11;
+	google.protobuf.Int32Value PaymentDay = 12;
+	google.protobuf.BoolValue IsEmployeeBonusRequested = 13;
+	Developer Developer = 14;
+	repeated LoanPurpose LoanPurposes = 15;
+	FeeSettings FeeSettings = 16;
+	InputMarketingAction MarketingActions = 17;
+	repeated InputFee Fees = 18;
 }
 
 message SimulationResults {
-	cis.types.NullableGrpcDecimal LoanAmount = 1;
-	google.protobuf.Int32Value LoanDuration = 2;
+	cis.types.GrpcDecimal LoanAmount = 1;
+	int32 LoanDuration = 2;
 	cis.types.NullableGrpcDate LoanDueDate = 3;
 	cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
 	cis.types.GrpcDecimal LoanInterestRateProvided = 5;
@@ -97,8 +95,8 @@ message SimulationResults {
 }
 
 message BaseSimulationResults {
-	cis.types.NullableGrpcDecimal LoanAmount = 1;
-	google.protobuf.Int32Value LoanDuration = 2;
+	cis.types.GrpcDecimal LoanAmount = 1;
+	int32 LoanDuration = 2;
 	cis.types.NullableGrpcDate LoanDueDate = 3;
 	cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
 	cis.types.GrpcDecimal LoanInterestRateProvided = 5;
@@ -123,8 +121,8 @@ message LoanPurpose {
 }
 
 message FeeSettings {
-	int32 FeeTariffPurpose = 1;
-	int32 StatementTypeId = 2;
+	google.protobuf.Int32Value FeeTariffPurpose = 1;
+	google.protobuf.Int32Value StatementTypeId = 2;
 	bool IsStatementCharged = 3;
 }
 
