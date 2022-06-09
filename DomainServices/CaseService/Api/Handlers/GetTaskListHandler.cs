@@ -120,7 +120,8 @@ internal class GetTaskListHandler
     {
         if (!String.IsNullOrWhiteSpace(user.CPM) && !String.IsNullOrWhiteSpace(user.ICP))
         {
-            return $"{user.CPM}/{user.ICP}";
+            // "login": "CPM: 99811022 ICP: 128911022"
+            return $"CPM: {user.CPM} ICP: {user.ICP}";
         }
 
         var identity = user.UserIdentifiers.FirstOrDefault()?.Identity;
