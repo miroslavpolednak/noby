@@ -22,8 +22,17 @@ internal class SimulateMortgageRequestValidator : AbstractValidator<Dto.Simulate
             .GreaterThan(0)
             .WithMessage("SimulationInputs.ProductTypeId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
 
+        RuleFor(t => t.Request.SimulationInputs.LoanKindId)
+            .GreaterThan(0)
+            .WithMessage("SimulationInputs.LoanKindId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
         RuleFor(t => t.Request.SimulationInputs.GuaranteeDateFrom)
            .Must(p => (p != null) && p >= DateTime.Today.AddDays(AppDefaults.MaxGuaranteeInDays * -1))
            .WithMessage($"SimulationInputs.GuaranteeDateFrom can't be older then {AppDefaults.MaxGuaranteeInDays} days").WithErrorCode("99999"); //TODO: ErrorCode
+
+        RuleFor(t => t.Request.SimulationInputs.MarketingActions)
+            .Must(p => p != null)
+            .WithMessage("SimulationInputs.MarketingActions are not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
     }
 }

@@ -12,6 +12,7 @@ internal class SimulateMortgageHandler
     #region Construction
 
     private readonly ILogger<SimulateMortgageHandler> _logger;
+    private readonly ICodebookServiceAbstraction _codebookService;
     private readonly Eas.IEasClient _easClient;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
@@ -25,6 +26,7 @@ internal class SimulateMortgageHandler
     {
         _logger = logger;
         _easClient = easClient;
+        _codebookService = codebookService;
         _easSimulationHTClient = easSimulationHTClient;
     }
 
@@ -69,7 +71,41 @@ internal class SimulateMortgageHandler
         {
             input.PaymentDay = await GetDefaultPaymentDay(cancellation);
         }
-      
+
+        //Sleva z úrokové sazby(dle individuální cenotvorby)
+        //Default: Pokud nepřijde na vstup, ukládáme hodnotu nula  "0"
+        if (input.InterestRateDiscount == null)
+        {
+            input.InterestRateDiscount = 0;
+        }
+
+        // Typ čerpání
+        // DrawingType(SB enum)
+        // Default: "0" jednorázové
+        if (!input.DrawingType.HasValue)
+        {
+            input.DrawingType = 0;
+        }
+
+        //Je žádáno zaměstnanecké zvýhodnění?
+        //Default: False
+        input.IsEmployeeBonusRequested = input.IsEmployeeBonusRequested ?? false;
+
+        if (input.FeeSettings != null)
+        {
+            // Určuje za jakým účelem se generuje seznam poplatků.
+            // Default: 0 - za účelem nabídky
+            input.FeeSettings.FeeTariffPurpose = 0;
+
+            // Nastavení typu výpisů StatementType(CIS_HU_TYP_VYPIS)
+            // Default: první hodnota v číselníku(dle Order)
+            if (!input.FeeSettings.StatementTypeId.HasValue)
+            {
+                var statementType = (await _codebookService.StatementTypes(cancellation)).OrderBy(i=> i.Order).First();
+                input.FeeSettings.StatementTypeId = statementType.Id;
+            }
+        }
+
         return input;
     }
 
@@ -88,4 +124,3 @@ internal class SimulateMortgageHandler
            _ => throw new NotImplementedException("RunSimulationHT")
        };
 }
-
