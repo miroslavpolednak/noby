@@ -49,12 +49,6 @@ internal class CasesModelConverter
 				})
 				.ToList();
 		}
-		//MOCK
-		converted.ActiveTasks = new List<Dto.TaskModel>
-		{
-			new Dto.TaskModel { CategoryId = 1, TaskCount = 1 },
-			new Dto.TaskModel { CategoryId = 2, TaskCount = 1 }
-		};
 
 		return converted;
 	}
