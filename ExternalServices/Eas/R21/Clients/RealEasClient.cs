@@ -131,6 +131,22 @@ internal sealed class RealEasClient
         });
     }
 
+    public async Task<IServiceCallResult> CheckForm(S_FORMULAR formular)
+    {
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            var request = new CheckFormRequest(formular);
+
+            _logger.LogSerializedObject("CheckFormRequest", request);
+            var response = await client.CheckFormAsync(request);
+            _logger.LogSerializedObject("CheckFormResponse", response);
+
+            return new SuccessfulServiceCallResult<int>(response.CheckFormResult);
+        });
+    }
+
     public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger)
         : base(Versions.R21, configuration, logger)
     {

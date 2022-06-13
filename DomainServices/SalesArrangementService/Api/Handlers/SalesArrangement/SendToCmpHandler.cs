@@ -131,6 +131,10 @@ internal class SendToCmpHandler
         // create JSON data
         var jsonData = CreateJsonData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById);
 
+        // check form
+        var checkFormForm = GetCheckFormForm();
+        var checkFormResult = ResolveCheckForm(await _easClient.CheckForm(checkFormForm));
+
         // save form to DB
         await SaveForm(arrangement.ContractNumber, jsonData, cancellation);
 
@@ -153,7 +157,7 @@ internal class SendToCmpHandler
 
         if (invalidSaMandatoryFields.Length > 0)
         {
-            throw new CisValidationException(99999, $"Sales arrangement mandatory fields not provided [{ String.Join(StringJoinSeparator, invalidSaMandatoryFields) }]."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement mandatory fields not provided [{String.Join(StringJoinSeparator, invalidSaMandatoryFields)}]."); //TODO: ErrorCode
         }
     }
 
@@ -172,11 +176,11 @@ internal class SendToCmpHandler
             return mandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
         }
 
-        var invalidIncomes = incomesById.Select(i => new { Id = i.Key, InvalidFields = FindInvalidFields(i.Value) }).Where(i=> i.InvalidFields.Length > 0).ToArray();
+        var invalidIncomes = incomesById.Select(i => new { Id = i.Key, InvalidFields = FindInvalidFields(i.Value) }).Where(i => i.InvalidFields.Length > 0).ToArray();
         if (invalidIncomes.Length > 0)
         {
             var details = invalidIncomes.Select(i => $"{i.Id}[{String.Join(StringJoinSeparator, i.InvalidFields)}]");
-            throw new CisValidationException(99999, $"Income mandatory fields not provided [{ String.Join(StringJoinSeparator, details) }]."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Income mandatory fields not provided [{String.Join(StringJoinSeparator, details)}]."); //TODO: ErrorCode
         }
     }
 
@@ -197,7 +201,7 @@ internal class SendToCmpHandler
 
         if (customerIdsInvalid.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement customers [{ String.Join(StringJoinSeparator, customerIdsInvalid) }] don't contain both [KB,MP] identities."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement customers [{String.Join(StringJoinSeparator, customerIdsInvalid)}] don't contain both [KB,MP] identities."); //TODO: ErrorCode
         }
     }
 
@@ -207,7 +211,7 @@ internal class SendToCmpHandler
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
         if (duplicitHouseholdTypeIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement contains duplicit household types [{ String.Join(StringJoinSeparator, duplicitHouseholdTypeIds) }]."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement contains duplicit household types [{String.Join(StringJoinSeparator, duplicitHouseholdTypeIds)}]."); //TODO: ErrorCode
         }
 
         // check if MAIN household is available
@@ -221,7 +225,7 @@ internal class SendToCmpHandler
         var invalidHouseholdIds = households.Where(i => !i.CustomerOnSAId1.HasValue && i.CustomerOnSAId2.HasValue).Select(i => i.HouseholdId);
         if (invalidHouseholdIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement contains households [{ String.Join(StringJoinSeparator, invalidHouseholdIds) }] with CustomerOnSAId2 but without CustomerOnSAId1."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement contains households [{String.Join(StringJoinSeparator, invalidHouseholdIds)}] with CustomerOnSAId2 but without CustomerOnSAId1."); //TODO: ErrorCode
         }
 
         // check if CustomerOnSAId1 is available on Main households
@@ -237,7 +241,7 @@ internal class SendToCmpHandler
            .GroupBy(i => i).Where(i => i.Count() > 1).Select(i => i.Key);
         if (duplicitCustomerOnSAIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement households contain duplicit customers [{ String.Join(StringJoinSeparator, duplicitCustomerOnSAIds) }] on sales arrangement."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Sales arrangement households contain duplicit customers [{String.Join(StringJoinSeparator, duplicitCustomerOnSAIds)}] on sales arrangement."); //TODO: ErrorCode
         }
 
         // check if customers on SA correspond to customers on households
@@ -252,7 +256,7 @@ internal class SendToCmpHandler
 
         if (customerIdsInvalid.Any())
         {
-            throw new CisValidationException(99999, $"Customers [{ String.Join(StringJoinSeparator, customerIdsInvalid) }] on sales arrangement don't correspond to customers on households."); //TODO: ErrorCode
+            throw new CisValidationException(99999, $"Customers [{String.Join(StringJoinSeparator, customerIdsInvalid)}] on sales arrangement don't correspond to customers on households."); //TODO: ErrorCode
         }
     }
 
@@ -302,14 +306,14 @@ internal class SendToCmpHandler
 
     private async Task<Dictionary<int, Income>> GetIncomesById(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
-        var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i=>i.IncomeId)).ToArray();
+        var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i => i.IncomeId)).ToArray();
         var incomes = new List<Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
             var income = await _mediator.Send(new Dto.GetIncomeMediatrRequest(incomeIds[i]), cancellation);
             incomes.Add(income);
         }
-        return incomes.ToDictionary(i=>i.IncomeId);
+        return incomes.ToDictionary(i => i.IncomeId);
     }
 
     private async Task<Dictionary<string, CustomerResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
@@ -333,7 +337,7 @@ internal class SendToCmpHandler
             _ => throw new NotImplementedException()
         };
 
-    private void ResolveAddFirstSignatureDate(IServiceCallResult result)
+    private static void ResolveAddFirstSignatureDate(IServiceCallResult result)
     {
         switch (result)
         {
@@ -341,6 +345,14 @@ internal class SendToCmpHandler
                 throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key);
         }
     }
+
+    private static int ResolveCheckForm(IServiceCallResult result) =>
+       result switch
+       {
+           SuccessfulServiceCallResult<int> r => r.Model,
+           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
+           _ => throw new NotImplementedException()
+       };
 
     private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
@@ -513,8 +525,8 @@ internal class SendToCmpHandler
 
         object? MapIdentificationDocument(IdentificationDocument i)
         {
-            if (i == null) { 
-                return null; 
+            if (i == null) {
+                return null;
             }
 
             return new {
@@ -617,9 +629,9 @@ internal class SendToCmpHandler
                 zrazky_ze_mzdy_ostatni = i.Employement?.WageDeduction?.DeductionOther.ToJsonString(),
                 prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.ConfirmationByCompany.ToJsonString(),
                 //prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
-                prijem_potvrzeni_datum =  i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
-                prijem_potvrzeni_osoba =  i.Employement?.IncomeConfirmation?.ConfirmationPerson,
-                prijem_potvrzeni_kontakt =  i.Employement?.IncomeConfirmation?.ConfirmationContact,
+                prijem_potvrzeni_datum = i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
+                prijem_potvrzeni_osoba = i.Employement?.IncomeConfirmation?.ConfirmationPerson,
+                prijem_potvrzeni_kontakt = i.Employement?.IncomeConfirmation?.ConfirmationContact,
             };
         }
 
@@ -656,7 +668,7 @@ internal class SendToCmpHandler
                 prijmeni_rodne = c.NaturalPerson?.BirthName,
                 jmeno = c.NaturalPerson?.FirstName,
                 datum_narozeni = c.NaturalPerson?.DateOfBirth.ToJsonString(),
-                misto_narozeni_obec = c.NaturalPerson?.PlaceOfBirth,                             
+                misto_narozeni_obec = c.NaturalPerson?.PlaceOfBirth,
                 misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
                 pohlavi = cGenderId.HasValue ? gendersById[cGenderId.Value].StarBuildJsonCode : null,
                 statni_prislusnost = cCitizenshipCountriesId.ToJsonString(),                    // vzít první
@@ -954,6 +966,40 @@ internal class SendToCmpHandler
 }
         */
         #endregion
+    }
+
+    private static Eas.EasWrapper.S_FORMULAR GetCheckFormForm()
+    {
+
+        //<? xml version="1.0" encoding="utf-8"?>
+        //<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        //  <soap:Body>
+        //    <CheckFormV2Request xmlns = "http://asseco/EAS/EAS_WS_SB_Services" >
+        //      < formularData >
+        //        < formular_id > 3601001 </ formular_id >
+        //        < cislo_smlouvy > HF0000055 </ cislo_smlouvy >
+        //        < datum_prijeti > 2022 - 05 - 30T12:23:34.202Z</datum_prijeti>
+        //        <data>{"cislo_smlouvy":"HF0000055","case_id":"2954395","business_case_ID":"193","kanal_ziskani":"1","datum_vytvoreni_zadosti":"19.05.2022","datum_prvniho_podpisu":"19.05.2022","uv_produkt":"20001","uv_druh":"2000","indikativni_LTV":"50,00","indikativni_LTC":"0,00","seznam_mark_akci":[],"individualni_sleva_us":"0","garance_us":"0","sazba_vyhlasovana":"1,00","sazba_skladacka":"0,02","sazba_poskytnuta":"0,02","vyhlasovanaTyp":"1","vyse_uveru":"5000000,00","anuitni_splatka":"83333,33","splatnost_uv_mesice":"60","fixace_uv_mesice":"36","predp_termin_cerpani":"20.05.2022","den_splaceni":"15","forma_splaceni":"1","seznam_poplatku":[],"seznam_ucelu":[{"uv_ucel":"201","uv_ucel_suma":"5000000,00"}],"seznam_objektu":[{"cislo_objektu_uveru":"1","typ_nemovitosti":"2","objekt_uv_je_zajisteni":"0","ucel_porizeni":"1"}],"seznam_ucastniku":[{"role":"1","zmocnenec":"0","cislo_domacnosti":"1","klient":{"rodne_cislo":"6708301490","kb_id":"113666423","mp_id":"58","titul_pred":"Ing.","prijmeni_nazev":"TESTOVACI","prijmeni_rodne":"Ale\u0161ovka","jmeno":"KLIENT","datum_narozeni":"30.08.1967","misto_narozeni_obec":"Praha 4","misto_narozeni_stat":"16","pohlavi":"M","statni_prislusnost":"16","zamestnanec":"0","rezident":"0","PEP":"0","seznam_adres":[{"typ_adresy":"1","ulice":"Bryksova","cislo_popisne":"550","cislo_orientacni":"","psc":"78301","misto":"Olomouc - Slavon\u00EDn","stat":"16"}],"seznam_dokladu":[{"cislo_dokladu":"101929795","typ_dokladu":"1","vydal":"M\u011B\u00DA Kot\u011Bh\u016Flky","vydal_datum":"16.05.2022","vydal_stat":"16","platnost_do":"16.05.2029"}],"seznam_kontaktu":[{"typ_kontaktu":"1","hodnota_kontaktu":"\u002B420 777888999"},{ "typ_kontaktu":"5","hodnota_kontaktu":"kuk@kuk.cz"}],"rodinny_stav":"1","druh_druzka":"0","vzdelani":"3","prijmy":[{"prvni_pracovni_sml_od":"02.05.2022","posledni_zamestnani_od":"19.05.2022","poradi_prijmu":"1","zdroj_prijmu_hlavni":"1","typ_pracovniho_pomeru":"3","klient_ve_vypovedni_lhute":"0","klient_ve_zkusebni_lhute":"1","prijem_ze_zahranici":"0","domicilace_prijmu_ze_zamestnani":"0","pracovni_smlouva_aktualni_od":"04.05.2022","pracovni_smlouva_aktualni_do":"31.05.2022","zamestnavatel_nazov":"zamest","zamestnavatel_rc_ico":"7777777777","zamestnavatel_sidlo_ulice":"zamestova","zamestnavatel_sidlo_cislo_popisne_orientacni":"111","zamestnavatel_sidlo_mesto":"praha","zamestnavatel_sidlo_psc":"10039","zamestnavatel_sidlo_stat":"16","zamestnavatel_telefonni_cislo":"66666666","zamestnavatel_okec":"14","zamestnavatel_pracovni_sektor":"4","zamestnavatel_senzitivni_sektor":"0","povolani":"1","zamestnan_jako":"superman","prijem_vyse":"120000","prijem_mena":"CZK","zrazky_ze_mzdy_rozhodnuti":"123,00","zrazky_ze_mzdy_splatky":"456,00","zrazky_ze_mzdy_ostatni":"789,00","prijem_potvrzeni_vystavila_ext_firma":"1","prijem_potvrzeni_misto_vystaveni":"praha","prijem_potvrzeni_datum":"18.05.2022","prijem_potvrzeni_osoba":"ucetni","prijem_potvrzeni_kontakt":"724247247"}],"zavazky":[{"cislo_zavazku":"1","druh_zavazku":"1","vyse_splatky":"1000","vyse_nesplacene_jistiny":"200000","vyse_limitu":"0","mimo_entitu_mandanta":"1"}],"prijem_sbiran":"0","uzamcene_prijmy":"0"}}],"zprostredkovano_3_stranou":"0","sjednal_CPM":"99917587","sjednal_ICP":"000017587","VIP_makler":"0","mena_prijmu":"CZK","mena_bydliste":"CZK","zpusob_zasilani_vypisu":"1","predp_hodnota_nem_zajisteni":"10000000,00","fin_kryti_vlastni_zdroje":"10000,00","fin_kryti_cizi_zdroje":"10000,00","fin_kryti_celkem":"20000,00","zpusob_podpisu_smluv_dok":"3","seznam_domacnosti":[{"cislo_domacnosti":"1","pocet_deti_0_10let":"1","pocet_deti_nad_10let":"1","sporeni":"3333","pojisteni":"2222","naklady_na_bydleni":"1111","ostatni_vydaje":"4444","vyporadani_majetku":"2"}],"parametr_domicilace":"1","parametr_RZP":"1","parametr_pojisteni_nem":"1","parametr_vyse_prijmu_uveru":"1"}</ data >
+        //      </ formularData >
+        //    </ CheckFormV2Request >
+        //  </ soap:Body >
+        //</ soap:Envelope >
+
+        var fields = new Eas.EasWrapper.S_FORMULAR_ITEM[]
+            {
+                new Eas.EasWrapper.S_FORMULAR_ITEM() {
+                    field_id = 1,
+                    value = ""
+                },
+            };
+
+        var checkFormForm = new Eas.EasWrapper.S_FORMULAR()
+        {
+            formular_id = 3601001,
+            fields = fields
+        };
+
+        return checkFormForm;
     }
 
     #endregion

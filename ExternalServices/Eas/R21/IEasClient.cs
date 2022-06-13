@@ -56,4 +56,13 @@ public interface IEasClient
     /// SuccessfulServiceCallResult[]
     /// </returns>
     Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate);
+
+    /// <summary>
+    /// Kontrola formuláře
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[]
+    /// </returns>
+    Task<IServiceCallResult> CheckForm(S_FORMULAR formular);
+
 }
