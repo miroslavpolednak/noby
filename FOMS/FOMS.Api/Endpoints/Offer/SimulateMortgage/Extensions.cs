@@ -23,7 +23,7 @@ internal static class Extensions
                 CollateralAmount = request.CollateralAmount,
                 PaymentDay = request.PaymentDay,
                 IsEmployeeBonusRequested = request.IsEmployeeBonusRequested,
-                ExpectedDateOfDrawing = request.ExpectedDateOfDrawing
+                ExpectedDateOfDrawing = request.ExpectedDateOfDrawing,
             },
             BasicParameters = new()
             {
@@ -31,14 +31,29 @@ internal static class Extensions
                 FinancialResourcesOther = request.FinancialResourcesOther,
             }
         };
-        
+
         if (request.LoanPurposes is not null && request.LoanPurposes.Any())
             model.SimulationInputs.LoanPurposes.AddRange(
                 request.LoanPurposes.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
                 );
 
+        if (request.MarketingActions is not null)
+        {
+            model.SimulationInputs.MarketingActions = new InputMarketingAction()
+            {
+                Domicile = request.MarketingActions.Domicile,
+                HealthRiskInsurance = request.MarketingActions.HealthRiskInsurance,
+                RealEstateInsurance = request.MarketingActions.RealEstateInsurance,
+                IncomeLoanRatioDiscount = request.MarketingActions.IncomeLoanRatioDiscount,
+                UserVip = request.MarketingActions.UserVip,
+            };
+        }
+
         return model;
     }
+
+    //grpcurl -insecure -d "{\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\", \"BasicParameters\": {}, \"SimulationInputs\": {\"ProductTypeId\":20001, \"LoanKindId\":2000, \"LoanAmount\":{\"units\":3150020},\"LoanDuration\":36, \"GuaranteeDateFrom\": {\"year\":2022,\"month\":5,\"day\":15 }, \"InterestRateDiscount\": {\"units\":1}, \"FixedRatePeriod\": 24, \"CollateralAmount\": {\"units\":6500000}, \"DrawingDuration\": 0, \"LoanPurposes\":[{\"LoanPurposeId\":201,\"Sum\":{\"units\":1000000}}, {\"LoanPurposeId\":202,\"Sum\":{\"units\":2000000}}], \"MarketingActions\":{} }}" -H "Authorization: Basic YTph" 172.30.35.51:31006 DomainServices.OfferService.v1.OfferService/SimulateMortgage
+
 
     public static Dto.MortgageOutputs ToApiResponse(this SimulationResults result, SimulationInputs inputs)
         => new()
@@ -64,6 +79,18 @@ internal static class Extensions
             LoanInterestRateAnnounced = result.LoanInterestRateAnnounced,
             LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
             EmployeeBonusDeviation = result.EmployeeBonusDeviation,
-            MarketingActionsDeviation = result.MarketingActionsDeviation
+            MarketingActionsDeviation = result.MarketingActionsDeviation,
+            MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
         };
+
+    private static Dto.MarketingActionResult ToApiResponseItem(this ResultMarketingAction resultItem)
+    {
+        return new Dto.MarketingActionResult() {
+            Code = resultItem.Code,
+            Requested = resultItem.Requested == 1,
+            Applied = resultItem.Applied == 1,
+            // MarketingActionId = resultItem.MarketingActionId, 
+            // Deviation = resultItem.Deviation,
+        };
+    }
 }

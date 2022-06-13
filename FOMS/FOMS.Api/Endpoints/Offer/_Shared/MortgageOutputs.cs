@@ -42,4 +42,7 @@ public class MortgageOutputs
     public int? PaymentDay { get; set; }
 
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
+
+    public List<MarketingActionResult>? MarketingActions { get; set; }
+
 }
