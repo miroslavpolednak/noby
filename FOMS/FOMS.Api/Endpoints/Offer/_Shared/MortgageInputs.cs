@@ -86,4 +86,7 @@ public class MortgageInputs
     public int? DrawingDuration { get; set; }
 
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
+
+    public MarketingActionInput? MarketingActions { get; set; }
+
 }
