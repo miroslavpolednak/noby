@@ -2,6 +2,6 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
-message SendToCmpRequest {
+message SalesArrangementIdRequest {
 	int32 SalesArrangementId = 1;
 }

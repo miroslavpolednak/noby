@@ -25,6 +25,7 @@ Pro použití vybrané implementace si stačí z DI vyžádat zaregistrovanou ve
 ## Interní nastavení
 ### Vygenerování EAS wrapperu
         dotnet-svcutil "d:\Visual Studio Projects\MPSS-FOMS\CIS\ExternalServices\Eas\EAS_WS_SB_Services.xml" -o "EasWrapper.cs" -i -n *,ExternalServices.Eas.R21.EasWrapper
+        dotnet-svcutil "D:\Users\992466q\source\repos\OneSolution\ExternalServices\Eas\R21\EAS_WS_SB_Services.xml" -o "EasWrapper.cs" -i -n *,ExternalServices.Eas.R21.EasWrapper
 
 ### ServiceDiscovery
 Klíč pro uložení v ServiceDiscovery tabulce je **ES:EAS**, typ je **Proprietary**.

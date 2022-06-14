@@ -80,4 +80,11 @@ internal sealed class MockEasClient : IEasClient
     {
         return new SuccessfulServiceCallResult();
     }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IServiceCallResult> CheckFormV2(CheckFormData formData)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    {
+        return new SuccessfulServiceCallResult();
+    }
 }

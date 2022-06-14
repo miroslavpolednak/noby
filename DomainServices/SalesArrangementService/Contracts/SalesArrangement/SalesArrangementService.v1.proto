@@ -11,7 +11,8 @@ import "UpdateSalesArrangementState.proto";
 import "GetSalesArrangementList.proto";
 import "GetSalesArrangementByOfferId.proto";
 import "UpdateSalesArrangement.proto";
-import "SendToCmp.proto";
+import "Types.proto";
+import "ValidateSalesArrangement.proto";
 import "UpdateSalesArrangementParameters.proto";
 import "UpdateLoanAssessmentParameters.proto";
 
@@ -38,7 +39,10 @@ service SalesArrangementService {
 	rpc UpdateSalesArrangement (DomainServices.SalesArrangementService.UpdateSalesArrangementRequest) returns (google.protobuf.Empty);
 
 	// predani ke zpracovani
-	rpc SendToCmp (DomainServices.SalesArrangementService.SendToCmpRequest) returns (google.protobuf.Empty);
+	rpc SendToCmp (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (google.protobuf.Empty);
+
+	// validace SA (CheckForm)
+	rpc ValidateSalesArrangement (DomainServices.SalesArrangementService.SalesArrangementIdRequest) returns (ValidateSalesArrangementResponse);
 
 	rpc UpdateSalesArrangementParameters (DomainServices.SalesArrangementService.UpdateSalesArrangementParametersRequest) returns (google.protobuf.Empty);
 

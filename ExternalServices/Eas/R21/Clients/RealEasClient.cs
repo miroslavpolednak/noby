@@ -147,6 +147,38 @@ internal sealed class RealEasClient
         });
     }
 
+    public async Task<IServiceCallResult> CheckFormV2(CheckFormData formData)
+    {
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            var request = new CheckFormV2Request(formData);
+
+            _logger.LogSerializedObject("CheckFormV2Request", request);
+            var response = await client.CheckForm_V2Async(request);
+            _logger.LogSerializedObject("CheckFormV2Response", response);
+
+            var res = new R21.CheckFormV2.Response(response.commonResult, response.formularData);
+
+            return new SuccessfulServiceCallResult<R21.CheckFormV2.Response>(res);
+        });
+    }
+
+    private async Task<IServiceCallResult> GetVersion(string mode)
+    {
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            _logger.LogSerializedObject("GetVersion Mode", mode);
+            var response = await client.GetVersionInfoAsync(mode);
+            _logger.LogSerializedObject("GetVersionResponse", response);
+
+            return new SuccessfulServiceCallResult<string>(response.Version);
+        });
+    }
+
     public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger)
         : base(Versions.R21, configuration, logger)
     {
