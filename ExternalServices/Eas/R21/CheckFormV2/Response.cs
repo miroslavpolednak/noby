@@ -6,13 +6,17 @@
 
         public string CommonText { get; private set; }
 
-        public Errors Detail { get; private set; }
+        public Errors? Detail { get; private set; }
 
         public Response(EasWrapper.CommonResult commonResult, EasWrapper.CheckFormData formData)
         {
             CommonValue = commonResult.return_val;
             CommonText = commonResult.return_text;
-            Detail = Errors.Parse(formData.data);
+
+            if (!String.IsNullOrEmpty(formData.data))
+            {
+                Detail = Errors.Parse(formData.data);
+            }
         }
 
     }

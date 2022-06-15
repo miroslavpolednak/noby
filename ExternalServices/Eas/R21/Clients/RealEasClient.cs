@@ -159,6 +159,11 @@ internal sealed class RealEasClient
             var response = await client.CheckForm_V2Async(request);
             _logger.LogSerializedObject("CheckFormV2Response", response);
 
+            //Console.WriteLine("REQ");
+            //(new System.Xml.Serialization.XmlSerializer(request.GetType())).Serialize(Console.Out, request);
+            //Console.WriteLine("RES");
+            //(new System.Xml.Serialization.XmlSerializer(response.GetType())).Serialize(Console.Out, response);
+
             var res = new R21.CheckFormV2.Response(response.commonResult, response.formularData);
 
             return new SuccessfulServiceCallResult<R21.CheckFormV2.Response>(res);
