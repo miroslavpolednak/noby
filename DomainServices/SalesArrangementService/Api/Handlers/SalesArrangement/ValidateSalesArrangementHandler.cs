@@ -33,12 +33,22 @@ internal class ValidateSalesArrangementHandler
 
     public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        //var checkFormData = SalesArrangement.FormDataJsonBuilder.BuildSampleFormData(3601001);
-
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation);
         var builder = new SalesArrangement.Shared.FormDataJsonBuilder(formData);
 
-        var checkFormData = builder.Build(3601001);
+        var actualDate = DateTime.Now.Date;
+        var jsonData = builder.BuildJson3601001();
+
+        var checkFormData = new Eas.EasWrapper.CheckFormData()
+        {
+            formular_id = 3601001,
+            cislo_smlouvy = formData.Arrangement.ContractNumber,
+            // dokument_id = "9876543210",          //??? dokument_id je nepovinné, to neposílej
+            datum_prijeti = actualDate,             //??? datum prijeti dej v D1.2 aktuální datum
+            data = jsonData,
+        };
+
+        //var checkFormData = SalesArrangement.FormDataJsonBuilder.BuildSampleFormData(3601001);
 
         var checkFormResult = ResolveCheckForm(await _easClient.CheckFormV2(checkFormData));
 

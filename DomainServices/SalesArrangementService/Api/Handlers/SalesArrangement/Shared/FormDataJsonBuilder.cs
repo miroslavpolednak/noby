@@ -24,34 +24,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
         #endregion
 
-
-        public Eas.EasWrapper.CheckFormData Build(int formId)
-        {
-            string? jsonData;
-
-            switch (formId)
-            {
-                case 3601001:
-                    jsonData = BuildJson_3601001();
-                    break;
-
-                default:
-                    throw new CisArgumentException(99999, $"FormId #{formId} is not supported.", nameof(formId));  //TODO: ErrorCode
-            }
-
-            var formData = new Eas.EasWrapper.CheckFormData()
-            {
-                formular_id = 3601001,
-                cislo_smlouvy = Data.Arrangement.ContractNumber,
-                dokument_id = "9876543210", //???
-                datum_prijeti = new DateTime(2022, 1, 1), //???
-                data = jsonData,
-            };
-
-            return formData!;
-        }
-
-        private string BuildJson_3601001(bool ignoreNullValues = true)
+        public string BuildJson3601001(bool ignoreNullValues = true)
         {
             var actualDate = DateTime.Now.Date;
 
