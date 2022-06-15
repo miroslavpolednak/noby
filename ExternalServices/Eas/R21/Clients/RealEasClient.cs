@@ -131,6 +131,59 @@ internal sealed class RealEasClient
         });
     }
 
+    public async Task<IServiceCallResult> CheckForm(S_FORMULAR formular)
+    {
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            var request = new CheckFormRequest(formular);
+
+            _logger.LogSerializedObject("CheckFormRequest", request);
+            var response = await client.CheckFormAsync(request);
+            _logger.LogSerializedObject("CheckFormResponse", response);
+
+            return new SuccessfulServiceCallResult<int>(response.CheckFormResult);
+        });
+    }
+
+    public async Task<IServiceCallResult> CheckFormV2(CheckFormData formData)
+    {
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            var request = new CheckFormV2Request(formData);
+
+            _logger.LogSerializedObject("CheckFormV2Request", request);
+            var response = await client.CheckForm_V2Async(request);
+            _logger.LogSerializedObject("CheckFormV2Response", response);
+
+            //Console.WriteLine("REQ");
+            //(new System.Xml.Serialization.XmlSerializer(request.GetType())).Serialize(Console.Out, request);
+            //Console.WriteLine("RES");
+            //(new System.Xml.Serialization.XmlSerializer(response.GetType())).Serialize(Console.Out, response);
+
+            var res = new R21.CheckFormV2.Response(response.commonResult, response.formularData);
+
+            return new SuccessfulServiceCallResult<R21.CheckFormV2.Response>(res);
+        });
+    }
+
+    private async Task<IServiceCallResult> GetVersion(string mode)
+    {
+        return await callMethod(async () =>
+        {
+            using EAS_WS_SB_ServicesClient client = createClient();
+
+            _logger.LogSerializedObject("GetVersion Mode", mode);
+            var response = await client.GetVersionInfoAsync(mode);
+            _logger.LogSerializedObject("GetVersionResponse", response);
+
+            return new SuccessfulServiceCallResult<string>(response.Version);
+        });
+    }
+
     public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger)
         : base(Versions.R21, configuration, logger)
     {

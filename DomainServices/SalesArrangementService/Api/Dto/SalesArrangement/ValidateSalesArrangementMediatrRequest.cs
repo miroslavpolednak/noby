@@ -2,12 +2,12 @@
 
 namespace DomainServices.SalesArrangementService.Api.Dto;
 
-internal sealed class SendToCmpMediatrRequest
-    : IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+internal sealed class ValidateSalesArrangementMediatrRequest
+    : IRequest<ValidateSalesArrangementResponse>, CIS.Core.Validation.IValidatableRequest
 {
     public int SalesArrangementId { get; init; }
 
-    public SendToCmpMediatrRequest(SalesArrangementIdRequest request)
+    public ValidateSalesArrangementMediatrRequest(SalesArrangementIdRequest request)
     {
         SalesArrangementId = request.SalesArrangementId;
     }

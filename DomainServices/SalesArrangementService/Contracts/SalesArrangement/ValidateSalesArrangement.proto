@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+message ValidateSalesArrangementResponse {
+    repeated ValidationMessage Errors = 1;
+    repeated ValidationMessage Warnings = 2;
+}
+
+message ValidationMessage {
+    string Parameter = 1;
+    string Value = 2;
+    int32 Code = 3;
+    string Message = 4;
+    string AdditionalInformation = 5;
+}

@@ -60,12 +60,30 @@ internal sealed class MockEasClient : IEasClient
         return await Task.FromResult(new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse() { Id = 123 }));
     }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async Task<IServiceCallResult> GetContractNumber(int clientId, int caseId)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         return new SuccessfulServiceCallResult<string>( $"{clientId}_{caseId}");
     }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    {
+        return new SuccessfulServiceCallResult();
+    }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IServiceCallResult> CheckForm(S_FORMULAR formular)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    {
+        return new SuccessfulServiceCallResult();
+    }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IServiceCallResult> CheckFormV2(CheckFormData formData)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         return new SuccessfulServiceCallResult();
     }
