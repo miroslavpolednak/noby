@@ -18,5 +18,10 @@ namespace ExternalServices.Rip.V1
         {
             return await Task.FromResult(new SuccessfulServiceCallResult<string>("123"));
         }
+
+        public async Task<IServiceCallResult> GetLoanApplication(string loanApplicationAssessmentId, List<string> expand)
+        {
+            return await Task.FromResult(new ErrorServiceCallResult(0, "chyba"));
+        }
     }
 }

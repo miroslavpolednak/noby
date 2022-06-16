@@ -2,6 +2,7 @@
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
+using ExternalServices.Rip.V1.RipWrapper;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -12,11 +13,28 @@ internal class GetLoanApplicationAssessmentHandler
     {
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
-        if (!saInstance.OfferId.HasValue)
-            throw new CisNotFoundException(0, "Offer not found for SA");
+        if (!saInstance.LoanApplicationAssessmentId.HasValue)
+            throw new CisValidationException($"LoanApplicationAssessmentId for SA #{saInstance.LoanApplicationAssessmentId}");
+
         // instance Offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
 
+        var result = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationAssessmentResponse>(await _ripClient.GetLoanApplication(saInstance.LoanApplicationAssessmentId.Value.ToString(), new List<string>
+        {
+            "assessmentDetail",
+            "householdAssessmentDetail",
+            "collateralRiskCharacteristics"
+        }));
+
+        var model = result.ToApiResponse();
+        model.Application!.LoanAmount = offerInstance.SimulationResults.LoanAmount ?? 0;
+        model.Application!.LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0;
+
+        return model;
+    }
+
+    static GetLoanApplicationAssessmentResponse getMock(_Offer.GetMortgageOfferResponse offerInstance)
+    {
         int[] codes = new[] { 501, 502 };
         Random random = new Random();
         int randomNumber1 = random.Next(0, codes.Length);
@@ -119,18 +137,20 @@ internal class GetLoanApplicationAssessmentHandler
                 }
             }
         };
-
         return model;
     }
 
+    private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
-    public GetLoanApplicationAssessmentHandler(
+    public GetLoanApplicationAssessmentHandler( 
         IOfferServiceAbstraction offerService,
-        ISalesArrangementServiceAbstraction salesArrangementService)
+        ISalesArrangementServiceAbstraction salesArrangementService,
+        ExternalServices.Rip.V1.IRipClient ripClient)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
+        _ripClient = ripClient;
     }
 }

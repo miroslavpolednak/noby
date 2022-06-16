@@ -2,17 +2,17 @@
 
 public class Household
 {
-    public int HouseholdId { get; set; }
-    public int LoanApplicationLimit { get; set; }
-    public int LoanApplicationInstallmentLimit { get; set; }
-    public int MonthlyIncomeAmount { get; set; }
-    public int MonthlyCostsWithoutInstAmount { get; set; }
-    public int MonthlyInstallmentsInKBAmount { get; set; }
-    public int MonthlyEntrepreneurInstallmentsInKBAmount { get; set; }
-    public int MonthlyInstallmentsInMPSSAmount { get; set; }
-    public int MonthlyInstallmentsInOFIAmount { get; set; }
-    public int MonthlyInstallmentsInCBCBAmount { get; set; }
-    public int DTI { get; set; }
-    public int DSTI { get; set; }
-    public int CIR { get; set; }
+    public long? HouseholdId { get; set; }
+    public double? LoanApplicationLimit { get; set; }
+    public double? LoanApplicationInstallmentLimit { get; set; }
+    public double? MonthlyIncomeAmount { get; set; }
+    public double? MonthlyCostsWithoutInstAmount { get; set; }
+    public double? MonthlyInstallmentsInKBAmount { get; set; }
+    public double? MonthlyEntrepreneurInstallmentsInKBAmount { get; set; }
+    public double? MonthlyInstallmentsInMPSSAmount { get; set; }
+    public double? MonthlyInstallmentsInOFIAmount { get; set; }
+    public double? MonthlyInstallmentsInCBCBAmount { get; set; }
+    public long? DTI { get; set; }
+    public long? DSTI { get; set; }
+    public long? CIR { get; set; }
 }
