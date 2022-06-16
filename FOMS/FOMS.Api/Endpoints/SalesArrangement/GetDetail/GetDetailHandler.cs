@@ -21,6 +21,7 @@ internal class GetDetailHandler
         {
             SalesArrangementId = saInstance.SalesArrangementId,
             SalesArrangementTypeId = saInstance.SalesArrangementTypeId,
+            LoanApplicationAssessmentId = saInstance.LoanApplicationAssessmentId,
             CreatedBy = saInstance.Created.UserName,
             CreatedTime = saInstance.Created.DateTime,
             Data = detailData,

@@ -13,7 +13,9 @@ public sealed class GetDetailResponse
     /// Druh zadosti. Ciselnik SalesArrangementTypes.
     /// </summary>
     public int SalesArrangementTypeId { get; set; }
-    
+
+    public int? LoanApplicationAssessmentId { get; set; }
+
     /// <summary>
     /// Datum vytvoreni SA
     /// </summary>
