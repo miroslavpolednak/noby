@@ -3,7 +3,7 @@ using CIS.Infrastructure.Logging;
 
 namespace ExternalServices.Eas.R21;
 
-internal sealed class RealEasClient 
+internal sealed class RealEasClient
     : Shared.BaseClient<RealEasClient>, IEasClient
 {
     public async Task<IServiceCallResult> GetSavingsLoanId(long caseId)
@@ -11,7 +11,7 @@ internal sealed class RealEasClient
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
-            
+
             //TODO az bude metoda, tak zavolat 
             /*if (result.SIM_error != 0)
                 _logger.LogInformation("Unable to create MktItem instance in Starbuild: {error}: {errorText}", result.SIM_error, result.SIM_error_text);*/
@@ -74,7 +74,7 @@ internal sealed class RealEasClient
 
             _logger.LogSerializedObject("S_KLIENTDATA[]", request);
             var result = await client.GetKlientData_NewKlientAsync(request);
-            
+
             if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
                 return new ErrorServiceCallResult(0, "EAS GetKlientData_NewKlientResult is empty");
 
@@ -155,9 +155,9 @@ internal sealed class RealEasClient
 
             var request = new CheckFormV2Request(formData);
 
-            _logger.LogSerializedObject("CheckFormV2Request", request);
+            _logger.LogSerializedObject("CheckFormV2Request", new { FormData = formData });
             var response = await client.CheckForm_V2Async(request);
-            _logger.LogSerializedObject("CheckFormV2Response", response);
+            _logger.LogSerializedObject("CheckFormV2Response", new { CommonResult = response.commonResult, FormularData = response.formularData });
 
             //Console.WriteLine("REQ");
             //(new System.Xml.Serialization.XmlSerializer(request.GetType())).Serialize(Console.Out, request);
