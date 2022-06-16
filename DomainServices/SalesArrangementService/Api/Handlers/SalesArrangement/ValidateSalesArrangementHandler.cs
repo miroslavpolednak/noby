@@ -1,11 +1,6 @@
-﻿
-using Grpc.Core;
+﻿using Grpc.Core;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.CodebookService.Abstraction;
-using DomainServices.CaseService.Abstraction;
-using DomainServices.OfferService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -15,12 +10,12 @@ internal class ValidateSalesArrangementHandler
 
     #region Construction
 
-    private readonly SalesArrangement.Shared.FormDataService _formDataService;
+    private readonly FormDataService _formDataService;
     private readonly ILogger<ValidateSalesArrangementHandler> _logger;
     private readonly Eas.IEasClient _easClient;
 
     public ValidateSalesArrangementHandler(
-        SalesArrangement.Shared.FormDataService formDataService,
+        FormDataService formDataService,
         ILogger<ValidateSalesArrangementHandler> logger,
         Eas.IEasClient easClient)
     {
@@ -31,17 +26,19 @@ internal class ValidateSalesArrangementHandler
 
     #endregion
 
+    private static int[] ValidCommonValues = new int[] { 0, 2 };
+
     public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation);
-        var builder = new SalesArrangement.Shared.FormDataJsonBuilder(formData);
+        var builder = new FormDataJsonBuilder(formData);
 
         var actualDate = DateTime.Now.Date;
-        var jsonData = builder.BuildJson3601001();
+        var jsonData = builder.BuildJson(EFormType.F3601);
 
         var checkFormData = new Eas.EasWrapper.CheckFormData()
         {
-            formular_id = 3601001,
+            formular_id = 1,
             cislo_smlouvy = formData.Arrangement.ContractNumber,
             // dokument_id = "9876543210",          //??? dokument_id je nepovinné, to neposílej
             datum_prijeti = actualDate,             //??? datum prijeti dej v D1.2 aktuální datum
@@ -51,6 +48,13 @@ internal class ValidateSalesArrangementHandler
         //var checkFormData = SalesArrangement.FormDataJsonBuilder.BuildSampleFormData(3601001);
 
         var checkFormResult = ResolveCheckForm(await _easClient.CheckFormV2(checkFormData));
+
+        if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
+        {
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+            throw new ArgumentException($"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]", "CommonValue");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+        }
 
         return ResultToResponse(checkFormResult);
     }
