@@ -67,7 +67,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult<GetSalesArrangementListResponse>(result);
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, DateTime? firstSignedDate, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangement), salesArrangementId);
         var result = await _userContext.AddUserContext(async () => await _service.UpdateSalesArrangementAsync(
@@ -75,7 +75,8 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
             {
                 SalesArrangementId = salesArrangementId,
                 ContractNumber = contractNumber ?? "",
-                RiskBusinessCaseId = riskBusinessCaseId ?? ""
+                RiskBusinessCaseId = riskBusinessCaseId ?? "",
+                FirstSignedDate = firstSignedDate,
             }, cancellationToken: cancellationToken)
         );
         return new SuccessfulServiceCallResult();

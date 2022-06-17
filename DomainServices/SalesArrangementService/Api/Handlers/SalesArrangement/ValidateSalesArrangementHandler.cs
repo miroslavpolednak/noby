@@ -38,14 +38,15 @@ internal class ValidateSalesArrangementHandler
 
         var checkFormData = new Eas.EasWrapper.CheckFormData()
         {
-            formular_id = 1,
+            formular_id = 3601001,
             cislo_smlouvy = formData.Arrangement.ContractNumber,
             // dokument_id = "9876543210",          //??? dokument_id je nepovinné, to neposílej
+            dokument_id = FormDataJsonBuilder.MockDokumentId, // TODO: dočasný mock - odstranit až si to Assecco odladí
             datum_prijeti = actualDate,             //??? datum prijeti dej v D1.2 aktuální datum
             data = jsonData,
         };
 
-        //var checkFormData = SalesArrangement.FormDataJsonBuilder.BuildSampleFormData(3601001);
+        //var checkFormDataSample = FormDataJsonBuilder.BuildSampleFormData3601();
 
         var checkFormResult = ResolveCheckForm(await _easClient.CheckFormV2(checkFormData));
 

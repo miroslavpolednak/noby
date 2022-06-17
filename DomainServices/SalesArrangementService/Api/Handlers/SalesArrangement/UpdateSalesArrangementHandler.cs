@@ -25,6 +25,7 @@ internal class UpdateSalesArrangementDataHandler
         entity.ContractNumber = request.Request.ContractNumber;
         entity.EaCode = request.Request.EaCode;
         entity.RiskBusinessCaseId = request.Request.RiskBusinessCaseId;
+        entity.FirstSignedDate = request.Request.FirstSignedDate;
         
         await _dbContext.SaveChangesAsync(cancellation);
 
