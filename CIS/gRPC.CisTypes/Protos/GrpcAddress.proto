@@ -22,4 +22,6 @@ message GrpcAddress {
   string EvidenceNumber = 8;
    
   bool IsPrimary = 9;
+
+  string DeliveryDetails = 10;
 }
