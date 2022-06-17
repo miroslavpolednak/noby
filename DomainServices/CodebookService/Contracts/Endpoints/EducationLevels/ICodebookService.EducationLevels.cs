@@ -1,10 +1,10 @@
-﻿using ProtoBuf.Grpc;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
+using ProtoBuf.Grpc;
 
-namespace DomainServices.CodebookService.Contracts
+namespace DomainServices.CodebookService.Contracts;
+
+public partial interface ICodebookService
 {
-    public partial interface ICodebookService
-    {
-        [OperationContract]
-        Task<List<GenericCodebookItem>> EducationLevels(Endpoints.EducationLevels.EducationLevelsRequest request, CallContext context = default);
-    }
+    [OperationContract]
+    Task<List<EducationLevelItem>> EducationLevels(EducationLevelsRequest request, CallContext context = default);
 }

@@ -23,7 +23,11 @@ namespace DomainServices.CustomerService.Api.Handlers
             _logger.LogInformation("Get detail instance ID #{id}", request.Request);
 
             // zavolat CM
-            var cmResponse = (await _cm.GetDetail(request.Request.Identity.IdentityId, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken)).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
+            var cmResponse = (
+                await _cm.GetDetail(
+                    request.Request.Identity.IdentityId, Activity.Current?.TraceId.ToHexString() ?? "", 
+                    cancellationToken)
+                ).CheckCMResult<CustomerManagement.CMWrapper.CustomerBaseInfo>();
 
             var response = new CustomerResponse();
 
@@ -33,6 +37,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             var genders = await _codebooks.Genders();
             var maritals = await _codebooks.MaritalStatuses();
             var titles = await _codebooks.AcademicDegreesBefore();
+            var educations = await _codebooks.EducationLevels();
 
             // identity
             response.Identities.Add(cmResponse.CustomerId.ToIdentity());
@@ -52,7 +57,9 @@ namespace DomainServices.CustomerService.Api.Handlers
                 PlaceOfBirth = np.BirthPlace ?? "",
                 BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
                 MaritalStatusStateId = maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
-                DegreeBeforeId = titles.FirstOrDefault(t => String.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id
+                DegreeBeforeId = titles.FirstOrDefault(t => String.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
+                EducationLevelId = educations.FirstOrDefault(t => String.Equals(t.RDMCode, cmResponse.Kyc.NaturalPersonKyc.EducationCode, StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
+                IsPoliticallyExposed = cmResponse.IsPoliticallyExposed
             };
 
             // 

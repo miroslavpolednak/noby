@@ -54,4 +54,8 @@ message NaturalPerson {
    google.protobuf.Int32Value DegreeBeforeId = 11;
 
    google.protobuf.Int32Value DegreeAfterId = 12;
+
+   google.protobuf.BoolValue IsPoliticallyExposed = 13;
+
+   int32 EducationLevelId = 14;
 }
