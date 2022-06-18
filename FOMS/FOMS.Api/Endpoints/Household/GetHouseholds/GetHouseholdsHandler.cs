@@ -15,12 +15,15 @@ internal class GetHouseholdsHandler
 
         var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
 
-        return households.Select(t => new Dto.HouseholdInList
-        {
-            HouseholdId = t.HouseholdId,
-            HouseholdTypeId = t.HouseholdTypeId,
-            HouseholdTypeName = householdTypes.First(x => x.Id == t.HouseholdTypeId).Name
-        }).ToList();
+        return households
+            .Select(t => new Dto.HouseholdInList
+            {
+                HouseholdId = t.HouseholdId,
+                HouseholdTypeId = t.HouseholdTypeId,
+                HouseholdTypeName = householdTypes.First(x => x.Id == t.HouseholdTypeId).Name
+            })
+            .OrderBy(t => t.HouseholdTypeId)
+            .ToList();
     }
 
     private readonly ICodebookServiceAbstraction _codebookService;
