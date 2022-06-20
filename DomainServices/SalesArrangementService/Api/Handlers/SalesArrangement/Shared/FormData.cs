@@ -28,6 +28,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         public Dictionary<int, GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
         public Dictionary<int, GenderItem> GendersById { get; init; }
         public Dictionary<int, SalesArrangementStateItem> SalesArrangementStatesById { get; init; }
+        public List<GenericCodebookItemWithCode> EmploymentTypes { get; init; }
 
         #endregion
 
@@ -45,7 +46,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             Dictionary<string, CustomerResponse> customersByIdentityCode,
             Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
             Dictionary<int, GenderItem> gendersById,
-            Dictionary<int, SalesArrangementStateItem> salesArrangementStatesById)
+            Dictionary<int, SalesArrangementStateItem> salesArrangementStatesById,
+            List<GenericCodebookItemWithCode> employmentTypes)
         {
             Arrangement = arrangement;
             ProductType = productType;
@@ -59,6 +61,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             AcademicDegreesBeforeById = academicDegreesBeforeById;
             GendersById = gendersById;
             SalesArrangementStatesById = salesArrangementStatesById;
+            EmploymentTypes = employmentTypes;
         }
 
         #endregion
