@@ -24,7 +24,8 @@ internal class GetCustomersHandler
                 Id = t.CustomerOnSAId,
                 FirstName = t.FirstNameNaturalPerson,
                 LastName = t.Name,
-                DateOfBirth = t.DateOfBirthNaturalPerson
+                DateOfBirth = t.DateOfBirthNaturalPerson,
+                CustomerRoleId = t.CustomerRoleId
             };
             
             // pokud nema identitu, ani nevolej customerSvc

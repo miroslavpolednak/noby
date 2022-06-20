@@ -71,10 +71,28 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(offerId.Value, cancellationToken));
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
-        
+
+        // loan purpose
+        string? loanPurposeName = null;
+        decimal? loanPurposeSum = null;
+        if (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any())
+        {
+            var purpose = offerInstance.SimulationInputs.LoanPurposes.First();
+            
+            loanPurposeName = (await _codebookService.LoanPurposes(cancellationToken)).FirstOrDefault(t => t.Id == purpose.LoanPurposeId)?.Name;
+            loanPurposeSum = purpose.Sum;
+        }
+
         // create response object
         return new Dto.MortgageDetailDto()
         {
+            LoanPurposeName = loanPurposeName,
+            LoanPurposeSum = loanPurposeSum,
+            PaymentDay = offerInstance.SimulationInputs.PaymentDay,
+            LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
+            ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing,
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
+            LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
             LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
             LoanKindId = offerInstance.SimulationInputs.LoanKindId,
             ContractNumber = saCase.Data.ContractNumber,

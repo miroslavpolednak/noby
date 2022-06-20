@@ -9,6 +9,18 @@ public class MortgageDetailDto
     /// </summary>
     public string? ContractNumber { get; set; }
 
+    public int FixedRatePeriod { get; set; }
+
+    public DateTime? ExpectedDateOfDrawing { get; set; }
+
+    public DateTime? LoanDueDate { get; set; }
+
+    public int? PaymentDay { get; set; }
+
+    public string? LoanPurposeName { get; set; }
+
+    public decimal? LoanPurposeSum { get; set; }
+
     /// <summary>
     /// Akce / produkt
     /// </summary>
@@ -48,6 +60,8 @@ public class MortgageDetailDto
     /// Mesicni splatka
     /// </summary>
     public decimal? LoanPaymentAmount { get; set; }
+
+    public decimal LoanInterestRateProvided { get; set; }
 
     /// <summary>
     /// Datum cerpani
