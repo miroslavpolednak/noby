@@ -2,6 +2,8 @@
 
 public class CaseModel
 {
+	public CaseOwnerModel? CaseOwner { get; set; }
+
 	/// <summary>
 	/// Unikátní Id obchodního případu
 	/// </summary>

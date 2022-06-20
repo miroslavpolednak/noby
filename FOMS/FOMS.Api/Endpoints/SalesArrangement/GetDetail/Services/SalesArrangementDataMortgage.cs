@@ -33,8 +33,10 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         CancellationToken cancellationToken)
         => salesArrangementState switch
         {
-            SalesArrangementStates.InProgress => await getDataInternal(caseId, offerId, cancellationToken),
-            _ => await getDataKonsDb(caseId, cancellationToken)
+            // posledni dohoda je takova, ze se vraci data jen z nasich entit
+            //SalesArrangementStates.InProgress => await getDataInternal(caseId, offerId, cancellationToken),
+            //_ => await getDataKonsDb(caseId, cancellationToken)
+            _ => await getDataInternal(caseId, offerId, cancellationToken),
         };
 
     async Task<Dto.MortgageDetailDto> getDataKonsDb(long caseId, CancellationToken cancellationToken)
