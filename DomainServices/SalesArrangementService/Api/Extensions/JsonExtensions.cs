@@ -65,6 +65,11 @@ internal static class JsonExtensions
         return ((DateTime?)value).ToJsonString();
     }
 
+    public static string? ToJsonString(this bool? value)
+    {
+        return (value.HasValue) ? value.Value.ToJsonString() : null;
+    }
+
     public static string ToJsonString(this bool value)
     {
         return value ? "1" : "0";

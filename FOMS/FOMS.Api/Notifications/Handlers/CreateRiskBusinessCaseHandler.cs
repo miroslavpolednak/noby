@@ -46,7 +46,7 @@ internal class CreateRiskBusinessCaseHandler
         string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
 
         // ulozit na SA
-        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, cancellationToken));
+        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, null, cancellationToken));
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)

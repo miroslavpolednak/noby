@@ -7,6 +7,7 @@ using DomainServices.UserService.Contracts;
 
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.Genders;
+using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
 {
@@ -26,12 +27,25 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         public Dictionary<string, CustomerResponse> CustomersByIdentityCode { get; init; }
         public Dictionary<int, GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
         public Dictionary<int, GenderItem> GendersById { get; init; }
+        public Dictionary<int, SalesArrangementStateItem> SalesArrangementStatesById { get; init; }
 
         #endregion
 
         #region Construction
 
-        public FormData(Contracts.SalesArrangement arrangement, ProductTypeItem productType, GetMortgageOfferDetailResponse offer, Case caseData, User? user, List<Contracts.Household> households, List<Contracts.CustomerOnSA> customersOnSa, Dictionary<int, Income> incomesById, Dictionary<string, CustomerResponse> customersByIdentityCode, Dictionary<int, GenericCodebookItem> academicDegreesBeforeById, Dictionary<int, GenderItem> gendersById)
+        public FormData(
+            Contracts.SalesArrangement arrangement,
+            ProductTypeItem productType,
+            GetMortgageOfferDetailResponse offer,
+            Case caseData,
+            User? user,
+            List<Contracts.Household> households,
+            List<Contracts.CustomerOnSA> customersOnSa,
+            Dictionary<int, Income> incomesById,
+            Dictionary<string, CustomerResponse> customersByIdentityCode,
+            Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
+            Dictionary<int, GenderItem> gendersById,
+            Dictionary<int, SalesArrangementStateItem> salesArrangementStatesById)
         {
             Arrangement = arrangement;
             ProductType = productType;
@@ -44,6 +58,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             CustomersByIdentityCode = customersByIdentityCode;
             AcademicDegreesBeforeById = academicDegreesBeforeById;
             GendersById = gendersById;
+            SalesArrangementStatesById = salesArrangementStatesById;
         }
 
         #endregion

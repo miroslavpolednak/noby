@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 
+using DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
+
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class SendToCmpHandler
@@ -8,21 +10,28 @@ internal class SendToCmpHandler
 
     #region Construction
 
-    private readonly SalesArrangement.Shared.FormDataService _formDataService;
+    private readonly FormDataService _formDataService;
     private readonly ILogger<SendToCmpHandler> _logger;
     private readonly Repositories.NobyRepository _repository;
-    private readonly Eas.IEasClient _easClient;
+    private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
+   
 
     public SendToCmpHandler(
-        SalesArrangement.Shared.FormDataService formDataService,
+        FormDataService formDataService,
         ILogger<SendToCmpHandler> logger,
         Repositories.NobyRepository repository,
-        Eas.IEasClient easClient)
+        UserService.Abstraction.IUserServiceAbstraction userService)
     {
         _formDataService = formDataService;
         _logger = logger;
         _repository = repository;
-        _easClient = easClient;
+        _userService = userService;
+    }
+
+    private class DefaultFormValues
+    {
+        public string? TYP_FORMULARE { get; init; }
+        public string? HESLO_KOD { get; init; }
     }
 
     #endregion
@@ -30,12 +39,27 @@ internal class SendToCmpHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
     {
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation);
-        var builder = new SalesArrangement.Shared.FormDataJsonBuilder(formData);
+        var builder = new FormDataJsonBuilder(formData);
 
-        var jsonData = builder.BuildJson3601001();
+        // load user
+        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(formData.Arrangement.Created.UserId!.Value, cancellation));
 
-        // save form to DB
-        await SaveForm(formData.Arrangement.ContractNumber, jsonData, cancellation);
+        var formsToSave = new EFormType[] { 
+            EFormType.F3601, 
+            EFormType.F3602 
+        };
+
+        // TODO: run in transaction ?
+        for(var i = 0; i < formsToSave.Length; i++)
+        {
+            var formType = formsToSave[i];
+
+            // build data
+            var jsonData = builder.BuildJson(formType);
+
+            // save to DB
+            await SaveForm(user, GetDefaultFormValues(formType), formData.Arrangement.ContractNumber, jsonData, cancellation);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
@@ -57,7 +81,28 @@ internal class SendToCmpHandler
         return prefix + sId + suffix;
     }
 
-    private async Task SaveForm(string contractNumber, string jsonData, CancellationToken cancellation)
+    private static DefaultFormValues GetDefaultFormValues(EFormType formType)
+    {
+        DefaultFormValues? formValues;
+
+        switch (formType)
+        {
+            case EFormType.F3601:
+                formValues = new DefaultFormValues { TYP_FORMULARE = "3601A", HESLO_KOD= "608248" };
+                break;
+
+            case EFormType.F3602:
+                formValues = new DefaultFormValues { TYP_FORMULARE = "3602A", HESLO_KOD = "608243" };
+                break;
+
+            default:
+                throw new CisArgumentException(99999, $"Form type #{formType} is not supported.", nameof(formType));  //TODO: ErrorCode
+        }
+
+        return formValues;
+    }
+
+    private async Task SaveForm(UserService.Contracts.User user, DefaultFormValues defaultFormValues, string contractNumber, string jsonData, CancellationToken cancellation)
     {
         var count = await _repository.GetFormsCount(cancellation);
 
@@ -70,15 +115,15 @@ internal class SendToCmpHandler
         var entity = new Repositories.Entities.FormInstanceInterface()
         {
             DOKUMENT_ID = docmentId,
-            TYP_FORMULARE = "3601A",
+            TYP_FORMULARE = defaultFormValues.TYP_FORMULARE,
             CISLO_SMLOUVY = contractNumber,
             STATUS = 100,
             DRUH_FROMULARE = 'N',
             FORMID = formId,
-            CPM = String.Empty,                 // add from user
-            ICP = String.Empty,                 // add from user
+            CPM = user.CPM ?? String.Empty,
+            ICP = user.ICP ?? String.Empty,
             CREATED_AT = DateTime.Now,          // what time zone?
-            HESLO_KOD = "600248",
+            HESLO_KOD = defaultFormValues.HESLO_KOD,
             STORNOVANO = 0,
             TYP_DAT = 1,
             JSON_DATA_CLOB = jsonData
@@ -89,6 +134,6 @@ internal class SendToCmpHandler
         _logger.EntityCreated(nameof(Repositories.Entities.FormInstanceInterface), long.Parse(formId, CultureInfo.InvariantCulture));
     }
 
-
     #endregion
+  
 }

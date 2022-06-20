@@ -28,7 +28,8 @@ internal static class CMExtension
             IsPrimary = isPrimary,
             CountryId = countries.FirstOrDefault(t => t.ShortName == model.CountryCode)?.Id,
             Postcode = model.PostCode ?? "",
-            Street = (componentAddress?.Street ?? model.Street) ?? ""
+            Street = (componentAddress?.Street ?? model.Street) ?? "",
+            DeliveryDetails = model.DeliveryDetails ?? ""
         };
 
     public static Contracts.IdentificationDocument ToIdentificationDocument(this CustomerManagement.CMWrapper.IdentificationDocument model, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries, List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> identificationDocumentTypes)

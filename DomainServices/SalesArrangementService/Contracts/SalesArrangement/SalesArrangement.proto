@@ -49,6 +49,8 @@ message SalesArrangement {
 
 	string EaCode = 18;
 
+	cis.types.NullableGrpcDate FirstSignedDate = 19;
+
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 20;
     }
