@@ -26,7 +26,8 @@ internal class ValidateSalesArrangementHandler
 
     #endregion
 
-    private static int[] ValidCommonValues = new int[] { 0, 2 };
+    // private static int[] ValidCommonValues = new int[] { 0, 2 };
+    private static int[] ValidCommonValues = new int[] { 0, 6 }; // TODO: podle slov od p. Slováka se má jednat o hodnoty 0,6 (odpovídá to i výsledkům služby)
 
     public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
