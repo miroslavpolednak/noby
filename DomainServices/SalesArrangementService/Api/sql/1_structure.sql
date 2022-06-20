@@ -30,6 +30,7 @@ CREATE TABLE [dbo].[SalesArrangement](
     [LoanToCost] decimal(5,2) NULL,
     RiskBusinessCaseExpirationDate date NULL,
     EaCode varchar(50) NULL,
+    [FirstSignedDate] [datetime] NULL,
 	[CreatedUserName] [nvarchar](100) NULL,
 	[CreatedUserId] [int] NULL,
 	[CreatedTime] [datetime] NOT NULL,
