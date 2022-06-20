@@ -246,6 +246,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             var actualDate = DateTime.Now.Date;
 
             var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => Data.Households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
+            var firstEmploymentType = Data.EmploymentTypes.OrderBy(i => i.Id).FirstOrDefault();
 
             object? MapHousehold(Contracts.Household i)
             {
@@ -410,17 +411,21 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
                 var i = Data.IncomesById[iil.IncomeId];
 
+                var employmentTypeId = i.Employement?.Job?.EmploymentTypeId ?? firstEmploymentType?.Id;
+                var countryId = i.Employement?.Employer?.CountryId;
+
                 return new
                 {
                     prvni_pracovni_sml_od = i.Employement?.Job?.FirstWorkContractSince.ToJsonString(),
-                    posledni_zamestnani_od = actualDate.ToJsonString(),                         // [MOCK] aktuální datum (relevantní v tomto DROPu, poté bude ´posledni_zamestnani_od´ zrušeno)
+                    posledni_zamestnani_od = actualDate.ToJsonString(),                                             // [MOCK] aktuální datum (relevantní v tomto DROPu, poté bude ´posledni_zamestnani_od´ zrušeno)
                     poradi_prijmu = rowNumber.ToJsonString(),
                     zdroj_prijmu_hlavni = iil.IncomeTypeId.ToJsonString(),
-                    typ_pracovniho_pomeru = i.Employement?.Job?.EmploymentTypeId.ToJsonString(),
-                    klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),
-                    klient_ve_zkusebni_lhute = i.Employement?.Job?.JobTrialPeriod.ToJsonString(),
-                    //prijem_ze_zahranici = i.Employement?.IsForeignIncome.ToJsonString(),
-                    //domicilace_prijmu_ze_zamestnani = i.Employement?.IsDomicile.ToJsonString(),
+                    typ_pracovniho_pomeru = employmentTypeId.ToJsonString(),
+                    klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),                 // Pokud je parametr null, mapujeme 0
+                    klient_ve_zkusebni_lhute = i.Employement?.Job?.JobTrialPeriod.ToJsonString(),                   // Pokud je parametr null, mapujeme 0
+                    prijem_ze_zahranici = countryId.HasValue ? (countryId.Value != 16).ToJsonString() : null,       // Pokud Employer.Address.CountryId = 16 mapujeme 0(= ne), v ostatních případech 1(= ano)
+                    domicilace_prijmu_ze_zamestnani = 0.ToJsonString(),
+                    typ_dokumentu = 1.ToJsonString(),                                                               // Pro příjem ze zaměstnání default "1"
                     pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                     pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
                     zamestnavatel_nazov = i.Employement?.Employer?.Name,
