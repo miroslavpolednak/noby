@@ -26,14 +26,23 @@ internal static class OfferApiModuleDtoExtensions
         {
             Aprc = result.Aprc,
             EmployeeBonusLoanCode = result.EmployeeBonusLoanCode,
-            InterestRate = result.LoanInterestRate,
-            InterestRateAnnounced = result.LoanInterestRateAnnounced,
             LoanDuration = result.LoanDuration,
             LoanTotalAmount = result.LoanTotalAmount,
             LoanToValue = result.LoanToValue,
             LoanAmount = result.LoanAmount,
             LoanPaymentAmount = result.LoanPaymentAmount,
             LoanPurposes = inputs.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
-            PaymentDay = inputs.PaymentDay
+            PaymentDay = inputs.PaymentDay,
+            LoanDueDate = result.LoanDueDate,
+            LoanInterestRateProvided = result.LoanInterestRateProvided,
+            ContractSignedDate = result.ContractSignedDate,
+            DrawingDateTo = result.DrawingDateTo,
+            AnnuityPaymentsDateFrom = result.AnnuityPaymentsDateFrom,
+            AnnuityPaymentsCount = result.AnnuityPaymentsCount,
+            LoanInterestRate = result.LoanInterestRate,
+            LoanInterestRateAnnounced = result.LoanInterestRateAnnounced,
+            LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
+            EmployeeBonusDeviation = result.EmployeeBonusDeviation,
+            MarketingActionsDeviation = result.MarketingActionsDeviation
         };
 }

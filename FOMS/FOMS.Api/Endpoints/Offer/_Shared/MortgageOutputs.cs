@@ -3,20 +3,9 @@
 public class MortgageOutputs
 {
     /// <summary>
-    /// Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
-    /// </summary>
-    public decimal InterestRate { get; set; }
-    
-    /// <summary>
-    /// Standardní číselníková úroková sazba
-    /// </summary>
-    public decimal InterestRateAnnounced { get; set; }
-    
-    /// <summary>
     /// Výše úvěru
     /// </summary>
     public decimal? LoanAmount { get; set; }
-
 
     public DateTime? LoanDueDate { get; set; }
     public int? LoanDuration { get; set; }

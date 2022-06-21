@@ -897,16 +897,6 @@
             uver.lhutaDocerpani
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRate">
-            <summary>
-            Skládačková úroková sazba (číselníková sazba mínus slevy dané marketingovými akcemi). 
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.InterestRateAnnounced">
-            <summary>
-            Standardní číselníková úroková sazba
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageOutputs.LoanAmount">
             <summary>
             Výše úvěru
