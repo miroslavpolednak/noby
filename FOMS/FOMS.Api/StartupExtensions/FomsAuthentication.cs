@@ -19,9 +19,11 @@ public static class FomsAuthentication
         {
             builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddDataProtection()
+                .SetApplicationName("NobyFeApi")
                 .PersistKeysToDbContext<DataProtectionKeysContext>();
         }
 
+        // set up auth provider
         switch (configuration.AuthenticationScheme)
         {
             case AuthenticationConstants.CaasAuthScheme:
