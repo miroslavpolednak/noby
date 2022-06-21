@@ -102,6 +102,18 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
+    public async Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default)
+    {
+        _logger.RequestHandlerStartedWithId(nameof(ValidateSalesArrangement), salesArrangementId);
+        var result = await _userContext.AddUserContext(async () => await _service.ValidateSalesArrangementAsync(
+            new()
+            {
+                SalesArrangementId = salesArrangementId
+            }, cancellationToken: cancellationToken)
+        );
+        return new SuccessfulServiceCallResult();
+    }
+
     public async Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
     {
         _logger.RequestHandlerStartedWithId(nameof(SendToCmp), salesArrangementId);
