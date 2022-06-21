@@ -81,6 +81,15 @@ public interface ISalesArrangementServiceAbstraction
     Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
+    /// Validace žádosti (CheckForm).
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="ValidateSalesArrangementResponse" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">SalesArrangement unavailable</exception>
+    /// <exception cref="System.Exception">Unexpected error during validation process</exception>
+    Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
     /// Update LAID
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
