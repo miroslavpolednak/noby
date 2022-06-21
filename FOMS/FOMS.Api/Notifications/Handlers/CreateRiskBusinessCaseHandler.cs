@@ -31,19 +31,21 @@ internal class CreateRiskBusinessCaseHandler
         if (!households.Any())
             throw new CisValidationException("CreateRiskBusinessCase: household does not exist");
 
+        string riskSegment = "xxx_mock";
         // ziskat segment
-        string riskSegment = await getRiskSegment(
+        /*string riskSegment = await getRiskSegment(
             notification.SalesArrangementId, 
             households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId, 
             caseInstance.Data.ProductTypeId, 
             offerInstance.SimulationInputs.LoanKindId,
             notification.CustomerOnSAId,
-            notification.NewMpCustomerId.Value);
+            notification.NewMpCustomerId.Value);*/
 
         bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, cancellationToken));
 
         // get rbcId
-        string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
+        //string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
+        string riskBusinessId = "xxx_mock";
 
         // ulozit na SA
         bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, null, cancellationToken));
