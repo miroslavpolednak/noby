@@ -96,10 +96,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         //        "fin_kryti_celkem",
         //        "zpusob_podpisu_smluv_dok",
         //        "seznam_domacnosti",
-        //        "parametr_domicilace",
-        //        "parametr_RZP",
-        //        "parametr_pojisteni_nem",
-        //        "parametr_vyse_prijmu_uveru"
         //        }
         //    },
 
@@ -152,10 +148,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         //        //"fin_kryti_celkem",
         //        //"zpusob_podpisu_smluv_dok",
         //        //"seznam_domacnosti",
-        //        //"parametr_domicilace",
-        //        //"parametr_RZP",
-        //        //"parametr_pojisteni_nem",
-        //        //"parametr_vyse_prijmu_uveru"
         //        }
         //    },
 
@@ -226,12 +218,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         //        case "fin_kryti_celkem": value = null; break; // = financialResourcesTotal.ToJsonString(),                                                              // OfferInstance
         //        case "zpusob_podpisu_smluv_dok": value = null; break; // = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
         //        case "seznam_domacnosti": value = null; break; // = Data.Households?.Select(i": value = null; break; // => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
-
-        //        // other mandatory fields in JSON:
-        //        case "parametr_domicilace": value = null; break; // = 1.ToJsonString(),
-        //        case "parametr_RZP": value = null; break; // = 1.ToJsonString(),
-        //        case "parametr_pojisteni_nem": value = null; break; // = 1.ToJsonString(),
-        //        case "parametr_vyse_prijmu_uveru": value = null; break; // = 1.ToJsonString(),
 
         //    };
 
@@ -499,8 +485,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
                     druh_druzka = i.HasPartner.ToJsonString(),
                     vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
-                    prijmy = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
-                    zavazky = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                    seznam_prijmu = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                    seznam_zavazku = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                     prijem_sbiran = 0.ToJsonString(),                                               // [MOCK] (default 0) out of scope
                     uzamcene_prijmy = false.ToJsonString(),                                         // [MOCK] (default 0) jinak z c.LockedIncomeDateTime.HasValue.ToJsonString(),
                                                                                                     // datum_posledniho_uzam_prijmu = c.LockedIncomeDateTime.ToJsonString(),        // ??? chybí implementace!
@@ -590,12 +576,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
 
-                        // other mandatory fields in JSON:
-                        parametr_domicilace = 1.ToJsonString(),
-                        parametr_RZP = 1.ToJsonString(),
-                        parametr_pojisteni_nem = 1.ToJsonString(),
-                        parametr_vyse_prijmu_uveru = 1.ToJsonString(),
-
                         //tests
                         cislo_dokumentu = MockDokumentId,
                     };
@@ -654,12 +634,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         //fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                                   // OfferInstance
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
                         //seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
-
-                        //// other mandatory fields in JSON:
-                        //parametr_domicilace = 1.ToJsonString(),
-                        //parametr_RZP = 1.ToJsonString(),
-                        //parametr_pojisteni_nem = 1.ToJsonString(),
-                        //parametr_vyse_prijmu_uveru = 1.ToJsonString(),
 
                         //tests
                         cislo_dokumentu = MockDokumentId,

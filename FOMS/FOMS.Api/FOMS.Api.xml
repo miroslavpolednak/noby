@@ -1072,6 +1072,16 @@
             Odeslani SA do SB
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.SendToCmp.SendToCmpResponse.Errors">
+            <summary>
+            Chyby bránící odeslání žádosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.SendToCmp.SendToCmpResponse.Warnings">
+            <summary>
+            Varování.
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest.Parameters">
             <summary>
             Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
