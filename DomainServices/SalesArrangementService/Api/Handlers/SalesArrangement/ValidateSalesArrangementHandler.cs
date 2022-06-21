@@ -41,9 +41,9 @@ internal class ValidateSalesArrangementHandler
         {
             formular_id = 3601001,
             cislo_smlouvy = formData.Arrangement.ContractNumber,
-            // dokument_id = "9876543210",          //??? dokument_id je nepovinné, to neposílej
-            dokument_id = FormDataJsonBuilder.MockDokumentId, // TODO: dočasný mock - odstranit až si to Assecco odladí
-            datum_prijeti = actualDate.AddDays(-1), //actualDate,             //??? datum prijeti dej v D1.2 aktuální datum
+            // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
+            dokument_id = FormDataJsonBuilder.MockDokumentId,   // TODO: dočasný mock - odstranit až si to Assecco odladí
+            datum_prijeti = actualDate,                         // ??? datum prijeti dej v D1.2 aktuální datum
             data = jsonData,
         };
 

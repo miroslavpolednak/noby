@@ -111,7 +111,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken)
         );
-        return new SuccessfulServiceCallResult();
+        return new SuccessfulServiceCallResult<ValidateSalesArrangementResponse>(result);
     }
 
     public async Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
