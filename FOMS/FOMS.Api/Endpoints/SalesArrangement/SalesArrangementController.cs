@@ -98,8 +98,8 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: SendToCmp" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task SendToCmp([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId), cancellationToken);
+    public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new SendToCmp.SendToCmpRequest{ SalesArrangementId = salesArrangementId }, cancellationToken);
 
     private readonly IMediator _mediator;
     public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
