@@ -1,5 +1,7 @@
 ﻿using FOMS.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 
 namespace FOMS.Api.StartupExtensions;
 
@@ -10,6 +12,12 @@ public static class FomsAuthentication
         // its mandatory to have auth scheme
         if (string.IsNullOrEmpty(configuration.AuthenticationScheme))
             throw new ArgumentException($"Authentication scheme is not specified. Please add correct NOBY.AuthenticationScheme in appsettings.json");
+
+        // set up data protection
+        string connectionString = builder.Configuration.GetConnectionString("dataProtection");
+        builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
+        builder.Services.AddDataProtection()
+            .PersistKeysToDbContext<DataProtectionKeysContext>();
 
         switch (configuration.AuthenticationScheme)
         {
