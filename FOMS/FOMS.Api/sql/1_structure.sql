@@ -4,7 +4,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[DataProtectionKey](
+CREATE TABLE [dbo].[DataProtectionKeys](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[FriendlyName] [nvarchar](max) NULL,
 	[Xml] [nvarchar](max) NULL,

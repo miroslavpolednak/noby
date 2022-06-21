@@ -15,9 +15,12 @@ public static class FomsAuthentication
 
         // set up data protection
         string connectionString = builder.Configuration.GetConnectionString("dataProtection");
-        builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
-        builder.Services.AddDataProtection()
-            .PersistKeysToDbContext<DataProtectionKeysContext>();
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+            builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDataProtection()
+                .PersistKeysToDbContext<DataProtectionKeysContext>();
+        }
 
         switch (configuration.AuthenticationScheme)
         {
