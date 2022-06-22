@@ -18,5 +18,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.PaymentDays
 
         [DataMember(Order = 4)]
         public bool IsDefault { get; set; }
+
+        [DataMember(Order = 5)]
+        public bool ShowOnPortal { get; set; }
     }
 }
