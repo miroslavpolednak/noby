@@ -20,6 +20,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.PaymentDays
         public bool IsDefault { get; set; }
 
         [DataMember(Order = 5)]
+        [JsonIgnore]
         public bool ShowOnPortal { get; set; }
     }
 }
