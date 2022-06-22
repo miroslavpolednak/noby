@@ -13,7 +13,12 @@ internal class DeleteCustomerHandler
         var entity = await _dbContext.Customers
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
-        
+
+        // nemuze to byt hlavni dluznik
+        if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
+            throw new CisValidationException(0, "CustomerOnSA is in role=Debtor -> can't be deleted");
+
+        // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId
         var saParameterInstance = await _dbContext.SalesArrangementsParameters
             .FirstOrDefaultAsync(t => t.SalesArrangementId == entity.SalesArrangementId, cancellation);
         if (saParameterInstance?.ParametersBin is not null)
@@ -44,13 +49,10 @@ internal class DeleteCustomerHandler
     }
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly Repositories.CustomerOnSAServiceRepository _repository;
 
     public DeleteCustomerHandler(
-        Repositories.CustomerOnSAServiceRepository repository, 
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
-        _repository = repository;
         _dbContext = dbContext;
     }
 }
