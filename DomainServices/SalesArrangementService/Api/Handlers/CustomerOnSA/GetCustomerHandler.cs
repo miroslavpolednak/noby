@@ -44,13 +44,10 @@ internal class GetCustomerHandler
     }
     
     private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<GetCustomerHandler> _logger;
     
     public GetCustomerHandler(
-        SalesArrangementServiceDbContext dbContext,
-        ILogger<GetCustomerHandler> logger)
+        SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-        _logger = logger;
     }
 }

@@ -2,6 +2,7 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
 import "CustomerObligation.proto";
@@ -16,7 +17,7 @@ message CustomerOnSA {
     
     int32 CustomerRoleId = 4;
     
-    bool HasPartner = 5;
+    google.protobuf.BoolValue HasPartner = 5;
     
     string FirstNameNaturalPerson = 6;
     

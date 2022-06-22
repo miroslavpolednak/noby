@@ -56,33 +56,7 @@ internal class GetCreditWorthinessHandler
         // domacnosti
         ripRequest.Households = new List<LoanApplicationHousehold>();
         foreach (var household in households)
-        {
-            var h = new LoanApplicationHousehold
-            {
-                ChildrenUnderAnd10 = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
-                ChildrenOver10 = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
-                Clients = new List<LoanApplicationCounterParty>()
-            };
-            
-            // expenses
-            if (household.Expenses is not null)
-                h.ExpensesSummary = new ExpensesSummary
-                {
-                    Rent = household.Expenses.HousingExpenseAmount.GetValueOrDefault(0),
-                    Saving = household.Expenses.SavingExpenseAmount.GetValueOrDefault(0),
-                    Insurance = household.Expenses.InsuranceExpenseAmount.GetValueOrDefault(0),
-                    Other = household.Expenses.OtherExpenseAmount.GetValueOrDefault(0)
-                };
-
-            // clients
-            if (household.CustomerOnSAId1.HasValue)
-            {
-                var customer = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSaService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken));
-                h.Clients.Add(createClient(customer));
-            }
-
-            ripRequest.Households.Add(h);
-        }
+            ripRequest.Households.Add(await createHousehold(household, cancellationToken));
 
         var ripResult = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculation>(await _ripClient.ComputeCreditWorthiness(ripRequest));
 
@@ -100,13 +74,53 @@ internal class GetCreditWorthinessHandler
         };
     }
 
-    static LoanApplicationCounterParty createClient(_SA.CustomerOnSA customer)
+    private async Task<LoanApplicationHousehold> createHousehold(_SA.Household household, CancellationToken cancellationToken)
     {
+        var h = new LoanApplicationHousehold
+        {
+            ChildrenUnderAnd10 = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
+            ChildrenOver10 = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
+            Clients = new List<LoanApplicationCounterParty>()
+        };
+
+        // expenses
+        if (household.Expenses is not null)
+            h.ExpensesSummary = new ExpensesSummary
+            {
+                Rent = household.Expenses.HousingExpenseAmount.GetValueOrDefault(0),
+                Saving = household.Expenses.SavingExpenseAmount.GetValueOrDefault(0),
+                Insurance = household.Expenses.InsuranceExpenseAmount.GetValueOrDefault(0),
+                Other = household.Expenses.OtherExpenseAmount.GetValueOrDefault(0)
+            };
+
+        // clients
+        if (household.CustomerOnSAId1.HasValue)
+            h.Clients.Add(await createClient(household.CustomerOnSAId1.Value, cancellationToken));
+        if (household.CustomerOnSAId2.HasValue)
+            h.Clients.Add(await createClient(household.CustomerOnSAId2.Value, cancellationToken));
+
+        return h;
+    }
+
+    private async Task<LoanApplicationCounterParty> createClient(int customerOnSAId, CancellationToken cancellationToken)
+    {
+        // customer on SA instance
+        var customer = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
+
         var c = new LoanApplicationCounterParty
         {
-            IsPartnerMp = customer.HasPartner,
-            //MaritalStatusMp = 1 //nacitat z CustomerService???
+            IsPartnerMp = customer.HasPartner
         };
+
+        // customer instance
+        if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
+        {
+            var customerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
+            {
+                Identity = customer.CustomerIdentifiers.First()
+            }, cancellationToken));
+            c.MaritalStatusMp = customerInstance.NaturalPerson?.MaritalStatusStateId;
+        }
 
         // neni tu zadani jake ID posilat, tak beru prvni
         if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
@@ -118,6 +132,8 @@ internal class GetCreditWorthinessHandler
                 Amount = Convert.ToDouble(t.Sum),
                 CategoryMp = t.IncomeTypeId
             }).ToList();
+        else
+            throw new CisValidationException($"Customer #{customer.CustomerOnSAId} does not have any income");
 
         if (customer.Obligations is not null && customer.Obligations.Any())
             c.CreditLiabilities = customer.Obligations.Select(t => new CreditLiability
@@ -142,11 +158,13 @@ internal class GetCreditWorthinessHandler
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction _householdService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSaService;
+    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public GetCreditWorthinessHandler(
         ILogger<GetCreditWorthinessHandler> logger,
         ExternalServices.Rip.V1.IRipClient ripClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
+        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
@@ -154,6 +172,7 @@ internal class GetCreditWorthinessHandler
         DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction householdService,
         DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
     {
+        _customerService = customerService;
         _ripClient = ripClient;
         _userService = userService;
         _caseService = caseService;

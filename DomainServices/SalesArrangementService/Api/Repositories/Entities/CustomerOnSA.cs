@@ -14,7 +14,7 @@ internal class CustomerOnSA
     
     public CIS.Foms.Enums.CustomerRoles CustomerRoleId { get; set; }
     
-    public bool HasPartner { get; set; }
+    public bool? HasPartner { get; set; }
 
     public string? FirstNameNaturalPerson { get; set; } = null!;
     

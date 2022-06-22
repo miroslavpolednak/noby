@@ -920,14 +920,14 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Je klient druhem/družkou?
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("isPartnerMp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsPartnerMp { get; set; }
+        [Newtonsoft.Json.JsonProperty("isPartnerMp", NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsPartnerMp { get; set; }
 
         /// <summary>
         /// Rodinný stav.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("maritalStatusMp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int MaritalStatusMp { get; set; }
+        [Newtonsoft.Json.JsonProperty("maritalStatusMp", NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaritalStatusMp { get; set; }
 
         /// <summary>
         /// Příjem klienta.

@@ -22,6 +22,8 @@ public sealed class LogConfiguration
     /// </summary>
     public SeqLogger? Seq { get; set; }
 
+    public ApplicationInsightsLogger? ApplicationInsights { get; set; }
+
     public sealed class SeqLogger
     {
         public string ServerUrl { get; set; } = "";
@@ -34,6 +36,11 @@ public sealed class LogConfiguration
     }
 
     public sealed class MsSqlLogger
+    {
+        public string ConnectionString { get; set; } = "";
+    }
+
+    public sealed class ApplicationInsightsLogger
     {
         public string ConnectionString { get; set; } = "";
     }

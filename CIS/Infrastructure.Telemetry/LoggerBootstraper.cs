@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Configuration;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -15,6 +16,7 @@ internal class LoggerBootstraper
     private readonly ICisEnvironmentConfiguration? _cisConfiguration;
     private readonly IConfiguration? _generalConfiguration;
     private readonly LogBehaviourTypes _logType;
+    private readonly IServiceProvider _serviceProvider;
 
     public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LogBehaviourTypes logType)
     {
@@ -24,6 +26,7 @@ internal class LoggerBootstraper
 
         _logType = logType;
         _generalConfiguration = hostingContext.Configuration;
+        _serviceProvider = serviceProvider;
         _cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
     }
 
@@ -68,6 +71,14 @@ internal class LoggerBootstraper
     public void AddOutputs(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
 #pragma warning restore CA1822 // Mark members as static
     {
+        // app insights
+        if (configuration.ApplicationInsights is not null)
+        {
+            loggerConfiguration
+                .WriteTo
+                .ApplicationInsights(_serviceProvider.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces);
+        }
+
         // seq
         if (configuration.Seq is not null)
         {
