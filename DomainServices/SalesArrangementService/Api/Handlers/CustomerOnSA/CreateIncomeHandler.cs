@@ -1,8 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using Google.Protobuf;
-using System.Text.Json.Serialization;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -26,9 +24,7 @@ internal class CreateIncomeHandler
         var dataObject = getDataObject(request.Request);
         if (dataObject != null)
         {
-            var serOpt = new JsonSerializerOptions();
-            serOpt.Converters.Add(new CustomJsonConverterForType());
-            entity.Data = JsonSerializer.Serialize(dataObject, serOpt);
+            entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
             entity.DataBin = dataObject.ToByteArray();
         }
         
@@ -59,35 +55,5 @@ internal class CreateIncomeHandler
     {
         _dbContext = dbContext;
         _logger = logger;
-    }
-
-    public class CustomJsonConverterForType : JsonConverter<Type>
-    {
-        public override Type Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options
-            )
-        {
-            // Caution: Deserialization of type instances like this 
-            // is not recommended and should be avoided
-            // since it can lead to potential security issues.
-
-            // If you really want this supported (for instance if the JSON input is trusted):
-            // string assemblyQualifiedName = reader.GetString();
-            // return Type.GetType(assemblyQualifiedName);
-            throw new NotSupportedException();
-        }
-
-        public override void Write(
-            Utf8JsonWriter writer,
-            Type value,
-            JsonSerializerOptions options
-            )
-        {
-            string assemblyQualifiedName = value.AssemblyQualifiedName;
-            // Use this with caution, since you are disclosing type information.
-            writer.WriteStringValue(assemblyQualifiedName);
-        }
     }
 }
