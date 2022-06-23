@@ -209,39 +209,29 @@
             </summary>
             <param name="productTypeId">ID typu produktu</param>
         </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">
+            <summary>
+            Detailni informace o prijmu
+            </summary>
+        </member>
         <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Smazani prijmu customera
             </summary>
             <remarks>
+            <strong>CustomerIncome.Delete</strong><br/>
             Tento endpoint se v soucasne dobe asi pouzivat nebude.<br/>
             <i>DS:</i> SalesArrangementService/DeleteIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID prijmu ke smazani</param>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.UpdateIncomes(System.Int32,FOMS.Api.Endpoints.CustomerIncome.UpdateIncomes.UpdateIncomesRequest,System.Threading.CancellationToken)">
-            <summary>
-            Update zakladnich dat o prijmech customera
-            </summary>
-            <remarks>
-            V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>
-            - pokud je v CreateIncomeItem vyplnen IncomeId, pokusi se updatovat zakladni data daneho prijmu
-            - pokud je v CreateIncomeItem IcnomeId=NULL, vytvori novy prijem
-            - pokud v payloadu nenajde nektery z jiz existujicich prijmu v databazi, tyto prijmy smaze
-            Pokud uzivatel zmeni v dropdownu typ prijmu, tento se bere jako novy prijem. Frontend tedy musi zajistit, aby se dany CreateIncomeItem odstranil z kolekce a vlozil se do nej novy s novym IncomeTypeId a IncomeId=NULL.<br/>
-            <i>DS:</i> SalesArrangementService/CreateIncome<br/>
-            <i>DS:</i> SalesArrangementService/DeleteIncome<br/>
-            <i>DS:</i> SalesArrangementService/UpdateIncomeBasicData
-            </remarks>
-            <param name="customerOnSAId">ID customera</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:System.Int32"/> (IncomeId)</returns>
-        </member>
         <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.GetDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Detail prijmu customera
             </summary>
             <remarks>
+            <strong>CustomerIncome.GetDetail</strong><br/>
             Pouzit pro zobrazeni detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
             <i>DS:</i> SalesArrangementService/GetIncome
             </remarks>
@@ -256,11 +246,22 @@
             Update detailu prijmu customera
             </summary>
             <remarks>
+            <strong>CustomerIncome.Update</strong><br/>
             Pouzit pro update detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
             <i>DS:</i> SalesArrangementService/UpdateIncome
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID prijmu</param>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Create(System.Int32,FOMS.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni prijmu customera
+            </summary>
+            <remarks>
+            <strong>CustomerIncome.Create</strong><br/>
+            <i>DS:</i> SalesArrangementService/CreateIncome
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
         </member>
         <member name="P:FOMS.Api.Endpoints.CustomerIncome.GetIncome.GetIncomeResponse.IncomeTypeId">
             <summary>
@@ -270,11 +271,6 @@
         <member name="P:FOMS.Api.Endpoints.CustomerIncome.GetIncome.GetIncomeResponse.Data">
             <summary>
             Detail prijmu na L2
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.CustomerIncome.UpdateIncomes.UpdateIncomesRequest.Incomes">
-            <summary>
-            Seznam prijmu (novych, existujicich) pro daneho customera
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest.Data">
@@ -419,6 +415,11 @@
             ID typu domacnosti. Ciselnik HouseholdTypes
             </summary>
             <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Incomes">
+            <summary>
+            Prijmy customera
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.RoleId">
             <summary>
@@ -572,11 +573,6 @@
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.DateOfBirth">
             <summary>
             Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.Incomes">
-            <summary>
-            Prijmy customera
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.Obligations">

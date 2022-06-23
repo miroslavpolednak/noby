@@ -1,6 +1,6 @@
 ﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncome;
+namespace FOMS.Api.Endpoints.CustomerIncome;
 
 internal static class Extensions
 {
