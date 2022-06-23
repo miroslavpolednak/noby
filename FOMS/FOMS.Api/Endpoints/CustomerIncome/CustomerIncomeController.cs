@@ -70,8 +70,8 @@ public class CustomerIncomeController : ControllerBase
     [HttpPost("{customerOnSAId:int}/income")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
 
     private readonly IMediator _mediator;
