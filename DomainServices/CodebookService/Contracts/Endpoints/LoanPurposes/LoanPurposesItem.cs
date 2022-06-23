@@ -15,15 +15,12 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
         public int MandantId { get; set; }
 
         [DataMember(Order = 4)]
-        public CIS.Foms.Enums.Mandants Mandant { get; set; }
-
-        [DataMember(Order = 5)]
         public List<int> ProductTypeIds { get; set; }
 
-        [DataMember(Order = 6)]
+        [DataMember(Order = 5)]
         public int Order { get; set; }
 
-        [DataMember(Order = 7)]
+        [DataMember(Order = 6)]
         [JsonIgnore]
         public bool IsValid { get; set; }
     }

@@ -35,8 +35,8 @@ internal class CaseStateChangedHandler
             caseState.Name, 
             notification.ProductTypeId,
             ownerInstance.CPM,
-            ownerInstance.ICP, 
-            productType.Mandant,
+            ownerInstance.ICP,
+            (CIS.Foms.Enums.Mandants)productType.MandantId,
             rbcId);
 
         await _sbWebApiClient.CaseStateChanged(request, cancellationToken);

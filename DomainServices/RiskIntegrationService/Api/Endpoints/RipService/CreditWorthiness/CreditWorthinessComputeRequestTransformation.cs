@@ -309,7 +309,7 @@ public class CreditWorthinessComputeRequestTransformation
         
         var item = (await _codebookService.RiskApplicationTypes()).FirstOrDefault(m => m.ProductTypeId != null && m.ProductTypeId.Contains(product));
 
-        _logger.LogInformation($"Get item z číselníku RiskAppType: Product = {product} --> AppTypeId = {item.C4mAplTypeId}, Mandant = {item.Mandant}");
+        _logger.LogInformation($"Get item z číselníku RiskAppType: Product = {product} --> AppTypeId = {item.C4mAplTypeId}, MandantId = {item.MandantId}");
 
         if (item == null)
         {
@@ -464,7 +464,7 @@ public class CreditWorthinessComputeRequestTransformation
             Id = idMp
         };
 
-        var mandant = (await GetRiskApplicationTypeItem(RipRequest.LoanApplicationProduct.Product))?.Mandant;
+        var mandant = (await GetRiskApplicationTypeItem(RipRequest.LoanApplicationProduct.Product))?.MandantId;
         if (mandant.HasValue)
         {
             resourceIdentifier.Instance = ((Mandant)(int)mandant).ToString();

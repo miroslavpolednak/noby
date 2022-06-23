@@ -10,15 +10,12 @@
         public int MandantId { get; set; }
 
         [DataMember(Order = 3)]
-        public int Mandant { get; set; }
-
-        [DataMember(Order = 4)]
         public string CodeBgm { get; set; }
 
-        [DataMember(Order = 5)]
+        [DataMember(Order = 4)]
         public string TextBgm { get; set; }
 
-        [DataMember(Order = 6)]
+        [DataMember(Order = 5)]
         public string NameType { get; set; }
     }
 }

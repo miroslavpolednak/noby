@@ -10,15 +10,12 @@
         public int MandantId { get; set; }
 
         [DataMember(Order = 3)]
-        public int Mandant { get; set; }
-
-        [DataMember(Order = 4)]
         public string Name { get; set; }
 
-        [DataMember(Order = 5)]
+        [DataMember(Order = 4)]
         public string Code { get; set; }
 
-        [DataMember(Order = 6)]
+        [DataMember(Order = 5)]
         public bool IsValid { get; set; }
     }
 }
