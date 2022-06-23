@@ -51,13 +51,6 @@ internal class UpdateCustomersHandler
             if (customer!.Obligations is not null)
                 obligationsRequest.Obligations.AddRange(customer.Obligations.ToDomainServiceRequest());
             await _customerOnSAService.UpdateObligations(obligationsRequest, cancellationToken);
-
-            // ulozit incomes
-            await _mediator.Send(new CustomerIncome.UpdateIncomes.UpdateIncomesRequest
-            {
-                CustomerOnSAId = customerId.Value,
-                Incomes = customer?.Incomes
-            }, cancellationToken);
         }
 
         return customerId;

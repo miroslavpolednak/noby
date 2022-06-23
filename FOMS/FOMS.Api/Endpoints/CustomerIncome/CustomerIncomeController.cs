@@ -10,6 +10,7 @@ public class CustomerIncomeController : ControllerBase
     /// Smazani prijmu customera
     /// </summary>
     /// <remarks>
+    /// <strong>CustomerIncome.Delete</strong><br/>
     /// Tento endpoint se v soucasne dobe asi pouzivat nebude.<br/>
     /// <i>DS:</i> SalesArrangementService/DeleteIncome
     /// </remarks>
@@ -22,31 +23,10 @@ public class CustomerIncomeController : ControllerBase
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId), cancellationToken);
 
     /// <summary>
-    /// Update zakladnich dat o prijmech customera
-    /// </summary>
-    /// <remarks>
-    /// V payloadu prijima kolekci prijmu zadanych na obrazovce domacnosti. Kolekci porovna se stavem ulozenym v databazi a provede rozdilove ulozeni.<br/>
-    /// - pokud je v CreateIncomeItem vyplnen IncomeId, pokusi se updatovat zakladni data daneho prijmu
-    /// - pokud je v CreateIncomeItem IcnomeId=NULL, vytvori novy prijem
-    /// - pokud v payloadu nenajde nektery z jiz existujicich prijmu v databazi, tyto prijmy smaze
-    /// Pokud uzivatel zmeni v dropdownu typ prijmu, tento se bere jako novy prijem. Frontend tedy musi zajistit, aby se dany CreateIncomeItem odstranil z kolekce a vlozil se do nej novy s novym IncomeTypeId a IncomeId=NULL.<br/>
-    /// <i>DS:</i> SalesArrangementService/CreateIncome<br/>
-    /// <i>DS:</i> SalesArrangementService/DeleteIncome<br/>
-    /// <i>DS:</i> SalesArrangementService/UpdateIncomeBasicData
-    /// </remarks>
-    /// <param name="customerOnSAId">ID customera</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="int"/> (IncomeId)</returns>
-    [HttpPost("{customerOnSAId:int}/income")]
-    [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost", "UC: Prijem" })]
-    [ProducesResponseType(typeof(int[]), StatusCodes.Status200OK)]
-    public async Task<int[]> UpdateIncomes([FromRoute] int customerOnSAId, [FromBody] UpdateIncomes.UpdateIncomesRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
-
-    /// <summary>
     /// Detail prijmu customera
     /// </summary>
     /// <remarks>
+    /// <strong>CustomerIncome.GetDetail</strong><br/>
     /// Pouzit pro zobrazeni detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
     /// <i>DS:</i> SalesArrangementService/GetIncome
     /// </remarks>
@@ -66,6 +46,7 @@ public class CustomerIncomeController : ControllerBase
     /// Update detailu prijmu customera
     /// </summary>
     /// <remarks>
+    /// <strong>CustomerIncome.Update</strong><br/>
     /// Pouzit pro update detailu prijmu - tj. Level 2 obrazovka prokliknuta z detailu domacnosti.<br/>
     /// <i>DS:</i> SalesArrangementService/UpdateIncome
     /// </remarks>
@@ -77,6 +58,21 @@ public class CustomerIncomeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request, CancellationToken cancellationToken)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
+
+    /// <summary>
+    /// Vytvoreni prijmu customera
+    /// </summary>
+    /// <remarks>
+    /// <strong>CustomerIncome.Create</strong><br/>
+    /// <i>DS:</i> SalesArrangementService/CreateIncome
+    /// </remarks>
+    /// <param name="customerOnSAId">ID customera</param>
+    [HttpPost("{customerOnSAId:int}/income")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request, CancellationToken cancellationToken)
+        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
 
     private readonly IMediator _mediator;
     public CustomerIncomeController(IMediator mediator) => _mediator = mediator;

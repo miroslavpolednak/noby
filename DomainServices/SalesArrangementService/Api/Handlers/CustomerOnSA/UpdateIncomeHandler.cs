@@ -5,7 +5,7 @@ using Google.Protobuf;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
-internal class UpdateIncomeHandler
+internal sealed class UpdateIncomeHandler
     : IRequestHandler<Dto.UpdateIncomeMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateIncomeMediatrRequest request, CancellationToken cancellation)

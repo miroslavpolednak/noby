@@ -2,7 +2,7 @@
 
 namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncome;
 
-public class UpdateIncomeRequest
+public sealed class UpdateIncomeRequest
     : Dto.BaseIncome, IRequest
 {
     [JsonIgnore]

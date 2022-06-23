@@ -4,6 +4,11 @@ public class CustomerInHousehold
     : Dto.BaseCustomer
 {
     /// <summary>
+    /// Prijmy customera
+    /// </summary>
+    public List<CustomerIncome.Dto.IncomeBaseData>? Incomes { get; set; }
+
+    /// <summary>
     /// Role klienta
     /// </summary>
     /// <example>1</example>

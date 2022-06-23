@@ -23,11 +23,6 @@ public abstract class BaseCustomer
     public DateTime? DateOfBirth { get; set; }
 
     /// <summary>
-    /// Prijmy customera
-    /// </summary>
-    public List<CustomerIncome.Dto.IncomeBaseData>? Incomes { get; set; }
-
-    /// <summary>
     /// Zavazky customera
     /// </summary>
     public List<CustomerObligation>? Obligations { get; set; }
