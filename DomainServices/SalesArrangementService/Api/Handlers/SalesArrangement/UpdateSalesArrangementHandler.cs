@@ -53,7 +53,7 @@ internal class UpdateSalesArrangementDataHandler
                 caseInstance.Data.ProductTypeId,
                 ownerInstance.CPM,
                 ownerInstance.ICP,
-                productType.Mandant,
+                (Mandants)productType.MandantId,
                 request.Request.RiskBusinessCaseId);
 
             bool sbNotified = ServiceCallResult.Resolve(await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellation));

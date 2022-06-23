@@ -18,7 +18,6 @@ public class LoanPurposesHandler
                     Id = i.Id,
                     Name = i.Name,
                     MandantId = i.MandantId,
-                    Mandant = i.Mandant,
                     ProductTypeIds = i.ProductTypeId?.ParseIDs(),
                     Order = i.Order,
                     IsValid = i.IsValid,
@@ -38,7 +37,7 @@ public class LoanPurposesHandler
         public string? ProductTypeId { get; set; }
     }
 
-    const string _sqlQuery = @"SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId', MANDANT 'Mandant', KOD_UVER 'ProductTypeId', PORADI 'Order', CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
+    const string _sqlQuery = @"SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId', KOD_UVER 'ProductTypeId', PORADI 'Order', CASE WHEN SYSDATETIME() BETWEEN [DATUM_PLATNOSTI_OD] AND ISNULL([DATUM_PLATNOSTI_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
                                 FROM SBR.CIS_UCEL_UVERU_INT1 ORDER BY KOD";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

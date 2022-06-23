@@ -53,9 +53,5 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         [DataMember(Order = 14)]
         public int? KonsDbLoanType { get; set; }
 
-        [DataMember(Order = 15)]
-        [DefaultValue(CIS.Foms.Enums.Mandants.Unknown)]
-        public CIS.Foms.Enums.Mandants Mandant { get; set; }
-
     }
 }
