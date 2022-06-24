@@ -241,10 +241,16 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     return null;
                 }
 
+                var householdTypeId = i.HouseholdTypeId;
+                if (formType == EFormType.F3602)
+                {
+                    householdTypeId = 2;
+                }
+
                 return new
                 {
                     cislo_domacnosti = i.HouseholdTypeId.ToJsonString(),
-                    role_domacnosti = i.HouseholdTypeId.ToJsonString(),
+                    role_domacnosti = householdTypeId.ToJsonString(),
                     //pocet_deti_0_10let = i.Data.ChildrenUpToTenYearsCount.ToJsonString(),
                     //pocet_deti_nad_10let = i.Data.ChildrenOverTenYearsCount.ToJsonString(),
                     pocet_deti_0_10let = (i.Data.ChildrenUpToTenYearsCount ?? 0).ToJsonString(),
@@ -502,10 +508,16 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     return null;
                 }
 
+                var roleId = i.CustomerRoleId;
+                if (formType == EFormType.F3602)
+                {
+                    roleId = 2;
+                }
+
                 var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();  // ??? co když je stejné CustomerOnSAId ve vícero households
                 return new
                 {
-                    role = i.CustomerRoleId.ToJsonString(),                     // CustomerOnSA
+                    role = roleId.ToJsonString(),                     // CustomerOnSA
                     zmocnenec = (i.CustomerOnSAId == Data.Arrangement.Mortgage?.Agent).ToJsonString(),   // zmocnenec = True pro customera,jehoz CustomerOnSaId je rovno hodnotě parametru Agent a false pro všechny ostatní případy.
                     cislo_domacnosti = household.HouseholdTypeId.ToJsonString(),// CustomerOnSA ??? brát Houshold.CustomerOnSAId (1 nebo 2)
                     klient = MapCustomer(i),
@@ -519,7 +531,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             decimal? financialResourcesTotal = (financialResourcesOwn.HasValue || financialResourcesOther.HasValue) ? ((financialResourcesOwn ?? 0) + (financialResourcesOther ?? 0)) : null;
             DateTime riskBusinessCaseExpirationDate = (Data.Arrangement.RiskBusinessCaseExpirationDate is not null) ? (DateTime)Data.Arrangement.RiskBusinessCaseExpirationDate! : actualDate.AddDays(90).Date;
             DateTime firstSignedDate = (Data.Arrangement.FirstSignedDate is not null) ? (DateTime)Data.Arrangement.FirstSignedDate! : actualDate;
-            var seznamIdFormulare = new int[] { 0 };
+            var seznamIdFormulare = new object[] { new { id_formulare = 0.ToJsonString() } };
 
             object data = new { };
 
@@ -569,7 +581,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
 
                         //zpusob_zasilani_vypisu = Data.Offer.SimulationResults.StatementTypeId.ToJsonString(),                                     // Offerinstance !!! removed in D1-2 (moved to fees without DV mapping)
-                        zpusob_zasilani_vypisu = 0.ToJsonString(),                                                                                  // [MOCK] . . . přibude až v D1-3
+                        zpusob_zasilani_vypisu = 1.ToJsonString(),                                                                                  // [MOCK] . . . přibude až v D1-3
 
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),                                   // Offerinstance
                         typ_cerpani = Data.Offer.SimulationInputs.DrawingType.ToJsonString(),
@@ -581,7 +593,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
 
-                        seznam_id_formulare = seznamIdFormulare.Select(i => i.ToJsonString()).ToArray(),
+                        seznam_id_formulare = seznamIdFormulare,
                         ea_kod = "608248",
 
                         //tests
@@ -643,7 +655,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
 
-                        seznam_id_formulare = seznamIdFormulare.Select(i => i.ToJsonString()).ToArray(),
+                        seznam_id_formulare = seznamIdFormulare,
                         ea_kod = "608243",
 
                         //tests
