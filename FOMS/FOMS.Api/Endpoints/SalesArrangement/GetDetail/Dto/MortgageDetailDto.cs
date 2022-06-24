@@ -17,10 +17,6 @@ public class MortgageDetailDto
 
     public int? PaymentDay { get; set; }
 
-    public string? LoanPurposeName { get; set; }
-
-    public decimal? LoanPurposeSum { get; set; }
-
     /// <summary>
     /// Akce / produkt
     /// </summary>
@@ -61,8 +57,6 @@ public class MortgageDetailDto
     /// </summary>
     public decimal? LoanPaymentAmount { get; set; }
 
-    public decimal LoanInterestRateProvided { get; set; }
-
     /// <summary>
     /// Datum cerpani
     /// </summary>
@@ -78,11 +72,20 @@ public class MortgageDetailDto
     /// </summary>
     public bool YearlyAccountStatement { get; set; }
 
-    //TODO tohle musi nekdo prelozit
-    public int? Jistina { get; set; }
-    public int? DruhUveru { get; set; }
-    public int? DelkaFixaceUrokoveSazby { get; set; }
-    public string? UcelUveru { get; set; }
-    public DateTime? DatumPrvniVyplatyZUveru { get; set; }
-    public DateTime? DatumPredpSplatnosti { get; set; }
+    public DateTime? ContractSignedDate { get; set; }
+    public DateTime? FixedRateValidTo { get; set; }
+    public decimal? Principal { get; set; }
+    public decimal? AvailableForDrawing { get; set; }
+    public DateTime? DrawingDateTo { get; set; }
+    public decimal? CurrentAmount { get; set; }
+    public string? PaymentAccount { get; set; }
+    public decimal? CurrentOverdueAmount { get; set; }
+    public decimal? AllOverdueFees { get; set; }
+    public int? OverdueDaysNumber { get; set; }
+    public decimal? InterestInArrears { get; set; }
+    public decimal? LoanInterestRateRefix { get; set; }
+    public DateTime? LoanInterestRateValidFromRefix { get; set; }
+    public int? FixedRatePeriodRefix { get; set; }
+
+    public List<MortgageDetailLoanPurpose>? LoanPurposes { get; set; }
 }

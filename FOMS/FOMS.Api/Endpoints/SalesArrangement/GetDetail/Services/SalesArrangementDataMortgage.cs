@@ -74,33 +74,26 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
 
-        // loan purpose
-        string? loanPurposeName = null;
-        decimal? loanPurposeSum = null;
-        if (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any())
-        {
-            var purpose = offerInstance.SimulationInputs.LoanPurposes.First();
-            
-            loanPurposeName = (await _codebookService.LoanPurposes(cancellationToken)).FirstOrDefault(t => t.Id == purpose.LoanPurposeId)?.Name;
-            loanPurposeSum = purpose.Sum;
-        }
-
         // create response object
         return new Dto.MortgageDetailDto()
         {
-            LoanPurposeName = loanPurposeName,
-            LoanPurposeSum = loanPurposeSum,
-            PaymentDay = offerInstance.SimulationInputs.PaymentDay,
-            LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
-            ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing,
-            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
-            LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
+            ContractNumber = saCase.Data.ContractNumber,
+            ProductName = loanKindName,
+            LoanAmount = offerInstance.SimulationResults.LoanAmount,
+            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
+            ContractSignedDate = offerInstance.SimulationResults.ContractSignedDate,
+            DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
             LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
             LoanKindId = offerInstance.SimulationInputs.LoanKindId,
-            ContractNumber = saCase.Data.ContractNumber,
-            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
-            LoanAmount = offerInstance.SimulationResults.LoanAmount,
-            ProductName = loanKindName
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
+            ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing,
+            LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
+            PaymentDay = offerInstance.SimulationInputs.PaymentDay,
+            LoanPurposes = offerInstance.SimulationInputs.LoanPurposes is null ? null : offerInstance.SimulationInputs.LoanPurposes.Select(x => new Dto.MortgageDetailLoanPurpose
+            {
+                LoanPurposeId = x.LoanPurposeId,
+                Sum = x.Sum
+            }).ToList()
         };
     }
 
