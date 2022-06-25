@@ -27,6 +27,9 @@ message GetServicesResponse {
    string EnvironmentName = 2;
 }
 
+message ClearCacheRequest {
+}
+
 enum ServiceTypes {
    Unknown = 0;
    Grpc = 1;

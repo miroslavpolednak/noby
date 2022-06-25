@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CIS.InternalServices.ServiceDiscovery.Dto;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Dto;
 
 [DataContract]
 [Serializable]

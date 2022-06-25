@@ -9,8 +9,13 @@ namespace CIS.InternalServices.ServiceDiscovery.Api.Repositories;
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class ServicesMemoryCache
 {
-    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
+    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
+
+    public static void Clear()
+    {
+        _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
+    }
 
     public async Task<List<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
@@ -28,7 +33,7 @@ internal sealed class ServicesMemoryCache
                 {
                     // Key not in cache, so get data.
                     cacheEntry = await getServicesFromDb(environmentName, cancellationToken);
-                    _cache.Set(environmentName, cacheEntry);
+                    _cache.Set(environmentName, cacheEntry, _entryOptions);
                 }
             }
             finally
@@ -62,6 +67,13 @@ internal sealed class ServicesMemoryCache
             })
             .ToList();
     }
+
+    static MemoryCacheEntryOptions _entryOptions = new()
+    {
+        Size = 1,
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+        Priority = CacheItemPriority.High
+    };
 
     private readonly ILogger<ServicesMemoryCache> _logger;
     private readonly ServiceDiscoveryRepository _repository;

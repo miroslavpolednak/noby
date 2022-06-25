@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Types;
 using CIS.InternalServices.ServiceDiscovery.Contracts;
 
-namespace CIS.InternalServices.ServiceDiscovery.Dto;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Dto;
 
 internal record GetServiceRequest : IRequest<GetServiceResponse> 
 {

@@ -6,6 +6,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, string, Exception> _foundServices;
     private static readonly Action<ILogger, string, Exception> _servicesFoundInCache;
     private static readonly Action<ILogger, string, Exception> _servicesNotFoundInCache;
+    private static readonly Action<ILogger, Exception> _cacheCleared;
 
     static LoggerExtensions()
     {
@@ -28,6 +29,11 @@ internal static class LoggerExtensions
             LogLevel.Debug,
             new EventId(152, nameof(ServicesNotFoundInCache)),
             "Services for {EnvironmentName} NOT found in cache");
+
+        _cacheCleared = LoggerMessage.Define(
+            LogLevel.Information,
+            new EventId(158, nameof(CacheCleared)),
+            "Cache has been cleared");
     }
 
     public static void NoServicesForEnvironment(this ILogger logger, string environmentName)
@@ -41,4 +47,8 @@ internal static class LoggerExtensions
 
     public static void ServicesFoundInCache(this ILogger logger, string environmentName)
         => _servicesFoundInCache(logger, environmentName, null!);
+
+    public static void CacheCleared(this ILogger logger)
+        => _cacheCleared(logger, null!);
 }
+

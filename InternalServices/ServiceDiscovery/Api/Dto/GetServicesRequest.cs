@@ -1,7 +1,6 @@
 ﻿using CIS.InternalServices.ServiceDiscovery.Contracts;
-using MediatR;
 
-namespace CIS.InternalServices.ServiceDiscovery.Dto;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Dto;
 
 internal record GetServicesRequest(
     Core.Types.ApplicationEnvironmentName Environment,
