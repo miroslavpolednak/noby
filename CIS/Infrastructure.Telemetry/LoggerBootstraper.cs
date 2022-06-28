@@ -91,7 +91,7 @@ internal class LoggerBootstraper
         if (configuration.File is not null)
         {
             var path = Path.Combine(configuration.File.Path, configuration.File.Filename);
-            var template = @"{Timestamp: yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
+            var template = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
 
             loggerConfiguration
                 .WriteTo
