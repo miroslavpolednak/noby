@@ -26,8 +26,7 @@ internal class ValidateSalesArrangementHandler
 
     #endregion
 
-    // private static int[] ValidCommonValues = new int[] { 0, 2 };
-    private static int[] ValidCommonValues = new int[] { 0, 6 }; // TODO: podle slov od p. Slováka se má jednat o hodnoty 0,6 (odpovídá to i výsledkům služby)
+    private static int[] ValidCommonValues = new int[] { 0, 6 };
 
     public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
@@ -53,9 +52,15 @@ internal class ValidateSalesArrangementHandler
 
         if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
         {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            throw new ArgumentException($"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]", "CommonValue");
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+            var message = $"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]";
+            if (checkFormResult.CommonValue == 2)
+            {
+                throw new CisValidationException(16041, message);
+            }
+            else
+            {
+                throw new CisValidationException(16040, message);   // TODO: return status code 500 instead of 400
+            }
         }
 
         return ResultToResponse(checkFormResult);
