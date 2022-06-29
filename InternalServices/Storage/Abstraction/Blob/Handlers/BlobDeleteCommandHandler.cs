@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.InternalServices.Storage.Abstraction.BlobStorage.Dto;
+﻿using CIS.InternalServices.Storage.Abstraction.BlobStorage.Dto;
 
 namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
 
@@ -7,14 +6,11 @@ internal class BlobDeleteCommandHandler : AsyncRequestHandler<BlobDeleteRequest>
 {
     private readonly ILogger<BlobDeleteCommandHandler> _logger;
     private readonly Contracts.v1.Blob.BlobClient _service;
-    private readonly ICisUserContextHelpers _userContext;
 
     public BlobDeleteCommandHandler(
         ILogger<BlobDeleteCommandHandler> logger,
-        Contracts.v1.Blob.BlobClient service,
-        ICisUserContextHelpers userContext)
+        Contracts.v1.Blob.BlobClient service)
     {
-        _userContext = userContext;
         _service = service;
         _logger = logger;
     }
@@ -28,7 +24,7 @@ internal class BlobDeleteCommandHandler : AsyncRequestHandler<BlobDeleteRequest>
             BlobKey = request.BlobKey
         };
 
-        await _userContext.AddUserContext(async () => { await _service.DeleteAsync(model); });
+        await _service.DeleteAsync(model);
 
         _logger.LogDebug("Deleted blob {key}", request.BlobKey);
     }

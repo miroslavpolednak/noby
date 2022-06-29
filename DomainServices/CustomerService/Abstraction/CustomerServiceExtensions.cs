@@ -40,8 +40,6 @@ public static class CustomerServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisUserContextHelpers();
-
         // register storage services
         services.TryAddTransient<ICustomerServiceAbstraction, CustomerService>();
 
@@ -58,7 +56,6 @@ public static class CustomerServiceExtensions
         {
             services
             .AddGrpcClientFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
-            .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<AuthenticationInterceptor>();
         }

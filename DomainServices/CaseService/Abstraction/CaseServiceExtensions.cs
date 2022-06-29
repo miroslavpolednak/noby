@@ -40,8 +40,6 @@ public static class CaseServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisUserContextHelpers();
-
         // register service
         services.TryAddTransient<ICaseServiceAbstraction, Services.CaseService>();
 
@@ -59,7 +57,6 @@ public static class CaseServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
                 .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();

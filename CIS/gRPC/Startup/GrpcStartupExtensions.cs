@@ -75,6 +75,7 @@ public static class GrpcStartupExtensions
             var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
             options.Address = serviceUri.Url;
         })
+            .ConfigureChannel((serviceProvider, options) => configureChannel<TService>(serviceProvider, options))
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
     }
 
@@ -87,29 +88,8 @@ public static class GrpcStartupExtensions
             var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
             options.Address = serviceUri.Url;
         })
-            .ConfigureChannel((serviceProvider, options) =>
-            {
-                var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-
-                if (settings.IsInvalidCertificateAllowed)
-                    options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler()
-                    {
-                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    });
-                else
-                    options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler());
-            })
+            .ConfigureChannel((serviceProvider, options) => configureChannel<TService>(serviceProvider, options))
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
-    }
-
-    public static IHttpClientBuilder ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<TService>(this IHttpClientBuilder builder)
-        where TService : class
-    {
-        return builder.ConfigurePrimaryHttpMessageHandler((provider) =>
-        {
-            HttpClientHandler httpHandler = new();
-            return httpHandler;
-        });
     }
 
     public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
@@ -117,5 +97,20 @@ public static class GrpcStartupExtensions
     {
         services.TryAddSingleton(new GrpcServiceUriSettings<TService>(serviceUrl, isInvalidCertificateAllowed));
         return services;
+    }
+
+    private static void configureChannel<TService>(IServiceProvider serviceProvider, Grpc.Net.Client.GrpcChannelOptions options)
+        where TService : class
+    {
+        var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
+        var userAccessor = serviceProvider.GetRequiredService<Core.Security.ICurrentUserAccessor>();
+
+        if (settings.IsInvalidCertificateAllowed)
+            options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            }, userAccessor);
+        else
+            options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler(), userAccessor);
     }
 }

@@ -39,7 +39,7 @@ internal class SearchCasesHandler
 
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<SearchCasesHandler> _logger;
-    
+
     public SearchCasesHandler(
         Repositories.CaseServiceRepository repository,
         ILogger<SearchCasesHandler> logger)
