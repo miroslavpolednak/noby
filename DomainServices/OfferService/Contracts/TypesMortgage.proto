@@ -54,10 +54,10 @@ message SimulationInputs {
 	int32 ProductTypeId = 2;
 	int32 LoanKindId = 3;
 	cis.types.GrpcDecimal LoanAmount = 4;
-	int32 LoanDuration = 5;
+	google.protobuf.Int32Value LoanDuration = 5;			//nullable kvůli validaci na NotNull
 	cis.types.GrpcDate GuaranteeDateFrom = 6;
 	cis.types.NullableGrpcDecimal InterestRateDiscount = 7;
-	int32 FixedRatePeriod = 8;			
+	google.protobuf.Int32Value FixedRatePeriod = 8;			//nullable kvůli validaci na NotNull
     cis.types.GrpcDecimal CollateralAmount = 9;
 	google.protobuf.Int32Value DrawingType = 10; 
 	google.protobuf.Int32Value DrawingDuration = 11;

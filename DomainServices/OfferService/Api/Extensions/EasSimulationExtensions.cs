@@ -32,7 +32,7 @@ internal static class EasSimulationExtensions
             rozhodnyDenSazby = inputs.GuaranteeDateFrom,
             datumZalozeni = inputs.GuaranteeDateFrom,
             indCenotvorbaOdchylka = -1 * ((decimal)inputs.InterestRateDiscount!),
-            periodaFixace = inputs.FixedRatePeriod,
+            periodaFixace = inputs.FixedRatePeriod!.Value,
             predpokladanaHodnotaZajisteni = inputs.CollateralAmount,
             typCerpani = inputs.DrawingType!.Value,
             lhutaDocerpani = inputs.DrawingDuration,

@@ -10,10 +10,6 @@ internal class SimulateMortgageRequestValidator : AbstractValidator<Dto.Simulate
            .Must((_, resourceProcessId) => Guid.TryParse(resourceProcessId, out Guid g))
            .WithMessage("ResourceProcessId is missing or is in invalid format").WithErrorCode("10008");
 
-        RuleFor(t => t.Request.BasicParameters)
-            .Must(p => p != null)
-            .WithMessage("BasicParameters are not specified").WithErrorCode("99999"); //TODO: ErrorCode
-
         RuleFor(t => t.Request.SimulationInputs)
             .Must(p => p != null)
             .WithMessage("SimulationInputs are not specified").WithErrorCode("99999"); //TODO: ErrorCode
@@ -34,5 +30,20 @@ internal class SimulateMortgageRequestValidator : AbstractValidator<Dto.Simulate
             .Must(p => p != null)
             .WithMessage("SimulationInputs.MarketingActions are not specified").WithErrorCode("99999"); //TODO: ErrorCode
 
+        RuleFor(t => t.Request.SimulationInputs.FixedRatePeriod)
+           .Must(p => p != null)
+           .WithMessage("SimulationInputs.FixedRatePeriod is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
+        RuleFor(t => t.Request.SimulationInputs.LoanAmount)
+           .Must(p => p != null)
+           .WithMessage("SimulationInputs.LoanAmount is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
+        RuleFor(t => t.Request.SimulationInputs.LoanDuration)
+           .Must(p => p != null)
+           .WithMessage("SimulationInputs.LoanDuration is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+
+        RuleFor(t => t.Request.SimulationInputs.CollateralAmount)
+           .Must(p => p != null)
+           .WithMessage("SimulationInputs.CollateralAmount is not specified").WithErrorCode("99999"); //TODO: ErrorCode
     }
 }
