@@ -56,12 +56,14 @@ public sealed partial class NullableGrpcDecimal
     double IConvertible.ToDouble(IFormatProvider? provider) => Convert.ToDouble((decimal)this!);
     decimal IConvertible.ToDecimal(IFormatProvider? provider) => (decimal)this!;
     DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ThrowNotSupported<DateTime>();
-    string IConvertible.ToString(IFormatProvider? provider) => ThrowNotSupported<string>();
+    string IConvertible.ToString(IFormatProvider? provider) => ((decimal)this).ToString();
 
     object IConvertible.ToType(Type conversionType, IFormatProvider? provider)
     {
         if (conversionType == typeof(NullableGrpcDecimal))
             return this;
+        else if (conversionType == typeof(string))
+            return this.ToString();
 
         return ThrowNotSupported(conversionType);
     }
