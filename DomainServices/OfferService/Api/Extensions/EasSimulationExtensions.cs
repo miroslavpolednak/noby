@@ -143,6 +143,25 @@ internal static class EasSimulationExtensions
         return poplatky.ToArray();
     }
 
+    // operations
+    private static EasWrapper.MimoradnaOperace[] ToReqExceptionalOperations(this SimulationInputs inputs)
+    {
+        var operation = new EasWrapper.MimoradnaOperace
+        {
+            klic = 1,                   // Na tento parametr se mockuje fixně hodnota 1
+            suma = inputs.LoanAmount,   // Na tento parametr se mapuje hodnota z Offer.SimulationInputs.LoanAmount,
+            //valuta =                  // Na tento parametr se mapuje hodnota z SalesArrangement.ExpectedDateOfDrawing (pokud není null) a pokud je null, pak se mapuje Offer.SimulationInputs.ExpectedDateOfDrawing,
+        };
+
+        var expectedDateOfDrawing = (DateTime?)inputs.ExpectedDateOfDrawing;
+
+        if (expectedDateOfDrawing.HasValue)
+        {
+            operation.valuta = expectedDateOfDrawing.Value;
+        }
+
+        return new EasWrapper.MimoradnaOperace[] {operation};
+    }
 
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
@@ -160,6 +179,7 @@ internal static class EasSimulationExtensions
             ucelyUveru = inputs.ToReqLoanPurposes(),
             nastaveniPoplatku = inputs.ToReqFeeSettings(),
             marketingoveAkce = inputs.ToReqMarketingActions(),
+            mimoradneOperace = inputs.ToReqExceptionalOperations(),
             poplatky = inputs.ToReqFees(),
         };
     }
@@ -183,22 +203,15 @@ internal static class EasSimulationExtensions
             lhutaDocerpani = 0,
             //< eas:typCerpani > 0 </ eas:typCerpani >          < !--NEW:v006 - 0 / 1, kde 1 = postupne cerpani-- >
         },
-        //urokovaSazba = new EasWrapper.SimSettingsUrokovaSazba
-        //{
-        //    zadaZvyhodneni = 0,
-        //    developerId = 0,
-        //    developerProjektId = 0,
-        //},
-        //mimoradneOperace = new EasWrapper.MimoradnaOperace[]
-        //{
-        //    new EasWrapper.MimoradnaOperace
-        //    {
-        //        klic=1,
-        //        valuta=new DateTime(2022,12,31),
-        //        suma=300000.00m,
-        //        poznamka= "Cerpani"
-        //    }
-        //},
+        mimoradneOperace = new EasWrapper.MimoradnaOperace[]
+        {
+            new EasWrapper.MimoradnaOperace
+            {
+                klic=1,                             // Na tento parametr se mockuje fixně hodnota 1
+                valuta=new DateTime(2022,12,31),    // Na tento parametr se mapuje hodnota z SalesArrangement.ExpectedDateOfDrawing (pokud není null) a pokud je null, pak se mapuje Offer.SimulationInputs.ExpectedDateOfDrawing,
+                suma=300000.00m,                    // Na tento parametr se mapuje hodnota z Offer.SimulationInputs.LoanAmount,
+            }
+        },
         ucelyUveru = new EasWrapper.UcelUveru[] {
             new EasWrapper.UcelUveru{  kodUcelu = 201},
             new EasWrapper.UcelUveru{  kodUcelu = 202}
@@ -290,25 +303,29 @@ internal static class EasSimulationExtensions
     // fees
     private static SimulationResults AddResResults(this SimulationResults results, EasWrapper.Poplatek[] res)
     {
-        var items = res.Select(i => new ResultFee
+        var toResultFee = (EasWrapper.Poplatek i) =>
         {
-            FeeId = i.kodSB,
-            DiscountPercentage = i.slevaIC,
-            TariffSum = i.sumaSazebnikova,
-            ComposedSum = i.sumaSkladackova,
-            FinalSum = i.sumaVysledna,
-            MarketingActionId = i.kodMaAkce,
-            Name = i.textAplikace,
-            ShortNameForExample= i.textDokumentaceVzorovyPriklad,
-            TariffName = i.textDokumentaceSazebnik,
-            UsageText = i.pouziti,
-            TariffTextWithAmount = i.textDokumentaceSazebnikHodnota,
-            CodeKB = i.kodKB,
-            DisplayAsFreeOfCharge = i.zobrazitZdarma.ToBool(),
-            IncludeInRPSN = i.zapocitatRPSN.ToBool(),
-            Periodicity = i.periodicita,
-            AccountDateFrom = i.uctovatOd,
-        });
+            var fee = new ResultFee();
+            fee.FeeId = i.kodSB;
+            fee.DiscountPercentage = i.slevaIC;
+            fee.TariffSum = i.sumaSazebnikova;
+            fee.ComposedSum = i.sumaSkladackova;
+            fee.FinalSum = i.sumaVysledna;
+            fee.MarketingActionId = i.kodMaAkce;
+            fee.Name = i.textAplikace;
+            fee.ShortNameForExample = i.textDokumentaceVzorovyPriklad;
+            fee.TariffName = i.textDokumentaceSazebnik ?? String.Empty;
+            fee.UsageText = i.pouziti ?? String.Empty;
+            fee.TariffTextWithAmount = i.textDokumentaceSazebnikHodnota ?? String.Empty;
+            fee.CodeKB = i.kodKB ?? String.Empty;
+            fee.DisplayAsFreeOfCharge = i.zobrazitZdarma.ToBool();
+            fee.IncludeInRPSN = i.zapocitatRPSN.ToBool();
+            fee.Periodicity = i.periodicita ?? String.Empty;
+            fee.AccountDateFrom = i.uctovatOd;
+            return fee;
+        };
+
+        var items = res.Select(i => toResultFee(i));
 
         results.Fees.AddRange(items);
 
