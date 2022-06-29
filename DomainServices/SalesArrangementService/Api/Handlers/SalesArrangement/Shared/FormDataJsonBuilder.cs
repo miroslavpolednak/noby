@@ -579,10 +579,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         // VIP_makler = 0.ToJsonString(),                                                                                           // [MOCK] User (default 0) !!! removed in D1-2
                         mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
-
-                        //zpusob_zasilani_vypisu = Data.Offer.SimulationResults.StatementTypeId.ToJsonString(),                                     // Offerinstance !!! removed in D1-2 (moved to fees without DV mapping)
-                        zpusob_zasilani_vypisu = 1.ToJsonString(),                                                                                  // [MOCK] . . . přibude až v D1-3
-
+                        zpusob_zasilani_vypisu = Data.Offer.SimulationInputs.FeeSettings.StatementTypeId.ToJsonString(),                            // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),                                   // Offerinstance
                         typ_cerpani = Data.Offer.SimulationInputs.DrawingType.ToJsonString(),
                         datum_garance_us = Data.Arrangement.OfferGuaranteeDateFrom.ToJsonString(),

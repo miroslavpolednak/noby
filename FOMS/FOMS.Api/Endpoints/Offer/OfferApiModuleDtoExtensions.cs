@@ -14,7 +14,7 @@ internal static class OfferApiModuleDtoExtensions
             CollateralAmount = input.CollateralAmount,
             PaymentDay = input.PaymentDay,
             IsEmployeeBonusRequested = input.IsEmployeeBonusRequested,
-            FixedRatePeriod = input.FixedRatePeriod,
+            FixedRatePeriod = input.FixedRatePeriod!.Value,
             ExpectedDateOfDrawing = input.ExpectedDateOfDrawing,
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
