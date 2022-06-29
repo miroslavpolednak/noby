@@ -5,6 +5,8 @@ internal class GetUserByLoginHandler
 {
     public async Task<Contracts.User> Handle(Dto.GetUserByLoginMediatrRequest request, CancellationToken cancellation)
     {
+        var user = _currentUser.IsAuthenticated;
+
         string cacheKey = Contracts.Helpers.GetUserCacheKey(request.Login);
         var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
 
@@ -42,15 +44,18 @@ internal class GetUserByLoginHandler
     private readonly ILogger<GetUserByLoginHandler> _logger;
     private readonly IDistributedCache _cache;
     private readonly CIS.Infrastructure.Telemetry.IAuditLogger _audit;
+    private readonly CIS.Core.Security.ICurrentUserAccessor _currentUser;
 
     static DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(20) };
 
     public GetUserByLoginHandler(
+        CIS.Core.Security.ICurrentUserAccessor currentUser,
         CIS.Infrastructure.Telemetry.IAuditLogger audit,
         IDistributedCache cache,
         Repositories.XxvRepository repository,
         ILogger<GetUserByLoginHandler> logger)
     {
+        _currentUser = currentUser;
         _audit = audit;
         _cache = cache;
         _repository = repository;

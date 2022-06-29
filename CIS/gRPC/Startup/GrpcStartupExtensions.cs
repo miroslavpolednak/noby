@@ -87,6 +87,18 @@ public static class GrpcStartupExtensions
             var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
             options.Address = serviceUri.Url;
         })
+            .ConfigureChannel((serviceProvider, options) =>
+            {
+                var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
+
+                if (settings.IsInvalidCertificateAllowed)
+                    options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler()
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    });
+                else
+                    options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler());
+            })
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
     }
 
@@ -95,13 +107,7 @@ public static class GrpcStartupExtensions
     {
         return builder.ConfigurePrimaryHttpMessageHandler((provider) =>
         {
-            var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-
             HttpClientHandler httpHandler = new();
-            // neduveryhodny certifikat
-            if (serviceUri.IsInvalidCertificateAllowed)
-                httpHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-
             return httpHandler;
         });
     }
