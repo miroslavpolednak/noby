@@ -63,6 +63,13 @@ internal class SimulateMortgageHandler
 
     }
 
+    private BasicParameters SetUpDefaults(BasicParameters parameters, DateTime guaranteeDateFrom)
+    {
+        parameters = parameters ?? new BasicParameters();
+        parameters.GuaranteeDateTo = guaranteeDateFrom.AddDays(AppDefaults.MaxGuaranteeInDays);
+        return parameters;
+    }
+
     private async Task<SimulationInputs> SetUpDefaults(SimulationInputs input, CancellationToken cancellation)
     {
         input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
@@ -91,29 +98,22 @@ internal class SimulateMortgageHandler
         //Default: False
         input.IsEmployeeBonusRequested = input.IsEmployeeBonusRequested ?? false;
 
-        if (input.FeeSettings != null)
-        {
-            // Určuje za jakým účelem se generuje seznam poplatků.
-            // Default: 0 - za účelem nabídky
-            input.FeeSettings.FeeTariffPurpose = 0;
+        input.FeeSettings = input.FeeSettings ?? new FeeSettings();
 
-            // Nastavení typu výpisů StatementType(CIS_HU_TYP_VYPIS)
-            // Default: první hodnota v číselníku(dle Order)
-            if (!input.FeeSettings.StatementTypeId.HasValue)
-            {
-                var statementType = (await _codebookService.StatementTypes(cancellation)).OrderBy(i=> i.Order).First();
-                input.FeeSettings.StatementTypeId = statementType.Id;
-            }
+        // Určuje za jakým účelem se generuje seznam poplatků.
+        // Default: 0 - za účelem nabídky
+        input.FeeSettings.FeeTariffPurpose = 0;
+
+        // Nastavení typu výpisů StatementType(CIS_HU_TYP_VYPIS)
+        // Default: první hodnota v číselníku(dle Order)
+        if (!input.FeeSettings.StatementTypeId.HasValue)
+        {
+            //var statementType = (await _codebookService.StatementTypes(cancellation)).OrderBy(i => i.Order).First();
+            //input.FeeSettings.StatementTypeId = statementType.Id;
+            input.FeeSettings.StatementTypeId = 1;  //Default: 1 . . . první hodnota číselníku se zatím odkládá
         }
 
         return input;
-    }
-
-    private BasicParameters SetUpDefaults(BasicParameters parameters, DateTime guaranteeDateFrom)
-    {
-        parameters = parameters ?? new BasicParameters();
-        parameters.GuaranteeDateTo = guaranteeDateFrom.AddDays(AppDefaults.MaxGuaranteeInDays);
-        return parameters;
     }
 
     private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse ResolveRunSimulationHT(IServiceCallResult result) =>

@@ -85,7 +85,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
             DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
             LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
             LoanKindId = offerInstance.SimulationInputs.LoanKindId,
-            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value,
             ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing,
             LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
             PaymentDay = offerInstance.SimulationInputs.PaymentDay,

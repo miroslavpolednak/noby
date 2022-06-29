@@ -49,7 +49,7 @@ internal class GetCreditWorthinessHandler
             InterestRate = (double)offerInstance.SimulationResults.LoanInterestRate,
             AmountRequired = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
             Annuity = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
-            FixationPeriod = offerInstance.SimulationInputs.FixedRatePeriod
+            FixationPeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
         };
 #pragma warning restore CA1305
         
