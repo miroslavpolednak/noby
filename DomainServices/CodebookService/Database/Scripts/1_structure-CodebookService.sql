@@ -7,6 +7,51 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+CREATE TABLE [dbo].[EA_CIS_EACODEMAIN](
+	[kod] [int] NOT NULL,
+	[popis] [varchar](100) NULL,
+	[popis_klient] [varchar](100) NULL,
+	[platnost_od] [date] NULL,
+	[platnost_do] [date] NULL,
+	[kategorie] [varchar](64) NULL,
+	[druh_kb] [varchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[kod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[EducationLevelExtension](
+	[EducationLevelId] [int] NOT NULL,
+	[RDMCode] [varchar](10) NULL,
+ CONSTRAINT [PK_EducationLevelExtension] PRIMARY KEY CLUSTERED 
+(
+	[EducationLevelId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[RiskApplicationType](
+	[Id] [int] NOT NULL,
+	[Mandant] [tinyint] NOT NULL,
+	[DateFrom] [date] NOT NULL,
+	[DateTo] [date] NULL,
+	[LoanProductsId] [nvarchar](100) NOT NULL,
+	[LoanType] [nvarchar](100) NULL,
+	[MarketingActions] [nvarchar](100) NULL,
+	[LtvFrom] [numeric](16, 4) NULL,
+	[LtvTo] [numeric](16, 4) NULL,
+	[ClusterCode] [nvarchar](50) NOT NULL,
+	[C4mAplTypeId] [nvarchar](50) NOT NULL,
+	[C4mAplTypeName] [nvarchar](100) NOT NULL,
+ CONSTRAINT [PK_RiskApplicationType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[IdentificationDocumentTypeExtension](
 	[IdentificationDocumentTypeId] [int] NOT NULL,
 	[RDMCode] [varchar](10) NULL,
@@ -64,5 +109,25 @@ CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
     (
     [RelationshipCustomerProductTypeId] ASC
      )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[WorkflowTaskStateExtension](
+	[WorkflowTaskStateId] [int] NOT NULL,
+	[Flag] [tinyint] NOT NULL,
+ CONSTRAINT [PK_WorkflowTaskStateExtension] PRIMARY KEY CLUSTERED 
+(
+	[WorkflowTaskStateId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[WorkflowTaskTypeExtension](
+	[WorkflowTaskTypeId] [int] NOT NULL,
+	[CategoryId] [int] NOT NULL,
+ CONSTRAINT [PK_WorkflowTaskTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[WorkflowTaskTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
