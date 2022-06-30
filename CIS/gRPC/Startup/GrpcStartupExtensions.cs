@@ -102,17 +102,29 @@ public static class GrpcStartupExtensions
     private static void configureChannel<TService>(IServiceProvider serviceProvider, Grpc.Net.Client.GrpcChannelOptions options)
         where TService : class
     {
+        int? currentUserId = null;
         var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-        var userAccessor = serviceProvider.GetRequiredService<Core.Security.ICurrentUserAccessor>();
-        //var httpContext = serviceProvider.GetRequiredService<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
         
+        var httpContext = serviceProvider.GetRequiredService<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
+        if (httpContext?.HttpContext?.Request.Headers is not null
+            && httpContext.HttpContext.Request.Headers.ContainsKey(Core.Security.Constants.ContextUserHttpHeaderKey)
+            && int.TryParse(httpContext.HttpContext.Request.Headers[Core.Security.Constants.ContextUserHttpHeaderKey], out int userId))
+        {
+            currentUserId = userId;
+        }
+        else
+        {
+            var userAccessor = serviceProvider.GetService<Core.Security.ICurrentUserAccessor>();
+            if (userAccessor is not null && userAccessor.IsAuthenticated)
+                currentUserId = userAccessor.User!.Id;
+        }
 
         if (settings.IsInvalidCertificateAllowed)
             options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler()
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            }, userAccessor);
+            }, currentUserId);
         else
-            options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler(), userAccessor);
+            options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler(), currentUserId);
     }
 }

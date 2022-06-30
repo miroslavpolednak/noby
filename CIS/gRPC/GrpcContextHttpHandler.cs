@@ -2,20 +2,19 @@
 
 internal sealed class GrpcContextHttpHandler : DelegatingHandler
 {
-    private readonly Core.Security.ICurrentUserAccessor _userAccessor;
+    private readonly int? _currentUserId;
 
-    public GrpcContextHttpHandler(HttpMessageHandler innerHandler, Core.Security.ICurrentUserAccessor currentUserAccessor)
+    public GrpcContextHttpHandler(HttpMessageHandler innerHandler, int? currentUserId)
         : base(innerHandler)
     {
-        _userAccessor = currentUserAccessor;
+        _currentUserId = currentUserId;
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(
-        HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        if (_userAccessor.IsAuthenticated)
+        if (_currentUserId.HasValue)
 #pragma warning disable CA1305 // Specify IFormatProvider
-            request.Headers.Add(Core.Security.Constants.ContextUserHttpHeaderKey, _userAccessor.User!.Id.ToString());
+            request.Headers.Add(Core.Security.Constants.ContextUserHttpHeaderKey, _currentUserId.Value.ToString());
 #pragma warning restore CA1305 // Specify IFormatProvider
 
         return base.SendAsync(request, cancellationToken);

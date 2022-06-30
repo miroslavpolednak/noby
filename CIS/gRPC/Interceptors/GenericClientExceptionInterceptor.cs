@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
