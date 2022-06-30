@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\DomainServicesSecurity.Abstraction\CIS.DomainServicesSecurity.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

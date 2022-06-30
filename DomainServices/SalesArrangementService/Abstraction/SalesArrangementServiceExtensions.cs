@@ -18,6 +18,8 @@ public static class SalesArrangementServiceExtensions
     public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
         => services
             .AddGrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl, isInvalidCertificateAllowed)
             .registerServices()
             .registerGrpcServices();
 

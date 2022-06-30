@@ -7,11 +7,11 @@ namespace CIS.Infrastructure.Telemetry.Middlewares;
 /// <summary>
 /// Middleware, ktery pridava do kontextu logu (serilogu) informace o aktualnim CIS uzivateli
 /// </summary>
-internal sealed class LoggerCisUserMiddleware
+internal sealed class LoggerCisUserWebapiMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public LoggerCisUserMiddleware(RequestDelegate next)
+    public LoggerCisUserWebapiMiddleware(RequestDelegate next)
     {
         _next = next;
     }
@@ -21,7 +21,7 @@ internal sealed class LoggerCisUserMiddleware
         var userAccessor = context.RequestServices.GetService(typeof(ICurrentUserAccessor)) as ICurrentUserAccessor;
         if (userAccessor is not null && userAccessor.IsAuthenticated)
         {
-            using (LogContext.PushProperty("CisUserId", userAccessor.User!.Id))
+            using (LogContext.PushProperty(Constants.LoggerContextUserIdPropertyName, userAccessor.User!.Id))
             {
                 await _next.Invoke(context);
             }

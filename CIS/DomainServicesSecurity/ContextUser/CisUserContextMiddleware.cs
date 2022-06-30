@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Results;
-using System.Diagnostics;
 
 namespace CIS.DomainServicesSecurity.ContextUser;
 
@@ -16,11 +15,7 @@ internal sealed class CisUserContextMiddleware
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        int? partyId = null;
-        if (httpContext.Request.Headers.ContainsKey(Core.Security.Constants.ContextUserHttpHeaderKey)
-            && int.TryParse(httpContext.Request.Headers[Core.Security.Constants.ContextUserHttpHeaderKey], out int i))
-            partyId = i;
-
+        int? partyId = CurrentUserAccessorHelpers.GetUserIdFromHeaders(httpContext.Request);
         if (partyId.HasValue)
         {
             var userService = httpContext.RequestServices.GetRequiredService<DomainServices.UserService.Abstraction.IUserServiceAbstraction>();

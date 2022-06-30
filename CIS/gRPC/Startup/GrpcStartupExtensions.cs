@@ -104,6 +104,8 @@ public static class GrpcStartupExtensions
     {
         var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
         var userAccessor = serviceProvider.GetRequiredService<Core.Security.ICurrentUserAccessor>();
+        //var httpContext = serviceProvider.GetRequiredService<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
+        
 
         if (settings.IsInvalidCertificateAllowed)
             options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler()
