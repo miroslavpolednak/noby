@@ -35,7 +35,7 @@ internal class UpdateSalesArrangementParametersHandler
 
         // naplnit parametry serializovanym objektem
         var dataObject = getDataObject(request.Request);
-        entity.Parameters = dataObject is null ? null : JsonFormatter.Default.Format(dataObject);
+        entity.Parameters = dataObject is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
         entity.ParametersBin = dataObject is null ? null : dataObject.ToByteArray();
         
         await _dbContext.SaveChangesAsync(cancellation);

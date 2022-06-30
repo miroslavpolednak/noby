@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -36,7 +35,7 @@ internal class LinkModelationToSalesArrangementHandler
             {
                 var parametersModel = _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin);
                 parametersModel.LoanRealEstates.Clear();
-                saParameters.Parameters = JsonSerializer.Serialize(parametersModel);
+                saParameters.Parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parametersModel);
                 saParameters.ParametersBin = parametersModel.ToByteArray();
                 await _dbContext.SaveChangesAsync(cancellation); //ma se to ulozit hned
             }

@@ -1,6 +1,5 @@
 ﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using Google.Protobuf;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
@@ -17,7 +16,7 @@ internal sealed class UpdateIncomeHandler
         var dataObject = getDataObject(entity.IncomeTypeId, request.Request);
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
-        entity.Data = JsonSerializer.Serialize((object)dataObject);
+        entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject((object)dataObject);
         entity.DataBin = dataObject?.ToByteArray();
 
         await _dbContext.SaveChangesAsync(cancellation);

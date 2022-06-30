@@ -4,6 +4,10 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 
+message ObligationsCollection {
+    repeated CustomerObligation Items = 1;
+}
+
 message CustomerObligation {
     google.protobuf.Int32Value ObligationTypeId = 1;
 

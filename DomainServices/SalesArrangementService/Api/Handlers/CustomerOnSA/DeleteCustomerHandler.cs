@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using Google.Protobuf;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -34,7 +33,7 @@ internal class DeleteCustomerHandler
                     )?.CustomerOnSAId1;
                 
                 parameter.Agent = mainCustomerOnSAId;
-                saParameterInstance.Parameters = JsonSerializer.Serialize(parameter);
+                saParameterInstance.Parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parameter);
                 saParameterInstance.ParametersBin = parameter.ToByteArray();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Google.Protobuf;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -34,18 +35,32 @@ internal class UpdateObligationsHandler
             };
             _dbContext.CustomersObligations.Add(obligationEntity);
         }
-        obligationEntity.Data = request.Request.Obligations is null ? null : JsonSerializer.Serialize(request.Request.Obligations!.ToList());
 
+        if (request.Request.Obligations is null)
+        {
+            obligationEntity.DataBin = null;
+            obligationEntity.Data = null;
+        }
+        else
+        {
+            // tohle je tu jen kvuli serializaci do bin. Casem nejak refaktorovat.
+            var obligationsCollection = new _SA.ObligationsCollection();
+            obligationsCollection.Items.AddRange(request.Request.Obligations);
+
+            obligationEntity.DataBin = obligationsCollection!.ToByteArray();
+            obligationEntity.Data = Newtonsoft.Json.JsonConvert.SerializeObject(request.Request.Obligations!.ToList());
+        }
+        
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     
     public UpdateObligationsHandler(
-        DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _codebookService = codebookService;

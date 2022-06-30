@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.SalesArrangementService.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -24,13 +23,17 @@ internal class GetCustomerHandler
         customerInstance.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
 
         // obligations
-        var obligations = await _dbContext.CustomersObligations
+        var obligationsBin = await _dbContext.CustomersObligations
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .Select(t => t.Data)
+            .Select(t => t.DataBin)
             .FirstOrDefaultAsync(cancellation);
-        if (!string.IsNullOrEmpty(obligations))
-            customerInstance.Obligations.AddRange(JsonSerializer.Deserialize<List<Contracts.CustomerObligation>>(obligations));
+
+        if (obligationsBin is not null)
+        {
+            var obligations = Contracts.ObligationsCollection.Parser.ParseFrom(obligationsBin);
+            customerInstance.Obligations.AddRange(obligations.Items);
+        }
 
         // incomes
         var list = await _dbContext.CustomersIncomes

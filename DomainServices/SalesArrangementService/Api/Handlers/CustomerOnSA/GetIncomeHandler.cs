@@ -1,6 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -25,12 +24,12 @@ internal class GetIncomeHandler
             }
         };
 
-        if (!string.IsNullOrEmpty(entity.Data))
+        if (entity.DataBin is not null)
         {
             switch (entity.IncomeTypeId)
             {
                 case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
-                    model.Employement = JsonSerializer.Deserialize<IncomeDataEmployement>(entity.Data!);
+                    model.Employement = IncomeDataEmployement.Parser.ParseFrom(entity.DataBin);
                     break;
                 default:
                     throw new NotImplementedException("This customer income type deserializer is not implemented");
@@ -41,13 +40,9 @@ internal class GetIncomeHandler
     }
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<GetIncomeHandler> _logger;
 
-    public GetIncomeHandler(
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<GetIncomeHandler> logger)
+    public GetIncomeHandler(Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-        _logger = logger;
     }
 }

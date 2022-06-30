@@ -1,5 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Api.Repositories.Entities;
-using System.Text.Json;
+using Google.Protobuf;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
@@ -30,10 +30,15 @@ internal class CreateCustomerHandler
         // obligations
         if (request.Request.Customer?.Obligations is not null && request.Request.Customer.Obligations.Any())
         {
+            // tohle je tu jen kvuli serializaci do bin. Casem nejak refaktorovat.
+            var obligationsCollection = new _SA.ObligationsCollection();
+            obligationsCollection.Items.AddRange(request.Request.Customer.Obligations!);
+
             var obligationEntity = new CustomerOnSAObligations
             {
                 CustomerOnSAId = customerId,
-                Data = JsonSerializer.Serialize(request.Request.Customer.Obligations!.ToList())
+                DataBin = obligationsCollection!.ToByteArray(),
+                Data = Newtonsoft.Json.JsonConvert.SerializeObject(request.Request.Customer.Obligations!.ToList())
             };
             _dbContext.CustomersObligations.Add(obligationEntity);
             await _dbContext.SaveChangesAsync(cancellation);
