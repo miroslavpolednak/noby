@@ -1,5 +1,7 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
+using _CA = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail;
@@ -12,6 +14,8 @@ internal class GetDetailHandler
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
+        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_CA.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
+
         // data o SA
         object detailData = await _dataFactory
             .GetService()
@@ -19,6 +23,7 @@ internal class GetDetailHandler
 
         return new GetDetailResponse()
         {
+            ProductTypeId = caseInstance.Data.ProductTypeId,
             SalesArrangementId = saInstance.SalesArrangementId,
             SalesArrangementTypeId = saInstance.SalesArrangementTypeId,
             LoanApplicationAssessmentId = saInstance.LoanApplicationAssessmentId,
@@ -49,14 +54,17 @@ internal class GetDetailHandler
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException("Api/SalesArrangement/GetDetailHandler/getParameters")
         };
-    
+
+    private readonly ICaseServiceAbstraction _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly Services.SalesArrangementDataFactory _dataFactory;
     
     public GetDetailHandler(
+        ICaseServiceAbstraction caseService,
         Services.SalesArrangementDataFactory dataFactory,
         ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _caseService = caseService;
         _dataFactory = dataFactory;
         _salesArrangementService = salesArrangementService;
     }
