@@ -41,8 +41,6 @@ public static class RiskIntegrationServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisUserContextHelpers();
-
         // register storage services
         services.TryAddTransient<IRipServiceAbstraction, Services.RipService>();
 
@@ -59,7 +57,6 @@ public static class RiskIntegrationServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<v1.IRipService>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<v1.IRipService>()
                 .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }

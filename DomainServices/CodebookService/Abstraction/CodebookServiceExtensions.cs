@@ -54,8 +54,6 @@ public static class CodebookServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisUserContextHelpers();
-
         // register services
         services.TryAddTransient<ICodebookServiceAbstraction, CodebookService>();
 
@@ -75,7 +73,6 @@ public static class CodebookServiceExtensions
         {
             services
                 .AddCodeFirstGrpcClientFromCisEnvironment<Contracts.ICodebookService>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.ICodebookService>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }

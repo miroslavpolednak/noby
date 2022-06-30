@@ -48,8 +48,6 @@ public static class ServiceDiscoveryExtensions
             var configuration = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>();
             return new EnvironmentNameProvider(configuration?.EnvironmentName);
         });
-        // context user
-        services.AddCisUserContextHelpers();
 
         return services;
     }
@@ -60,7 +58,6 @@ public static class ServiceDiscoveryExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.DiscoveryService.DiscoveryServiceClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.DiscoveryService.DiscoveryServiceClient>()
                 .AddInterceptor<GenericClientExceptionInterceptor>();
         }
         return services;

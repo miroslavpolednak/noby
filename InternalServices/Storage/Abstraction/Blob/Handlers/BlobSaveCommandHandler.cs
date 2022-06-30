@@ -1,21 +1,16 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-
-namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
+﻿namespace CIS.InternalServices.Storage.Abstraction.BlobStorage.Handlers;
 
 internal class BlobSaveCommandHandler : IRequestHandler<Dto.BlobSaveRequest, string>
 {
     private readonly ILogger<BlobSaveCommandHandler> _logger;
     private readonly Core.Configuration.ICisEnvironmentConfiguration _configuration;
     private readonly Contracts.v1.Blob.BlobClient _service;
-    private readonly ICisUserContextHelpers _userContext;
 
     public BlobSaveCommandHandler(
         ILogger<BlobSaveCommandHandler> logger,
         Contracts.v1.Blob.BlobClient service, 
-        Core.Configuration.ICisEnvironmentConfiguration configuration,
-        ICisUserContextHelpers userContext)
+        Core.Configuration.ICisEnvironmentConfiguration configuration)
     {
-        _userContext = userContext;
         _service = service;
         _configuration = configuration;
         _logger = logger;
@@ -37,7 +32,7 @@ internal class BlobSaveCommandHandler : IRequestHandler<Dto.BlobSaveRequest, str
             }
         };
 
-        var result = await _userContext.AddUserContext(async () => await _service.SaveAsync(model));
+        var result = await _service.SaveAsync(model);
 
         _logger.LogDebug("Saved with key {key}", result.BlobKey);
         return result.BlobKey;

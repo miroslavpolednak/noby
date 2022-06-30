@@ -41,17 +41,14 @@ internal class GetUserByLoginHandler
     private readonly Repositories.XxvRepository _repository;
     private readonly ILogger<GetUserByLoginHandler> _logger;
     private readonly IDistributedCache _cache;
-    private readonly CIS.Infrastructure.Telemetry.IAuditLogger _audit;
 
     static DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(20) };
 
     public GetUserByLoginHandler(
-        CIS.Infrastructure.Telemetry.IAuditLogger audit,
         IDistributedCache cache,
         Repositories.XxvRepository repository,
         ILogger<GetUserByLoginHandler> logger)
     {
-        _audit = audit;
         _cache = cache;
         _repository = repository;
         _logger = logger;

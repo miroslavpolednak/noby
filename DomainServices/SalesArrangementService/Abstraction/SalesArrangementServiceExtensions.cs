@@ -18,6 +18,8 @@ public static class SalesArrangementServiceExtensions
     public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
         => services
             .AddGrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl, isInvalidCertificateAllowed)
             .registerServices()
             .registerGrpcServices();
 
@@ -40,8 +42,6 @@ public static class SalesArrangementServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisUserContextHelpers();
-
         // register storage services
         services.TryAddTransient<ISalesArrangementServiceAbstraction, Services.SalesArrangementService>();
         services.TryAddTransient<ICustomerOnSAServiceAbstraction, Services.CustomerOnSAService>();
@@ -60,7 +60,6 @@ public static class SalesArrangementServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
@@ -69,7 +68,6 @@ public static class SalesArrangementServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
@@ -78,7 +76,6 @@ public static class SalesArrangementServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
                 .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }

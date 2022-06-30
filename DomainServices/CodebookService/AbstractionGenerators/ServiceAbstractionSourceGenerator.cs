@@ -40,7 +40,7 @@ namespace DomainServices.CodebookService.AbstractionGenerators
             {
                 // implementation
                 sbImpl.AppendLine($"public async {m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken))");
-                sbImpl.AppendLine($"=> await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _userContext.AddUserContext(async () => (await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken))));");
+                sbImpl.AppendLine($"=> await _cache.GetOrCreate(\"{m.MethodName}\", async () => await _codebookService.{m.MethodName}(new {m.RequestDtoType}(), cancellationToken));");
 
                 // interface
                 sbInterface.AppendLine($"{m.ReturnType} {m.MethodName}(CancellationToken cancellationToken = default(CancellationToken));");

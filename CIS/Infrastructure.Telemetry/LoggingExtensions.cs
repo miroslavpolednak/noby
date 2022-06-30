@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Serilog.Filters;
 using Serilog;
 
 namespace CIS.Infrastructure.Telemetry;
@@ -10,15 +9,25 @@ public static class LoggingExtensions
 {
     public static IApplicationBuilder UseCisLogging(this IApplicationBuilder webApplication)
     {
-        webApplication.UseMiddleware<Middlewares.LoggerCisUserMiddleware>();
+        webApplication.UseWhen(
+            httpContext => httpContext.RequestServices.GetRequiredService<CisTelemetryConfiguration>().Logging?.LogType == LogBehaviourTypes.WebApi, 
+            builder => builder.UseMiddleware<Middlewares.LoggerCisUserWebapiMiddleware>());
 
-        webApplication.UseSerilogRequestLogging();
-
+        webApplication.UseWhen(
+            httpContext => httpContext.RequestServices.GetRequiredService<CisTelemetryConfiguration>().Logging?.LogType == LogBehaviourTypes.Grpc,
+            builder => builder.UseMiddleware<Middlewares.LoggerCisUserGrpcMiddleware>());
+        
         return webApplication;
     }
 
     public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
     {
+        // get configuration from json file
+        var configSection = builder.Configuration.GetSection(_configurationTelemetryKey);
+        CisTelemetryConfiguration configuration = new();
+        configSection.Bind(configuration);
+        builder.Services.AddSingleton(configuration);
+
         // auditni log
         builder.Services.AddSingleton<IAuditLogger>(new AuditLogger());
 
@@ -47,28 +56,25 @@ public static class LoggingExtensions
     {
         builder.UseSerilog((hostingContext, serviceProvider, loggerConfiguration) =>
         {
-            // get configuration from json file
-            var configSection = hostingContext.Configuration.GetSection(_configurationTelemetryKey);
-            CisTelemetryConfiguration _configuration = new();
-            configSection.Bind(_configuration);
+            var configuration = serviceProvider.GetRequiredService<CisTelemetryConfiguration>();
 
-            if (_configuration.Logging is not null)
+            if (configuration.Logging is not null)
             {
-                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, _configuration.Logging.LogType);
+                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, configuration.Logging.LogType);
 
                 bootstrapper.SetupFilters(loggerConfiguration);
 
                 // general log setup
-                if (_configuration?.Logging?.Application is not null)
+                if (configuration?.Logging?.Application is not null)
                 {
                     bootstrapper.EnrichLogger(loggerConfiguration);
-                    bootstrapper.AddOutputs(loggerConfiguration, _configuration.Logging.Application);
+                    bootstrapper.AddOutputs(loggerConfiguration, configuration.Logging.Application);
                 }
 
                 // audit log setup
-                if (_configuration?.Logging?.Audit is not null)
+                if (configuration?.Logging?.Audit is not null)
                 {
-                    AuditLogger.SetupLogger(bootstrapper, _configuration.Logging.Audit);
+                    AuditLogger.SetupLogger(bootstrapper, configuration.Logging.Audit);
                 }
             }
         });

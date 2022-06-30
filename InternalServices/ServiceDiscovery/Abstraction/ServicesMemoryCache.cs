@@ -51,12 +51,11 @@ internal sealed class ServicesMemoryCache
 
     private async Task<ImmutableList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        var result = await _userContext.AddUserContext(async () => await _service.GetServicesAsync(
+        var result = await _service.GetServicesAsync(
             new Contracts.GetServicesRequest
             {
                 Environment = environmentName
-            }, cancellationToken: cancellationToken)
-        );
+            }, cancellationToken: cancellationToken);
         
         return result
             .Services
@@ -65,16 +64,13 @@ internal sealed class ServicesMemoryCache
     }
 
     private readonly ILogger<ServicesMemoryCache> _logger;
-    private readonly DomainServicesSecurity.Abstraction.ICisUserContextHelpers _userContext;
     private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;
 
     public ServicesMemoryCache(
         Contracts.v1.DiscoveryService.DiscoveryServiceClient service,
-        DomainServicesSecurity.Abstraction.ICisUserContextHelpers userContext,
         ILogger<ServicesMemoryCache> logger)
     {
         _logger = logger;
         _service = service;
-        _userContext = userContext;
     }
 }

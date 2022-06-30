@@ -1,19 +1,14 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-
-namespace CIS.InternalServices.Storage.Abstraction.BlobStorageTemp.Handlers;
+﻿namespace CIS.InternalServices.Storage.Abstraction.BlobStorageTemp.Handlers;
 
 internal class BlobTempMoveSessionCommandHandler : AsyncRequestHandler<Dto.BlobTempMoveSessionRequest>
 {
     private readonly ILogger<BlobTempMoveSessionCommandHandler> _logger;
     private readonly Contracts.v1.BlobTemp.BlobTempClient _service;
-    private readonly ICisUserContextHelpers _userContext;
 
     public BlobTempMoveSessionCommandHandler(
         ILogger<BlobTempMoveSessionCommandHandler> logger,
-        Contracts.v1.BlobTemp.BlobTempClient service,
-        ICisUserContextHelpers userContext)
+        Contracts.v1.BlobTemp.BlobTempClient service)
     {
-        _userContext = userContext;
         _service = service;
         _logger = logger;
     }
@@ -27,7 +22,7 @@ internal class BlobTempMoveSessionCommandHandler : AsyncRequestHandler<Dto.BlobT
             SessionId = request.SessionId
         };
 
-        await _userContext.AddUserContext(async () => await _service.MoveSessionAsync(model));
+        await _service.MoveSessionAsync(model);
 
         _logger.LogDebug("Moved session {sessionId}", request.SessionId);
     }

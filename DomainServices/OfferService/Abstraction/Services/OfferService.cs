@@ -4,7 +4,6 @@ using DomainServices.OfferService.Contracts;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
-using CIS.DomainServicesSecurity.Abstraction;
 
 namespace DomainServices.OfferService.Abstraction;
 
@@ -15,14 +14,11 @@ internal class OfferService : IOfferServiceAbstraction
 
     private readonly ILogger<OfferService> _logger;
     private readonly Contracts.v1.OfferService.OfferServiceClient _service;
-    private readonly ICisUserContextHelpers _userContext;
 
     public OfferService(
         ILogger<OfferService> logger,
-        Contracts.v1.OfferService.OfferServiceClient service,
-        ICisUserContextHelpers userContext)
+        Contracts.v1.OfferService.OfferServiceClient service)
     {
-        _userContext = userContext;
         _service = service;
         _logger = logger;
     }
@@ -33,7 +29,7 @@ internal class OfferService : IOfferServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetOffer), offerId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
+        var result = await _service.GetOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetOfferResponse>(result);
     }
@@ -42,7 +38,7 @@ internal class OfferService : IOfferServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgageOffer), offerId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
+        var result = await _service.GetMortgageOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetMortgageOfferResponse>(result);
     }
@@ -51,7 +47,7 @@ internal class OfferService : IOfferServiceAbstraction
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgageOfferDetail), offerId);
 
-        var result = await _userContext.AddUserContext(async () => await _service.GetMortgageOfferDetailAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken));
+        var result = await _service.GetMortgageOfferDetailAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetMortgageOfferDetailResponse>(result);
     }
@@ -62,7 +58,7 @@ internal class OfferService : IOfferServiceAbstraction
 
         try
         {
-            var result = await _userContext.AddUserContext(async () => await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken));
+            var result = await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
 
             _logger.LogDebug("Abstraction SimulateMortgage saved as #{id}", result.OfferId);
 

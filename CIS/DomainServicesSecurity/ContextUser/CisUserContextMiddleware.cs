@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Results;
-using System.Diagnostics;
 
 namespace CIS.DomainServicesSecurity.ContextUser;
 
@@ -7,8 +6,6 @@ internal sealed class CisUserContextMiddleware
 {
     private readonly ILogger<CisUserContextMiddleware> _logger;
     private readonly RequestDelegate _next;
-
-    const string ContextUserBaggageKey = "MpPartyId";
 
     public CisUserContextMiddleware(RequestDelegate next, ILoggerFactory logFactory)
     {
@@ -18,10 +15,7 @@ internal sealed class CisUserContextMiddleware
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        int? partyId = null;
-        if (int.TryParse(Activity.Current?.Baggage.FirstOrDefault(b => b.Key == ContextUserBaggageKey).Value, out int i))
-            partyId = i;
-
+        int? partyId = CurrentUserAccessorHelpers.GetUserIdFromHeaders(httpContext.Request);
         if (partyId.HasValue)
         {
             var userService = httpContext.RequestServices.GetRequiredService<DomainServices.UserService.Abstraction.IUserServiceAbstraction>();

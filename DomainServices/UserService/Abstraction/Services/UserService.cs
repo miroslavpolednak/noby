@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Results;
-using CIS.DomainServicesSecurity.Abstraction;
 using Microsoft.Extensions.Logging;
 
 namespace DomainServices.UserService.Abstraction.Services;
@@ -12,12 +11,11 @@ internal class UserService : IUserServiceAbstraction
 
         try
         {
-            var result = await _userContext.AddUserContext(async () => await _service.GetUserByLoginAsync(
+            var result = await _service.GetUserByLoginAsync(
                 new Contracts.GetUserByLoginRequest
                 {
                     Login = login
-                }, cancellationToken: cancellationToken)
-            );
+                }, cancellationToken: cancellationToken);
             return new SuccessfulServiceCallResult<Contracts.User>(result);
         }
         catch (CIS.Core.Exceptions.CisNotFoundException ex)
@@ -30,12 +28,11 @@ internal class UserService : IUserServiceAbstraction
     {
         try
         {
-            var result = await _userContext.AddUserContext(async () => await _service.GetUserAsync(
+            var result = await _service.GetUserAsync(
                 new Contracts.GetUserRequest
                 {
                     UserId = userId
-                }, cancellationToken: cancellationToken)
-            );
+                }, cancellationToken: cancellationToken);
             return new SuccessfulServiceCallResult<Contracts.User>(result);
         }
         catch (CIS.Core.Exceptions.CisNotFoundException ex)
@@ -46,14 +43,11 @@ internal class UserService : IUserServiceAbstraction
 
     private readonly ILogger<UserService> _logger;
     private readonly Contracts.v1.UserService.UserServiceClient _service;
-    private readonly ICisUserContextHelpers _userContext;
 
     public UserService(
         ILogger<UserService> logger,
-        Contracts.v1.UserService.UserServiceClient service,
-        ICisUserContextHelpers userContext)
+        Contracts.v1.UserService.UserServiceClient service)
     {
-        _userContext = userContext;
         _service = service;
         _logger = logger;
     }

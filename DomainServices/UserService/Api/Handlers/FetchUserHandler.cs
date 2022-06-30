@@ -1,16 +1,11 @@
-﻿using System.Diagnostics;
-
-namespace DomainServices.UserService.Api.Handlers;
+﻿namespace DomainServices.UserService.Api.Handlers;
 
 internal sealed class FetchUserHandler
     : IRequestHandler<Dto.FetchUserMediatrRequest, Contracts.User>
 {
     public async Task<Contracts.User> Handle(Dto.FetchUserMediatrRequest request, CancellationToken cancellation)
     {
-        int? partyId = null;
-        if (int.TryParse(Activity.Current?.Baggage.FirstOrDefault(b => b.Key == "MpPartyId").Value, out int i))
-            partyId = i;
-
+        int? partyId = _currentUserAccessor.User?.Id;
         if (partyId is null)
             throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User not logged in", 1);
 
@@ -34,10 +29,12 @@ internal sealed class FetchUserHandler
         return model;
     }
 
+    private readonly CIS.Core.Security.ICurrentUserAccessor _currentUserAccessor;
     private readonly Repositories.XxvRepository _repository;
 
-    public FetchUserHandler(Repositories.XxvRepository repository)
+    public FetchUserHandler(Repositories.XxvRepository repository, CIS.Core.Security.ICurrentUserAccessor currentUserAccessor)
     {
         _repository = repository;
+        _currentUserAccessor = currentUserAccessor;
     }
 }

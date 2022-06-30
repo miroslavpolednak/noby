@@ -40,8 +40,6 @@ public static class OfferServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddCisUserContextHelpers();
-
         // register storage services
         services.TryAddTransient<IOfferServiceAbstraction, OfferService>();
 
@@ -59,7 +57,6 @@ public static class OfferServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.OfferService.OfferServiceClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.OfferService.OfferServiceClient>()
                 .AddInterceptor<GenericClientExceptionInterceptor>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();

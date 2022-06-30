@@ -71,8 +71,6 @@ public static class StorageExtensions
         // mediatr
         services.AddMediatR(typeof(StorageExtensions).Assembly);
 
-        services.AddCisUserContextHelpers();
-
         // register storage services
         services.TryAddTransient<IBlobServiceAbstraction, BlobStorage.BlobService>();
         services.TryAddTransient<IBlobTempServiceAbstraction, BlobStorageTemp.BlobTempService>();
@@ -90,13 +88,11 @@ public static class StorageExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.Blob.BlobClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.Blob.BlobClient>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
 
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.BlobTemp.BlobTempClient>()
-                .ConfigurePrimaryHttpMessageHandlerFromCisEnvironment<Contracts.v1.Blob.BlobClient>()
                 .AddInterceptor<ExceptionInterceptor>()
                 .AddInterceptor<AuthenticationInterceptor>();
         }
