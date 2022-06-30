@@ -8,14 +8,10 @@ internal class GetMortgageOfferDetailHandler
 {
     #region Construction
 
-    private readonly ILogger<GetMortgageOfferDetailHandler> _logger;
-
     public GetMortgageOfferDetailHandler(
         Repositories.OfferRepository repository,
-        ILogger<GetMortgageOfferDetailHandler> logger,
         ICodebookServiceAbstraction codebookService) : base(repository, codebookService)
     {
-        _logger = logger;
     }
 
     #endregion
@@ -24,16 +20,14 @@ internal class GetMortgageOfferDetailHandler
     {
         var entity = await _repository.Get(request.OfferId, cancellation);
 
-        var simulationInputs = entity.SimulationInputs.ToSimulationInputs();
-
         var model = new GetMortgageOfferDetailResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            BasicParameters = entity.BasicParameters.ToBasicParameters(),
-            SimulationInputs = simulationInputs,
-            SimulationResults = entity.SimulationResults.ToSimulationResults(),            
+            BasicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin),
+            SimulationInputs = SimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin),
+            SimulationResults = SimulationResults.Parser.ParseFrom(entity.SimulationResultsBin)
         };
 
         return model;

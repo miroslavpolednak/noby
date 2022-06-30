@@ -1,6 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Abstraction;
-using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
@@ -25,16 +24,14 @@ internal class GetMortgageOfferHandler
     {
         var entity = await _repository.Get(request.OfferId, cancellation);
 
-        var simulationInputs = entity.SimulationInputs.ToSimulationInputs();
-
         var model = new GetMortgageOfferResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            BasicParameters = entity.BasicParameters.ToBasicParameters(),
-            SimulationInputs = simulationInputs,
-            SimulationResults = entity.SimulationResults.ToBaseSimulationResults(),
+            BasicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin),
+            SimulationInputs = SimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin),
+            SimulationResults = SimulationResults.Parser.ParseFrom(entity.SimulationResultsBin)
         };
 
         return model;

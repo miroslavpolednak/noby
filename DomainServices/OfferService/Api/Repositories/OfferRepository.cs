@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Google.Protobuf;
 
 namespace DomainServices.OfferService.Api.Repositories;
 
@@ -13,14 +13,17 @@ internal class OfferRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Entities.Offer> SaveOffer(Guid resourceProcessId,object basicParameters, object simulationInputs, object simulationResults, CancellationToken cancellation)
+    public async Task<Entities.Offer> SaveOffer(Guid resourceProcessId, IMessage basicParameters, IMessage simulationInputs, IMessage simulationResults, CancellationToken cancellation)
     {
         var entity = new Entities.Offer
         {
             ResourceProcessId = resourceProcessId,
-            BasicParameters = JsonSerializer.Serialize(basicParameters),
-            SimulationInputs = JsonSerializer.Serialize(simulationInputs),
-            SimulationResults = JsonSerializer.Serialize(simulationResults),
+            BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(basicParameters),
+            SimulationInputs = Newtonsoft.Json.JsonConvert.SerializeObject(simulationInputs),
+            SimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(simulationResults),
+            BasicParametersBin = basicParameters.ToByteArray(),
+            SimulationInputsBin = simulationInputs.ToByteArray(),
+            SimulationResultsBin = simulationResults.ToByteArray()
         };
 
         _dbContext.Offers.Add(entity);
