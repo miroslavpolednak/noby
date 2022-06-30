@@ -4,6 +4,8 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail;
 
 public sealed class GetDetailResponse
 {
+    public int ProductTypeId { get; set; }
+
     /// <summary>
     /// ID zadosti.
     /// </summary>
