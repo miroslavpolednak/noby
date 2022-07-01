@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using _OS = DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Abstraction;
 using Grpc.Core;
 using CIS.Infrastructure.gRPC;
@@ -7,7 +7,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 namespace DomainServices.OfferService.Api.Handlers;
 
 internal class SimulateMortgageHandler
-    : BaseHandler, IRequestHandler<Dto.SimulateMortgageMediatrRequest, SimulateMortgageResponse>
+    : BaseHandler, IRequestHandler<Dto.SimulateMortgageMediatrRequest, _OS.SimulateMortgageResponse>
 {
     #region Construction
 
@@ -32,7 +32,7 @@ internal class SimulateMortgageHandler
 
     #endregion
 
-    public async Task<SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
+    public async Task<_OS.SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
     {
         var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
 
@@ -51,7 +51,7 @@ internal class SimulateMortgageHandler
         _logger.EntityCreated(nameof(Repositories.Entities.Offer), entity.OfferId);
 
         // create response
-        return new SimulateMortgageResponse
+        return new _OS.SimulateMortgageResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
@@ -63,14 +63,14 @@ internal class SimulateMortgageHandler
 
     }
 
-    private BasicParameters SetUpDefaults(BasicParameters parameters, DateTime guaranteeDateFrom)
+    private _OS.BasicParameters SetUpDefaults(_OS.BasicParameters parameters, DateTime guaranteeDateFrom)
     {
-        parameters = parameters ?? new BasicParameters();
+        parameters = parameters ?? new _OS.BasicParameters();
         parameters.GuaranteeDateTo = guaranteeDateFrom.AddDays(AppDefaults.MaxGuaranteeInDays);
         return parameters;
     }
 
-    private async Task<SimulationInputs> SetUpDefaults(SimulationInputs input, CancellationToken cancellation)
+    private async Task<_OS.MortgageSimulationInputs> SetUpDefaults(_OS.MortgageSimulationInputs input, CancellationToken cancellation)
     {
         input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
 
@@ -98,7 +98,7 @@ internal class SimulateMortgageHandler
         //Default: False
         input.IsEmployeeBonusRequested = input.IsEmployeeBonusRequested ?? false;
 
-        input.FeeSettings = input.FeeSettings ?? new FeeSettings();
+        input.FeeSettings = input.FeeSettings ?? new _OS.FeeSettings();
 
         // Určuje za jakým účelem se generuje seznam poplatků.
         // Default: 0 - za účelem nabídky

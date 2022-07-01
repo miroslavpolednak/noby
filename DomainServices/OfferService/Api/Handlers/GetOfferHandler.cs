@@ -1,10 +1,10 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using _OS = DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Abstraction;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
 internal class GetOfferHandler
-    : BaseHandler, IRequestHandler<Dto.GetOfferMediatrRequest, GetOfferResponse>
+    : BaseHandler, IRequestHandler<Dto.GetOfferMediatrRequest, _OS.GetOfferResponse>
 {
     #region Construction
 
@@ -20,11 +20,11 @@ internal class GetOfferHandler
 
     #endregion
 
-    public async Task<GetOfferResponse> Handle(Dto.GetOfferMediatrRequest request, CancellationToken cancellation)
+    public async Task<_OS.GetOfferResponse> Handle(Dto.GetOfferMediatrRequest request, CancellationToken cancellation)
     {
         var entity = await _repository.Get(request.OfferId, cancellation);
 
-        var model = new GetOfferResponse
+        var model = new _OS.GetOfferResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),

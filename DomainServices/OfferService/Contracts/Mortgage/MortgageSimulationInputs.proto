@@ -29,4 +29,3 @@ message MortgageSimulationInputs {
 	InputMarketingAction MarketingActions = 17;
 	repeated InputFee Fees = 18;
 }
-}

@@ -3,8 +3,10 @@ package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "ModificationStamp.proto";
-import "MortgageSimulationInputs.proto";
-import "MortgageSimulationResults.proto";
+import "BasicParameters.proto";
+import "Mortgage/MortgageSimulationInputs.proto";
+import "Mortgage/MortgageSimulationResults.proto";
+import "Mortgage/AdditionalMortgageSimulationResults.proto";
 
 message GetMortgageOfferDetailResponse {
 	int32 OfferId = 1;
@@ -13,4 +15,5 @@ message GetMortgageOfferDetailResponse {
 	BasicParameters BasicParameters = 4;
 	MortgageSimulationInputs SimulationInputs = 5;
 	MortgageSimulationResults SimulationResults = 6;
+	AdditionalMortgageSimulationResults AdditionalSimulationResults = 7;
 }

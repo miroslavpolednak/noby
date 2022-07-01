@@ -23,4 +23,6 @@ internal class Offer : CIS.Core.Data.BaseCreated
 
     public byte[] SimulationResultsBin { get; set; } = default!;
 
+    public byte[] AdditionalSimulationResultsBin { get; set; } = default!;
+
 }

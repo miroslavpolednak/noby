@@ -4,8 +4,8 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "ModificationStamp.proto";
 import "BasicParameters.proto";
-import "MortgageSimulationInputs.proto";
-import "MortgageSimulationResults.proto";
+import "Mortgage/MortgageSimulationInputs.proto";
+import "Mortgage/MortgageSimulationResults.proto";
 
 message GetMortgageOfferResponse {
 	int32 OfferId = 1;

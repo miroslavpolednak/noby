@@ -4,6 +4,9 @@ option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 
 import "OfferIdRequest.proto";
 import "GetOffer.proto";
+import "Mortgage/GetMortgageOffer.proto";
+import "Mortgage/GetMortgageOfferDetail.proto";
+import "Mortgage/SimulateMortgage.proto";
 
 service OfferService {
 	rpc GetOffer (DomainServices.OfferService.OfferIdRequest) returns (DomainServices.OfferService.GetOfferResponse);
