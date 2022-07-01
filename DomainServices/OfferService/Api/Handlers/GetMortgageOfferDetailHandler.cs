@@ -1,39 +1,38 @@
-﻿using DomainServices.OfferService.Contracts;
-using DomainServices.CodebookService.Abstraction;
+﻿using _OS = DomainServices.OfferService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Handlers;
 
 internal class GetMortgageOfferDetailHandler
-    : BaseHandler, IRequestHandler<Dto.GetMortgageOfferDetailMediatrRequest, GetMortgageOfferDetailResponse>
+    : IRequestHandler<Dto.GetMortgageOfferDetailMediatrRequest, _OS.GetMortgageOfferDetailResponse>
 {
     #region Construction
 
-    private readonly ILogger<GetMortgageOfferDetailHandler> _logger;
+    private readonly Repositories.OfferServiceDbContext _dbContext;
 
-    public GetMortgageOfferDetailHandler(
-        Repositories.OfferRepository repository,
-        ILogger<GetMortgageOfferDetailHandler> logger,
-        ICodebookServiceAbstraction codebookService) : base(repository, codebookService)
+    public GetMortgageOfferDetailHandler(Repositories.OfferServiceDbContext dbContext)
     {
-        _logger = logger;
+        _dbContext = dbContext;
     }
 
     #endregion
 
-    public async Task<GetMortgageOfferDetailResponse> Handle(Dto.GetMortgageOfferDetailMediatrRequest request, CancellationToken cancellation)
+    public async Task<_OS.GetMortgageOfferDetailResponse> Handle(Dto.GetMortgageOfferDetailMediatrRequest request, CancellationToken cancellation)
     {
-        var entity = await _repository.Get(request.OfferId, cancellation);
+        var entity = await _dbContext.Offers
+           .AsNoTracking()
+           .Where(t => t.OfferId == request.OfferId)
+           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Offer #{request.OfferId} not found");
 
-        var simulationInputs = entity.SimulationInputs.ToSimulationInputs();
-
-        var model = new GetMortgageOfferDetailResponse
+        var model = new _OS.GetMortgageOfferDetailResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity),
-            BasicParameters = entity.BasicParameters.ToBasicParameters(),
-            SimulationInputs = simulationInputs,
-            SimulationResults = entity.SimulationResults.ToSimulationResults(),            
+            BasicParameters = _OS.BasicParameters.Parser.ParseFrom(entity.BasicParametersBin),
+            SimulationInputs = _OS.MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin),
+            SimulationResults = _OS.MortgageSimulationResults.Parser.ParseFrom(entity.SimulationResultsBin),
+            AdditionalSimulationResults = _OS.AdditionalMortgageSimulationResults.Parser.ParseFrom(entity.AdditionalSimulationResultsBin)
         };
 
         return model;

@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using ExternalServices.Eas;
 using ExternalServices.EasSimulationHT;
 using FluentValidation;
 
@@ -14,8 +13,6 @@ internal static class StartupExtensions
     {
         if (configuration == null)
             throw new ArgumentNullException("AppConfiguration");
-        if (configuration.EAS == null)
-            throw new ArgumentNullException("AppConfiguration.EAS");
     }
 
     public static WebApplicationBuilder AddOfferService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
@@ -30,9 +27,6 @@ internal static class StartupExtensions
                 .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
-
-        // EAS svc
-        builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 
         // EAS EasSimulationHT svc
         builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);

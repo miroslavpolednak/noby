@@ -12,6 +12,13 @@
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Dto\Models\**" />
+    <Content Remove="Dto\Models\**" />
+    <EmbeddedResource Remove="Dto\Models\**" />
+    <None Remove="Dto\Models\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<InternalsVisibleTo Include="DomainServices.OfferService.Tests" />
 	</ItemGroup>
@@ -22,6 +29,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
 	  <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
 	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.9.0" />
   </ItemGroup>
 
@@ -31,14 +39,9 @@
     <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
-    <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
     <ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dto\Models\" />
   </ItemGroup>
 
 </Project>

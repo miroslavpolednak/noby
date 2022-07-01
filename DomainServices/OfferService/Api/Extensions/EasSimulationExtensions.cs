@@ -1,5 +1,4 @@
-﻿using DomainServices.OfferService.Contracts;
-
+﻿using _OS = DomainServices.OfferService.Contracts;
 using EasWrapper = ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper;
 
 namespace DomainServices.OfferService.Api;
@@ -21,7 +20,7 @@ internal static class EasSimulationExtensions
 
 
     // loan
-    private static EasWrapper.SimSettingsUver ToReqLoan(this SimulationInputs inputs)
+    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs)
     {
         var uver = new EasWrapper.SimSettingsUver
         {
@@ -53,7 +52,7 @@ internal static class EasSimulationExtensions
 
 
     // interest rate
-    private static EasWrapper.SimSettingsUrokovaSazba ToReqInterestRate(this SimulationInputs inputs)
+    private static EasWrapper.SimSettingsUrokovaSazba ToReqInterestRate(this _OS.MortgageSimulationInputs inputs)
     {
         var urokovaSazba = new EasWrapper.SimSettingsUrokovaSazba
         {
@@ -71,7 +70,7 @@ internal static class EasSimulationExtensions
 
 
     // loan purposes
-    private static EasWrapper.UcelUveru[] ToReqLoanPurposes(this SimulationInputs inputs)
+    private static EasWrapper.UcelUveru[] ToReqLoanPurposes(this _OS.MortgageSimulationInputs inputs)
     {
         var ucelyUveru = inputs.LoanPurposes.Select(i => new EasWrapper.UcelUveru
         {
@@ -83,7 +82,7 @@ internal static class EasSimulationExtensions
 
 
     // fee settings
-    private static EasWrapper.SimSettingsPoplatky? ToReqFeeSettings(this SimulationInputs inputs)
+    private static EasWrapper.SimSettingsPoplatky? ToReqFeeSettings(this _OS.MortgageSimulationInputs inputs)
     {
         if (inputs.FeeSettings == null)
         {
@@ -104,7 +103,7 @@ internal static class EasSimulationExtensions
 
 
     // marketing actions
-    private static EasWrapper.MarketingovaAkce[] ToReqMarketingActions(this SimulationInputs inputs)
+    private static EasWrapper.MarketingovaAkce[] ToReqMarketingActions(this _OS.MortgageSimulationInputs inputs)
     {
         var list = new List<EEasSimulationMarketingActionType>();
 
@@ -132,7 +131,7 @@ internal static class EasSimulationExtensions
 
 
     // fees
-    private static EasWrapper.Poplatek[] ToReqFees(this SimulationInputs inputs)
+    private static EasWrapper.Poplatek[] ToReqFees(this _OS.MortgageSimulationInputs inputs)
     {
         var poplatky = inputs.Fees.Select(i => new EasWrapper.Poplatek
         {
@@ -144,7 +143,7 @@ internal static class EasSimulationExtensions
     }
 
     // operations
-    private static EasWrapper.MimoradnaOperace[] ToReqExceptionalOperations(this SimulationInputs inputs)
+    private static EasWrapper.MimoradnaOperace[] ToReqExceptionalOperations(this _OS.MortgageSimulationInputs inputs)
     {
         var operation = new EasWrapper.MimoradnaOperace
         {
@@ -166,7 +165,7 @@ internal static class EasSimulationExtensions
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
     /// </summary>
-    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this SimulationInputs inputs)
+    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs)
     {
         //return SampleRequest;
 
@@ -233,7 +232,7 @@ internal static class EasSimulationExtensions
     #region ResponseToResults
 
     // loan
-    private static SimulationResults AddResResults(this SimulationResults results, EasWrapper.UverVysledky res)
+    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.UverVysledky res)
     {
         results.LoanAmount = res.vyseUveru;
         results.LoanDuration = res.splatnostUveru;
@@ -256,7 +255,7 @@ internal static class EasSimulationExtensions
 
 
     // interest rate
-    private static SimulationResults AddResResults(this SimulationResults results, EasWrapper.UrokovaSazba res)
+    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.UrokovaSazba res)
     {
         results.LoanInterestRate = res.urokovaSazba;
         results.LoanInterestRateAnnounced = res.vyhlasovana;
@@ -267,9 +266,9 @@ internal static class EasSimulationExtensions
 
 
     // payment schedule (simple)
-    private static SimulationResults AddResResults(this SimulationResults results, EasWrapper.SplS[] res)
+    private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.SplS[] res)
     {
-        var items = res.Select(i => new PaymentScheduleSimple {
+        var items = res.Select(i => new _OS.PaymentScheduleSimple {
             PaymentIndex = i.n,
             PaymentNumber = i.cisloSplatky,
             Date = i.datumSplatky,  // ´string´ field - SimulationService is responsible for correct formating
@@ -284,9 +283,9 @@ internal static class EasSimulationExtensions
 
 
     // marketing actions
-    private static SimulationResults AddResResults(this SimulationResults results, EasWrapper.MarketingovaAkce[] res)
+    private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.MarketingovaAkce[] res)
     {
-        var items = res.Select(i => new ResultMarketingAction
+        var items = res.Select(i => new _OS.ResultMarketingAction
         {
             Code = i.typMaAkce,
             Requested = i.zaskrtnuto,
@@ -301,11 +300,11 @@ internal static class EasSimulationExtensions
     }
 
     // fees
-    private static SimulationResults AddResResults(this SimulationResults results, EasWrapper.Poplatek[] res)
+    private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.Poplatek[] res)
     {
         var toResultFee = (EasWrapper.Poplatek i) =>
         {
-            var fee = new ResultFee();
+            var fee = new _OS.ResultFee();
             fee.FeeId = i.kodSB;
             fee.DiscountPercentage = i.slevaIC;
             fee.TariffSum = i.sumaSazebnikova;
@@ -336,14 +335,21 @@ internal static class EasSimulationExtensions
     /// <summary>
     /// Converts EasSimulationHT object [SimulationHTResponse] to Offer object [SimulationResults].
     /// </summary>
-    public static SimulationResults ToSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)
+    public static _OS.MortgageSimulationResults ToSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)
     {
-        var results = new SimulationResults()
+        var results = new _OS.MortgageSimulationResults()
             .AddResResults(easSimulationResponse.uverVysledky)                  // loan
-            .AddResResults(easSimulationResponse.urokovaSazba)                  // interest rate
+            .AddResResults(easSimulationResponse.urokovaSazba);                  // interest rate
+
+        return results;
+    }
+
+    public static _OS.AdditionalMortgageSimulationResults ToAdditionalSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)
+    {
+        var results = new _OS.AdditionalMortgageSimulationResults()
             .AddResResults(easSimulationResponse.splatkovyKalendarJednoduchy)   // payment schedule (simple)
             .AddResResults(easSimulationResponse.marketingoveAkce)              // marketing actions
-            .AddResResults(easSimulationResponse.poplatky);                     // fees
+            .AddResResults(easSimulationResponse.poplatky);
 
         return results;
     }
@@ -353,14 +359,7 @@ internal static class EasSimulationExtensions
     #region Shared
 
     private static bool ToBool(this int? value)
-    {
-        if (!value.HasValue)
-        {
-            return false;
-        }
-
-        return value.Value == 1 ? true : false;
-    }
+        => value.GetValueOrDefault(0) == 1;
 
     #endregion
 

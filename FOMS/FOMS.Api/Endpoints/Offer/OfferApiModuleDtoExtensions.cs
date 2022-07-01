@@ -4,7 +4,7 @@ namespace FOMS.Api.Endpoints.Offer;
 
 internal static class OfferApiModuleDtoExtensions
 {
-    public static Dto.MortgageInputs ToApiResponse(this SimulationInputs input, BasicParameters basicParams)
+    public static Dto.MortgageInputs ToApiResponse(this MortgageSimulationInputs input, BasicParameters basicParams)
         => new()
         {
             ProductTypeId = input.ProductTypeId,
@@ -21,7 +21,7 @@ internal static class OfferApiModuleDtoExtensions
             LoanPurposes = input.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
         };
     
-    public static Dto.MortgageOutputs ToApiResponse(this BaseSimulationResults result, SimulationInputs inputs)
+    public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs)
         => new()
         {
             Aprc = result.Aprc,

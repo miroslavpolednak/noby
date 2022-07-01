@@ -2,14 +2,71 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
-import "ModificationStamp.proto";
+import "google/protobuf/wrappers.proto";
+import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
+import "NullableGrpcDate.proto";
 
-message OfferIdRequest {
-	int32 OfferId = 1;
+message LoanPurpose {
+	int32 LoanPurposeId = 1;
+	cis.types.GrpcDecimal Sum = 2;
 }
 
-message GetOfferResponse {
-	int32 OfferId = 1;
-	string ResourceProcessId = 2;
-	cis.types.ModificationStamp Created = 3;
+message FeeSettings {
+	google.protobuf.Int32Value FeeTariffPurpose = 1;
+	google.protobuf.Int32Value StatementTypeId = 2;
+	bool IsStatementCharged = 3;
+}
+
+message InputMarketingAction {
+	bool Domicile = 1;
+	bool HealthRiskInsurance = 2;
+	bool RealEstateInsurance = 3;
+	bool IncomeLoanRatioDiscount = 4;
+	bool UserVip = 5;
+}
+
+message ResultMarketingAction {
+	string Code = 1;
+	int32 Requested = 2;
+	google.protobuf.Int32Value Applied = 3;
+	google.protobuf.Int32Value MarketingActionId = 4;
+	cis.types.NullableGrpcDecimal Deviation = 5;
+}
+
+message InputFee {
+	int32 FeeId = 1;
+	cis.types.GrpcDecimal DiscountPercentage = 2;
+}
+
+message ResultFee {
+	int32 FeeId = 1;
+	cis.types.GrpcDecimal DiscountPercentage = 2;
+	cis.types.NullableGrpcDecimal TariffSum = 3;
+	cis.types.NullableGrpcDecimal ComposedSum = 4;
+	cis.types.NullableGrpcDecimal FinalSum = 5;
+	google.protobuf.Int32Value MarketingActionId = 6;
+	string Name = 7;
+	string ShortNameForExample = 8;
+	string TariffName = 9;
+	string UsageText = 10;
+	string TariffTextWithAmount = 11;
+	string CodeKB = 12;
+	bool DisplayAsFreeOfCharge = 13;
+	bool IncludeInRPSN = 14;
+	string Periodicity = 15;
+	cis.types.NullableGrpcDate AccountDateFrom = 16;
+}
+
+message Developer {
+	google.protobuf.Int32Value DeveloperId = 1;
+	google.protobuf.Int32Value ProjectId = 2;
+}
+
+message PaymentScheduleSimple {
+	int32 PaymentIndex = 1;
+	string PaymentNumber = 2;
+	string Date = 3;
+	string Type = 4;
+	string Amount = 5;
 }
