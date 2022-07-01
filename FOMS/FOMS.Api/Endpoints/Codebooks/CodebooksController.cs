@@ -78,7 +78,7 @@ public class CodebooksController : ControllerBase
             .Select(t => t.FixedRatePeriod)
             .OrderBy(t => t)
             .ToList();
-    
+
     /// <summary>
     /// Ciselnik druhu uveru.
     /// </summary>
@@ -87,11 +87,17 @@ public class CodebooksController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
     public async Task<List<LoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
-        => (await svc.ProductTypes(cancellationToken))
-            .FirstOrDefault(t => t.Id == productTypeId)?
-            .LoanKinds
-            .Where(t => t.IsValid)
+    {
+        var loanKindsIds = (await svc.ProductTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?
+            .LoanKindIds
             .ToList();
+        if (loanKindsIds is null) return null;
+
+        return (await svc.LoanKinds(cancellationToken))
+            .Where(t => loanKindsIds.Contains(t.Id))
+            .ToList();
+    }
 
     /// <summary>
     /// FixedRatePeriod s filtraci na product
