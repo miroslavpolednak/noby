@@ -704,7 +704,7 @@
             ID noveho klienta
             </summary>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.SimulationInputs)">
+        <member name="M:FOMS.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageSimulationInputs)">
             <summary>
             Vytvoreni requestu pro zalozeni CASE
             </summary>

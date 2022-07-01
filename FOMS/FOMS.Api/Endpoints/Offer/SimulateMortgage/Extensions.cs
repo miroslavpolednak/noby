@@ -52,7 +52,7 @@ internal static class Extensions
         return model;
     }
 
-    public static Dto.MortgageOutputs ToApiResponse(this SimulationResults result, SimulationInputs inputs)
+    public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs)
         => new()
         {
             Aprc = result.Aprc,

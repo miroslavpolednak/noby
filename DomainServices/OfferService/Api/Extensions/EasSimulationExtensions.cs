@@ -266,7 +266,7 @@ internal static class EasSimulationExtensions
 
 
     // payment schedule (simple)
-    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.SplS[] res)
+    private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.SplS[] res)
     {
         var items = res.Select(i => new _OS.PaymentScheduleSimple {
             PaymentIndex = i.n,
@@ -283,7 +283,7 @@ internal static class EasSimulationExtensions
 
 
     // marketing actions
-    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.MarketingovaAkce[] res)
+    private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.MarketingovaAkce[] res)
     {
         var items = res.Select(i => new _OS.ResultMarketingAction
         {
@@ -300,7 +300,7 @@ internal static class EasSimulationExtensions
     }
 
     // fees
-    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.Poplatek[] res)
+    private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.Poplatek[] res)
     {
         var toResultFee = (EasWrapper.Poplatek i) =>
         {
@@ -339,17 +339,17 @@ internal static class EasSimulationExtensions
     {
         var results = new _OS.MortgageSimulationResults()
             .AddResResults(easSimulationResponse.uverVysledky)                  // loan
-            .AddResResults(easSimulationResponse.urokovaSazba)                  // interest rate
-            .AddResResults(easSimulationResponse.splatkovyKalendarJednoduchy)   // payment schedule (simple)
-            .AddResResults(easSimulationResponse.marketingoveAkce)              // marketing actions
-            .AddResResults(easSimulationResponse.poplatky);                     // fees
+            .AddResResults(easSimulationResponse.urokovaSazba);                  // interest rate
 
         return results;
     }
 
     public static _OS.AdditionalMortgageSimulationResults ToAdditionalSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)
     {
-        var results = new _OS.AdditionalMortgageSimulationResults();
+        var results = new _OS.AdditionalMortgageSimulationResults()
+            .AddResResults(easSimulationResponse.splatkovyKalendarJednoduchy)   // payment schedule (simple)
+            .AddResResults(easSimulationResponse.marketingoveAkce)              // marketing actions
+            .AddResResults(easSimulationResponse.poplatky);
 
         return results;
     }
