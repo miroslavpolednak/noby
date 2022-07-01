@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "ModificationStamp.proto";
+
+message GetOfferResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+}

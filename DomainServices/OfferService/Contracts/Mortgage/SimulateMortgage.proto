@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "ModificationStamp.proto";
+import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+import "MortgageSimulationInputs.proto";
+import "MortgageSimulationResults.proto";
+
+message MortgageSimulateMortgageRequest {
+	string ResourceProcessId = 1;
+	BasicParameters BasicParameters = 2;
+	MortgageSimulationInputs SimulationInputs = 3;
+}
+
+message MortgageSimulateMortgageResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	MortgageSimulationInputs SimulationInputs = 5;
+	MortgageSimulationResults SimulationResults = 6;
+}
