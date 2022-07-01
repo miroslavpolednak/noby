@@ -32,11 +32,4 @@ internal class OfferRepository
 
         return entity;
     }
-
-    public async Task<Entities.Offer> Get(int offerId, CancellationToken cancellation)
-        => await _dbContext.Offers
-           .AsNoTracking()
-           .Where(t => t.OfferId == offerId)
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Offer #{offerId} not found");
-
 }

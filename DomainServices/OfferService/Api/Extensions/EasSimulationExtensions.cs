@@ -347,19 +347,19 @@ internal static class EasSimulationExtensions
         return results;
     }
 
+    public static _OS.AdditionalMortgageSimulationResults ToAdditionalSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)
+    {
+        var results = new _OS.AdditionalMortgageSimulationResults();
+
+        return results;
+    }
+
     #endregion
 
     #region Shared
 
     private static bool ToBool(this int? value)
-    {
-        if (!value.HasValue)
-        {
-            return false;
-        }
-
-        return value.Value == 1 ? true : false;
-    }
+        => value.GetValueOrDefault(0) == 1;
 
     #endregion
 
