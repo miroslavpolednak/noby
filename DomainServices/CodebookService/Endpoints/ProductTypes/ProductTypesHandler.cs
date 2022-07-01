@@ -11,11 +11,9 @@ public class ProductTypesHandler
         {
             return await FastMemoryCache.GetOrCreate<ProductTypeItem>(nameof(ProductTypesHandler), async () =>
             {
-                // vytahnout druhy uveru pro naparovani do kolekci
-                var loanKinds = await _mediator.Send(new Contracts.Endpoints.LoanKinds.LoanKindsRequest(), cancellationToken);
-
                 // vytahnout mapovani na product category
                 var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
+                var extMapperById = extMapper.ToDictionary(i => i.ProductTypeId);
 
                 // vytahnout vlastni ciselnik z XXD
                 var result = await _connectionProviderXxd.ExecuteDapperRawSqlToList<ProductTypeItem>(_sqlQuery, cancellationToken);
@@ -23,27 +21,10 @@ public class ProductTypesHandler
                 // namapovat kategorie z extensions tabulky
                 result.ForEach(t =>
                 {
-                    // dohrat podrizene LoanKind - jako prasarna, ale nechtelo se mi kvuli tomu delat special objekt
-                    if (!string.IsNullOrWhiteSpace(t.MpHomeApiLoanType))
-                    {
-                        var loanKindIds = t.MpHomeApiLoanType
-                            .Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                            .Select(x => Convert.ToInt32(x))
-                            .ToArray();
-                        if (loanKinds.Any())
-                            t.LoanKinds = loanKinds.Where(x => loanKindIds.Contains(x.Id)).ToList();
-                        t.MpHomeApiLoanType = null;
-                        t.KonsDbLoanType = null;
-                    }
-
-                    // rozsirena nastaveni z extension tabulky
-                    var item = extMapper.FirstOrDefault(x => x.ProductTypeId == t.Id);
-                    if (item is not null)
-                    {
-                        t.MpHomeApiLoanType = item.MpHomeApiLoanType;
-                        t.KonsDbLoanType = item.KonsDbLoanType;
-                    }
-
+                    var ext = extMapperById.ContainsKey(t.Id) ? extMapperById[t.Id] : null;
+                    t.LoanKindIds = t.MpHomeApiLoanType.ParseIDs();
+                    t.MpHomeApiLoanType = ext?.MpHomeApiLoanType;
+                    t.KonsDbLoanType = ext?.KonsDbLoanType;
                 });
 
                 return result;
