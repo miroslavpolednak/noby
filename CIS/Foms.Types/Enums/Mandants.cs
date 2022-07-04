@@ -10,11 +10,11 @@ public enum Mandants : byte
     [EnumMember]
     Unknown = 0,
 
-    [Display(Name = "Modrá pyramida")]
+    [Display(Name = "Modrá pyramida", ShortName = "MPSS")]
     [EnumMember]
     Mp = 1,
 
-    [Display(Name = "Komerční banka")]
+    [Display(Name = "Komerční banka", ShortName = "KB")]
     [EnumMember]
     Kb = 2
 }

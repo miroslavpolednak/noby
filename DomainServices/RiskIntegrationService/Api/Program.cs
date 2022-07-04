@@ -76,7 +76,8 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1.RiskBusinessCaseService>();
+    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.RiskBusinessCaseService>();
+    endpoints.MapGrpcService< DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.CreditWorthinessService>();
     endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceGrpc>();
 
     endpoints.MapCodeFirstGrpcReflectionService();

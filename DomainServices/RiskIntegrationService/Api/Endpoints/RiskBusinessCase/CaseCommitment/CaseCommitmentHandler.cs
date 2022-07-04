@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1.Handlers;
+﻿namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.CaseCommitment;
 
 internal sealed class CaseCommitmentHandler
     : IRequestHandler<Contracts.RiskBusinessCase.CaseCommitmentRequest, Contracts.RiskBusinessCase.CaseCommitmentResponse>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V1;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness;
 
 [Authorize]
 [ApiController]

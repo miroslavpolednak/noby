@@ -1,7 +1,7 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase;
 
 [Authorize]
 public class RiskBusinessCaseService

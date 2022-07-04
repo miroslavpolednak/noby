@@ -1113,12 +1113,12 @@
             kód pracovní pozice přihlášeného uživatele /schvalovatele
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V1.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest,System.Threading.CancellationToken)">
             <summary>
             Výpoèet rozšíøené bonity
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest,System.Threading.CancellationToken)">
             <summary>
             Risk Business Case - Create
             </summary>

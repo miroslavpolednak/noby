@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.RealEstatePurchaseTypes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.RealEstatePurchaseTypes;
 
 namespace DomainServices.CodebookService.Endpoints.RealEstatePurchaseTypes
 {

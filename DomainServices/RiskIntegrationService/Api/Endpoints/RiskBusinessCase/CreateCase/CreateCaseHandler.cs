@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1.Handlers;
+﻿namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.CreateCase;
 
 internal sealed class CreateCaseHandler
     : IRequestHandler<Contracts.RiskBusinessCase.CreateCaseRequest, Contracts.RiskBusinessCase.CreateCaseResponse>

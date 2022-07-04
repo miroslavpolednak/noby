@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase;
 
 [Authorize]
 [ApiController]

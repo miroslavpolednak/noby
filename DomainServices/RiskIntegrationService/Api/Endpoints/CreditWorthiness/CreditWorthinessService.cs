@@ -1,7 +1,7 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V1;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness;
 
 [Authorize]
 public class CreditWorthinessService
