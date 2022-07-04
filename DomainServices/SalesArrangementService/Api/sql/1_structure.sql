@@ -222,6 +222,7 @@ CREATE TABLE [dbo].[CustomerOnSAIncome](
 	[IncomeTypeId] [int] NOT NULL,
 	[Sum] decimal(12,2) NULL,
 	[CurrencyCode] [varchar](3) NULL,
+    [IncomeSource] [nvarchar(255)] NULL,
 	[Data] [nvarchar](max) NULL,
     [DataBin] [varbinary](max) NULL,
 	[CreatedUserName] [nvarchar](100) NULL,

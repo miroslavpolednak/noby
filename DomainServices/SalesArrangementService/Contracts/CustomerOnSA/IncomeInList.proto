@@ -10,4 +10,5 @@ message IncomeInList {
     int32 IncomeTypeId = 2;
     cis.types.NullableGrpcDecimal Sum = 3;
     string CurrencyCode = 4;
+    string IncomeSource = 5;
 }

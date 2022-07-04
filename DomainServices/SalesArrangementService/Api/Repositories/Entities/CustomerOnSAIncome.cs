@@ -19,6 +19,8 @@ internal class CustomerOnSAIncome
     
     public string? CurrencyCode { get; set; }
     
+    public string? IncomeSource { get; set; }
+
     public string? Data { get; set; }
     
     public byte[]? DataBin { get; set; }

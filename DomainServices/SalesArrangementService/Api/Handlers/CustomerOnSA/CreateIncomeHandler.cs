@@ -18,6 +18,7 @@ internal class CreateIncomeHandler
             CustomerOnSAId = request.Request.CustomerOnSAId,
             Sum = request.Request.BaseData?.Sum,
             CurrencyCode = request.Request.BaseData?.CurrencyCode,
+            IncomeSource = getIncomeSource(request.Request),
             IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)request.Request.IncomeTypeId
         };
 
@@ -38,6 +39,13 @@ internal class CreateIncomeHandler
             IncomeId = entity.CustomerOnSAIncomeId
         };
     }
+
+    static string? getIncomeSource(CreateIncomeRequest request)
+        => (CIS.Foms.Enums.CustomerIncomeTypes)request.IncomeTypeId switch
+        {
+            CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement?.Employer.Name,
+            _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
+        };
 
     static IMessage? getDataObject(CreateIncomeRequest request)
         => (CIS.Foms.Enums.CustomerIncomeTypes)request.IncomeTypeId switch

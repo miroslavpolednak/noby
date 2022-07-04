@@ -26,6 +26,7 @@ internal static class Extensions
                 Sum = x.Sum,
                 CurrencyCode = x.CurrencyCode,
                 IncomeId = x.IncomeId,
+                IncomeSource = x.IncomeSource,
                 IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)x.IncomeTypeId
             }).ToList(),
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => new Dto.CustomerObligation

@@ -42,14 +42,11 @@ internal class GetHouseholdHandler
 
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
-    private readonly ILogger<GetHouseholdHandler> _logger;
 
     public GetHouseholdHandler(
         IHouseholdServiceAbstraction householdService,
-        ICustomerOnSAServiceAbstraction customerOnSAService,
-        ILogger<GetHouseholdHandler> logger)
+        ICustomerOnSAServiceAbstraction customerOnSAService)
     {
-        _logger = logger;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;
     }
