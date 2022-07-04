@@ -1,0 +1,600 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "CreditWorthinessCalculation"
+  },
+  "basePath": "/kbgroup-laa-credit-worthiness-calculation-service-1.0.1/api",
+  "tags": [
+    {
+      "name": "CreditWorthinessCalculation"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/credit-worthiness": {
+      "put": {
+        "tags": [
+          "CreditWorthinessCalculation"
+        ],
+        "summary": "Výpočet Bonity",
+        "description": "",
+        "operationId": "creditWorthiness_1",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreditWorthinessCalculationArguments"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreditWorthinessCalculation"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreditWorthinessCalculation": {
+      "type": "object",
+      "required": [
+        "installmentLimit",
+        "maxAmount",
+        "resultReason"
+      ],
+      "properties": {
+        "installmentLimit": {
+          "type": "integer",
+          "format": "int64",
+          "xml": {
+            "name": "INSTALLMENT_LIMIT"
+          },
+          "description": "maximální disponibilní splátka"
+        },
+        "maxAmount": {
+          "type": "integer",
+          "format": "int64",
+          "xml": {
+            "name": "MAX_AMOUNT"
+          },
+          "description": "maximální výše úvěru"
+        },
+        "remainsLivingAnnuity": {
+          "type": "integer",
+          "format": "int64",
+          "xml": {
+            "name": "REMAINS_LIVING_ANNUITY"
+          },
+          "description": "Zbývá na živobytí s ANNUITY"
+        },
+        "remainsLivingInst": {
+          "type": "integer",
+          "format": "int64",
+          "xml": {
+            "name": "REMAINS_LIVING_INST"
+          },
+          "description": "Zbývá na živobytí s disp. Splátkou"
+        },
+        "resultReason": {
+          "xml": {
+            "name": "RESULT_REASON"
+          },
+          "description": "ResultReson",
+          "$ref": "#/definitions/ResultReason"
+        }
+      },
+      "xml": {
+        "name": "RESPONSE",
+        "namespace": "cz:kb:c4m:pgs:bonity:bonityadvanced"
+      },
+      "description": "Parametry potřebné pro výpočet Bonity"
+    },
+    "ResultReason": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "xml": {
+            "name": "CODE"
+          },
+          "description": "kód důvodu nespočtení výsledku"
+        },
+        "description": {
+          "type": "string",
+          "xml": {
+            "name": "DESC"
+          },
+          "description": "popis důvodu nespočtení výsledku"
+        }
+      },
+      "description": "Důvod(y) nespočetní výseldků bonity."
+    },
+    "CreditLiabilitiesSummary": {
+      "type": "object",
+      "required": [
+        "amount",
+        "amountConsolidated",
+        "productGroup"
+      ],
+      "properties": {
+        "productGroup": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CC",
+            "AD"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Množství."
+        },
+        "amountConsolidated": {
+          "type": "number",
+          "description": "Množství."
+        }
+      },
+      "description": "HouseholdCreditLiabilitiesSummaryOutHomeCompany."
+    },
+    "CreditLiabilitiesSummaryHomeCompany": {
+      "type": "object",
+      "required": [
+        "amount",
+        "amountConsolidated",
+        "productGroup"
+      ],
+      "properties": {
+        "productGroup": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CC",
+            "AD"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Množství."
+        },
+        "amountConsolidated": {
+          "type": "number",
+          "description": "Množství."
+        }
+      },
+      "description": "HouseholdCreditLiabilitiesSummaryHomeCompany."
+    },
+    "CreditWorthinessCalculationArguments": {
+      "type": "object",
+      "required": [
+        "households",
+        "itChannel",
+        "loanApplicationProduct",
+        "riskBusinessCaseId"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "resourceProcessId": {
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "itChannel": {
+          "type": "string",
+          "description": "Identifikátor volající aplikace.",
+          "enum": [
+            "NOBY",
+            "STARBUILD",
+            "DCS"
+          ]
+        },
+        "riskBusinessCaseId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Identifikátor žádosti z pohledu Risku, nepovinné."
+        },
+        "loanApplicationDealer": {
+          "description": "Informace o delaerovi, který službu volá",
+          "$ref": "#/definitions/Dealer"
+        },
+        "kbGroupPerson": {
+          "description": "Informace o interním zaměstanci, který službu volá",
+          "$ref": "#/definitions/Person"
+        },
+        "loanApplicationProduct": {
+          "description": "Identifikátor žádosti z pohledu Risku, nepovinné.",
+          "$ref": "#/definitions/LoanApplicationProduct"
+        },
+        "households": {
+          "type": "array",
+          "description": "Domácnosti.",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationHousehold"
+          }
+        }
+      },
+      "description": "Parametry potřebné pro výpočet Bonity"
+    },
+    "Dealer": {
+      "type": "object",
+      "required": [
+        "companyId",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "Identifikátor dealera",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "companyId": {
+          "description": "Identifikátor zprostředkovateské společnosti",
+          "$ref": "#/definitions/ResourceIdentifier"
+        }
+      },
+      "description": "Dealer"
+    },
+    "ExpensesSummary": {
+      "type": "object",
+      "required": [
+        "amount",
+        "category"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Kategorie.",
+          "enum": [
+            "RENT",
+            "ALIMONY",
+            "OTHER",
+            "INSURANCE",
+            "SAVING"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Množství."
+        }
+      },
+      "description": "Parametry domácnosti."
+    },
+    "InstallmentsSummaryHomeCompany": {
+      "type": "object",
+      "required": [
+        "amount",
+        "amountConsolidated",
+        "productGroup"
+      ],
+      "properties": {
+        "productGroup": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CL",
+            "ML"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Množství."
+        },
+        "amountConsolidated": {
+          "type": "number",
+          "description": "Množství."
+        }
+      },
+      "description": "HouseholdInstallmentsSummaryHomeCompany."
+    },
+    "InstallmentsSummaryOutHomeCompany": {
+      "type": "object",
+      "required": [
+        "amount",
+        "amountConsolidated",
+        "productGroup"
+      ],
+      "properties": {
+        "productGroup": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CL",
+            "ML"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Množství."
+        },
+        "amountConsolidated": {
+          "type": "number",
+          "description": "Množství."
+        }
+      },
+      "description": "HouseholdInstallmentsSummaryOutHomeCompany."
+    },
+    "JobPost": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Kód pracovní pozice přihlášeného uživatele/schvalovatele"
+        }
+      },
+      "description": "JobPost"
+    },
+    "LoanApplicationCounterParty": {
+      "type": "object",
+      "required": [
+        "isPartner",
+        "loanApplicationIncome",
+        "maritalStatus"
+      ],
+      "properties": {
+        "id": {
+          "description": "Identifikátor klienta (např. v případě KB klienta IDDI)",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "loanApplicationIncome": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationIncome"
+          }
+        },
+        "isPartner": {
+          "type": "integer",
+          "format": "int32",
+          "description": "současný rodinný stav"
+        },
+        "maritalStatus": {
+          "type": "string",
+          "description": "Je klient druhem/družkou?",
+          "enum": [
+            "S",
+            "M",
+            "D",
+            "W",
+            "R"
+          ]
+        }
+      },
+      "description": "Protistrana žádosti o půjčku."
+    },
+    "LoanApplicationHousehold": {
+      "type": "object",
+      "required": [
+        "childrenOver10",
+        "childrenUnderAnd10",
+        "clients",
+        "creditLiabilitiesSummary",
+        "creditLiabilitiesSummaryOut",
+        "expensesSummary",
+        "installmentsSummary",
+        "installmentsSummaryOut"
+      ],
+      "properties": {
+        "childrenUnderAnd10": {
+          "type": "integer",
+          "format": "int64",
+          "description": "počet vyživovaných dětí do 10 let (včetně)."
+        },
+        "childrenOver10": {
+          "type": "integer",
+          "format": "int64",
+          "description": "počet vyživovaných dětí nad 10 let ."
+        },
+        "expensesSummary": {
+          "type": "array",
+          "description": "Household Expenses Summary",
+          "items": {
+            "$ref": "#/definitions/ExpensesSummary"
+          }
+        },
+        "creditLiabilitiesSummaryOut": {
+          "type": "array",
+          "description": "Shrnutí pasiv úvěru mimo domácnosti",
+          "items": {
+            "$ref": "#/definitions/CreditLiabilitiesSummary"
+          }
+        },
+        "creditLiabilitiesSummary": {
+          "type": "array",
+          "description": "Shrnutí pasiv úvěru domácnosti",
+          "items": {
+            "$ref": "#/definitions/CreditLiabilitiesSummaryHomeCompany"
+          }
+        },
+        "installmentsSummaryOut": {
+          "type": "array",
+          "description": "Shrnutí splátek mimo domácnosti",
+          "items": {
+            "$ref": "#/definitions/InstallmentsSummaryOutHomeCompany"
+          }
+        },
+        "installmentsSummary": {
+          "type": "array",
+          "description": "Shrnutí splátek domácnosti",
+          "items": {
+            "$ref": "#/definitions/InstallmentsSummaryHomeCompany"
+          }
+        },
+        "clients": {
+          "type": "array",
+          "description": "Klienti",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationCounterParty"
+          }
+        }
+      },
+      "description": "Parametry domácnosti."
+    },
+    "LoanApplicationIncome": {
+      "type": "object",
+      "required": [
+        "amount",
+        "category",
+        "month"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Kategorie.",
+          "enum": [
+            "SALARY",
+            "ENTERPRISE",
+            "RENT",
+            "OTHER"
+          ]
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Počet měsíců."
+        },
+        "amount": {
+          "type": "number",
+          "description": "Množství."
+        }
+      },
+      "description": "Žádost o půjčku příjem."
+    },
+    "LoanApplicationProduct": {
+      "type": "object",
+      "required": [
+        "amountRequired",
+        "productClusterCode"
+      ],
+      "properties": {
+        "productClusterCode": {
+          "type": "string",
+          "description": "kód produktového shluku (shluk jednoho produktu)."
+        },
+        "maturity": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Splatnost úvěru - počet splátek v měsíci."
+        },
+        "interestRate": {
+          "type": "number",
+          "description": "Žádaná roční úroková sazba."
+        },
+        "amountRequired": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Požadovaná výše úvěru v Kč."
+        },
+        "annuity": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Požadovaná splátka v Kč."
+        },
+        "fixationPeriod": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Doba fixace v měsících."
+        }
+      },
+      "description": "Parametry potřebné pro výpočet Bonity"
+    },
+    "OrganizationUnit": {
+      "type": "object",
+      "required": [
+        "id",
+        "jobPost",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Pobočka + expozitura přihlášení uživatele/schvalovatele"
+        },
+        "name": {
+          "type": "string",
+          "description": "Název pobočky přihlášení uživatele/schvalovatele"
+        },
+        "jobPost": {
+          "description": "Pracovní skupina",
+          "$ref": "#/definitions/JobPost"
+        }
+      },
+      "description": "OrganizationUnit"
+    },
+    "Person": {
+      "type": "object",
+      "required": [
+        "id",
+        "orgUnit",
+        "surname"
+      ],
+      "properties": {
+        "id": {
+          "description": "osobní číslo přihlášeného uživatele/schvalovatele",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "surname": {
+          "type": "string",
+          "description": "příjmení přihlášeného uživatele/příjmení schvalovatele"
+        },
+        "orgUnit": {
+          "description": "Pracovní skupina",
+          "$ref": "#/definitions/OrganizationUnit"
+        }
+      },
+      "description": "Person"
+    },
+    "ResourceIdentifier": {
+      "type": "object",
+      "required": [
+        "domain",
+        "id",
+        "instance",
+        "resource"
+      ],
+      "properties": {
+        "instance": {
+          "type": "string",
+          "description": "The resource instance code, eg. 'KBCZ'",
+          "minLength": 0,
+          "maxLength": 16
+        },
+        "domain": {
+          "type": "string",
+          "description": "The resource domain code, eg. 'CFLM'",
+          "minLength": 0,
+          "maxLength": 16
+        },
+        "resource": {
+          "type": "string",
+          "description": "The resource code (the in-domain resource code, eg. 'LimitModel')",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "id": {
+          "type": "string",
+          "description": "ID",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "variant": {
+          "type": "string",
+          "description": "The variant of the resource, eg. distinguishing the origin of the source",
+          "minLength": 0,
+          "maxLength": 16
+        }
+      },
+      "description": "ResourceIdentifier"
+    }
+  }
+}

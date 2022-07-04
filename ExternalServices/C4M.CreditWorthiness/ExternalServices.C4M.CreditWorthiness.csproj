@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
+    <ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -9,7 +9,7 @@ namespace DomainServices.RiskIntegrationService.Abstraction;
 
 public static class RiskIntegrationServiceExtensions
 {
-    public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    /*public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, bool isInvalidCertificateAllowed)
         => services
             .AddCisServiceDiscovery(isInvalidCertificateAllowed)
             .registerUriSettings(isInvalidCertificateAllowed)
@@ -42,7 +42,7 @@ public static class RiskIntegrationServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register storage services
-        services.TryAddTransient<IRipServiceAbstraction, Services.RipService>();
+        //services.TryAddTransient<IRipServiceAbstraction, Services.RipService>();
 
         // exception handling
         services.TryAddSingleton<GenericClientExceptionInterceptor>();
@@ -71,5 +71,5 @@ public static class RiskIntegrationServiceExtensions
             var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
             options.Address = serviceUri.Url;
         });
-    }
+    }*/
 }

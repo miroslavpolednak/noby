@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
 /// <summary>
 /// Parametry potřebné pro výpočet Bonity

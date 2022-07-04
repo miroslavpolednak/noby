@@ -4,256 +4,398 @@
         <name>DomainServices.RiskIntegrationService.Contracts</name>
     </assembly>
     <members>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditLiability">
-            <summary>
-            Household Credit Liabilities OutHomeCompany.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditLiability.LiabilityType">
-            <summary>
-            Typ závazku.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditLiability.Limit">
-            <summary>
-            Výše limitu kreditní karty nebo povoleného debetu.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditLiability.AmountConsolidated">
-            <summary>
-            Konsolidovaná výše limitu kreditní karty nebo povoleného debetu.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditLiability.Installment">
-            <summary>
-            Výše splátky spotřebitelského nebo hypotečního úvěru.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditLiability.InstallmentConsolidated">
-            <summary>
-            Konsolidovaná výše splátky spotřebitelského nebo hypotečního úvěru.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditLiability.OutHomeCompanyFlag">
-            <summary>
-            Příznak, že závazek je veden u jiného peněžního ústavu (JPÚ), než v kterém je sjednáván úvěr.
-            </summary>
-        </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest">
             <summary>
             Parametry potřebné pro výpočet Bonity
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest.ResourceProcessIdMp">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest.ResourceProcessIdMp">
             <summary>
             ResourceProcessId
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest.ItChannel">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest.ItChannel">
             <summary>
             Identifikátor volající aplikace.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest.RiskBusinessCaseIdMp">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest.RiskBusinessCaseIdMp">
             <summary>
             Identifikátor žádosti z pohledu Risku (nepovinné).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest.HumanUser">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest.HumanUser">
             <summary>
             Uživatel/schvalovatel, který službu volá (přihlášený do NOBY/StarBuildu)
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest.LoanApplicationProduct">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest.LoanApplicationProduct">
             <summary>
             Loan application product.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessRequest.Households">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest.Households">
             <summary>
             Domácnosti.
             </summary>
             <value>Domácnosti.</value>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse">
             <summary>
             Vypočtená Bonita (výsledek)
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse.InstallmentLimit">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse.InstallmentLimit">
             <summary>
             Maximální disponibilní splátka
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse.MaxAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse.MaxAmount">
             <summary>
             Maximální výše úvěru
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse.RemainsLivingAnnuity">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse.RemainsLivingAnnuity">
             <summary>
             Zbývá na živobytí s ANNUITY
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse.RemainsLivingInst">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse.RemainsLivingInst">
             <summary>
             Zbývá na živobytí s disp. Splátkou
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse.WorthinessResult">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse.WorthinessResult">
             <summary>
             Výsledek porovnání disponibilní a požadované splátky (0 - nebonitní, 1 - bonitní)
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthinessResponse.ResultReason">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateResponse.ResultReason">
             <summary>
             ResultReason
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.ExpensesSummary">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability">
+            <summary>
+            Household Credit Liabilities OutHomeCompany.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability.LiabilityType">
+            <summary>
+            Typ závazku.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability.Limit">
+            <summary>
+            Výše limitu kreditní karty nebo povoleného debetu.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability.AmountConsolidated">
+            <summary>
+            Konsolidovaná výše limitu kreditní karty nebo povoleného debetu.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability.Installment">
+            <summary>
+            Výše splátky spotřebitelského nebo hypotečního úvěru.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability.InstallmentConsolidated">
+            <summary>
+            Konsolidovaná výše splátky spotřebitelského nebo hypotečního úvěru.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditLiability.OutHomeCompanyFlag">
+            <summary>
+            Příznak, že závazek je veden u jiného peněžního ústavu (JPÚ), než v kterém je sjednáván úvěr.
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ExpensesSummary">
             <summary>
             Parametry domácnosti.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.ExpensesSummary.Rent">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ExpensesSummary.Rent">
             <summary>
             Náklady domácnosti spojené s bydlením (Kč/měsíc).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.ExpensesSummary.Saving">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ExpensesSummary.Saving">
             <summary>
             Výdaje domácnosti na spoření (Kč/měsíc).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.ExpensesSummary.Insurance">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ExpensesSummary.Insurance">
             <summary>
             Výdaje domácnosti na pojištění (Kč/měsíc).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.ExpensesSummary.Other">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ExpensesSummary.Other">
             <summary>
             Ostatní výdaje domácnosti (Kč/měsíc).
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationCounterParty">
             <summary>
             Protistrana žádosti o půjčku.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty.IdMp">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationCounterParty.IdMp">
             <summary>
             ID klienta
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty.IsPartnerMp">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationCounterParty.IsPartnerMp">
             <summary>
             Je klient druhem/družkou?
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty.MaritalStatusMp">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationCounterParty.MaritalStatusMp">
             <summary>
             Rodinný stav.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty.LoanApplicationIncome">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationCounterParty.LoanApplicationIncome">
             <summary>
             Příjem klienta.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationCounterParty.CreditLiabilities">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationCounterParty.CreditLiabilities">
             <summary>
             Závazky klienta.
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationHousehold">
             <summary>
             Parametry domácnosti.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold.ChildrenUnderAnd10">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationHousehold.ChildrenUnderAnd10">
             <summary>
             Počet vyživovaných dětí do 10 let (včetně).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold.ChildrenOver10">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationHousehold.ChildrenOver10">
             <summary>
             Počet vyživovaných dětí nad 10 let.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold.ExpensesSummary">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationHousehold.ExpensesSummary">
             <summary>
             Household Expenses Summary
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationHousehold.Clients">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationHousehold.Clients">
             <summary>
             Klienti
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.LoanApplicationIncome">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationIncome">
             <summary>
             Příjem klienta
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationIncome.CategoryMp">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationIncome.CategoryMp">
             <summary>
             Kategorie příjmu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationIncome.Amount">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationIncome.Amount">
             <summary>
             Výše příjmu.
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct">
             <summary>
             Parametry potřebné pro výpočet Bonity
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct.Product">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct.Product">
             <summary>
             Kód produktu
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct.Maturity">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct.Maturity">
             <summary>
             Doba splatnosti úvěru v měsících.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct.InterestRate">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct.InterestRate">
             <summary>
             Žádaná roční úroková sazba.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct.AmountRequired">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct.AmountRequired">
             <summary>
             Požadovaná výše úvěru v Kč.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct.Annuity">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct.Annuity">
             <summary>
             Požadovaná výše splátky v Kč.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.LoanApplicationProduct.FixationPeriod">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.LoanApplicationProduct.FixationPeriod">
             <summary>
             Doba fixace úrokové sazby v měsících.
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Contracts.ResultReason">
+        <member name="T:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ResultReason">
             <summary>
             Důvod(y) nespočtení výsledků bonity.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.ResultReason.Code">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ResultReason.Code">
             <summary>
             Kód důvodu nespočtení výsledku
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.ResultReason.Description">
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.ResultReason.Description">
             <summary>
             Popis důvodu nespočtení výsledku
             </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.loanApplicationId">
+            <summary>
+            ID dané úvěrové žádosti.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.ItChannel">
+            <summary>
+            IT Channel.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.LoanApplicationProduct">
+            <summary>
+            loanApplicationProduct.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.RiskBusinessCaseFinalResult">
+            <summary>
+            riskBusinessCaseFinalResult.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.LoanSoldProduct">
+            <summary>
+            loanSoldProduct.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.ApprovalLevel">
+            <summary>
+            approvalLevel.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.ApprovalDate">
+            <summary>
+            Datum schválení.  Format: yyyy-MM-dd 
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.LoanAgreement">
+            <summary>
+            loanAgreement.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.Approver">
+            <summary>
+            approver.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.CollateralAgreements">
+            <summary>
+            collateralAgreements.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentRequest.HumanUser">
+            <summary>
+            Uživatel/schvalovatel, který službu volá (přihlášený do NOBY/StarBuildu)
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentResponse.Timestamp">
+            <summary>
+            Datum a čas odpovědi
+            </summary>
+            <value>Datum a čas odpovědi</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentResponse.OperationResult">
+            <summary>
+            Status
+            </summary>
+            <value>Status</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CaseCommitmentResponse.ResultReasons">
+            <summary>
+            Důvod(y) nespočetní výsledků bonity
+            </summary>
+            <value>Důvod(y) nespočetní výsledků bonity</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CollateralAgreement.Id">
+            <summary>
+            Identifikátor obchodního případu.
+            </summary>
+            <value>Identifikátor obchodního případu.</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CommitmentResultReason.Code">
+            <summary>
+            kód důvodu nespočtení výsledku.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CommitmentResultReason.Desc">
+            <summary>
+            popis důvodu nespočtení výsledku.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest.LoanApplicationIdMp">
+            <summary>
+            ID dané úvěrové žádosti.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest.ResourceProcessIdMp">
+            <summary>
+            ID business procesu, v rámci kterého, Risk Business Case vzniká.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest.ItChannel">
+            <summary>
+            Typ zdrojové aplikace (např. NOBY, STARBUILD)
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseResponse.RiskBusinessCaseIdMp">
+            <summary>
+            identifikátor obchodního případu v C4M (ResoureIdentifier.Id)
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.LoanAgreement.DistributionChannel">
+            <summary>
+            Identifikátor obchodního případu.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.LoanAgreement.SignatureType">
+            <summary>
+            Identifikátor obchodního případu.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.LoanApplicationProduct.Product">
+            <summary>
+            kód produktového shluku (shluk jednoho produktu).
+            </summary>
+            <value>kód produktového shluku (shluk jednoho produktu).</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.LoanSoldProduct.Id">
+            <summary>
+            Identifikátor obchodního případu.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CompanyId.Company">
+            <summary>
+            Company (eg. MP, KB) 
+            </summary>
+            <value>Company (eg. MP, KB)</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.CompanyId.Id">
+            <summary>
+            Id
+            </summary>
+            <value>Id</value>
         </member>
         <member name="T:DomainServices.RiskIntegrationService.Contracts.HumanUser">
             <summary>
@@ -269,6 +411,18 @@
             <summary>
             Identitní schéma ("MPAD", "KBAD", "DMID" (BrokerId), "M04ID", "M17ID")
             </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.SystemId.Id">
+            <summary>
+            Id
+            </summary>
+            <value>Id</value>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Contracts.SystemId.Name">
+            <summary>
+            System (eg. NOBY, STARBUILD)
+            </summary>
+            <value>System (eg. NOBY, STARBUILD)</value>
         </member>
         <member name="T:DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest">
             <summary>

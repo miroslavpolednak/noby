@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using FluentValidation;
+using DomainServices.RiskIntegrationService.Api.Clients;
 
 namespace DomainServices.RiskIntegrationService.Api;
 
@@ -8,8 +8,8 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddRipService(this WebApplicationBuilder builder)
     {
         // add general Dapper repository
-        builder.Services
-            .AddDapper<Shared.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
+        /*builder.Services
+            .AddDapper<Shared.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));*/
 
         builder.Services
             .AddMediatR(typeof(Program).Assembly)
@@ -24,6 +24,10 @@ internal static class StartupExtensions
 
         // MVC
         builder.Services.AddControllers();
+
+        // register c4m clients
+        builder.AddRiskBusinessCase();
+        builder.AddCreditWorthiness();
 
         return builder;
     }

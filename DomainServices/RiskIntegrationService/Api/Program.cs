@@ -56,8 +56,6 @@ builder.AddRipSwagger();
 
 // add grpc
 builder.AddRipGrpc();
-
-builder.Services.AddCustomRemoteServiceC4m(builder.Configuration);
 #endregion register builder
 
 // kestrel configuration
@@ -78,7 +76,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RipServiceGrpc>();
+    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V1.RiskBusinessCaseService>();
     endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceGrpc>();
 
     endpoints.MapCodeFirstGrpcReflectionService();

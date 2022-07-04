@@ -1,6 +1,4 @@
-﻿using CIS.Foms.Enums;
-
-namespace ExternalServices.SbWebApi.Configuration;
+﻿namespace ExternalServices.SbWebApi.Configuration;
 
 public sealed class SbWebApiConfiguration
     : CIS.ExternalServicesHelpers.Configuration.ExternalServiceBaseConfiguration
