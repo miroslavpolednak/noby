@@ -8,6 +8,8 @@ public class IncomeBaseData
     /// </summary>
     public int? IncomeId { get; set; }
 
+    public string? IncomeSource { get; set; }
+
     /// <summary>
     /// Typ prijmu
     /// </summary>

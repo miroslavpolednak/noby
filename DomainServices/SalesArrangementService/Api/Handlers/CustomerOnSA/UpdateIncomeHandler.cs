@@ -16,6 +16,7 @@ internal sealed class UpdateIncomeHandler
         var dataObject = getDataObject(entity.IncomeTypeId, request.Request);
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
+        entity.IncomeSource = getIncomeSource(request.Request, entity.IncomeTypeId);
         entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject((object)dataObject);
         entity.DataBin = dataObject?.ToByteArray();
 
@@ -23,6 +24,13 @@ internal sealed class UpdateIncomeHandler
         
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
+
+    static string? getIncomeSource(_SA.UpdateIncomeRequest request, CIS.Foms.Enums.CustomerIncomeTypes typeId)
+        => typeId switch
+        {
+            CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement?.Employer.Name,
+            _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
+        };
 
     static IMessage getDataObject(CIS.Foms.Enums.CustomerIncomeTypes incomeType, _SA.UpdateIncomeRequest request)
         => incomeType switch
