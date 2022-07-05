@@ -9,7 +9,7 @@ public abstract class BaseDbContext<TDbContext>
     where TDbContext : DbContext
 {
     public Core.Security.ICurrentUserAccessor? CurrentUser { get; init; }
-    public CIS.Core.IDateTime CisDateTime { get; init; }
+    public Core.IDateTime CisDateTime { get; init; }
 
     public BaseDbContext(BaseDbContextAggregate<TDbContext> aggregate)
         : base(aggregate.Options)
@@ -21,16 +21,15 @@ public abstract class BaseDbContext<TDbContext>
     /// <summary>
     /// Automaticka aplikace created/modified/actual interfacu
     /// </summary>
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        addInterfaceFields();
-        return base.SaveChangesAsync(cancellationToken);
+        await addInterfaceFields(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
     {
-        addInterfaceFields();
-        return base.SaveChanges();
+        throw new NotImplementedException("Use async version of SaveChanges() method!");
     }
 
     #region DateOnly conversions
@@ -66,7 +65,7 @@ public abstract class BaseDbContext<TDbContext>
     }
     #endregion DateOnly conversions
 
-    private void addInterfaceFields()
+    private async Task addInterfaceFields(CancellationToken cancellationToken)
     {
         foreach (var entry in this.ChangeTracker.Entries())
         {
@@ -75,30 +74,34 @@ public abstract class BaseDbContext<TDbContext>
                 case EntityState.Added:
                     if (entry.Entity is ICreated obj1 && obj1.CreatedUserId.GetValueOrDefault(0) == 0)
                     {
-                        if (CurrentUser is not null && CurrentUser.IsAuthenticated)
+                        if (CurrentUser!.IsAuthenticated)
                         {
-                            obj1.CreatedUserId = CurrentUser.User!.Id;
-                            obj1.CreatedUserName = CurrentUser.User!.DisplayName;
-                        }
-                        else //TODO workaround nez bude upravena struktura DB, odstranit!
-                        {
-                            obj1.CreatedUserId = 0;
-                            obj1.CreatedUserName = "";
+                            await CurrentUser.EnsureDetails(cancellationToken);
+                            obj1.CreatedUserId = CurrentUser!.User!.Id;
+                            obj1.CreatedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
                         obj1.CreatedTime = CisDateTime.Now;
                     }
                     if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj2)
                     {
-                        obj2.ModifiedUserId = CurrentUser.User!.Id;
-                        obj2.ModifiedUserName = CurrentUser.User!.DisplayName;
+                        if (CurrentUser!.IsAuthenticated)
+                        {
+                            await CurrentUser.EnsureDetails(cancellationToken);
+                            obj2.ModifiedUserId = CurrentUser!.User!.Id;
+                            obj2.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
+                        }
                     }
                     break;
 
                 case EntityState.Modified:
                     if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj3)
                     {
-                        obj3.ModifiedUserId = CurrentUser.User!.Id;
-                        obj3.ModifiedUserName = CurrentUser.User!.DisplayName;
+                        if (CurrentUser!.IsAuthenticated)
+                        {
+                            await CurrentUser.EnsureDetails(cancellationToken);
+                            obj3.ModifiedUserId = CurrentUser!.User!.Id;
+                            obj3.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
+                        }
                     }
                     break;
             }

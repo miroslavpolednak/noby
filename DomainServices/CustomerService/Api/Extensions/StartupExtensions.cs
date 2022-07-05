@@ -37,7 +37,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceCustomerManagement(appConfiguration.CustomerManagement);
 
         // CodebookService
-        builder.Services.AddCodebookService(true);
+        builder.Services.AddCodebookService();
 
         // add validators
         builder.Services.Scan(selector => selector

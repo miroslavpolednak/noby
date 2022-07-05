@@ -50,10 +50,10 @@ builder.AddCaseService(appConfiguration);
 
 // add BE services
 builder.Services
-    .AddSalesArrangementService(true)
-    .AddCodebookService(true)
-    .AddUserService(true)
-    .AddCisServiceDiscovery(true);
+    .AddSalesArrangementService()
+    .AddCodebookService()
+    .AddUserService()
+    .AddCisServiceDiscovery();
 
 builder.Services.AddGrpc(options =>
 {

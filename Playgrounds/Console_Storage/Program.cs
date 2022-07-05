@@ -15,7 +15,7 @@ var serviceProvider = new ServiceCollection()
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
-    .AddStorage(true)
+    .AddStorage()
     .AddHttpContextAccessor()
     .BuildServiceProvider();
 

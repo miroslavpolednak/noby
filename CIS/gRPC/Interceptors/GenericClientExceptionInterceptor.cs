@@ -6,7 +6,8 @@ using CIS.Infrastructure.Logging;
 
 namespace CIS.Infrastructure.gRPC;
 
-public sealed class GenericClientExceptionInterceptor : Interceptor
+public sealed class GenericClientExceptionInterceptor
+    : Interceptor
 {
     private readonly ILogger<GenericClientExceptionInterceptor> _logger;
 

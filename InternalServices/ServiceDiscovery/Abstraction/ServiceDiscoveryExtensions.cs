@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.Infrastructure.gRPC;
+﻿using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -7,19 +6,19 @@ namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
 
 public static class ServiceDiscoveryExtensions
 {
-    public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services)
         => services
-            .registerUriSettings(isInvalidCertificateAllowed)
+            .registerUriSettings()
             .registerServices()
             .registerGrpcServices();
 
-    public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, string discoveryServiceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, string discoveryServiceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(discoveryServiceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(discoveryServiceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>)))
         {
@@ -28,7 +27,7 @@ public static class ServiceDiscoveryExtensions
                 string url = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
                 var logger = provider.GetService<ILoggerFactory>();
                 if (logger != null) logger.CreateLogger<GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>().DiscoveryServiceUrlFound(url);
-                return new GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url, isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url);
             });
         }
         return services;
@@ -36,8 +35,6 @@ public static class ServiceDiscoveryExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        // exception handling
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         // cache
         services.TryAddTransient<ServicesMemoryCache>();
         // abstraction svc
@@ -57,8 +54,7 @@ public static class ServiceDiscoveryExtensions
         if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.DiscoveryService.DiscoveryServiceClient)))
         {
             services
-                .AddGrpcClientFromCisEnvironment<Contracts.v1.DiscoveryService.DiscoveryServiceClient>()
-                .AddInterceptor<GenericClientExceptionInterceptor>();
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.DiscoveryService.DiscoveryServiceClient>();
         }
         return services;
     }

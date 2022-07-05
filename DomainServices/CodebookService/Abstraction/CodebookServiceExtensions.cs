@@ -3,39 +3,25 @@ using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.DomainServicesSecurity.Abstraction;
 
 namespace DomainServices.CodebookService.Abstraction;
 
 public static class CodebookServiceExtensions
 {
-    /// <summary>
-    /// Override for integration testing
-    /// </summary>
-    internal static IServiceCollection AddCodebookService(this IServiceCollection services, Action<IServiceProvider, Grpc.Net.ClientFactory.GrpcClientFactoryOptions> customConfiguration)
-    {
-        services
-            .AddCodeFirstGrpcClient<Contracts.ICodebookService>(customConfiguration)
-            .AddInterceptor<ExceptionInterceptor>()
-            .AddInterceptor<AuthenticationInterceptor>();
-
-        return services.registerServices();
-    }
-
-    public static IServiceCollection AddCodebookService(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCodebookService(this IServiceCollection services)
         => services
-            .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-            .registerUriSettings(isInvalidCertificateAllowed)
+            .AddCisServiceDiscovery()
+            .registerUriSettings()
             .registerServices()
             .registerGrpcServices();
 
-    public static IServiceCollection AddCodebookService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCodebookService(this IServiceCollection services, string serviceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.ICodebookService>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.ICodebookService>(serviceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.ICodebookService>)))
         {
@@ -46,7 +32,7 @@ public static class CodebookServiceExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.ICodebookService>(url ?? throw new ArgumentNullException("url", "Codebook Service URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.ICodebookService>(url ?? throw new ArgumentNullException("url", "Codebook Service URL can not be determined"));
             });
         }
         return services;
@@ -56,10 +42,6 @@ public static class CodebookServiceExtensions
     {
         // register services
         services.TryAddTransient<ICodebookServiceAbstraction, CodebookService>();
-
-        // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
 
         // register cache
         services.TryAddSingleton(new AbstractionMemoryCache());
@@ -72,9 +54,7 @@ public static class CodebookServiceExtensions
         if (!services.Any(t => t.ServiceType == typeof(Contracts.ICodebookService)))
         {
             services
-                .AddCodeFirstGrpcClientFromCisEnvironment<Contracts.ICodebookService>()
-                .AddInterceptor<ExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddCodeFirstGrpcClientFromCisEnvironment<Contracts.ICodebookService>();
         }
         return services;
     }

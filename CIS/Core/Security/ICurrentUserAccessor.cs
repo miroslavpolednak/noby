@@ -11,7 +11,17 @@ public interface ICurrentUserAccessor
     bool IsAuthenticated { get; }
 
     /// <summary>
-    /// Instance uzivatele
+    /// Zakladni data o uzivateli - Id, login?
     /// </summary>
     ICurrentUser? User { get; }
+
+    /// <summary>
+    /// Kompletni profil uzivatele - neni implicitne naplnen. Pro jeho naplneni je potreba zavolat FetchDetails().
+    /// </summary>
+    ICurrentUserDetails? UserDetails { get; }
+
+    /// <summary>
+    /// Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+    /// </summary>
+    Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken);
 }

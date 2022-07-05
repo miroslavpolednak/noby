@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.Infrastructure.gRPC;
+﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

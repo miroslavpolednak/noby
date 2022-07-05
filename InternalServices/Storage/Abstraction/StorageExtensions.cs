@@ -1,7 +1,6 @@
 ﻿using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using CIS.DomainServicesSecurity.Abstraction;
 
 namespace CIS.InternalServices.Storage.Abstraction;
 
@@ -13,33 +12,29 @@ public static class StorageExtensions
     internal static IServiceCollection AddStorageTest(this IServiceCollection services, Action<IServiceProvider, Grpc.Net.ClientFactory.GrpcClientFactoryOptions> customConfiguration)
     {
         services
-            .AddGrpcClient<Contracts.v1.Blob.BlobClient>(customConfiguration)
-            .AddInterceptor<ExceptionInterceptor>()
-            .AddInterceptor<AuthenticationInterceptor>();
+            .AddGrpcClient<Contracts.v1.Blob.BlobClient>(customConfiguration);
 
         services
-            .AddGrpcClient<Contracts.v1.BlobTemp.BlobTempClient>(customConfiguration)
-            .AddInterceptor<ExceptionInterceptor>()
-            .AddInterceptor<AuthenticationInterceptor>();
+            .AddGrpcClient<Contracts.v1.BlobTemp.BlobTempClient>(customConfiguration);
 
         return services.registerServices();
     }
 
-    public static IServiceCollection AddStorage(this IServiceCollection services, string storageServiceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddStorage(this IServiceCollection services, string storageServiceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.v1.Blob.BlobClient>(storageServiceUrl, isInvalidCertificateAllowed)
-            .AddGrpcServiceUriSettings<Contracts.v1.BlobTemp.BlobTempClient>(storageServiceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.Blob.BlobClient>(storageServiceUrl)
+            .AddGrpcServiceUriSettings<Contracts.v1.BlobTemp.BlobTempClient>(storageServiceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    public static IServiceCollection AddStorage(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddStorage(this IServiceCollection services)
         => services
-            .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-            .registerUriSettings(isInvalidCertificateAllowed)
+            .AddCisServiceDiscovery()
+            .registerUriSettings()
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.v1.Blob.BlobClient>)))
         {
@@ -50,7 +45,7 @@ public static class StorageExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl ?? throw new ArgumentNullException("StorageServiceUrl");
-                return new GrpcServiceUriSettings<Contracts.v1.Blob.BlobClient>(url, isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.v1.Blob.BlobClient>(url);
             });
 
             services.TryAddSingleton(provider =>
@@ -60,7 +55,7 @@ public static class StorageExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl ?? throw new ArgumentNullException("StorageServiceUrl");
-                return new GrpcServiceUriSettings<Contracts.v1.BlobTemp.BlobTempClient>(url, isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.v1.BlobTemp.BlobTempClient>(url);
             });
         }
         return services;
@@ -75,10 +70,6 @@ public static class StorageExtensions
         services.TryAddTransient<IBlobServiceAbstraction, BlobStorage.BlobService>();
         services.TryAddTransient<IBlobTempServiceAbstraction, BlobStorageTemp.BlobTempService>();
 
-        // exception handling
-        services.TryAddSingleton<ExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
-
         return services;
     }
 
@@ -88,13 +79,11 @@ public static class StorageExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.Blob.BlobClient>()
-                .AddInterceptor<ExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddInterceptor<ExceptionInterceptor>();
 
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.BlobTemp.BlobTempClient>()
-                .AddInterceptor<ExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddInterceptor<ExceptionInterceptor>();
         }
         return services;
     }

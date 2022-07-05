@@ -59,8 +59,7 @@ public static class StartupExtensions
         // helper pro ziskani aktualniho uzivatele
         builder.Services.AddScoped<Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
 
-        // pridat user service
-        builder.Services.AddUserService(true);
+        builder.Services.AddUserService();
 
         return builder;
     }

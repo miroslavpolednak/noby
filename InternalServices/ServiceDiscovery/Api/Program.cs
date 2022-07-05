@@ -1,5 +1,3 @@
-using CIS.DomainServicesSecurity;
-using CIS.DomainServicesSecurity.ContextUser;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
@@ -25,7 +23,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // helper pro ziskani aktualniho uzivatele
-builder.Services.AddScoped<CIS.Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
+builder.Services.AddScoped<CIS.Core.Security.ICurrentUserAccessor, CIS.InternalServices.ServiceDiscovery.Api.ServiceDiscoveryContextUserAccessor>();
 
 // health checks
 builder.AddCisHealthChecks();
@@ -39,7 +37,7 @@ builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"))
 
 builder.Services.AddGrpc(options =>
 {
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
+    options.Interceptors.Add<GenericServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 #endregion register builder.Services
@@ -52,7 +50,6 @@ if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
 app.UseRouting();
-app.UseCisServiceUserContext();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

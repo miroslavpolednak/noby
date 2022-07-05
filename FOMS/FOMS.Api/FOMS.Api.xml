@@ -4,6 +4,11 @@
         <name>FOMS.Api</name>
     </assembly>
     <members>
+        <member name="M:FOMS.Api.Endpoints.Admin.AdminController.GetDiscoveryServices(System.Threading.CancellationToken)">
+            <summary>
+            Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
+            </summary>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetById(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail Case-u.

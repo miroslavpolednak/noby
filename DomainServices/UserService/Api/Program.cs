@@ -35,7 +35,7 @@ builder.AddCisHealthChecks();
 builder.AddCisServiceAuthentication();
 
 // add services
-builder.Services.AddCisServiceDiscovery(true);
+builder.Services.AddCisServiceDiscovery();
 builder.AddUserService();
 
 builder.Services.AddGrpc(options =>

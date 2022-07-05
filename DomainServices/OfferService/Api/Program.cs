@@ -42,9 +42,9 @@ builder.Services.AddAttributedServices(typeof(Program));
 // authentication
 builder.AddCisServiceAuthentication();
 
-builder.Services.AddCisServiceDiscovery(true); // kvuli auto dotazeni URL pro EAS
+builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 
-builder.Services.AddCodebookService(true);
+builder.Services.AddCodebookService();
 
 // add my services
 builder.AddOfferService(appConfiguration);

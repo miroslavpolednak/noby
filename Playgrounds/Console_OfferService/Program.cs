@@ -78,7 +78,7 @@ var serviceProvider = new ServiceCollection()
         InternalServicePassword = "a"
     })
     .AddHttpContextAccessor()
-    .AddOfferService("https://localhost:5010", true)
+    .AddOfferService("https://localhost:5010")
     .BuildServiceProvider();
 
 var service = serviceProvider.GetService<DomainServices.OfferService.Abstraction.IOfferServiceAbstraction>();

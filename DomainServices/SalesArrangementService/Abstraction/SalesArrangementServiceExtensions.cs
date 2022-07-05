@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.Infrastructure.gRPC;
+﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -8,22 +7,22 @@ namespace DomainServices.SalesArrangementService.Abstraction;
 
 public static class SalesArrangementServiceExtensions
 {
-    public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddSalesArrangementService(this IServiceCollection services)
     => services
-        .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-        .registerUriSettings(isInvalidCertificateAllowed)
+        .AddCisServiceDiscovery()
+        .registerUriSettings()
         .registerServices()
         .registerGrpcServices();
 
-    public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, string serviceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl, isInvalidCertificateAllowed)
-            .AddGrpcServiceUriSettings<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient>(serviceUrl, isInvalidCertificateAllowed)
-            .AddGrpcServiceUriSettings<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl)
+            .AddGrpcServiceUriSettings<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient>(serviceUrl)
+            .AddGrpcServiceUriSettings<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>)))
         {
@@ -34,7 +33,7 @@ public static class SalesArrangementServiceExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(url ?? throw new ArgumentNullException("url", "SalesArrangementService URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(url ?? throw new ArgumentNullException("url", "SalesArrangementService URL can not be determined"));
             });
         }
         return services;
@@ -47,10 +46,6 @@ public static class SalesArrangementServiceExtensions
         services.TryAddTransient<ICustomerOnSAServiceAbstraction, Services.CustomerOnSAService>();
         services.TryAddTransient<IHouseholdServiceAbstraction, Services.HouseholdService>();
 
-        // exception handling
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
-
         return services;
     }
 
@@ -59,25 +54,19 @@ public static class SalesArrangementServiceExtensions
         if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient)))
         {
             services
-                .AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .AddInterceptor<GenericClientExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>();
         }
         
         if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.HouseholdService.HouseholdServiceClient)))
         {
             services
-                .AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .AddInterceptor<GenericClientExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>();
         }
         
         if (!services.Any(t => t.ServiceType == typeof(Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient)))
         {
             services
-                .AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>()
-                .AddInterceptor<GenericClientExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>();
         }
         return services;
     }

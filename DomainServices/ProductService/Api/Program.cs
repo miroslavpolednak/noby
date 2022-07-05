@@ -45,8 +45,8 @@ builder.AddCisServiceAuthentication();
 // add services
 builder.AddProductService(appConfiguration);
 builder.Services
-    .AddCisServiceDiscovery(true)
-    .AddCaseService(true);
+    .AddCisServiceDiscovery()
+    .AddCaseService();
 
 builder.Services.AddGrpc(options =>
 {

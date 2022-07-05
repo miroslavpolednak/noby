@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.Infrastructure.gRPC;
+﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -8,20 +7,20 @@ namespace DomainServices.OfferService.Abstraction;
 
 public static class OfferServiceExtensions
 {
-    public static IServiceCollection AddOfferService(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddOfferService(this IServiceCollection services)
         => services
-            .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-            .registerUriSettings(isInvalidCertificateAllowed)
+            .AddCisServiceDiscovery()
+            .registerUriSettings()
             .registerServices()
             .registerGrpcServices();
     
-    public static IServiceCollection AddOfferService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddOfferService(this IServiceCollection services, string serviceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.v1.OfferService.OfferServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.OfferService.OfferServiceClient>(serviceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.v1.OfferService.OfferServiceClient>)))
         {
@@ -32,7 +31,7 @@ public static class OfferServiceExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.v1.OfferService.OfferServiceClient>(url ?? throw new ArgumentNullException("url", "OfferService URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.v1.OfferService.OfferServiceClient>(url ?? throw new ArgumentNullException("url", "OfferService URL can not be determined"));
             });
         }
         return services;
@@ -44,9 +43,7 @@ public static class OfferServiceExtensions
         services.TryAddTransient<IOfferServiceAbstraction, OfferService>();
 
         // exception handling
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<ExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
     }
@@ -57,9 +54,7 @@ public static class OfferServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.OfferService.OfferServiceClient>()
-                .AddInterceptor<GenericClientExceptionInterceptor>()
-                .AddInterceptor<ExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddInterceptor<ExceptionInterceptor>();
         }
         return services;
     }

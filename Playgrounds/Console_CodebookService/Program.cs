@@ -14,7 +14,7 @@ var serviceProvider = new ServiceCollection()
         InternalServicePassword = "a"
     })
     .AddHttpContextAccessor()
-    .AddCodebookService(true)
+    .AddCodebookService()
     .BuildServiceProvider();
 
 var service = serviceProvider.GetService<DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction>() ?? throw new Exception();

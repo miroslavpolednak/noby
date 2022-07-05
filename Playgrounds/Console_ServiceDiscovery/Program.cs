@@ -34,7 +34,7 @@ services.AddSingleton<CIS.Core.Configuration.ICisEnvironmentConfiguration>(new C
     DefaultApplicationKey = "console"
  });
 services.AddHttpContextAccessor();
-services.AddCisServiceDiscovery(true);
+services.AddCisServiceDiscovery();
 var provider = services.BuildServiceProvider();
             
 var svc = provider.GetRequiredService<IDiscoveryServiceAbstraction>();

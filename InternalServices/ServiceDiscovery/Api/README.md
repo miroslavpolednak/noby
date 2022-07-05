@@ -74,4 +74,5 @@ Vrácí všechny služby daného typu, dostupné v daném prostředí.
 ## grpcurl tests
         grpcurl -insecure 172.30.35.51:5002 list
 
+        grpcurl -insecure -d "{\"Environment\":\"uat\"}" -H "Authorization: Basic YTph" -H "mp-user-id: 267" 127.0.0.1:5005 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices
         grpcurl -insecure -d "{\"Environment\":\"FAT\"}" 172.30.35.51:5002 CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService/GetServices

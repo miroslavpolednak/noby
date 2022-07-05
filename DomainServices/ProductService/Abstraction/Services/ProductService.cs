@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 using DomainServices.ProductService.Contracts;
-using CIS.DomainServicesSecurity.Abstraction;
 
 namespace DomainServices.ProductService.Abstraction.Services;
 

@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.Infrastructure.gRPC;
+﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -8,20 +7,20 @@ namespace DomainServices.CaseService.Abstraction;
 
 public static class CaseServiceExtensions
 {
-    public static IServiceCollection AddCaseService(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCaseService(this IServiceCollection services)
     => services
-        .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-        .registerUriSettings(isInvalidCertificateAllowed)
+        .AddCisServiceDiscovery()
+        .registerUriSettings()
         .registerServices()
         .registerGrpcServices();
 
-    public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>(serviceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>)))
         {
@@ -32,7 +31,7 @@ public static class CaseServiceExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>(url ?? throw new ArgumentNullException("url", "CaseService URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>(url ?? throw new ArgumentNullException("url", "CaseService URL can not be determined"));
             });
         }
         return services;
@@ -44,9 +43,7 @@ public static class CaseServiceExtensions
         services.TryAddTransient<ICaseServiceAbstraction, Services.CaseService>();
 
         // exception handling
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         services.TryAddSingleton<ExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
 
         return services;
     }
@@ -57,9 +54,7 @@ public static class CaseServiceExtensions
         {
             services
                 .AddGrpcClientFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
-                .AddInterceptor<GenericClientExceptionInterceptor>()
-                .AddInterceptor<ExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
+                .AddInterceptor<ExceptionInterceptor>();
         }
         return services;
     }

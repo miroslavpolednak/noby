@@ -45,7 +45,7 @@ internal static class StartupExtensions
         // repos
         builder.Services.AddScoped<Repositories.LoanRepository>();
 
-        builder.Services.AddCodebookService(true);
+        builder.Services.AddCodebookService();
             
         return builder;
     }

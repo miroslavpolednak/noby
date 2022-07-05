@@ -47,12 +47,12 @@ builder.AddCisServiceAuthentication();
 
 // add services
 builder.Services
-    .AddCisServiceDiscovery(true)
-    .AddCaseService(true)
-    .AddCodebookService(true)
-    .AddOfferService(true)
-    .AddCustomerService(true)
-    .AddUserService(true);
+    .AddCisServiceDiscovery()
+    .AddCaseService()
+    .AddCodebookService()
+    .AddOfferService()
+    .AddCustomerService()
+    .AddUserService();
 
 builder.AddSalesArrangementService(appConfiguration);
 

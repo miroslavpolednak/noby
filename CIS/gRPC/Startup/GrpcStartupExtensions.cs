@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -71,38 +72,40 @@ public static class GrpcStartupExtensions
     public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService>(this IServiceCollection services) 
         where TService : class
     {
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         return services
             .AddGrpcClient<TService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
                 options.Address = serviceUri.Url;
             })
-            .ConfigureChannel((serviceProvider, options) => configureChannel<TService>(serviceProvider, options))
+            .ConfigureChannel(configureChannel)
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
-            .AddCallCredentials(addCredentials)
-            .AddInterceptor<GenericClientExceptionInterceptor>();
+            .AddInterceptor<GenericClientExceptionInterceptor>()
+            .AddCallCredentials(addCredentials);
     }
 
     public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services)
         where TService : class 
         where TServiceUriSettings : class
     {
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
         return services
             .AddGrpcClient<TService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
                 options.Address = serviceUri.Url;
             })
-            .ConfigureChannel((serviceProvider, options) => configureChannel<TService>(serviceProvider, options))
+            .ConfigureChannel(configureChannel)
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
-            .AddCallCredentials(addCredentials)
-            .AddInterceptor<GenericClientExceptionInterceptor>();
+            .AddInterceptor<GenericClientExceptionInterceptor>()
+            .AddCallCredentials(addCredentials);
     }
 
-    public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl)
         where TService : class
     {
-        services.TryAddSingleton(new GrpcServiceUriSettings<TService>(serviceUrl, isInvalidCertificateAllowed));
+        services.TryAddSingleton(new GrpcServiceUriSettings<TService>(serviceUrl));
         return services;
     }
 
@@ -126,18 +129,13 @@ public static class GrpcStartupExtensions
             return Task.CompletedTask;
         };
 
-    private static void configureChannel<TService>(IServiceProvider serviceProvider, Grpc.Net.Client.GrpcChannelOptions options)
-        where TService : class
-    {
-        var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-        
-        HttpClientHandler httpHandler = new();
-        if (settings.IsInvalidCertificateAllowed)
-            options.HttpHandler = new HttpClientHandler()
+    private static Action<GrpcChannelOptions> configureChannel =
+        (GrpcChannelOptions options) =>
+        {
+            HttpClientHandler httpHandler = new()
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             };
-        
-        options.HttpHandler = httpHandler;
-    }
+            options.HttpHandler = httpHandler;
+        };
 }

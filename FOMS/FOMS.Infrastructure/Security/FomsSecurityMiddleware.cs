@@ -14,7 +14,7 @@ public class AppSecurityMiddleware
     public async Task Invoke(HttpContext context, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
     {
         //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
-        if (context.Request.Path != "/api/users/signin")
+        if (!_anonymousUrl.Contains(context.Request.Path.ToString()))
         {
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
@@ -34,7 +34,13 @@ public class AppSecurityMiddleware
         await _next.Invoke(context);
     }
 
-    private DomainServices.UserService.Contracts.User resolveResult(IServiceCallResult result) =>
+    private static string[] _anonymousUrl = new[]
+    {
+        "/api/users/signin",
+        "/api/admin/discovery-service"
+    };
+
+    private  static DomainServices.UserService.Contracts.User resolveResult(IServiceCallResult result) =>
         result switch
         {
             SuccessfulServiceCallResult<DomainServices.UserService.Contracts.User> r => r.Model,

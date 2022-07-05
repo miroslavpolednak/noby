@@ -6,9 +6,4 @@ public interface ICurrentUser
     /// v33id
     /// </summary>
     int Id { get; }
-
-    /// <summary>
-    /// Cele jmeno uzivatele
-    /// </summary>
-    string? DisplayName { get; }
 }

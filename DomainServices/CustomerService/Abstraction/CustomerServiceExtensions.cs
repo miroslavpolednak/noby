@@ -1,5 +1,4 @@
-﻿using CIS.DomainServicesSecurity.Abstraction;
-using CIS.Infrastructure.gRPC;
+﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -8,20 +7,20 @@ namespace DomainServices.CustomerService.Abstraction;
 
 public static class CustomerServiceExtensions
 {
-    public static IServiceCollection AddCustomerService(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCustomerService(this IServiceCollection services)
         => services
-            .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-            .registerUriSettings(isInvalidCertificateAllowed)
+            .AddCisServiceDiscovery()
+            .registerUriSettings()
             .registerServices()
             .registerGrpcServices();
 
-    public static IServiceCollection AddCustomerService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
+    public static IServiceCollection AddCustomerService(this IServiceCollection services, string serviceUrl)
         => services
-            .AddGrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(serviceUrl, isInvalidCertificateAllowed)
+            .AddGrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(serviceUrl)
             .registerServices()
             .registerGrpcServices();
 
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
+    private static IServiceCollection registerUriSettings(this IServiceCollection services)
     {
         if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>)))
         {
@@ -32,7 +31,7 @@ public static class CustomerServiceExtensions
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl;
-                return new GrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "CustomerService URL can not be determined"), isInvalidCertificateAllowed);
+                return new GrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "CustomerService URL can not be determined"));
             });
         }
         return services;
@@ -43,10 +42,6 @@ public static class CustomerServiceExtensions
         // register storage services
         services.TryAddTransient<ICustomerServiceAbstraction, CustomerService>();
 
-        // exception handling
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
-
         return services;
     }
 
@@ -55,9 +50,7 @@ public static class CustomerServiceExtensions
         if (!services.Any(t => t.ServiceType == typeof(Contracts.V1.CustomerService.CustomerServiceClient)))
         {
             services
-            .AddGrpcClientFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>()
-            .AddInterceptor<GenericClientExceptionInterceptor>()
-            .AddInterceptor<AuthenticationInterceptor>();
+            .AddGrpcClientFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>();
         }
         return services;
     }

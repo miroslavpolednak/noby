@@ -29,13 +29,13 @@ builder
 
 // add domain services
 builder.Services
-    .AddOfferService(true)
-    .AddCodebookService(true)
-    .AddCustomerService(true)
-    .AddProductService(true)
-    .AddUserService(true)
-    .AddCaseService(true)
-    .AddSalesArrangementService(true);
+    .AddOfferService()
+    .AddCodebookService()
+    .AddCustomerService()
+    .AddProductService()
+    .AddUserService()
+    .AddCaseService()
+    .AddSalesArrangementService();
 
 // FOMS services
 builder

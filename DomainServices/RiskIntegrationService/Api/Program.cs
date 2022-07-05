@@ -48,8 +48,8 @@ builder.AddRipService();
 
 // add BE services
 builder.Services
-    .AddCodebookService(true)
-    .AddCisServiceDiscovery(true);
+    .AddCodebookService()
+    .AddCisServiceDiscovery();
 
 // swagger
 builder.AddRipSwagger();
