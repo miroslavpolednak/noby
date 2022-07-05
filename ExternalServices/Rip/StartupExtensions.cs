@@ -28,7 +28,8 @@ public static class StartupExtensions
                         // service url
                         if (ripConfiguration.UseServiceDiscovery)
                         {
-                            string url = services.GetRequiredService<IDiscoveryServiceAbstraction>()
+                            string url = services
+                                .GetRequiredService<IDiscoveryServiceAbstraction>()
                                 .GetServiceUrlSynchronously(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{ServiceName}"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                             client.BaseAddress = new Uri(url!);
                         }

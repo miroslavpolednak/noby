@@ -27,7 +27,9 @@ public static class RiskIntegrationServiceExtensions
         {
             services.AddSingleton(provider =>
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+    .GetServiceUrlSynchronously(new("DS:ProductService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                     .GetService(new("DS:RiskIntegrationService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
                     .GetAwaiter()
                     .GetResult()?

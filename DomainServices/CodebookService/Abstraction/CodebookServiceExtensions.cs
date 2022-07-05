@@ -27,11 +27,9 @@ public static class CodebookServiceExtensions
         {
             services.AddSingleton(provider =>
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("DS:CodebookService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("DS:CodebookService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 return new GrpcServiceUriSettings<Contracts.ICodebookService>(url ?? throw new ArgumentNullException("url", "Codebook Service URL can not be determined"));
             });
         }

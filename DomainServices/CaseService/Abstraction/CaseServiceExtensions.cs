@@ -26,11 +26,9 @@ public static class CaseServiceExtensions
         {
             services.AddSingleton(provider =>
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("DS:CaseService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("DS:CaseService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 return new GrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>(url ?? throw new ArgumentNullException("url", "CaseService URL can not be determined"));
             });
         }

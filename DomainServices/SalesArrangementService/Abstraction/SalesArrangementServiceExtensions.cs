@@ -28,11 +28,9 @@ public static class SalesArrangementServiceExtensions
         {
             services.AddSingleton(provider =>
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("DS:SalesArrangementService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("DS:SalesArrangementService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 return new GrpcServiceUriSettings<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(url ?? throw new ArgumentNullException("url", "SalesArrangementService URL can not be determined"));
             });
         }

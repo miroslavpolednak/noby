@@ -32,11 +32,9 @@ public static class StartupExtensions
             // pokud se ma hledat URL v service discovery
             if (easConfiguration.UseServiceDiscovery)
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("ES:EAS"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("ES:EAS"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 easConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:EAS Proprietary service URL");
             }
             return easConfiguration;

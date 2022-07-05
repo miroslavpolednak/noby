@@ -27,10 +27,7 @@ public static class OfferServiceExtensions
             services.AddSingleton(provider =>
             {
                 string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("DS:OfferService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                    .GetServiceUrlSynchronously(new("DS:OfferService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 return new GrpcServiceUriSettings<Contracts.v1.OfferService.OfferServiceClient>(url ?? throw new ArgumentNullException("url", "OfferService URL can not be determined"));
             });
         }

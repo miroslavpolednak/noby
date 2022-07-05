@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Results;
 using CIS.Core.Security;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FOMS.Infrastructure.Security;
 
@@ -8,15 +9,13 @@ public sealed class FomsCurrentUserAccessor
     : ICurrentUserAccessor
 {
     private readonly IHttpContextAccessor _httpContext;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
 
     private ICurrentUser? _user;
     private ICurrentUserDetails? _userDetails;
     private bool _userDetailsFetched;
 
-    public FomsCurrentUserAccessor(IHttpContextAccessor httpContext, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
+    public FomsCurrentUserAccessor(IHttpContextAccessor httpContext)
     {
-        _userService = userService;
         _httpContext = httpContext;
     }
 
@@ -45,7 +44,8 @@ public sealed class FomsCurrentUserAccessor
 
         _userDetailsFetched = true;
 
-        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_user!.Id, cancellationToken));
+        var userService = _httpContext.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Abstraction.IUserServiceAbstraction>();
+        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await userService.GetUser(_user!.Id, cancellationToken));
         _userDetails = new CisUserDetails
         {
             DisplayName = userInstance.FullName,

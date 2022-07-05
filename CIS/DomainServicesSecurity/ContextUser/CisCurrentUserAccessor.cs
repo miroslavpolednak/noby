@@ -7,16 +7,14 @@ public sealed class CisCurrentContextUserAccessor
     : ICurrentUserAccessor
 {
     private readonly IHttpContextAccessor? _httpContext;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
 
     private ICurrentUser? _user;
     private ICurrentUserDetails? _userDetails;
     private bool _userDetailsFetched;
 
-    public CisCurrentContextUserAccessor(IHttpContextAccessor? httpContext, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
+    public CisCurrentContextUserAccessor(IHttpContextAccessor? httpContext)
     {
         _httpContext = httpContext;
-        _userService = userService;
     }
 
     public ICurrentUser? User
@@ -47,7 +45,8 @@ public sealed class CisCurrentContextUserAccessor
 
         _userDetailsFetched = true;
 
-        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_user!.Id, cancellationToken));
+        var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Abstraction.IUserServiceAbstraction>();
+        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await userService.GetUser(_user!.Id, cancellationToken));
         _userDetails = new CisUserDetails
         {
             DisplayName = userInstance.FullName,

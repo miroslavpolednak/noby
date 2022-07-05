@@ -26,11 +26,9 @@ public static class CustomerServiceExtensions
         {
             services.AddSingleton(provider =>
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("DS:CustomerService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("DS:CustomerService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 return new GrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(url ?? throw new ArgumentNullException("url", "CustomerService URL can not be determined"));
             });
         }

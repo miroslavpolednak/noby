@@ -20,11 +20,9 @@ public static class StartupExtensions
             // pokud se ma hledat URL v service discovery
             if (eSignaturesConfiguration.UseServiceDiscovery)
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("ES:ESignatures"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("ES:ESignatures"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 eSignaturesConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:ESignatures Proprietary service URL");
             }
             return eSignaturesConfiguration;

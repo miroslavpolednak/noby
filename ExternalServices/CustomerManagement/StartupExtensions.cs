@@ -19,11 +19,9 @@ public static class StartupExtensions
             // pokud se ma hledat URL v service discovery
             if (configuration.UseServiceDiscovery)
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("ES:CustomerManagement"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("ES:CustomerManagement"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 configuration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:CustomerManagement Proprietary service URL");
             }
             return configuration;

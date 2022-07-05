@@ -20,11 +20,9 @@ public static class StartupExtensions
             // pokud se ma hledat URL v service discovery
             if (mpHomeConfiguration.UseServiceDiscovery)
             {
-                string? url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new("ES:MpHome"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
+                string? url = provider
+                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetServiceUrlSynchronously(new("ES:MpHome"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
                 mpHomeConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:MpHome Proprietary service URL");
             }
             return mpHomeConfiguration;
