@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,26 +71,32 @@ public static class GrpcStartupExtensions
     public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService>(this IServiceCollection services) 
         where TService : class
     {
-        return services.AddGrpcClient<TService>((provider, options) =>
-        {
-            var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-            options.Address = serviceUri.Url;
-        })
+        return services
+            .AddGrpcClient<TService>((provider, options) =>
+            {
+                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
+                options.Address = serviceUri.Url;
+            })
             .ConfigureChannel((serviceProvider, options) => configureChannel<TService>(serviceProvider, options))
-            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
+            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
+            .AddCallCredentials(addCredentials)
+            .AddInterceptor<GenericClientExceptionInterceptor>();
     }
 
     public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services)
         where TService : class 
         where TServiceUriSettings : class
     {
-        return services.AddGrpcClient<TService>((provider, options) =>
-        {
-            var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
-            options.Address = serviceUri.Url;
-        })
+        return services
+            .AddGrpcClient<TService>((provider, options) =>
+            {
+                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
+                options.Address = serviceUri.Url;
+            })
             .ConfigureChannel((serviceProvider, options) => configureChannel<TService>(serviceProvider, options))
-            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true);
+            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
+            .AddCallCredentials(addCredentials)
+            .AddInterceptor<GenericClientExceptionInterceptor>();
     }
 
     public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
@@ -99,32 +106,38 @@ public static class GrpcStartupExtensions
         return services;
     }
 
+    private static Func<AuthInterceptorContext, Metadata, IServiceProvider, Task> addCredentials =
+        (context, metadata, serviceProvider) =>
+        {
+            var configuration = serviceProvider.GetRequiredService<Core.Configuration.ICisEnvironmentConfiguration>();
+            var userAccessor = serviceProvider.GetService<Core.Security.ICurrentUserAccessor>();
+
+            if (string.IsNullOrEmpty(configuration.InternalServicesLogin) || string.IsNullOrEmpty(configuration.InternalServicePassword))
+                throw new System.Security.Authentication.InvalidCredentialException("InternalServicesLogin or InternalServicePassword is empty");
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{configuration.InternalServicesLogin}:{configuration.InternalServicePassword}");
+
+            // add authentication header
+            metadata.Add("authorization", $"Basic {Convert.ToBase64String(plainTextBytes)}");
+
+            // add context userId
+            if (userAccessor is not null && userAccessor.IsAuthenticated)
+                metadata.Add(Core.Security.Constants.ContextUserHttpHeaderKey, userAccessor!.User!.Id.ToString(System.Globalization.CultureInfo.InvariantCulture));
+
+            return Task.CompletedTask;
+        };
+
     private static void configureChannel<TService>(IServiceProvider serviceProvider, Grpc.Net.Client.GrpcChannelOptions options)
         where TService : class
     {
-        int? currentUserId = null;
         var settings = serviceProvider.GetRequiredService<GrpcServiceUriSettings<TService>>();
         
-        var httpContext = serviceProvider.GetRequiredService<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
-        if (httpContext?.HttpContext?.Request.Headers is not null
-            && httpContext.HttpContext.Request.Headers.ContainsKey(Core.Security.Constants.ContextUserHttpHeaderKey)
-            && int.TryParse(httpContext.HttpContext.Request.Headers[Core.Security.Constants.ContextUserHttpHeaderKey], out int userId))
-        {
-            currentUserId = userId;
-        }
-        else
-        {
-            var userAccessor = serviceProvider.GetService<Core.Security.ICurrentUserAccessor>();
-            if (userAccessor is not null && userAccessor.IsAuthenticated)
-                currentUserId = userAccessor.User!.Id;
-        }
-
+        HttpClientHandler httpHandler = new();
         if (settings.IsInvalidCertificateAllowed)
-            options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler()
+            options.HttpHandler = new HttpClientHandler()
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            }, currentUserId);
-        else
-            options.HttpHandler = new GrpcContextHttpHandler(new HttpClientHandler(), currentUserId);
+            };
+        
+        options.HttpHandler = httpHandler;
     }
 }

@@ -2,13 +2,13 @@
 
 namespace CIS.DomainServicesSecurity.ContextUser;
 
-internal class CisCurrentUserAccessor 
+public sealed class CisCurrentContextUserAccessor 
     : ICurrentUserAccessor
 {
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor? _httpContext;
     private ICurrentUser? _user;
 
-    public CisCurrentUserAccessor(IHttpContextAccessor httpContext)
+    public CisCurrentContextUserAccessor(IHttpContextAccessor? httpContext)
     {
         _httpContext = httpContext;
     }
@@ -18,7 +18,7 @@ internal class CisCurrentUserAccessor
         get 
         {
             if (_user is null)
-                _user = _httpContext.HttpContext?.User?.Identities?.FirstOrDefault(t => t is ICurrentUser) as ICurrentUser;
+                _user = _httpContext?.HttpContext?.User?.Identities?.FirstOrDefault(t => t is ICurrentUser) as ICurrentUser;
             return _user;
         }
     }

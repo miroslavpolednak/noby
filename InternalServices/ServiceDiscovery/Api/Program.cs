@@ -1,3 +1,5 @@
+using CIS.DomainServicesSecurity;
+using CIS.DomainServicesSecurity.ContextUser;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
@@ -21,6 +23,9 @@ builder.Services.AddAttributedServices(typeof(Program));
 
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);
+
+// helper pro ziskani aktualniho uzivatele
+builder.Services.AddScoped<CIS.Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
 
 // health checks
 builder.AddCisHealthChecks();
@@ -47,6 +52,8 @@ if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
 app.UseRouting();
+app.UseCisServiceUserContext();
+app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>
 {
