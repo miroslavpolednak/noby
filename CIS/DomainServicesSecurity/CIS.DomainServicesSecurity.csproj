@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
 		<ProjectReference Include="..\Core\CIS.Core.csproj" />
+		<ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
 	</ItemGroup>
 
 </Project>

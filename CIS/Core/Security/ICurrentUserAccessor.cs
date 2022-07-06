@@ -24,4 +24,7 @@ public interface ICurrentUserAccessor
     /// Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
     /// </summary>
     Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken);
+
+    Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken) 
+        where TDetails : ICurrentUserDetails;
 }
