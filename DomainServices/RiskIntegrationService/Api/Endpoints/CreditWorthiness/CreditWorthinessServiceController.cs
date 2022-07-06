@@ -5,7 +5,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness;
 
 [Authorize]
 [ApiController]
-[Route("api/credit-worthiness/v1")]
+[Route("v1/credit-worthiness")]
 public sealed class CreditWorthinessServiceController
     : ControllerBase
 {
