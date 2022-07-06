@@ -19,7 +19,8 @@ internal class SimulateMortgageHandler
         {
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
-            SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs)
+            SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs),
+            Fees = result.SimulationResults.Fees is null ? null : result.SimulationResults.Fees.ToApiResponse()
         };
 
         return responseModel;
