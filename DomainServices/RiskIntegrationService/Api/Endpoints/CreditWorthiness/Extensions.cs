@@ -22,10 +22,10 @@ internal static class Extensions
     public static List<_C4M.ExpensesSummary> ToC4m(this Contracts.CreditWorthiness.ExpensesSummary expenses)
         => new List<_C4M.ExpensesSummary>()
         {
-            new() { Amount = expenses.Rent, Category = _C4M.ExpensesSummaryCategory.RENT },
-            new() { Amount = expenses.Saving, Category = _C4M.ExpensesSummaryCategory.SAVING },
-            new() { Amount = expenses.Insurance, Category = _C4M.ExpensesSummaryCategory.INSURANCE },
-            new() { Amount = expenses.Other, Category = _C4M.ExpensesSummaryCategory.OTHER },
+            new() { Amount = expenses.Rent.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.RENT },
+            new() { Amount = expenses.Saving.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.SAVING },
+            new() { Amount = expenses.Insurance.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.INSURANCE },
+            new() { Amount = expenses.Other.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.OTHER },
             new() { Amount = 0, Category = _C4M.ExpensesSummaryCategory.ALIMONY },
         };
 
