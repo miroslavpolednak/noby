@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Abstraction;
+using FOMS.Api.Endpoints.Offer.SimulateMortgage;
 using DSContracts = DomainServices.OfferService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.GetMortgageByOfferId;
@@ -8,7 +9,7 @@ internal class GetMortgageByOfferIdHandler
 {
     public async Task<Dto.GetMortgageResponse> Handle(GetMortgageByOfferIdRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(request.OfferId, cancellationToken));
+        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(request.OfferId, cancellationToken));
 
         _logger.RequestHandlerFinished(nameof(GetMortgageByOfferIdHandler));
 
@@ -18,7 +19,8 @@ internal class GetMortgageByOfferIdHandler
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
             SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
-            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs)
+            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs),
+            Fees = result.SimulationResults.Fees is null ? null : result.SimulationResults.Fees.ToApiResponse()
         };
     }
 

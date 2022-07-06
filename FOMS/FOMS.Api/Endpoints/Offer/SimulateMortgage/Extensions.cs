@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
+using Google.Protobuf.Collections;
 
 namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -77,6 +78,27 @@ internal static class Extensions
             MarketingActionsDeviation = result.MarketingActionsDeviation,
             MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList()
         };
+
+    public static List<Dto.Fee> ToApiResponse(this RepeatedField<ResultFee> fees)
+        => fees.Select(t => new Dto.Fee
+        {
+            FeeId = t.FeeId,
+            DiscountPercentage = t.DiscountPercentage,
+            DisplayAsFreeOfCharge = t.DisplayAsFreeOfCharge,
+            ShortNameForExample = t.ShortNameForExample,
+            AccountDateFrom = t.AccountDateFrom,
+            CodeKB = t.CodeKB,
+            ComposedSum = t.ComposedSum,
+            FinalSum = t.FinalSum,
+            IncludeInRPSN = t.IncludeInRPSN,
+            TariffSum = t.TariffSum,
+            MarketingActionId = t.MarketingActionId,
+            Name = t.Name,
+            Periodicity = t.Periodicity,
+            TariffName = t.TariffName,
+            TariffTextWithAmount = t.TariffTextWithAmount,
+            UsageText = t.UsageText
+        }).ToList();
 
     private static Dto.MarketingActionResult ToApiResponseItem(this ResultMarketingAction resultItem)
     {
