@@ -36,4 +36,10 @@ internal sealed class ServiceDiscoveryContextUserAccessor
     {
         throw new NotImplementedException();
     }
+
+    public Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken)
+        where TDetails : ICurrentUserDetails
+    {
+        throw new NotImplementedException();
+    }
 }

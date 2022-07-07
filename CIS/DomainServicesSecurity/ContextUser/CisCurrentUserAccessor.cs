@@ -9,7 +9,7 @@ public sealed class CisCurrentContextUserAccessor
     private readonly IHttpContextAccessor? _httpContext;
 
     private ICurrentUser? _user;
-    private ICurrentUserDetails? _userDetails;
+    private Foms.Types.Interfaces.IFomsCurrentUserDetails? _userDetails;
     private bool _userDetailsFetched;
 
     public CisCurrentContextUserAccessor(IHttpContextAccessor? httpContext)
@@ -47,7 +47,7 @@ public sealed class CisCurrentContextUserAccessor
 
         var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Abstraction.IUserServiceAbstraction>();
         var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await userService.GetUser(_user!.Id, cancellationToken));
-        _userDetails = new CisUserDetails
+        _userDetails = new FomsCurrentUserDetails
         {
             DisplayName = userInstance.FullName,
             CPM = userInstance.CPM,
@@ -55,5 +55,15 @@ public sealed class CisCurrentContextUserAccessor
         };
 
         return _userDetails;
+    }
+
+    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken) 
+        where TDetails : ICurrentUserDetails
+    {
+        if (typeof(TDetails) is not Foms.Types.Interfaces.IFomsCurrentUserDetails)
+            throw new InvalidOperationException("User detail type must be of Foms.Types.Interfaces.IFomsCurrentUserDetails");
+
+        await EnsureDetails(cancellationToken);
+        return (TDetails)_userDetails!;
     }
 }
