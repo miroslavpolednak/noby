@@ -20,7 +20,8 @@ internal static class Extensions
                 LastName = request.LastName ?? "",
                 BirthNumber = request.BirthNumber ?? "",
                 DateOfBirth = request.DateOfBirth
-            }
+            },
+            Mandant = Mandants.Kb
         };
 
         // ID klienta

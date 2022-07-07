@@ -13,6 +13,11 @@ internal class SearchCustomersMediatrRequestValidator : AbstractValidator<Dto.Se
         RuleFor(t => t.Request.Identity)
             .SetValidator(new IdentityValidator());
 
+        RuleFor(t => t.Request.Mandant)
+            .IsInEnum()
+            .NotEqual(CIS.Infrastructure.gRPC.CisTypes.Mandants.Unknown)
+            .WithMessage("Mandant must be not empty").WithErrorCode("17000");
+
         RuleFor(t => t.Request.NaturalPerson.LastName)
             .NotEmpty()
             .When(t => t.Request.NaturalPerson != null && !string.IsNullOrEmpty(t.Request.NaturalPerson.FirstName))
