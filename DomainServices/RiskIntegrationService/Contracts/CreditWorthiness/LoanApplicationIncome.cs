@@ -7,5 +7,5 @@ public class LoanApplicationIncome
     public int CategoryMp { get; set; }
 
     [DataMember(Order = 2)]
-    public double Amount { get; set; }
+    public decimal Amount { get; set; }
 }

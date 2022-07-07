@@ -123,7 +123,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Množství.
@@ -132,7 +132,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amountConsolidated")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double AmountConsolidated { get; set; }
+        public decimal AmountConsolidated { get; set; }
 
     }
 
@@ -160,7 +160,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Množství.
@@ -169,7 +169,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amountConsolidated")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double AmountConsolidated { get; set; }
+        public decimal AmountConsolidated { get; set; }
 
     }
 
@@ -302,7 +302,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
     }
 
@@ -330,7 +330,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Množství.
@@ -339,7 +339,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amountConsolidated")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double AmountConsolidated { get; set; }
+        public decimal AmountConsolidated { get; set; }
 
     }
 
@@ -367,7 +367,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Množství.
@@ -376,7 +376,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amountConsolidated")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double AmountConsolidated { get; set; }
+        public decimal AmountConsolidated { get; set; }
 
     }
 
@@ -560,7 +560,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
     }
 
@@ -596,7 +596,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.
         [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? InterestRate { get; set; }
+        public decimal? InterestRate { get; set; }
 
         /// <summary>
         /// Požadovaná výše úvěru v Kč.

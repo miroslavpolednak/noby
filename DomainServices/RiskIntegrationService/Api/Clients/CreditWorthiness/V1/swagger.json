@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "CreditWorthinessCalculation"
+    "title": "CreditWorthinessCalculation",
+    "version": "1.0.0"
   },
   "basePath": "/kbgroup-laa-credit-worthiness-calculation-service-1.0.1/api",
   "tags": [
@@ -138,10 +138,12 @@
         },
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         },
         "amountConsolidated": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         }
       },
@@ -165,10 +167,12 @@
         },
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         },
         "amountConsolidated": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         }
       },
@@ -263,6 +267,7 @@
         },
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         }
       },
@@ -286,10 +291,12 @@
         },
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         },
         "amountConsolidated": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         }
       },
@@ -313,10 +320,12 @@
         },
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         },
         "amountConsolidated": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         }
       },
@@ -465,6 +474,7 @@
         },
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "Množství."
         }
       },
@@ -488,6 +498,7 @@
         },
         "interestRate": {
           "type": "number",
+          "format": "decimal",
           "description": "Žádaná roční úroková sazba."
         },
         "amountRequired": {

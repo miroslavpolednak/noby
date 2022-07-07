@@ -10,7 +10,7 @@ public class LoanApplicationProduct
     public int Maturity { get; set; }
 
     [DataMember(Order = 3)]
-    public double InterestRate { get; set; }
+    public decimal InterestRate { get; set; }
 
     [DataMember(Order = 4)]
     public int AmountRequired { get; set; }

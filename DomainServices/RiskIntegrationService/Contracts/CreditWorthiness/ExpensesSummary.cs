@@ -4,14 +4,14 @@
 public class ExpensesSummary
 {
     [DataMember(Order = 1)]
-    public double? Rent { get; set; }
+    public decimal? Rent { get; set; }
 
     [DataMember(Order = 2)]
-    public double? Saving { get; set; }
+    public decimal? Saving { get; set; }
 
     [DataMember(Order = 3)]
-    public double? Insurance { get; set; }
+    public decimal? Insurance { get; set; }
 
     [DataMember(Order = 4)]
-    public double? Other { get; set; }
+    public decimal? Other { get; set; }
 }
