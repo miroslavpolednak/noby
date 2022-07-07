@@ -28,8 +28,7 @@ internal static class CalculateRequestExtensions
     public static List<_C4M.LoanApplicationCounterParty> ToC4m(this List<Contracts.CreditWorthiness.LoanApplicationCounterParty> clients,
         int mandantId,
         List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> maritalStatuses,
-        List<CodebookService.Contracts.GenericCodebookItemWithCode> mainIncomeTypes,
-        List<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+        List<CodebookService.Contracts.GenericCodebookItemWithCode> mainIncomeTypes)
         => clients.Select(t =>
         {
             // income
@@ -43,14 +42,11 @@ internal static class CalculateRequestExtensions
             t.LoanApplicationIncome?.ForEach(i =>
             {
                 string incomeCode = mainIncomeTypes.FirstOrDefault(t => t.Id == i.CategoryMp)?.Code ?? throw new CisValidationException(0, $"IncomeType={i.CategoryMp} not found in IncomeMainTypes codebook");
-                incomes.First(t => t.Category == Enum.Parse<_C4M.LoanApplicationIncomeCategory>(incomeCode)).Amount += i.Amount;
+                incomes.First(t => t.Category == FastEnum.Parse<_C4M.LoanApplicationIncomeCategory>(incomeCode)).Amount += i.Amount;
             });
 
-            // zavazky
-
-
             // merital status
-            _C4M.LoanApplicationCounterPartyMaritalStatus maritalStatus = Enum.TryParse(maritalStatuses.FirstOrDefault(m => m.Id == t.MaritalStatusMp)?.RdmMaritalStatusCode, out _C4M.LoanApplicationCounterPartyMaritalStatus ms) ? ms : _C4M.LoanApplicationCounterPartyMaritalStatus.M;
+            _C4M.LoanApplicationCounterPartyMaritalStatus maritalStatus = FastEnum.TryParse(maritalStatuses.FirstOrDefault(m => m.Id == t.MaritalStatusMp)?.RdmMaritalStatusCode, out _C4M.LoanApplicationCounterPartyMaritalStatus ms) ? ms : _C4M.LoanApplicationCounterPartyMaritalStatus.M;
 
             // Id, IsPartner
             return new _C4M.LoanApplicationCounterParty
@@ -76,7 +72,7 @@ internal static class CalculateRequestExtensions
                 {
                     Amount = coll?.Sum(x => x.Limit) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = Enum.Parse<_C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup>(t.Code)
+                    ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup>(t.Code)
                 };
             })
             .ToList();
@@ -90,7 +86,7 @@ internal static class CalculateRequestExtensions
                 {
                     Amount = coll?.Sum(x => x.Limit) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = Enum.Parse<_C4M.CreditLiabilitiesSummaryProductGroup>(t.Code)
+                    ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryProductGroup>(t.Code)
                 };
             })
             .ToList();
@@ -104,7 +100,7 @@ internal static class CalculateRequestExtensions
                 {
                     Amount = coll?.Sum(x => x.Installment) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = Enum.Parse<_C4M.InstallmentsSummaryHomeCompanyProductGroup>(t.Code)
+                    ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryHomeCompanyProductGroup>(t.Code)
                 };
             })
             .ToList();
@@ -118,7 +114,7 @@ internal static class CalculateRequestExtensions
                 {
                     Amount = coll?.Sum(x => x.Installment) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = Enum.Parse<_C4M.InstallmentsSummaryOutHomeCompanyProductGroup>(t.Code)
+                    ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryOutHomeCompanyProductGroup>(t.Code)
                 };
             })
             .ToList();

@@ -1,6 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.Calculate;
+﻿using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.Contracts;
 
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.Contracts;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.Calculate;
 
 internal sealed class CalculateHandler
     : IRequestHandler<Contracts.CreditWorthiness.CalculateRequest, Contracts.CreditWorthiness.CalculateResponse>
@@ -17,15 +17,15 @@ internal sealed class CalculateHandler
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
             ResourceProcessId = _C4M.ResourceIdentifier.Create("MPSS", "OM", "OfferInstance", request.ResourceProcessIdMp),
-            ItChannel = Enum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(request.ItChannel!),
+            ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseIdMp!),
             LoanApplicationProduct = request.LoanApplicationProduct.ToC4m(riskApplicationType.C4mAplCode),
             Households = request.Households!.Select(h => new _C4M.LoanApplicationHousehold
             {
-                ChildrenOver10 = h.ChildrenOver10.GetValueOrDefault(),
-                ChildrenUnderAnd10 = h.ChildrenUnderAnd10.GetValueOrDefault(),
+                ChildrenOver10 = h.ChildrenOver10,
+                ChildrenUnderAnd10 = h.ChildrenUnderAnd10,
                 ExpensesSummary = (h.ExpensesSummary ?? new Contracts.CreditWorthiness.ExpensesSummary()).ToC4m(),
-                Clients = (h.Clients ?? new(0)).ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes, obligationTypes),
+                Clients = (h.Clients ?? new(0)).ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
                 CreditLiabilitiesSummary = liabilitiesFlatten.ToC4mCreditLiabilitiesSummary(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 CreditLiabilitiesSummaryOut = liabilitiesFlatten.ToC4mCreditLiabilitiesSummaryOut(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 InstallmentsSummary = liabilitiesFlatten.ToC4mInstallmentsSummary(obligationTypes.Where(o => o.Id == 1 || o.Id == 2)),
@@ -54,12 +54,18 @@ internal sealed class CalculateHandler
     private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly AppConfiguration _configuration;
+    private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public CalculateHandler(
+        AppConfiguration configuration,
+        CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         Clients.CreditWorthiness.V1.ICreditWorthinessClient client, 
         CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
+        _serviceUserAccessor = serviceUserAccessor;
+        _configuration = configuration;
         _codebookService = codebookService;
         _xxvConnectionProvider = xxvConnectionProvider;
         _client = client;

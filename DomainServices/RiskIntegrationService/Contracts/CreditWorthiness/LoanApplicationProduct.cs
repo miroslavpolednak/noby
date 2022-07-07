@@ -1,23 +1,23 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
-public class LoanApplicationProduct
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+public sealed class LoanApplicationProduct
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public int Product { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public int Maturity { get; set; }
 
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public decimal InterestRate { get; set; }
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public int AmountRequired { get; set; }
 
-    [DataMember(Order = 5)]
+    [ProtoMember(5)]
     public int Annuity { get; set; }
 
-    [DataMember(Order = 6)]
+    [ProtoMember(6)]
     public int FixationPeriod { get; set; }
 }

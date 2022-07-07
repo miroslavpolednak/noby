@@ -5,13 +5,13 @@ public sealed partial class UserIdentity
     public UserIdentity(Foms.Types.UserIdentity identity)
     {
         Identity = identity.Identity;
-        IdentityScheme = Enum.Parse<Types.UserIdentitySchemes>(identity.Scheme.ToString());
+        IdentityScheme = FastEnum.Parse<Types.UserIdentitySchemes>(identity.Scheme.ToString());
     }
 
     public UserIdentity(string? identity, Foms.Enums.UserIdentitySchemes? scheme)
     {
         Identity = identity;
-        IdentityScheme = Enum.Parse<Types.UserIdentitySchemes>((scheme ?? Foms.Enums.UserIdentitySchemes.Unknown).ToString());
+        IdentityScheme = FastEnum.Parse<Types.UserIdentitySchemes>((scheme ?? Foms.Enums.UserIdentitySchemes.Unknown).ToString());
     }
 
     public static implicit operator Foms.Types.UserIdentity?(UserIdentity? identity)
@@ -27,7 +27,7 @@ public sealed partial class UserIdentity
         return new UserIdentity()
         {
             Identity = identity.Identity,
-            IdentityScheme = Enum.Parse<Types.UserIdentitySchemes>(identity.Scheme.ToString()),
+            IdentityScheme = FastEnum.Parse<Types.UserIdentitySchemes>(identity.Scheme.ToString()),
         };
     }
 }

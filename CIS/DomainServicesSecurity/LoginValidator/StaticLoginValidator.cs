@@ -6,7 +6,7 @@ internal class StaticLoginValidator : ILoginValidator
     {
         { "a", "a" },
         { "b", "b" },
-        { "c", "c" }
+        { "sb", "pwd" }
     };
 
     public Task<bool> Validate(string login, string password)

@@ -1,11 +1,11 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
-public class LoanApplicationIncome
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+public sealed class LoanApplicationIncome
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public int CategoryMp { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public decimal Amount { get; set; }
 }

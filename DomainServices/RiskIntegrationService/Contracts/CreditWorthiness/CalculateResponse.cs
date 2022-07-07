@@ -1,23 +1,23 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
+[ProtoContract]
 public class CalculateResponse
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public long? InstallmentLimit { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public long? MaxAmount { get; set; }
 
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public long? RemainsLivingAnnuity { get; set; }
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public long? RemainsLivingInst { get; set; }
 
-    [DataMember(Order = 5)]
+    [ProtoMember(5)]
     public int WorthinessResult { get; set; }
 
-    [DataMember(Order = 6)]
+    [ProtoMember(6)]
     public ResultReason? ResultReason { get; set; }
 }

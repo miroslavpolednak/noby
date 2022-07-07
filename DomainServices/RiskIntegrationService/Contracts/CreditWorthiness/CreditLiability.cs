@@ -1,23 +1,23 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
-public class CreditLiability
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+public sealed class CreditLiability
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public int LiabilityType { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public decimal? Limit { get; set; }
 
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public decimal? AmountConsolidated { get; set; }
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public decimal? Installment { get; set; }
 
-    [DataMember(Order = 5)]
+    [ProtoMember(5)]
     public decimal? InstallmentConsolidated { get; set; }
 
-    [DataMember(Order = 6)]
+    [ProtoMember(6)]
     public bool OutHomeCompanyFlag { get; set; }
 }

@@ -2,7 +2,7 @@
         grpcurl -insecure 127.0.0.1:5022 list
         grpcurl -insecure -d "{\"Id\":2,\"Name\":\"John\"}" -H "Authorization: Basic YTph" 127.0.0.1:5022 DomainServices.RiskIntegrationService.v1.TestService/HalloWorld
 
-        grpcurl -insecure -d "{\"ItChannel\":\"NOBY\",\"RiskBusinessCaseIdMp\":\"xxxxx1\",\"ResourceProcessIdMp\":\"2\",\"HumanUser\":{\"Identity\":\"John\",\"IdentityScheme\":\"KBID\"},\"LoanApplicationProduct\":{\"Product\":1,\"Maturity\":1,\"InterestRate\":1,\"AmountRequired\":1,\"Annuity\":1,\"FixationPeriod\":1}}" -H "Authorization: Basic YTph" 127.0.0.1:5022 DomainServices.RiskIntegrationService.v1.CreditWorthinessService/Calculate
+        grpcurl -insecure -d "{\"RiskBusinessCaseIdMp\":\"1\",\"ResourceProcessIdMp\":\"2\",\"HumanUser\":{\"Identity\":\"John\",\"IdentityScheme\":\"KBID\"},\"LoanApplicationProduct\":{\"Product\":20001,\"Maturity\":1,\"InterestRate\":\"1.5\",\"AmountRequired\":1,\"Annuity\":1,\"FixationPeriod\":1},\"Households\":[{\"ChildrenUnderAnd10\":1,\"ChildrenOver10\":0,\"ExpensesSummary\":{\"Rent\":\"4000\",\"Saving\":\"2500\"},\"Clients\":[{\"IdMp\":\"111\",\"MaritalStatusMp\":1,\"LoanApplicationIncome\":[{\"CategoryMp\":1,\"Amount\":\"15000\"}]}]}]}" -H "Authorization: Basic YTph" -H "mp-user-id: 267" 127.0.0.1:5022 DomainServices.RiskIntegrationService.v1.CreditWorthinessService/Calculate
 
         grpcurl -insecure -d "{\"LoanApplicationIdMp\":{\"Id\":\"xx\",\"Name\":\"xxx\"},\"ResourceProcessIdMp\":\"2\",\"ItChannel\":\"John\"}" -H "Authorization: Basic YTph" 127.0.0.1:5022 DomainServices.RiskIntegrationService.v1.RiskBusinessCaseService/CreateCase
 

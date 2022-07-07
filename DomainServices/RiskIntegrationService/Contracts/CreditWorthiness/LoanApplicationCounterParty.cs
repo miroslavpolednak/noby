@@ -1,21 +1,20 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
-public class LoanApplicationCounterParty
+[ProtoContract]
+public sealed class LoanApplicationCounterParty
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public string? IdMp { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public bool IsPartnerMp { get; set; }
 
-    [Required]
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public int? MaritalStatusMp { get; set; }
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public List<LoanApplicationIncome>? LoanApplicationIncome { get; set; }
 
-    [DataMember(Order = 5)]
+    [ProtoMember(5)]
     public List<CreditLiability>? CreditLiabilities { get; set; }
 }

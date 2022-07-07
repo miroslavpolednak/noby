@@ -1,17 +1,17 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
-public class ExpensesSummary
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+public sealed class ExpensesSummary
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public decimal? Rent { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public decimal? Saving { get; set; }
 
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public decimal? Insurance { get; set; }
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public decimal? Other { get; set; }
 }

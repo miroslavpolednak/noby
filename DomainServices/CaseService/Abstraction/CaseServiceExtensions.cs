@@ -7,10 +7,10 @@ namespace DomainServices.CaseService.Abstraction;
 public static class CaseServiceExtensions
 {
     public static IServiceCollection AddCaseService(this IServiceCollection services)
-    => services.TryAddGrpcClient<Contracts.v1.CaseService.CaseServiceClient>(a =>
-        a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.CaseService.CaseServiceClient>("DS:CaseService")
-        .registerServices()
-    );
+        => services.TryAddGrpcClient<Contracts.v1.CaseService.CaseServiceClient>(a =>
+            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.CaseService.CaseServiceClient>("DS:CaseService")
+            .registerServices()
+        );
 
     public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
         => services.TryAddGrpcClient<Contracts.v1.CaseService.CaseServiceClient>(a =>

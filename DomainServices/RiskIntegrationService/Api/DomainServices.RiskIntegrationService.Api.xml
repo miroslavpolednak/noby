@@ -1113,6 +1113,17 @@
             kód pracovní pozice přihlášeného uživatele /schvalovatele
             </summary>
         </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.AppConfiguration.ServiceUser2ItChannelBinding">
+            <summary>
+            Nastaveni mapovani technickych uzivatelu sluzby vs. ItChannel C4M
+            [service_user, C4M ItChannel]
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.AppConfigurationExtensions.GetItChannelFromServiceUser(DomainServices.RiskIntegrationService.Api.AppConfiguration,System.String)">
+            <summary>
+            Vrati ItChannel pro C4M, ktery je platny pro aktualniho service usera
+            </summary>
+        </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest,System.Threading.CancellationToken)">
             <summary>
             Výpoèet rozšíøené bonity

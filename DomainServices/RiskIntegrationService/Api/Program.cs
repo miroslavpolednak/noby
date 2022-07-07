@@ -17,10 +17,8 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
 AppConfiguration appConfiguration = new();
 builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-#endregion strongly typed configuration
 
 #region register builder
 // strongly-typed konfigurace aplikace

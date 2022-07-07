@@ -87,6 +87,7 @@ app.UseRouting();
 // auth
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCisServiceUserContext();
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>

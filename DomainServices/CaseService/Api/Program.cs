@@ -52,7 +52,7 @@ builder.AddCaseService(appConfiguration);
 builder.Services
     .AddSalesArrangementService()
     .AddCodebookService()
-    .AddUserService("https://localhost:5080")
+    .AddUserService()
     .AddCisServiceDiscovery();
 
 builder.Services.AddGrpc(options =>

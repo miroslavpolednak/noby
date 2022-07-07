@@ -28,11 +28,11 @@ public static class GrpcStartupExtensions
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
                 options.Address = serviceUri.Url;
             })
-            .ConfigureChannel(configureChannel)
+            .CisConfigureChannel()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()
-            .AddCallCredentials(addCredentials);
+            .AddCisCallCredentials();
     }
 
     public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services)
@@ -48,11 +48,11 @@ public static class GrpcStartupExtensions
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
                 options.Address = serviceUri.Url;
             })
-            .ConfigureChannel(configureChannel)
+            .CisConfigureChannel()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()
-            .AddCallCredentials(addCredentials);
+            .AddCisCallCredentials();
     }
 
     public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl)
@@ -61,6 +61,12 @@ public static class GrpcStartupExtensions
         services.TryAddSingleton(new GrpcServiceUriSettings<TService>(serviceUrl));
         return services;
     }
+
+    public static IHttpClientBuilder CisConfigureChannel(this IHttpClientBuilder builder)
+        => builder.ConfigureChannel(configureChannel);
+
+    public static IHttpClientBuilder AddCisCallCredentials(this IHttpClientBuilder builder)
+        => builder.AddCallCredentials(addCredentials);
 
     private static Func<AuthInterceptorContext, Metadata, IServiceProvider, Task> addCredentials =
         (context, metadata, serviceProvider) =>

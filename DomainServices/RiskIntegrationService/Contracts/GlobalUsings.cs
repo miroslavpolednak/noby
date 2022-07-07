@@ -2,3 +2,4 @@
 global using System.ServiceModel;
 global using MediatR;
 global using System.ComponentModel.DataAnnotations;
+global using ProtoBuf;

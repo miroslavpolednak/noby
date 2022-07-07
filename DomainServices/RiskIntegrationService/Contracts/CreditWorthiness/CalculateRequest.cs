@@ -1,25 +1,25 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
-[DataContract]
+[ProtoContract]
 public class CalculateRequest
     : IRequest<CalculateResponse>, CIS.Core.Validation.IValidatableRequest
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public string? ResourceProcessIdMp { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public string? ItChannel { get; set; }
 
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public string? RiskBusinessCaseIdMp { get; set; }
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public HumanUser? HumanUser { get; set; }
 
-    [DataMember(Order = 5)]
+    [ProtoMember(5)]
     public LoanApplicationProduct? LoanApplicationProduct { get; set; }
 
-    [DataMember(Order = 6)]
+    [ProtoMember(6)]
     public List<LoanApplicationHousehold>? Households { get; set; }
 }
 
