@@ -1129,7 +1129,7 @@
             Výpočet rozšířené bonity
             </summary>
             <remarks>
-            Specs: <a href="https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE">https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE</a>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE">https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE</a>
             </remarks>
         </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest,System.Threading.CancellationToken)">

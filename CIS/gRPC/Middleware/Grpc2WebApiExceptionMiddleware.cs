@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Authentication;
 
-namespace CIS.Infrastructure.WebApi.Middlewares;
+namespace CIS.Infrastructure.gRPC.Middleware;
 
-public class ApiExceptionMiddleware
+public sealed class Grpc2WebApiExceptionMiddleware
 {
     private readonly RequestDelegate _next;
-    
-    public ApiExceptionMiddleware(RequestDelegate next)
+
+    public Grpc2WebApiExceptionMiddleware(RequestDelegate next)
     {
         _next = next;
     }
@@ -23,26 +25,6 @@ public class ApiExceptionMiddleware
         catch (AuthenticationException)
         {
             await Results.Unauthorized().ExecuteAsync(context);
-        }
-        catch (NotImplementedException ex)
-        {
-            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.NotImplemented).ExecuteAsync(context);
-        }
-        // DS neni dostupna
-        catch (Core.Exceptions.ServiceUnavailableException ex)
-        {
-            await Results.Problem(ex.MethodName, $"Service '{ex.ServiceName}' unavailable", statusCode: (int)HttpStatusCode.ServiceUnavailable).ExecuteAsync(context);
-        }
-        // serviceCallResult error
-        catch (Core.Exceptions.ServiceCallResultErrorException ex)
-        {
-            var result = Results.ValidationProblem(ex.Errors.ToDictionary(k => k.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), v => new[] { v.Message }));
-            await result.ExecuteAsync(context);
-        }
-        // object not found
-        catch (Core.Exceptions.CisNotFoundException ex)
-        {
-            await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)
@@ -61,6 +43,23 @@ public class ApiExceptionMiddleware
             else
                 result = Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" });
 
+            await result.ExecuteAsync(context);
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.InvalidArgument)
+        {
+            IResult result;
+            // try list of errors first
+            var messages = ex.GetErrorMessagesFromRpcException();
+            if (messages.Any()) // most likely its validation exception
+            {
+                var errors = messages.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
+                result = Results.ValidationProblem(errors!);
+            }
+            else // its single argument exception
+            {
+                string message = ex.GetErrorMessageFromRpcException();
+                result = Results.BadRequest(new ProblemDetails() { Title = ex.Message });
+            }
             await result.ExecuteAsync(context);
         }
         // jakakoliv jina chyba
