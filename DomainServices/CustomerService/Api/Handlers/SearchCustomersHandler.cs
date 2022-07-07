@@ -20,7 +20,8 @@ namespace DomainServices.CustomerService.Api.Handlers
 
         public async Task<SearchCustomersResponse> Handle(SearchCustomersMediatrRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Search CM #{id}", string.Join(",", request.Request));
+            if (request.Request.Mandant != CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb)
+                return new SearchCustomersResponse();
 
             // ciselniky
             var docTypes = await _codebooks.IdentificationDocumentTypes(cancellationToken);
