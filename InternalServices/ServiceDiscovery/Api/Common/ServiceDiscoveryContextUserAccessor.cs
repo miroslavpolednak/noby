@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using CIS.DomainServicesSecurity;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api;
 
@@ -23,7 +22,7 @@ internal sealed class ServiceDiscoveryContextUserAccessor
     {
         get
         {
-            int? userId = CurrentUserAccessorHelpers.GetUserIdFromHeaders(_httpContext.HttpContext!.Request);
+            int? userId = getUserIdFromHeaders(_httpContext.HttpContext!.Request);
             if (userId.HasValue)
                 _user = new ServiceDiscoveryContextUser(userId.Value);
             return _user;
@@ -41,5 +40,14 @@ internal sealed class ServiceDiscoveryContextUserAccessor
         where TDetails : ICurrentUserDetails
     {
         throw new NotImplementedException();
+    }
+
+    static int? getUserIdFromHeaders(HttpRequest request)
+    {
+        int? partyId = null;
+        if (request.Headers.ContainsKey(Core.Security.Constants.ContextUserHttpHeaderKey)
+            && int.TryParse(request.Headers[Core.Security.Constants.ContextUserHttpHeaderKey], out int i))
+            partyId = i;
+        return partyId;
     }
 }

@@ -14,6 +14,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Clients\CreditWorthiness\V1\swagger.json" />
+	  <Content Remove="Clients\RiskBusinessCase\V1\swagger.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Clients\CreditWorthiness\V1\swagger.json" />
+	  <None Include="Clients\RiskBusinessCase\V1\swagger.json" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="FastEnum" Version="1.8.0" />
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />

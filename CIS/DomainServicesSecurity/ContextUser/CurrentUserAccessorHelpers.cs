@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace CIS.DomainServicesSecurity;
+﻿namespace CIS.DomainServicesSecurity;
 
 public static class CurrentUserAccessorHelpers
 {

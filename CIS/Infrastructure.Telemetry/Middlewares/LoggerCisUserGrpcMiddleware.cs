@@ -14,7 +14,7 @@ internal sealed class LoggerCisUserGrpcMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        int? userId = DomainServicesSecurity.CurrentUserAccessorHelpers.GetUserIdFromHeaders(context.Request);
+        int? userId = getUserIdFromHeaders(context.Request);
         if (userId.HasValue)
         {
             using (LogContext.PushProperty(Constants.LoggerContextUserIdPropertyName, userId.Value))
@@ -24,5 +24,14 @@ internal sealed class LoggerCisUserGrpcMiddleware
         }
         else
             await _next.Invoke(context);
+    }
+
+    static int? getUserIdFromHeaders(HttpRequest request)
+    {
+        int? partyId = null;
+        if (request.Headers.ContainsKey(Core.Security.Constants.ContextUserHttpHeaderKey)
+            && int.TryParse(request.Headers[Core.Security.Constants.ContextUserHttpHeaderKey], out int i))
+            partyId = i;
+        return partyId;
     }
 }

@@ -20,7 +20,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
-		<ProjectReference Include="..\..\..\CIS\DomainServicesSecurity.Abstraction\CIS.DomainServicesSecurity.Abstraction.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
