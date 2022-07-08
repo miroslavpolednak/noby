@@ -40,7 +40,7 @@ internal class CasesModelConverter
 		if (model.ActiveTasks is not null && model.ActiveTasks.Any())
 		{
 			converted.ActiveTasks = model.ActiveTasks
-				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.CategoryId.GetValueOrDefault())
+				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.CategoryId)
 				.GroupBy(k => k)
 				.Select(t => new Dto.TaskModel
 				{
