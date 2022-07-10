@@ -1,44 +1,53 @@
-﻿using CIS.ExternalServicesHelpers.Configuration;
-using Polly;
-using Polly.Extensions.Http;
-using System.Net.Http.Headers;
+﻿using System.Net;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
 internal static class HttpClientExtensions
 {
-    public static IHttpClientBuilder ConfigureC4mHttpMessageHandler(this IHttpClientBuilder builder)
-        =>builder.ConfigurePrimaryHttpMessageHandler(()
-            => new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-            });
-
-    public static IHttpClientBuilder AddC4mPolicyHandler<TService>(this IHttpClientBuilder builder, string serviceName)
-        => builder.AddPolicyHandler((services, request) => 
-            HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .WaitAndRetryAsync(new[]
-                    {
-                        TimeSpan.FromSeconds(1)
-                    },
-                    onRetry: (outcome, timespan, retryAttempt, context) =>
-                    {
-                        services.GetService<ILogger<TService>>()?.ExtServiceRetryCall(serviceName, retryAttempt, timespan.TotalMilliseconds);
-                    }
-                )
-        );
-    
-    public static IHttpClientBuilder AddC4mHttpClient<TClient, TImplementation>(this IServiceCollection services, IExternalServiceBasicAuthenticationConfiguration configuration)
-        where TClient : class
-        where TImplementation : class, TClient
-        => services.AddHttpClient<TClient, TImplementation>((services, client) =>
+    public static async Task<TResult> PostToC4m<TResult>(this HttpClient client, 
+        ILogger logger, 
+        string serviceName, 
+        string endpointName, 
+        string url, 
+        object request,
+        CancellationToken cancellationToken)
+        where TResult : class
+    {
+        try
         {
-            // service url
-            client.BaseAddress = new Uri(configuration.ServiceUrl);
+            logger.ExtServiceRequest(serviceName, endpointName, request);
 
-            // auth
-            var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-        });
+            var response = await client
+                .PostAsJsonAsync(client.BaseAddress + url, request, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (response!.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<TResult>(cancellationToken: cancellationToken)
+                ?? throw new CisExtServiceResponseDeserializationException(0, serviceName, endpointName, nameof(TResult));
+
+                logger.ExtServiceResponse(serviceName, endpointName, result);
+
+                return result;
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                // asi validacni chyba?
+                throw new CisValidationException(0, "validatce");
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                throw new CisServiceUnavailableException(serviceName, endpointName, await getRawResponse());
+            else if ((int)response.StatusCode >= 500)
+                throw new CisServiceServerErrorException(serviceName, endpointName, await getRawResponse());
+            else
+                throw new CisServiceServerErrorException(serviceName, endpointName, $"{response.StatusCode}: {await getRawResponse()}");
+
+            async Task<string> getRawResponse()
+                => response.Content == null ? "" : await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new CisServiceUnavailableException(serviceName, endpointName, ex.Message);
+        }
+    }
 }
