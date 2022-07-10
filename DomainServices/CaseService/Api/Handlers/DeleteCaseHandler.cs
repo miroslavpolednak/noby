@@ -5,6 +5,12 @@ internal class DeleteCaseHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteCaseMediatrRequest request, CancellationToken cancellation)
     {
+        var count = ServiceCallResult
+            .ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, null, cancellation))
+            .SalesArrangements.Count;
+        if (count > 0)
+            throw new CisValidationException(0, "One or more SalesArrangements exists for this case");
+
         // ulozit do DB
         await _repository.DeleteCase(request.CaseId, cancellation);
 
@@ -12,13 +18,13 @@ internal class DeleteCaseHandler
     }
 
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly ILogger<DeleteCaseHandler> _logger;
+    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public DeleteCaseHandler(
-        Repositories.CaseServiceRepository repository,
-        ILogger<DeleteCaseHandler> logger)
+        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
+        Repositories.CaseServiceRepository repository)
     {
         _repository = repository;
-        _logger = logger;
+        _salesArrangementService = salesArrangementService;
     }
 }
