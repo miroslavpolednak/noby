@@ -34,7 +34,7 @@ public sealed class GenericClientExceptionInterceptor
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
             _logger.ServiceUnavailable("GRPC service unavailable", ex);
-            throw new ServiceUnavailableException(serviceName, methodFullName, ex.Message);
+            throw new CisServiceUnavailableException(serviceName, methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
         {

@@ -15,7 +15,7 @@ public static class ServiceCallResult
         {
             SuccessfulServiceCallResult<TModel> r => r.Model,
             EmptyServiceCallResult => throw new Exceptions.CisArgumentNullException(0, $"ServiceCallResult is empty but should be instance of {typeof(TModel)}", nameof(result)),
-            ErrorServiceCallResult r2 => throw new Exceptions.ServiceCallResultErrorException(r2),
+            ErrorServiceCallResult r2 => throw new Exceptions.CisServiceCallResultErrorException(r2),
             _ => throw new NotImplementedException("ServiceCallResult type unknown (Resolve<>)")
         };
 

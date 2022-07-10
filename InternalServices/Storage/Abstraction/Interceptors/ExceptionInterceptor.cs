@@ -31,7 +31,7 @@ internal class ExceptionInterceptor : Interceptor
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
             _logger.LogError(ex, "StorageService unavailable");
-            throw new ServiceUnavailableException("StorageService", methodFullName, ex.Message);
+            throw new CisServiceUnavailableException("StorageService", methodFullName, ex.Message);
         }
         catch (RpcException ex) when (ex.Trailers != null)
         {

@@ -9,26 +9,18 @@ internal sealed class RealCreditWorthinessClient
     {
         _logger.ExtServiceRequest(CreditWorthinessStartupExtensions.ServiceName, _calculateUrl, request);
 
-        var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, cancellationToken);
+        return await HttpClientResponseHelper.CallService(
+            async () => await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, cancellationToken),
+            async (response) =>
+            {
+                var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(cancellationToken: cancellationToken)
+                    ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, _calculateUrl, nameof(CreditWorthinessCalculation));
 
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, _calculateUrl, nameof(CreditWorthinessCalculation));
-
-            _logger.ExtServiceResponse(CreditWorthinessStartupExtensions.ServiceName, _calculateUrl, response);
-            return result;
-        }
-        else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-        {
-            // asi validacni chyba?
-            throw new CisValidationException(0, "validatce");
-        }
-        else
-        {
-            // 500?
-            throw new ServiceCallResultErrorException(0, "chyba?");
-        }
+                _logger.ExtServiceResponse(CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), response);
+                return result;
+            },
+            CreditWorthinessStartupExtensions.ServiceName,
+            nameof(Calculate));
     }
 
     private readonly HttpClient _httpClient;

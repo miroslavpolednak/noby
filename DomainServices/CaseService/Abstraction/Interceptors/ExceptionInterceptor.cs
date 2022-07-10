@@ -34,7 +34,7 @@ internal class ExceptionInterceptor : Interceptor
         catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition) // nedostupna sluzba EAS atd.
         {
             _logger.ExtServiceUnavailable("CaseService", ex);
-            throw new ServiceUnavailableException("CaseService/dependant_service", methodFullName, ex.Message);
+            throw new CisServiceUnavailableException("CaseService/dependant_service", methodFullName, ex.Message);
         }
     }
 }

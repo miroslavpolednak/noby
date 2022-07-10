@@ -32,7 +32,7 @@ internal sealed class RealRiskBusinessCaseClient
         else
         {
             // 500?
-            throw new ServiceCallResultErrorException(0, "chyba?");
+            throw new CisServiceCallResultErrorException(0, "chyba?");
         }
     }
 
