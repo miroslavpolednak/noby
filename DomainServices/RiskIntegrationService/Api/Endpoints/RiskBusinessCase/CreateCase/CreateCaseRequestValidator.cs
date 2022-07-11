@@ -7,8 +7,8 @@ internal sealed class CreateCaseRequestValidator
 {
     public CreateCaseRequestValidator()
     {
-        RuleFor(t => t.ResourceProcessIdMp)
-            .NotEmpty()
+        RuleFor(t => t.LoanApplicationIdMp)
+            .NotNull()
             .WithErrorCode("0");
     }
 }

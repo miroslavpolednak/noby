@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.CreateCase;
+﻿using DomainServices.RiskIntegrationService.Api.Clients;
+
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.CreateCase;
 
 internal sealed class CreateCaseHandler
     : IRequestHandler<Contracts.RiskBusinessCase.CreateCaseRequest, Contracts.RiskBusinessCase.CreateCaseResponse>
@@ -10,20 +12,20 @@ internal sealed class CreateCaseHandler
             ItChannel = Clients.RiskBusinessCase.V1.Contracts.CreateRequestItChannel.NOBY,
             LoanApplicationId = new Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier
             {
-                Domain = "LA",
-                Instance = "MPSS",
-                Resource = "LoanApplication",
-                Id = request.LoanApplicationIdMp.Id,
-                Variant = request.LoanApplicationIdMp.Name
+                Id = request.LoanApplicationIdMp!.Id,
+                Variant = request.LoanApplicationIdMp.Name,
+                Instance = Constants.MPSS,
+                Domain = Constants.LA,
+                Resource = Constants.LoanApplication
             },
-            ResourceProcessId = new Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier
+            ResourceProcessId = request.ResourceProcessIdMp != null ? new Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier
             {
-                Domain = "OM",
-                Instance = "MPSS",
-                Resource = "OfferInstance",
                 Id = request.ResourceProcessIdMp,
-                Variant = request.LoanApplicationIdMp.Name
-            }
+                Variant = request.LoanApplicationIdMp.Name,
+                Domain = Constants.OM,
+                Instance = Constants.MPSS,
+                Resource = Constants.OfferInstance
+            } : null
         };
 
         var result = await _client.CreateCase(transformedRequest, cancellation);

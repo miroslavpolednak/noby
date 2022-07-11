@@ -2,45 +2,63 @@
 
 namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider")]
 internal sealed class RealRiskBusinessCaseClient
     : IRiskBusinessCaseClient
 {
-    public async Task<LoanApplicationCommit> CaseCommitment(string riskBusinessCaseId, CommitRequest request, CancellationToken cancellationToken)
-    {
-        return null;
-    }
-
     public async Task<LoanApplicationCreate> CreateCase(CreateRequest request, CancellationToken cancellationToken)
     {
         _logger.ExtServiceRequest(RiskBusinessCaseStartupExtensions.ServiceName, _createCaseUrl, request);
 
         var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + _createCaseUrl, request, cancellationToken);
+        var result = await response.ToClientResponse<LoanApplicationCreate>(_createCaseUrl, _logger, cancellationToken);
 
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<LoanApplicationCreate>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, RiskBusinessCaseStartupExtensions.ServiceName, _createCaseUrl, nameof(LoanApplicationCreate));
+        return result;
+    }
 
-            _logger.ExtServiceResponse(RiskBusinessCaseStartupExtensions.ServiceName, _createCaseUrl, response);
-            return result;
-        }
-        else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-        {
-            // asi validacni chyba?
-            throw new CisValidationException(0, "validatce");
-        }
-        else
-        {
-            // 500?
-            throw new ServiceCallResultErrorException(0, "chyba?");
-        }
+    public async Task<Identified> CaseAssessment(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
+    {
+        string url = string.Format(_caseAssessmentUrl, riskBusinessCaseId);
+
+        _logger.ExtServiceRequest(RiskBusinessCaseStartupExtensions.ServiceName, url, request);
+
+        var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + url, request, cancellationToken);
+        var result = await response.ToClientResponse<Identified>(url, _logger, cancellationToken);
+
+        return result;
+    }
+
+    public async Task<RiskBusinessCaseCommand> CaseAssessmentAsync(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
+    {
+        string url = string.Format(_caseAssessmentAsync, riskBusinessCaseId);
+
+        _logger.ExtServiceRequest(RiskBusinessCaseStartupExtensions.ServiceName, url, request);
+
+        var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + url, request, cancellationToken);
+        var result = await response.ToClientResponse<RiskBusinessCaseCommand>(url, _logger, cancellationToken);
+
+        return result;
+    }
+
+    public async Task<LoanApplicationCommit> CaseCommitment(string riskBusinessCaseId, CommitRequest request, CancellationToken cancellationToken)
+    {
+        string url = string.Format(_caseCommitmentsUrl, riskBusinessCaseId);
+
+        _logger.ExtServiceRequest(RiskBusinessCaseStartupExtensions.ServiceName, url, request);
+
+        var response = await _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + url, request, cancellationToken);
+        var result = await response.ToClientResponse<LoanApplicationCommit>(url, _logger, cancellationToken);
+
+        return result;
     }
 
     private readonly HttpClient _httpClient;
     private readonly ILogger<RealRiskBusinessCaseClient> _logger;
 
-    const string _caseCommitmentsUrl = "/riskBusinessCase/{0}/commitments";
     const string _createCaseUrl = "/riskBusinessCase";
+    const string _caseAssessmentUrl = "/riskBusinessCase/{0}/assessment";
+    const string _caseAssessmentAsync = "/assessment/command?riskBusinessCaseId={0}";
+    const string _caseCommitmentsUrl = "/riskBusinessCase/{0}/commitment";
 
     public RealRiskBusinessCaseClient(HttpClient httpClient, ILogger<RealRiskBusinessCaseClient> logger)
     {

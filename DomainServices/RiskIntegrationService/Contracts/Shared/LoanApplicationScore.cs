@@ -1,11 +1,11 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts;
 
 [ProtoContract]
-public class SystemId
+public sealed class LoanApplicationScore
 {
     [ProtoMember(1)]
-    public string? Id { get; set; }
+    public string? Value { get; set; }
 
     [ProtoMember(2)]
-    public string? Name { get; set; }
+    public string? Scale { get; set; }
 }

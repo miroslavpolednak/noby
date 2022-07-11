@@ -5,11 +5,29 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 internal sealed class MockRiskBusinessCaseClient
     : IRiskBusinessCaseClient
 {
-#pragma warning disable CA1822 // Mark members as static
+    public Task<LoanApplicationCreate> CreateCase(CreateRequest request, CancellationToken cancellationToken)
+        => Task.FromResult(new LoanApplicationCreate
+        {
+            RiskBusinessCaseId = new ResourceIdentifier
+            {
+                Id = "new-rbc-id"
+            }
+        });
+
+    public Task<Identified> CaseAssessment(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
+        => Task.FromResult(new Identified
+        {
+            
+        });
+
+    public Task<RiskBusinessCaseCommand> CaseAssessmentAsync(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
+        => Task.FromResult(new RiskBusinessCaseCommand
+        {
+            CommandId = 123456L
+        });
+
     public Task<LoanApplicationCommit> CaseCommitment(string riskBusinessCaseId, CommitRequest request, CancellationToken cancellationToken)
-#pragma warning restore CA1822 // Mark members as static
-    {
-        return Task.FromResult<LoanApplicationCommit>(new LoanApplicationCommit
+        => Task.FromResult(new LoanApplicationCommit
         {
             OperationResult = "vysledek",
             ResultReasons = new List<ResultReason>
@@ -26,16 +44,5 @@ internal sealed class MockRiskBusinessCaseClient
                 Id = riskBusinessCaseId
             }
         });
-    }
 
-    public Task<LoanApplicationCreate> CreateCase(CreateRequest request, CancellationToken cancellationToken)
-    {
-        return Task.FromResult<LoanApplicationCreate>(new LoanApplicationCreate
-        {
-            RiskBusinessCaseId = new ResourceIdentifier
-            {
-                Id = "new-rbc-id"
-            }
-        });
-    }
 }
