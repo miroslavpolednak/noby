@@ -18,13 +18,11 @@ internal sealed class RealCreditWorthinessClient
     }
 
     private readonly HttpClient _httpClient;
-    private readonly ILogger<RealCreditWorthinessClient> _logger;
-
+    
     const string _calculateUrl = "/credit-worthiness";
 
-    public RealCreditWorthinessClient(HttpClient httpClient, ILogger<RealCreditWorthinessClient> logger)
+    public RealCreditWorthinessClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _logger = logger;
     }
 }
