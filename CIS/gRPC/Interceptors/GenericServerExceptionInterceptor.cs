@@ -36,7 +36,7 @@ public class GenericServerExceptionInterceptor : Interceptor
             _logger.EntityAlreadyExist(e);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, e.Message, e.ExceptionCode);
         }
-        catch (Core.Exceptions.ServiceCallResultErrorException e)
+        catch (Core.Exceptions.CisServiceCallResultErrorException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
             throw GrpcExceptionHelpers.CreateRpcExceptionFromServiceCall(e);

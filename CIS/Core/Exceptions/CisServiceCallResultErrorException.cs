@@ -2,7 +2,7 @@
 
 namespace CIS.Core.Exceptions;
 
-public sealed class ServiceCallResultErrorException 
+public sealed class CisServiceCallResultErrorException 
     : BaseCisException
 {
     public IImmutableList<(int Key, string Message)> Errors => _result.Errors;
@@ -10,13 +10,13 @@ public sealed class ServiceCallResultErrorException
 
     private readonly Results.ErrorServiceCallResult _result;
 
-    public ServiceCallResultErrorException(int key, string message)
+    public CisServiceCallResultErrorException(int key, string message)
         : base(key, message)
     {
         _result = new Results.ErrorServiceCallResult(key, message);
     }
 
-    public ServiceCallResultErrorException(Results.ErrorServiceCallResult result)
+    public CisServiceCallResultErrorException(Results.ErrorServiceCallResult result)
         : base(result.Errors[0].Key, result.Errors[0].Message)
     {
         _result = result;

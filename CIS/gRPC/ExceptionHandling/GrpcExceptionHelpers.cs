@@ -9,7 +9,7 @@ public static class GrpcExceptionHelpers
 {
     private const string _errorMessageFromRpcExceptionRegex = "Detail=\"(?<error>.*)\"\\)";
 
-    public static RpcException CreateRpcExceptionFromServiceCall(ServiceCallResultErrorException exception)
+    public static RpcException CreateRpcExceptionFromServiceCall(CisServiceCallResultErrorException exception)
     {
         Metadata trailersCollection = new();
         trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exception.ExceptionCode.ToString(System.Globalization.CultureInfo.InvariantCulture));

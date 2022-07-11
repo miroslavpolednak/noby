@@ -26,6 +26,15 @@ public sealed class Grpc2WebApiExceptionMiddleware
         {
             await Results.Unauthorized().ExecuteAsync(context);
         }
+        // chyby na strane c4m
+        catch (Core.Exceptions.CisServiceUnavailableException ex)
+        {
+            await Results.Problem(ex.Message, title: "C4M service unavailable", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+        }
+        catch (Core.Exceptions.CisServiceServerErrorException ex)
+        {
+            await Results.Problem(ex.Message, title: "C4M service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+        }
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)
         {

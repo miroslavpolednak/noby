@@ -11,8 +11,8 @@ namespace DomainServices.CustomerService.Abstraction
         /// <returns><see cref="SuccessfulServiceCallResult{}"/> of <see cref="SearchCustomersResponse"/> - OK;</returns>
         /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17000; Validation problem</exception>
         /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17001; Customer Management error</exception>
-        /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
-        /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
         Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -21,8 +21,8 @@ namespace DomainServices.CustomerService.Abstraction
         /// <returns><see cref="SuccessfulServiceCallResult{}"/> of <see cref="CustomerListResponse"/> - OK;</returns>
         /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17000; Validation problem</exception>
         /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17001; Customer Management error</exception>
-        /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
-        /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
         Task<IServiceCallResult> GetCustomerList(CustomerListRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace DomainServices.CustomerService.Abstraction
         /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17000; Validation problem</exception>
         /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17001; Customer Management error</exception>
         /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 17002; Customer not found: {}</exception>
-        /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">CaseService unavailable</exception>
-        /// <exception cref="CIS.Core.Exceptions.ServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
         Task<IServiceCallResult> GetCustomerDetail(CustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<IServiceCallResult> Create(CreateRequest request, CancellationToken cancellationToken = default(CancellationToken));

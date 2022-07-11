@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -7,6 +8,9 @@ namespace CIS.Infrastructure.gRPC;
 
 public static class GrpcStartupExtensions
 {
+    public static IApplicationBuilder UseGrpc2WebApiException(this IApplicationBuilder app)
+        => app.UseWhen(context => context.Request.ContentType == "application/json", builder => app.UseMiddleware<Middleware.Grpc2WebApiExceptionMiddleware>());
+
     public static IServiceCollection TryAddGrpcClient<TService>(this IServiceCollection services, Action<IServiceCollection> registration)
     {
         if (!services.Any(t => t.ServiceType == typeof(TService)))

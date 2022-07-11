@@ -64,7 +64,7 @@ if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
 // zachytavat vyjimky pri WebApi volani a transformovat je do 400 bad request
-app.UseWhen(context => context.Request.ContentType == "application/json", builder => app.UseMiddleware<CIS.Infrastructure.gRPC.Middleware.Grpc2WebApiExceptionMiddleware>());
+app.UseGrpc2WebApiException();
 
 app.UseRouting();
 
