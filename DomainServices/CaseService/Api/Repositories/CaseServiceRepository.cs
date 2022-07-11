@@ -95,10 +95,10 @@ internal class CaseServiceRepository
             .ToListAsync(cancellation);
 
         // rozsekat na jednotlive cases
-        data.ForEach(t => t.ActiveTasks.AddRange(
+        data.ForEach(t => t.Tasks.AddRange(
             tasksCollection
                 .Where(x => x.CaseId == t.CaseId)
-                .Select(x => new Contracts.ActiveTask { TaskProcessId = x.TaskProcessId, TaskTypeId = x.TaskTypeId })
+                .Select(x => new Contracts.ActiveTask { TaskProcessId = x.TaskProcessId, TypeId = x.TaskTypeId })
                 .ToList()
         ));
 
@@ -149,7 +149,7 @@ internal class CaseServiceRepository
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task ReplaceActiveTasks(long caseId, Contracts.UpdateTaskItem[] tasks, CancellationToken cancellation)
+    public async Task ReplaceActiveTasks(long caseId, Contracts.ActiveTask[] tasks, CancellationToken cancellation)
     {
         var taskProcessIds = tasks.Select(i => i.TaskProcessId);
 

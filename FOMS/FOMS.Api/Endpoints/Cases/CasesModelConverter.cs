@@ -37,10 +37,10 @@ internal class CasesModelConverter
 			LastName = model.Customer?.Name
 		};
 
-		if (model.ActiveTasks is not null && model.ActiveTasks.Any())
+		if (model.Tasks is not null && model.Tasks.Any())
 		{
-			converted.ActiveTasks = model.ActiveTasks
-				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.CategoryId)
+			converted.ActiveTasks = model.Tasks
+				.Join(_taskTypes, i => i.TypeId, o => o.Id, (task, i) => i.CategoryId)
 				.GroupBy(k => k)
 				.Select(t => new Dto.TaskModel
 				{
