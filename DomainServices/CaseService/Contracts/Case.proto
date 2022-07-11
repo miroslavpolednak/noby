@@ -30,11 +30,10 @@ message Case {
 	cis.types.ModificationStamp Created = 8;
 
 	// Aktivni tasky workflow na danem Case
-	repeated ActiveTask ActiveTasks = 9;
+	repeated ActiveTask Tasks = 9;
 }
 
 message ActiveTask {
-	int32 TaskTypeId = 1;
-
-	int32 TaskProcessId = 2;
+	int32 TaskProcessId = 1;
+	int32 TypeId = 2;
 }

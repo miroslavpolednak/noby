@@ -3,13 +3,9 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "GrpcDate.proto";
-
-message UpdateTaskItem {
-	int32 TaskProcessId = 1;
-	int32 TypeId = 2;
-}
+import "Case.proto";
 
 message UpdateActiveTasksRequest {
 	int64 CaseId = 1;
-	repeated UpdateTaskItem Tasks = 2;
+	repeated ActiveTask Tasks = 2;
 }

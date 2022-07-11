@@ -114,11 +114,13 @@ internal class SimulateMortgageHandler
         //Default: False
         input.IsEmployeeBonusRequested = input.IsEmployeeBonusRequested ?? false;
 
-        input.FeeSettings = input.FeeSettings ?? new _OS.FeeSettings();
+        var defaultFeeSettings = new _OS.FeeSettings() { FeeTariffPurpose = 0, StatementTypeId = 1, IsStatementCharged = true };
+
+        input.FeeSettings = input.FeeSettings ?? defaultFeeSettings;
 
         // Určuje za jakým účelem se generuje seznam poplatků.
         // Default: 0 - za účelem nabídky
-        input.FeeSettings.FeeTariffPurpose = 0;
+        input.FeeSettings.FeeTariffPurpose = input.FeeSettings.FeeTariffPurpose.HasValue ? input.FeeSettings.FeeTariffPurpose.Value : defaultFeeSettings.FeeTariffPurpose;
 
         // Nastavení typu výpisů StatementType(CIS_HU_TYP_VYPIS)
         // Default: první hodnota v číselníku(dle Order)
@@ -126,7 +128,7 @@ internal class SimulateMortgageHandler
         {
             //var statementType = (await _codebookService.StatementTypes(cancellation)).OrderBy(i => i.Order).First();
             //input.FeeSettings.StatementTypeId = statementType.Id;
-            input.FeeSettings.StatementTypeId = 1;  //Default: 1 . . . první hodnota číselníku se zatím odkládá
+            input.FeeSettings.StatementTypeId = defaultFeeSettings.StatementTypeId;  //Default: 1 . . . první hodnota číselníku se zatím odkládá
         }
 
         return input;

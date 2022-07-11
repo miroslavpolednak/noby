@@ -20,7 +20,7 @@ public static class ClientExtensions
         else
         {
             // 500?
-            throw new ServiceCallResultErrorException(0, "chyba?");
+            throw new CisValidationException(0, "chyba?");
         }
     }
 }
