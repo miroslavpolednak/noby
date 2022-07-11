@@ -7,19 +7,20 @@ internal sealed class RealCreditWorthinessClient
 {
     public async Task<CreditWorthinessCalculation> Calculate(CreditWorthinessCalculationArguments request, CancellationToken cancellationToken)
     {
-        return await _httpClient.PostToC4m<CreditWorthinessCalculation>(
-            _logger,
-            CreditWorthinessStartupExtensions.ServiceName,
-            nameof(Calculate),
-            _calculateUrl,
-            request,
-            cancellationToken);
+        var response = await _httpClient
+                    .PutAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, cancellationToken)
+                    .ConfigureAwait(false);
+
+        var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(cancellationToken: cancellationToken)
+                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(CreditWorthinessCalculation));
+
+        return result;
     }
 
     private readonly HttpClient _httpClient;
     private readonly ILogger<RealCreditWorthinessClient> _logger;
 
-    const string _calculateUrl = "/riskBusinessCase";
+    const string _calculateUrl = "/credit-worthiness";
 
     public RealCreditWorthinessClient(HttpClient httpClient, ILogger<RealCreditWorthinessClient> logger)
     {

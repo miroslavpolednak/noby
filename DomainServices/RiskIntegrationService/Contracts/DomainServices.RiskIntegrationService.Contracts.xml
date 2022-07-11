@@ -93,21 +93,6 @@
             popis důvodu nespočtení výsledku.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest.LoanApplicationIdMp">
-            <summary>
-            ID dané úvěrové žádosti.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest.ResourceProcessIdMp">
-            <summary>
-            ID business procesu, v rámci kterého, Risk Business Case vzniká.
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest.ItChannel">
-            <summary>
-            Typ zdrojové aplikace (např. NOBY, STARBUILD)
-            </summary>
-        </member>
         <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseResponse.RiskBusinessCaseIdMp">
             <summary>
             identifikátor obchodního případu v C4M (ResoureIdentifier.Id)

@@ -1113,6 +1113,26 @@
             kód pracovní pozice přihlášeného uživatele /schvalovatele
             </summary>
         </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CreateCase(DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CreateRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoření nového Risk Business Case
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CaseAssessment(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhodnocení úvěrové žádosti
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CaseAssessmentAsync(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhodnocení úvěrové žádosti - asynchronní
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CaseCommitment(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest,System.Threading.CancellationToken)">
+            <summary>
+            Dokončení úvěrové žádosti
+            </summary>
+        </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.AppConfiguration.ServiceUser2ItChannelBinding">
             <summary>
             Nastaveni mapovani technickych uzivatelu sluzby vs. ItChannel C4M
