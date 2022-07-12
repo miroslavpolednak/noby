@@ -121,4 +121,44 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
 FROM dbo.Uver A
 INNER JOIN cis.AkceUveru B ON A.AkceUveruId=B.Id
 WHERE A.Id=@id";
+
+    /*
+
+    SELECT
+	A.CisloSmlouvy 'ContractNumber',
+	B.Text 'ProductName',
+	A.VyseUveru 'LoanAmount',
+	A.RadnaSazba 'LoanInterestRate',
+	A.DelkaFixaceUrokoveSazby 'FixedRatePeriod ',
+	A.TypUveru 'ProductTypeId',
+	A.MesicniSplatka 'LoanPaymentAmount',
+	A.ZustatekCelkem 'CurrentAmount',
+	A.DatumKonceCerpani 'DrawingDateTo',
+	A.DatumUzavreniSmlouvy 'ContractStartDate',
+	A.DatumFixaceUrokoveSazby 'FixationDate',
+	A.ZbyvaCerpat 'AmountToWithdraw',
+	--dbo.VztahUver.PartnerId
+	--dbo.VztahUver.VztahId
+	A.DatumUzavreniSmlouvy 'ContractSignedDate',
+	A.DatumFixaceUrokoveSazby 'FixedRateValidTo',
+	A.ZbyvaCerpat 'AvailableForDrawing',
+	null 'Principal', -- A.Jistina ???
+	A.DruhUveru 'LoanKindId',
+	A.DatumPrvniVyplatyZUveru 'ExpectedDateOfDrawing',
+	null 'LoanDueDate', -- DatumPredpSplatnosti, DatumZbytkoveSplCelkem ???
+	null 'PaymentDay', -- ???
+	null 'LoanInterestRateRefix', -- ???
+	null 'LoanInterestRateValidFromRefix', -- ???
+	null 'FixedRatePeriodRefix', -- ???
+	null 'Cpm', -- A.CPM ???
+	A.PoradceId 'Icp',
+	null 'LoanTermsValidFrom',
+	null 'YearlyAccountStatement',
+    A.DruhUveru 'DruhUveru',
+    A.DelkaFixaceUrokoveSazby 'DelkaFixaceUrokoveSazby'
+FROM dbo.Uver A
+INNER JOIN cis.AkceUveru B ON A.AkceUveruId=B.Id
+--WHERE A.Id=@id
+
+     */
 }
