@@ -51,7 +51,7 @@ internal class GetAllHandler
             "obligationtypes" => new(original, await _codebooks.ObligationTypes(cancellationToken)),
             "paymentdays" => new(original, (await _codebooks.PaymentDays(cancellationToken)).Where(t => t.ShowOnPortal).ToList()),
             "postcodes" => new (original, await _codebooks.PostCodes(cancellationToken)),
-            "producttypes" => new(original, await _codebooks.ProductTypes(cancellationToken)),
+            "producttypes" => new(original, await getProductTypes(cancellationToken)),
             "propertysettlements" => new(original, await _codebooks.PropertySettlements(cancellationToken)),
             "salesarrangementstates" => new(original, (await _codebooks.SalesArrangementStates(cancellationToken)).Where(t => t.Id > 0).ToList()),
             "salesarrangementtypes" => new(original, await _codebooks.SalesArrangementTypes(cancellationToken)),
@@ -71,6 +71,26 @@ internal class GetAllHandler
 
             _ => throw new NotImplementedException($"Codebook code '{original}' is not implemented")
         };
+
+    private async Task<List<Dto.ProductTypeItem>> getProductTypes(CancellationToken cancellationToken)
+    {
+        var loankinds = await _codebooks.LoanKinds(cancellationToken);
+        var codeboook = await _codebooks.ProductTypes(cancellationToken);
+
+        return codeboook.Select(t => new Dto.ProductTypeItem
+        {
+            Id = t.Id,
+            LoanAmountMax = t.LoanAmountMax,
+            LoanAmountMin = t.LoanAmountMin,
+            LoanDurationMax = t.LoanDurationMax,
+            LoanDurationMin = t.LoanDurationMin,
+            LtvMax = t.LtvMax,
+            LtvMin = t.LtvMin,
+            MandantId = t.MandantId,
+            Name = t.Name,
+            LoanKinds = t.LoanKindIds is null ? null : loankinds.Where(x => t.LoanKindIds.Contains(x.Id)).ToList()
+        }).ToList();
+    }
 
     private readonly ICodebookServiceAbstraction _codebooks;
     private readonly ILogger<GetAllHandler> _logger;
