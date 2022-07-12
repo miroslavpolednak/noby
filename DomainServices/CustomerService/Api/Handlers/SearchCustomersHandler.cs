@@ -20,9 +20,6 @@ namespace DomainServices.CustomerService.Api.Handlers
 
         public async Task<SearchCustomersResponse> Handle(SearchCustomersMediatrRequest request, CancellationToken cancellationToken)
         {
-            if (request.Request.Mandant != CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb)
-                return new SearchCustomersResponse();
-
             // ciselniky
             var docTypes = await _codebooks.IdentificationDocumentTypes(cancellationToken);
             var countries = await _codebooks.Countries(cancellationToken);
