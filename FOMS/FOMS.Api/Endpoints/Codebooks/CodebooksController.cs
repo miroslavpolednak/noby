@@ -31,6 +31,7 @@ public class CodebooksController : ControllerBase
     /// - Fees
     /// - FixedRatePeriods
     /// - Genders
+    /// - HouseholdTypes
     /// - IdentificationDocumentTypes
     /// - IncomeMainTypes
     /// - IncomeForeignTypes

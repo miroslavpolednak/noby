@@ -38,6 +38,7 @@ internal class GetAllHandler
             "fees" => new(original, await _codebooks.Fees(cancellationToken)),
             "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
+            "householdtypes" => new(original, await _codebooks.HouseholdTypes(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
             "incomemaintypes" => new(original, await _codebooks.IncomeMainTypes(cancellationToken)),
             "incomeforeigntypes" => new(original, await _codebooks.IncomeForeignTypes(cancellationToken)),
