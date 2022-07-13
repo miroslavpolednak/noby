@@ -5,21 +5,18 @@ public class CalculateRequest
     : IRequest<CalculateResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
-    public string? ResourceProcessIdMp { get; set; }
-
-    [ProtoMember(2)]
-    public string? ItChannel { get; set; }
+    public string? ResourceProcessId { get; set; }
 
     [ProtoMember(3)]
-    public string? RiskBusinessCaseIdMp { get; set; }
+    public string? RiskBusinessCaseId { get; set; }
 
     [ProtoMember(4)]
-    public HumanUser? HumanUser { get; set; }
+    public Identity? Identity { get; set; }
 
     [ProtoMember(5)]
-    public LoanApplicationProduct? LoanApplicationProduct { get; set; }
+    public CreditWorthinessProduct? Product { get; set; }
 
     [ProtoMember(6)]
-    public List<LoanApplicationHousehold>? Households { get; set; }
+    public List<CreditWorthinessHousehold>? Households { get; set; }
 }
 

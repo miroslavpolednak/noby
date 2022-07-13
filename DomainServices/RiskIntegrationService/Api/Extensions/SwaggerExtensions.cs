@@ -48,7 +48,9 @@ internal static class SwaggerExtensions
             x.UseInlineDefinitionsForEnums();
 
             x.CustomSchemaIds(type => type.ToString());
-            
+
+            x.MapType<decimal>(() => new OpenApiSchema { Type = "number", Format = "decimal" });
+
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.RiskIntegrationService.Contracts.xml"));

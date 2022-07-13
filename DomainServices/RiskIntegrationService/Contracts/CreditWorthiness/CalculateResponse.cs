@@ -16,7 +16,7 @@ public class CalculateResponse
     public long? RemainsLivingInst { get; set; }
 
     [ProtoMember(5)]
-    public int WorthinessResult { get; set; }
+    public CreditWorthinessResults WorthinessResult { get; set; }
 
     [ProtoMember(6)]
     public ResultReason? ResultReason { get; set; }

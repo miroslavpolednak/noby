@@ -59,7 +59,7 @@ public class CaseCommitmentRequest
     /// approver.
     /// </summary>
     [DataMember(Order = 9)]
-    public HumanUser Approver { get; set; }
+    public Identity Approver { get; set; }
 
     /// <summary>
     /// collateralAgreements.
@@ -71,5 +71,5 @@ public class CaseCommitmentRequest
     /// Uživatel/schvalovatel, který službu volá (přihlášený do NOBY/StarBuildu)
     /// </summary>
     [DataMember(Order = 11)]
-    public HumanUser HumanUser { get; set; }
+    public Identity HumanUser { get; set; }
 }

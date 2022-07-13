@@ -4,18 +4,18 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.C
 
 internal static class CalculateRequestExtensions
 {
-    public static _C4M.LoanApplicationProduct ToC4m(this Contracts.CreditWorthiness.LoanApplicationProduct product, string clusterCode)
+    public static _C4M.LoanApplicationProduct ToC4m(this Contracts.CreditWorthiness.CreditWorthinessProduct product, string clusterCode)
         => new()
         {
             ProductClusterCode = clusterCode,
-            AmountRequired = product.AmountRequired,
-            Annuity = product.Annuity,
-            FixationPeriod = product.FixationPeriod,
-            InterestRate = product.InterestRate,
-            Maturity = product.Maturity
+            AmountRequired = product.LoanAmount,
+            Annuity = product.LoanPaymentAmount,
+            FixationPeriod = product.FixedRatePeriod,
+            InterestRate = product.LoanInterestRate,
+            Maturity = product.LoanDuration
         };
 
-    public static List<_C4M.ExpensesSummary> ToC4m(this Contracts.CreditWorthiness.ExpensesSummary expenses)
+    public static List<_C4M.ExpensesSummary> ToC4m(this Contracts.CreditWorthiness.CreditWorthinessExpenses expenses)
         => new List<_C4M.ExpensesSummary>()
         {
             new() { Amount = expenses.Rent.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.RENT },
@@ -25,7 +25,7 @@ internal static class CalculateRequestExtensions
             new() { Amount = 0, Category = _C4M.ExpensesSummaryCategory.ALIMONY },
         };
 
-    public static List<_C4M.LoanApplicationCounterParty> ToC4m(this List<Contracts.CreditWorthiness.LoanApplicationCounterParty> clients,
+    public static List<_C4M.LoanApplicationCounterParty> ToC4m(this List<Contracts.CreditWorthiness.CreditWorthinessCustomer> clients,
         int mandantId,
         List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> maritalStatuses,
         List<CodebookService.Contracts.GenericCodebookItemWithCode> mainIncomeTypes)
@@ -39,14 +39,14 @@ internal static class CalculateRequestExtensions
                 new() { Category = _C4M.LoanApplicationIncomeCategory.RENT, Month = 1 },
                 new() { Category = _C4M.LoanApplicationIncomeCategory.OTHER, Month = 1 }
             };
-            t.LoanApplicationIncome?.ForEach(i =>
+            t.Incomes?.ForEach(i =>
             {
-                string incomeCode = mainIncomeTypes.FirstOrDefault(t => t.Id == i.CategoryMp)?.Code ?? throw new CisValidationException(0, $"IncomeType={i.CategoryMp} not found in IncomeMainTypes codebook");
+                string incomeCode = mainIncomeTypes.FirstOrDefault(t => t.Id == i.IncomeTypeId)?.Code ?? throw new CisValidationException(0, $"IncomeType={i.IncomeTypeId} not found in IncomeMainTypes codebook");
                 incomes.First(t => t.Category == FastEnum.Parse<_C4M.LoanApplicationIncomeCategory>(incomeCode)).Amount += i.Amount;
             });
 
             // merital status
-            _C4M.LoanApplicationCounterPartyMaritalStatus maritalStatus = FastEnum.TryParse(maritalStatuses.FirstOrDefault(m => m.Id == t.MaritalStatusMp)?.RdmMaritalStatusCode, out _C4M.LoanApplicationCounterPartyMaritalStatus ms) ? ms : _C4M.LoanApplicationCounterPartyMaritalStatus.M;
+            _C4M.LoanApplicationCounterPartyMaritalStatus maritalStatus = FastEnum.TryParse(maritalStatuses.FirstOrDefault(m => m.Id == t.MaritalStatusStateId)?.RdmMaritalStatusCode, out _C4M.LoanApplicationCounterPartyMaritalStatus ms) ? ms : _C4M.LoanApplicationCounterPartyMaritalStatus.M;
 
             // Id, IsPartner
             return new _C4M.LoanApplicationCounterParty
@@ -56,63 +56,63 @@ internal static class CalculateRequestExtensions
                     Id = t.IdMp,
                     Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
                 },
-                IsPartner = t.IsPartnerMp ? 1 : 0,
+                IsPartner = t.HasPartner ? 1 : 0,
                 MaritalStatus = maritalStatus,
                 LoanApplicationIncome = incomes,
             };
         }).ToList();
 
     #region liabilities
-    public static List<_C4M.CreditLiabilitiesSummaryHomeCompany> ToC4mCreditLiabilitiesSummary(this List<Contracts.CreditWorthiness.CreditLiability>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.CreditLiabilitiesSummaryHomeCompany> ToC4mCreditLiabilitiesSummary(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
-                var coll = liabilites?.Where(x => x.LiabilityType == t.Id && !x.OutHomeCompanyFlag).ToList();
+                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && !x.IsObligationCreditorExternal).ToList();
                 return new _C4M.CreditLiabilitiesSummaryHomeCompany
                 {
-                    Amount = coll?.Sum(x => x.Limit) ?? 0,
+                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup>(t.Code)
                 };
             })
             .ToList();
 
-    public static List<_C4M.CreditLiabilitiesSummary> ToC4mCreditLiabilitiesSummaryOut(this List<Contracts.CreditWorthiness.CreditLiability>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.CreditLiabilitiesSummary> ToC4mCreditLiabilitiesSummaryOut(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
-                var coll = liabilites?.Where(x => x.LiabilityType == t.Id && x.OutHomeCompanyFlag).ToList();
+                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && x.IsObligationCreditorExternal).ToList();
                 return new _C4M.CreditLiabilitiesSummary
                 {
-                    Amount = coll?.Sum(x => x.Limit) ?? 0,
+                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryProductGroup>(t.Code)
                 };
             })
             .ToList();
 
-    public static List<_C4M.InstallmentsSummaryHomeCompany> ToC4mInstallmentsSummary(this List<Contracts.CreditWorthiness.CreditLiability>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.InstallmentsSummaryHomeCompany> ToC4mInstallmentsSummary(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
-                var coll = liabilites?.Where(x => x.LiabilityType == t.Id && !x.OutHomeCompanyFlag).ToList();
+                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && !x.IsObligationCreditorExternal).ToList();
                 return new _C4M.InstallmentsSummaryHomeCompany
                 {
-                    Amount = coll?.Sum(x => x.Installment) ?? 0,
+                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryHomeCompanyProductGroup>(t.Code)
                 };
             })
             .ToList();
 
-    public static List<_C4M.InstallmentsSummaryOutHomeCompany> ToC4mInstallmentsSummaryOut(this List<Contracts.CreditWorthiness.CreditLiability>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.InstallmentsSummaryOutHomeCompany> ToC4mInstallmentsSummaryOut(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
-                var coll = liabilites?.Where(x => x.LiabilityType == t.Id && x.OutHomeCompanyFlag).ToList();
+                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && x.IsObligationCreditorExternal).ToList();
                 return new _C4M.InstallmentsSummaryOutHomeCompany
                 {
-                    Amount = coll?.Sum(x => x.Installment) ?? 0,
+                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryOutHomeCompanyProductGroup>(t.Code)
                 };
@@ -121,14 +121,14 @@ internal static class CalculateRequestExtensions
     #endregion liabilities
 
     #region human user
-    public static _C4M.Dealer ToC4mDealer(this Dto.C4mUserInfoData userInfo, Contracts.HumanUser humanUser)
+    public static _C4M.Dealer ToC4mDealer(this Dto.C4mUserInfoData userInfo, Contracts.Identity humanUser)
         => new()
         {
             Id = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser),
             CompanyId = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser, userInfo.DealerCompanyId?.ToString())
         };
 
-    public static _C4M.Person ToC4mKbPerson(this Dto.C4mUserInfoData userInfo, Contracts.HumanUser humanUser)
+    public static _C4M.Person ToC4mKbPerson(this Dto.C4mUserInfoData userInfo, Contracts.Identity humanUser)
         => new()
         {
             Id = _C4M.ResourceIdentifier.Create("PM", "KBGroupPerson", humanUser),

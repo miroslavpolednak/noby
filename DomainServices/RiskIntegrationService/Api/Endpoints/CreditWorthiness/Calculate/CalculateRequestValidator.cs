@@ -8,28 +8,28 @@ internal class CalculateRequestValidator
 {
     public CalculateRequestValidator()
     {
-        RuleFor(t => t.ResourceProcessIdMp)
+        RuleFor(t => t.ResourceProcessId)
             .NotEmpty();
 
-        RuleFor(t => t.RiskBusinessCaseIdMp)
+        RuleFor(t => t.RiskBusinessCaseId)
             .Must(t => long.TryParse(t, out long x));
 
-        RuleFor(t => t.LoanApplicationProduct)
+        RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
             .NotNull()
             .ChildRules(t =>
             {
-                t.RuleFor(t => t!.Product)
+                t.RuleFor(t => t!.ProductTypeId)
                     .GreaterThan(0);
-                t.RuleFor(t => t!.Maturity)
+                t.RuleFor(t => t!.LoanInterestRate)
                     .GreaterThan(0);
-                t.RuleFor(t => t!.InterestRate)
+                t.RuleFor(t => t!.LoanAmount)
                     .GreaterThan(0);
-                t.RuleFor(t => t!.AmountRequired)
+                t.RuleFor(t => t!.LoanPaymentAmount)
                     .GreaterThan(0);
-                t.RuleFor(t => t!.Annuity)
+                t.RuleFor(t => t!.FixedRatePeriod)
                     .GreaterThan(0);
-                t.RuleFor(t => t!.FixationPeriod)
+                t.RuleFor(t => t!.LoanDuration)
                     .GreaterThan(0);
             });
 
@@ -38,27 +38,27 @@ internal class CalculateRequestValidator
         RuleForEach(t => t.Households)
             .ChildRules(t =>
             {
-                t.RuleFor(t => t!.Clients)
+                t.RuleFor(t => t!.Customers)
                     .NotEmpty();
-                t.RuleForEach(t => t!.Clients)
+                t.RuleForEach(t => t!.Customers)
                     .ChildRules(x =>
                     {
                         x.RuleFor(t => t!.IdMp)
                             .NotEmpty();
-                        x.RuleFor(t => t!.LoanApplicationIncome)
+                        x.RuleFor(t => t!.Incomes)
                             .NotEmpty();
-                        x.RuleForEach(t => t!.LoanApplicationIncome)
+                        x.RuleForEach(t => t!.Incomes)
                             .ChildRules(y =>
                             {
-                                y.RuleFor(t => t!.CategoryMp)
+                                y.RuleFor(t => t!.IncomeTypeId)
                                     .GreaterThan(0);
                             });
                     });
             });
 
-        RuleFor(t => t.HumanUser)
+        RuleFor(t => t.Identity)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .SetValidator(new HumanUserValidator());
+            .SetValidator(new IdentityValidator());
     }
 }

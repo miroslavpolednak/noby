@@ -16,6 +16,8 @@ internal static class CalculateResponseExtensions
                 Code = response.ResultReason.Code,
                 Description = response.ResultReason.Description
             },
-            WorthinessResult = response.InstallmentLimit > response.RemainsLivingAnnuity ? 1 : 0
+            WorthinessResult = response.InstallmentLimit > response.RemainsLivingAnnuity 
+                ? Contracts.CreditWorthiness.CreditWorthinessResults.Success 
+                : Contracts.CreditWorthiness.CreditWorthinessResults.Failed
         };
 }

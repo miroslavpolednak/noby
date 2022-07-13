@@ -2,12 +2,12 @@
 
 namespace DomainServices.RiskIntegrationService.Api.GlobalValidators;
 
-internal class HumanUserValidator
-    : AbstractValidator<Contracts.HumanUser?>
+internal class IdentityValidator
+    : AbstractValidator<Contracts.Identity?>
 {
-    public HumanUserValidator()
+    public IdentityValidator()
     {
-        RuleFor(t => t!.Identity)
+        RuleFor(t => t!.IdentityId)
             .NotEmpty();
         RuleFor(t => t!.IdentityScheme)
             .NotEmpty();
