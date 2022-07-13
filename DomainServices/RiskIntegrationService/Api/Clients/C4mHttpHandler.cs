@@ -49,8 +49,12 @@ internal class C4mHttpHandler : DelegatingHandler
                 // chyba spravne reportovana z c4m
                 var result = await response.Content.ReadFromJsonAsync<Dto.ErrorModel>(cancellationToken: cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(C4mHttpHandler), nameof(Dto.ErrorModel));
-
-                throw new CisValidationException(0, await getRawResponse());
+                
+                throw new CisExtServiceValidationException(new List<(string Key, string Message)> 
+                { 
+                    (result.Code ?? "", result.Message ?? "") 
+                }, 
+                $"C4M error: Category: {result.Category}; Code: {result.Code};");
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
                 throw new CisServiceUnavailableException(_serviceName, request.RequestUri!.ToString(), await getRawResponse());

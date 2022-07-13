@@ -11,9 +11,6 @@ internal class CalculateRequestValidator
         RuleFor(t => t.ResourceProcessId)
             .NotEmpty();
 
-        RuleFor(t => t.RiskBusinessCaseId)
-            .Must(t => long.TryParse(t, out long x));
-
         RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
             .NotNull()

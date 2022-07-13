@@ -29,11 +29,34 @@ public sealed class Grpc2WebApiExceptionMiddleware
         // chyby na strane c4m
         catch (Core.Exceptions.CisServiceUnavailableException ex)
         {
-            await Results.Problem(ex.Message, title: "C4M service unavailable", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+            await Results.Problem(ex.Message, title: "External service unavailable", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
         }
         catch (Core.Exceptions.CisServiceServerErrorException ex)
         {
-            await Results.Problem(ex.Message, title: "C4M service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+            await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+        }
+        // osetrena validace na urovni api call
+        catch (Core.Exceptions.CisExtServiceValidationException ex)
+        {
+            IResult result;
+            // osetrena validace v pripade, ze se vraci vice validacnich hlasek
+            if (ex.ContainErrorsList)
+            {
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+                result = Results.ValidationProblem(errors, title: "External service validation failed", detail: ex.Message);
+            }
+            else if (!string.IsNullOrEmpty(ex.Message))
+                result = Results.BadRequest(new ProblemDetails() 
+                { 
+                    Title = "External service validation failed", 
+                    Detail = ex.Message 
+                });
+            else
+                result = Results.BadRequest(new ProblemDetails() { Title = "External service: Untreated validation exception" });
+
+            await result.ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)
@@ -45,7 +68,7 @@ public sealed class Grpc2WebApiExceptionMiddleware
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
-                result = Results.ValidationProblem(errors);
+                result = Results.ValidationProblem(errors, title: ex.Message);
             }
             else if (!string.IsNullOrEmpty(ex.Message))
                 result = Results.BadRequest(new ProblemDetails() { Title = ex.Message });

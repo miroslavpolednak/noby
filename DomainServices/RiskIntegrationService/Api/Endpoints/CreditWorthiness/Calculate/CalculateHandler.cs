@@ -18,7 +18,7 @@ internal sealed class CalculateHandler
         {
             ResourceProcessId = _C4M.ResourceIdentifier.Create("MPSS", "OM", "OfferInstance", request.ResourceProcessId),
             ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
-            RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseId!),
+            //RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseId!),
             LoanApplicationProduct = request.Product.ToC4m(riskApplicationType.C4mAplCode),
             Households = request.Households!.Select(h => new _C4M.LoanApplicationHousehold
             {
