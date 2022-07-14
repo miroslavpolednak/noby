@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace CIS.Infrastructure.gRPC;
 
 //TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru
-internal class ContextUserForwardingClientInterceptor : Interceptor
+public class ContextUserForwardingClientInterceptor : Interceptor
 {
     private readonly IServiceProvider _serviceProvider;
 

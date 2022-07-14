@@ -23,9 +23,4 @@
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Interfaces\" />
-	  <Folder Include="Services\" />
-	</ItemGroup>
 </Project>

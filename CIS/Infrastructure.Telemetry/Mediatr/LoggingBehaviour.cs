@@ -19,14 +19,28 @@ internal class LoggingBehaviour<TRequest, TResponse>
     {
         string requestName = typeof(TRequest).Name;
 
-        _logger.RequestHandlerStarted(requestName, request);
-
+        using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "Payload", request }
+            }))
+        {
+            _logger.RequestHandlerStarted(requestName);
+        }
+        
         var response = await next();
 
         if (response is null || response is MediatR.Unit)
             _logger.RequestHandlerFinished(requestName);
         else
-            _logger.RequestHandlerFinished(requestName, response);
+        {
+            using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "Payload", response }
+            }))
+            {
+                _logger.RequestHandlerStarted(requestName);
+            }
+        }
         
         return response;
     }

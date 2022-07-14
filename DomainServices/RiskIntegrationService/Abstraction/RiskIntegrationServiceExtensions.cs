@@ -1,76 +1,44 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProtoBuf.Grpc.ClientFactory;
 
 namespace DomainServices.RiskIntegrationService.Abstraction;
 
 public static class RiskIntegrationServiceExtensions
 {
-    /*public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, bool isInvalidCertificateAllowed)
-        => services
-            .AddCisServiceDiscovery(isInvalidCertificateAllowed)
-            .registerUriSettings(isInvalidCertificateAllowed)
+    public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services)
+        => services.TryAddGrpcClient<v1.ICreditWorthinessService>(a =>
+            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.IGrpcSettingsMarker>("DS:RiskIntegrationService")
             .registerServices()
-            .registerGrpcServices();
+        );
 
-    public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, string serviceUrl, bool isInvalidCertificateAllowed)
-        => services
-            .AddGrpcServiceUriSettings<v1.IRipService>(serviceUrl, isInvalidCertificateAllowed)
+    public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, string serviceUrl)
+        => services.TryAddGrpcClient<v1.ICreditWorthinessService>(a =>
+            a.AddGrpcServiceUriSettings<Contracts.IGrpcSettingsMarker>(serviceUrl)
             .registerServices()
-            .registerGrpcServices();
-
-    private static IServiceCollection registerUriSettings(this IServiceCollection services, bool isInvalidCertificateAllowed)
-    {
-        if (!services.Any(t => t.ServiceType == typeof(GrpcServiceUriSettings<v1.IRipService>)))
-        {
-            services.AddSingleton(provider =>
-            {
-                string? url = provider
-                    .GetRequiredService<IDiscoveryServiceAbstraction>()
-    .GetServiceUrlSynchronously(new("DS:ProductService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
-                    .GetService(new("DS:RiskIntegrationService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc)
-                    .GetAwaiter()
-                    .GetResult()?
-                    .ServiceUrl;
-                return new GrpcServiceUriSettings<v1.IRipService>(url ?? throw new ArgumentNullException("url", "RiskIntegrationService URL can not be determined"), isInvalidCertificateAllowed);
-            });
-        }
-        return services;
-    }
+        );
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register storage services
-        //services.TryAddTransient<IRipServiceAbstraction, Services.RipService>();
+        services.AddTransient<ICreditWorthinessService, Services.CreditWorthinessService>();
 
-        // exception handling
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
-        services.TryAddSingleton<AuthenticationInterceptor>();
+        services.AddSingleton<GenericClientExceptionInterceptor>();
+        services.AddScoped<ContextUserForwardingClientInterceptor>();
+
+        services
+            .AddCodeFirstGrpcClient<v1.ICreditWorthinessService>((provider, options) =>
+            {
+                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<Contracts.IGrpcSettingsMarker>>();
+                options.Address = serviceUri.Url;
+            })
+            .CisConfigureChannel()
+            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
+            .AddInterceptor<GenericClientExceptionInterceptor>()
+            .AddInterceptor<ContextUserForwardingClientInterceptor>()
+            .AddCisCallCredentials();
 
         return services;
     }
-
-    private static IServiceCollection registerGrpcServices(this IServiceCollection services)
-    {
-        if (!services.Any(t => t.ServiceType == typeof(v1.IRipService)))
-        {
-            services
-                .AddGrpcClientFromCisEnvironment<v1.IRipService>()
-                .AddInterceptor<GenericClientExceptionInterceptor>()
-                .AddInterceptor<AuthenticationInterceptor>();
-        }
-        return services;
-    }
-
-    private static IHttpClientBuilder AddCodeFirstGrpcClientFromCisEnvironment<TService>(this IServiceCollection services)
-            where TService : class
-    {
-        return services.AddCodeFirstGrpcClient<TService>((provider, options) =>
-        {
-            var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-            options.Address = serviceUri.Url;
-        });
-    }*/
 }
