@@ -10,5 +10,5 @@ public interface ICreditWorthinessService
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<IServiceCallResult> Calculate(Contracts.CreditWorthiness.CalculateRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> Calculate(Contracts.CreditWorthiness.CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -4,7 +4,7 @@ using FluentValidation;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.Calculate;
 
 internal class CalculateRequestValidator
-    : AbstractValidator<Contracts.CreditWorthiness.CalculateRequest>
+    : AbstractValidator<Contracts.CreditWorthiness.CreditWorthinessCalculateRequest>
 {
     public CalculateRequestValidator()
     {

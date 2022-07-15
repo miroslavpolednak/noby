@@ -1144,7 +1144,7 @@
             Vrati ItChannel pro C4M, ktery je platny pro aktualniho service usera
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CalculateRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditWorthinessCalculateRequest,System.Threading.CancellationToken)">
             <summary>
             Výpočet rozšířené bonity
             </summary>

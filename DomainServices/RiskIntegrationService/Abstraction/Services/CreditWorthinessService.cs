@@ -5,11 +5,11 @@ namespace DomainServices.RiskIntegrationService.Abstraction.Services;
 internal class CreditWorthinessService
     : ICreditWorthinessService
 {
-    public async Task<IServiceCallResult> Calculate(Contracts.CreditWorthiness.CalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> Calculate(Contracts.CreditWorthiness.CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStarted(nameof(Calculate));
         var result = await _service.Calculate(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<Contracts.CreditWorthiness.CalculateResponse>(result);
+        return new SuccessfulServiceCallResult<Contracts.CreditWorthiness.CreditWorthinessCalculateResponse>(result);
     }
 
     private readonly ILogger<CreditWorthinessService> _logger;

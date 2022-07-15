@@ -1,8 +1,8 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
 [ProtoContract]
-public class CalculateRequest
-    : IRequest<CalculateResponse>, CIS.Core.Validation.IValidatableRequest
+public class CreditWorthinessCalculateRequest
+    : IRequest<CreditWorthinessCalculateResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
     public string? ResourceProcessId { get; set; }

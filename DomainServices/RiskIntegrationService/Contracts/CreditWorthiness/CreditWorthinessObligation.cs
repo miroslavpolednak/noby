@@ -7,7 +7,7 @@ public sealed class CreditWorthinessObligation
     public int ObligationTypeId { get; set; }
 
     [ProtoMember(2)]
-    public decimal? Ammount { get; set; }
+    public decimal? Amount { get; set; }
 
     [ProtoMember(3)]
     public decimal? AmountConsolidated { get; set; }

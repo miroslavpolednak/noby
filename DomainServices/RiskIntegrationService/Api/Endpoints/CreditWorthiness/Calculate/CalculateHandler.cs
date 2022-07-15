@@ -3,9 +3,9 @@
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.Calculate;
 
 internal sealed class CalculateHandler
-    : IRequestHandler<Contracts.CreditWorthiness.CalculateRequest, Contracts.CreditWorthiness.CalculateResponse>
+    : IRequestHandler<Contracts.CreditWorthiness.CreditWorthinessCalculateRequest, Contracts.CreditWorthiness.CreditWorthinessCalculateResponse>
 {
-    public async Task<Contracts.CreditWorthiness.CalculateResponse> Handle(Contracts.CreditWorthiness.CalculateRequest request, CancellationToken cancellation)
+    public async Task<Contracts.CreditWorthiness.CreditWorthinessCalculateResponse> Handle(Contracts.CreditWorthiness.CreditWorthinessCalculateRequest request, CancellationToken cancellation)
     {
         // appl type pro aktualni produkt
         var riskApplicationType = await getRiskApplicationType(request.Product!.ProductTypeId, cancellation);

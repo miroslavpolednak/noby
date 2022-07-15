@@ -3,5 +3,5 @@
 [ServiceContract(Name = "DomainServices.RiskIntegrationService.v1.CreditWorthinessService")]
 public interface ICreditWorthinessService
 {
-    ValueTask<Contracts.CreditWorthiness.CalculateResponse> Calculate(Contracts.CreditWorthiness.CalculateRequest request, CancellationToken cancellationToken = default);
+    ValueTask<Contracts.CreditWorthiness.CreditWorthinessCalculateResponse> Calculate(Contracts.CreditWorthiness.CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default);
 }

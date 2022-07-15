@@ -70,7 +70,7 @@ internal static class CalculateRequestExtensions
                 var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && !x.IsObligationCreditorExternal).ToList();
                 return new _C4M.CreditLiabilitiesSummaryHomeCompany
                 {
-                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
+                    Amount = coll?.Sum(x => x.Amount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup>(t.Code)
                 };
@@ -84,7 +84,7 @@ internal static class CalculateRequestExtensions
                 var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && x.IsObligationCreditorExternal).ToList();
                 return new _C4M.CreditLiabilitiesSummary
                 {
-                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
+                    Amount = coll?.Sum(x => x.Amount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryProductGroup>(t.Code)
                 };
@@ -98,7 +98,7 @@ internal static class CalculateRequestExtensions
                 var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && !x.IsObligationCreditorExternal).ToList();
                 return new _C4M.InstallmentsSummaryHomeCompany
                 {
-                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
+                    Amount = coll?.Sum(x => x.Amount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryHomeCompanyProductGroup>(t.Code)
                 };
@@ -112,7 +112,7 @@ internal static class CalculateRequestExtensions
                 var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && x.IsObligationCreditorExternal).ToList();
                 return new _C4M.InstallmentsSummaryOutHomeCompany
                 {
-                    Amount = coll?.Sum(x => x.Ammount) ?? 0,
+                    Amount = coll?.Sum(x => x.Amount) ?? 0,
                     AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
                     ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryOutHomeCompanyProductGroup>(t.Code)
                 };
