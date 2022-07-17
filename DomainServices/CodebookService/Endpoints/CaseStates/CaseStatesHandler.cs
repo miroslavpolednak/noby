@@ -8,7 +8,7 @@ public class CaseStatesHandler
     public Task<List<CaseStateItem>> Handle(CaseStatesRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Foms.Enums.CaseStates>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.CaseStates>()
             .Select(t => new CaseStateItem
             {
                 Id = (int)t,

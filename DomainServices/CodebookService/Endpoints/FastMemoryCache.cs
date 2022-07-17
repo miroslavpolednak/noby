@@ -1,14 +1,25 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Concurrent;
 
 namespace DomainServices.CodebookService.Endpoints;
 
-internal class FastMemoryCache
+public sealed class FastMemoryCache
 {
+    //TODO zatim se mi to nechce datavat do appsettings
+    public const int AbsoluteExpirationInMinutes = 10;
+
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
+    private static CancellationTokenSource _changeTokenSource = new CancellationTokenSource();
 
-    public static async Task<List<TItem>> GetOrCreate<TItem>(string key, Func<Task<List<TItem>>> createItems)
+    public static void Reset()
+    {
+        _changeTokenSource.Cancel();
+        _changeTokenSource = new CancellationTokenSource();
+    }
+
+    internal static async Task<List<TItem>> GetOrCreate<TItem>(string key, Func<Task<List<TItem>>> createItems)
         where TItem : class
     {
         List<TItem> cacheEntry;
@@ -23,7 +34,15 @@ internal class FastMemoryCache
                 {
                     // Key not in cache, so get data.
                     cacheEntry = await createItems();
-                    _cache.Set(key, cacheEntry);
+
+                    // opts
+                    var cacheOptions = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(AbsoluteExpirationInMinutes)
+                    };
+                    cacheOptions.AddExpirationToken(new CancellationChangeToken(_changeTokenSource.Token));
+
+                    _cache.Set(key, cacheEntry, cacheOptions);
                 }
             }
             finally

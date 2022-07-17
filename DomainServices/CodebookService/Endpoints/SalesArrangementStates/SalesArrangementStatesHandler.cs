@@ -8,7 +8,7 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementStates
         public Task<List<SalesArrangementStateItem>> Handle(SalesArrangementStatesRequest request, CancellationToken cancellationToken)
         {
             //TODO nakesovat?
-            var values = Enum.GetValues<CIS.Foms.Enums.SalesArrangementStates>()
+            var values = FastEnum.GetValues<CIS.Foms.Enums.SalesArrangementStates>()
                 .Select(t => new SalesArrangementStateItem
                 {
                     Id = (int)t,

@@ -8,7 +8,7 @@ public class GendersHandler
     public Task<List<GenderItem>> Handle(GendersRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Foms.Enums.Genders>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.Genders>()
             .Select(t => new GenderItem
             {
                 Id = (int)t,

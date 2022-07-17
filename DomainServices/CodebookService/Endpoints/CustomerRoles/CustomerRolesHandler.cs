@@ -16,7 +16,7 @@ public class CustomerRolesHandler
         };
 
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Foms.Enums.CustomerRoles>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.CustomerRoles>()
             .Select(t => new CustomerRoleItem()
             {
                 Id = (int)t,

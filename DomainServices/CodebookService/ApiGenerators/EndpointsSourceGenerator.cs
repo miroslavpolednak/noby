@@ -1,6 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,6 +27,7 @@ namespace DomainServices.CodebookService.ApiGenerators
             var endpoints = serviceInterface.GetMembers()
                 .Where(t => t is IMethodSymbol)
                 .Cast<IMethodSymbol>()
+                .Where(t => t.OriginalDefinition.Name != "Reset")
                 .Select(t => new Endpoint(t.OriginalDefinition.Name, t.OriginalDefinition.ReturnType.ToString(), t.OriginalDefinition.Parameters.Count() == 2 ? t.OriginalDefinition.Parameters[0].ToString() : ""))
                 .ToList();
 
