@@ -10,7 +10,7 @@ public class HouseholdTypeItem
 
     [DataMember(Order = 2)]
     [JsonIgnore]
-    public CIS.Foms.Enums.HouseholdTypes Value { get; set; }
+    public CIS.Foms.Enums.HouseholdTypes EnumValue { get; set; }
     
     [DataMember(Order = 3)]
     public string Name { get; set; }

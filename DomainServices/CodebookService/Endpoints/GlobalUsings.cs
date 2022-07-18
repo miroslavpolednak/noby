@@ -6,3 +6,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using CIS.Core;
 global using CIS.Infrastructure.Logging;
 global using CIS.Infrastructure.Data;
+global using FastEnumUtility;

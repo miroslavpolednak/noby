@@ -10,8 +10,11 @@ public class SignatureTypeItem
 
     [DataMember(Order = 2)]
     [JsonIgnore]
-    public CIS.Foms.Enums.SignatureTypes Value { get; set; }
+    public CIS.Foms.Enums.SignatureTypes EnumValue { get; set; }
     
     [DataMember(Order = 3)]
     public string Name { get; set; }
+
+    [DataMember(Order = 4)]
+    public bool IsDefault { get; set; }
 }

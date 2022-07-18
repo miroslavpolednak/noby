@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
 [ProtoContract]
-public sealed class ResultReason
+public sealed class CreditWorthinessResultReason
 {
     [ProtoMember(1)]
     public string? Code { get; set; }

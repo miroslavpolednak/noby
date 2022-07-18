@@ -1,13 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using ProtoBuf.Grpc;
+﻿using DomainServices.CodebookService.Endpoints;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DomainServices.CodebookService.Api.Services;
 
 [Authorize]
 public partial class CodebookService
 {
-    private readonly MediatR.IMediator _mediator;
+    private readonly IMediator _mediator;
 
-    public CodebookService(MediatR.IMediator mediator)
+    public ValueTask Reset(CancellationToken cancellationToken = default)
+    {
+        FastMemoryCache.Reset();
+
+        return ValueTask.CompletedTask;
+    }
+
+    public CodebookService(IMediator mediator)
         => this._mediator = mediator;
 }

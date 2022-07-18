@@ -167,6 +167,7 @@
             - Fees
             - FixedRatePeriods
             - Genders
+            - HouseholdTypes
             - IdentificationDocumentTypes
             - IncomeMainTypes
             - IncomeForeignTypes

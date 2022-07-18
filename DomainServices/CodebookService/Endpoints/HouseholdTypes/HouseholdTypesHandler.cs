@@ -8,11 +8,11 @@ internal class HouseholdTypesHandler
     public Task<List<HouseholdTypeItem>> Handle(HouseholdTypesRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Foms.Enums.HouseholdTypes>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.HouseholdTypes>()
             .Select(t => new HouseholdTypeItem()
             {
                 Id = (int)t,
-                Value = t,
+                EnumValue = t,
                 RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
             })

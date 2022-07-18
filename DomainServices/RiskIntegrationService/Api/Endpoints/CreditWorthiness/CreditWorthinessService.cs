@@ -14,6 +14,6 @@ public class CreditWorthinessService
         _mediator = mediator;
     }
 
-    public async ValueTask<CalculateResponse> Calculate(CalculateRequest request, CancellationToken cancellationToken = default)
+    public async ValueTask<CreditWorthinessCalculateResponse> Calculate(CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default)
         => await _mediator.Send(request, cancellationToken);
 }

@@ -7,7 +7,7 @@ public class AddressTypesHandler : IRequestHandler<AddressTypesRequest, List<Gen
 {
     public Task<List<GenericCodebookItemWithCode>> Handle(AddressTypesRequest request, CancellationToken cancellationToken)
     {
-        var values = Enum.GetValues<CIS.Foms.Enums.AddressTypes>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.AddressTypes>()
                 .Where(t => t > 0)
                 .Select(t => new GenericCodebookItemWithCode
                 {

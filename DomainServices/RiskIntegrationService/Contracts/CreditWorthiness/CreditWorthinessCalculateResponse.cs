@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
 [ProtoContract]
-public class CalculateResponse
+public class CreditWorthinessCalculateResponse
 {
     [ProtoMember(1)]
     public long? InstallmentLimit { get; set; }
@@ -16,8 +16,8 @@ public class CalculateResponse
     public long? RemainsLivingInst { get; set; }
 
     [ProtoMember(5)]
-    public int WorthinessResult { get; set; }
+    public CreditWorthinessResults WorthinessResult { get; set; }
 
     [ProtoMember(6)]
-    public ResultReason? ResultReason { get; set; }
+    public CreditWorthinessResultReason? ResultReason { get; set; }
 }

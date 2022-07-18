@@ -3,29 +3,29 @@
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.Calculate;
 
 internal sealed class CalculateHandler
-    : IRequestHandler<Contracts.CreditWorthiness.CalculateRequest, Contracts.CreditWorthiness.CalculateResponse>
+    : IRequestHandler<Contracts.CreditWorthiness.CreditWorthinessCalculateRequest, Contracts.CreditWorthiness.CreditWorthinessCalculateResponse>
 {
-    public async Task<Contracts.CreditWorthiness.CalculateResponse> Handle(Contracts.CreditWorthiness.CalculateRequest request, CancellationToken cancellation)
+    public async Task<Contracts.CreditWorthiness.CreditWorthinessCalculateResponse> Handle(Contracts.CreditWorthiness.CreditWorthinessCalculateRequest request, CancellationToken cancellation)
     {
         // appl type pro aktualni produkt
-        var riskApplicationType = await getRiskApplicationType(request.LoanApplicationProduct!.Product, cancellation);
+        var riskApplicationType = await getRiskApplicationType(request.Product!.ProductTypeId, cancellation);
         var maritalStatuses = await _codebookService.MaritalStatuses(cancellation);
         var mainIncomeTypes = await _codebookService.IncomeMainTypes(cancellation);
         var obligationTypes = await _codebookService.ObligationTypes(cancellation);
-        var liabilitiesFlatten = request.Households!.SelectMany(h => h.Clients!.Where(x => x.CreditLiabilities is not null).SelectMany(x => x.CreditLiabilities!)).ToList();
+        var liabilitiesFlatten = request.Households!.SelectMany(h => h.Customers!.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!)).ToList();
 
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
-            ResourceProcessId = _C4M.ResourceIdentifier.Create("MPSS", "OM", "OfferInstance", request.ResourceProcessIdMp),
+            ResourceProcessId = _C4M.ResourceIdentifier.Create("MPSS", "OM", "OfferInstance", request.ResourceProcessId),
             ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
-            RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseIdMp!),
-            LoanApplicationProduct = request.LoanApplicationProduct.ToC4m(riskApplicationType.C4mAplCode),
+            //RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseId!),
+            LoanApplicationProduct = request.Product.ToC4m(riskApplicationType.C4mAplCode),
             Households = request.Households!.Select(h => new _C4M.LoanApplicationHousehold
             {
-                ChildrenOver10 = h.ChildrenOver10,
-                ChildrenUnderAnd10 = h.ChildrenUnderAnd10,
-                ExpensesSummary = (h.ExpensesSummary ?? new Contracts.CreditWorthiness.ExpensesSummary()).ToC4m(),
-                Clients = (h.Clients ?? new(0)).ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
+                ChildrenOver10 = h.ChildrenOverTenYearsCount,
+                ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
+                ExpensesSummary = (h.ExpensesSummary ?? new Contracts.CreditWorthiness.CreditWorthinessExpenses()).ToC4m(),
+                Clients = h.Customers!.ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
                 CreditLiabilitiesSummary = liabilitiesFlatten.ToC4mCreditLiabilitiesSummary(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 CreditLiabilitiesSummaryOut = liabilitiesFlatten.ToC4mCreditLiabilitiesSummaryOut(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 InstallmentsSummary = liabilitiesFlatten.ToC4mInstallmentsSummary(obligationTypes.Where(o => o.Id == 1 || o.Id == 2)),
@@ -34,11 +34,11 @@ internal sealed class CalculateHandler
         };
         
         // human user instance
-        var dealer = await _xxvConnectionProvider.GetC4mUserInfo(request.HumanUser!.Identity, request.HumanUser.IdentityScheme, cancellation);
-        if ((new[] { "KBAD", "MPAD" }).Contains(request.HumanUser.IdentityScheme))
-            requestModel.KbGroupPerson = dealer.ToC4mKbPerson(request.HumanUser);
+        var dealer = await _xxvConnectionProvider.GetC4mUserInfo(request.Identity!.IdentityId, request.Identity.IdentityScheme, cancellation);
+        if ((new[] { "KBAD", "MPAD" }).Contains(request.Identity.IdentityScheme))
+            requestModel.KbGroupPerson = dealer.ToC4mKbPerson(request.Identity);
         else
-            requestModel.LoanApplicationDealer = dealer.ToC4mDealer(request.HumanUser);
+            requestModel.LoanApplicationDealer = dealer.ToC4mDealer(request.Identity);
 
         // volani c4m
         var response = await _client.Calculate(requestModel, cancellation);

@@ -4,18 +4,20 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.C
 
 internal static class CalculateResponseExtensions
 {
-    public static Contracts.CreditWorthiness.CalculateResponse ToServiceResponse(this _C4M.CreditWorthinessCalculation response)
+    public static Contracts.CreditWorthiness.CreditWorthinessCalculateResponse ToServiceResponse(this _C4M.CreditWorthinessCalculation response)
         => new()
         {
             InstallmentLimit = response.InstallmentLimit,
             MaxAmount = response.MaxAmount,
             RemainsLivingAnnuity = response.RemainsLivingAnnuity,
             RemainsLivingInst = response.RemainsLivingInst,
-            ResultReason = response.ResultReason is null ? null : new Contracts.CreditWorthiness.ResultReason
+            ResultReason = response.ResultReason is null ? null : new Contracts.CreditWorthiness.CreditWorthinessResultReason
             {
                 Code = response.ResultReason.Code,
                 Description = response.ResultReason.Description
             },
-            WorthinessResult = response.InstallmentLimit > response.RemainsLivingAnnuity ? 1 : 0
+            WorthinessResult = response.InstallmentLimit > response.RemainsLivingAnnuity 
+                ? Contracts.CreditWorthiness.CreditWorthinessResults.Success 
+                : Contracts.CreditWorthiness.CreditWorthinessResults.Failed
         };
 }

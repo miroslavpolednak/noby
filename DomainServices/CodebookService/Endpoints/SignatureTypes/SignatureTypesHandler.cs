@@ -8,12 +8,13 @@ public class SignatureTypesHandler
     public Task<List<SignatureTypeItem>> Handle(SignatureTypesRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Foms.Enums.SignatureTypes>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.SignatureTypes>()
             .Select(t => new SignatureTypeItem
             {
                 Id = (int)t,
-                Value = t,
-                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
+                EnumValue = t,
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
             })
             .ToList();
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CIS.Core.Attributes;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace CIS.Foms.Enums;
@@ -19,6 +20,7 @@ public enum SignatureTypes : byte
     Biometric = 2,
         
     [EnumMember]
+    [CisDefaultValue]
     [Display(Name = "Elektronicky")]
     Electronic = 3
 }

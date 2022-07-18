@@ -31,6 +31,7 @@ public class CodebooksController : ControllerBase
     /// - Fees
     /// - FixedRatePeriods
     /// - Genders
+    /// - HouseholdTypes
     /// - IdentificationDocumentTypes
     /// - IncomeMainTypes
     /// - IncomeForeignTypes
@@ -108,7 +109,7 @@ public class CodebooksController : ControllerBase
     [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
     public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
-            .Where(t => t.ProductTypeId == productTypeId)
-            .DistinctBy(t => new { t.FixedRatePeriod, t.IsNewProduct, t.MandantId, t.IsValid })
+            .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct && t.IsValid)
+            .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })
             .ToList();
 }

@@ -19,7 +19,7 @@ internal static class CreditWorthinessStartupExtensions
                 else
                     builder.Services
                         .AddC4mHttpClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient>(configuration)
-                        .ConfigureC4mHttpMessageHandler()
+                        .ConfigureC4mHttpMessageHandler<CreditWorthiness.V1.RealCreditWorthinessClient>(ServiceName)
                         .AddC4mPolicyHandler<CreditWorthiness.V1.ICreditWorthinessClient>(ServiceName);
                 break;
 

@@ -7,12 +7,16 @@ namespace DomainServices.RiskIntegrationService.Api.Clients;
 
 internal static class HttpClientFactoryExtensions
 {
-    public static IHttpClientBuilder ConfigureC4mHttpMessageHandler(this IHttpClientBuilder builder)
-        =>builder.ConfigurePrimaryHttpMessageHandler(()
-            => new HttpClientHandler
+    public static IHttpClientBuilder ConfigureC4mHttpMessageHandler<TClient>(this IHttpClientBuilder builder, string serviceName)
+        => builder.ConfigurePrimaryHttpMessageHandler((serviceProvider) => 
+        {
+            var logger = serviceProvider.GetRequiredService<ILogger<TClient>>();
+
+            return new C4mHttpHandler(new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-            });
+            }, logger, serviceName);
+        });
 
     public static IHttpClientBuilder AddC4mPolicyHandler<TService>(this IHttpClientBuilder builder, string serviceName)
         => builder.AddPolicyHandler((services, request) => 

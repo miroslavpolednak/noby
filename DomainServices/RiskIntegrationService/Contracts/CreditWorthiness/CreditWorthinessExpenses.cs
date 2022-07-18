@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
-public sealed class ExpensesSummary
+public sealed class CreditWorthinessExpenses
 {
     [ProtoMember(1)]
     public decimal? Rent { get; set; }

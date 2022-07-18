@@ -9,7 +9,7 @@ public class WorkflowTaskCategoriesHandler
     public Task<List<GenericCodebookItem>> Handle(WorkflowTaskCategoriesRequest request, CancellationToken cancellationToken)
     {
         //TODO nakesovat?
-        var values = Enum.GetValues<CIS.Foms.Enums.WorkflowTaskCategory>()
+        var values = FastEnum.GetValues<CIS.Foms.Enums.WorkflowTaskCategory>()
             .Select(t => new GenericCodebookItem
             {
                 Id = (int)t,
