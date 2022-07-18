@@ -12,8 +12,9 @@ public class SignatureTypesHandler
             .Select(t => new SignatureTypeItem
             {
                 Id = (int)t,
-                Value = t,
-                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
+                EnumValue = t,
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
             })
             .ToList();
 

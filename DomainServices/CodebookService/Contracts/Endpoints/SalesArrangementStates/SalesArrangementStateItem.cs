@@ -9,7 +9,7 @@ public class SalesArrangementStateItem
     public int Id { get; set; }
     
     [DataMember(Order = 2)]
-    public CIS.Foms.Enums.SalesArrangementStates Value { get; set; }
+    public CIS.Foms.Enums.SalesArrangementStates EnumValue { get; set; }
     
     [DataMember(Order = 3)]
     public string Name { get; set; }

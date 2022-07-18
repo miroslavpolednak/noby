@@ -143,7 +143,7 @@ internal class FormDataService
         }
 
         // check if MAIN household is available
-        var mainHouseholdCount = households.Count(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHouseholdCount = households.Count(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         if (mainHouseholdCount != 1)
         {
             throw new CisValidationException(99999, $"Sales arrangement must contain just one '{CIS.Foms.Enums.HouseholdTypes.Main}' household."); //TODO: ErrorCode
@@ -157,7 +157,7 @@ internal class FormDataService
         }
 
         // check if CustomerOnSAId1 is available on Main households
-        var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         if (!mainHousehold.CustomerOnSAId1.HasValue)
         {
             throw new CisValidationException(99999, $"Main household´s CustomerOnSAId1 not defined [{mainHousehold.HouseholdId}]."); //TODO: ErrorCode
@@ -190,7 +190,7 @@ internal class FormDataService
 
     private static Identity GetMainMpIdentity(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<Contracts.CustomerOnSA> customersOnSa)
     {
-        var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].Value == CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         var mainCustomerOnSa1 = customersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
         return mainCustomerOnSa1.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).First();
     }

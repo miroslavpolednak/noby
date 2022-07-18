@@ -12,7 +12,7 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementStates
                 .Select(t => new SalesArrangementStateItem
                 {
                     Id = (int)t,
-                    Value = t,
+                    EnumValue = t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                     StarbuildId = t.GetAttribute<CIS.Core.Attributes.CisStarbuildIdAttribute>()?.StarbuildId,
                     IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()

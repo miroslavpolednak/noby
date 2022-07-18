@@ -12,7 +12,7 @@ internal class HouseholdTypesHandler
             .Select(t => new HouseholdTypeItem()
             {
                 Id = (int)t,
-                Value = t,
+                EnumValue = t,
                 RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
             })
