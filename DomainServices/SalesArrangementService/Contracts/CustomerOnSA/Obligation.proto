@@ -6,7 +6,7 @@ import "google/protobuf/wrappers.proto";
 import "ObligationShared.proto";
 
 message Obligation {
-    int32 ObligationeId = 1;
+    int32 ObligationId = 1;
 
     int32 CustomerOnSAId = 2;
     

@@ -1,6 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
-using Google.Protobuf;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -13,30 +12,31 @@ internal class CreateObligationHandler
         if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
             throw new CisNotFoundException(16020, "CustomerOnSA", request.Request.CustomerOnSAId);
 
-        var entity = new Repositories.Entities.CustomerOnSAIncome
+        var entity = new Repositories.Entities.CustomerOnSAObligation
         {
             CustomerOnSAId = request.Request.CustomerOnSAId,
-            Sum = request.Request.BaseData?.Sum,
-            CurrencyCode = request.Request.BaseData?.CurrencyCode,
-            IncomeSource = getIncomeSource(request.Request),
-            IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)request.Request.IncomeTypeId
+            ObligationState = request.Request.ObligationState,
+            ObligationTypeId = request.Request.ObligationTypeId!.Value,
+            InstallmentAmount = request.Request.InstallmentAmount,
+            LoanPrincipalAmount = request.Request.LoanPrincipalAmount,
+            CreditCardLimit = request.Request.CreditCardLimit,
+            CreditorId = request.Request.Creditor?.CreditorId,
+            CreditorName = request.Request.Creditor?.Name,
+            CreditorIsExternal = request.Request.Creditor?.IsExternal,
+            CorrectionTypeId = request.Request.Correction?.CorrectionTypeId,
+            CreditCardLimitCorrection = request.Request.Correction?.CreditCardLimitCorrection,
+            InstallmentAmountCorrection = request.Request.Correction?.InstallmentAmountCorrection,
+            LoanPrincipalAmountCorrection = request.Request.Correction?.LoanPrincipalAmountCorrection
         };
 
-        var dataObject = getDataObject(request.Request);
-        if (dataObject != null)
-        {
-            entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
-            entity.DataBin = dataObject.ToByteArray();
-        }
-        
-        _dbContext.CustomersIncomes.Add(entity);
+        _dbContext.CustomersObligations.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSAIncome), entity.CustomerOnSAIncomeId);
+        _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSAObligation), entity.CustomerOnSAObligationId);
 
-        return new CreateIncomeResponse
+        return new CreateObligationResponse
         {
-            IncomeId = entity.CustomerOnSAIncomeId
+            ObligationId = entity.CustomerOnSAObligationId
         };
     }
 
