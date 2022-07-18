@@ -34,7 +34,7 @@ internal class CreateCustomerHandler
             var obligationsCollection = new _SA.ObligationsCollection();
             obligationsCollection.Items.AddRange(request.Request.Customer.Obligations!);
 
-            var obligationEntity = new CustomerOnSAObligations
+            var obligationEntity = new CustomerOnSAObligation
             {
                 CustomerOnSAId = customerId,
                 DataBin = obligationsCollection!.ToByteArray(),
