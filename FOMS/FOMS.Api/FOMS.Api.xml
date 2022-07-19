@@ -307,6 +307,51 @@
             </summary>
             <example>1</example>
         </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazani zavazku customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/DeleteObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="obligationId">ID zavazku ke smazani</param>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.GetDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail zavazku customera
+            </summary>
+            <remarks>
+            <strong>CustomerObligation.GetDetail</strong><br/>
+            <i>DS:</i> SalesArrangementService/GetObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="obligationId">ID zavazku</param>
+            <returns>
+            <see cref="T:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationFullDto"/>
+            </returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerObligation.UpdateObligation.UpdateObligationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update detailu zavazku customera
+            </summary>
+            <remarks>
+            <strong>CustomerObligation.Update</strong><br/>
+            <i>DS:</i> SalesArrangementService/UpdateObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="obligationId">ID zavazku</param>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Create(System.Int32,FOMS.Api.Endpoints.CustomerObligation.CreateObligation.CreateObligationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni zavazku customera
+            </summary>
+            <remarks>
+            <strong>CustomerObligation.Create</strong><br/>
+            <i>DS:</i> SalesArrangementService/CreateObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledavani klientu
@@ -463,11 +508,6 @@
             Klient 2= spoludluznik
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Obligations">
-            <summary>
-            Zavazky obou klientu vytazene z objektu Customer1 a Customer2.
-            </summary>
-        </member>
         <member name="T:FOMS.Api.Endpoints.Household.HouseholdController">
             <summary>
             Prace s domacnostmi a customery
@@ -546,11 +586,6 @@
             ID spoludluznika
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Obligations">
-            <summary>
-            Zavazky obou klientu vytazene do objektu Customer1 a Customer2.
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Data">
             <summary>
             Sekce Ostatni parametry
@@ -584,11 +619,6 @@
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.Obligations">
             <summary>
             Zavazky customera
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdCustomerObligation.CustomerIndex">
-            <summary>
-            Cislo klienta (1 nebo 2)
             </summary>
         </member>
         <member name="T:FOMS.Api.Endpoints.Household.Dto.HouseholdData">

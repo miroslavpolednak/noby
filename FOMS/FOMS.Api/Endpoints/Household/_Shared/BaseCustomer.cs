@@ -25,5 +25,5 @@ public abstract class BaseCustomer
     /// <summary>
     /// Zavazky customera
     /// </summary>
-    public List<CustomerObligation>? Obligations { get; set; }
+    public List<CustomerObligation.Dto.ObligationFullDto>? Obligations { get; set; }
 }
