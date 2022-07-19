@@ -431,8 +431,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     zamestnavatel_sidlo_stat = i.Employement?.Employer?.CountryId?.ToJsonString(),
                     //zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
                     //zamestnavatel_okec = i.Employement?.Employer?.ClassificationOfEconomicActivitiesId.ToJsonString(),
-                    //zamestnavatel_pracovni_sektor =  i.Employement?.Employer?.WorkSectorId.ToJsonString(),
-                    //zamestnavatel_senzitivni_sektor =  i.Employement?.Employer?.SensitiveSector.ToJsonString(),
+                    zamestnavatel_pracovni_sektor =  5.ToJsonString(),          // default pro Drop1-2, v Drop1-3 bude odstraněno
+                    zamestnavatel_senzitivni_sektor =  0.ToJsonString(),        // default pro Drop1-2, v Drop1-3 bude odstraněno
                     //povolani = i.Employement?.Job?.JobType.ToJsonString(),
                     zamestnan_jako = i.Employement?.Job?.JobDescription,
                     prijem_vyse = iil.Sum.ToJsonString(),
