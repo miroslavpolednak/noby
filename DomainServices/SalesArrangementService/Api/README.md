@@ -39,6 +39,14 @@
         grpcurl -insecure -d "{\"SalesArrangementId\":26}" -H "Authorization: Basic YTph" 127.0.0.1:5010 DomainServices.SalesArrangementService.v1.SalesArrangementService/SendToCmp
         grpcurl -insecure -d "{\"SalesArrangementId\":26}" -H "Authorization: Basic YTph" 127.0.0.1:5010 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
 
+
+
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"ObligationTypeId\":1,\"InstallmentAmount\":1000,\"CreditCardLimit\":550,\"Creditor\":{\"Name\":\"Franta\"},\"Correction\":{\"CorrectionTypeId\":1,\"InstallmentAmountCorrection\":2000}}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/CreateObligation
+        grpcurl -insecure -d "{\"ObligationId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/GetObligation
+        grpcurl -insecure -d "{\"ObligationId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/DeleteObligation
+        grpcurl -insecure -d "{\"ObligationId\":2,\"ObligationTypeId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/UpdateObligation
+        grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.CustomerOnSAService/GetObligationList
+
 ## run batch
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
         dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"

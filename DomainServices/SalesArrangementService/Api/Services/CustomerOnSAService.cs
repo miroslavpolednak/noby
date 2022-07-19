@@ -28,8 +28,20 @@ internal class CustomerOnSAService : Contracts.v1.CustomerOnSAService.CustomerOn
         => await _mediator.Send(new Dto.UpdateCustomerMediatrRequest(request), context.CancellationToken);
 
     // obligations -----------------------------------------------------
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateObligations(UpdateObligationsRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.UpdateObligationsMediatrRequest(request), context.CancellationToken);
+    public override async Task<CreateObligationResponse> CreateObligation(CreateObligationRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.CreateObligationMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateObligation(Obligation request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateObligationMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<Obligation> GetObligation(ObligationIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetObligationMediatrRequest(request.ObligationId), context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteObligation(ObligationIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.DeleteObligationMediatrRequest(request.ObligationId), context.CancellationToken);
+
+    public override async Task<GetObligationListResponse> GetObligationList(CustomerOnSAIdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetObligationListMediatrRequest(request.CustomerOnSAId), context.CancellationToken);
 
     // incomes -----------------------------------------------------
     public override async Task<CreateIncomeResponse> CreateIncome(CreateIncomeRequest request, ServerCallContext context)

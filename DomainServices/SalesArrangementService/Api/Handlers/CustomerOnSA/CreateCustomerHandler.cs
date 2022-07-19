@@ -27,23 +27,6 @@ internal class CreateCustomerHandler
         await _dbContext.SaveChangesAsync(cancellation);
         int customerId = entity.CustomerOnSAId;
 
-        // obligations
-        if (request.Request.Customer?.Obligations is not null && request.Request.Customer.Obligations.Any())
-        {
-            // tohle je tu jen kvuli serializaci do bin. Casem nejak refaktorovat.
-            var obligationsCollection = new _SA.ObligationsCollection();
-            obligationsCollection.Items.AddRange(request.Request.Customer.Obligations!);
-
-            var obligationEntity = new CustomerOnSAObligation
-            {
-                CustomerOnSAId = customerId,
-                DataBin = obligationsCollection!.ToByteArray(),
-                Data = Newtonsoft.Json.JsonConvert.SerializeObject(request.Request.Customer.Obligations!.ToList())
-            };
-            _dbContext.CustomersObligations.Add(obligationEntity);
-            await _dbContext.SaveChangesAsync(cancellation);
-        }
-
         _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSA), customerId);
         
         var model = new _SA.CreateCustomerResponse()

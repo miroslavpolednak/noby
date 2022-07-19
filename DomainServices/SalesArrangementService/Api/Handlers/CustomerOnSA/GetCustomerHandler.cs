@@ -26,14 +26,8 @@ internal class GetCustomerHandler
         var obligationsBin = await _dbContext.CustomersObligations
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .Select(t => t.DataBin)
+            .Select(CustomerOnSAServiceRepositoryExpressions.Obligation())
             .FirstOrDefaultAsync(cancellation);
-
-        if (obligationsBin is not null)
-        {
-            var obligations = Contracts.ObligationsCollection.Parser.ParseFrom(obligationsBin);
-            customerInstance.Obligations.AddRange(obligations.Items);
-        }
 
         // incomes
         var list = await _dbContext.CustomersIncomes

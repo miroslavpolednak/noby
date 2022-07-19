@@ -19,6 +19,4 @@ message CustomerOnSABase {
     google.protobuf.BoolValue HasPartner = 5;
 
     cis.types.NullableGrpcDate LockedIncomeDateTime = 6;
-
-    repeated Obligation Obligations = 7;
 }
