@@ -20,7 +20,7 @@ internal static class MortgageExtensions
             InterestRate = mortgage.LoanInterestRate,
             FixationPeriod = mortgage.FixedRatePeriod,
             MonthlyInstallment = mortgage.LoanPaymentAmount,
-            LoanEventCode = mortgage.LoanActionCode,
+           
 
             //TODO: add mapping (not specified so far)
             //CurrentAmount
@@ -45,15 +45,29 @@ internal static class MortgageExtensions
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
             FixedRatePeriod = eLoan.DelkaFixaceUrokoveSazby,
-            // ProductTypeId = ???
+            ProductTypeId = eLoan.TypUveru,
             LoanPaymentAmount = eLoan.MesicniSplatka,
-            LoanActionCode = eLoan.AkceUveruId,
-
-            //TODO: add mapping (not specified so far)
-            //CurrentAmount
-            //DrawingMaxOn
-            //VUP
-            //Statement
+            CurrentAmount = eLoan.ZustatekCelkem,
+            DrawingDateTo = eLoan.DatumKonceCerpani,
+            ContractSignedDate = eLoan.DatumUzavreniSmlouvy,
+            FixedRateValidTo = eLoan.DatumFixaceUrokoveSazby,
+            AvailableForDrawing = eLoan.ZbyvaCerpat,
+            // Principal = eLoan.Jistina,           // ???
+            LoanKindId = eLoan.DruhUveru,
+            PaymentAccount = null,                  // ???
+            CurrentOverdueAmount = null,            // ???
+            AllOverdueFees = null,                  // ???
+            OverdueDaysNumber = null,               // ???
+            // LoanPurposes = null,                 // ???
+            ExpectedDateOfDrawing = eLoan.DatumPrvniVyplatyZUveru,
+            InterestInArrears = null,               // ???
+            LoanDueDate = null,                     // ???
+            PaymentDay = null,                      // ???
+            LoanInterestRateRefix = null,           // ???
+            LoanInterestRateValidFromRefix = null,  // ???
+            FixedRatePeriodRefix = null,            // ???
+            // Cpm = eLoan.CPM,                     // ???
+            // Icp = eLoan.PoradceId,               // ???
         };
 
         if (eRelationships?.Count > 0)
