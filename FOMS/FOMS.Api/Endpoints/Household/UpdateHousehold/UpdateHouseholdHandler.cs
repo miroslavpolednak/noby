@@ -8,9 +8,13 @@ internal class UpdateHouseholdHandler
 {
     protected override async Task Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
+        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+
         // update domacnosti
         var householdRequest = new _SA.UpdateHouseholdRequest
         {
+            CustomerOnSAId1 = householdInstance.CustomerOnSAId1,
+            CustomerOnSAId2 = householdInstance.CustomerOnSAId2,
             HouseholdId = request.HouseholdId,
             Data = request.Data.ToDomainServiceRequest(),
             Expenses = request.Expenses.ToDomainServiceRequest()
