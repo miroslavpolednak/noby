@@ -9,65 +9,73 @@
 
 namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
 {
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services", ConfigurationName="ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.IHT_WS_SB_Services")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services", ConfigurationName = "ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.IHT_WS_SB_Services")]
     internal interface IHT_WS_SB_Services
     {
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/GetVersionInfo")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.GetVersionInfoResponse> GetVersionInfoAsync(string Mode);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SimulationHT", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SimulationHT")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/SimulationHT", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/SimulationHT")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse> SimulationHTAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SplatkovyKalendarResponse> SplatkovyKalendarAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SplatkovyKalendarRequest request);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Find_Response> WFS_FindTasksAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Message message);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/WFS_EventReport")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Event_Response> WFS_EventReportAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Message message);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/WFS_ManageTask")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_CommonResponse> WFS_ManageTaskAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Message message);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://asseco/EAS/EAS_WS_SB_Services/GetBookOfTermsAndLoanPurpose", ReplyAction = "http://asseco/EAS/EAS_WS_SB_Services/GetBookOfTermsAndLoanPurpose")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults = true)]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.BookOfTerms_response> GetBookOfTermsAndLoanPurposeAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.BookOfTerms_request message);
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class GetVersionInfoResponse
     {
-        
+
         private string versionField;
-        
+
         private string buildDirField;
-        
+
         private string webServicesBuiltField;
-        
+
         private string coreBuiltField;
-        
+
         private string shareBuiltField;
-        
+
         private string machineNameField;
-        
+
         private string dbField;
-        
+
         private string dBsysdateField;
-        
+
         private string dODField;
-        
+
         private string userField;
-        
+
         private string debugInfoField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string Version
         {
             get
@@ -79,9 +87,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.versionField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string BuildDir
         {
             get
@@ -93,9 +101,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.buildDirField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string WebServicesBuilt
         {
             get
@@ -107,9 +115,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.webServicesBuiltField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public string CoreBuilt
         {
             get
@@ -121,9 +129,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.coreBuiltField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public string ShareBuilt
         {
             get
@@ -135,9 +143,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.shareBuiltField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
         public string MachineName
         {
             get
@@ -149,9 +157,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.machineNameField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
         public string DB
         {
             get
@@ -163,9 +171,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.dbField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
         public string DBsysdate
         {
             get
@@ -177,9 +185,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.dBsysdateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
         public string DOD
         {
             get
@@ -191,9 +199,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.dODField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
         public string User
         {
             get
@@ -205,9 +213,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.userField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
         public string DebugInfo
         {
             get
@@ -220,84 +228,588 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class WFS_FindItem
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class LoanInfo
     {
-        
-        private WFS_MetadataItem[] taskField;
-        
+
+        private decimal loanAmounthField;
+
+        private decimal exhaustedLoanAmountField;
+
+        private decimal sumOfPendingDrawdownsField;
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
-        public WFS_MetadataItem[] task
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public decimal loanAmounth
         {
             get
             {
-                return this.taskField;
+                return this.loanAmounthField;
             }
             set
             {
-                this.taskField = value;
+                this.loanAmounthField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public decimal exhaustedLoanAmount
+        {
+            get
+            {
+                return this.exhaustedLoanAmountField;
+            }
+            set
+            {
+                this.exhaustedLoanAmountField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public decimal sumOfPendingDrawdowns
+        {
+            get
+            {
+                return this.sumOfPendingDrawdownsField;
+            }
+            set
+            {
+                this.sumOfPendingDrawdownsField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class WFS_MetadataItem
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class PurposeDetail
     {
-        
-        private string mtdt_defField;
-        
-        private string mtdt_valField;
-        
+
+        private decimal stateOfConstractionField;
+
+        private int orderOfLastZovField;
+
+        private string numberOfValuationOfLastZovField;
+
+        private decimal feeForNextZovField;
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public string mtdt_def
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public decimal stateOfConstraction
         {
             get
             {
-                return this.mtdt_defField;
+                return this.stateOfConstractionField;
             }
             set
             {
-                this.mtdt_defField = value;
+                this.stateOfConstractionField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string mtdt_val
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public int orderOfLastZov
         {
             get
             {
-                return this.mtdt_valField;
+                return this.orderOfLastZovField;
             }
             set
             {
-                this.mtdt_valField = value;
+                this.orderOfLastZovField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public string numberOfValuationOfLastZov
+        {
+            get
+            {
+                return this.numberOfValuationOfLastZovField;
+            }
+            set
+            {
+                this.numberOfValuationOfLastZovField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public decimal feeForNextZov
+        {
+            get
+            {
+                return this.feeForNextZovField;
+            }
+            set
+            {
+                this.feeForNextZovField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class PurposeOfLoanItem
+    {
+
+        private int typeField;
+
+        private bool isAdvanceDrawdownLoanField;
+
+        private decimal amountOfPurposeField;
+
+        private decimal undrawnLoanAmountField;
+
+        private decimal allowedAmountToDrawField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int type
+        {
+            get
+            {
+                return this.typeField;
+            }
+            set
+            {
+                this.typeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public bool isAdvanceDrawdownLoan
+        {
+            get
+            {
+                return this.isAdvanceDrawdownLoanField;
+            }
+            set
+            {
+                this.isAdvanceDrawdownLoanField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public decimal amountOfPurpose
+        {
+            get
+            {
+                return this.amountOfPurposeField;
+            }
+            set
+            {
+                this.amountOfPurposeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public decimal undrawnLoanAmount
+        {
+            get
+            {
+                return this.undrawnLoanAmountField;
+            }
+            set
+            {
+                this.undrawnLoanAmountField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public decimal allowedAmountToDraw
+        {
+            get
+            {
+                return this.allowedAmountToDrawField;
+            }
+            set
+            {
+                this.allowedAmountToDrawField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class BookOfTermsItem
+    {
+
+        private string nameOfTermField;
+
+        private string textField;
+
+        private bool isZovField;
+
+        private bool isLastConditionZovField;
+
+        private System.Nullable<System.DateTime> dateOfCompletionField;
+
+        private string completionOperatorField;
+
+        private int actionCodeField;
+
+        private int typeOfSekcionField;
+
+        private System.Nullable<int> phaseNumberField;
+
+        private string orderInSectionField;
+
+        private System.Nullable<System.DateTime> blockedToField;
+
+        private bool isVisibleToClientField;
+
+        private bool isInRemindingField;
+
+        private System.Nullable<System.DateTime> reminding_DeadlineField;
+
+        private System.Nullable<int> reminding_ConditionField;
+
+        private System.Nullable<int> reminding_DeadlineShiftInMonthsField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public string nameOfTerm
+        {
+            get
+            {
+                return this.nameOfTermField;
+            }
+            set
+            {
+                this.nameOfTermField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public string text
+        {
+            get
+            {
+                return this.textField;
+            }
+            set
+            {
+                this.textField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public bool isZov
+        {
+            get
+            {
+                return this.isZovField;
+            }
+            set
+            {
+                this.isZovField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public bool isLastConditionZov
+        {
+            get
+            {
+                return this.isLastConditionZovField;
+            }
+            set
+            {
+                this.isLastConditionZovField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date", IsNullable = true, Order = 4)]
+        public System.Nullable<System.DateTime> dateOfCompletion
+        {
+            get
+            {
+                return this.dateOfCompletionField;
+            }
+            set
+            {
+                this.dateOfCompletionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 5)]
+        public string completionOperator
+        {
+            get
+            {
+                return this.completionOperatorField;
+            }
+            set
+            {
+                this.completionOperatorField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public int actionCode
+        {
+            get
+            {
+                return this.actionCodeField;
+            }
+            set
+            {
+                this.actionCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
+        public int typeOfSekcion
+        {
+            get
+            {
+                return this.typeOfSekcionField;
+            }
+            set
+            {
+                this.typeOfSekcionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 8)]
+        public System.Nullable<int> phaseNumber
+        {
+            get
+            {
+                return this.phaseNumberField;
+            }
+            set
+            {
+                this.phaseNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
+        public string orderInSection
+        {
+            get
+            {
+                return this.orderInSectionField;
+            }
+            set
+            {
+                this.orderInSectionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date", IsNullable = true, Order = 10)]
+        public System.Nullable<System.DateTime> blockedTo
+        {
+            get
+            {
+                return this.blockedToField;
+            }
+            set
+            {
+                this.blockedToField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
+        public bool isVisibleToClient
+        {
+            get
+            {
+                return this.isVisibleToClientField;
+            }
+            set
+            {
+                this.isVisibleToClientField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 12)]
+        public bool isInReminding
+        {
+            get
+            {
+                return this.isInRemindingField;
+            }
+            set
+            {
+                this.isInRemindingField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date", IsNullable = true, Order = 13)]
+        public System.Nullable<System.DateTime> reminding_Deadline
+        {
+            get
+            {
+                return this.reminding_DeadlineField;
+            }
+            set
+            {
+                this.reminding_DeadlineField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 14)]
+        public System.Nullable<int> reminding_Condition
+        {
+            get
+            {
+                return this.reminding_ConditionField;
+            }
+            set
+            {
+                this.reminding_ConditionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 15)]
+        public System.Nullable<int> reminding_DeadlineShiftInMonths
+        {
+            get
+            {
+                return this.reminding_DeadlineShiftInMonthsField;
+            }
+            set
+            {
+                this.reminding_DeadlineShiftInMonthsField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class BookOfTerms_response
+    {
+
+        private CommonResult resultField;
+
+        private BookOfTermsItem[] bookOfTermsField;
+
+        private PurposeOfLoanItem[] purposesOfLoanField;
+
+        private PurposeDetail purposeDetailField;
+
+        private LoanInfo loanInfoField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public CommonResult result
+        {
+            get
+            {
+                return this.resultField;
+            }
+            set
+            {
+                this.resultField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
+        public BookOfTermsItem[] bookOfTerms
+        {
+            get
+            {
+                return this.bookOfTermsField;
+            }
+            set
+            {
+                this.bookOfTermsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 2)]
+        public PurposeOfLoanItem[] purposesOfLoan
+        {
+            get
+            {
+                return this.purposesOfLoanField;
+            }
+            set
+            {
+                this.purposesOfLoanField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 3)]
+        public PurposeDetail purposeDetail
+        {
+            get
+            {
+                return this.purposeDetailField;
+            }
+            set
+            {
+                this.purposeDetailField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public LoanInfo loanInfo
+        {
+            get
+            {
+                return this.loanInfoField;
+            }
+            set
+            {
+                this.loanInfoField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class CommonResult
     {
-        
+
         private int return_valField;
-        
+
         private string return_textField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int return_val
         {
             get
@@ -309,9 +821,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.return_valField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public string return_text
         {
             get
@@ -324,21 +836,109 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class BookOfTerms_request
+    {
+
+        private string contract_numberField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public string contract_number
+        {
+            get
+            {
+                return this.contract_numberField;
+            }
+            set
+            {
+                this.contract_numberField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class WFS_FindItem
+    {
+
+        private WFS_MetadataItem[] taskField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        public WFS_MetadataItem[] task
+        {
+            get
+            {
+                return this.taskField;
+            }
+            set
+            {
+                this.taskField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class WFS_MetadataItem
+    {
+
+        private string mtdt_defField;
+
+        private string mtdt_valField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public string mtdt_def
+        {
+            get
+            {
+                return this.mtdt_defField;
+            }
+            set
+            {
+                this.mtdt_defField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public string mtdt_val
+        {
+            get
+            {
+                return this.mtdt_valField;
+            }
+            set
+            {
+                this.mtdt_valField = value;
+            }
+        }
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WFS_Event_Response))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WFS_Manage_CreateTask_Response))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WFS_Find_Response))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_CommonResponse
     {
-        
+
         private CommonResult resultField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public CommonResult result
         {
             get
@@ -351,18 +951,18 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_Response : WFS_CommonResponse
     {
-        
+
         private int request_idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int request_id
         {
             get
@@ -375,18 +975,18 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_CreateTask_Response : WFS_CommonResponse
     {
-        
+
         private int task_idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -399,20 +999,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Find_Response : WFS_CommonResponse
     {
-        
+
         private int items_foundField;
-        
+
         private WFS_FindItem[] tasksField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int items_found
         {
             get
@@ -424,9 +1024,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.items_foundField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=1)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
         public WFS_FindItem[] tasks
         {
             get
@@ -439,20 +1039,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_VerificationDocumentItem
     {
-        
+
         private string doc_typeField;
-        
+
         private string doc_descField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string doc_type
         {
             get
@@ -464,9 +1064,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.doc_typeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string doc_desc
         {
             get
@@ -479,7 +1079,7 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WFS_Event_Test))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WFS_Event_DocumentBankSigned))]
@@ -506,24 +1106,24 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WFS_Find_ByPools))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Message
     {
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_Test : WFS_Message
     {
-        
+
         private string textField;
-        
+
         private System.DateTime datumField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 0)]
         public string text
         {
             get
@@ -535,9 +1135,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.textField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date", Order = 1)]
         public System.DateTime datum
         {
             get
@@ -550,26 +1150,26 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_DocumentBankSigned : WFS_Message
     {
-        
+
         private string external_idField;
-        
+
         private string document_typeField;
-        
+
         private string contract_noField;
-        
+
         private System.DateTime bank_sign_dateField;
-        
+
         private string bank_sign_loginField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 0)]
         public string external_id
         {
             get
@@ -581,9 +1181,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.external_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public string document_type
         {
             get
@@ -595,9 +1195,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.document_typeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
         public string contract_no
         {
             get
@@ -609,9 +1209,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.contract_noField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date", Order = 3)]
         public System.DateTime bank_sign_date
         {
             get
@@ -623,9 +1223,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.bank_sign_dateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 4)]
         public string bank_sign_login
         {
             get
@@ -638,40 +1238,40 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_CaseStateChanged : WFS_Message
     {
-        
+
         private int case_idField;
-        
+
         private int uver_idField;
-        
+
         private string contract_noField;
-        
+
         private string loan_noField;
-        
+
         private string jmeno_prijmeniField;
-        
+
         private string case_stateField;
-        
+
         private int product_typeField;
-        
+
         private string owner_cpmField;
-        
+
         private string owner_icpField;
-        
+
         private int mandantField;
-        
+
         private int client_benefitsField;
-        
+
         private string risk_business_case_idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int case_id
         {
             get
@@ -683,9 +1283,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.case_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public int uver_id
         {
             get
@@ -697,9 +1297,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.uver_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
         public string contract_no
         {
             get
@@ -711,9 +1311,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.contract_noField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 3)]
         public string loan_no
         {
             get
@@ -725,9 +1325,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.loan_noField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public string jmeno_prijmeni
         {
             get
@@ -739,9 +1339,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.jmeno_prijmeniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
         public string case_state
         {
             get
@@ -753,9 +1353,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.case_stateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
         public int product_type
         {
             get
@@ -767,9 +1367,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.product_typeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
         public string owner_cpm
         {
             get
@@ -781,9 +1381,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.owner_cpmField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
         public string owner_icp
         {
             get
@@ -795,9 +1395,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.owner_icpField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
         public int mandant
         {
             get
@@ -809,9 +1409,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.mandantField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
         public int client_benefits
         {
             get
@@ -823,9 +1423,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.client_benefitsField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 11)]
         public string risk_business_case_id
         {
             get
@@ -838,18 +1438,18 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_VerificationStart : WFS_Message
     {
-        
+
         private int uver_idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int uver_id
         {
             get
@@ -862,26 +1462,26 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_VerificationCommonDocumentsStart : WFS_Message
     {
-        
+
         private int uver_idField;
-        
+
         private int klient_idField;
-        
+
         private string cas_idField;
-        
+
         private string klient_schemaField;
-        
+
         private WFS_VerificationDocumentItem[] documentsField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int uver_id
         {
             get
@@ -893,9 +1493,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.uver_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public int klient_id
         {
             get
@@ -907,9 +1507,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.klient_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string cas_id
         {
             get
@@ -921,9 +1521,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.cas_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public string klient_schema
         {
             get
@@ -935,9 +1535,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.klient_schemaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("documents", Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute("documents", Order = 4)]
         public WFS_VerificationDocumentItem[] documents
         {
             get
@@ -950,26 +1550,26 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_VerificationConfidentialDocumentsStart : WFS_Message
     {
-        
+
         private int uver_idField;
-        
+
         private int klient_idField;
-        
+
         private string cas_idField;
-        
+
         private string klient_schemaField;
-        
+
         private WFS_VerificationDocumentItem[] documentsField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int uver_id
         {
             get
@@ -981,9 +1581,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.uver_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public int klient_id
         {
             get
@@ -995,9 +1595,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.klient_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string cas_id
         {
             get
@@ -1009,9 +1609,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.cas_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public string klient_schema
         {
             get
@@ -1023,9 +1623,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.klient_schemaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("documents", Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute("documents", Order = 4)]
         public WFS_VerificationDocumentItem[] documents
         {
             get
@@ -1038,20 +1638,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_VerificationConfidentialDocumentsDone : WFS_Message
     {
-        
+
         private int uver_idField;
-        
+
         private string cas_idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int uver_id
         {
             get
@@ -1063,9 +1663,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.uver_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string cas_id
         {
             get
@@ -1078,18 +1678,18 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_VerificationFinished : WFS_Message
     {
-        
+
         private int uver_idField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int uver_id
         {
             get
@@ -1102,24 +1702,24 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Event_VerificationNotification : WFS_Message
     {
-        
+
         private string risk_bc_idField;
-        
+
         private string ntf_subjField;
-        
+
         private string ntf_textField;
-        
+
         private string ntf_urlField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string risk_bc_id
         {
             get
@@ -1131,9 +1731,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.risk_bc_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string ntf_subj
         {
             get
@@ -1145,9 +1745,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.ntf_subjField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string ntf_text
         {
             get
@@ -1159,9 +1759,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.ntf_textField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 3)]
         public string ntf_url
         {
             get
@@ -1174,24 +1774,24 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_CreateTask : WFS_Message
     {
-        
+
         private int task_typeField;
-        
+
         private int parent_task_setField;
-        
+
         private string performerField;
-        
+
         private WFS_MetadataItem[] metadataField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_type
         {
             get
@@ -1203,9 +1803,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_typeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public int parent_task_set
         {
             get
@@ -1217,9 +1817,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.parent_task_setField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
         public string performer
         {
             get
@@ -1231,9 +1831,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.performerField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("metadata", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute("metadata", Order = 3)]
         public WFS_MetadataItem[] metadata
         {
             get
@@ -1246,20 +1846,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_AcceptTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private string performerField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1271,9 +1871,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public string performer
         {
             get
@@ -1286,20 +1886,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_ChangeTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private int task_typeField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1311,9 +1911,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public int task_type
         {
             get
@@ -1326,20 +1926,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_AssignTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private string performerField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1351,9 +1951,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string performer
         {
             get
@@ -1366,20 +1966,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_UnAssignTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private string noteField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1391,9 +1991,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string note
         {
             get
@@ -1406,20 +2006,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_AdoptTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private string noteField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1431,9 +2031,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public string note
         {
             get
@@ -1446,20 +2046,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_CompleteTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private WFS_MetadataItem[] metadataField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1471,9 +2071,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("metadata", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute("metadata", Order = 1)]
         public WFS_MetadataItem[] metadata
         {
             get
@@ -1486,20 +2086,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_CancelTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private string noteField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1511,9 +2111,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string note
         {
             get
@@ -1526,20 +2126,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Manage_UpdateTask : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private WFS_MetadataItem[] metadataField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1551,9 +2151,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("metadata", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute("metadata", Order = 1)]
         public WFS_MetadataItem[] metadata
         {
             get
@@ -1566,20 +2166,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Find_ByTaskId : WFS_Message
     {
-        
+
         private int task_idField;
-        
+
         private int[] task_stateField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int task_id
         {
             get
@@ -1591,9 +2191,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("task_state", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute("task_state", Order = 1)]
         public int[] task_state
         {
             get
@@ -1606,22 +2206,22 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Find_ByCaseId : WFS_Message
     {
-        
+
         private int case_idField;
-        
+
         private int[] task_stateField;
-        
+
         private string search_patternField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int case_id
         {
             get
@@ -1633,9 +2233,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.case_idField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("task_state", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute("task_state", Order = 1)]
         public int[] task_state
         {
             get
@@ -1647,9 +2247,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_stateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
         public string search_pattern
         {
             get
@@ -1662,22 +2262,22 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Find_ByContractNo : WFS_Message
     {
-        
+
         private string contract_noField;
-        
+
         private int[] task_stateField;
-        
+
         private string search_patternField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string contract_no
         {
             get
@@ -1689,9 +2289,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.contract_noField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("task_state", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute("task_state", Order = 1)]
         public int[] task_state
         {
             get
@@ -1703,9 +2303,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.task_stateField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
         public string search_pattern
         {
             get
@@ -1718,22 +2318,22 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Find_ByCpmIcp : WFS_Message
     {
-        
+
         private string owner_cpmField;
-        
+
         private string owner_icpField;
-        
+
         private int[] task_stateField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string owner_cpm
         {
             get
@@ -1745,9 +2345,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.owner_cpmField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public string owner_icp
         {
             get
@@ -1759,9 +2359,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.owner_icpField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("task_state", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute("task_state", Order = 2)]
         public int[] task_state
         {
             get
@@ -1774,20 +2374,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Find_ByPools : WFS_Message
     {
-        
+
         private string[] poolsField;
-        
+
         private int[] task_stateField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("pools", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("pools", Order = 0)]
         public string[] pools
         {
             get
@@ -1799,9 +2399,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.poolsField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("task_state", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute("task_state", Order = 1)]
         public int[] task_state
         {
             get
@@ -1814,20 +2414,20 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class WFS_Header
     {
-        
+
         private string systemField;
-        
+
         private string loginField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 0)]
         public string system
         {
             get
@@ -1839,9 +2439,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.systemField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public string login
         {
             get
@@ -1854,126 +2454,220 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SimErrorInfo
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class Umoreni
     {
-        
-        private int kodChybyField;
-        
-        private string textChybyField;
-        
-        private string textWarninguField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int kodChyby
-        {
-            get
-            {
-                return this.kodChybyField;
-            }
-            set
-            {
-                this.kodChybyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string textChyby
-        {
-            get
-            {
-                return this.textChybyField;
-            }
-            set
-            {
-                this.textChybyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string textWarningu
-        {
-            get
-            {
-                return this.textWarninguField;
-            }
-            set
-            {
-                this.textWarninguField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class RpsnTok
-    {
-        
-        private System.DateTime datumField;
-        
-        private decimal sumaTokuField;
-        
-        private decimal cerpaniField;
-        
+
+        private int uverIdField;
+
+        private int mesField;
+
+        private string datMField;
+
+        private string datField;
+
+        private int splCField;
+
+        private int splMField;
+
+        private int splXField;
+
+        private string msgField;
+
+        private string splTxtField;
+
+        private string datTxtField;
+
         private decimal splatkaField;
-        
-        private decimal ostatniNakladyField;
-        
-        private string poznamkaField;
-        
+
+        private decimal splatkaMimField;
+
+        private decimal jistinaField;
+
+        private decimal urokyBezneField;
+
+        private decimal poplatkyField;
+
+        private decimal poplatkyMimField;
+
+        private decimal smluvniPokutyField;
+
+        private decimal urokyOdlozeneField;
+
+        private decimal urokySankciField;
+
+        private decimal urokyzProdleniField;
+
+        private decimal pojisteniField;
+
+        private decimal zustJistField;
+
+        private string iNFOField;
+
+        private decimal saldoField;
+
+        private decimal preplatekField;
+
+        private decimal z4Field;
+
+        private decimal z6Field;
+
+        private decimal z8Field;
+
+        private decimal z10Field;
+
+        private decimal z12Field;
+
+        private decimal dnesnaField;
+
+        private decimal pouzField;
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public System.DateTime datum
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int uverId
         {
             get
             {
-                return this.datumField;
+                return this.uverIdField;
             }
             set
             {
-                this.datumField = value;
+                this.uverIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public decimal sumaToku
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public int mes
         {
             get
             {
-                return this.sumaTokuField;
+                return this.mesField;
             }
             set
             {
-                this.sumaTokuField = value;
+                this.mesField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public decimal cerpani
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public string datM
         {
             get
             {
-                return this.cerpaniField;
+                return this.datMField;
             }
             set
             {
-                this.cerpaniField = value;
+                this.datMField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public string dat
+        {
+            get
+            {
+                return this.datField;
+            }
+            set
+            {
+                this.datField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public int splC
+        {
+            get
+            {
+                return this.splCField;
+            }
+            set
+            {
+                this.splCField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public int splM
+        {
+            get
+            {
+                return this.splMField;
+            }
+            set
+            {
+                this.splMField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public int splX
+        {
+            get
+            {
+                return this.splXField;
+            }
+            set
+            {
+                this.splXField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
+        public string msg
+        {
+            get
+            {
+                return this.msgField;
+            }
+            set
+            {
+                this.msgField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
+        public string splTxt
+        {
+            get
+            {
+                return this.splTxtField;
+            }
+            set
+            {
+                this.splTxtField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
+        public string datTxt
+        {
+            get
+            {
+                return this.datTxtField;
+            }
+            set
+            {
+                this.datTxtField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
         public decimal splatka
         {
             get
@@ -1985,335 +2679,191 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.splatkaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public decimal ostatniNaklady
+        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
+        public decimal splatkaMim
         {
             get
             {
-                return this.ostatniNakladyField;
+                return this.splatkaMimField;
             }
             set
             {
-                this.ostatniNakladyField = value;
+                this.splatkaMimField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public string poznamka
+        [System.Xml.Serialization.XmlElementAttribute(Order = 12)]
+        public decimal jistina
         {
             get
             {
-                return this.poznamkaField;
+                return this.jistinaField;
             }
             set
             {
-                this.poznamkaField = value;
+                this.jistinaField = value;
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SplF
-    {
-        
-        private int nField;
-        
-        private string cField;
-        
-        private string dField;
-        
-        private string pField;
-        
-        private string jField;
-        
-        private string uField;
-        
-        private string zField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int n
+        [System.Xml.Serialization.XmlElementAttribute(Order = 13)]
+        public decimal urokyBezne
         {
             get
             {
-                return this.nField;
+                return this.urokyBezneField;
             }
             set
             {
-                this.nField = value;
+                this.urokyBezneField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string c
+        [System.Xml.Serialization.XmlElementAttribute(Order = 14)]
+        public decimal poplatky
         {
             get
             {
-                return this.cField;
+                return this.poplatkyField;
             }
             set
             {
-                this.cField = value;
+                this.poplatkyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string d
+        [System.Xml.Serialization.XmlElementAttribute(Order = 15)]
+        public decimal poplatkyMim
         {
             get
             {
-                return this.dField;
+                return this.poplatkyMimField;
             }
             set
             {
-                this.dField = value;
+                this.poplatkyMimField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string p
+        [System.Xml.Serialization.XmlElementAttribute(Order = 16)]
+        public decimal smluvniPokuty
         {
             get
             {
-                return this.pField;
+                return this.smluvniPokutyField;
             }
             set
             {
-                this.pField = value;
+                this.smluvniPokutyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public string j
+        [System.Xml.Serialization.XmlElementAttribute(Order = 17)]
+        public decimal urokyOdlozene
         {
             get
             {
-                return this.jField;
+                return this.urokyOdlozeneField;
             }
             set
             {
-                this.jField = value;
+                this.urokyOdlozeneField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public string u
+        [System.Xml.Serialization.XmlElementAttribute(Order = 18)]
+        public decimal urokySankci
         {
             get
             {
-                return this.uField;
+                return this.urokySankciField;
             }
             set
             {
-                this.uField = value;
+                this.urokySankciField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public string z
+        [System.Xml.Serialization.XmlElementAttribute(Order = 19)]
+        public decimal urokyzProdleni
         {
             get
             {
-                return this.zField;
+                return this.urokyzProdleniField;
             }
             set
             {
-                this.zField = value;
+                this.urokyzProdleniField = value;
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SplS
-    {
-        
-        private int nField;
-        
-        private string cisloSplatkyField;
-        
-        private string datumSplatkyField;
-        
-        private string typSplatkyField;
-        
-        private string vyseSplatkyField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int n
+        [System.Xml.Serialization.XmlElementAttribute(Order = 20)]
+        public decimal pojisteni
         {
             get
             {
-                return this.nField;
+                return this.pojisteniField;
             }
             set
             {
-                this.nField = value;
+                this.pojisteniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string cisloSplatky
+        [System.Xml.Serialization.XmlElementAttribute(Order = 21)]
+        public decimal zustJist
         {
             get
             {
-                return this.cisloSplatkyField;
+                return this.zustJistField;
             }
             set
             {
-                this.cisloSplatkyField = value;
+                this.zustJistField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string datumSplatky
+        [System.Xml.Serialization.XmlElementAttribute(Order = 22)]
+        public string INFO
         {
             get
             {
-                return this.datumSplatkyField;
+                return this.iNFOField;
             }
             set
             {
-                this.datumSplatkyField = value;
+                this.iNFOField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string typSplatky
+        [System.Xml.Serialization.XmlElementAttribute(Order = 23)]
+        public decimal saldo
         {
             get
             {
-                return this.typSplatkyField;
+                return this.saldoField;
             }
             set
             {
-                this.typSplatkyField = value;
+                this.saldoField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public string vyseSplatky
-        {
-            get
-            {
-                return this.vyseSplatkyField;
-            }
-            set
-            {
-                this.vyseSplatkyField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class Operace
-    {
-        
-        private int klicField;
-        
-        private System.DateTime valutaField;
-        
-        private decimal sumaField;
-        
-        private string poznamkaField;
-        
-        private decimal zustatekField;
-        
-        private decimal preplatekField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int klic
-        {
-            get
-            {
-                return this.klicField;
-            }
-            set
-            {
-                this.klicField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public System.DateTime valuta
-        {
-            get
-            {
-                return this.valutaField;
-            }
-            set
-            {
-                this.valutaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public decimal suma
-        {
-            get
-            {
-                return this.sumaField;
-            }
-            set
-            {
-                this.sumaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string poznamka
-        {
-            get
-            {
-                return this.poznamkaField;
-            }
-            set
-            {
-                this.poznamkaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public decimal zustatek
-        {
-            get
-            {
-                return this.zustatekField;
-            }
-            set
-            {
-                this.zustatekField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 24)]
         public decimal preplatek
         {
             get
@@ -2325,563 +2875,133 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.preplatekField = value;
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class UrokovaSazba
-    {
-        
-        private decimal urokovaSazbaField;
-        
-        private decimal vyhlasovanaField;
-        
-        private int vyhlasovanaTypField;
-        
-        private decimal stdVyhlasovanaField;
-        
-        private decimal vipVyhlasovanaField;
-        
-        private decimal devVyhlasovanaField;
-        
-        private decimal zamVyhlasovanaField;
-        
-        private decimal zamOdchylkaField;
-        
-        private decimal maOdchylkaField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public decimal urokovaSazba
+        [System.Xml.Serialization.XmlElementAttribute(Order = 25)]
+        public decimal z4
         {
             get
             {
-                return this.urokovaSazbaField;
+                return this.z4Field;
             }
             set
             {
-                this.urokovaSazbaField = value;
+                this.z4Field = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public decimal vyhlasovana
+        [System.Xml.Serialization.XmlElementAttribute(Order = 26)]
+        public decimal z6
         {
             get
             {
-                return this.vyhlasovanaField;
+                return this.z6Field;
             }
             set
             {
-                this.vyhlasovanaField = value;
+                this.z6Field = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public int vyhlasovanaTyp
+        [System.Xml.Serialization.XmlElementAttribute(Order = 27)]
+        public decimal z8
         {
             get
             {
-                return this.vyhlasovanaTypField;
+                return this.z8Field;
             }
             set
             {
-                this.vyhlasovanaTypField = value;
+                this.z8Field = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public decimal stdVyhlasovana
+        [System.Xml.Serialization.XmlElementAttribute(Order = 28)]
+        public decimal z10
         {
             get
             {
-                return this.stdVyhlasovanaField;
+                return this.z10Field;
             }
             set
             {
-                this.stdVyhlasovanaField = value;
+                this.z10Field = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public decimal vipVyhlasovana
+        [System.Xml.Serialization.XmlElementAttribute(Order = 29)]
+        public decimal z12
         {
             get
             {
-                return this.vipVyhlasovanaField;
+                return this.z12Field;
             }
             set
             {
-                this.vipVyhlasovanaField = value;
+                this.z12Field = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public decimal devVyhlasovana
+        [System.Xml.Serialization.XmlElementAttribute(Order = 30)]
+        public decimal dnesna
         {
             get
             {
-                return this.devVyhlasovanaField;
+                return this.dnesnaField;
             }
             set
             {
-                this.devVyhlasovanaField = value;
+                this.dnesnaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public decimal zamVyhlasovana
+        [System.Xml.Serialization.XmlElementAttribute(Order = 31)]
+        public decimal pouz
         {
             get
             {
-                return this.zamVyhlasovanaField;
+                return this.pouzField;
             }
             set
             {
-                this.zamVyhlasovanaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
-        public decimal zamOdchylka
-        {
-            get
-            {
-                return this.zamOdchylkaField;
-            }
-            set
-            {
-                this.zamOdchylkaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
-        public decimal maOdchylka
-        {
-            get
-            {
-                return this.maOdchylkaField;
-            }
-            set
-            {
-                this.maOdchylkaField = value;
+                this.pouzField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class UverVysledky
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SplatkovyKalendarResponse
     {
-        
-        private decimal vyseUveruField;
-        
-        private decimal splatkaUveruField;
-        
-        private int splatnostUveruField;
-        
-        private System.DateTime splatnostUveruDatumField;
-        
-        private decimal sazbaPoskytnutaField;
-        
-        private int kodZvyhodneniField;
-        
-        private decimal lTVField;
-        
-        private System.Nullable<System.DateTime> datumPodpisuSmlouvyField;
-        
-        private System.Nullable<System.DateTime> datumDocerpaniField;
-        
-        private System.Nullable<System.DateTime> datumZahajeniAnuitnihoSplaceniField;
-        
-        private System.Nullable<int> pocetAnuitnichSplatekField;
-        
-        private System.Nullable<decimal> rpsnField;
-        
-        private System.Nullable<decimal> celkoveNakladyUveruField;
-        
-        private System.Nullable<decimal> rpsnRefixField;
-        
-        private System.Nullable<decimal> celkoveNakladyUveruRefixField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public decimal vyseUveru
-        {
-            get
-            {
-                return this.vyseUveruField;
-            }
-            set
-            {
-                this.vyseUveruField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public decimal splatkaUveru
-        {
-            get
-            {
-                return this.splatkaUveruField;
-            }
-            set
-            {
-                this.splatkaUveruField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public int splatnostUveru
-        {
-            get
-            {
-                return this.splatnostUveruField;
-            }
-            set
-            {
-                this.splatnostUveruField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public System.DateTime splatnostUveruDatum
-        {
-            get
-            {
-                return this.splatnostUveruDatumField;
-            }
-            set
-            {
-                this.splatnostUveruDatumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public decimal sazbaPoskytnuta
-        {
-            get
-            {
-                return this.sazbaPoskytnutaField;
-            }
-            set
-            {
-                this.sazbaPoskytnutaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public int kodZvyhodneni
-        {
-            get
-            {
-                return this.kodZvyhodneniField;
-            }
-            set
-            {
-                this.kodZvyhodneniField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public decimal LTV
-        {
-            get
-            {
-                return this.lTVField;
-            }
-            set
-            {
-                this.lTVField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=7)]
-        public System.Nullable<System.DateTime> datumPodpisuSmlouvy
-        {
-            get
-            {
-                return this.datumPodpisuSmlouvyField;
-            }
-            set
-            {
-                this.datumPodpisuSmlouvyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
-        public System.Nullable<System.DateTime> datumDocerpani
-        {
-            get
-            {
-                return this.datumDocerpaniField;
-            }
-            set
-            {
-                this.datumDocerpaniField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
-        public System.Nullable<System.DateTime> datumZahajeniAnuitnihoSplaceni
-        {
-            get
-            {
-                return this.datumZahajeniAnuitnihoSplaceniField;
-            }
-            set
-            {
-                this.datumZahajeniAnuitnihoSplaceniField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
-        public System.Nullable<int> pocetAnuitnichSplatek
-        {
-            get
-            {
-                return this.pocetAnuitnichSplatekField;
-            }
-            set
-            {
-                this.pocetAnuitnichSplatekField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
-        public System.Nullable<decimal> rpsn
-        {
-            get
-            {
-                return this.rpsnField;
-            }
-            set
-            {
-                this.rpsnField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=12)]
-        public System.Nullable<decimal> celkoveNakladyUveru
-        {
-            get
-            {
-                return this.celkoveNakladyUveruField;
-            }
-            set
-            {
-                this.celkoveNakladyUveruField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=13)]
-        public System.Nullable<decimal> rpsnRefix
-        {
-            get
-            {
-                return this.rpsnRefixField;
-            }
-            set
-            {
-                this.rpsnRefixField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
-        public System.Nullable<decimal> celkoveNakladyUveruRefix
-        {
-            get
-            {
-                return this.celkoveNakladyUveruRefixField;
-            }
-            set
-            {
-                this.celkoveNakladyUveruRefixField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SimulationHTResponse
-    {
-        
-        private UverVysledky uverVysledkyField;
-        
-        private UrokovaSazba urokovaSazbaField;
-        
-        private MarketingovaAkce[] marketingoveAkceField;
-        
-        private Poplatek[] poplatkyField;
-        
-        private Operace[] operaceField;
-        
-        private SplS[] splatkovyKalendarJednoduchyField;
-        
-        private SplF[] splatkovyKalendarPlnyField;
-        
-        private RpsnTok[] rpsnTokyField;
-        
-        private RpsnTok[] rpsnTokyRefixField;
-        
+
+        private Umoreni[] splatkovyKalendarField;
+
         private SimErrorInfo errorInfoField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public UverVysledky uverVysledky
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
+        public Umoreni[] splatkovyKalendar
         {
             get
             {
-                return this.uverVysledkyField;
+                return this.splatkovyKalendarField;
             }
             set
             {
-                this.uverVysledkyField = value;
+                this.splatkovyKalendarField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public UrokovaSazba urokovaSazba
-        {
-            get
-            {
-                return this.urokovaSazbaField;
-            }
-            set
-            {
-                this.urokovaSazbaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=2)]
-        public MarketingovaAkce[] marketingoveAkce
-        {
-            get
-            {
-                return this.marketingoveAkceField;
-            }
-            set
-            {
-                this.marketingoveAkceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=3)]
-        public Poplatek[] poplatky
-        {
-            get
-            {
-                return this.poplatkyField;
-            }
-            set
-            {
-                this.poplatkyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=4)]
-        public Operace[] operace
-        {
-            get
-            {
-                return this.operaceField;
-            }
-            set
-            {
-                this.operaceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=5)]
-        public SplS[] splatkovyKalendarJednoduchy
-        {
-            get
-            {
-                return this.splatkovyKalendarJednoduchyField;
-            }
-            set
-            {
-                this.splatkovyKalendarJednoduchyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=6)]
-        public SplF[] splatkovyKalendarPlny
-        {
-            get
-            {
-                return this.splatkovyKalendarPlnyField;
-            }
-            set
-            {
-                this.splatkovyKalendarPlnyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=7)]
-        public RpsnTok[] rpsnToky
-        {
-            get
-            {
-                return this.rpsnTokyField;
-            }
-            set
-            {
-                this.rpsnTokyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=8)]
-        public RpsnTok[] rpsnTokyRefix
-        {
-            get
-            {
-                return this.rpsnTokyRefixField;
-            }
-            set
-            {
-                this.rpsnTokyRefixField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public SimErrorInfo errorInfo
         {
             get
@@ -2894,682 +3014,274 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class MarketingovaAkce
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimErrorInfo
     {
-        
-        private string typMaAkceField;
-        
-        private int zaskrtnutoField;
-        
-        private System.Nullable<int> uplatnenaField;
-        
-        private System.Nullable<int> kodMaAkceField;
-        
-        private System.Nullable<decimal> odchylkaSazbyField;
-        
-        private System.Nullable<int> jeSkladackaField;
-        
-        private string nazevField;
-        
+
+        private int kodChybyField;
+
+        private string textChybyField;
+
+        private SimWarningInfo[] warningyField;
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public string typMaAkce
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int kodChyby
         {
             get
             {
-                return this.typMaAkceField;
+                return this.kodChybyField;
             }
             set
             {
-                this.typMaAkceField = value;
+                this.kodChybyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public int zaskrtnuto
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public string textChyby
         {
             get
             {
-                return this.zaskrtnutoField;
+                return this.textChybyField;
             }
             set
             {
-                this.zaskrtnutoField = value;
+                this.textChybyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
-        public System.Nullable<int> uplatnena
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 2)]
+        public SimWarningInfo[] warningy
         {
             get
             {
-                return this.uplatnenaField;
+                return this.warningyField;
             }
             set
             {
-                this.uplatnenaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
-        public System.Nullable<int> kodMaAkce
-        {
-            get
-            {
-                return this.kodMaAkceField;
-            }
-            set
-            {
-                this.kodMaAkceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
-        public System.Nullable<decimal> odchylkaSazby
-        {
-            get
-            {
-                return this.odchylkaSazbyField;
-            }
-            set
-            {
-                this.odchylkaSazbyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=5)]
-        public System.Nullable<int> jeSkladacka
-        {
-            get
-            {
-                return this.jeSkladackaField;
-            }
-            set
-            {
-                this.jeSkladackaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public string nazev
-        {
-            get
-            {
-                return this.nazevField;
-            }
-            set
-            {
-                this.nazevField = value;
+                this.warningyField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class Poplatek
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimWarningInfo
     {
-        
-        private int kodSBField;
-        
-        private decimal slevaICField;
-        
-        private System.Nullable<decimal> sumaSazebnikovaField;
-        
-        private System.Nullable<decimal> sumaSkladackovaField;
-        
-        private System.Nullable<decimal> sumaVyslednaField;
-        
-        private System.Nullable<int> kodMaAkceField;
-        
-        private string textAplikaceField;
-        
-        private string textDokumentaceVzorovyPrikladField;
-        
-        private string textDokumentaceSazebnikField;
-        
-        private string textDokumentaceSazebnikHodnotaField;
-        
-        private string pouzitiField;
-        
-        private string kodKBField;
-        
-        private System.Nullable<int> zobrazitZdarmaField;
-        
-        private System.Nullable<int> zapocitatRPSNField;
-        
-        private string periodicitaField;
-        
-        private System.Nullable<System.DateTime> uctovatOdField;
-        
+
+        private int kodWarninguField;
+
+        private string textWarninguField;
+
+        private string internalMsgField;
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int kodSB
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int kodWarningu
         {
             get
             {
-                return this.kodSBField;
+                return this.kodWarninguField;
             }
             set
             {
-                this.kodSBField = value;
+                this.kodWarninguField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public decimal slevaIC
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public string textWarningu
         {
             get
             {
-                return this.slevaICField;
+                return this.textWarninguField;
             }
             set
             {
-                this.slevaICField = value;
+                this.textWarninguField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
-        public System.Nullable<decimal> sumaSazebnikova
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public string internalMsg
         {
             get
             {
-                return this.sumaSazebnikovaField;
+                return this.internalMsgField;
             }
             set
             {
-                this.sumaSazebnikovaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
-        public System.Nullable<decimal> sumaSkladackova
-        {
-            get
-            {
-                return this.sumaSkladackovaField;
-            }
-            set
-            {
-                this.sumaSkladackovaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
-        public System.Nullable<decimal> sumaVysledna
-        {
-            get
-            {
-                return this.sumaVyslednaField;
-            }
-            set
-            {
-                this.sumaVyslednaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=5)]
-        public System.Nullable<int> kodMaAkce
-        {
-            get
-            {
-                return this.kodMaAkceField;
-            }
-            set
-            {
-                this.kodMaAkceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public string textAplikace
-        {
-            get
-            {
-                return this.textAplikaceField;
-            }
-            set
-            {
-                this.textAplikaceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
-        public string textDokumentaceVzorovyPriklad
-        {
-            get
-            {
-                return this.textDokumentaceVzorovyPrikladField;
-            }
-            set
-            {
-                this.textDokumentaceVzorovyPrikladField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
-        public string textDokumentaceSazebnik
-        {
-            get
-            {
-                return this.textDokumentaceSazebnikField;
-            }
-            set
-            {
-                this.textDokumentaceSazebnikField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
-        public string textDokumentaceSazebnikHodnota
-        {
-            get
-            {
-                return this.textDokumentaceSazebnikHodnotaField;
-            }
-            set
-            {
-                this.textDokumentaceSazebnikHodnotaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
-        public string pouziti
-        {
-            get
-            {
-                return this.pouzitiField;
-            }
-            set
-            {
-                this.pouzitiField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
-        public string kodKB
-        {
-            get
-            {
-                return this.kodKBField;
-            }
-            set
-            {
-                this.kodKBField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=12)]
-        public System.Nullable<int> zobrazitZdarma
-        {
-            get
-            {
-                return this.zobrazitZdarmaField;
-            }
-            set
-            {
-                this.zobrazitZdarmaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=13)]
-        public System.Nullable<int> zapocitatRPSN
-        {
-            get
-            {
-                return this.zapocitatRPSNField;
-            }
-            set
-            {
-                this.zapocitatRPSNField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
-        public string periodicita
-        {
-            get
-            {
-                return this.periodicitaField;
-            }
-            set
-            {
-                this.periodicitaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=15)]
-        public System.Nullable<System.DateTime> uctovatOd
-        {
-            get
-            {
-                return this.uctovatOdField;
-            }
-            set
-            {
-                this.uctovatOdField = value;
+                this.internalMsgField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SimSettingsPoplatky
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SplatkovyKalendarSettings
     {
-        
-        private int dokumentField;
-        
-        private System.Nullable<int> restructPriznakField;
-        
-        private int vypisHuField;
-        
-        private int vypisBuField;
-        
-        private System.Nullable<decimal> rzpSumaField;
-        
-        private System.Nullable<int> rzpFrekvenceField;
-        
-        private System.Nullable<int> rzpDenPlatbyField;
-        
-        private System.Nullable<System.DateTime> rzpDatumPocatkuField;
-        
-        private System.Nullable<System.DateTime> rzpDatumKonceField;
-        
-        private System.Nullable<decimal> pojNemovSumaField;
-        
-        private System.Nullable<int> pojNemovFrekvenceField;
-        
-        private System.Nullable<int> pojNemovDenPlatbyField;
-        
-        private System.Nullable<System.DateTime> pojNemovDatumPocatkuField;
-        
-        private System.Nullable<System.DateTime> pojNemovDatumKonceField;
-        
+
+        private int uverIdField;
+
+        private int modeField;
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int dokument
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int uverId
         {
             get
             {
-                return this.dokumentField;
+                return this.uverIdField;
             }
             set
             {
-                this.dokumentField = value;
+                this.uverIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
-        public System.Nullable<int> restructPriznak
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public int mode
         {
             get
             {
-                return this.restructPriznakField;
+                return this.modeField;
             }
             set
             {
-                this.restructPriznakField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public int vypisHu
-        {
-            get
-            {
-                return this.vypisHuField;
-            }
-            set
-            {
-                this.vypisHuField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public int vypisBu
-        {
-            get
-            {
-                return this.vypisBuField;
-            }
-            set
-            {
-                this.vypisBuField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
-        public System.Nullable<decimal> rzpSuma
-        {
-            get
-            {
-                return this.rzpSumaField;
-            }
-            set
-            {
-                this.rzpSumaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=5)]
-        public System.Nullable<int> rzpFrekvence
-        {
-            get
-            {
-                return this.rzpFrekvenceField;
-            }
-            set
-            {
-                this.rzpFrekvenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=6)]
-        public System.Nullable<int> rzpDenPlatby
-        {
-            get
-            {
-                return this.rzpDenPlatbyField;
-            }
-            set
-            {
-                this.rzpDenPlatbyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=7)]
-        public System.Nullable<System.DateTime> rzpDatumPocatku
-        {
-            get
-            {
-                return this.rzpDatumPocatkuField;
-            }
-            set
-            {
-                this.rzpDatumPocatkuField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
-        public System.Nullable<System.DateTime> rzpDatumKonce
-        {
-            get
-            {
-                return this.rzpDatumKonceField;
-            }
-            set
-            {
-                this.rzpDatumKonceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
-        public System.Nullable<decimal> pojNemovSuma
-        {
-            get
-            {
-                return this.pojNemovSumaField;
-            }
-            set
-            {
-                this.pojNemovSumaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
-        public System.Nullable<int> pojNemovFrekvence
-        {
-            get
-            {
-                return this.pojNemovFrekvenceField;
-            }
-            set
-            {
-                this.pojNemovFrekvenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
-        public System.Nullable<int> pojNemovDenPlatby
-        {
-            get
-            {
-                return this.pojNemovDenPlatbyField;
-            }
-            set
-            {
-                this.pojNemovDenPlatbyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=12)]
-        public System.Nullable<System.DateTime> pojNemovDatumPocatku
-        {
-            get
-            {
-                return this.pojNemovDatumPocatkuField;
-            }
-            set
-            {
-                this.pojNemovDatumPocatkuField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=13)]
-        public System.Nullable<System.DateTime> pojNemovDatumKonce
-        {
-            get
-            {
-                return this.pojNemovDatumKonceField;
-            }
-            set
-            {
-                this.pojNemovDatumKonceField = value;
+                this.modeField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class MimoradnaOperace
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SplatkovyKalendarRequest
     {
-        
-        private int klicField;
-        
-        private System.DateTime valutaField;
-        
-        private decimal sumaField;
-        
+
+        private SplatkovyKalendarSettings settingsField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public SplatkovyKalendarSettings settings
+        {
+            get
+            {
+                return this.settingsField;
+            }
+            set
+            {
+                this.settingsField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class RpsnTok
+    {
+
+        private System.DateTime datumField;
+
+        private decimal sumaTokuField;
+
+        private decimal cerpaniField;
+
+        private decimal splatkaField;
+
+        private decimal ostatniNakladyField;
+
         private string poznamkaField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int klic
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public System.DateTime datum
         {
             get
             {
-                return this.klicField;
+                return this.datumField;
             }
             set
             {
-                this.klicField = value;
+                this.datumField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public System.DateTime valuta
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public decimal sumaToku
         {
             get
             {
-                return this.valutaField;
+                return this.sumaTokuField;
             }
             set
             {
-                this.valutaField = value;
+                this.sumaTokuField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public decimal suma
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public decimal cerpani
         {
             get
             {
-                return this.sumaField;
+                return this.cerpaniField;
             }
             set
             {
-                this.sumaField = value;
+                this.cerpaniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public decimal splatka
+        {
+            get
+            {
+                return this.splatkaField;
+            }
+            set
+            {
+                this.splatkaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public decimal ostatniNaklady
+        {
+            get
+            {
+                return this.ostatniNakladyField;
+            }
+            set
+            {
+                this.ostatniNakladyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
         public string poznamka
         {
             get
@@ -3582,22 +3294,1606 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SplF
+    {
+
+        private int nField;
+
+        private string cField;
+
+        private string dField;
+
+        private string pField;
+
+        private string jField;
+
+        private string uField;
+
+        private string zField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int n
+        {
+            get
+            {
+                return this.nField;
+            }
+            set
+            {
+                this.nField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public string c
+        {
+            get
+            {
+                return this.cField;
+            }
+            set
+            {
+                this.cField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public string d
+        {
+            get
+            {
+                return this.dField;
+            }
+            set
+            {
+                this.dField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public string p
+        {
+            get
+            {
+                return this.pField;
+            }
+            set
+            {
+                this.pField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public string j
+        {
+            get
+            {
+                return this.jField;
+            }
+            set
+            {
+                this.jField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public string u
+        {
+            get
+            {
+                return this.uField;
+            }
+            set
+            {
+                this.uField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public string z
+        {
+            get
+            {
+                return this.zField;
+            }
+            set
+            {
+                this.zField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SplS
+    {
+
+        private int nField;
+
+        private string cisloSplatkyField;
+
+        private string datumSplatkyField;
+
+        private string typSplatkyField;
+
+        private string vyseSplatkyField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int n
+        {
+            get
+            {
+                return this.nField;
+            }
+            set
+            {
+                this.nField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public string cisloSplatky
+        {
+            get
+            {
+                return this.cisloSplatkyField;
+            }
+            set
+            {
+                this.cisloSplatkyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public string datumSplatky
+        {
+            get
+            {
+                return this.datumSplatkyField;
+            }
+            set
+            {
+                this.datumSplatkyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public string typSplatky
+        {
+            get
+            {
+                return this.typSplatkyField;
+            }
+            set
+            {
+                this.typSplatkyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public string vyseSplatky
+        {
+            get
+            {
+                return this.vyseSplatkyField;
+            }
+            set
+            {
+                this.vyseSplatkyField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class Operace
+    {
+
+        private int klicField;
+
+        private System.DateTime valutaField;
+
+        private decimal sumaField;
+
+        private string poznamkaField;
+
+        private decimal zustatekField;
+
+        private decimal preplatekField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int klic
+        {
+            get
+            {
+                return this.klicField;
+            }
+            set
+            {
+                this.klicField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public System.DateTime valuta
+        {
+            get
+            {
+                return this.valutaField;
+            }
+            set
+            {
+                this.valutaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public decimal suma
+        {
+            get
+            {
+                return this.sumaField;
+            }
+            set
+            {
+                this.sumaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public string poznamka
+        {
+            get
+            {
+                return this.poznamkaField;
+            }
+            set
+            {
+                this.poznamkaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public decimal zustatek
+        {
+            get
+            {
+                return this.zustatekField;
+            }
+            set
+            {
+                this.zustatekField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public decimal preplatek
+        {
+            get
+            {
+                return this.preplatekField;
+            }
+            set
+            {
+                this.preplatekField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class UrokovaSazba
+    {
+
+        private decimal urokovaSazbaField;
+
+        private decimal vyhlasovanaField;
+
+        private int vyhlasovanaTypField;
+
+        private int vyhlasovanaIdSazbyField;
+
+        private decimal stdVyhlasovanaField;
+
+        private decimal vipVyhlasovanaField;
+
+        private decimal devVyhlasovanaField;
+
+        private decimal zamVyhlasovanaField;
+
+        private decimal maOdchylkaField;
+
+        private decimal zamOdchylkaField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public decimal urokovaSazba
+        {
+            get
+            {
+                return this.urokovaSazbaField;
+            }
+            set
+            {
+                this.urokovaSazbaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public decimal vyhlasovana
+        {
+            get
+            {
+                return this.vyhlasovanaField;
+            }
+            set
+            {
+                this.vyhlasovanaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public int vyhlasovanaTyp
+        {
+            get
+            {
+                return this.vyhlasovanaTypField;
+            }
+            set
+            {
+                this.vyhlasovanaTypField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public int vyhlasovanaIdSazby
+        {
+            get
+            {
+                return this.vyhlasovanaIdSazbyField;
+            }
+            set
+            {
+                this.vyhlasovanaIdSazbyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public decimal stdVyhlasovana
+        {
+            get
+            {
+                return this.stdVyhlasovanaField;
+            }
+            set
+            {
+                this.stdVyhlasovanaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public decimal vipVyhlasovana
+        {
+            get
+            {
+                return this.vipVyhlasovanaField;
+            }
+            set
+            {
+                this.vipVyhlasovanaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public decimal devVyhlasovana
+        {
+            get
+            {
+                return this.devVyhlasovanaField;
+            }
+            set
+            {
+                this.devVyhlasovanaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
+        public decimal zamVyhlasovana
+        {
+            get
+            {
+                return this.zamVyhlasovanaField;
+            }
+            set
+            {
+                this.zamVyhlasovanaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
+        public decimal maOdchylka
+        {
+            get
+            {
+                return this.maOdchylkaField;
+            }
+            set
+            {
+                this.maOdchylkaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
+        public decimal zamOdchylka
+        {
+            get
+            {
+                return this.zamOdchylkaField;
+            }
+            set
+            {
+                this.zamOdchylkaField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class UverVysledky
+    {
+
+        private decimal vyseUveruField;
+
+        private decimal splatkaUveruField;
+
+        private int splatnostUveruField;
+
+        private System.DateTime splatnostUveruDatumField;
+
+        private decimal sazbaPoskytnutaField;
+
+        private int kodZvyhodneniField;
+
+        private decimal lTVField;
+
+        private System.Nullable<System.DateTime> datumPodpisuSmlouvyField;
+
+        private System.Nullable<System.DateTime> datumDocerpaniField;
+
+        private System.Nullable<System.DateTime> datumZahajeniAnuitnihoSplaceniField;
+
+        private System.Nullable<int> pocetAnuitnichSplatekField;
+
+        private System.Nullable<decimal> rpsnField;
+
+        private System.Nullable<decimal> celkoveNakladyUveruField;
+
+        private System.Nullable<decimal> rpsnRefixField;
+
+        private System.Nullable<decimal> celkoveNakladyUveruRefixField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public decimal vyseUveru
+        {
+            get
+            {
+                return this.vyseUveruField;
+            }
+            set
+            {
+                this.vyseUveruField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public decimal splatkaUveru
+        {
+            get
+            {
+                return this.splatkaUveruField;
+            }
+            set
+            {
+                this.splatkaUveruField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public int splatnostUveru
+        {
+            get
+            {
+                return this.splatnostUveruField;
+            }
+            set
+            {
+                this.splatnostUveruField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public System.DateTime splatnostUveruDatum
+        {
+            get
+            {
+                return this.splatnostUveruDatumField;
+            }
+            set
+            {
+                this.splatnostUveruDatumField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public decimal sazbaPoskytnuta
+        {
+            get
+            {
+                return this.sazbaPoskytnutaField;
+            }
+            set
+            {
+                this.sazbaPoskytnutaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public int kodZvyhodneni
+        {
+            get
+            {
+                return this.kodZvyhodneniField;
+            }
+            set
+            {
+                this.kodZvyhodneniField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public decimal LTV
+        {
+            get
+            {
+                return this.lTVField;
+            }
+            set
+            {
+                this.lTVField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 7)]
+        public System.Nullable<System.DateTime> datumPodpisuSmlouvy
+        {
+            get
+            {
+                return this.datumPodpisuSmlouvyField;
+            }
+            set
+            {
+                this.datumPodpisuSmlouvyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 8)]
+        public System.Nullable<System.DateTime> datumDocerpani
+        {
+            get
+            {
+                return this.datumDocerpaniField;
+            }
+            set
+            {
+                this.datumDocerpaniField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 9)]
+        public System.Nullable<System.DateTime> datumZahajeniAnuitnihoSplaceni
+        {
+            get
+            {
+                return this.datumZahajeniAnuitnihoSplaceniField;
+            }
+            set
+            {
+                this.datumZahajeniAnuitnihoSplaceniField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 10)]
+        public System.Nullable<int> pocetAnuitnichSplatek
+        {
+            get
+            {
+                return this.pocetAnuitnichSplatekField;
+            }
+            set
+            {
+                this.pocetAnuitnichSplatekField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 11)]
+        public System.Nullable<decimal> rpsn
+        {
+            get
+            {
+                return this.rpsnField;
+            }
+            set
+            {
+                this.rpsnField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 12)]
+        public System.Nullable<decimal> celkoveNakladyUveru
+        {
+            get
+            {
+                return this.celkoveNakladyUveruField;
+            }
+            set
+            {
+                this.celkoveNakladyUveruField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 13)]
+        public System.Nullable<decimal> rpsnRefix
+        {
+            get
+            {
+                return this.rpsnRefixField;
+            }
+            set
+            {
+                this.rpsnRefixField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 14)]
+        public System.Nullable<decimal> celkoveNakladyUveruRefix
+        {
+            get
+            {
+                return this.celkoveNakladyUveruRefixField;
+            }
+            set
+            {
+                this.celkoveNakladyUveruRefixField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimulationHTResponse
+    {
+
+        private UverVysledky uverVysledkyField;
+
+        private UrokovaSazba urokovaSazbaField;
+
+        private MarketingovaAkce[] marketingoveAkceField;
+
+        private Poplatek[] poplatkyField;
+
+        private Operace[] operaceField;
+
+        private SplS[] splatkovyKalendarJednoduchyField;
+
+        private SplF[] splatkovyKalendarPlnyField;
+
+        private RpsnTok[] rpsnTokyField;
+
+        private RpsnTok[] rpsnTokyRefixField;
+
+        private SimErrorInfo errorInfoField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public UverVysledky uverVysledky
+        {
+            get
+            {
+                return this.uverVysledkyField;
+            }
+            set
+            {
+                this.uverVysledkyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public UrokovaSazba urokovaSazba
+        {
+            get
+            {
+                return this.urokovaSazbaField;
+            }
+            set
+            {
+                this.urokovaSazbaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 2)]
+        public MarketingovaAkce[] marketingoveAkce
+        {
+            get
+            {
+                return this.marketingoveAkceField;
+            }
+            set
+            {
+                this.marketingoveAkceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 3)]
+        public Poplatek[] poplatky
+        {
+            get
+            {
+                return this.poplatkyField;
+            }
+            set
+            {
+                this.poplatkyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 4)]
+        public Operace[] operace
+        {
+            get
+            {
+                return this.operaceField;
+            }
+            set
+            {
+                this.operaceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 5)]
+        public SplS[] splatkovyKalendarJednoduchy
+        {
+            get
+            {
+                return this.splatkovyKalendarJednoduchyField;
+            }
+            set
+            {
+                this.splatkovyKalendarJednoduchyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 6)]
+        public SplF[] splatkovyKalendarPlny
+        {
+            get
+            {
+                return this.splatkovyKalendarPlnyField;
+            }
+            set
+            {
+                this.splatkovyKalendarPlnyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 7)]
+        public RpsnTok[] rpsnToky
+        {
+            get
+            {
+                return this.rpsnTokyField;
+            }
+            set
+            {
+                this.rpsnTokyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 8)]
+        public RpsnTok[] rpsnTokyRefix
+        {
+            get
+            {
+                return this.rpsnTokyRefixField;
+            }
+            set
+            {
+                this.rpsnTokyRefixField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
+        public SimErrorInfo errorInfo
+        {
+            get
+            {
+                return this.errorInfoField;
+            }
+            set
+            {
+                this.errorInfoField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class MarketingovaAkce
+    {
+
+        private string typMaAkceField;
+
+        private int zaskrtnutoField;
+
+        private System.Nullable<int> uplatnenaField;
+
+        private System.Nullable<int> kodMaAkceField;
+
+        private System.Nullable<decimal> odchylkaSazbyField;
+
+        private System.Nullable<int> jeSkladackaField;
+
+        private string nazevField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public string typMaAkce
+        {
+            get
+            {
+                return this.typMaAkceField;
+            }
+            set
+            {
+                this.typMaAkceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public int zaskrtnuto
+        {
+            get
+            {
+                return this.zaskrtnutoField;
+            }
+            set
+            {
+                this.zaskrtnutoField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
+        public System.Nullable<int> uplatnena
+        {
+            get
+            {
+                return this.uplatnenaField;
+            }
+            set
+            {
+                this.uplatnenaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 3)]
+        public System.Nullable<int> kodMaAkce
+        {
+            get
+            {
+                return this.kodMaAkceField;
+            }
+            set
+            {
+                this.kodMaAkceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 4)]
+        public System.Nullable<decimal> odchylkaSazby
+        {
+            get
+            {
+                return this.odchylkaSazbyField;
+            }
+            set
+            {
+                this.odchylkaSazbyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 5)]
+        public System.Nullable<int> jeSkladacka
+        {
+            get
+            {
+                return this.jeSkladackaField;
+            }
+            set
+            {
+                this.jeSkladackaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public string nazev
+        {
+            get
+            {
+                return this.nazevField;
+            }
+            set
+            {
+                this.nazevField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class Poplatek
+    {
+
+        private int kodSBField;
+
+        private decimal slevaICField;
+
+        private System.Nullable<decimal> sumaSazebnikovaField;
+
+        private System.Nullable<decimal> sumaSkladackovaField;
+
+        private System.Nullable<int> kodMaAkceField;
+
+        private string textAplikaceField;
+
+        private string textDokumentaceVzorovyPrikladField;
+
+        private System.Nullable<decimal> sumaVyslednaField;
+
+        private string textDokumentaceSazebnikField;
+
+        private string textDokumentaceSazebnikHodnotaField;
+
+        private string pouzitiField;
+
+        private string kodKBField;
+
+        private System.Nullable<int> zobrazitZdarmaField;
+
+        private System.Nullable<int> zapocitatRPSNField;
+
+        private string periodicitaField;
+
+        private System.Nullable<System.DateTime> uctovatOdField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int kodSB
+        {
+            get
+            {
+                return this.kodSBField;
+            }
+            set
+            {
+                this.kodSBField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public decimal slevaIC
+        {
+            get
+            {
+                return this.slevaICField;
+            }
+            set
+            {
+                this.slevaICField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
+        public System.Nullable<decimal> sumaSazebnikova
+        {
+            get
+            {
+                return this.sumaSazebnikovaField;
+            }
+            set
+            {
+                this.sumaSazebnikovaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 3)]
+        public System.Nullable<decimal> sumaSkladackova
+        {
+            get
+            {
+                return this.sumaSkladackovaField;
+            }
+            set
+            {
+                this.sumaSkladackovaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 4)]
+        public System.Nullable<int> kodMaAkce
+        {
+            get
+            {
+                return this.kodMaAkceField;
+            }
+            set
+            {
+                this.kodMaAkceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public string textAplikace
+        {
+            get
+            {
+                return this.textAplikaceField;
+            }
+            set
+            {
+                this.textAplikaceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        public string textDokumentaceVzorovyPriklad
+        {
+            get
+            {
+                return this.textDokumentaceVzorovyPrikladField;
+            }
+            set
+            {
+                this.textDokumentaceVzorovyPrikladField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 7)]
+        public System.Nullable<decimal> sumaVysledna
+        {
+            get
+            {
+                return this.sumaVyslednaField;
+            }
+            set
+            {
+                this.sumaVyslednaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
+        public string textDokumentaceSazebnik
+        {
+            get
+            {
+                return this.textDokumentaceSazebnikField;
+            }
+            set
+            {
+                this.textDokumentaceSazebnikField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
+        public string textDokumentaceSazebnikHodnota
+        {
+            get
+            {
+                return this.textDokumentaceSazebnikHodnotaField;
+            }
+            set
+            {
+                this.textDokumentaceSazebnikHodnotaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
+        public string pouziti
+        {
+            get
+            {
+                return this.pouzitiField;
+            }
+            set
+            {
+                this.pouzitiField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
+        public string kodKB
+        {
+            get
+            {
+                return this.kodKBField;
+            }
+            set
+            {
+                this.kodKBField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 12)]
+        public System.Nullable<int> zobrazitZdarma
+        {
+            get
+            {
+                return this.zobrazitZdarmaField;
+            }
+            set
+            {
+                this.zobrazitZdarmaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 13)]
+        public System.Nullable<int> zapocitatRPSN
+        {
+            get
+            {
+                return this.zapocitatRPSNField;
+            }
+            set
+            {
+                this.zapocitatRPSNField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 14)]
+        public string periodicita
+        {
+            get
+            {
+                return this.periodicitaField;
+            }
+            set
+            {
+                this.periodicitaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 15)]
+        public System.Nullable<System.DateTime> uctovatOd
+        {
+            get
+            {
+                return this.uctovatOdField;
+            }
+            set
+            {
+                this.uctovatOdField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimSettingsPoplatky
+    {
+
+        private int dokumentField;
+
+        private System.Nullable<int> restructPriznakField;
+
+        private int vypisHuField;
+
+        private int vypisBuField;
+
+        private System.Nullable<decimal> rzpSumaField;
+
+        private System.Nullable<int> rzpFrekvenceField;
+
+        private System.Nullable<int> rzpDenPlatbyField;
+
+        private System.Nullable<System.DateTime> rzpDatumPocatkuField;
+
+        private System.Nullable<System.DateTime> rzpDatumKonceField;
+
+        private System.Nullable<decimal> pojNemovSumaField;
+
+        private System.Nullable<int> pojNemovFrekvenceField;
+
+        private System.Nullable<int> pojNemovDenPlatbyField;
+
+        private System.Nullable<System.DateTime> pojNemovDatumPocatkuField;
+
+        private System.Nullable<System.DateTime> pojNemovDatumKonceField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int dokument
+        {
+            get
+            {
+                return this.dokumentField;
+            }
+            set
+            {
+                this.dokumentField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
+        public System.Nullable<int> restructPriznak
+        {
+            get
+            {
+                return this.restructPriznakField;
+            }
+            set
+            {
+                this.restructPriznakField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public int vypisHu
+        {
+            get
+            {
+                return this.vypisHuField;
+            }
+            set
+            {
+                this.vypisHuField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public int vypisBu
+        {
+            get
+            {
+                return this.vypisBuField;
+            }
+            set
+            {
+                this.vypisBuField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 4)]
+        public System.Nullable<decimal> rzpSuma
+        {
+            get
+            {
+                return this.rzpSumaField;
+            }
+            set
+            {
+                this.rzpSumaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 5)]
+        public System.Nullable<int> rzpFrekvence
+        {
+            get
+            {
+                return this.rzpFrekvenceField;
+            }
+            set
+            {
+                this.rzpFrekvenceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 6)]
+        public System.Nullable<int> rzpDenPlatby
+        {
+            get
+            {
+                return this.rzpDenPlatbyField;
+            }
+            set
+            {
+                this.rzpDenPlatbyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 7)]
+        public System.Nullable<System.DateTime> rzpDatumPocatku
+        {
+            get
+            {
+                return this.rzpDatumPocatkuField;
+            }
+            set
+            {
+                this.rzpDatumPocatkuField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 8)]
+        public System.Nullable<System.DateTime> rzpDatumKonce
+        {
+            get
+            {
+                return this.rzpDatumKonceField;
+            }
+            set
+            {
+                this.rzpDatumKonceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 9)]
+        public System.Nullable<decimal> pojNemovSuma
+        {
+            get
+            {
+                return this.pojNemovSumaField;
+            }
+            set
+            {
+                this.pojNemovSumaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 10)]
+        public System.Nullable<int> pojNemovFrekvence
+        {
+            get
+            {
+                return this.pojNemovFrekvenceField;
+            }
+            set
+            {
+                this.pojNemovFrekvenceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 11)]
+        public System.Nullable<int> pojNemovDenPlatby
+        {
+            get
+            {
+                return this.pojNemovDenPlatbyField;
+            }
+            set
+            {
+                this.pojNemovDenPlatbyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 12)]
+        public System.Nullable<System.DateTime> pojNemovDatumPocatku
+        {
+            get
+            {
+                return this.pojNemovDatumPocatkuField;
+            }
+            set
+            {
+                this.pojNemovDatumPocatkuField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 13)]
+        public System.Nullable<System.DateTime> pojNemovDatumKonce
+        {
+            get
+            {
+                return this.pojNemovDatumKonceField;
+            }
+            set
+            {
+                this.pojNemovDatumKonceField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class MimoradnaOperace
+    {
+
+        private int klicField;
+
+        private System.DateTime valutaField;
+
+        private decimal sumaField;
+
+        private string poznamkaField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public int klic
+        {
+            get
+            {
+                return this.klicField;
+            }
+            set
+            {
+                this.klicField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+        public System.DateTime valuta
+        {
+            get
+            {
+                return this.valutaField;
+            }
+            set
+            {
+                this.valutaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public decimal suma
+        {
+            get
+            {
+                return this.sumaField;
+            }
+            set
+            {
+                this.sumaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public string poznamka
+        {
+            get
+            {
+                return this.poznamkaField;
+            }
+            set
+            {
+                this.poznamkaField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class SimSettingsUrokovaSazba
     {
-        
+
         private System.Nullable<int> zadaZvyhodneniField;
-        
+
         private System.Nullable<int> developerIdField;
-        
+
         private System.Nullable<int> developerProjektIdField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 0)]
         public System.Nullable<int> zadaZvyhodneni
         {
             get
@@ -3609,9 +4905,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.zadaZvyhodneniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public System.Nullable<int> developerId
         {
             get
@@ -3623,9 +4919,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.developerIdField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 2)]
         public System.Nullable<int> developerProjektId
         {
             get
@@ -3638,18 +4934,18 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class UcelUveru
     {
-        
+
         private int kodUceluField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int kodUcelu
         {
             get
@@ -3662,58 +4958,58 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class SimSettingsUver
     {
-        
+
         private System.DateTime datumZalozeniField;
-        
+
         private System.Nullable<System.DateTime> datumPodpisuSmlouvyField;
-        
+
         private int kodProduktuField;
-        
+
         private System.Nullable<int> tarifField;
-        
+
         private int kanalField;
-        
+
         private int druhUveruField;
-        
+
         private System.Nullable<int> segmentUveruField;
-        
+
         private System.Nullable<int> kodZvyhodneniField;
-        
+
         private int denSplatkyField;
-        
+
         private System.Nullable<decimal> vyseUveruField;
-        
+
         private System.Nullable<decimal> splatkaUveruField;
-        
+
         private System.Nullable<int> splatnostUveruField;
-        
+
         private System.Nullable<System.DateTime> splatnostUveruDatumField;
-        
+
         private System.DateTime rozhodnyDenSazbyField;
-        
+
         private decimal urokovaSazbaField;
-        
+
         private decimal indCenotvorbaOdchylkaField;
-        
+
         private int periodaFixaceField;
-        
+
         private decimal predpokladanaHodnotaZajisteniField;
-        
+
         private decimal lTVField;
-        
+
         private int typCerpaniField;
-        
+
         private System.Nullable<int> lhutaDocerpaniField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public System.DateTime datumZalozeni
         {
             get
@@ -3725,9 +5021,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.datumZalozeniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 1)]
         public System.Nullable<System.DateTime> datumPodpisuSmlouvy
         {
             get
@@ -3739,9 +5035,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.datumPodpisuSmlouvyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public int kodProduktu
         {
             get
@@ -3753,9 +5049,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.kodProduktuField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 3)]
         public System.Nullable<int> tarif
         {
             get
@@ -3767,9 +5063,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.tarifField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public int kanal
         {
             get
@@ -3781,9 +5077,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.kanalField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
         public int druhUveru
         {
             get
@@ -3795,9 +5091,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.druhUveruField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 6)]
         public System.Nullable<int> segmentUveru
         {
             get
@@ -3809,9 +5105,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.segmentUveruField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 7)]
         public System.Nullable<int> kodZvyhodneni
         {
             get
@@ -3823,9 +5119,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.kodZvyhodneniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 8)]
         public int denSplatky
         {
             get
@@ -3837,9 +5133,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.denSplatkyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 9)]
         public System.Nullable<decimal> vyseUveru
         {
             get
@@ -3851,9 +5147,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.vyseUveruField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 10)]
         public System.Nullable<decimal> splatkaUveru
         {
             get
@@ -3865,9 +5161,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.splatkaUveruField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 11)]
         public System.Nullable<int> splatnostUveru
         {
             get
@@ -3879,9 +5175,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.splatnostUveruField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 12)]
         public System.Nullable<System.DateTime> splatnostUveruDatum
         {
             get
@@ -3893,9 +5189,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.splatnostUveruDatumField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 13)]
         public System.DateTime rozhodnyDenSazby
         {
             get
@@ -3907,9 +5203,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.rozhodnyDenSazbyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 14)]
         public decimal urokovaSazba
         {
             get
@@ -3921,9 +5217,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.urokovaSazbaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 15)]
         public decimal indCenotvorbaOdchylka
         {
             get
@@ -3935,9 +5231,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.indCenotvorbaOdchylkaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 16)]
         public int periodaFixace
         {
             get
@@ -3949,9 +5245,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.periodaFixaceField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 17)]
         public decimal predpokladanaHodnotaZajisteni
         {
             get
@@ -3963,9 +5259,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.predpokladanaHodnotaZajisteniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=18)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 18)]
         public decimal LTV
         {
             get
@@ -3977,9 +5273,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.lTVField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=19)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 19)]
         public int typCerpani
         {
             get
@@ -3991,9 +5287,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.typCerpaniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=20)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true, Order = 20)]
         public System.Nullable<int> lhutaDocerpani
         {
             get
@@ -4006,26 +5302,26 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class SimSettings
     {
-        
+
         private int rezimVolaniField;
-        
+
         private int enableResponseSplatkovyKalendarJednoduchyField;
-        
+
         private int enableResponseSplatkovyKalendarPlnyField;
-        
+
         private int enableResponseOperaceField;
-        
+
         private int enableResponseRpsnTokyField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public int rezimVolani
         {
             get
@@ -4037,9 +5333,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.rezimVolaniField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public int enableResponseSplatkovyKalendarJednoduchy
         {
             get
@@ -4051,9 +5347,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.enableResponseSplatkovyKalendarJednoduchyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public int enableResponseSplatkovyKalendarPlny
         {
             get
@@ -4065,9 +5361,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.enableResponseSplatkovyKalendarPlnyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public int enableResponseOperace
         {
             get
@@ -4079,9 +5375,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.enableResponseOperaceField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public int enableResponseRpsnToky
         {
             get
@@ -4094,32 +5390,32 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class SimulationHTRequest
     {
-        
+
         private SimSettings settingsField;
-        
+
         private SimSettingsUver uverField;
-        
+
         private UcelUveru[] ucelyUveruField;
-        
+
         private SimSettingsUrokovaSazba urokovaSazbaField;
-        
+
         private MimoradnaOperace[] mimoradneOperaceField;
-        
+
         private MarketingovaAkce[] marketingoveAkceField;
-        
+
         private Poplatek[] poplatkyField;
-        
+
         private SimSettingsPoplatky nastaveniPoplatkuField;
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public SimSettings settings
         {
             get
@@ -4131,9 +5427,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.settingsField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
         public SimSettingsUver uver
         {
             get
@@ -4145,9 +5441,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.uverField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=2)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 2)]
         public UcelUveru[] ucelyUveru
         {
             get
@@ -4159,9 +5455,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.ucelyUveruField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public SimSettingsUrokovaSazba urokovaSazba
         {
             get
@@ -4173,9 +5469,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.urokovaSazbaField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=4)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 4)]
         public MimoradnaOperace[] mimoradneOperace
         {
             get
@@ -4187,9 +5483,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.mimoradneOperaceField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=5)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 5)]
         public MarketingovaAkce[] marketingoveAkce
         {
             get
@@ -4201,9 +5497,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.marketingoveAkceField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=6)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 6)]
         public Poplatek[] poplatky
         {
             get
@@ -4215,9 +5511,9 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
                 this.poplatkyField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
         public SimSettingsPoplatky nastaveniPoplatku
         {
             get
@@ -4230,130 +5526,65 @@ namespace ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper
             }
         }
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     internal interface IHT_WS_SB_ServicesChannel : ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.IHT_WS_SB_Services, System.ServiceModel.IClientChannel
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     internal partial class HT_WS_SB_ServicesClient : System.ServiceModel.ClientBase<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.IHT_WS_SB_Services>, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.IHT_WS_SB_Services
     {
-        
-        /// <summary>
-        /// Chcete-li nakonfigurovat koncový bod služby, implementujte tuto částečnou metodu.
-        /// </summary>
-        /// <param name="serviceEndpoint">Koncový bod, který má být nakonfigurován</param>
-        /// <param name="clientCredentials">Přihlašovací údaje klienta</param>
-        static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
-        
-        public HT_WS_SB_ServicesClient() : 
-                base(HT_WS_SB_ServicesClient.GetDefaultBinding(), HT_WS_SB_ServicesClient.GetDefaultEndpointAddress())
-        {
-            this.Endpoint.Name = EndpointConfiguration.BasicHttpBinding_IHT_WS_SB_Services.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
-        public HT_WS_SB_ServicesClient(EndpointConfiguration endpointConfiguration) : 
-                base(HT_WS_SB_ServicesClient.GetBindingForEndpoint(endpointConfiguration), HT_WS_SB_ServicesClient.GetEndpointAddress(endpointConfiguration))
-        {
-            this.Endpoint.Name = endpointConfiguration.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
-        public HT_WS_SB_ServicesClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
-                base(HT_WS_SB_ServicesClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
-        {
-            this.Endpoint.Name = endpointConfiguration.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
-        public HT_WS_SB_ServicesClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(HT_WS_SB_ServicesClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
-        {
-            this.Endpoint.Name = endpointConfiguration.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
-        public HT_WS_SB_ServicesClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public HT_WS_SB_ServicesClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }
-        
+
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.GetVersionInfoResponse> GetVersionInfoAsync(string Mode)
         {
             return base.Channel.GetVersionInfoAsync(Mode);
         }
-        
+
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse> SimulationHTAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTRequest request)
         {
             return base.Channel.SimulationHTAsync(request);
         }
-        
+
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SplatkovyKalendarResponse> SplatkovyKalendarAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SplatkovyKalendarRequest request)
+        {
+            return base.Channel.SplatkovyKalendarAsync(request);
+        }
+
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Find_Response> WFS_FindTasksAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Message message)
         {
             return base.Channel.WFS_FindTasksAsync(header, message);
         }
-        
+
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Event_Response> WFS_EventReportAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Message message)
         {
             return base.Channel.WFS_EventReportAsync(header, message);
         }
-        
+
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_CommonResponse> WFS_ManageTaskAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.WFS_Message message)
         {
             return base.Channel.WFS_ManageTaskAsync(header, message);
         }
-        
+
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.BookOfTerms_response> GetBookOfTermsAndLoanPurposeAsync(ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.BookOfTerms_request message)
+        {
+            return base.Channel.GetBookOfTermsAndLoanPurposeAsync(message);
+        }
+
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
-        
+
         public virtual System.Threading.Tasks.Task CloseAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
-        }
-        
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
-        {
-            if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IHT_WS_SB_Services))
-            {
-                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
-                result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
-                result.MaxReceivedMessageSize = int.MaxValue;
-                result.AllowCookies = true;
-                result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
-                return result;
-            }
-            throw new System.InvalidOperationException(string.Format("Nelze najít koncový bod s názvem {0}.", endpointConfiguration));
-        }
-        
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
-        {
-            if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IHT_WS_SB_Services))
-            {
-                return new System.ServiceModel.EndpointAddress("https://adpra136.vsskb.cz/FAT/HT_WS_SB_Services.svc");
-            }
-            throw new System.InvalidOperationException(string.Format("Nelze najít koncový bod s názvem {0}.", endpointConfiguration));
-        }
-        
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
-        {
-            return HT_WS_SB_ServicesClient.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IHT_WS_SB_Services);
-        }
-        
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
-        {
-            return HT_WS_SB_ServicesClient.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IHT_WS_SB_Services);
-        }
-        
-        public enum EndpointConfiguration
-        {
-            
-            BasicHttpBinding_IHT_WS_SB_Services,
         }
     }
 }
