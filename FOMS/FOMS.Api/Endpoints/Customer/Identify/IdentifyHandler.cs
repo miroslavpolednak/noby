@@ -51,8 +51,8 @@ internal sealed class IdentifyHandler
                 Name = customerInstance.NaturalPerson.LastName
             }, cancellationToken);
 
-            var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, createCustomerResult.PartnerId.Value);
-            await _mediator.Publish(notification, cancellationToken);
+            //var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, createCustomerResult.PartnerId.Value);
+            //await _mediator.Publish(notification, cancellationToken);
         }
     }
 
