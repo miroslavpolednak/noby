@@ -20,13 +20,7 @@ internal static class MortgageExtensions
             InterestRate = mortgage.LoanInterestRate,
             FixationPeriod = mortgage.FixedRatePeriod,
             MonthlyInstallment = mortgage.LoanPaymentAmount,
-           
-
             //TODO: add mapping (not specified so far)
-            //CurrentAmount
-            //DrawingMaxOn
-            //VUP
-            //Statement
         };
 
         return request;
