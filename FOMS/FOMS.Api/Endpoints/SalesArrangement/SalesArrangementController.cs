@@ -27,7 +27,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">Sales arrangement</param>
     /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
-    [HttpGet("{salesArrangementId:int}/credit-worhiness")]
+    [HttpGet("{salesArrangementId:int}/credit-worthiness")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
     [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
