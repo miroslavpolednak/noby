@@ -9,8 +9,6 @@ internal class SearchHandler
 {
     public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
     {
-        _logger.RequestHandlerStarted(nameof(SearchHandler));
-        
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
             .FromRequest(request.Pagination)

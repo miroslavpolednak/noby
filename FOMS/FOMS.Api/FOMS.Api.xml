@@ -165,6 +165,36 @@
             </summary>
             <param name="productTypeId">ID typu produktu</param>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.DeveloperSearch(FOMS.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhledání developerských projektů
+            </summary>
+            <remarks>
+            Vyhledá developerské projekty na základě vyhledávacího textu.<br />
+            Vyhledává se v číselníku <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
+            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+            </remarks>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest.SearchText">
+            <summary>
+            Text pro vyhledávání
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchRequest.Pagination">
+            <summary>
+            Nastaveni strankovani a razeni.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchResponse.Pagination">
+            <summary>
+            Informace o strankovani a razeni.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Codebooks.DeveloperSearch.DeveloperSearchResponse.Rows">
+            <summary>
+            Kolekce nalezenych projektu.
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">
             <summary>
             Detailni informace o prijmu

@@ -9,7 +9,9 @@ namespace DomainServices.CodebookService.ApiGenerators
     [Generator]
     public class EndpointsSourceGenerator : ISourceGenerator
     {
+        private static string[] _hardcodedCodebooks = new[] { "DeveloperSearch", "Reset" };
         private static readonly Regex _castCamelCaseToDashDelimitedRegex = new Regex(@"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", RegexOptions.Compiled);
+
         public void Initialize(GeneratorInitializationContext context)
         {
             /*if (!Debugger.IsAttached)
@@ -27,7 +29,7 @@ namespace DomainServices.CodebookService.ApiGenerators
             var endpoints = serviceInterface.GetMembers()
                 .Where(t => t is IMethodSymbol)
                 .Cast<IMethodSymbol>()
-                .Where(t => t.OriginalDefinition.Name != "Reset")
+                .Where(t => !_hardcodedCodebooks.Contains(t.OriginalDefinition.Name))
                 .Select(t => new Endpoint(t.OriginalDefinition.Name, t.OriginalDefinition.ReturnType.ToString(), t.OriginalDefinition.Parameters.Count() == 2 ? t.OriginalDefinition.Parameters[0].ToString() : ""))
                 .ToList();
 
