@@ -21,6 +21,9 @@ internal sealed class IdentifyHandler
         // SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(customerOnSaInstance.SalesArrangementId, cancellationToken));
 
+        if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
+            throw new CisValidationException(0, "CustomerOnSA has been already identified");
+
         var modelToUpdate = new _SA.UpdateCustomerRequest
         {
             CustomerOnSAId = request.CustomerOnSAId,
@@ -43,16 +46,19 @@ internal sealed class IdentifyHandler
         if (customerOnSaInstance.CustomerRoleId == 1)
         {
             // update CASE-u
-            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
+            var updateRepsonse = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
             {
                 Identity = request.CustomerIdentity!,
                 DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
                 FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
                 Name = customerInstance.NaturalPerson.LastName
-            }, cancellationToken);
+            }, cancellationToken));
 
-            //var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, createCustomerResult.PartnerId.Value);
-            //await _mediator.Publish(notification, cancellationToken);
+            if (updateRepsonse.PartnerId.HasValue)
+            {
+                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, updateRepsonse.PartnerId.Value);
+                await _mediator.Publish(notification, cancellationToken);
+            }
         }
     }
 
