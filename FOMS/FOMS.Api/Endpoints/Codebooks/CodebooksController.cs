@@ -14,16 +14,16 @@ public class CodebooksController : ControllerBase
     /// <remarks>
     /// Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
     /// Aktualne implementovane ciselniky jsou:
-    /// - AcademicDegreesAfter
-    /// - AcademicDegreesBefore
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421388420\">AcademicDegreesAfter</a>
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421388414\">AcademicDegreesBefore</a>
     /// - ActionCodesSavings
     /// - ActionCodesSavingsLoan
-    /// - CaseStates
-    /// - ClassificationOfEconomicActivities
-    /// - ContactTypes
-    /// - Countries
-    /// - Currencies
-    /// - CustomerRoles
+    /// - <a href=\"https://wiki.kb.cz/confluence/display/HT/CaseState\">CaseStates</a>
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=430216251\">ClassificationOfEconomicActivities</a>
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=392877756\">ContactTypes</a>
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=405522415\">Countries</a>
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=424127746\">Currencies</a>
+    /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421386916\">CustomerRoles</a>
     /// - Developers
     /// - DeveloperProjects
     /// - EducationLevels
