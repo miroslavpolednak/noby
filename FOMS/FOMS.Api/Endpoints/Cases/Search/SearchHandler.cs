@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Security;
 using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
-using DSContracts = DomainServices.CaseService.Contracts;
+using _CS = DomainServices.CaseService.Contracts;
 
 namespace FOMS.Api.Endpoints.Cases.Search;
 
@@ -18,8 +18,8 @@ internal class SearchHandler
         _logger.SearchPaginableSettings(paginable);
         
         // zavolat BE sluzbu
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
-        _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(DomainServices.CaseService.Contracts.Case));
+        var result = ServiceCallResult.ResolveAndThrowIfError<_CS.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
+        _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(_CS.Case));
 
         // transform
         return new SearchResponse
