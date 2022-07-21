@@ -106,8 +106,8 @@ internal static class Extensions
             Code = resultItem.Code,
             Requested = resultItem.Requested == 1,
             Applied = resultItem.Applied == 1,
-            // MarketingActionId = resultItem.MarketingActionId, 
-            // Deviation = resultItem.Deviation,
+            MarketingActionId = resultItem.MarketingActionId, 
+            Deviation = resultItem.Deviation
         };
     }
 }

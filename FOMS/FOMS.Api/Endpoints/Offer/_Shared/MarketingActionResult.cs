@@ -8,7 +8,7 @@ public sealed class MarketingActionResult
 
 	public bool Applied { get; set; }
 
-	//public int? MarketingActionId { get; set; }
+	public int? MarketingActionId { get; set; }
 
-	//public decimal? Deviation { get; set; }
+	public decimal? Deviation { get; set; }
 }
