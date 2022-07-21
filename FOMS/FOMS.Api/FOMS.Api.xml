@@ -281,6 +281,15 @@
             <param name="identityScheme">Schema ve kterem je klient ulozeny - Kb | Mp</param>
             <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Identify(System.Int32,FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identifikace klienta
+            </summary>
+            <remarks>
+            Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
             <summary>
             Jmeno klienta
