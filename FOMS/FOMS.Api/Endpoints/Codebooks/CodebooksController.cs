@@ -16,7 +16,7 @@ public class CodebooksController : ControllerBase
     /// Aktualne implementovane ciselniky jsou:
     /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421388420\">AcademicDegreesAfter</a>
     /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421388414\">AcademicDegreesBefore</a>
-    /// - ActionCodesSavings
+    /// - ActionCodesSavings.
     /// - ActionCodesSavingsLoan
     /// - <a href=\"https://wiki.kb.cz/confluence/display/HT/CaseState\">CaseStates</a>
     /// - <a href=\"https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=430216251\">ClassificationOfEconomicActivities</a>
