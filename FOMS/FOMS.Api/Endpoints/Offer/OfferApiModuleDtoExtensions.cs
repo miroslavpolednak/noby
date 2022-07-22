@@ -18,6 +18,7 @@ internal static class OfferApiModuleDtoExtensions
             ExpectedDateOfDrawing = input.ExpectedDateOfDrawing,
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
+            GuaranteeDateFrom = (DateTime)basicParams.GuaranteeDateTo!,
             LoanPurposes = input.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
         };
     
