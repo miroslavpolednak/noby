@@ -20,5 +20,11 @@ namespace ExternalServices.Rip.V1
         /// </summary>
         /// <returns>string - RiskSegment</returns>
         Task<IServiceCallResult> CreateLoanApplication(LoanApplicationRequest arguments);
+
+        /// <summary>
+        /// ???
+        /// </summary>
+        /// <returns>LoanApplicationAssessmentResponse</returns>
+        Task<IServiceCallResult> GetLoanApplication(string loanApplicationAssessmentId, List<string> expand);
     }
 }
