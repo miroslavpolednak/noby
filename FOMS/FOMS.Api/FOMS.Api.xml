@@ -145,57 +145,7 @@
             Datum a cas posledni zmeny Case.
             </summary>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
-            <summary>Kolekce vyzadanych ciselniku.</summary>
-            <remarks>
-            Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
-            Aktualne implementovane ciselniky jsou:
-            - AcademicDegreesAfter
-            - AcademicDegreesBefore
-            - ActionCodesSavings
-            - ActionCodesSavingsLoan
-            - CaseStates
-            - ClassificationOfEconomicActivities
-            - ContactTypes
-            - Countries
-            - Currencies
-            - CustomerRoles
-            - Developers
-            - DeveloperProjects
-            - EducationLevels
-            - EmploymentTypes
-            - Fees
-            - FixedRatePeriods
-            - Genders
-            - HouseholdTypes
-            - IdentificationDocumentTypes
-            - IncomeMainTypes
-            - IncomeForeignTypes
-            - IncomeOtherTypes
-            - JobTypes
-            - LegalCapacities
-            - LoanPurposes
-            - LoanKinds
-            - Mandants
-            - MaritalStatuses
-            - ObligationTypes
-            - PaymentDays
-            - PostCodes
-            - ProductTypes
-            - PropertySettlements
-            - RealEstateTypes
-            - RealEstatePurchaseTypes
-            - SalesArrangementStates
-            - SalesArrangementTypes
-            - SignatureTypes
-            - WorkflowTaskCategories
-            - WorkflowTaskStates
-            - WorkflowTaskTypes
-            - WorkSectors
-            </remarks>
-            <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
-            <returns>Kolekce vyzadanych ciselniku.</returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)" -->
         <member name="M:FOMS.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
             <summary>
             Ciselnik fixace uveru.
@@ -330,6 +280,15 @@
             <param name="identityId">ID klienta v danem schematu</param>
             <param name="identityScheme">Schema ve kterem je klient ulozeny - Kb | Mp</param>
             <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Identify(System.Int32,FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identifikace klienta
+            </summary>
+            <remarks>
+            Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
             <summary>

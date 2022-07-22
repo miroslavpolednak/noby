@@ -58,10 +58,8 @@ internal class CaseServiceRepository
         {
             if (searchTerm.Length < 8 && int.TryParse(searchTerm, out int searchCaseId))
                 query = query.Where(t => t.CaseId == searchCaseId);
-            else if ((searchTerm.Length == 10 || searchTerm.Length == 8) && decimal.TryParse(searchTerm, out _))
-                query = query.Where(t => t.ContractNumber == searchTerm);
             else
-                query = query.Where(t => t.Name.Contains(searchTerm));
+                query = query.Where(t => t.Name.Contains(searchTerm) || t.ContractNumber.Contains(searchTerm));
         }
         
         // razeni
