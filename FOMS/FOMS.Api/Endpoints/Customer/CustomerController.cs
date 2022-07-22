@@ -50,10 +50,11 @@ public class CustomerController : ControllerBase
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify")]
     [Produces("application/json")]
+    [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Modelace Hypoteky", "Klient", "UC: Domacnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Identify([FromRoute] int customerOnSAId, [FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(new Identify.IdentifyRequest().InfuseId(customerOnSAId), cancellationToken);
+        => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;
