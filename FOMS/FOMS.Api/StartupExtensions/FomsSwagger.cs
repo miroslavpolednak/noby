@@ -29,6 +29,7 @@ internal static class FomsSwagger
             
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
+            x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
         });
         
         // Adds FluentValidationRules staff to Swagger.
