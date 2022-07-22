@@ -51,7 +51,15 @@ internal class CreateMortgageCaseHandler
         if (createCustomerResult.PartnerId.HasValue)
         {
             var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
-            await _mediator.Publish(notification, cancellationToken);
+            try
+            {
+                await _mediator.Publish(notification, cancellationToken);
+            }
+            catch (Exception err)
+            {
+                //TODO osetrit rollback?
+                _logger.LogError(err, "TODO rollback create case?");
+            }
         }
 
         //TODO co udelat, kdyz se neco z toho nepovede?
