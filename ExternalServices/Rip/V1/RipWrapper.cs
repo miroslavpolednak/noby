@@ -392,22 +392,22 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Risk Business Case - Assessment (Asynchronous)
+        /// Vyhodnocení úvěrové žádosti - asynchronní volání
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<RiskBusinessCaseCommand> RiskBusinessCaseAssessmentAsync(string id, AssessmentRequest body)
+        public virtual System.Threading.Tasks.Task<RiskBusinessCaseCommand> RiskBusinessCaseAssessmentCreateAsync(string id, AssessmentRequest body)
         {
-            return RiskBusinessCaseAssessmentAsync(id, body, System.Threading.CancellationToken.None);
+            return RiskBusinessCaseAssessmentCreateAsync(id, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Risk Business Case - Assessment (Asynchronous)
+        /// Vyhodnocení úvěrové žádosti - asynchronní volání
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<RiskBusinessCaseCommand> RiskBusinessCaseAssessmentAsync(string id, AssessmentRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RiskBusinessCaseCommand> RiskBusinessCaseAssessmentCreateAsync(string id, AssessmentRequest body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v1/assessment/command/riskBusinessCaseId={id}");
@@ -476,7 +476,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Risk Business Case - Create
+        /// Vytvoření nového Risk Business Case
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -487,7 +487,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Risk Business Case - Create
+        /// Vytvoření nového Risk Business Case
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -559,7 +559,91 @@ namespace ExternalServices.Rip.V1.RipWrapper
         }
 
         /// <summary>
-        /// Risk Business Case - Commit
+        /// Vyhodnocení úvěrové žádosti
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<LoanApplicationAssessment> RiskBusinessCaseAssessmentAsync(string id, AssessmentRequest body)
+        {
+            return RiskBusinessCaseAssessmentAsync(id, body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Vyhodnocení úvěrové žádosti
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<LoanApplicationAssessment> RiskBusinessCaseAssessmentAsync(string id, AssessmentRequest body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/v1/riskBusinessCase/{id}/assessment");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<LoanApplicationAssessment>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Dokončení úvěrové žádosti
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -570,7 +654,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Risk Business Case - Commit
+        /// Dokončení úvěrové žádosti
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -754,13 +838,15 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Identifikátor uživatele/schvalovatele (os.číslo, login, ...)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("identity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("identity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Identity { get; set; }
 
         /// <summary>
         /// Identitní schéma ("MPAD", "KBAD", "DMID" (BrokerId), "M04ID", "M17ID")
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("identityScheme", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("identityScheme", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string IdentityScheme { get; set; }
 
     }
@@ -818,26 +904,26 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Náklady domácnosti spojené s bydlením (Kč/měsíc).
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("rent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Rent { get; set; }
+        [Newtonsoft.Json.JsonProperty("rent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Rent { get; set; }
 
         /// <summary>
         /// Výdaje domácnosti na spoření (Kč/měsíc).
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("saving", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Saving { get; set; }
+        [Newtonsoft.Json.JsonProperty("saving", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Saving { get; set; }
 
         /// <summary>
         /// Výdaje domácnosti na pojištění (Kč/měsíc).
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("insurance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Insurance { get; set; }
+        [Newtonsoft.Json.JsonProperty("insurance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Insurance { get; set; }
 
         /// <summary>
         /// Ostatní výdaje domácnosti (Kč/měsíc).
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("other", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Other { get; set; }
+        [Newtonsoft.Json.JsonProperty("other", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Other { get; set; }
 
     }
 
@@ -876,26 +962,26 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Výše limitu kreditní karty nebo povoleného debetu.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Limit { get; set; }
+        [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Limit { get; set; }
 
         /// <summary>
         /// Konsolidovaná výše limitu kreditní karty nebo povoleného debetu.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("amountConsolidated", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double AmountConsolidated { get; set; }
+        [Newtonsoft.Json.JsonProperty("amountConsolidated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? AmountConsolidated { get; set; }
 
         /// <summary>
         /// Výše splátky spotřebitelského nebo hypotečního úvěru.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("installment", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Installment { get; set; }
+        [Newtonsoft.Json.JsonProperty("installment", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Installment { get; set; }
 
         /// <summary>
         /// Konsolidovaná výše splátky spotřebitelského nebo hypotečního úvěru.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("installmentConsolidated", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double InstallmentConsolidated { get; set; }
+        [Newtonsoft.Json.JsonProperty("installmentConsolidated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? InstallmentConsolidated { get; set; }
 
         /// <summary>
         /// Příznak, že závazek je veden u jiného peněžního ústavu (JPÚ), než v kterém je sjednáván úvěr.
@@ -920,13 +1006,13 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Je klient druhem/družkou?
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("isPartnerMp", NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("isPartnerMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsPartnerMp { get; set; }
 
         /// <summary>
         /// Rodinný stav.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("maritalStatusMp", NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("maritalStatusMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaritalStatusMp { get; set; }
 
         /// <summary>
@@ -952,14 +1038,14 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Počet vyživovaných dětí do 10 let (včetně).
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("childrenUnderAnd10", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? ChildrenUnderAnd10 { get; set; }
+        [Newtonsoft.Json.JsonProperty("childrenUnderAnd10", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ChildrenUnderAnd10 { get; set; }
 
         /// <summary>
         /// Počet vyživovaných dětí nad 10 let.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("childrenOver10", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? ChildrenOver10 { get; set; }
+        [Newtonsoft.Json.JsonProperty("childrenOver10", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ChildrenOver10 { get; set; }
 
         [Newtonsoft.Json.JsonProperty("expensesSummary", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ExpensesSummary ExpensesSummary { get; set; }
@@ -967,8 +1053,9 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Klienti
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("clients", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<LoanApplicationCounterParty> Clients { get; set; }
+        [Newtonsoft.Json.JsonProperty("clients", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<LoanApplicationCounterParty> Clients { get; set; } = new System.Collections.ObjectModel.Collection<LoanApplicationCounterParty>();
 
     }
 
@@ -1081,13 +1168,15 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Id
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
-        /// System (eg. NOBY, STARBUILD)
+        /// Zdroj vzniku ID
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("system", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("system", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string System { get; set; }
 
     }
@@ -1101,26 +1190,26 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Rent.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("rent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Rent { get; set; }
+        [Newtonsoft.Json.JsonProperty("rent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Rent { get; set; }
 
         /// <summary>
         /// Saving.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("saving", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Saving { get; set; }
+        [Newtonsoft.Json.JsonProperty("saving", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Saving { get; set; }
 
         /// <summary>
         /// Insurance.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("insurance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Insurance { get; set; }
+        [Newtonsoft.Json.JsonProperty("insurance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Insurance { get; set; }
 
         /// <summary>
         /// Other.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("other", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Other { get; set; }
+        [Newtonsoft.Json.JsonProperty("other", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Other { get; set; }
 
     }
 
@@ -1189,8 +1278,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// Hodnota částky
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Value { get; set; }
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Value { get; set; }
 
         /// <summary>
         /// Kód měny částky (ISO 4217)
@@ -1242,7 +1331,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc..
         /// </summary>
         [Newtonsoft.Json.JsonProperty("employerType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? EmployerType { get; set; }
+        public int? EmployerType { get; set; }
 
         /// <summary>
         /// Název zaměstnavatele
@@ -1254,52 +1343,52 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// agregovaný OKEČ zaměstnavatele.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("nace", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Nace { get; set; }
+        public int? Nace { get; set; }
 
         /// <summary>
         /// povolání.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("profession", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Profession { get; set; }
+        public int? Profession { get; set; }
 
         /// <summary>
         /// PSČ sídla zaměstnavatele.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("postcode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Postcode { get; set; }
+        public int? Postcode { get; set; }
 
         /// <summary>
-        /// město sídla zaměstnání.
+        /// Město sídla zaměstnavatele
         /// </summary>
         [Newtonsoft.Json.JsonProperty("city", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string City { get; set; }
 
         /// <summary>
-        /// Stát sídla zaměstnání.
+        /// Stát sídla zaměstnavatele
         /// </summary>
         [Newtonsoft.Json.JsonProperty("countryCodeMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CountryCodeMp { get; set; }
 
         /// <summary>
-        /// Název pracovní pozice.
+        /// Název pracovní pozice
         /// </summary>
         [Newtonsoft.Json.JsonProperty("jobTitle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string JobTitle { get; set; }
 
         /// <summary>
-        /// ulice sídla zaměstnání.
+        /// Ulice sídla zaměstnavatele
         /// </summary>
         [Newtonsoft.Json.JsonProperty("street", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Street { get; set; }
 
         /// <summary>
-        /// číslo popisné sídla zaměstnavatele
+        /// Číslo popisné sídla zaměstnavatele
         /// </summary>
         [Newtonsoft.Json.JsonProperty("houseNumber", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int HouseNumber { get; set; }
 
         /// <summary>
-        /// číslo orientační sídla zaměstnavatele
+        /// Číslo orientační sídla zaměstnavatele
         /// </summary>
         [Newtonsoft.Json.JsonProperty("streetNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StreetNumber { get; set; }
@@ -1314,37 +1403,37 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public Amount MonthlyIncomeAmount { get; set; }
 
         /// <summary>
-        /// předčíslí čísla účtu zaměstnavatele, z kterého klientovi chodí mzda
+        /// Předčíslí čísla účtu zaměstnavatele, z kterého klientovi chodí mzda
         /// </summary>
         [Newtonsoft.Json.JsonProperty("accountNumberPrefix", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AccountNumberPrefix { get; set; }
 
         /// <summary>
-        /// číslo účtu zaměstnavatele (bez předčíslí), z kterého klientovi chodí mzda
+        /// Číslo účtu zaměstnavatele (bez předčíslí), z kterého klientovi chodí mzda
         /// </summary>
         [Newtonsoft.Json.JsonProperty("accountNumberCore", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AccountNumberCore { get; set; }
 
         /// <summary>
-        /// kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda
+        /// Kód banky účtu zaměstnavatele, z kterého klientovi chodí mzda
         /// </summary>
         [Newtonsoft.Json.JsonProperty("accountBankCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AccountBankCode { get; set; }
 
         /// <summary>
-        /// příznak domicilace příjmu
+        /// Příznak domicilace příjmu
         /// </summary>
         [Newtonsoft.Json.JsonProperty("domiciled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Domiciled { get; set; }
 
         /// <summary>
-        /// typ dokumentu dokládajícího příjmy (\"PNZ\"=příjem není zadán).
+        /// Typ dokumentu dokládajícího příjmy (\"PNZ\"=příjem není zadán).
         /// </summary>
         [Newtonsoft.Json.JsonProperty("proofTypeMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ProofTypeMp { get; set; }
 
         /// <summary>
-        /// typ zaměstnání v zahraničí
+        /// Typ zaměstnání v zahraničí
         /// </summary>
         [Newtonsoft.Json.JsonProperty("foreignEmploymentType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ForeignEmploymentType { get; set; }
@@ -1356,13 +1445,13 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public double? GrossAnnualIncome { get; set; }
 
         /// <summary>
-        /// kontaktní osoba uvedená na potvrzení o výši příjmu.
+        /// Kontaktní osoba uvedená na potvrzení o výši příjmu.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("proofConfirmationContactSurname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProofConfirmationContactSurname { get; set; }
 
         /// <summary>
-        /// kontaktní tel. číslo uvedené na potvrzení o výši příjmu.
+        /// Kontaktní tel.číslo uvedené na potvrzení o výši příjmu.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("proofConfirmationContactPhone", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProofConfirmationContactPhone { get; set; }
@@ -1386,25 +1475,25 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public bool? NoticePeriod { get; set; }
 
         /// <summary>
-        /// Je pracovní poměr sjednán na dobu určitou?.
+        /// Typ pracovního poměru
         /// </summary>
         [Newtonsoft.Json.JsonProperty("employmentTypeMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? EmploymentTypeMp { get; set; }
 
         /// <summary>
-        /// první pracovní smlouva se zaměstnavatelem od.
+        /// Datum začátku první pracovní smlouvy se zaměstnavatelem
         /// </summary>
         [Newtonsoft.Json.JsonProperty("firstContractFrom", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? FirstContractFrom { get; set; }
 
         /// <summary>
-        /// aktuální pracovní smlouva od.
+        /// Datum začátku aktuální pracovní smlouvy
         /// </summary>
         [Newtonsoft.Json.JsonProperty("currentContractFrom", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? CurrentContractFrom { get; set; }
 
         /// <summary>
-        /// aktuální pracovní smlouva do.
+        /// Datum konce aktuální pracovní smlouvy
         /// </summary>
         [Newtonsoft.Json.JsonProperty("currentContractTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? CurrentContractTo { get; set; }
@@ -1427,28 +1516,28 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class LoanApplicationEntrepreneurIncome
     {
         /// <summary>
-        /// rodné číslo / IČO FOP.
+        /// Rodné číslo / IČO FOP
         /// </summary>
         [Newtonsoft.Json.JsonProperty("entrepreneurIdentificationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string EntrepreneurIdentificationNumber { get; set; }
 
         /// <summary>
-        /// agregovaný OKEČ.
+        /// Agregovaný OKEČ podnikatele
         /// </summary>
         [Newtonsoft.Json.JsonProperty("nace", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Nace { get; set; }
+        public int? Nace { get; set; }
 
         /// <summary>
         /// povolání.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("profession", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Profession { get; set; }
+        public int? Profession { get; set; }
 
         /// <summary>
         /// PSČ sídla podnikání.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("postcode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Postcode { get; set; }
+        public int? Postcode { get; set; }
 
         /// <summary>
         /// město sídla podnikání.
@@ -1604,7 +1693,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public LoanApplicationRentIncome RentIncome { get; set; }
 
         /// <summary>
-        /// ostatní příjmy
+        /// Ostatní příjmy
         /// </summary>
         [Newtonsoft.Json.JsonProperty("otherIncome", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<LoanApplicationOtherIncome> OtherIncome { get; set; }
@@ -1691,7 +1780,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class LoanApplicationCounterParty2
     {
         /// <summary>
-        /// LoanApplication identity
+        /// ID klienta (volajícího systému)
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Id { get; set; }
@@ -1703,62 +1792,62 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public bool? IsPartner { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// ID klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("customerId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Příznak zaměstnance skupiny
         /// </summary>
         [Newtonsoft.Json.JsonProperty("groupEmployee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? GroupEmployee { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Příznak zvláštního vztahu k bance
         /// </summary>
         [Newtonsoft.Json.JsonProperty("specialRelationsWithKB", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SpecialRelationsWithKB { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Rodné číslo
         /// </summary>
         [Newtonsoft.Json.JsonProperty("birthNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BirthNumber { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Role klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("roleCodeMp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int RoleCodeMp { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Jméno klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("firstname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Firstname { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Příjmení klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("surname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Surname { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Rodné příjmení klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("birthName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BirthName { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Datum narození klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("birthDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? BirthDate { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Místo narození klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("birthPlace", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BirthPlace { get; set; }
@@ -1767,37 +1856,37 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public PrimaryAddress Address { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Pohlaví klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("genderMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string GenderMp { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Rodinný stav klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("maritalStatusMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaritalStatusMp { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Nejvyšší dosažené vzdělání klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("highestEducation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? HighestEducation { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Titul klienta (před jménem)
         /// </summary>
         [Newtonsoft.Json.JsonProperty("academicTitlePrefix", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AcademicTitlePrefix { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Tel.číslo klienta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("mobilePhoneNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MobilePhoneNumber { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Příznak (klient má e-mail adresu)
         /// </summary>
         [Newtonsoft.Json.JsonProperty("hasEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HasEmail { get; set; }
@@ -1812,7 +1901,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public LoanApplicationIncome2 Income { get; set; }
 
         /// <summary>
-        /// LoanApplication identity
+        /// Příznak daňového rezidenta
         /// </summary>
         [Newtonsoft.Json.JsonProperty("taxpayer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Taxpayer { get; set; }
@@ -1850,13 +1939,13 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// počet vyživovaných dětí do 10 let (včetně).
         /// </summary>
         [Newtonsoft.Json.JsonProperty("childrenUnderAnd10", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? ChildrenUnderAnd10 { get; set; }
+        public int? ChildrenUnderAnd10 { get; set; }
 
         /// <summary>
         /// počet vyživovaných dětí nad 10 let .
         /// </summary>
         [Newtonsoft.Json.JsonProperty("childrenOver10", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? ChildrenOver10 { get; set; }
+        public int? ChildrenOver10 { get; set; }
 
         [Newtonsoft.Json.JsonProperty("householdExpensesSummary", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ExpensesSummary2 HouseholdExpensesSummary { get; set; }
@@ -1893,7 +1982,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// účel úvěru.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("codeMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? CodeMp { get; set; }
+        public int? CodeMp { get; set; }
 
         /// <summary>
         /// výše požadované výše úvěru pro daný účel.
@@ -1990,19 +2079,19 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// počet splátek (anuitní a úrokové).
         /// </summary>
         [Newtonsoft.Json.JsonProperty("maturity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Maturity { get; set; }
+        public int? Maturity { get; set; }
 
         /// <summary>
         /// žádaná anuitní splátka.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("annuity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? Annuity { get; set; }
+        public int? Annuity { get; set; }
 
         /// <summary>
         /// doba fixace úrokové sazby.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fixationPeriod", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? FixationPeriod { get; set; }
+        public int? FixationPeriod { get; set; }
 
         /// <summary>
         /// žádaná roční úroková sazba.
@@ -2026,7 +2115,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// počet splátek (pouze anuitní).
         /// </summary>
         [Newtonsoft.Json.JsonProperty("installmentCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? InstallmentCount { get; set; }
+        public int? InstallmentCount { get; set; }
 
         /// <summary>
         /// termín čerpání obchodu od.
@@ -2100,22 +2189,24 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public string AccountBankCode { get; set; }
 
         /// <summary>
-        /// kód produktového shluku (shluk jednoho produktu).
+        /// Typ produktu
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("productType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("productType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ProductType { get; set; }
 
         /// <summary>
-        /// kód produktového shluku (shluk jednoho produktu).
+        /// Typ vztahu
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("relationType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("relationType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RelationType { get; set; }
 
         /// <summary>
-        /// remainingExposure
+        /// Zbývající angažovanost
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("remainingExposure", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double RemainingExposure { get; set; }
+        [Newtonsoft.Json.JsonProperty("remainingExposure", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? RemainingExposure { get; set; }
 
     }
 
@@ -2150,7 +2241,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// <summary>
         /// loan application verze (verze dat - timestamp)
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("loanApplicationDataVersion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("loanApplicationDataVersion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LoanApplicationDataVersion { get; set; }
 
         /// <summary>
@@ -2433,11 +2525,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
         [Newtonsoft.Json.JsonProperty("loanApplicationLimit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoanApplicationLimit LoanApplicationLimit { get; set; }
 
-        /// <summary>
-        /// Assessment detail
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("loanApplicationRiskCharacteristics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<RiskCharacteristics> LoanApplicationRiskCharacteristics { get; set; }
+        [Newtonsoft.Json.JsonProperty("loanApplicationRiskCharacteristics", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RiskCharacteristics LoanApplicationRiskCharacteristics { get; set; }
 
     }
 
@@ -2762,15 +2851,6 @@ namespace ExternalServices.Rip.V1.RipWrapper
         [Newtonsoft.Json.JsonProperty("loanOffBalanceAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Amount3 LoanOffBalanceAmount { get; set; }
 
-        /// <summary>
-        /// noOfDaysPastDue
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("noOfDaysPastDue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? NoOfDaysPastDue { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("loanAmountPastDue", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount3 LoanAmountPastDue { get; set; }
-
         [Newtonsoft.Json.JsonProperty("exposureAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Amount3 ExposureAmount { get; set; }
 
@@ -3027,9 +3107,6 @@ namespace ExternalServices.Rip.V1.RipWrapper
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ExposureSummaryForApproval
     {
-        [Newtonsoft.Json.JsonProperty("totalExistingExposureKB", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Amount3 TotalExistingExposureKB { get; set; }
-
         [Newtonsoft.Json.JsonProperty("totalExistingExposureKBNaturalPerson", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Amount3 TotalExistingExposureKBNaturalPerson { get; set; }
 
@@ -3194,6 +3271,317 @@ namespace ExternalServices.Rip.V1.RipWrapper
     }
 
     /// <summary>
+    /// Resource
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Resource2
+    {
+        /// <summary>
+        /// Entity
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("entity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Entity { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SystemId Id { get; set; }
+
+    }
+
+    /// <summary>
+    /// AssessmentReasonDetail
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AssessmentReasonDetail2
+    {
+        /// <summary>
+        /// Target
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("target", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Target { get; set; }
+
+        /// <summary>
+        /// Desc
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("desc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Desc { get; set; }
+
+        /// <summary>
+        /// Target
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("resource", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Resource2> Resource { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanApplicationAssessmentReason2
+    {
+        /// <summary>
+        /// code.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// Level
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("level", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Level { get; set; }
+
+        /// <summary>
+        /// Weight
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Weight { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AssessmentReasonDetail2 Detail { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanApplicationScore2
+    {
+        /// <summary>
+        /// value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// scale.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("scale", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Scale { get; set; }
+
+    }
+
+    /// <summary>
+    /// Amount
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Amount4
+    {
+        /// <summary>
+        /// Hodnota částky
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Value { get; set; }
+
+        /// <summary>
+        /// Kód měny částky (ISO 4217)
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("currencyCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CurrencyCode { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanApplicationLimit2
+    {
+        [Newtonsoft.Json.JsonProperty("_LoanApplicationLimit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 _LoanApplicationLimit { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("loanApplicationInstallmentLimit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 LoanApplicationInstallmentLimit { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("loanApplicationCollateralLimit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 LoanApplicationCollateralLimit { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("remainingAnnuityLivingAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 RemainingAnnuityLivingAmount { get; set; }
+
+        /// <summary>
+        /// Remaining Annuity Living Amount
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("calculationIrStressed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CalculationIrStressed { get; set; }
+
+        /// <summary>
+        /// iir
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("iir", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Iir { get; set; }
+
+        /// <summary>
+        /// cir
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("cir", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Cir { get; set; }
+
+        /// <summary>
+        /// dti
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("dti", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Dti { get; set; }
+
+        /// <summary>
+        /// dsti
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("dsti", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Dsti { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RiskCharacteristics2
+    {
+        [Newtonsoft.Json.JsonProperty("monthlyIncomeAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyIncomeAmount { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("monthlyCostsWithoutInstAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyCostsWithoutInstAmount { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("monthlyInstallmentsInKBAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyInstallmentsInKBAmount { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("monthlyEntrepreneurInstallmentsInKBAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyEntrepreneurInstallmentsInKBAmount { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("monthlyInstallmentsInMPSSAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyInstallmentsInMPSSAmount { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("monthlyInstallmentsInOFIAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyInstallmentsInOFIAmount { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("monthlyInstallmentsInCBCBAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Amount4 MonthlyInstallmentsInCBCBAmount { get; set; }
+
+    }
+
+    /// <summary>
+    /// Detaily vyhodnocení.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AssessmentDetail2
+    {
+        [Newtonsoft.Json.JsonProperty("loanApplicationScore", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LoanApplicationScore2 LoanApplicationScore { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("loanApplicationLimit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LoanApplicationLimit2 LoanApplicationLimit { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("loanApplicationRiskCharacteristics", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RiskCharacteristics2 LoanApplicationRiskCharacteristics { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdAssessmentDetail2
+    {
+        /// <summary>
+        /// severity.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Id { get; set; }
+
+        /// <summary>
+        /// householdId.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("householdId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? HouseholdId { get; set; }
+
+        /// <summary>
+        /// householdIndex.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("householdIndex", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? HouseholdIndex { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("assessmentDetail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AssessmentDetail2 AssessmentDetail { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CounterpartyAssessmentDetail2
+    {
+        /// <summary>
+        /// severity.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? Id { get; set; }
+
+        /// <summary>
+        /// counterPartyId.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("counterPartyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? CounterPartyId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("customerId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SystemId CustomerId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("assessmentDetail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AssessmentDetail2 AssessmentDetail { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanApplicationAssessment
+    {
+        /// <summary>
+        /// ID vyhodnocení aplikačního ratingu
+        /// <br/>urn:ri:KBCZ.LAA.LoanApplicationAssessment.13838887
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("loanApplicationIdMp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SystemId LoanApplicationIdMp { get; set; }
+
+        /// <summary>
+        /// ID obchodního případu.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("riskBusinesscaseIdMp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RiskBusinesscaseIdMp { get; set; }
+
+        /// <summary>
+        /// Datum expirace obchodního případu v C4M
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("riskBusinesscaseExpirationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? RiskBusinesscaseExpirationDate { get; set; }
+
+        /// <summary>
+        /// Kód výsledku aplikačního ratingu
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("assessmentResult", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AssessmentResult { get; set; }
+
+        /// <summary>
+        /// SRN (standardní rizikové náklady)
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("standardRiskCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? StandardRiskCosts { get; set; }
+
+        /// <summary>
+        /// Kód GL tabulky
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("glTableCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? GlTableCode { get; set; }
+
+        /// <summary>
+        /// loanApplicationAssessmentReason.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("loanApplicationAssessmentReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<LoanApplicationAssessmentReason2> LoanApplicationAssessmentReason { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("assessmentDetail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AssessmentDetail2 AssessmentDetail { get; set; }
+
+        /// <summary>
+        /// householdAssessmentDetail.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("householdAssessmentDetail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<HouseholdAssessmentDetail2> HouseholdAssessmentDetail { get; set; }
+
+        /// <summary>
+        /// counterpartyAssessmentDetail.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("counterpartyAssessmentDetail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<CounterpartyAssessmentDetail2> CounterpartyAssessmentDetail { get; set; }
+
+    }
+
+    /// <summary>
     /// LoanApplicationProduct
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -3250,34 +3638,37 @@ namespace ExternalServices.Rip.V1.RipWrapper
     public partial class CommitRequest
     {
         [Newtonsoft.Json.JsonProperty("loanApplicationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SystemId LoanApplicationId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public SystemId LoanApplicationId { get; set; } = new SystemId();
 
         /// <summary>
-        /// IT Channel.
+        /// IT Channel
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("itChannel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("itChannel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ItChannel { get; set; }
 
         [Newtonsoft.Json.JsonProperty("loanApplicationProduct", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoanApplicationProduct3 LoanApplicationProduct { get; set; }
 
         /// <summary>
-        /// riskBusinessCaseFinalResult.
+        /// Výsledek
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("riskBusinessCaseFinalResult", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("riskBusinessCaseFinalResult", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RiskBusinessCaseFinalResult { get; set; }
 
         [Newtonsoft.Json.JsonProperty("loanSoldProduct", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoanSoldProduct LoanSoldProduct { get; set; }
 
         /// <summary>
-        /// approvalLevel.
+        /// Úroveň schválení
         /// </summary>
         [Newtonsoft.Json.JsonProperty("approvalLevel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ApprovalLevel { get; set; }
 
         /// <summary>
-        /// Datum schválení.  Format: yyyy-MM-dd
+        /// Datum schválení (yyyy-MM-dd)
         /// </summary>
         [Newtonsoft.Json.JsonProperty("approvalDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? ApprovalDate { get; set; }
@@ -3289,7 +3680,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         public HumanUser Approver { get; set; }
 
         /// <summary>
-        /// collateralAgreements.
+        /// Zajištění (kolekce)
         /// </summary>
         [Newtonsoft.Json.JsonProperty("collateralAgreements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<CollateralAgreement> CollateralAgreements { get; set; }
@@ -3326,7 +3717,7 @@ namespace ExternalServices.Rip.V1.RipWrapper
         /// identifikátor obchodního případu v C4M
         /// </summary>
         [Newtonsoft.Json.JsonProperty("riskBusinessCaseId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? RiskBusinessCaseId { get; set; }
+        public string RiskBusinessCaseId { get; set; }
 
         /// <summary>
         /// Datum a čas odpovědi
