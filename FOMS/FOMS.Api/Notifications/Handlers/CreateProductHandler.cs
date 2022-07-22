@@ -1,5 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.ProductService.Abstraction;
+﻿using DomainServices.ProductService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Product = DomainServices.ProductService.Contracts;

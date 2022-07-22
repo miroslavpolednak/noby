@@ -57,11 +57,21 @@ internal sealed class IdentifyHandler
             if (updateRepsonse.PartnerId.HasValue)
             {
                 var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, updateRepsonse.PartnerId.Value);
-                await _mediator.Publish(notification, cancellationToken);
+
+                try
+                {
+                    await _mediator.Publish(notification, cancellationToken);
+                }
+                catch (Exception err)
+                {
+                    //TODO osetrit rollback?
+                    _logger.LogError(err, "TODO rollback create case?");
+                }
             }
         }
     }
 
+    private readonly ILogger<IdentifyHandler> _logger;
     private readonly IMediator _mediator;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ICustomerServiceAbstraction _customerService;
@@ -69,6 +79,7 @@ internal sealed class IdentifyHandler
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public IdentifyHandler(
+        ILogger<IdentifyHandler> logger,
         IMediator mediator,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICaseServiceAbstraction caseService,
@@ -76,6 +87,7 @@ internal sealed class IdentifyHandler
         ICustomerOnSAServiceAbstraction customerOnSAService)
     {
         _mediator = mediator;
+        _logger = logger;
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _customerService = customerService;
