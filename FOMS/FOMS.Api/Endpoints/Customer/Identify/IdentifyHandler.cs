@@ -43,10 +43,10 @@ internal sealed class IdentifyHandler
         var successfulUpdate = ServiceCallResult.IsSuccessResult(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));
 
         // hlavni klient
-        if (customerOnSaInstance.CustomerRoleId == 1)
+        if (successfulUpdate && customerOnSaInstance.CustomerRoleId == 1)
         {
             // update CASE-u
-            var updateRepsonse = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
+            var updateResponse = ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
             {
                 Identity = request.CustomerIdentity!,
                 DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
@@ -54,9 +54,10 @@ internal sealed class IdentifyHandler
                 Name = customerInstance.NaturalPerson.LastName
             }, cancellationToken));
 
-            if (updateRepsonse.PartnerId.HasValue)
+            if (customerInstance.Identities.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp))
             {
-                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, updateRepsonse.PartnerId.Value);
+                int mpid = customerInstance.Identities.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
+                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, mpid);
                 await _mediator.Publish(notification, cancellationToken);
             }
         }
