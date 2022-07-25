@@ -118,14 +118,14 @@ internal sealed class RealEasClient
 
     public async Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
     {
-        _logger.LogDebug("Run inputs: {caseId}, {loanId}, {firstSignatureDate}", caseId, loanId, firstSignatureDate);
+        _logger.LogDebug("AddFirstSignatureDate inputs: CaseId: {caseId}, LoanId: {loanId}, FirstSignatureDate: {firstSignatureDate}", caseId, loanId, firstSignatureDate);
 
         return await callMethod(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
             var response = await client.Add_FirstSignatureDateAsync(caseId, loanId, firstSignatureDate);
-            _logger.LogSerializedObject("AddFirstSignatureDate response", response);
+            _logger.LogSerializedObject("AddFirstSignatureDate outputs: ", response.commonResult);
 
             return new SuccessfulServiceCallResult();
         });
