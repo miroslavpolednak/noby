@@ -33,6 +33,7 @@ internal class GetAllHandler
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
             "developers" => new(original, await _codebooks.Developers(cancellationToken)),
             "developerprojects" => new(original, await _codebooks.DeveloperProjects(cancellationToken)),
+            "drawingdurations" => new(original, await _codebooks.DrawingDurations(cancellationToken)),
             "educationlevels" => new(original, await _codebooks.EducationLevels(cancellationToken)),
             "employmenttypes" => new(original, await _codebooks.EmploymentTypes(cancellationToken)),
             "fees" => new(original, await _codebooks.Fees(cancellationToken)),

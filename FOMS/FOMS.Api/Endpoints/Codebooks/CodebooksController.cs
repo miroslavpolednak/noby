@@ -26,6 +26,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
     /// - Developers
     /// - DeveloperProjects
+    /// - DrawingDurations
     /// - EducationLevels
     /// - EmploymentTypes
     /// - Fees

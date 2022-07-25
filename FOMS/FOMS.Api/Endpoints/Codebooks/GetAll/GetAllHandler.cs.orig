@@ -33,18 +33,15 @@ internal class GetAllHandler
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
             "developers" => new(original, await _codebooks.Developers(cancellationToken)),
             "developerprojects" => new(original, await _codebooks.DeveloperProjects(cancellationToken)),
+            "drawingdurations" => new(original, await _codebooks.DrawingDurations(cancellationToken)),
             "educationlevels" => new(original, await _codebooks.EducationLevels(cancellationToken)),
             "employmenttypes" => new(original, await _codebooks.EmploymentTypes(cancellationToken)),
             "fees" => new(original, await _codebooks.Fees(cancellationToken)),
             "fixedrateperiods" => new(original, await _codebooks.FixedRatePeriods(cancellationToken)),
             "genders" => new(original, await _codebooks.Genders(cancellationToken)),
             "identificationdocumenttypes" => new(original, await _codebooks.IdentificationDocumentTypes(cancellationToken)),
-<<<<<<< HEAD
             "incomemaintypes" => new(original, await _codebooks.IncomeMainTypes(cancellationToken)),
-=======
-            "incomemaintypes" => new(original, await _codebooks.IncomeTypes(cancellationToken)),
->>>>>>> HFICH-1350
-            "incomeforeigntypes" => new(original, await _codebooks.IncomeForeignTypes(cancellationToken)),
+            "incomeothertypes" => new(original, await _codebooks.IncomeOtherTypes(cancellationToken)),
             "jobtypes" => new(original, await _codebooks.JobTypes(cancellationToken)),
             "legalcapacities" => new(original, await _codebooks.LegalCapacities(cancellationToken)),
             "loanpurposes" => new(original, await _codebooks.LoanPurposes(cancellationToken)),
