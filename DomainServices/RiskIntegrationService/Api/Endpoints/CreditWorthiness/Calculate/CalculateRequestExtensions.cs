@@ -63,7 +63,7 @@ internal static class CalculateRequestExtensions
         }).ToList();
 
     #region liabilities
-    public static List<_C4M.CreditLiabilitiesSummaryHomeCompany> ToC4mCreditLiabilitiesSummary(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.CreditLiabilitiesSummaryHomeCompany> ToC4mCreditLiabilitiesSummary(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
@@ -77,7 +77,7 @@ internal static class CalculateRequestExtensions
             })
             .ToList();
 
-    public static List<_C4M.CreditLiabilitiesSummary> ToC4mCreditLiabilitiesSummaryOut(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.CreditLiabilitiesSummary> ToC4mCreditLiabilitiesSummaryOut(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
@@ -91,7 +91,7 @@ internal static class CalculateRequestExtensions
             })
             .ToList();
 
-    public static List<_C4M.InstallmentsSummaryHomeCompany> ToC4mInstallmentsSummary(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.InstallmentsSummaryHomeCompany> ToC4mInstallmentsSummary(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
         => obligationTypes
             .Select(t =>
             {
@@ -105,7 +105,7 @@ internal static class CalculateRequestExtensions
             })
             .ToList();
 
-    public static List<_C4M.InstallmentsSummaryOutHomeCompany> ToC4mInstallmentsSummaryOut(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.GenericCodebookItemWithCode> obligationTypes)
+    public static List<_C4M.InstallmentsSummaryOutHomeCompany> ToC4mInstallmentsSummaryOut(this List<Contracts.CreditWorthiness.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
         => obligationTypes
             .Select(t =>
             {

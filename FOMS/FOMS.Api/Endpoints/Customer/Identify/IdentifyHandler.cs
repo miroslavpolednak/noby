@@ -43,10 +43,10 @@ internal sealed class IdentifyHandler
         var successfulUpdate = ServiceCallResult.IsSuccessResult(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));
 
         // hlavni klient
-        if (customerOnSaInstance.CustomerRoleId == 1)
+        if (successfulUpdate && customerOnSaInstance.CustomerRoleId == 1)
         {
             // update CASE-u
-            var updateRepsonse = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
+            var updateResponse = ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
             {
                 Identity = request.CustomerIdentity!,
                 DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
@@ -54,24 +54,15 @@ internal sealed class IdentifyHandler
                 Name = customerInstance.NaturalPerson.LastName
             }, cancellationToken));
 
-            if (updateRepsonse.PartnerId.HasValue)
+            if (customerInstance.Identities.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp))
             {
-                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, updateRepsonse.PartnerId.Value);
-
-                try
-                {
-                    await _mediator.Publish(notification, cancellationToken);
-                }
-                catch (Exception err)
-                {
-                    //TODO osetrit rollback?
-                    _logger.LogError(err, "TODO rollback create case?");
-                }
+                int mpid = customerInstance.Identities.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
+                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, mpid);
+                await _mediator.Publish(notification, cancellationToken);
             }
         }
     }
 
-    private readonly ILogger<IdentifyHandler> _logger;
     private readonly IMediator _mediator;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ICustomerServiceAbstraction _customerService;
@@ -79,7 +70,6 @@ internal sealed class IdentifyHandler
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public IdentifyHandler(
-        ILogger<IdentifyHandler> logger,
         IMediator mediator,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICaseServiceAbstraction caseService,
@@ -87,7 +77,6 @@ internal sealed class IdentifyHandler
         ICustomerOnSAServiceAbstraction customerOnSAService)
     {
         _mediator = mediator;
-        _logger = logger;
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _customerService = customerService;
