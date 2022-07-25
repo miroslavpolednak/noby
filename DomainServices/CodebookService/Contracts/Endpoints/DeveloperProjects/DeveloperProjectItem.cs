@@ -29,7 +29,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.DeveloperProjects
 
         [DataMember(Order = 7)]
         [JsonIgnore]
-        public bool MassValuation { get; set; }
+        public int MassValuation { get; set; }
 
         [DataMember(Order = 8)]
         [JsonIgnore]

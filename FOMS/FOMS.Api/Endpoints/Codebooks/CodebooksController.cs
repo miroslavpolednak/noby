@@ -24,6 +24,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=405522415">Countries</a>
     /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=424127746">Currencies</a>
     /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
+    /// - BankCodes
     /// - Developers
     /// - DeveloperProjects
     /// - DrawingDurations

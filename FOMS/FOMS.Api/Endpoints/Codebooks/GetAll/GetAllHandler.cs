@@ -25,6 +25,7 @@ internal class GetAllHandler
             "academicdegreesbefore" => new(original, (await _codebooks.AcademicDegreesBefore(cancellationToken))),
             "actioncodessavings" => new(original, (await _codebooks.ActionCodesSavings(cancellationToken)).Where(t => t.IsValid)),
             "actioncodessavingsloan" => new(original, (await _codebooks.ActionCodesSavingsLoan(cancellationToken)).Where(t => t.IsValid)),
+            "bankcodes" => new(original, await _codebooks.BankCodes(cancellationToken)),
             "casestates" => new(original, await _codebooks.CaseStates(cancellationToken)),
             "classificationofeconomicactivities" => new(original, await _codebooks.ClassificationOfEconomicActivities(cancellationToken)),
             "contacttypes" => new(original, await _codebooks.ContactTypes(cancellationToken)),
