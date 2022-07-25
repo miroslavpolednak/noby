@@ -69,6 +69,7 @@ internal class GetTaskListHandler
         {
             case_id = caseId,
             task_state = taskStateIds,
+            search_pattern = "LoanProcessSubtasks",
         };
 
         // load tasks

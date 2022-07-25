@@ -14,23 +14,25 @@ public class CodebooksController : ControllerBase
     /// <remarks>
     /// Vraci ciselniky identifikovane query parametrem "q". Jednotlive ciselniky jsou oddelene carkou.<br/>
     /// Aktualne implementovane ciselniky jsou:
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421388420">AcademicDegreesAfter</a>
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
-    /// - ActionCodesSavings...
-    /// - ActionCodesSavingsLoan
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388420">AcademicDegreesAfter</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
+    /// - ActionCodesSavings - obsolete
+    /// - ActionCodesSavingsLoan - obsolete
     /// - <a href="https://wiki.kb.cz/confluence/display/HT/CaseState">CaseStates</a>
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=430216251">ClassificationOfEconomicActivities</a>
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=392877756">ContactTypes</a>
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=405522415">Countries</a>
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=424127746">Currencies</a>
-    /// - <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
-    /// - Developers
-    /// - DeveloperProjects
-    /// - EducationLevels
-    /// - EmploymentTypes
-    /// - Fees
-    /// - FixedRatePeriods
-    /// - Genders
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216251">ClassificationOfEconomicActivities</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405522415">Countries</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
+    /// - BankCodes
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
+    /// - DrawingDurations
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
     /// - HouseholdTypes
     /// - IdentificationDocumentTypes
     /// - IncomeMainTypes
@@ -118,7 +120,7 @@ public class CodebooksController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
-    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
+    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
     /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
     /// </remarks>
     [HttpPost("developer-project/search")]

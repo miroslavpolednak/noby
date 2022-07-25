@@ -79,6 +79,7 @@ Fee                                 Fees
 PaymentDay                          PaymentDays
 DeveloperProject                    DeveloperProjects
 Developer                           Developers
+DrawingDurations                    DrawingDurations
 
 MarketingAction                     MarketingActions
 StatementType                       StatementTypes
