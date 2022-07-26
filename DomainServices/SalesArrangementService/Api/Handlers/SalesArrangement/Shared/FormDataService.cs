@@ -336,7 +336,7 @@ internal class FormDataService
         }
 
         // Add first signature date (pro KB produkty caseId = UverID)
-        ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now));
+        ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
 
         // ProductType load
         var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);

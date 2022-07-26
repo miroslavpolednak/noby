@@ -15,6 +15,7 @@ variables:
   solution: 'FOMS\FOMS.Api\FOMS.Api.csproj'
 
 steps:
+
 #- task: UseDotNet@2
 #  inputs:
 #    packageType: 'sdk'
