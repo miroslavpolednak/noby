@@ -22,7 +22,7 @@ public class EmploymentTypesHandler
     }
 
     private const string _sqlQuery =
-            "SELECT Kod 'Id', CODE 'Code', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [xxd0vss].[SBR].[CIS_PRACOVNY_POMER] ORDER BY Kod";
+            "SELECT Kod 'Id', CODE 'Code', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM SBR.CIS_PRACOVNY_POMER ORDER BY Kod";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<EmploymentTypesHandler> _logger;

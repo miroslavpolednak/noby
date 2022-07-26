@@ -51,6 +51,7 @@ internal class GetAllHandler
             "loankinds" => new (original, (await _codebooks.LoanKinds(cancellationToken)).Where(t => t.IsValid)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),
             "maritalstatuses" => new(original, (await _codebooks.MaritalStatuses(cancellationToken))),
+            "obligationcorrectiontypes" => new(original, await _codebooks.ObligationCorrectionTypes(cancellationToken)),
             "obligationtypes" => new(original, await _codebooks.ObligationTypes(cancellationToken)),
             "paymentdays" => new(original, (await _codebooks.PaymentDays(cancellationToken)).Where(t => t.ShowOnPortal).ToList()),
             "postcodes" => new (original, await _codebooks.PostCodes(cancellationToken)),

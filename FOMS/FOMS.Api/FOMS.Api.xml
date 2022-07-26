@@ -180,6 +180,7 @@
             - LoanKinds
             - Mandants
             - MaritalStatuses
+            - ObligationCorrectionTypes
             - ObligationTypes
             - PaymentDays
             - PostCodes

@@ -44,6 +44,7 @@ public class CodebooksController : ControllerBase
     /// - LoanKinds
     /// - Mandants
     /// - MaritalStatuses
+    /// - ObligationCorrectionTypes
     /// - ObligationTypes
     /// - PaymentDays
     /// - PostCodes
