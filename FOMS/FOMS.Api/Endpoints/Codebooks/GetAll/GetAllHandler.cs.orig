@@ -31,6 +31,7 @@ internal class GetAllHandler
             "contacttypes" => new(original, await _codebooks.ContactTypes(cancellationToken)),
             "countries" => new(original, (await _codebooks.Countries(cancellationToken)).OrderByDescending(t => t.IsDefault).ToList()),
             "currencies" => new(original, await _codebooks.Currencies(cancellationToken)),
+            "customerprofiles" => new(original, await _codebooks.CustomerProfiles(cancellationToken)),
             "customerroles" => new(original, await _codebooks.CustomerRoles(cancellationToken)),
             "developers" => new(original, await _codebooks.Developers(cancellationToken)),
             "developerprojects" => new(original, await _codebooks.DeveloperProjects(cancellationToken)),
