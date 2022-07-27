@@ -23,6 +23,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405522415">Countries</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
+    /// - CustomerProfiles
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
     /// - BankCodes
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
