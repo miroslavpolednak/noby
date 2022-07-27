@@ -127,7 +127,9 @@ internal sealed class RealEasClient
             var response = await client.Add_FirstSignatureDateAsync(caseId, loanId, firstSignatureDate);
             _logger.LogSerializedObject("AddFirstSignatureDate outputs: ", response.commonResult);
 
-            return new SuccessfulServiceCallResult();
+            var res = new CommonResponse(response.commonResult);
+            return new SuccessfulServiceCallResult<CommonResponse>(res);
+
         });
     }
 
