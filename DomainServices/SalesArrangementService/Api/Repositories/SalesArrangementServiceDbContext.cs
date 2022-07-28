@@ -15,14 +15,14 @@ internal sealed class SalesArrangementServiceDbContext
     public DbSet<Entities.SalesArrangementParameters> SalesArrangementsParameters { get; set; }
     public DbSet<Entities.CustomerOnSA> Customers { get; set; }
     public DbSet<Entities.CustomerOnSAIncome> CustomersIncomes { get; set; }
-    public DbSet<Entities.CustomerOnSAObligations> CustomersObligations { get; set; }
+    public DbSet<Entities.CustomerOnSAObligation> CustomersObligations { get; set; }
     public DbSet<Entities.CustomerOnSAIdentity> CustomersIdentities { get; set; }
     public DbSet<Entities.Household> Households { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterCisTemporalTable<Entities.SalesArrangement>();
-        modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSAObligations>();
+        modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSAObligation>();
         modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSA>();
         modelBuilder.RegisterCisTemporalTable<Entities.CustomerOnSAIdentity>();
         modelBuilder.RegisterCisTemporalTable<Entities.Household>();

@@ -360,7 +360,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerObligation(CustomerObligation i, int rowNumber)
+            object? MapCustomerObligation(Obligation i, int rowNumber)
             {
                 if (i == null)
                 {
@@ -374,7 +374,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     vyse_splatky = i.InstallmentAmount.ToJsonString(),
                     vyse_nesplacene_jistiny = i.LoanPrincipalAmount.ToJsonString(),
                     vyse_limitu = i.CreditCardLimit.ToJsonString(),
-                    mimo_entitu_mandanta = i.IsObligationCreditorExternal.ToJsonString()
+                    mimo_entitu_mandanta = i.Creditor?.IsExternal?.ToJsonString()
                 };
             }
 

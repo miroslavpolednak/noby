@@ -26,9 +26,4 @@ public class GetHouseholdResponse
     /// Klient 2= spoludluznik
     /// </summary>
     public CustomerInHousehold? Customer2 { get; set; }
-
-    /// <summary>
-    /// Zavazky obou klientu vytazene z objektu Customer1 a Customer2.
-    /// </summary>
-    public List<Dto.HouseholdCustomerObligation>? Obligations { get; set; }
 }

@@ -341,6 +341,108 @@
             </summary>
             <example>1</example>
         </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazání závazku customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/DeleteObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="obligationId">ID závazku ke smazani</param>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.GetDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Detail závazku customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/GetObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="obligationId">ID závazku</param>
+            <returns>
+            <see cref="T:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationFullDto"/>
+            </returns>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerObligation.UpdateObligation.UpdateObligationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update detailu závazku customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/UpdateObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+            <param name="obligationId">ID závazku</param>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Create(System.Int32,FOMS.Api.Endpoints.CustomerObligation.CreateObligation.CreateObligationRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoření závazku customera
+            </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/CreateObligation
+            </remarks>
+            <param name="customerOnSAId">ID customera</param>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCorrectionDto.CorrectionTypeId">
+            <summary>
+            Z číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionType (CIS_KOREKCE_ZAVAZKU)</a>
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCorrectionDto.InstallmentAmountCorrection">
+            <summary>
+            Výše konsolidace/zrušení splátky daného závazku
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCorrectionDto.LoanPrincipalAmountCorrection">
+            <summary>
+            Výše konsolidace/zrušení/snížení výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCorrectionDto.CreditCardLimitCorrection">
+            <summary>
+            Výše konsolidace/zrušení/snížení limitu KK/PD
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCreditorDto.CreditorId">
+            <summary>
+            Id věřitele z číselníku bank <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCode (CIS_KODY_BANK)</a>
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCreditorDto.Name">
+            <summary>
+            Jméno věřitele z číselníku bank <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCode (CIS_KODY_BANK)</a> nebo jméno věřitele zadané uživatelem
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationCreditorDto.IsExternal">
+            <summary>
+            True pokud je veřitel externí (=JPÚ - jiný peněžní ústav)<br />False pokud KB/MP (dáno vždy produktem)<br />null pokud je nedefinovaný
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationDto.ObligationTypeId">
+            <summary>
+            Druh závazku, z číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426150084">ObligationType (CIS_DRUH_ZAVAZKU)</a>
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationDto.InstallmentAmount">
+            <summary>
+            Výše splátky
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationDto.LoanPrincipalAmount">
+            <summary>
+            Výše nesplacené jistiny
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationDto.CreditCardLimit">
+            <summary>
+            Výše limitu kreditní karty
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationDto.ObligationState">
+            <summary>
+            Určuje stav závazku (prohlášený vs neprohlášený. V MPV bude vždy prohlášený.<br />Z číselníku <a href="https://wiki.kb.cz/display/HT/ObligationState">ObligationState</a>
+            </summary>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledavani klientu
@@ -481,6 +583,11 @@
             Identity klienta v KB nebo MP
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Obligations">
+            <summary>
+            Zavazky customera
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.HouseholdId">
             <summary>
             ID domacnosti
@@ -504,11 +611,6 @@
         <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Customer2">
             <summary>
             Klient 2= spoludluznik
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Obligations">
-            <summary>
-            Zavazky obou klientu vytazene z objektu Customer1 a Customer2.
             </summary>
         </member>
         <member name="T:FOMS.Api.Endpoints.Household.HouseholdController">
@@ -589,11 +691,6 @@
             ID spoludluznika
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Obligations">
-            <summary>
-            Zavazky obou klientu vytazene do objektu Customer1 a Customer2.
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Data">
             <summary>
             Sekce Ostatni parametry
@@ -622,16 +719,6 @@
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.DateOfBirth">
             <summary>
             Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.Obligations">
-            <summary>
-            Zavazky customera
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.HouseholdCustomerObligation.CustomerIndex">
-            <summary>
-            Cislo klienta (1 nebo 2)
             </summary>
         </member>
         <member name="T:FOMS.Api.Endpoints.Household.Dto.HouseholdData">
