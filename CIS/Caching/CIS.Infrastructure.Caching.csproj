@@ -16,9 +16,9 @@
   <ItemGroup>
     <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.171" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.48" />
     <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
   </ItemGroup>
