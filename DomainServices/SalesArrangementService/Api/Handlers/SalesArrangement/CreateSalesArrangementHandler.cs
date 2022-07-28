@@ -25,7 +25,7 @@ internal class CreateSalesArrangementHandler
             ContractNumber = request.Request.ContractNumber,
             EaCode = request.Request.EaCode,
             LoanToCost = request.Request.LoanToCost,
-            ChannelId = 1 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss...
+            ChannelId = 4 //HFICH-2028
         };
 
         // get default SA state
