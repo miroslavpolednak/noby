@@ -15,6 +15,7 @@ internal sealed class GetTaskListHandler
                 CreatedOn = t.CreatedOn,
                 Name = t.Name,
                 TaskId = t.TaskId,
+                TaskProcessId = t.TaskProcessId,
                 TypeId = t.TypeId
             }).ToList()
         };

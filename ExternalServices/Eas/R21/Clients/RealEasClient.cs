@@ -72,7 +72,7 @@ internal sealed class RealEasClient
 
             var request = new S_KLIENTDATA[] { clientData.MapToEas() };
 
-            _logger.LogSerializedObject("S_KLIENTDATA[]", request);
+            _logger.LogSerializedObject("GetKlientData_NewKlient request", request);
             var result = await client.GetKlientData_NewKlientAsync(request);
 
             if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
