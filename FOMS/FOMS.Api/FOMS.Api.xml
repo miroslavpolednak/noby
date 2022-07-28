@@ -540,6 +540,11 @@
             Identity klienta v KB nebo MP
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Obligations">
+            <summary>
+            Zavazky customera
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.HouseholdId">
             <summary>
             ID domacnosti
@@ -671,11 +676,6 @@
         <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.DateOfBirth">
             <summary>
             Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Household.Dto.BaseCustomer.Obligations">
-            <summary>
-            Zavazky customera
             </summary>
         </member>
         <member name="T:FOMS.Api.Endpoints.Household.Dto.HouseholdData">

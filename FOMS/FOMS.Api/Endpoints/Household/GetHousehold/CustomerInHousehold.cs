@@ -18,4 +18,9 @@ public class CustomerInHousehold
     /// Identity klienta v KB nebo MP
     /// </summary>
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+
+    /// <summary>
+    /// Zavazky customera
+    /// </summary>
+    public List<CustomerObligation.Dto.ObligationFullDto>? Obligations { get; set; }
 }

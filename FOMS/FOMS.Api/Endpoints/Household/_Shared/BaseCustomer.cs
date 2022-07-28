@@ -21,9 +21,4 @@ public abstract class BaseCustomer
     /// Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
-
-    /// <summary>
-    /// Zavazky customera
-    /// </summary>
-    public List<CustomerObligation.Dto.ObligationFullDto>? Obligations { get; set; }
 }
