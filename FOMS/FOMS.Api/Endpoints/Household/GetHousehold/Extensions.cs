@@ -1,4 +1,5 @@
 ﻿using contracts = DomainServices.SalesArrangementService.Contracts;
+using FOMS.Api.Endpoints.CustomerObligation;
 
 namespace FOMS.Api.Endpoints.Household.GetHousehold;
 
@@ -29,17 +30,7 @@ internal static class Extensions
                 IncomeSource = x.IncomeSource,
                 IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)x.IncomeTypeId
             }).ToList(),
-            Obligations = model.Obligations is null ? null : model.Obligations.Select(x => new Dto.CustomerObligation
-            {
-                CreditCardLimit = x.CreditCardLimit,
-                CreditCardLimitConsolidated = x.CreditCardLimitConsolidated,
-                IsObligationCreditorExternal = x.IsObligationCreditorExternal,
-                ObligationTypeId = x.ObligationTypeId,
-                LoanPrincipalAmountConsolidated = x.LoanPrincipalAmountConsolidated,
-                InstallmentAmount = x.InstallmentAmount,
-                InstallmentAmountConsolidated = x.InstallmentAmountConsolidated,
-                LoanPrincipalAmount = x.LoanPrincipalAmount
-            }).ToList()
+            Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
         };
 
     static Dto.HouseholdExpenses? mapExpenses(this contracts.Expenses model)

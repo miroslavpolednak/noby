@@ -1,5 +1,4 @@
-﻿
-namespace DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
 
 [DataContract]
 public class EducationLevelsRequest : IRequest<List<EducationLevelItem>>

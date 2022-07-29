@@ -51,13 +51,6 @@ internal class CustomerOnSAService : ICustomerOnSAServiceAbstraction
         return new SuccessfulServiceCallResult<UpdateCustomerResponse>(result);
     }
 
-    public async Task<IServiceCallResult> UpdateObligations(UpdateObligationsRequest request, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateObligations), request.CustomerOnSAId);
-        var result = await _service.UpdateObligationsAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
-    }
-
     #region Income
     public async Task<IServiceCallResult> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -113,6 +106,55 @@ internal class CustomerOnSAService : ICustomerOnSAServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
     #endregion Income
+
+    #region Obligation
+    public async Task<IServiceCallResult> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(CreateObligation), request.CustomerOnSAId);
+        var result = await _service.CreateObligationAsync(request, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult<int>(result.ObligationId);
+    }
+
+    public async Task<IServiceCallResult> DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(DeleteObligation), ObligationId);
+        var result = await _service.DeleteObligationAsync(
+            new()
+            {
+                ObligationId = ObligationId
+            }, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult();
+    }
+
+    public async Task<IServiceCallResult> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetObligation), ObligationId);
+        var result = await _service.GetObligationAsync(
+            new()
+            {
+                ObligationId = ObligationId
+            }, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult<Obligation>(result);
+    }
+
+    public async Task<IServiceCallResult> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetObligationList), customerOnSAId);
+        var result = await _service.GetObligationListAsync(
+            new()
+            {
+                CustomerOnSAId = customerOnSAId
+            }, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult<List<Obligation>>(result.Obligations.ToList());
+    }
+
+    public async Task<IServiceCallResult> UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(UpdateObligation), request.ObligationId);
+        var result = await _service.UpdateObligationAsync(request, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult();
+    }
+    #endregion Obligation
 
     private readonly ILogger<CustomerOnSAService> _logger;
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;

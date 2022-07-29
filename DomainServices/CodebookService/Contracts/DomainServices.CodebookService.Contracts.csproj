@@ -4,12 +4,14 @@
 	  <TargetFramework>net6.0</TargetFramework>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <Version>1.0.0.0</Version>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <DocumentationFile>DomainServices.CodebookService.Contracts.xml</DocumentationFile>
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="protobuf-net.Core" Version="3.1.17" />
-		<PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
+		<PackageReference Include="protobuf-net.Grpc" Version="1.0.171" />
 		<PackageReference Include="System.Text.Json" Version="6.0.5" />
 	</ItemGroup>
 

@@ -138,12 +138,12 @@ internal class GetCreditWorthinessHandler
         if (customer.Obligations is not null && customer.Obligations.Any())
             c.CreditLiabilities = customer.Obligations.Select(t => new CreditLiability
             {
-                AmountConsolidated = t.CreditCardLimitConsolidated.GetValueOrDefault(),
                 LiabilityType = t.ObligationTypeId.GetValueOrDefault(),
                 Installment = t.InstallmentAmount.GetValueOrDefault(),
-                InstallmentConsolidated = t.InstallmentAmountConsolidated.GetValueOrDefault(),
                 Limit = t.CreditCardLimit.GetValueOrDefault(),
-                OutHomeCompanyFlag = t.IsObligationCreditorExternal
+                InstallmentConsolidated = t.Correction?.InstallmentAmountCorrection.GetValueOrDefault() ?? 0,//asi?
+                AmountConsolidated = t.Correction?.CreditCardLimitCorrection.GetValueOrDefault() ?? 0,//asi?
+                OutHomeCompanyFlag = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
             }).ToList();
 
         return c;

@@ -63,6 +63,20 @@ namespace ExternalServices.Rip.V1
             });
         }
 
+        public async Task<IServiceCallResult> GetLoanApplication(string loanApplicationAssessmentId, List<string> expand)
+        {
+            _logger.LogInformation("GetLoanApplication {loanApplicationAssessmentId}", loanApplicationAssessmentId);
+            return await WithClient(async c => {
+
+                return await callMethod(async () => {
+
+                    var result = await c.LoanApplicationAssessmentAsync(loanApplicationAssessmentId, expand);
+
+                    return new SuccessfulServiceCallResult<LoanApplicationAssessmentResponse>(result);
+                });
+
+            });
+        }
 
         private Client CreateClient()
             => new(_httpClient?.BaseAddress?.ToString(), _httpClient);

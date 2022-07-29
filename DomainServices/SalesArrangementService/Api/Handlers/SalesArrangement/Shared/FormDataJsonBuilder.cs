@@ -64,7 +64,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         //        "indikativni_LTC",
         //        "termin_cerpani_do",
         //        "seznam_mark_akci",
-        //        "individualni_sleva_us",
         //        "sazba_vyhlasovana",
         //        "sazba_skladacka",
         //        "sazba_poskytnuta",
@@ -116,7 +115,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         //        //"indikativni_LTC",
         //        //"termin_cerpani_do",
         //        //"seznam_mark_akci",
-        //        //"individualni_sleva_us",
         //        //"sazba_vyhlasovana",
         //        //"sazba_skladacka",
         //        //"sazba_poskytnuta",
@@ -182,7 +180,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         //        case "indikativni_LTC": value = null; break; // = Data.Arrangement.LoanToCost.ToJsonString(),                                                                // OfferInstance -> SalesArrangement !!! moved from offer to arrangement in D1-2
         //        case "termin_cerpani_do": value = null; break; // = ((DateTime)Data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
         //        case "seznam_mark_akci": value = null; break; // = Array.Empty<object>(),                                                                               // [MOCK] OfferInstance (default empty array)
-        //        case "individualni_sleva_us": value = null; break; // = 0.ToJsonString(),                                                                               // [MOCK] OfferInstance (default 0)
         //        case "sazba_vyhlasovana": value = null; break; // = Data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
         //        case "sazba_skladacka": value = null; break; // = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                              // OfferInstance
         //        case "sazba_poskytnuta": value = null; break; // = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                             // OfferInstance": value = null; break; // = sazba_skladacka
@@ -294,6 +291,23 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
+            object? MapMarketingAction(ResultMarketingAction i)
+            {
+                if (i == null)
+                {
+                    return null;
+                }
+
+                return new
+                {
+                    typMaAkce = i.Code,
+                    zaskrtnuto = i.Requested.ToJsonString(),
+                    uplatnena = i.Applied.ToJsonString(),
+                    kodMaAkce = i.MarketingActionId.ToJsonString(),
+                    odchylkaSazby = i.Deviation.ToJsonString(),
+                };
+            }
+
             object? MapLoanRealEstate(SalesArrangementParametersMortgage.Types.LoanRealEstate i, int rowNumber)
             {
                 if (i == null)
@@ -363,7 +377,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerObligation(CustomerObligation i, int rowNumber)
+            object? MapCustomerObligation(Obligation i, int rowNumber)
             {
                 if (i == null)
                 {
@@ -377,7 +391,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     vyse_splatky = i.InstallmentAmount.ToJsonString(),
                     vyse_nesplacene_jistiny = i.LoanPrincipalAmount.ToJsonString(),
                     vyse_limitu = i.CreditCardLimit.ToJsonString(),
-                    mimo_entitu_mandanta = i.IsObligationCreditorExternal.ToJsonString()
+                    mimo_entitu_mandanta = i.Creditor?.IsExternal?.ToJsonString()
                 };
             }
 
@@ -411,7 +425,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 return new
                 {
                     prvni_pracovni_sml_od = i.Employement?.Job?.FirstWorkContractSince.ToJsonString(),
-                    posledni_zamestnani_od = actualDate.ToJsonString(),                                             // [MOCK] aktuální datum (relevantní v tomto DROPu, poté bude ´posledni_zamestnani_od´ zrušeno)
                     poradi_prijmu = rowNumber.ToJsonString(),
                     zdroj_prijmu_hlavni = iil.IncomeTypeId.ToJsonString(),
                     typ_pracovniho_pomeru = employmentTypeId.ToJsonString(),
@@ -431,8 +444,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     zamestnavatel_sidlo_stat = i.Employement?.Employer?.CountryId?.ToJsonString(),
                     //zamestnavatel_telefonni_cislo = i.Employement?.Employer?.PhoneNumber,
                     //zamestnavatel_okec = i.Employement?.Employer?.ClassificationOfEconomicActivitiesId.ToJsonString(),
-                    zamestnavatel_pracovni_sektor =  5.ToJsonString(),          // default pro Drop1-2, v Drop1-3 bude odstraněno
-                    zamestnavatel_senzitivni_sektor =  0.ToJsonString(),        // default pro Drop1-2, v Drop1-3 bude odstraněno
+                    zamestnavatel_pracovni_sektor = 5.ToJsonString(),          // default pro Drop1-2, v Drop1-3 bude odstraněno
+                    zamestnavatel_senzitivni_sektor = 0.ToJsonString(),        // default pro Drop1-2, v Drop1-3 bude odstraněno
                     //povolani = i.Employement?.Job?.JobType.ToJsonString(),
                     zamestnan_jako = i.Employement?.Job?.JobDescription,
                     prijem_vyse = iil.Sum.ToJsonString(),
@@ -466,6 +479,56 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 var cDegreeBeforeId = c.NaturalPerson?.DegreeBeforeId;
                 var cGenderId = c.NaturalPerson?.GenderId;
 
+                #region Fake
+
+                // ----------------------------------------------------------------------------------------------------------------------------------
+                // Fake for Drop1-2
+                // ----------------------------------------------------------------------------------------------------------------------------------
+                object? MapCustomerF3602()
+                {
+                    return new
+                    {
+                        rodne_cislo = "5458083246",
+
+                        kb_id = 703274075.ToJsonString(),
+                        mp_id = 200121760.ToJsonString(),                                   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
+                                                                                            // spolecnost_KB =                                                              // Customer - pokud načteme z CM ??? OP! 
+
+                        titul_pred = cDegreeBeforeId.HasValue ? Data.AcademicDegreesBeforeById[cDegreeBeforeId.Value].Name : null,    // (použít Name, nikoliv jen Id) 
+                                                                                                                                      // titul_za = c.NaturalPerson?.DegreeAfterId,                                    // ??? (použít Name, nikoliv jen Id), ve vzorovém JSONu ani není - neposílat
+                        prijmeni_nazev = "Pavlíková",
+                        prijmeni_rodne = c.NaturalPerson?.BirthName,
+                        jmeno = "Ivana",
+                        datum_narozeni = (new DateTime(1954, 8, 8)).ToJsonString(),
+                        misto_narozeni_obec = c.NaturalPerson?.PlaceOfBirth,
+                        misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
+                        pohlavi = "Z",
+                        statni_prislusnost = 16.ToJsonString(),                    // vzít první
+                        zamestnanec = 0.ToJsonString(),                                                 // [MOCK] OfferInstance (default 0)
+                        rezident = 0.ToJsonString(),                                                    // [MOCK] OfferInstance (default 0)
+                        PEP = c.NaturalPerson?.IsPoliticallyExposed.ToJsonString(),
+                        seznam_adres = c.Addresses?.Select(i => MapAddress(i)).ToArray() ?? Array.Empty<object>(),
+                        seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
+                        seznam_kontaktu = c.Contacts?.Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
+                        rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
+                        druh_druzka = (i.HasPartner ?? false).ToJsonString(),
+                        vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
+                        seznam_prijmu = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                        seznam_zavazku = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                        prijem_sbiran = 0.ToJsonString(),                                               // [MOCK] (default 0) out of scope
+                        uzamcene_prijmy = false.ToJsonString(),                                         // [MOCK] (default 0) jinak z c.LockedIncomeDateTime.HasValue.ToJsonString(),
+                                                                                                        // datum_posledniho_uzam_prijmu = c.LockedIncomeDateTime.ToJsonString(),        // ??? chybí implementace!
+                    };
+                }
+
+                if (formType == EFormType.F3602)
+                {
+                    return MapCustomerF3602();
+                }
+                // ----------------------------------------------------------------------------------------------------------------------------------
+
+                #endregion
+
                 return new
                 {
                     rodne_cislo = c.NaturalPerson?.BirthNumber,
@@ -491,7 +554,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
                     seznam_kontaktu = c.Contacts?.Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
                     rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
-                    druh_druzka = i.HasPartner.ToJsonString(),
+                    druh_druzka = (i.HasPartner ?? false).ToJsonString(),
                     vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
                     seznam_prijmu = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                     seznam_zavazku = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
@@ -538,6 +601,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             switch (formType)
             {
                 case EFormType.F3601:
+
+                    var developer = Data.Offer.SimulationInputs.Developer;
+                    var developerDescription = (developer == null) ? null : String.Join(",", (new List<string> { developer.NewDeveloperName ?? String.Empty, developer.NewDeveloperCin ?? String.Empty, developer.NewDeveloperProjectName ?? String.Empty }));
+
                     data = new
                     {
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
@@ -554,21 +621,23 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         indikativni_LTV = Data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
                         indikativni_LTC = Data.Arrangement.LoanToCost.ToJsonString(),                                                                // OfferInstance -> SalesArrangement !!! moved from offer to arrangement in D1-2
                         termin_cerpani_do = ((DateTime)Data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
-                        seznam_mark_akci = Array.Empty<object>(),                                                                               // [MOCK] OfferInstance (default empty array)
-                        individualni_sleva_us = 0.ToJsonString(),                                                                               // [MOCK] OfferInstance (default 0)
                         sazba_vyhlasovana = Data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
                         sazba_skladacka = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                              // OfferInstance
                         sazba_poskytnuta = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                             // OfferInstance = sazba_skladacka
                         vyhlasovanaTyp = Data.Offer.SimulationResults.LoanInterestRateAnnouncedType.ToJsonString(),                                  // OfferInstance 
                         vyse_uveru = Data.Offer.SimulationResults.LoanAmount.ToJsonString(),                                                         // OfferInstance
                         anuitni_splatka = Data.Offer.SimulationResults.LoanPaymentAmount.ToJsonString(),                                             // OfferInstance
-                        kodZvyhodneni = Data.Offer.SimulationResults.EmployeeBonusLoanCode.ToJsonString(),                                           // OfferInstance
+                        uv_zvyhodneni = Data.Offer.SimulationResults.EmployeeBonusLoanCode.ToJsonString(),                                           // OfferInstance
                         splatnost_uv_mesice = Data.Offer.SimulationResults.LoanDuration.ToJsonString(),                                              // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
                         fixace_uv_mesice = Data.Offer.SimulationInputs.FixedRatePeriod.ToJsonString(),                                               // OfferInstance - na FE je to v rocích a je to číselník ?
                         individualni_cenotvorba_odchylka = Data.Offer.SimulationInputs.InterestRateDiscount.ToJsonString(),
                         predp_termin_cerpani = Data.Arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
                         den_splaceni = Data.Offer.SimulationInputs.PaymentDay.ToJsonString(),                                                        // OfferInstance
+                        developer_id = Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString(),
+                        developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
+                        developer_popis = developerDescription,
                         forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
+                        seznam_mark_akci = Data.Offer.SimulationResults.MarketingActions?.Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_poplatku = Data.Offer.SimulationResults.Fees?.Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
                         seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),  // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
                         seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???
@@ -579,7 +648,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         // VIP_makler = 0.ToJsonString(),                                                                                           // [MOCK] User (default 0) !!! removed in D1-2
                         mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
-                        zpusob_zasilani_vypisu = Data.Offer.SimulationInputs.FeeSettings.StatementTypeId.ToJsonString(),                            // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId
+                        zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),                                         // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId -> Offerinstance.BasicParameters.StatementTypeId
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),                                   // Offerinstance
                         typ_cerpani = Data.Offer.SimulationInputs.DrawingType.ToJsonString(),
                         datum_garance_us = Data.Arrangement.OfferGuaranteeDateFrom.ToJsonString(),
@@ -616,7 +685,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         //indikativni_LTC = Data.Arrangement.LoanToCost.ToJsonString(),                                                                // OfferInstance -> SalesArrangement !!! moved from offer to arrangement in D1-2
                         //termin_cerpani_do = ((DateTime)Data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
                         //seznam_mark_akci = Array.Empty<object>(),                                                                               // [MOCK] OfferInstance (default empty array)
-                        //individualni_sleva_us = 0.ToJsonString(),                                                                               // [MOCK] OfferInstance (default 0)
                         //sazba_vyhlasovana = Data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
                         //sazba_skladacka = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                              // OfferInstance
                         //sazba_poskytnuta = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                             // OfferInstance = sazba_skladacka
@@ -662,7 +730,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
             }
 
-            var options = new JsonSerializerOptions { DefaultIgnoreCondition = ignoreNullValues ? System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull : System.Text.Json.Serialization.JsonIgnoreCondition.Never };
+            var options = new JsonSerializerOptions { 
+                DefaultIgnoreCondition = ignoreNullValues ? System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull : System.Text.Json.Serialization.JsonIgnoreCondition.Never,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-character-encoding
+            };
+
             var json = JsonSerializer.Serialize(data, options);
 
             return json;

@@ -17,13 +17,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="CustomerOnSA\CreateObligation.proto" />
 	  <None Remove="CustomerOnSA\CustomerOnSABase.proto" />
+	  <None Remove="CustomerOnSA\GetObligationList.proto" />
 	  <None Remove="CustomerOnSA\IncomeInList.proto" />
+	  <None Remove="CustomerOnSA\Obligation.proto" />
+	  <None Remove="CustomerOnSA\ObligationIdRequest.proto" />
+	  <None Remove="CustomerOnSA\ObligationShared.proto" />
 	  <None Remove="SalesArrangement\UpdateLoanAssessmentParameters.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.21.2" />
+		<PackageReference Include="Google.Protobuf" Version="3.21.4" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.47.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -42,8 +47,6 @@
 		<Protobuf Include="CustomerOnSA/CustomerOnSAIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/GetCustomerList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/UpdateCustomer.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="CustomerOnSA/UpdateObligations.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="CustomerOnSA/CustomerObligation.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/CreateIncome.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/IncomeShared.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/IncomeIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
@@ -53,6 +56,11 @@
 		<Protobuf Include="CustomerOnSA/Income.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/IncomeInList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/CustomerOnSABase.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CreateObligation.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/GetObligationList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/ObligationShared.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/Obligation.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/ObligationIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 
 		<Protobuf Include="Household/HouseholdService.v1.proto" GrpcServices="Both" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/HouseholdExpenses.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

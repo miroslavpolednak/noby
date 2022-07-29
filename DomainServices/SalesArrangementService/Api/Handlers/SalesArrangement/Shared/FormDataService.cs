@@ -265,22 +265,15 @@ internal class FormDataService
             _ => throw new NotImplementedException()
         };
 
-    private static void ResolveAddFirstSignatureDate(IServiceCallResult result)
-    {
-        switch (result)
-        {
-            case ErrorServiceCallResult err:
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key);
-        }
-    }
-
-    private static int ResolveCheckForm(IServiceCallResult result) =>
-       result switch
-       {
-           SuccessfulServiceCallResult<int> r => r.Model,
-           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
-           _ => throw new NotImplementedException()
-       };
+    private static Eas.CommonResponse ResolveAddFirstSignatureDate(IServiceCallResult result) =>
+      result switch
+      {
+          SuccessfulServiceCallResult<Eas.CommonResponse> r when r.Model.CommonValue != 0 
+          => throw new CisValidationException(99999, $"Invalid result of AddFirstSignatureDate [{r.Model.CommonValue}: {r.Model.CommonText}]."), //TODO: ErrorCode
+          SuccessfulServiceCallResult <Eas.CommonResponse> r => r.Model,
+          ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
+          _ => throw new NotImplementedException()
+      };
 
     private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
@@ -298,7 +291,7 @@ internal class FormDataService
 
     #endregion
 
-    public async Task<FormData> LoadAndPrepare(int salesArrangementId, CancellationToken cancellation)
+    public async Task<FormData> LoadAndPrepare(int salesArrangementId, CancellationToken cancellation, bool addFirstSignatureDate = false)
     {
         // load SalesArrangement
         var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }), cancellation);
@@ -335,8 +328,11 @@ internal class FormDataService
             await UpdateCase(_case, contractNumber, cancellation);
         }
 
-        // Add first signature date (pro KB produkty caseId = UverID)
-        ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now));
+        if (addFirstSignatureDate)
+        {
+            // Add first signature date (pro KB produkty caseId = UverID)
+            ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
+        }
 
         // ProductType load
         var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);
