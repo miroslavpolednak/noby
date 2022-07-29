@@ -7,6 +7,8 @@ internal sealed class GetTaskListHandler
     {
         var result = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.GetTaskListResponse>(await _caseService.GetTaskList(request.CaseId, cancellationToken));
 
+        var taskTypes = await _codebookService.WorkflowTaskTypes(cancellationToken);
+
         return new GetTaskListResponse
         {
             Tasks = result.Tasks?.Select(t => new Dto.WorkflowTask
@@ -14,6 +16,7 @@ internal sealed class GetTaskListHandler
                 StateId = t.StateId,
                 CreatedOn = t.CreatedOn,
                 Name = t.Name,
+                CategoryId = taskTypes.FirstOrDefault(x => x.Id == t.TypeId)?.CategoryId ?? 0,
                 TaskId = t.TaskId,
                 TaskProcessId = t.TaskProcessId,
                 TypeId = t.TypeId
@@ -21,11 +24,14 @@ internal sealed class GetTaskListHandler
         };
     }
 
+    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public GetTaskListHandler(
+        DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {
+        _codebookService = codebookService;
         _caseService = caseService;
     }
 }
