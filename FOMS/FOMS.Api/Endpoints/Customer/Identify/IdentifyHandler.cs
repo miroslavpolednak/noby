@@ -36,8 +36,6 @@ internal sealed class IdentifyHandler
                 LockedIncomeDateTime = customerOnSaInstance.LockedIncomeDateTime
             }
         };
-        if (customerOnSaInstance.Obligations is not null)
-            modelToUpdate.Customer.Obligations.AddRange(customerOnSaInstance.Obligations);
         modelToUpdate.Customer.CustomerIdentifiers.Add(request.CustomerIdentity!);
 
         var successfulUpdate = ServiceCallResult.IsSuccessResult(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));

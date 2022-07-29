@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.SalesArrangementService.Api.Dto;
 
-internal record UpdateObligationsMediatrRequest(Contracts.UpdateObligationsRequest Request)
+internal record DeleteObligationMediatrRequest(int ObligationId)
     : IRequest<Google.Protobuf.WellKnownTypes.Empty>
 {
 }

@@ -12,16 +12,10 @@ internal class UpdateCustomersHandler
         // detail domacnosti
         var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
 
-        // Honza chtel Obligations v rootu requestu
-        if (request.Obligations is not null && request.Customer1 is not null)
-            request.Customer1!.Obligations = request.Obligations.CastToCustomerObligations(0);
-        if (request.Obligations is not null && request.Customer2 is not null)
-            request.Customer2!.Obligations = request.Obligations.CastToCustomerObligations(1);
-
         var response = new UpdateCustomersResponse
         {
-            CustomerOnSAId1 = await processCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken),
-            CustomerOnSAId2 = await processCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken),
+            CustomerOnSAId1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken),
+            CustomerOnSAId2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken)
         };
 
         // linkovani na household
@@ -29,31 +23,6 @@ internal class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, response.CustomerOnSAId1, response.CustomerOnSAId2, cancellationToken);
 
         return response;
-    }
-
-    async Task<int?> processCustomer(
-        CustomerDto? customer,
-        int? householdCustomerId,
-        _SA.Household householdInstance,
-        CustomerRoles customerRole,
-        CancellationToken cancellationToken)
-    {
-        // zalozit, updatovat nebo smazat customera
-        int? customerId = await crudCustomer(customer, householdCustomerId, householdInstance, customerRole, cancellationToken);
-
-        if (customerId.HasValue)
-        {
-            // ulozit obligations
-            var obligationsRequest = new _SA.UpdateObligationsRequest
-            {
-                CustomerOnSAId = customerId.Value
-            };
-            if (customer!.Obligations is not null)
-                obligationsRequest.Obligations.AddRange(customer.Obligations.ToDomainServiceRequest());
-            await _customerOnSAService.UpdateObligations(obligationsRequest, cancellationToken);
-        }
-
-        return customerId;
     }
 
     async Task<int?> crudCustomer(

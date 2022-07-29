@@ -8,13 +8,16 @@ import "CreateCustomer.proto";
 import "CustomerOnSAIdRequest.proto";
 import "GetCustomerList.proto";
 import "UpdateCustomer.proto";
-import "UpdateObligations.proto";
 import "CreateIncome.proto";
 import "IncomeIdRequest.proto";
 import "GetIncomeList.proto";
 import "Income.proto";
 import "UpdateIncome.proto";
 import "UpdateIncomeBaseData.proto";
+import "ObligationIdRequest.proto";
+import "Obligation.proto";
+import "CreateObligation.proto";
+import "GetObligationList.proto";
 
 service CustomerOnSAService {
     // zalozeni noveho customera
@@ -32,9 +35,6 @@ service CustomerOnSAService {
 	// update
 	rpc UpdateCustomer (DomainServices.SalesArrangementService.UpdateCustomerRequest) returns (DomainServices.SalesArrangementService.UpdateCustomerResponse);
 
-	// update obligations
-	rpc UpdateObligations (DomainServices.SalesArrangementService.UpdateObligationsRequest) returns (google.protobuf.Empty);
-
 	// income part -------------------------------------------------------
     rpc CreateIncome (DomainServices.SalesArrangementService.CreateIncomeRequest) returns (DomainServices.SalesArrangementService.CreateIncomeResponse);
 
@@ -47,4 +47,15 @@ service CustomerOnSAService {
     rpc GetIncomeList (DomainServices.SalesArrangementService.GetIncomeListRequest) returns (DomainServices.SalesArrangementService.GetIncomeListResponse);
 
     rpc GetIncome (DomainServices.SalesArrangementService.IncomeIdRequest) returns (DomainServices.SalesArrangementService.Income);
+
+	// obligations part
+	rpc CreateObligation (DomainServices.SalesArrangementService.CreateObligationRequest) returns (DomainServices.SalesArrangementService.CreateObligationResponse);
+
+    rpc UpdateObligation (DomainServices.SalesArrangementService.Obligation) returns (google.protobuf.Empty);
+
+    rpc DeleteObligation (DomainServices.SalesArrangementService.ObligationIdRequest) returns (google.protobuf.Empty);
+
+    rpc GetObligationList (DomainServices.SalesArrangementService.CustomerOnSAIdRequest) returns (DomainServices.SalesArrangementService.GetObligationListResponse);
+
+    rpc GetObligation (DomainServices.SalesArrangementService.ObligationIdRequest) returns (DomainServices.SalesArrangementService.Obligation);
 }

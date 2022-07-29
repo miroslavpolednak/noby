@@ -46,14 +46,6 @@ public interface ICustomerOnSAServiceAbstraction
     Task<IServiceCallResult> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
-    /// Update zavazku customera
-    /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> UpdateObligations(UpdateObligationsRequest request, CancellationToken cancellationToken = default(CancellationToken));
-
-    /// <summary>
     /// Vytvoreni noveho prijmu
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="int" /> (IncomeId)</returns>
@@ -100,4 +92,44 @@ public interface ICustomerOnSAServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Vytvoreni noveho zavazku
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="int" /> (ObligationId)</returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16024; CustomerOnSAId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16028; ObligationTypeId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Smazani zavazku
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; Obligation ID {ObligationId} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Vraci instanci pozadovaneho zavazku
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Obligation" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; Obligation ID {request.ObligationId} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Vraci vsechny zavazky pro daneho Customera
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="List{}" /> where T : <see cref="ObligationInList" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Update detailu dat o zavazku
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; ObligationId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
+    Task<IServiceCallResult> UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken));
 }

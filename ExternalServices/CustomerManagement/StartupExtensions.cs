@@ -21,7 +21,7 @@ public static class StartupExtensions
             {
                 string? url = provider
                 .GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetServiceUrlSynchronously(new("ES:CustomerManagement"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
+                    .GetServiceUrlSynchronously(new("ES:CustomerManagement"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                 configuration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:CustomerManagement Proprietary service URL");
             }
             return configuration;

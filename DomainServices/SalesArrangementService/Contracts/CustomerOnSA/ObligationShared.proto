@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message ObligationCreditor {
+    google.protobuf.Int32Value CreditorId = 1;
+
+    string Name = 2;
+
+    google.protobuf.BoolValue IsExternal = 3;
+}
+
+message ObligationCorrection {
+    google.protobuf.Int32Value CorrectionTypeId = 1;
+
+    google.protobuf.Int32Value InstallmentAmountCorrection = 2;
+
+    google.protobuf.Int32Value LoanPrincipalAmountCorrection = 3;
+
+    google.protobuf.Int32Value CreditCardLimitCorrection = 4;
+}

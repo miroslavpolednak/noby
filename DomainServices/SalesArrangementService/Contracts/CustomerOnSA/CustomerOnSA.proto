@@ -5,7 +5,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
-import "CustomerObligation.proto";
+import "Obligation.proto";
 import "IncomeInList.proto";
 
 message CustomerOnSA {
@@ -25,7 +25,7 @@ message CustomerOnSA {
     
     cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 8;
 
-    repeated CustomerObligation Obligations = 9;
+    repeated Obligation Obligations = 9;
 
     repeated IncomeInList Incomes = 10;
 
