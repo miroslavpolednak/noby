@@ -22,7 +22,7 @@ public static class StartupExtensions
             {
                 string? url = provider
                     .GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetServiceUrlSynchronously(new("ES:ESignatures"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
+                    .GetServiceUrlSynchronously(new("ES:ESignatures"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                 eSignaturesConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:ESignatures Proprietary service URL");
             }
             return eSignaturesConfiguration;
