@@ -2,6 +2,7 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 
@@ -9,4 +10,5 @@ message BasicParameters {
 	cis.types.NullableGrpcDecimal FinancialResourcesOwn  = 1;
 	cis.types.NullableGrpcDecimal FinancialResourcesOther  = 2;
 	cis.types.NullableGrpcDate GuaranteeDateTo = 3;
+	google.protobuf.Int32Value StatementTypeId = 4;
 }

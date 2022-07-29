@@ -14,8 +14,7 @@ message LoanPurpose {
 
 message FeeSettings {
 	google.protobuf.Int32Value FeeTariffPurpose = 1;
-	google.protobuf.Int32Value StatementTypeId = 2;
-	bool IsStatementCharged = 3;
+	bool IsStatementCharged = 2;
 }
 
 message InputMarketingAction {
@@ -61,6 +60,9 @@ message ResultFee {
 message Developer {
 	google.protobuf.Int32Value DeveloperId = 1;
 	google.protobuf.Int32Value ProjectId = 2;
+	string NewDeveloperName = 3;
+	string NewDeveloperProjectName = 4;
+	string NewDeveloperCin = 5;
 }
 
 message PaymentScheduleSimple {

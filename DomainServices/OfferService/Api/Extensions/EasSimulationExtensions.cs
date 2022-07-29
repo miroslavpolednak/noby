@@ -82,7 +82,7 @@ internal static class EasSimulationExtensions
 
 
     // fee settings
-    private static EasWrapper.SimSettingsPoplatky? ToReqFeeSettings(this _OS.MortgageSimulationInputs inputs)
+    private static EasWrapper.SimSettingsPoplatky? ToReqFeeSettings(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters)
     {
         if (inputs.FeeSettings == null)
         {
@@ -91,11 +91,9 @@ internal static class EasSimulationExtensions
 
         var nastaveniPoplatku = new EasWrapper.SimSettingsPoplatky
         {
-            // dokument = inputs.FeeSettings.FeeTariffPurpose,
-            // vypisHu = inputs.FeeSettings.StatementTypeId,
             dokument = inputs.FeeSettings.FeeTariffPurpose!.Value,
-            vypisHu = inputs.FeeSettings.StatementTypeId!.Value,
             vypisBu = inputs.FeeSettings.IsStatementCharged ? 1 : 0,
+            vypisHu = basicParameters.StatementTypeId!.Value,
         };
 
         return nastaveniPoplatku;
@@ -165,7 +163,7 @@ internal static class EasSimulationExtensions
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
     /// </summary>
-    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs)
+    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters)
     {
         //return SampleRequest;
 
@@ -176,7 +174,7 @@ internal static class EasSimulationExtensions
             uver = inputs.ToReqLoan(),
             urokovaSazba = inputs.ToReqInterestRate(),
             ucelyUveru = inputs.ToReqLoanPurposes(),
-            nastaveniPoplatku = inputs.ToReqFeeSettings(),
+            nastaveniPoplatku = inputs.ToReqFeeSettings(basicParameters),
             marketingoveAkce = inputs.ToReqMarketingActions(),
             mimoradneOperace = inputs.ToReqExceptionalOperations(),
             poplatky = inputs.ToReqFees(),
