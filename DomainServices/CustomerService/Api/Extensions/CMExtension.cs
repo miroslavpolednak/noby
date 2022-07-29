@@ -13,7 +13,7 @@ internal static class CMExtension
     public static Identity ToIdentity(this long customerId)
         => new()
         {
-            IdentityId = (int)customerId,
+            IdentityId = customerId,
             IdentityScheme = Identity.Types.IdentitySchemes.Kb
         };
 

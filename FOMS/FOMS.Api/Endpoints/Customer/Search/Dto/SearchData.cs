@@ -6,7 +6,7 @@ public class SearchData
     /// <summary>
     /// [optional] ID klienta v MP nebo KB
     /// </summary>
-    public int? IdentityId { get; set; }
+    public long? IdentityId { get; set; }
 
     /// <summary>
     /// [optional] Zeme vydani dokladu

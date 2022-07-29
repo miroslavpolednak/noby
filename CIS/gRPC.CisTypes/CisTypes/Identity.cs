@@ -8,7 +8,7 @@ public sealed partial class Identity
         IdentityScheme = FastEnum.Parse<Types.IdentitySchemes>(identity.Scheme.ToString());
     }
 
-    public Identity(int? identityId, CIS.Foms.Enums.IdentitySchemes? scheme)
+    public Identity(long? identityId, CIS.Foms.Enums.IdentitySchemes? scheme)
     {
         IdentityId = identityId ?? 0;
         IdentityScheme = FastEnum.Parse<Types.IdentitySchemes>((scheme ?? CIS.Foms.Enums.IdentitySchemes.Unknown).ToString());

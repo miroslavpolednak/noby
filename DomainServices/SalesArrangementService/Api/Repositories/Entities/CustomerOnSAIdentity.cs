@@ -13,7 +13,7 @@ internal class CustomerOnSAIdentity
     
     public CIS.Foms.Enums.IdentitySchemes IdentityScheme { get; set; }
     
-    public int IdentityId { get; set; }
+    public long IdentityId { get; set; }
     
     public virtual CustomerOnSA Customer { get; set; }
 

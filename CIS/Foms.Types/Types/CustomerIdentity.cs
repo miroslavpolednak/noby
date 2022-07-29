@@ -5,29 +5,29 @@ namespace CIS.Foms.Types;
 
 public sealed class CustomerIdentity
 {
-    public int Id { get; init; }
+    public long Id { get; init; }
     public IdentitySchemes Scheme { get; init; }
 
     public CustomerIdentity()
     {
     }
 
-    public CustomerIdentity(int id, IdentitySchemes scheme)
+    public CustomerIdentity(long id, IdentitySchemes scheme)
     {
         Id = id;
         Scheme = scheme;
     }
 
-    public CustomerIdentity(int id, int scheme)
+    public CustomerIdentity(long id, int scheme)
     {
         Id = id;
         Scheme = (IdentitySchemes)scheme;
     }
 
-    public CustomerIdentity(int? id, string? scheme) 
+    public CustomerIdentity(long? id, string? scheme) 
         : this(id.GetValueOrDefault(), scheme) { }
 
-    public CustomerIdentity(int id, string? scheme)
+    public CustomerIdentity(long id, string? scheme)
     {
         Id = id;
         if (!Enum.TryParse(scheme, out Enums.IdentitySchemes parsedScheme))
@@ -43,7 +43,7 @@ public sealed class CustomerIdentity
         int idx = token.IndexOf(':');
         if (idx < 1)
             throw new CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
-        if (!int.TryParse(token.AsSpan(idx + 1), out int id))
+        if (!long.TryParse(token.AsSpan(idx + 1), out long id))
             throw new CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
         if (!Enum.TryParse(token.Substring(0, idx), out Enums.IdentitySchemes parsedScheme))
             throw new CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(token));

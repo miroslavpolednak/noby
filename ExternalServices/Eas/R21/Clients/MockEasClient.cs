@@ -61,7 +61,7 @@ internal sealed class MockEasClient : IEasClient
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> GetContractNumber(int clientId, int caseId)
+    public async Task<IServiceCallResult> GetContractNumber(long clientId, int caseId)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         return new SuccessfulServiceCallResult<string>( $"{clientId}_{caseId}");

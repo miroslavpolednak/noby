@@ -167,7 +167,7 @@ CREATE TABLE [dbo].[CustomerOnSAIdentity](
      [CustomerOnSAIdentityId] [int] IDENTITY(1,1) NOT NULL,
      [CustomerOnSAId] [int] NULL,
      [IdentityScheme] [tinyint] NOT NULL,
-     [IdentityId] [int] NOT NULL,
+     [IdentityId] [bigint] NOT NULL,
      [ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
      [ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
      CONSTRAINT [PK_CustomerOnSAIdentity] PRIMARY KEY CLUSTERED
@@ -233,7 +233,7 @@ CREATE TABLE [dbo].[CustomerOnSAIncome](
 	[IncomeTypeId] [int] NOT NULL,
 	[Sum] decimal(12,2) NULL,
 	[CurrencyCode] [varchar](3) NULL,
-    [IncomeSource] [nvarchar(255)] NULL,
+    [IncomeSource] [nvarchar](255) NULL,
 	[Data] [nvarchar](max) NULL,
     [DataBin] [varbinary](max) NULL,
 	[CreatedUserName] [nvarchar](100) NULL,

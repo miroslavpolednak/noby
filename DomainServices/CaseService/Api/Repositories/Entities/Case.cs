@@ -21,7 +21,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     // informace o klientovi
     public CIS.Foms.Enums.IdentitySchemes? CustomerIdentityScheme { get; set; }
-    public int? CustomerIdentityId { get; set; }
+    public long? CustomerIdentityId { get; set; }
     public string? FirstNameNaturalPerson { get; set; }
     public string Name { get; set; } = "";
     public DateOnly? DateOfBirthNaturalPerson { get; set; }

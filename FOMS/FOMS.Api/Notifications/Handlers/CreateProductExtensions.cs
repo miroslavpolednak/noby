@@ -5,7 +5,7 @@ namespace FOMS.Api.Notifications.Handlers;
 
 internal static class CreateProductExtensions
 {
-    public static MortgageData ToDomainServiceRequest(this GetMortgageOfferResponse offerData, int partnerId)
+    public static MortgageData ToDomainServiceRequest(this GetMortgageOfferResponse offerData, long partnerId)
     {
         var model = new MortgageData
         {

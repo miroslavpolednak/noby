@@ -47,7 +47,7 @@ public interface IEasClient
     /// <returns>
     /// SuccessfulServiceCallResult[ContractNrResponse]
     /// </returns>
-    Task<IServiceCallResult> GetContractNumber(int clientId, int caseId);
+    Task<IServiceCallResult> GetContractNumber(long clientId, int caseId);
 
     /// <summary>
     /// Přidání data prvního podpisu

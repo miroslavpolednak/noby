@@ -41,7 +41,7 @@ message CreateContractRelationshipRequest {
 
 message DeleteContractRelationshipRequest {
   int64 ProductId = 1;
-  int32 PartnerId = 2;
+  int64 PartnerId = 2;
 }
 
 message LoanPurpose {
@@ -56,7 +56,7 @@ message PaymentAccount {
 }
 
 message MortgageData {
-	int32 PartnerId = 1;
+	int64 PartnerId = 1;
 	string ContractNumber = 2;
 	cis.types.NullableGrpcDecimal LoanAmount = 3;
 	cis.types.NullableGrpcDecimal LoanInterestRate = 4;
@@ -88,7 +88,7 @@ message MortgageData {
 }
 
 message Relationship {
-	int32 PartnerId = 1;
+	int64 PartnerId = 1;
 	int32 ContractRelationshipTypeId = 2;
 }
 

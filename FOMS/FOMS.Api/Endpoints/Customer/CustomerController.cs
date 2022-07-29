@@ -38,7 +38,7 @@ public class CustomerController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Identifikace klienta", "UC: Domacnost" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetDetail.GetDetailResponse> GetDetail([FromQuery] int identityId, [FromQuery] CIS.Foms.Enums.IdentitySchemes identityScheme, CancellationToken cancellationToken)
+    public async Task<GetDetail.GetDetailResponse> GetDetail([FromQuery] long identityId, [FromQuery] CIS.Foms.Enums.IdentitySchemes identityScheme, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(identityId, identityScheme), cancellationToken);
 
     /// <summary>
