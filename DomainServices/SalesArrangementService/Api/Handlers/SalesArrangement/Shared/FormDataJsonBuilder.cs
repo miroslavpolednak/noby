@@ -291,6 +291,23 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
+            object? MapMarketingAction(ResultMarketingAction i)
+            {
+                if (i == null)
+                {
+                    return null;
+                }
+
+                return new
+                {
+                    typMaAkce = i.Code,
+                    zaskrtnuto = i.Requested.ToJsonString(),
+                    uplatnena = i.Applied.ToJsonString(),
+                    kodMaAkce = i.MarketingActionId.ToJsonString(),
+                    odchylkaSazby = i.Deviation.ToJsonString(),
+                };
+            }
+
             object? MapLoanRealEstate(SalesArrangementParametersMortgage.Types.LoanRealEstate i, int rowNumber)
             {
                 if (i == null)
@@ -604,7 +621,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         indikativni_LTV = Data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
                         indikativni_LTC = Data.Arrangement.LoanToCost.ToJsonString(),                                                                // OfferInstance -> SalesArrangement !!! moved from offer to arrangement in D1-2
                         termin_cerpani_do = ((DateTime)Data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
-                        seznam_mark_akci = Array.Empty<object>(),                                                                               // [MOCK] OfferInstance (default empty array)
                         sazba_vyhlasovana = Data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
                         sazba_skladacka = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                              // OfferInstance
                         sazba_poskytnuta = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                             // OfferInstance = sazba_skladacka
@@ -621,6 +637,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
                         developer_popis = developerDescription,
                         forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
+                        seznam_mark_akci = Data.Offer.SimulationResults.MarketingActions?.Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_poplatku = Data.Offer.SimulationResults.Fees?.Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
                         seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),  // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
                         seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???
