@@ -584,6 +584,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             switch (formType)
             {
                 case EFormType.F3601:
+
+                    var developer = Data.Offer.SimulationInputs.Developer;
+                    var developerDescription = (developer == null) ? null : String.Join(",", (new List<string> { developer.NewDeveloperName ?? String.Empty, developer.NewDeveloperCin ?? String.Empty, developer.NewDeveloperProjectName ?? String.Empty }));
+
                     data = new
                     {
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
@@ -613,6 +617,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         individualni_cenotvorba_odchylka = Data.Offer.SimulationInputs.InterestRateDiscount.ToJsonString(),
                         predp_termin_cerpani = Data.Arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
                         den_splaceni = Data.Offer.SimulationInputs.PaymentDay.ToJsonString(),                                                        // OfferInstance
+                        developer_id = Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString(),
+                        developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
+                        developer_popis = developerDescription,
                         forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
                         seznam_poplatku = Data.Offer.SimulationResults.Fees?.Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
                         seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),  // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
@@ -624,7 +631,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         // VIP_makler = 0.ToJsonString(),                                                                                           // [MOCK] User (default 0) !!! removed in D1-2
                         mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
-                        zpusob_zasilani_vypisu = Data.Offer.SimulationInputs.FeeSettings?.StatementTypeId.ToJsonString(),                            // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId
+                        zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),                                         // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId -> Offerinstance.BasicParameters.StatementTypeId
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),                                   // Offerinstance
                         typ_cerpani = Data.Offer.SimulationInputs.DrawingType.ToJsonString(),
                         datum_garance_us = Data.Arrangement.OfferGuaranteeDateFrom.ToJsonString(),

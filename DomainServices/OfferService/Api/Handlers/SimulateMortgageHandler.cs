@@ -43,7 +43,7 @@ internal class SimulateMortgageHandler
         var inputs = await setUpDefaults(request.Request.SimulationInputs, cancellation);
 
         // get simulation outputs
-        var easSimulationReq = inputs.ToEasSimulationRequest();
+        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters);
         var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
         var results = easSimulationRes.ToSimulationResults();
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
@@ -83,6 +83,7 @@ internal class SimulateMortgageHandler
     {
         parameters = parameters ?? new _OS.BasicParameters();
         parameters.GuaranteeDateTo = guaranteeDateFrom.AddDays(AppDefaults.MaxGuaranteeInDays);
+        parameters.StatementTypeId = parameters.StatementTypeId ?? 1;   // Default: 1
         return parameters;
     }
 
@@ -114,22 +115,13 @@ internal class SimulateMortgageHandler
         //Default: False
         input.IsEmployeeBonusRequested = input.IsEmployeeBonusRequested ?? false;
 
-        var defaultFeeSettings = new _OS.FeeSettings() { FeeTariffPurpose = 0, StatementTypeId = 1, IsStatementCharged = true };
+        var defaultFeeSettings = new _OS.FeeSettings() { FeeTariffPurpose = 0, IsStatementCharged = true };
 
         input.FeeSettings = input.FeeSettings ?? defaultFeeSettings;
 
         // Určuje za jakým účelem se generuje seznam poplatků.
         // Default: 0 - za účelem nabídky
         input.FeeSettings.FeeTariffPurpose = input.FeeSettings.FeeTariffPurpose.HasValue ? input.FeeSettings.FeeTariffPurpose.Value : defaultFeeSettings.FeeTariffPurpose;
-
-        // Nastavení typu výpisů StatementType(CIS_HU_TYP_VYPIS)
-        // Default: první hodnota v číselníku(dle Order)
-        if (!input.FeeSettings.StatementTypeId.HasValue)
-        {
-            //var statementType = (await _codebookService.StatementTypes(cancellation)).OrderBy(i => i.Order).First();
-            //input.FeeSettings.StatementTypeId = statementType.Id;
-            input.FeeSettings.StatementTypeId = defaultFeeSettings.StatementTypeId;  //Default: 1 . . . první hodnota číselníku se zatím odkládá
-        }
 
         return input;
     }
