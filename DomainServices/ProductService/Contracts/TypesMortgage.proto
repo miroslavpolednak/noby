@@ -44,6 +44,16 @@ message DeleteContractRelationshipRequest {
   int32 PartnerId = 2;
 }
 
+message LoanPurpose {
+	int32 LoanPurposeId = 1;
+	cis.types.GrpcDecimal Sum = 2;
+}
+
+message PaymentAccount {
+	string Number = 1;
+	string Prefix = 2;
+	string BankCode = 3;
+}
 
 message MortgageData {
 	int32 PartnerId = 1;
@@ -53,12 +63,28 @@ message MortgageData {
 	google.protobuf.Int32Value FixedRatePeriod = 5;
 	int32 ProductTypeId = 6;
 	cis.types.NullableGrpcDecimal LoanPaymentAmount = 7;
-	google.protobuf.Int32Value LoanActionCode = 8;
-	cis.types.GrpcDecimal CurrentAmount = 9;
-	cis.types.NullableGrpcDate DrawingMaxOn = 10;
-	cis.types.NullableGrpcDate VUP = 11;
-	google.protobuf.BoolValue Statement = 12;
-	repeated Relationship Relationships = 13;
+	cis.types.NullableGrpcDecimal CurrentAmount = 8;
+	cis.types.NullableGrpcDate DrawingDateTo = 9;
+	repeated Relationship Relationships = 10;
+	cis.types.NullableGrpcDate ContractSignedDate = 11;
+	cis.types.NullableGrpcDate FixedRateValidTo = 12;
+	cis.types.NullableGrpcDecimal AvailableForDrawing = 13;
+	cis.types.NullableGrpcDecimal Principal = 14;
+	google.protobuf.Int32Value LoanKindId = 15;
+	PaymentAccount PaymentAccount = 16;
+	cis.types.NullableGrpcDecimal CurrentOverdueAmount = 17;
+	cis.types.NullableGrpcDecimal AllOverdueFees = 18;
+	google.protobuf.Int32Value OverdueDaysNumber = 19;
+	repeated LoanPurpose LoanPurposes = 20;
+	cis.types.NullableGrpcDate ExpectedDateOfDrawing = 21;
+	cis.types.NullableGrpcDecimal InterestInArrears = 22;
+	cis.types.NullableGrpcDate LoanDueDate = 23;
+	google.protobuf.Int32Value PaymentDay = 24;
+	cis.types.NullableGrpcDecimal LoanInterestRateRefix = 25;
+	cis.types.NullableGrpcDate LoanInterestRateValidFromRefix = 26;
+	google.protobuf.Int32Value FixedRatePeriodRefix = 27;
+	string Cpm = 28;
+	string Icp = 29;
 }
 
 message Relationship {
