@@ -7,7 +7,7 @@
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        public string Code { get; set; }
+        public CIS.Foms.Enums.LoanInterestRateAnnouncedTypes Code { get; set; }
 
         [DataMember(Order = 3)]
         public string Name { get; set; }

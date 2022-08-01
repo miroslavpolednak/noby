@@ -48,6 +48,7 @@ internal class GetAllHandler
             "legalcapacities" => new(original, await _codebooks.LegalCapacities(cancellationToken)),
             "loanpurposes" => new(original, await _codebooks.LoanPurposes(cancellationToken)),
             "loankinds" => new(original, await _codebooks.LoanKinds(cancellationToken)),
+            "loaninterestrateannouncedtypes" => new(original, await _codebooks.LoanInterestRateAnnouncedTypes(cancellationToken)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),
             "maritalstatuses" => new(original, (await _codebooks.MaritalStatuses(cancellationToken)).Where(t => t.IsValid)),
             "obligationcorrectiontypes" => new(original, await _codebooks.ObligationCorrectionTypes(cancellationToken)),

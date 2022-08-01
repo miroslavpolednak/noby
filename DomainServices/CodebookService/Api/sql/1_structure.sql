@@ -131,26 +131,3 @@ INSERT INTO [dbo].[RelationshipCustomerProductTypeExtension]
 		   (13,'Child');
 GO
 */
-
--- table 'LoanInterestRateAnnouncedType'
--- DROP TABLE IF EXISTS [dbo].[LoanInterestRateAnnouncedType];
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'LoanInterestRateAnnouncedType')
-BEGIN
-	CREATE TABLE [dbo].LoanInterestRateAnnouncedType(
-		[Id] [int] NOT NULL,
-		[Code] [nvarchar](10) NOT NULL,
-		[Name] [nvarchar](50) NOT NULL
-		CONSTRAINT [PK_LoanInterestRateAnnouncedType] PRIMARY KEY CLUSTERED
-		(
-		[Id] ASC
-		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
-
-	INSERT INTO [dbo].[LoanInterestRateAnnouncedType]([Id],[Code],[Name])
-   VALUES
-    (1, 'SID', 'standardní'),
-	(2, 'VIP', 'VIP'),
-	(3, 'DEV', 'developerská'),
-	(4, 'ZAM', 'zaměstnanecká');
-END
-
