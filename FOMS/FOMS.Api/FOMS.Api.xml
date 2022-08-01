@@ -1045,7 +1045,7 @@
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ProductName">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.LoanKindName">
             <summary>
             Akce / produkt
             </summary>

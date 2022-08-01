@@ -20,7 +20,7 @@ public class MortgageDetailDto
     /// <summary>
     /// Akce / produkt
     /// </summary>
-    public string ProductName { get; set; } = null!;
+    public string LoanKindName { get; set; } = null!;
     
     /// <summary>
     /// Výše úvěru

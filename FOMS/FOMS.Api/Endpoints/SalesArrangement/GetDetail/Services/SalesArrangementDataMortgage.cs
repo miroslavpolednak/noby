@@ -44,7 +44,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         var model = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<Dto.MortgageDetailDto>(_konsDbSqlQuery, new {id = caseId}, cancellationToken)
             ?? throw new CisNotFoundException(ErrorCodes.CaseNotFoundInKonsDb, $"Case #{caseId} not found in KonsDb");
 
-        model.ProductName = (await _codebookService.LoanKinds(cancellationToken))
+        model.LoanKindName = (await _codebookService.LoanKinds(cancellationToken))
             .FirstOrDefault(t => t.Id == model.LoanKindId)?
             .Name ?? "-";
 
@@ -78,7 +78,7 @@ internal class SalesArrangementDataMortgage : ISalesArrangementDataService
         return new Dto.MortgageDetailDto()
         {
             ContractNumber = saCase.Data.ContractNumber,
-            ProductName = loanKindName,
+            LoanKindName = loanKindName,
             LoanAmount = offerInstance.SimulationResults.LoanAmount,
             LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
             ContractSignedDate = offerInstance.SimulationResults.ContractSignedDate,

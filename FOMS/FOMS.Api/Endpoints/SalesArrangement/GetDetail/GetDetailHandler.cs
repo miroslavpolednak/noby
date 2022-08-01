@@ -51,7 +51,7 @@ internal class GetDetailHandler
         return new Dto.MortgageDetailDto()
         {
             ContractNumber = saInstance.ContractNumber,
-            ProductName = loanKindName,
+            LoanKindName = loanKindName,
             LoanAmount = offerInstance.SimulationResults.LoanAmount,
             LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
             ContractSignedDate = offerInstance.SimulationResults.ContractSignedDate,
