@@ -25,7 +25,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             // zavolat CM
             var cmResponse = (
                 await _cm.GetList(
-                    request.Request.Identities.Select(t => (long)t.IdentityId), Activity.Current?.TraceId.ToHexString() ?? "", 
+                    request.Request.Identities.Select(t => t.IdentityId), Activity.Current?.TraceId.ToHexString() ?? "", 
                     cancellationToken)
                 ).CheckCMResult<IEnumerable<CustomerManagement.CMWrapper.CustomerBaseInfo>>();
 

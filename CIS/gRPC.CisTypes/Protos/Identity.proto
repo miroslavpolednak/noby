@@ -5,7 +5,7 @@ option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
 // Jednoznacna identifikace klienta s ohledem na ruzne mandanty.
 message Identity {
 	// Id klienta - bud ID_PARTNER nebo KBID
-	int32 identityId = 1;
+	int64 identityId = 1;
 
 	enum IdentitySchemes {
 		Unknown = 0;

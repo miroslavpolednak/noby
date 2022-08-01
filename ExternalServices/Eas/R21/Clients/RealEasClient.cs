@@ -98,7 +98,7 @@ internal sealed class RealEasClient
         });
     }
 
-    public async Task<IServiceCallResult> GetContractNumber(int clientId, int caseId)
+    public async Task<IServiceCallResult> GetContractNumber(long clientId, int caseId)
     {
         _logger.LogDebug("Run inputs: {clientId}, {caseId}", clientId, caseId);
 
@@ -106,7 +106,7 @@ internal sealed class RealEasClient
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
-            var request = new ContractNrRequest(clientId, caseId);
+            var request = new ContractNrRequest(Convert.ToInt32(clientId), caseId);
 
             _logger.LogSerializedObject("ContractNrRequest", request);
             var result = await client.Get_ContractNumberAsync(request);

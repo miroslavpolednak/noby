@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[Case](
     [OwnerUserId] [int] NOT NULL,
     [OwnerUserName] [nvarchar](100) NOT NULL,
     [CustomerIdentityScheme] [tinyint] NULL,
-    [CustomerIdentityId] [int] NULL,
+    [CustomerIdentityId] [bigint] NULL,
     [FirstNameNaturalPerson] [nvarchar](100) NULL,
     [Name] [nvarchar](100) NULL,
     [DateOfBirthNaturalPerson] [date] NULL,

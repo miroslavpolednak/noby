@@ -49,7 +49,7 @@ internal class CreateRiskBusinessCaseHandler
         bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, null, cancellationToken));
     }
 
-    async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, int mpId)
+    async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, long mpId)
     {
         var loanApplicationRequest = new ExternalServices.Rip.V1.RipWrapper.LoanApplicationRequest
         {

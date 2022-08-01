@@ -457,7 +457,7 @@
             </remarks>
             <returns>Seznam nalezenych klientu. BE sluzba neni strankovatelna, takze strankovani je jen jako fake na FE.</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.GetDetail(System.Int32,CIS.Foms.Enums.IdentitySchemes,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.GetDetail(System.Int64,CIS.Foms.Enums.IdentitySchemes,System.Threading.CancellationToken)">
             <summary>
             Detail klienta
             </summary>
