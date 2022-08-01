@@ -18,8 +18,17 @@ internal static class OfferApiModuleDtoExtensions
             ExpectedDateOfDrawing = input.ExpectedDateOfDrawing,
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
+            StatementTypeId = basicParams.StatementTypeId,
             GuaranteeDateFrom = (DateTime)input.GuaranteeDateFrom!,
             LoanPurposes = input.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
+            Developer = input.Developer is null ? null : new Dto.Developer
+            {
+                DeveloperId = input.Developer.DeveloperId,
+                NewDeveloperProjectName = input.Developer.NewDeveloperName,
+                NewDeveloperCin = input.Developer.NewDeveloperCin,
+                NewDeveloperName = input.Developer.NewDeveloperName,
+                ProjectId = input.Developer.ProjectId
+            }
         };
     
     public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs)

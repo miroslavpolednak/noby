@@ -25,11 +25,20 @@ internal static class Extensions
                 PaymentDay = request.PaymentDay,
                 IsEmployeeBonusRequested = request.IsEmployeeBonusRequested,
                 ExpectedDateOfDrawing = request.ExpectedDateOfDrawing,
+                Developer = request.Developer is null ? null : new Developer
+                {
+                    DeveloperId = request.Developer.DeveloperId,
+                    NewDeveloperCin = request.Developer.NewDeveloperCin,
+                    NewDeveloperName = request.Developer.NewDeveloperName,
+                    NewDeveloperProjectName = request.Developer.NewDeveloperProjectName,
+                    ProjectId = request.Developer.ProjectId
+                }
             },
             BasicParameters = new()
             {
                 FinancialResourcesOwn = request.FinancialResourcesOwn,
                 FinancialResourcesOther = request.FinancialResourcesOther,
+                StatementTypeId = request.StatementTypeId
             }
         };
 

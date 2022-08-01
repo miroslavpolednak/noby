@@ -65,6 +65,8 @@ public class MortgageInputs
     /// </summary>
     public decimal? FinancialResourcesOther { get; set; }
 
+    public int? StatementTypeId { get; set; }
+
     /// <summary>
     /// uver.rozhodnyDenSazby
     /// </summary>
@@ -89,4 +91,5 @@ public class MortgageInputs
 
     public MarketingActionInput? MarketingActions { get; set; }
 
+    public Developer? Developer { get; set; }
 }
