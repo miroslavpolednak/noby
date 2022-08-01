@@ -28,9 +28,7 @@ internal class GetCreditWorthinessHandler
         var households = ServiceCallResult.ResolveAndThrowIfError<List<_SA.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
         if (!households.Any())
             throw new CisValidationException("There is no household bound for this SA");
-        if (!households[0].CustomerOnSAId1.HasValue)
-            throw new CisValidationException("There is not client bound to primary household");
-
+        
         ripRequest.ResourceProcessIdMp = offerInstance.ResourceProcessId;
         ripRequest.RiskBusinessCaseIdMp = saInstance.RiskBusinessCaseId;
         ripRequest.ItChannel = "NOBY";
@@ -99,6 +97,10 @@ internal class GetCreditWorthinessHandler
         if (household.CustomerOnSAId2.HasValue)
             h.Clients.Add(await createClient(household.CustomerOnSAId2.Value, cancellationToken));
 
+        // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
+        if (!h.Clients.Any(t => t.LoanApplicationIncome.Any()))
+            throw new CisValidationException("At least one customer in household must have some income");
+
         return h;
     }
 
@@ -131,7 +133,7 @@ internal class GetCreditWorthinessHandler
             {
                 Amount = Convert.ToDouble(t.Sum),
                 CategoryMp = t.IncomeTypeId
-            }).ToList();
+            }).ToList() ?? new List<LoanApplicationIncome>();
         else
             throw new CisValidationException($"Customer #{customer.CustomerOnSAId} does not have any income");
 
@@ -149,7 +151,6 @@ internal class GetCreditWorthinessHandler
         return c;
     }
 
-    private readonly ILogger<GetCreditWorthinessHandler> _logger;
     private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
@@ -161,7 +162,6 @@ internal class GetCreditWorthinessHandler
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public GetCreditWorthinessHandler(
-        ILogger<GetCreditWorthinessHandler> logger,
         ExternalServices.Rip.V1.IRipClient ripClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
@@ -181,6 +181,5 @@ internal class GetCreditWorthinessHandler
         _salesArrangementService = salesArrangementService;
         _householdService = householdService;
         _customerOnSaService = customerOnSaService;
-        _logger = logger;
     }
 }
