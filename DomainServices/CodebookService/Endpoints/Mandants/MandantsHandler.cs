@@ -12,8 +12,8 @@ public class MandantTypesHandler
             .Where(t => t > 0)
             .Select(t => new MandantsItem
             {
+                Id = (int)t,
                 Code = t.ToString(),
-                StarbuildId = (int)t,
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
             })
             .ToList();
