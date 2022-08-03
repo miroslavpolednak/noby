@@ -15,6 +15,10 @@ public enum CustomerIncomeTypes : int
     Employement = 1,
 
     [EnumMember]
+    [Display(Name = "Z podnikání")]
+    Enterprise = 2,
+
+    [EnumMember]
     [Display(Name = "Ostatní")]
     Other = 5,
 }

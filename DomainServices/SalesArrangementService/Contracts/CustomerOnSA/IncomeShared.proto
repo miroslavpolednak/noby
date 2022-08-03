@@ -54,5 +54,11 @@ message IncomeDataEmployement {
 }
 
 message IncomeDataOther {
-    string something = 1;
+    int32 IncomeOtherTypeId = 1;
+}
+
+message IncomeDataEntrepreneur {
+    string Cin = 1;
+    string BirthNumber = 2;
+    int32 CountryOfResidenceId = 3;
 }

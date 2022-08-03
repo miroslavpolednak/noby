@@ -29,6 +29,8 @@ internal sealed class UpdateIncomeHandler
         => typeId switch
         {
             CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement?.Employer.Name,
+            CIS.Foms.Enums.CustomerIncomeTypes.Enterprise => "",
+            CIS.Foms.Enums.CustomerIncomeTypes.Other => "",
             _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
         };
 
@@ -37,6 +39,7 @@ internal sealed class UpdateIncomeHandler
         {
             CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement,
             CIS.Foms.Enums.CustomerIncomeTypes.Other => request.Other,
+            CIS.Foms.Enums.CustomerIncomeTypes.Enterprise => request.Entrepreneur,
             _ => throw new NotImplementedException("This customer income type serializer is not implemented")
         };
 

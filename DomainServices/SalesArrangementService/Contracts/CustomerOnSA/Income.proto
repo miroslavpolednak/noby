@@ -17,5 +17,6 @@ message Income {
     oneof Data {
         DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;
         DomainServices.SalesArrangementService.IncomeDataOther Other = 21;
+        DomainServices.SalesArrangementService.IncomeDataEntrepreneur Entrepreneur = 22;
     }
 }
