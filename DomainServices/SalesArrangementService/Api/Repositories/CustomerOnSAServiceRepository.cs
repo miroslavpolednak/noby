@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.SalesArrangementService.Api.Repositories.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
