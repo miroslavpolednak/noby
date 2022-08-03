@@ -436,7 +436,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                     pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
                     zamestnavatel_nazov = i.Employement?.Employer?.Name,
-                    zamestnavatel_rc_ico = i.Employement?.Employer?.Cin,
+                    zamestnavatel_rc_ico = new List<string> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),   // pouze jedna z hodnot, neměly by být zadány obě
                     //zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
                     //zamestnavatel_sidlo_cislo_popisne_orientacni = GetAddressNumber(i.Employement?.Employer?.Address),  //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
                     //zamestnavatel_sidlo_mesto = i.Employement?.Employer?.Address?.City,
