@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
 
 [DataContract]
-public class LegalCapacitiesRequest : IRequest<List<GenericCodebookItemWithCode>>
+public class LegalCapacitiesRequest : IRequest<List<LegalCapacityItem>>
 {
 }

@@ -1,19 +1,26 @@
-﻿using DomainServices.CodebookService.Contracts;
+﻿using System.ComponentModel.DataAnnotations;
 using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
 
 namespace DomainServices.CodebookService.Endpoints.LegalCapacities;
 
 internal class LegalCapacitiesHandler
-    : IRequestHandler<LegalCapacitiesRequest, List<GenericCodebookItemWithCode>>
+    : IRequestHandler<LegalCapacitiesRequest, List<LegalCapacityItem>>
 {
-    public Task<List<GenericCodebookItemWithCode>> Handle(LegalCapacitiesRequest request, CancellationToken cancellationToken)
+
+    public Task<List<LegalCapacityItem>> Handle(LegalCapacitiesRequest request, CancellationToken cancellationToken)
     {
-        //TODO dodelat na ciselnik od Asseca az bude
-        return Task.FromResult(new List<GenericCodebookItemWithCode>
-        {
-            new GenericCodebookItemWithCode { Id = 1, Name = "Omezená svéprávnost", Code = "D", IsValid = true },
-            new GenericCodebookItemWithCode { Id = 2, Name = "Bez omezení", Code = "N", IsValid = true },
-            new GenericCodebookItemWithCode { Id = 3, Name = "Jiné omezení", Code = "O", IsValid = true }
-        });
+        //TODO nakesovat?
+        var values = FastEnum.GetValues<CIS.Foms.Enums.LegalCapacities>()
+            .Select(t => new LegalCapacityItem()
+            {
+                Id = (int)t,
+                Code = t,
+                Name = t.GetAttribute<DisplayAttribute>()?.Name ?? String.Empty,
+                Description = t.GetAttribute<DisplayAttribute>()?.ShortName ?? String.Empty,
+            })
+            .ToList();
+
+        return Task.FromResult(values);
     }
+
 }
