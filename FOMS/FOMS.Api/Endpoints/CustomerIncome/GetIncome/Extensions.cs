@@ -4,6 +4,20 @@ namespace FOMS.Api.Endpoints.CustomerIncome.GetIncome;
 
 internal static class Extensions
 {
+    public static Dto.IncomeDataOther ToApiResponse(this _SA.IncomeDataOther contract)
+        => new Dto.IncomeDataOther
+        {
+            IncomeOtherTypeId = contract.IncomeOtherTypeId
+        };
+
+    public static Dto.IncomeDataEntrepreneur ToApiResponse(this _SA.IncomeDataEntrepreneur contract)
+        => new Dto.IncomeDataEntrepreneur
+        {
+            BirthNumber = contract.BirthNumber,
+            Cin = contract.Cin,
+            CountryOfResidenceId = contract.CountryOfResidenceId
+        };
+
     public static Dto.IncomeDataEmployement ToApiResponse(this _SA.IncomeDataEmployement contract)
         => new Dto.IncomeDataEmployement
         {

@@ -4,9 +4,22 @@ namespace FOMS.Api.Endpoints.CustomerIncome;
 
 internal static class Extensions
 {
+    public static _SA.IncomeDataOther ToDomainServiceRequest(this Dto.IncomeDataOther request)
+        => new _SA.IncomeDataOther
+        {
+            IncomeOtherTypeId = request.IncomeOtherTypeId
+        };
+
+    public static _SA.IncomeDataEntrepreneur ToDomainServiceRequest(this Dto.IncomeDataEntrepreneur request)
+        => new _SA.IncomeDataEntrepreneur
+        {
+            BirthNumber = request.BirthNumber,
+            Cin = request.Cin,
+            CountryOfResidenceId = request.CountryOfResidenceId
+        };
+
     public static _SA.IncomeDataEmployement ToDomainServiceRequest(this Dto.IncomeDataEmployement request)
-    {
-        return new _SA.IncomeDataEmployement
+        => new _SA.IncomeDataEmployement
         {
             ForeignIncomeTypeId = request.ForeignIncomeTypeId,
             Employer = request.Employer?.ToDomainServiceRequest(),
@@ -16,7 +29,6 @@ internal static class Extensions
             Job = request.Job?.ToDomainServiceRequest(),
             WageDeduction = request.WageDeduction?.ToDomainServiceRequest()
         };
-    }
 
     public static _SA.EmployerData ToDomainServiceRequest(this Dto.EmployerDataDto contract)
         => new _SA.EmployerData

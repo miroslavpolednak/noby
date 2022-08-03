@@ -27,9 +27,21 @@ internal class UpdateIncomeHandler
             switch ((CIS.Foms.Enums.CustomerIncomeTypes)incomeInstance.IncomeTypeId)
             {
                 case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
-                    var o = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString, _jsonSerializerOptions);
-                    if (o is not null) //TODO kdyz je to null, mam resit nejakou validaci?
-                        model.Employement = o.ToDomainServiceRequest();
+                    var o1 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString, _jsonSerializerOptions);
+                    if (o1 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
+                        model.Employement = o1.ToDomainServiceRequest();
+                    break;
+
+                case CIS.Foms.Enums.CustomerIncomeTypes.Other:
+                    var o2 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataOther>(dataString, _jsonSerializerOptions);
+                    if (o2 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
+                        model.Other = o2.ToDomainServiceRequest();
+                    break;
+
+                case CIS.Foms.Enums.CustomerIncomeTypes.Enterprise:
+                    var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEntrepreneur>(dataString, _jsonSerializerOptions);
+                    if (o3 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
+                        model.Entrepreneur = o3.ToDomainServiceRequest();
                     break;
 
                 default:
