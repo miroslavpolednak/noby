@@ -1,4 +1,5 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
+
 namespace DomainServices.SalesArrangementService.Api.Handlers.Household;
 
 internal class DeleteHouseholdHandler
@@ -6,25 +7,40 @@ internal class DeleteHouseholdHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteHouseholdMediatrRequest request, CancellationToken cancellation)
     {
-        var householdInstance = await _repository.GetHousehold(request.HouseholdId, cancellation);
-        if (householdInstance.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main)
+        var householdInstance = await _dbContext.Households
+            .Where(t => t.HouseholdId == request.HouseholdId)
+            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+
+        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main)
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
 
-        await _repository.Delete(request.HouseholdId, cancellation);
-        
+        // smazat customerOnSA
+        if (householdInstance.CustomerOnSAId1.HasValue)
+            await removeCustomer(householdInstance.CustomerOnSAId1.Value, cancellation);
+        if (householdInstance.CustomerOnSAId2.HasValue)
+            await removeCustomer(householdInstance.CustomerOnSAId2.Value, cancellation);
+        // smazat domacnost
+        _dbContext.Households.Remove(householdInstance);
+
+        await _dbContext.SaveChangesAsync(cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdRepository _repository;
-    private readonly ILogger<DeleteHouseholdHandler> _logger;
-    
-    public DeleteHouseholdHandler(
-        Repositories.HouseholdRepository repository,
-        ILogger<DeleteHouseholdHandler> logger)
+    async Task removeCustomer(int customerOnSAId, CancellationToken cancellation)
     {
-        _repository = repository;
-        _logger = logger;
+        _dbContext.Customers.Remove(await _dbContext.Customers.FirstAsync(t => t.CustomerOnSAId == customerOnSAId, cancellation));
+        _dbContext.CustomersIdentities.RemoveRange(await _dbContext.CustomersIdentities.Where(t => t.CustomerOnSAId == customerOnSAId).FirstAsync(cancellation));
+        _dbContext.CustomersObligations.RemoveRange(await _dbContext.CustomersObligations.Where(t => t.CustomerOnSAId == customerOnSAId).FirstAsync(cancellation));
+        _dbContext.CustomersIncomes.RemoveRange(await _dbContext.CustomersIncomes.Where(t => t.CustomerOnSAId == customerOnSAId).FirstAsync(cancellation));
+    }
+
+    private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
+    
+    public DeleteHouseholdHandler(Repositories.SalesArrangementServiceDbContext dbContext)
+    {
+        _dbContext = dbContext;
     }
 }
