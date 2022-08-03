@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-public class Fee
+public class FeeItem
 {
 	public int FeeId { get; set; }
 	public decimal DiscountPercentage { get; set; }

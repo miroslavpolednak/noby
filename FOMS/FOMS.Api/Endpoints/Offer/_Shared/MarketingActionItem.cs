@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-public sealed class MarketingActionResult
+public sealed class MarketingActionItem
 {
     public string Code { get; set; }
 

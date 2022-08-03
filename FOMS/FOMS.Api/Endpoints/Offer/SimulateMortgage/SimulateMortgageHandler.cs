@@ -13,7 +13,7 @@ internal class SimulateMortgageHandler
         
         // zavolat DS
         var result = await callOfferService(model, cancellationToken);
-
+        
         // predelat z DS na FE Dto
         SimulateMortgageResponse responseModel = new()
         {

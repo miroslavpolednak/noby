@@ -17,5 +17,5 @@ public sealed class SimulateMortgageResponse
     /// </summary>
     public Dto.MortgageOutputs? SimulationResults { get; set; }
 
-    public List<Dto.Fee>? Fees { get; set; }
+    public List<Dto.FeeItem>? Fees { get; set; }
 }

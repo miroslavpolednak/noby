@@ -1,6 +1,6 @@
 ﻿namespace FOMS.Api.Endpoints.Offer.Dto;
 
-public sealed class MarketingActionInput
+public sealed class MarketingActionInputItem
 {
     public bool Domicile { get; set; }
 

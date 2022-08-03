@@ -80,7 +80,7 @@ public class MortgageInputs
     /// <summary>
     /// uver.typCerpani
     /// </summary>
-    public int DrawingType { get; set; }
+    public int? DrawingType { get; set; }
 
     /// <summary>
     /// uver.lhutaDocerpani
@@ -89,7 +89,9 @@ public class MortgageInputs
 
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
 
-    public MarketingActionInput? MarketingActions { get; set; }
+    public MarketingActionInputItem? MarketingActions { get; set; }
 
     public Developer? Developer { get; set; }
+
+    public List<FeeInputItem>? Fees { get; set; }
 }

@@ -28,7 +28,23 @@ internal static class OfferApiModuleDtoExtensions
                 NewDeveloperCin = input.Developer.NewDeveloperCin,
                 NewDeveloperName = input.Developer.NewDeveloperName,
                 ProjectId = input.Developer.ProjectId
-            }
+            },
+            DrawingDuration = input.DrawingDuration,
+            DrawingType = input.DrawingType,
+            InterestRateDiscount = input.InterestRateDiscount,
+            MarketingActions = input.MarketingActions is null ? null : new Dto.MarketingActionInputItem
+            {
+                Domicile = input.MarketingActions.Domicile,
+                HealthRiskInsurance = input.MarketingActions.HealthRiskInsurance,
+                IncomeLoanRatioDiscount = input.MarketingActions.IncomeLoanRatioDiscount,
+                RealEstateInsurance = input.MarketingActions.RealEstateInsurance,
+                UserVip = input.MarketingActions.UserVip
+            },
+            Fees = input.Fees is null ? null : input.Fees.Select(f => new Dto.FeeInputItem
+            {
+                DiscountPercentage = f.DiscountPercentage,
+                FeeId = f.FeeId
+            }).ToList()
         };
     
     public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs)
@@ -53,6 +69,28 @@ internal static class OfferApiModuleDtoExtensions
             LoanInterestRateAnnounced = result.LoanInterestRateAnnounced,
             LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
             EmployeeBonusDeviation = result.EmployeeBonusDeviation,
-            MarketingActionsDeviation = result.MarketingActionsDeviation
+            MarketingActionsDeviation = result.MarketingActionsDeviation,
+            MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
+            PaymentScheduleSimple = result.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList()
+        };
+
+    public static Dto.PaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)
+        => new Dto.PaymentScheduleSimpleItem()
+        {
+            Amount = resultItem.Amount,
+            Date = resultItem.Date,
+            PaymentIndex = resultItem.PaymentIndex,
+            PaymentNumber = resultItem.PaymentNumber,
+            Type = resultItem.Type,
+        };
+
+    public static Dto.MarketingActionItem ToApiResponseItem(this ResultMarketingAction resultItem)
+        => new Dto.MarketingActionItem()
+        {
+            Code = resultItem.Code,
+            Requested = resultItem.Requested == 1,
+            Applied = resultItem.Applied == 1,
+            MarketingActionId = resultItem.MarketingActionId,
+            Deviation = resultItem.Deviation
         };
 }

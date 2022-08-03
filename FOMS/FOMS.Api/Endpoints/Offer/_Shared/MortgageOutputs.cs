@@ -32,6 +32,7 @@ public class MortgageOutputs
 
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
 
-    public List<MarketingActionResult>? MarketingActions { get; set; }
+    public List<MarketingActionItem>? MarketingActions { get; set; }
 
+    public List<PaymentScheduleSimpleItem>? PaymentScheduleSimple { get; set; }
 }

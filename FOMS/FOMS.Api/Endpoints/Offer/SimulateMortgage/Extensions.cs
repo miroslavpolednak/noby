@@ -42,6 +42,15 @@ internal static class Extensions
             }
         };
 
+        if (request.Fees is not null)
+        {
+            model.SimulationInputs.Fees.AddRange(request.Fees.Select(f => new InputFee
+            {
+                DiscountPercentage = f.DiscountPercentage,
+                FeeId = f.FeeId
+            }));
+        }
+
         if (request.LoanPurposes is not null && request.LoanPurposes.Any())
             model.SimulationInputs.LoanPurposes.AddRange(
                 request.LoanPurposes.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
@@ -85,11 +94,12 @@ internal static class Extensions
             LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
             EmployeeBonusDeviation = result.EmployeeBonusDeviation,
             MarketingActionsDeviation = result.MarketingActionsDeviation,
-            MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList()
+            MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
+            PaymentScheduleSimple = result.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList()
         };
 
-    public static List<Dto.Fee> ToApiResponse(this RepeatedField<ResultFee> fees)
-        => fees.Select(t => new Dto.Fee
+    public static List<Dto.FeeItem> ToApiResponse(this RepeatedField<ResultFee> fees)
+        => fees.Select(t => new Dto.FeeItem
         {
             FeeId = t.FeeId,
             DiscountPercentage = t.DiscountPercentage,
@@ -108,15 +118,4 @@ internal static class Extensions
             TariffTextWithAmount = t.TariffTextWithAmount,
             UsageText = t.UsageText
         }).ToList();
-
-    private static Dto.MarketingActionResult ToApiResponseItem(this ResultMarketingAction resultItem)
-    {
-        return new Dto.MarketingActionResult() {
-            Code = resultItem.Code,
-            Requested = resultItem.Requested == 1,
-            Applied = resultItem.Applied == 1,
-            MarketingActionId = resultItem.MarketingActionId, 
-            Deviation = resultItem.Deviation
-        };
-    }
 }
