@@ -53,7 +53,7 @@ internal class GetAllHandler
             "loaninterestrateannouncedtypes" => new(original, await _codebooks.LoanInterestRateAnnouncedTypes(cancellationToken)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),
             "maritalstatuses" => new(original, await _codebooks.MaritalStatuses(cancellationToken)),
-            "marketingactions" => new(original, await _codebooks.MarketingActions(cancellationToken)),
+            //"marketingactions" => new(original, await _codebooks.MarketingActions(cancellationToken)),
             "obligationcorrectiontypes" => new(original, await _codebooks.ObligationCorrectionTypes(cancellationToken)),
             "obligationtypes" => new(original, await _codebooks.ObligationTypes(cancellationToken)),
             "paymentdays" => new(original, (await _codebooks.PaymentDays(cancellationToken)).Where(t => t.ShowOnPortal).ToList()),
