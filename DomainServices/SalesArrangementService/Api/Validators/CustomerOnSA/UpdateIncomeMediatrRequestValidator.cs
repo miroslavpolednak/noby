@@ -16,5 +16,16 @@ internal class UpdateIncomeMediatrRequestValidator
             {
                 v.Add<Contracts.IncomeBaseData>(new IncomeBaseDataValidator(codebookService));
             });
+
+        RuleFor(t => t.Request.Employement)
+            .Must(t => {
+                if (t?.Employer is null)
+                {
+                    return true;
+                }
+                // nelze uvést Cin a BirthNumber zároveň
+                return !(!String.IsNullOrEmpty(t.Employer.Cin) && !String.IsNullOrEmpty(t.Employer.BirthNumber));
+            })
+            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("99999"); // TODO
     }
 }
