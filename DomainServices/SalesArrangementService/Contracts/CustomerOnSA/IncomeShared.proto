@@ -62,3 +62,7 @@ message IncomeDataEntrepreneur {
     string BirthNumber = 2;
     google.protobuf.Int32Value CountryOfResidenceId = 3;
 }
+
+message IncomeDataRent {
+    google.protobuf.Int32Value x = 1;
+}

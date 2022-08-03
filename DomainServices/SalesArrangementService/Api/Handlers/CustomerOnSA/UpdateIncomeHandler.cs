@@ -1,6 +1,7 @@
 ﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
+using CIS.Foms.Enums;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -16,7 +17,7 @@ internal sealed class UpdateIncomeHandler
         var dataObject = getDataObject(entity.IncomeTypeId, request.Request);
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
-        entity.IncomeSource = getIncomeSource(request.Request, entity.IncomeTypeId);
+        entity.IncomeSource = await getIncomeSource(request.Request, entity.IncomeTypeId, cancellation);
         entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject((object)dataObject);
         entity.DataBin = dataObject?.ToByteArray();
 
@@ -25,32 +26,35 @@ internal sealed class UpdateIncomeHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    static string? getIncomeSource(_SA.UpdateIncomeRequest request, CIS.Foms.Enums.CustomerIncomeTypes typeId)
+    async Task<string?> getIncomeSource(_SA.UpdateIncomeRequest request, CustomerIncomeTypes typeId, CancellationToken cancellationToken)
         => typeId switch
         {
-            CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement?.Employer.Name,
-            CIS.Foms.Enums.CustomerIncomeTypes.Enterprise => "",
-            CIS.Foms.Enums.CustomerIncomeTypes.Other => "",
+            CustomerIncomeTypes.Employement => string.IsNullOrEmpty(request.Employement?.Employer.Name) ? "-" : request.Employement?.Employer.Name,
+            CustomerIncomeTypes.Enterprise => "-",
+            CustomerIncomeTypes.Rent => "-",
+            CustomerIncomeTypes.Other => await getOtherIncomeName(request.Other.IncomeOtherTypeId, cancellationToken),
             _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
         };
 
-    static IMessage getDataObject(CIS.Foms.Enums.CustomerIncomeTypes incomeType, _SA.UpdateIncomeRequest request)
+    async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
+        => id.HasValue ? (await _codebookService.IncomeOtherTypes(cancellationToken)).FirstOrDefault(t => t.Id == id)?.Name : "-";
+
+    static IMessage getDataObject(CustomerIncomeTypes incomeType, _SA.UpdateIncomeRequest request)
         => incomeType switch
         {
-            CIS.Foms.Enums.CustomerIncomeTypes.Employement => request.Employement,
-            CIS.Foms.Enums.CustomerIncomeTypes.Other => request.Other,
-            CIS.Foms.Enums.CustomerIncomeTypes.Enterprise => request.Entrepreneur,
+            CustomerIncomeTypes.Employement => request.Employement,
+            CustomerIncomeTypes.Other => request.Other,
+            CustomerIncomeTypes.Enterprise => request.Entrepreneur,
+            CustomerIncomeTypes.Rent => request.Rent,
             _ => throw new NotImplementedException("This customer income type serializer is not implemented")
         };
 
+    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<UpdateIncomeHandler> _logger;
 
-    public UpdateIncomeHandler(
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<UpdateIncomeHandler> logger)
+    public UpdateIncomeHandler(Repositories.SalesArrangementServiceDbContext dbContext, CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
         _dbContext = dbContext;
-        _logger = logger;
+        _codebookService = codebookService;
     }
 }

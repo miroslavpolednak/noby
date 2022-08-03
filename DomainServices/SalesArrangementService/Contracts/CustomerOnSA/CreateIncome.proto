@@ -15,6 +15,7 @@ message CreateIncomeRequest {
         DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;
         DomainServices.SalesArrangementService.IncomeDataOther Other = 21;
         DomainServices.SalesArrangementService.IncomeDataEntrepreneur Entrepreneur = 22;
+        DomainServices.SalesArrangementService.IncomeDataRent Rent = 23;
     }
 }
 
