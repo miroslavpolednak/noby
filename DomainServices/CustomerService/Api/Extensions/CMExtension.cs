@@ -41,7 +41,7 @@ internal static class CMExtension
             IssuedBy = model.IssuedBy ?? "",
             Number = model.DocumentNumber ?? "",
             IssuingCountryId = countries.FirstOrDefault(t => t.ShortName == model.IssuingCountryCode)?.Id,
-            IdentificationDocumentTypeId = identificationDocumentTypes.First(t => t.RDMCode == model.TypeCode).Id
+            IdentificationDocumentTypeId = identificationDocumentTypes.First(t => t.RdmCode == model.TypeCode).Id
         };
 
     public static T CheckCMResult<T>(this IServiceCallResult result)

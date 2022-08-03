@@ -46,7 +46,7 @@ namespace DomainServices.CustomerService.Api.Handlers
             // podle dokladu
             if (request.Request.IdentificationDocument != null)
             {                
-                cmRequest.IdDocumentTypeCode = docTypes.First(t => t.Id == request.Request.IdentificationDocument.IdentificationDocumentTypeId).RDMCode;
+                cmRequest.IdDocumentTypeCode = docTypes.First(t => t.Id == request.Request.IdentificationDocument.IdentificationDocumentTypeId).RdmCode;
                 cmRequest.IdDocumentIssuingCountryCode = countries.First(t => t.Id == request.Request.IdentificationDocument.IssuingCountryId).ShortName;
                 cmRequest.IdDocumentNumber = request.Request.IdentificationDocument.Number;
             }
