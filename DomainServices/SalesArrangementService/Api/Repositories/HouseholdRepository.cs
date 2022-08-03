@@ -39,17 +39,6 @@ internal class HouseholdRepository
             .Select(HouseholdRepositoryExpressions.HouseholdDetail())
             .ToListAsync(cancellation);
     
-    public async Task Delete(int householdId, CancellationToken cancellation)
-    {
-        var entity = await _dbContext.Households
-            .Where(t => t.HouseholdId == householdId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {householdId} does not exist.");
-
-        _dbContext.Households.Remove(entity);
-        
-        await _dbContext.SaveChangesAsync(cancellation);
-    }
-
     public async Task CheckCustomers(int salesArrangementId, int? customerId1, int? customerId2, CancellationToken cancellation)
     {
         if (customerId1.HasValue
