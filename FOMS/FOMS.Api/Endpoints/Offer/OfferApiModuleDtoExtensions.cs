@@ -91,6 +91,7 @@ internal static class OfferApiModuleDtoExtensions
             Requested = resultItem.Requested == 1,
             Applied = resultItem.Applied == 1,
             MarketingActionId = resultItem.MarketingActionId,
-            Deviation = resultItem.Deviation
+            Deviation = resultItem.Deviation,
+            Name = resultItem.Name
         };
 }
