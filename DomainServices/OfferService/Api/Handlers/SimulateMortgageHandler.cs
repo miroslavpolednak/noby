@@ -74,7 +74,7 @@ internal class SimulateMortgageHandler
             Created = new ModificationStamp(entity),
             BasicParameters = basicParameters,
             SimulationInputs = inputs,
-            SimulationResults = results,
+            SimulationResults = results.AddAdditionalSimulationResults(additionalResults),
         };
 
     }
