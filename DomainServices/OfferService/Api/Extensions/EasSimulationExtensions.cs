@@ -290,6 +290,7 @@ internal static class EasSimulationExtensions
             Applied = i.uplatnena,
             MarketingActionId = i.kodMaAkce,
             Deviation = i.odchylkaSazby,
+            Name = i.nazev,
         });
 
         results.MarketingActions.AddRange(items);
@@ -349,6 +350,14 @@ internal static class EasSimulationExtensions
             .AddResResults(easSimulationResponse.marketingoveAkce)              // marketing actions
             .AddResResults(easSimulationResponse.poplatky);
 
+        return results;
+    }
+
+    public static _OS.MortgageSimulationResults AddAdditionalSimulationResults(this _OS.MortgageSimulationResults results, _OS.AdditionalMortgageSimulationResults resultsAdditional)
+    {
+        results.PaymentScheduleSimple.AddRange(resultsAdditional.PaymentScheduleSimple);
+        results.MarketingActions.AddRange(resultsAdditional.MarketingActions);
+        results.Fees.AddRange(resultsAdditional.Fees);
         return results;
     }
 
