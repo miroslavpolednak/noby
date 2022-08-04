@@ -11,4 +11,6 @@ public sealed class MarketingActionItem
 	public int? MarketingActionId { get; set; }
 
 	public decimal? Deviation { get; set; }
+
+	public string Name { get; set; }
 }
