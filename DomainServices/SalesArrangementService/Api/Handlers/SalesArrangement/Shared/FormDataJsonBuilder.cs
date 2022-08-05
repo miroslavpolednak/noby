@@ -596,6 +596,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             DateTime firstSignedDate = (Data.Arrangement.FirstSignedDate is not null) ? (DateTime)Data.Arrangement.FirstSignedDate! : actualDate;
             var seznamIdFormulare = new object[] { new { id_formulare = 0.ToJsonString() } };
 
+            var user_cpm = "99806569";
+            var user_icp = "114306569";
+
             object data = new { };
 
             switch (formType)
@@ -636,8 +639,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???
                         seznam_ucastniku = Data.CustomersOnSa?.Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),                   // CustomerOnSA, Customer
                         zprostredkovano_3_stranou = false.ToJsonString(),                                                                           // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
-                        sjednal_CPM = "90400037",                                                                                                   // [MOCK] 90400037  //Data.User!.CPM
-                        sjednal_ICP = "110000037",                                                                                                  // [MOCK] 110000037 //Data.User!.ICP
+                        sjednal_CPM = user_cpm,                                                                                                   // [MOCK] 90400037  //Data.User!.CPM
+                        sjednal_ICP = user_icp,                                                                                                  // [MOCK] 110000037 //Data.User!.ICP
                         // VIP_makler = 0.ToJsonString(),                                                                                           // [MOCK] User (default 0) !!! removed in D1-2
                         mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
@@ -696,8 +699,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         //seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???
                         seznam_ucastniku = Data.CustomersOnSa?.Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),                   // CustomerOnSA, Customer
                         //zprostredkovano_3_stranou = false.ToJsonString(),                                                                       // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
-                        sjednal_CPM = "90400037",                                                                                                   // [MOCK] 90400037  //Data.User!.CPM
-                        sjednal_ICP = "110000037",                                                                                                  // [MOCK] 110000037 //Data.User!.ICP
+                        sjednal_CPM = user_cpm,                                                                                                   // [MOCK] 90400037  //Data.User!.CPM
+                        sjednal_ICP = user_icp,                                                                                                  // [MOCK] 110000037 //Data.User!.ICP
                         //// VIP_makler = 0.ToJsonString(),                                                                                       // [MOCK] User (default 0) !!! removed in D1-2
                         //mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,                                                                 // SalesArrangement
                         //mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
