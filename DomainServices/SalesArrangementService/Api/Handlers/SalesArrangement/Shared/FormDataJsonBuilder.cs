@@ -640,8 +640,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
                         developer_popis = developerDescription,
                         forma_splaceni = 1.ToJsonString(),                                                                                      // [MOCK] OfferInstance (default 1)  
-                        seznam_mark_akci = Data.Offer.SimulationResults.MarketingActions?.Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
-                        seznam_poplatku = Data.Offer.SimulationResults.Fees?.Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
+                        seznam_mark_akci = Data.Offer.AdditionalSimulationResults.MarketingActions?.Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
+                        seznam_poplatku = Data.Offer.AdditionalSimulationResults.Fees?.Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
                         seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),  // OfferInstance - 1..5 ??? má se brát jen prvních 5 účelů ?
                         seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.ToList().Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(), // SalesArrangement - 0..3 ???
                         seznam_ucastniku = Data.CustomersOnSa?.Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),                   // CustomerOnSA, Customer

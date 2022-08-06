@@ -352,15 +352,6 @@ internal static class EasSimulationExtensions
 
         return results;
     }
-
-    public static _OS.MortgageSimulationResults AddAdditionalSimulationResults(this _OS.MortgageSimulationResults results, _OS.AdditionalMortgageSimulationResults resultsAdditional)
-    {
-        results.PaymentScheduleSimple.AddRange(resultsAdditional.PaymentScheduleSimple);
-        results.MarketingActions.AddRange(resultsAdditional.MarketingActions);
-        results.Fees.AddRange(resultsAdditional.Fees);
-        return results;
-    }
-
     #endregion
 
     #region Shared

@@ -1,5 +1,4 @@
 ﻿using DomainServices.OfferService.Contracts;
-using Google.Protobuf.Collections;
 
 namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -70,52 +69,4 @@ internal static class Extensions
 
         return model;
     }
-
-    public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs)
-        => new()
-        {
-            Aprc = result.Aprc,
-            EmployeeBonusLoanCode = result.EmployeeBonusLoanCode,
-            LoanDuration = result.LoanDuration,
-            LoanTotalAmount = result.LoanTotalAmount,
-            LoanToValue = result.LoanToValue,
-            LoanAmount = result.LoanAmount,
-            LoanPaymentAmount = result.LoanPaymentAmount,
-            LoanPurposes = inputs.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
-            PaymentDay = inputs.PaymentDay,
-            LoanDueDate = result.LoanDueDate,
-            LoanInterestRateProvided = result.LoanInterestRateProvided,
-            ContractSignedDate = result.ContractSignedDate,
-            DrawingDateTo = result.DrawingDateTo,
-            AnnuityPaymentsDateFrom = result.AnnuityPaymentsDateFrom,
-            AnnuityPaymentsCount = result.AnnuityPaymentsCount,
-            LoanInterestRate = result.LoanInterestRate,
-            LoanInterestRateAnnounced = result.LoanInterestRateAnnounced,
-            LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
-            EmployeeBonusDeviation = result.EmployeeBonusDeviation,
-            MarketingActionsDeviation = result.MarketingActionsDeviation,
-            MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
-            PaymentScheduleSimple = result.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList()
-        };
-
-    public static List<Dto.FeeItem> ToApiResponse(this RepeatedField<ResultFee> fees)
-        => fees.Select(t => new Dto.FeeItem
-        {
-            FeeId = t.FeeId,
-            DiscountPercentage = t.DiscountPercentage,
-            DisplayAsFreeOfCharge = t.DisplayAsFreeOfCharge,
-            ShortNameForExample = t.ShortNameForExample,
-            AccountDateFrom = t.AccountDateFrom,
-            CodeKB = t.CodeKB,
-            ComposedSum = t.ComposedSum,
-            FinalSum = t.FinalSum,
-            IncludeInRPSN = t.IncludeInRPSN,
-            TariffSum = t.TariffSum,
-            MarketingActionId = t.MarketingActionId,
-            Name = t.Name,
-            Periodicity = t.Periodicity,
-            TariffName = t.TariffName,
-            TariffTextWithAmount = t.TariffTextWithAmount,
-            UsageText = t.UsageText
-        }).ToList();
 }

@@ -21,6 +21,4 @@ public sealed class GetMortgageResponse
     /// Vysledky simulace.
     /// </summary>
     public MortgageOutputs SimulationResults { get; set; } = null!;
-
-    public List<FeeItem>? Fees { get; set; } = null!;
 }

@@ -19,8 +19,7 @@ internal class SimulateMortgageHandler
         {
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
-            SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs),
-            Fees = result.SimulationResults.Fees is null ? null : result.SimulationResults.Fees.ToApiResponse()
+            SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults)
         };
 
         return responseModel;
@@ -40,11 +39,9 @@ internal class SimulateMortgageHandler
     }
 
     private readonly IOfferServiceAbstraction _offerService;
-    private readonly ILogger<SimulateMortgageHandler> _logger;
-
-    public SimulateMortgageHandler(IOfferServiceAbstraction offerService, ILogger<SimulateMortgageHandler> logger)
+    
+    public SimulateMortgageHandler(IOfferServiceAbstraction offerService)
     {
-        _logger = logger;
         _offerService = offerService;
     }
 }

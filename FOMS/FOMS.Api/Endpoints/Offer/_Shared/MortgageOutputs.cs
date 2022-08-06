@@ -35,4 +35,6 @@ public class MortgageOutputs
     public List<MarketingActionItem>? MarketingActions { get; set; }
 
     public List<PaymentScheduleSimpleItem>? PaymentScheduleSimple { get; set; }
+
+    public List<FeeItem>? Fees { get; set; }
 }

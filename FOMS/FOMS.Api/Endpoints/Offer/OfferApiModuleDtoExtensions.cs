@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
+using Google.Protobuf.Collections;
 
 namespace FOMS.Api.Endpoints.Offer;
 
@@ -47,7 +48,7 @@ internal static class OfferApiModuleDtoExtensions
             }).ToList()
         };
     
-    public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs)
+    public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs, AdditionalMortgageSimulationResults additionalResults)
         => new()
         {
             Aprc = result.Aprc,
@@ -70,8 +71,9 @@ internal static class OfferApiModuleDtoExtensions
             LoanInterestRateAnnouncedType = result.LoanInterestRateAnnouncedType,
             EmployeeBonusDeviation = result.EmployeeBonusDeviation,
             MarketingActionsDeviation = result.MarketingActionsDeviation,
-            MarketingActions = result.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
-            PaymentScheduleSimple = result.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList()
+            MarketingActions = additionalResults.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
+            PaymentScheduleSimple = additionalResults.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList(),
+            Fees = additionalResults.Fees is null ? null : additionalResults.Fees.ToApiResponse()
         };
 
     public static Dto.PaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)
@@ -94,4 +96,25 @@ internal static class OfferApiModuleDtoExtensions
             Deviation = resultItem.Deviation,
             Name = resultItem.Name
         };
+
+    public static List<Dto.FeeItem> ToApiResponse(this RepeatedField<ResultFee> fees)
+        => fees.Select(t => new Dto.FeeItem
+        {
+            FeeId = t.FeeId,
+            DiscountPercentage = t.DiscountPercentage,
+            DisplayAsFreeOfCharge = t.DisplayAsFreeOfCharge,
+            ShortNameForExample = t.ShortNameForExample,
+            AccountDateFrom = t.AccountDateFrom,
+            CodeKB = t.CodeKB,
+            ComposedSum = t.ComposedSum,
+            FinalSum = t.FinalSum,
+            IncludeInRPSN = t.IncludeInRPSN,
+            TariffSum = t.TariffSum,
+            MarketingActionId = t.MarketingActionId,
+            Name = t.Name,
+            Periodicity = t.Periodicity,
+            TariffName = t.TariffName,
+            TariffTextWithAmount = t.TariffTextWithAmount,
+            UsageText = t.UsageText
+        }).ToList();
 }

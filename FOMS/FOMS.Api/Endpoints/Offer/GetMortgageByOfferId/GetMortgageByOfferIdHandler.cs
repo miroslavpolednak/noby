@@ -1,5 +1,4 @@
 ﻿using DomainServices.OfferService.Abstraction;
-using FOMS.Api.Endpoints.Offer.SimulateMortgage;
 using DSContracts = DomainServices.OfferService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.GetMortgageByOfferId;
@@ -19,8 +18,7 @@ internal class GetMortgageByOfferIdHandler
             OfferId = result.OfferId,
             ResourceProcessId = result.ResourceProcessId,
             SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
-            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs),
-            Fees = result.SimulationResults.Fees is null ? null : result.SimulationResults.Fees.ToApiResponse()
+            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs, result.AdditionalSimulationResults)
         };
     }
 
