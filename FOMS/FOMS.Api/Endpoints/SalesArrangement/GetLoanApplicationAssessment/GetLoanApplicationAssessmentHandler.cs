@@ -14,7 +14,7 @@ internal class GetLoanApplicationAssessmentHandler
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         if (!saInstance.LoanApplicationAssessmentId.HasValue)
-            throw new CisValidationException($"LoanApplicationAssessmentId for SA #{saInstance.LoanApplicationAssessmentId}");
+            throw new CisValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
         // instance Offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
