@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 message UpdateLoanAssessmentParametersRequest {
 	int32 SalesArrangementId = 1;
 	
-	google.protobuf.Int32Value LoanApplicationAssessmentId = 2;
+	string LoanApplicationAssessmentId = 2;
 
 	string RiskSegment = 3;
 

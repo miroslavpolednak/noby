@@ -1136,11 +1136,178 @@
             )
             </remarks>
         </member>
-        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetLoanApplicationAssessment(System.Int32,System.Threading.CancellationToken)">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Code">
             <summary>
-            Jak se to jmenuje?
+            Kód důvodu
             </summary>
-            <param name="salesArrangementId">Sales arrangement</param>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Level">
+            <summary>
+            Úroveň důvodu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Weight">
+            <summary>
+            Váha důvodu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Target">
+            <summary>
+            Cíl důvodu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Desc">
+            <summary>
+            Popis důvodu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.AssessmentReason.Result">
+            <summary>
+            Výsledek důvodu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.HouseholdId">
+            <summary>
+            ID domácnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.LoanApplicationLimit">
+            <summary>
+            Limit výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.LoanApplicationInstallmentLimit">
+            <summary>
+            Limit výše splátky
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyIncomeAmount">
+            <summary>
+            Celkové příjmy
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyCostsWithoutInstAmount">
+            <summary>
+            Celkové výdaje (bez splátek)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInKBAmount">
+            <summary>
+            Celkové stávající splátky v KB
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyEntrepreneurInstallmentsInKBAmount">
+            <summary>
+            Celkové stávající splátky FOP v KB
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInMPSSAmount">
+            <summary>
+            Celkové stávající splátky MPSS
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInOFIAmount">
+            <summary>
+            Celkové prohlášené splátky (klient)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInCBCBAmount">
+            <summary>
+            Celkové nalezené splátky (ext. registry)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.LoanApplicationLimit">
+            <summary>
+            Limit výše úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.LoanAmount">
+            <summary>
+            Požadováno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.LoanApplicationInstallmentLimit">
+            <summary>
+            Limit výše splátky
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.LoanPaymentAmount">
+            <summary>
+            Požadováno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.RemainingAnnuityLivingAmount">
+            <summary>
+            Zbývá na živobytí s požadovanou splátkou
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyIncomeAmount">
+            <summary>
+            Celkové příjmy
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyCostsWithoutInstAmount">
+            <summary>
+            Celkové výdaje (bez splátek)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyInstallmentsInKBAmount">
+            <summary>
+            Celkové stávající splátky v KB
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyEntrepreneurInstallmentsInKBAmount">
+            <summary>
+            Celkové stávající splátky FOP v KB
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyInstallmentsInMPSSAmount">
+            <summary>
+            Celkové stávající splátky MPSS
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyInstallmentsInOFIAmount">
+            <summary>
+            Celkové prohlášené splátky (klient)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.MonthlyInstallmentsInCBCBAmount">
+            <summary>
+            Celkové nalezené splátky (ext. registry)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse.RiskBusinesscaseExpirationDate">
+            <summary>
+            Datum expirace obchodního případu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse.AssessmentResult">
+            <summary>
+            Výsledek vyhodnocení<br/>501 - v pořádku<br/>502 - zamítnuto
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse.Reasons">
+            <summary>
+            Důvody
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse.Households">
+            <summary>
+            Domácnosti
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetLoanApplicationAssessment(System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Vrací vyhodnocení dané úvěrové žádosti
+            </summary>
+            <remarks>
+            Použít pro Skóring - výsledek vyhodnocení<br/>
+            - výsledek vyhodnocení žádosti<br/>
+            - výsledek vyhodnocení za jednotlivé domácnosti<br/>
+            Možno vyžadovat nové vyhodnocení
+            </remarks>
+            <param name="salesArrangementId">ID Sales Arrangement-u</param>
+            <param name="newAssessmentRequired">Požadováno nové posouzení</param>
             <returns><see cref="T:FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCreditWorthiness(System.Int32,System.Threading.CancellationToken)">

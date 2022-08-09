@@ -13,16 +13,17 @@ internal class GetLoanApplicationAssessmentHandler
     {
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
-        if (!saInstance.LoanApplicationAssessmentId.HasValue)
+        if (string.IsNullOrEmpty(saInstance.LoanApplicationAssessmentId))
             throw new CisValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
         // instance Offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationAssessmentResponse>(await _ripClient.GetLoanApplication(saInstance.LoanApplicationAssessmentId.Value.ToString(), new List<string>
+        var result = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationAssessmentResponse>(await _ripClient.GetLoanApplication(saInstance.LoanApplicationAssessmentId, new List<string>
         {
             "assessmentDetail",
             "householdAssessmentDetail",
+            "counterpartyAssessmentDetail",
             "collateralRiskCharacteristics"
         }));
 

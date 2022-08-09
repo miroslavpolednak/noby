@@ -93,6 +93,6 @@ public interface ISalesArrangementServiceAbstraction
     /// Update LAID
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellationToken = default(CancellationToken));
 }
 

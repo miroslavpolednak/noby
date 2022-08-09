@@ -27,7 +27,7 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
     
     public int ChannelId { get; set; }
 
-    public int? LoanApplicationAssessmentId { get; set; }
+    public string? LoanApplicationAssessmentId { get; set; }
     
     public string? RiskSegment { get; set; }
 

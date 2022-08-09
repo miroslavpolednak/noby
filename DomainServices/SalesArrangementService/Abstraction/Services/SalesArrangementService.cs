@@ -116,14 +116,14 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, int? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateLoanAssessmentParameters), salesArrangementId);
         var result = await _service.UpdateLoanAssessmentParametersAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
-                LoanApplicationAssessmentId = loanApplicationAssessmentId,
+                LoanApplicationAssessmentId = loanApplicationAssessmentId ?? "",
                 RiskSegment = riskSegment ?? "",
                 CommandId = commandId ?? ""
             }, cancellationToken: cancellationToken);

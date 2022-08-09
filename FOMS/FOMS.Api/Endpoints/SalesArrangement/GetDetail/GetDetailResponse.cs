@@ -16,7 +16,7 @@ public sealed class GetDetailResponse
     /// </summary>
     public int SalesArrangementTypeId { get; set; }
 
-    public int? LoanApplicationAssessmentId { get; set; }
+    public string? LoanApplicationAssessmentId { get; set; }
 
     /// <summary>
     /// Datum vytvoreni SA

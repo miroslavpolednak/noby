@@ -33,7 +33,7 @@ message SalesArrangement {
 
 	string RiskBusinessCaseId = 9;
 
-	google.protobuf.Int32Value LoanApplicationAssessmentId = 11;
+	string LoanApplicationAssessmentId = 11;
 
 	string RiskSegment = 12;
 

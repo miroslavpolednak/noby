@@ -7,16 +7,23 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>
-    /// Jak se to jmenuje?
+    /// Vrací vyhodnocení dané úvěrové žádosti
     /// </summary>
-    /// <param name="salesArrangementId">Sales arrangement</param>
+    /// <remarks>
+    /// Použít pro Skóring - výsledek vyhodnocení<br/>
+    /// - výsledek vyhodnocení žádosti<br/>
+    /// - výsledek vyhodnocení za jednotlivé domácnosti<br/>
+    /// Možno vyžadovat nové vyhodnocení
+    /// </remarks>
+    /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
+    /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
     /// <returns><see cref="GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [Produces("application/json")]
     //[SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
-    public async Task<GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId), cancellationToken);
+    public async Task<GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessment([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
 
     /// <summary>
     /// Vypocet rozsirene bonity
