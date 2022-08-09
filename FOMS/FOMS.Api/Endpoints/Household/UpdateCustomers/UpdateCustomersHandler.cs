@@ -51,10 +51,12 @@ internal class UpdateCustomersHandler
             {
                 try
                 {
+                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value));
+
                     newMpId = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
                     {
                         CustomerOnSAId = customer.CustomerOnSAId!.Value,
-                        Customer = customer.ToDomainServiceRequest()
+                        Customer = customer.ToDomainServiceRequest(customer.LockedIncome && !((DateTime?)currentCustomerInstance.LockedIncomeDateTime).HasValue ? DateTime.Now : null)
                     }, cancellationToken)).PartnerId;
                 }
                 catch (CisArgumentException ex) when (ex.ExceptionCode == 16033)
@@ -69,7 +71,7 @@ internal class UpdateCustomersHandler
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
                     CustomerRoleId = (int)customerRole,
-                    Customer = customer.ToDomainServiceRequest()
+                    Customer = customer.ToDomainServiceRequest(customer.LockedIncome ? DateTime.Now : null)
                 }, cancellationToken));
                 newMpId = createResult.PartnerId;
                 customerId = createResult.CustomerOnSAId;

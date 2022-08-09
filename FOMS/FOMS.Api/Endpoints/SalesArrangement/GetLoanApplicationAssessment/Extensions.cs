@@ -23,9 +23,9 @@ internal static class Extensions
                 CIR = response.AssessmentDetail?.LoanApplicationLimit?.Cir,
                 DTI = response.AssessmentDetail?.LoanApplicationLimit?.Dti,
                 DSTI = response.AssessmentDetail?.LoanApplicationLimit?.Dsti,
-                LTC = response.CollateralRiskCharacteristics?.First().Ltp,
-                LFTV = response.CollateralRiskCharacteristics?.First().Ltfv,
-                LTV = response.CollateralRiskCharacteristics?.First().Ltv
+                LTC = response.CollateralRiskCharacteristics?.FirstOrDefault()?.Ltp,
+                LFTV = response.CollateralRiskCharacteristics?.FirstOrDefault()?.Ltfv,
+                LTV = response.CollateralRiskCharacteristics?.FirstOrDefault()?.Ltv
             },
             Households = response.HouseholdAssessmentDetail?.Select(h => new Dto.Household
             {

@@ -13,132 +13,32 @@ internal class GetLoanApplicationAssessmentHandler
     {
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
-        if (string.IsNullOrEmpty(saInstance.LoanApplicationAssessmentId))
+        if (!request.NewAssessmentRequired && string.IsNullOrEmpty(saInstance.LoanApplicationAssessmentId))
             throw new CisValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
         // instance Offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationAssessmentResponse>(await _ripClient.GetLoanApplication(saInstance.LoanApplicationAssessmentId, new List<string>
+        if (request.NewAssessmentRequired) // vytvorit novy assessment
         {
-            "assessmentDetail",
-            "householdAssessmentDetail",
-            "counterpartyAssessmentDetail",
-            "collateralRiskCharacteristics"
-        }));
-
-        var model = result.ToApiResponse();
-        model.Application!.LoanAmount = offerInstance.SimulationResults.LoanAmount ?? 0;
-        model.Application!.LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0;
-
-        return model;
-    }
-
-    static GetLoanApplicationAssessmentResponse getMock(_Offer.GetMortgageOfferResponse offerInstance)
-    {
-        int[] codes = new[] { 501, 502 };
-        Random random = new Random();
-        int randomNumber1 = random.Next(0, codes.Length);
-
-        GetLoanApplicationAssessmentResponse model = new()
+            return null;
+        }
+        else // stary assessment
         {
-            Application = new()
+            var result = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationAssessmentResponse>(await _ripClient.GetLoanApplication(saInstance.LoanApplicationAssessmentId, new List<string>
             {
-                LoanApplicationLimit = 9862532,
-                LoanAmount = offerInstance.SimulationResults.LoanAmount ?? 0,
-                LoanApplicationInstallmentLimit = 26825,
-                LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0,
-                RemainingAnnuityLivingAmount = 8652,
-                MonthlyIncomeAmount = 56200,
-                MonthlyCostsWithoutInstAmount = 13200,
-                MonthlyInstallmentsInKBAmount = 5200,
-                MonthlyEntrepreneurInstallmentsInKBAmount = 0,
-                MonthlyInstallmentsInMPSSAmount = 0,
-                MonthlyInstallmentsInOFIAmount = 6526,
-                MonthlyInstallmentsInCBCBAmount = 11487,
-                CIR = 2,
-                DTI = 4,
-                DSTI = 52,
-                LTC = 12,
-                LFTV = 52,
-                LTV = 79
-            },
-            Households = new()
-            {
-                new Dto.Household
-                {
-                    HouseholdId = 2,
-                    MonthlyIncomeAmount = 25852,
-                    MonthlyCostsWithoutInstAmount = 3652,
-                    MonthlyInstallmentsInMPSSAmount = 2400,
-                    MonthlyInstallmentsInOFIAmount = 7825,
-                    MonthlyInstallmentsInCBCBAmount = 12935,
-                    CIR = 2,
-                    DTI = 4,
-                    DSTI = 48
-                }
-            },
-            RiskBusinesscaseExpirationDate = DateTime.Now,
-            AssessmentResult = codes[randomNumber1],
-            Reasons = new()
-            {
-                new()
-                {
-                    Code = "SOLUS",
-                    Level = "ERROR",
-                    Weight = 100,
-                    Target = "R",
-                    Desc = "Negativní záznam v SOLUSu",
-                    Result = "Black"
-                },
-                new()
-                {
-                    Code = "FRAUD",
-                    Level = "WARNING",
-                    Weight = 11,
-                    Target = "R",
-                    Desc = "3x Usvědčený podvodník",
-                    Result = "Black"
-                },
-                new()
-                {
-                    Code = "SOLUS",
-                    Level = "ERROR",
-                    Weight = 200,
-                    Target = "R",
-                    Desc = "Nesplacené závazky",
-                    Result = "Black"
-                },
-                new()
-                {
-                    Code = "FRAUD",
-                    Level = "WARNING",
-                    Weight = 1,
-                    Target = "R",
-                    Desc = "Podvody u mobilních operátorů",
-                    Result = "Black"
-                },
-                new()
-                {
-                    Code = "ID",
-                    Level = "PROBLEM",
-                    Weight = 1,
-                    Target = "R",
-                    Desc = "Prošlé doklady",
-                    Result = "Black"
-                },
-                new()
-                {
-                    Code = "SOLUS",
-                    Level = "INFO",
-                    Weight = 100,
-                    Target = "R",
-                    Desc = "Negativní záznam v SOLUSu",
-                    Result = "Black"
-                }
-            }
-        };
-        return model;
+                "assessmentDetail",
+                "householdAssessmentDetail",
+                "counterpartyAssessmentDetail",
+                "collateralRiskCharacteristics"
+            }));
+
+            var model = result.ToApiResponse();
+            model.Application!.LoanAmount = offerInstance.SimulationResults.LoanAmount ?? 0;
+            model.Application!.LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0;
+
+            return model;
+        }
     }
 
     private readonly ExternalServices.Rip.V1.IRipClient _ripClient;

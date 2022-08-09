@@ -88,6 +88,9 @@ public class HouseholdController : ControllerBase
     /// <summary>
     /// Update customeru na domacnosti
     /// </summary>
+    /// <remarks>
+    /// při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp
+    /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
     /// <returns>CustomerOnSAId nalinkovanych customeru</returns>
     [HttpPut("{householdId:int}/customers")]

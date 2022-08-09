@@ -675,8 +675,16 @@
             <summary>
             Update customeru na domacnosti
             </summary>
+            <remarks>
+            při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp
+            </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.CustomerDto.LockedIncome">
+            <summary>
+            Příznak zamknutí příjmů daného CustomerOnSA
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Household.UpdateCustomers.CustomerDto.Identity">
             <summary>
