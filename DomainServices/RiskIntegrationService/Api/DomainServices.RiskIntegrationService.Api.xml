@@ -394,6 +394,441 @@
             The variant of the resource, eg. distinguishing the origin of the source
             </summary>
         </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.Amount">
+            <summary>
+            Amount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.Amount.Value">
+            <summary>
+            Hodnota částky
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.Amount.CurrencyCode">
+            <summary>
+            Kód měny částky (ISO 4217)
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.CbcbContractId">
+            <summary>
+            cbcbContractId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.CustomerRoleCode">
+            <summary>
+            customerRoleCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.LoanType">
+            <summary>
+            loanType
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.MaturityDate">
+            <summary>
+            maturityDate
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.LoanAmount">
+            <summary>
+            loanAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.InstallmentAmount">
+            <summary>
+            installmentAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.ExposureAmount">
+            <summary>
+            exposureAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.ContractDate">
+            <summary>
+            contractDate
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.KbGroupInstanceCode">
+            <summary>
+            kbGroupInstanceCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingCBCBExposureItem.CbcbDataLastUpdate">
+            <summary>
+            cbcbDataLastUpdate
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.ProductId">
+            <summary>
+            productId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.LoanType">
+            <summary>
+            loanType
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.CustomerRoleCode">
+            <summary>
+            customerRoleCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.DiApplicationNumber">
+            <summary>
+            diApplicationNumber
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.AccType">
+            <summary>
+            accType
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.ProductClusterCode">
+            <summary>
+            productClusterCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.LoanAmount">
+            <summary>
+            loanAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.DrawingAmount">
+            <summary>
+            drawingAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.ContractDate">
+            <summary>
+            contractDate
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.MaturityDate">
+            <summary>
+            maturityDate
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.LoanBalanceAmount">
+            <summary>
+            loanBalanceAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.LoanOnBalanceAmount">
+            <summary>
+            loanOnBalanceAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.LoanOffBalanceAmount">
+            <summary>
+            loanOffBalanceAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.ExposureAmount">
+            <summary>
+            exposureAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.InstallmentAmount">
+            <summary>
+            installmentAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExistingKBGroupExposureItem.IsSecured">
+            <summary>
+            isSecured
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExposureSummaryForApproval">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExposureSummaryForApproval.TotalExistingExposureKB">
+            <summary>
+            totalExistingExposureKB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExposureSummaryForApproval.TotalExistingExposureKBNaturalPerson">
+            <summary>
+            totalExistingExposureKBNaturalPerson
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExposureSummaryForApproval.TotalExistingExposureKBNonPurpose">
+            <summary>
+            totalExistingExposureKBNonPurpose
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ExposureSummaryForApproval.TotalExistingExposureUnsecured">
+            <summary>
+            totalExistingExposureUnsecured
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.LoanApplicationCounterpartyId">
+            <summary>
+            loanApplicationCounterpartyId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.CustomerId">
+            <summary>
+            customerId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.RoleCode">
+            <summary>
+            roleCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.CbcbRegiterCalled">
+            <summary>
+            cbcbRegiterCalled
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.CbcbReportId">
+            <summary>
+            cbcbReportId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.ExistingKBGroupNaturalPersonExposureItem">
+            <summary>
+            existingKBGroupNaturalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.ExistingKBGroupJuridicalPersonExposureItem">
+            <summary>
+            existingKBGroupJuridicalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.RequestedKBGroupNaturalPersonExposureItem">
+            <summary>
+            requestedKBGroupNaturalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.RequestedKBGroupJuridicalPersonExposureItem">
+            <summary>
+            requestedKBGroupJuridicalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.ExistingCBCBNaturalPersonExposureItem">
+            <summary>
+            existingCBCBNaturalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.ExistingCBCBJuridicalPersonExposureItem">
+            <summary>
+            existingCBCBJuridicalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.RequestedCBCBNaturalPersonExposureItem">
+            <summary>
+            requestedCBCBNaturalPersonExposureItem
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationCounterparty.RequestedCBCBJuridicalPersonExposureItem">
+            <summary>
+            requestedCBCBJuridicalPersonExposureItem
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposureResult">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposureResult.LoanApplicationCounterparty">
+            <summary>
+            loanApplicationCounterparty
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposureResult.ExposureSummary">
+            <summary>
+            exposureSummary
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.CbcbContractId">
+            <summary>
+            cbcbContractId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.CustomerRoleCode">
+            <summary>
+            customerRoleCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.LoanType">
+            <summary>
+            loanType
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.MaturityDate">
+            <summary>
+            maturityDate
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.LoanAmount">
+            <summary>
+            loanAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.InstallmentAmount">
+            <summary>
+            installmentAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.KbGroupInstanceCode">
+            <summary>
+            kbGroupInstanceCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedCBCBExposureItem.CbcbDataLastUpdate">
+            <summary>
+            cbcbDataLastUpdate
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.RiskBusinessCaseId">
+            <summary>
+            riskBusinessCaseId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.LoanType">
+            <summary>
+            loanType
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.CustomerRoleCode">
+            <summary>
+            customerRoleCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.DiApplicationNumber">
+            <summary>
+            diApplicationNumber
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.AccType">
+            <summary>
+            accType
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.ProductClusterCode">
+            <summary>
+            productClusterCode
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.LoanAmount">
+            <summary>
+            loanAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.InstallmentAmount">
+            <summary>
+            installmentAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.IsSecured">
+            <summary>
+            isSecured
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.RequestedKBGroupExposureItem.StatusCode">
+            <summary>
+            statusCode
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ResourceIdentifier">
+            <summary>
+            ResourceIdentifier
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ResourceIdentifier.Instance">
+            <summary>
+            The resource instance code, eg. 'KBCZ'
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ResourceIdentifier.Domain">
+            <summary>
+            The resource domain code, eg. 'CFLM'
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ResourceIdentifier.Resource">
+            <summary>
+            The resource code (the in-domain resource code, eg. 'LimitModel')
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ResourceIdentifier.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.ResourceIdentifier.Variant">
+            <summary>
+            The variant of the resource, eg. distinguishing the origin of the source
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationDealer">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationDealer.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationDealer.CompanyId">
+            <summary>
+            companyId
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposure">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposure.LoanApplicationId">
+            <summary>
+            loanApplicationId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposure.LoanApplicationDataVersion">
+            <summary>
+            loanApplicationDataVersion
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposure.RiskBusinessCaseId">
+            <summary>
+            riskBusinessCaseId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts.LoanApplicationRelatedExposure.LoanApplicationDealer">
+            <summary>
+            loanApplicationDealer
+            </summary>
+        </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskBusinessCaseCommandState.CommandId">
             <summary>
             ID založeného požadavku 
@@ -1144,12 +1579,20 @@
             Vrati ItChannel pro C4M, ktery je platny pro aktualniho service usera
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.CreditWorthinessCalculateRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V1.CreditWorthinessServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V1.CreditWorthinessCalculateRequest,System.Threading.CancellationToken)">
             <summary>
             Výpočet rozšířené bonity
             </summary>
             <remarks>
             Specs: <a target="_blank" href="https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE">https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE</a>
+            </remarks>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V1.CustomersExposureServiceController.Calculate(DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V1.CustomersExposureCalculateRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti(Loan Applicaiton).
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/LOAN+APPLICATION+EXPOSURE">https://wiki.kb.cz/display/HT/LOAN+APPLICATION+EXPOSURE</a>
             </remarks>
         </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest,System.Threading.CancellationToken)">

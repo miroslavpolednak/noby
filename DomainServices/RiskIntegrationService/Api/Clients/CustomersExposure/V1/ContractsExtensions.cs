@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.Contracts;
+﻿namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
 
 internal partial class ResourceIdentifier
 {
@@ -16,12 +16,13 @@ internal partial class ResourceIdentifier
             Variant = humanUser.IdentityScheme!
         };
 
-    public static ResourceIdentifier Create(string instance, string domain, string resource, string? id)
+    public static ResourceIdentifier Create(string instance, string domain, string resource, string? id, string variant)
         => new ResourceIdentifier
         {
             Instance = instance,
             Domain = domain,
             Resource = resource,
-            Id = id
+            Id = id,
+            Variant = variant
         };
 }

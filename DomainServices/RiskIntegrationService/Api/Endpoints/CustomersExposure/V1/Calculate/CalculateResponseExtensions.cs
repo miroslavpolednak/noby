@@ -1,0 +1,11 @@
+﻿using _V1 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V1;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V1.Calculate;
+
+internal static class CalculateResponseExtensions
+{
+    public static _V1.CustomersExposureCalculateResponse ToServiceResponse(this _C4M.LoanApplicationRelatedExposureResult response)
+    {
+        return null;
+    }
+}

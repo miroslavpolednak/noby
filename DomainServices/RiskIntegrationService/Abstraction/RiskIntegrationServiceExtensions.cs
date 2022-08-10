@@ -8,13 +8,13 @@ namespace DomainServices.RiskIntegrationService.Abstraction;
 public static class RiskIntegrationServiceExtensions
 {
     public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services)
-        => services.TryAddGrpcClient<v1.ICreditWorthinessService>(a =>
+        => services.TryAddGrpcClient<CreditWorthiness.V1.ICreditWorthinessService>(a =>
             a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.IGrpcSettingsMarker>("DS:RiskIntegrationService")
             .registerServices()
         );
 
     public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<v1.ICreditWorthinessService>(a =>
+        => services.TryAddGrpcClient<CreditWorthiness.V1.ICreditWorthinessService>(a =>
             a.AddGrpcServiceUriSettings<Contracts.IGrpcSettingsMarker>(serviceUrl)
             .registerServices()
         );
@@ -22,13 +22,13 @@ public static class RiskIntegrationServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register storage services
-        services.AddTransient<ICreditWorthinessService, Services.CreditWorthinessService>();
+        services.AddTransient<CreditWorthiness.V1.ICreditWorthinessService, Services.CreditWorthiness.V1.CreditWorthinessService>();
 
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
 
         services
-            .AddCodeFirstGrpcClient<v1.ICreditWorthinessService>((provider, options) =>
+            .AddCodeFirstGrpcClient<CreditWorthiness.V1.ICreditWorthinessService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<Contracts.IGrpcSettingsMarker>>();
                 options.Address = serviceUri.Url;

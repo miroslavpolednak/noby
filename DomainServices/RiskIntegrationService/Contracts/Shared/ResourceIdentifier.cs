@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.Shared;
 
 [ProtoContract]
 public sealed class ResourceIdentifier

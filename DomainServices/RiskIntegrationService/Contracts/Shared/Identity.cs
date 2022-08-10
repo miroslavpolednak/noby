@@ -1,11 +1,11 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.Shared;
 
-[DataContract]
-public class Identity
+[ProtoContract]
+public sealed class Identity
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public string? IdentityId { get; set; }
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public string? IdentityScheme { get; set; }
 }

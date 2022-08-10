@@ -3,7 +3,7 @@
 namespace DomainServices.RiskIntegrationService.Api.GlobalValidators;
 
 internal class IdentityValidator
-    : AbstractValidator<Contracts.Identity?>
+    : AbstractValidator<Contracts.Shared.Identity?>
 {
     public IdentityValidator()
     {

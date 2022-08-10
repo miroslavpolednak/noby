@@ -32,6 +32,7 @@ internal static class StartupExtensions
         // register c4m clients
         builder.AddRiskBusinessCase();
         builder.AddCreditWorthiness();
+        builder.AddCustomersExposure();
 
         // databases
         builder.Services
