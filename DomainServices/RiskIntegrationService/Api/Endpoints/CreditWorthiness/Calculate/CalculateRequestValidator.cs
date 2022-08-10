@@ -53,7 +53,7 @@ internal class CalculateRequestValidator
                     });
             });
 
-        RuleFor(t => t.Identity)
+        RuleFor(t => t.UserIdentity)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .SetValidator(new IdentityValidator());

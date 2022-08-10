@@ -2720,11 +2720,8 @@ namespace ExternalServices.Rip.V1.RipWrapper
         [Newtonsoft.Json.JsonProperty("counterpartyAssessmentDetail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<CounterpartyAssessmentDetail> CounterpartyAssessmentDetail { get; set; }
 
-        /// <summary>
-        /// CollateralRiskCharacteristics
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("collateralRiskCharacteristics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<CollateralRiskCharacteristics> CollateralRiskCharacteristics { get; set; }
+        [Newtonsoft.Json.JsonProperty("collateralRiskCharacteristics", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CollateralRiskCharacteristics CollateralRiskCharacteristics { get; set; }
 
         [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SemanticVersion Version { get; set; }

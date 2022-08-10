@@ -11,7 +11,7 @@ public class CreditWorthinessCalculateRequest
     public string? RiskBusinessCaseId { get; set; }
 
     [ProtoMember(4)]
-    public Identity? Identity { get; set; }
+    public Identity? UserIdentity { get; set; }
 
     [ProtoMember(5)]
     public CreditWorthinessProduct? Product { get; set; }
