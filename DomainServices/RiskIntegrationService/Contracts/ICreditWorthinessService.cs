@@ -1,8 +1,8 @@
-﻿namespace DomainServices.RiskIntegrationService.V1
+﻿namespace DomainServices.RiskIntegrationService.V2
 {
-    [ServiceContract(Name = "DomainServices.RiskIntegrationService.v1.CreditWorthinessService")]
+    [ServiceContract(Name = "DomainServices.RiskIntegrationService.v2.CreditWorthinessService")]
     public interface ICreditWorthinessService
     {
-        ValueTask<Contracts.CreditWorthiness.V1.CreditWorthinessCalculateResponse> Calculate(Contracts.CreditWorthiness.V1.CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default);
+        ValueTask<Contracts.CreditWorthiness.V2.CreditWorthinessCalculateResponse> Calculate(Contracts.CreditWorthiness.V2.CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default);
     }
 }
