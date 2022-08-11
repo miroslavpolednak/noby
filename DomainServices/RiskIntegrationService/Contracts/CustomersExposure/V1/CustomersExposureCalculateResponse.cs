@@ -7,5 +7,5 @@ public class CustomersExposureCalculateResponse
     public List<CustomersExposureCustomer>? Customers { get; set; }
 
     [ProtoMember(2)]
-    public CustomersExposureExposureSummary? ExposureSummary { get; set; }
+    public List<CustomersExposureSummary>? ExposureSummary { get; set; }
 }

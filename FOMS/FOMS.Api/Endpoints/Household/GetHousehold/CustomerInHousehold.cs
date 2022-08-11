@@ -14,6 +14,8 @@ public class CustomerInHousehold
     /// <example>1</example>
     public int RoleId { get; set; }
 
+    public DateTime? LockedIncomeDateTime { get; set; }
+
     /// <summary>
     /// Identity klienta v KB nebo MP
     /// </summary>

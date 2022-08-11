@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "NullableGrpcDecimal.proto";
 import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
 
 message IncomeInList {
     int32 IncomeId = 1;

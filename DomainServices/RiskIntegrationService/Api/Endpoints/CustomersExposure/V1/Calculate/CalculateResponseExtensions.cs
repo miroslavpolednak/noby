@@ -4,8 +4,18 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.
 
 internal static class CalculateResponseExtensions
 {
-    public static _V1.CustomersExposureCalculateResponse ToServiceResponse(this _C4M.LoanApplicationRelatedExposureResult response)
+    /*public static _V1.CustomersExposureCalculateResponse ToServiceResponse(this _C4M.LoanApplicationRelatedExposureResult response)
     {
-        return null;
+        return new _V1.CustomersExposureCalculateResponse
+        {
+            ExposureSummary = response.ExposureSummary.Select(t => t.ToServiceResponse()).ToList()
+        };
     }
+
+    public static _V1.CustomersExposureSummary ToServiceResponse(this _C4M.ExposureSummaryForApproval item)
+        => new _V1.CustomersExposureSummary
+        {
+            TotalExistingExposureKB = item.TotalExistingExposureKB,
+            TotalExistingExposureKBNaturalPerson = item.TotalExistingExposureKBNonPurpose
+        };*/
 }

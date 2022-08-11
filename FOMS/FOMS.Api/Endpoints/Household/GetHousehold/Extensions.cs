@@ -22,6 +22,7 @@ internal static class Extensions
             LastName = model.Name,
             DateOfBirth = model.DateOfBirthNaturalPerson,
             RoleId = model.CustomerRoleId,
+            LockedIncomeDateTime = model.LockedIncomeDateTime,
             Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new CustomerIncome.Dto.IncomeBaseData
             {
                 Sum = x.Sum,
