@@ -31,7 +31,7 @@ internal class GetMortgageOfferHandler
                SimulationInputsBin = t.SimulationInputsBin,
                SimulationResultsBin = t.SimulationResultsBin
            })
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
         var model = new _OS.GetMortgageOfferResponse
         {
