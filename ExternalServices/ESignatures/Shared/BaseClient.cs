@@ -22,12 +22,12 @@ internal abstract class BaseClient<TClient>
         catch (InvalidOperationException e)
         {
             _logger.LogError(e, e.Message);
-            return new ErrorServiceCallResult(10009, $"ESignatures Endpoint '{_httpClient.BaseAddress}' unavailable");
+            return new ErrorServiceCallResult(9300, $"ESignatures Endpoint '{_httpClient.BaseAddress}' unavailable");
         }
         catch (EndpointNotFoundException)
         {
             _logger.LogError("ESignatures Endpoint '{uri}' not found", _httpClient.BaseAddress);
-            return new ErrorServiceCallResult(10008, $"ESignatures Endpoint '{_httpClient.BaseAddress}' not found");
+            return new ErrorServiceCallResult(9301, $"ESignatures Endpoint '{_httpClient.BaseAddress}' not found");
         }
         catch (Exception e)
         {

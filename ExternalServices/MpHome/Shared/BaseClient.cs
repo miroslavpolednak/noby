@@ -22,12 +22,12 @@ internal abstract class BaseClient<TClient>
         catch (InvalidOperationException e)
         {
             _logger.LogError(e, e.Message);
-            return new ErrorServiceCallResult(10009, $"MpHome Endpoint '{_httpClient.BaseAddress}' unavailable");
+            return new ErrorServiceCallResult(9400, $"MpHome Endpoint '{_httpClient.BaseAddress}' unavailable");
         }
         catch (EndpointNotFoundException)
         {
             _logger.LogError("MpHome Endpoint '{uri}' not found", _httpClient.BaseAddress);
-            return new ErrorServiceCallResult(10008, $"MpHome Endpoint '{_httpClient.BaseAddress}' not found");
+            return new ErrorServiceCallResult(9401, $"MpHome Endpoint '{_httpClient.BaseAddress}' not found");
         }
         catch (Exception e)
         {
