@@ -13,10 +13,11 @@ internal class UpdateCaseStateHandler
             throw new CisNotFoundException(13011, nameof(request.State), request.State);
 
         if (caseInstance.State == request.State)
-            throw new CisValidationException(0, "Case state already set to the same value"); //TODO: ErrorCode
+            throw new CisValidationException(13005, "Case state already set to the same value");
+
         // Zakázané přechody mezi stavy
         if (caseInstance.State == 6 || (caseInstance.State == 2 && request.State == 1))
-            throw new CisValidationException(0, "Case state change not allowed"); //TODO: ErrorCode
+            throw new CisValidationException(13006, "Case state change not allowed");
 
         // update v DB
         await _repository.UpdateCaseState(request.CaseId, request.State, cancellation);

@@ -42,12 +42,6 @@ internal class GetTaskListHandler
 
     public async Task<GetTaskListResponse> Handle(Dto.GetTaskListMediatrRequest request, CancellationToken cancellation)
     {
-        // check if user is authenticated
-        if (!_userAccessor.IsAuthenticated)
-        {
-            throw new CisValidationException(99999, $"User is not authenticated."); //TODO: ErrorCode
-        }
-
         var caseId = (int)request.CaseId;
 
         // check if case exists
@@ -114,7 +108,7 @@ internal class GetTaskListHandler
             message += $"Found tasks [{String.Join(",", taskIds)}] with invalid StateId [{String.Join(",", invalidStateIds)}].";
         }
 
-        throw new CisValidationException(99999, message); //TODO: ErrorCode
+        throw new CisValidationException(13008, message);
     }
 
     private static string GetLogin(UserService.Contracts.User user)
