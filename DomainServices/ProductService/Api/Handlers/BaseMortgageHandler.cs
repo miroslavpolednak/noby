@@ -43,12 +43,12 @@ internal class BaseMortgageHandler
 
         if (createNewOne && loanExists)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Loan), loanId); //TODO: error code
+            throw new CisAlreadyExistsException(12005, nameof(Loan), loanId);
         }
 
         if (!createNewOne && !loanExists)
         {
-            throw new CisNotFoundException(13014, nameof(Loan), loanId); //TODO: error code
+            throw new CisNotFoundException(12001, nameof(Loan), loanId);
         }
 
         // create request

@@ -8,7 +8,7 @@ internal class GetProductListRequestValidator : AbstractValidator<Dto.GetProduct
     {
         RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+            .WithMessage("CaseId is not specified").WithErrorCode("12008");
     }
 }
 
