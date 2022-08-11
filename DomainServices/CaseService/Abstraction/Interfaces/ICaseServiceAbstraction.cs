@@ -11,13 +11,12 @@ public interface ICaseServiceAbstraction
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{TModel}">SuccessfulServiceCallResult&lt;long&gt;</see> (CaseId)</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13004; Unable to get CaseId from SB</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; Case Owner Id not must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13018; Target amount must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13012; Customer Name must not be empty</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13013; ProductTypeId {} is not valid for this operation</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13014; ProductTypeId {} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">Code: 13015; Case #{} already exists</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13017; User not found: {}</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13022; User not found: {}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: {SB error key}; {SB error message}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
@@ -54,7 +53,7 @@ public interface ICaseServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13000; Case #{} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13016; CaseId must be > 0</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13017; User not found: {}</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 13022; User not found: {}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task<IServiceCallResult> LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken));

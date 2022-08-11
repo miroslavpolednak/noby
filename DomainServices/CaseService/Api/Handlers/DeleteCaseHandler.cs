@@ -9,7 +9,7 @@ internal class DeleteCaseHandler
             .ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, null, cancellation))
             .SalesArrangements.Count;
         if (count > 0)
-            throw new CisValidationException(0, "One or more SalesArrangements exists for this case");
+            throw new CisValidationException(0, "One or more SalesArrangements exists for this case"); //TODO: ErrorCode
 
         // ulozit do DB
         await _repository.DeleteCase(request.CaseId, cancellation);
