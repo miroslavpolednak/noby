@@ -54,7 +54,7 @@ internal static class CalculateRequestExtensions
             {
                 Id = new _C4M.ResourceIdentifier
                 {
-                    Id = t.IdMp,
+                    Id = t.InternalCustomerId,
                     Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
                 },
                 IsPartner = t.HasPartner ? 1 : 0,

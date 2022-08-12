@@ -40,7 +40,7 @@ internal sealed class CalculateRequestValidator
                 t.RuleForEach(t => t!.Customers)
                     .ChildRules(x =>
                     {
-                        x.RuleFor(t => t!.IdMp)
+                        x.RuleFor(t => t!.InternalCustomerId)
                             .NotEmpty();
                         x.RuleFor(t => t!.Incomes)
                             .NotEmpty();

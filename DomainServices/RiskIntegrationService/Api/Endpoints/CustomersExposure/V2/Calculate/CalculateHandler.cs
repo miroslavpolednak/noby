@@ -11,7 +11,7 @@ internal sealed class CalculateHandler
         var requestModel = new _C4M.LoanApplicationRelatedExposure
         {
             LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.CaseId!.ToString(), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
-            //RiskBusinessCaseId = request.RiskBusinessCaseId,
+            //RiskBusinessCaseId = request.RiskBusinessCaseId,//TODO C4M predela na string
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
         };
 
@@ -24,6 +24,8 @@ internal sealed class CalculateHandler
         }
 
         var response = await _client.Calculate(requestModel, cancellation);
+
+        var customerRoles = await _codebookService.CustomerRoles(cancellation);
 
         //return response.ToServiceResponse();
         return null;

@@ -26,4 +26,7 @@ public class CustomersExposureRequestedCBCBItem
 
     [ProtoMember(8)]
     public DateTime? CbcbDataLastUpdate { get; set; }
+    
+    [ProtoMember(9)]
+    public int? CustomerRoleId { get; set; }
 }

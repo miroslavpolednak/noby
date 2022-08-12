@@ -28,8 +28,11 @@ public class CustomersExposureExistingCBCBItem
     public decimal? ExposureAmount { get; set; }
 
     [ProtoMember(9)]
-    public string? KbGroupInstanceCode { get; set; }
+    public DateTime? ContractDate { get; set; }
 
     [ProtoMember(10)]
+    public string? KbGroupInstanceCode { get; set; }
+
+    [ProtoMember(11)]
     public DateTime? CbcbDataLastUpdate { get; set; }
 }

@@ -4,10 +4,10 @@
 public class CustomersExposureCustomer
 {
     [ProtoMember(1)]
-    public int? CustomerId { get; set; }
+    public long? InternalCustomerId { get; set; }
 
     [ProtoMember(2)]
-    public int? CustomerId2 { get; set; }
+    public string? PrimaryCustomerId { get; set; }
 
     [ProtoMember(3)]
     public int? CustomerRoleId { get; set; }
@@ -19,10 +19,10 @@ public class CustomersExposureCustomer
     public string? CbcbReportId { get; set; }
 
     [ProtoMember(6)]
-    public List<CustomerExposureExistingKBGroupItem>? ExistingKBGroupNaturalPersonExposures { get; set; }
+    public List<CustomersExposureExistingKBGroupItem>? ExistingKBGroupNaturalPersonExposures { get; set; }
 
     [ProtoMember(7)]
-    public List<CustomerExposureExistingKBGroupItem>? ExistingKBGroupJuridicalPersonExposures { get; set; }
+    public List<CustomersExposureExistingKBGroupItem>? ExistingKBGroupJuridicalPersonExposures { get; set; }
 
     [ProtoMember(8)]
     public List<CustomersExposureRequestedKBGroupItem>? RequestedKBGroupNaturalPersonExposures { get; set; }
