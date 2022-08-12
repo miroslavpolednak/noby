@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.Logging;
+using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
 namespace DomainServices.RiskIntegrationService.Abstraction.Services.CreditWorthiness.V2;
 
@@ -13,9 +14,9 @@ internal class CreditWorthinessService
     }
 
     private readonly ILogger<CreditWorthinessService> _logger;
-    private readonly RiskIntegrationService.V2.ICreditWorthinessService _service;
+    private readonly ICreditWorthinessService _service;
     
-    public CreditWorthinessService(RiskIntegrationService.V2.ICreditWorthinessService service, ILogger<CreditWorthinessService> logger)
+    public CreditWorthinessService(ICreditWorthinessService service, ILogger<CreditWorthinessService> logger)
     {
         _logger = logger;
         _service = service;

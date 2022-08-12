@@ -33,6 +33,7 @@ internal static class StartupExtensions
         builder.AddRiskBusinessCase();
         builder.AddCreditWorthiness();
         builder.AddCustomersExposure();
+        builder.AddLoanApplication();
 
         // databases
         builder.Services
