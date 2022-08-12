@@ -18,7 +18,7 @@ internal class UpdateSalesArrangementParametersHandler
             if (request.Request.Mortgage.Agent.HasValue)
             {
                 if (!_dbContext.Customers.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId && t.CustomerOnSAId == request.Request.Mortgage.Agent))
-                    throw new CisNotFoundException(16000, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
+                    throw new CisNotFoundException(16078, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
             }
         }
         

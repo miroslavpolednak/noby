@@ -96,7 +96,7 @@ internal class SendToCmpHandler
                 break;
 
             default:
-                throw new CisArgumentException(99999, $"Form type #{formType} is not supported.", nameof(formType));  //TODO: ErrorCode
+                throw new CisArgumentException(16063, $"Form type #{formType} is not supported.", nameof(formType));
         }
 
         return formValues;

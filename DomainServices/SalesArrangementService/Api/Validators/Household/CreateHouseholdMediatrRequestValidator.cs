@@ -22,6 +22,6 @@ internal class CreateHouseholdMediatrRequestValidator
         RuleFor(t => t.Request.CustomerOnSAId1)
             .NotNull()
             .When(t => t.Request.CustomerOnSAId2.HasValue)
-            .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16000");
+            .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16056");
     }
 }

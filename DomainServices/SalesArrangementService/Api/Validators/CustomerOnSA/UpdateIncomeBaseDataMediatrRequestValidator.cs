@@ -9,7 +9,7 @@ internal class UpdateIncomeBaseDataMediatrRequestValidator
     {
         RuleFor(t => t.Request.IncomeId)
             .GreaterThan(0)
-            .WithMessage("IncomeId must be > 0").WithErrorCode("16029");
+            .WithMessage("IncomeId must be > 0").WithErrorCode("16055");
 
         RuleFor(t => t.Request.BaseData)
             .SetInheritanceValidator(v =>

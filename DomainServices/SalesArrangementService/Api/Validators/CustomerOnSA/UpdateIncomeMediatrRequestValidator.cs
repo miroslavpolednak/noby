@@ -9,7 +9,7 @@ internal class UpdateIncomeMediatrRequestValidator
     {
         RuleFor(t => t.Request.IncomeId)
             .GreaterThan(0)
-            .WithMessage("IncomeId must be > 0").WithErrorCode("16029");
+            .WithMessage("IncomeId must be > 0").WithErrorCode("16055");
 
         RuleFor(t => t.Request.BaseData)
             .SetInheritanceValidator(v =>
@@ -26,6 +26,6 @@ internal class UpdateIncomeMediatrRequestValidator
                 // nelze uvést Cin a BirthNumber zároveň
                 return !(!String.IsNullOrEmpty(t.Employer.Cin) && !String.IsNullOrEmpty(t.Employer.BirthNumber));
             })
-            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("99999"); // TODO
+            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("16046");
     }
 }

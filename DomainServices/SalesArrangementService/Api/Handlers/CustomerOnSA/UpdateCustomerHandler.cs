@@ -47,7 +47,7 @@ internal class UpdateCustomerHandler
                 model.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(newMpId.Value, CIS.Foms.Enums.IdentitySchemes.Mp));
             }
             else
-                throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains KB Identity and create MP Identity failed", 16033);
+                throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains KB Identity and create MP Identity failed", 16054);
         }
         else
         {

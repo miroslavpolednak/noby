@@ -25,7 +25,7 @@ internal class LinkModelationToSalesArrangementHandler
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Offer {request.OfferId} is already linked to another SA", 16012);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Offer {request.OfferId} is already linked to another SA", 16057);
 
         if (offerInstance.SimulationInputs.LoanKindId == 2001 || 
             (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201)))
@@ -47,7 +47,7 @@ internal class LinkModelationToSalesArrangementHandler
             var offerInstanceOld = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation))
                 ?? throw new CisNotFoundException(16001, $"Offer ID #{salesArrangementInstance.OfferId} does not exist.");
             if ((DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
-                throw new CisValidationException(16000, $"Old offer GuaranteeDateFrom > than new GuaranteeDateFrom");
+                throw new CisValidationException(16058, $"Old offer GuaranteeDateFrom > than new GuaranteeDateFrom");
         }
 
         // update linku v DB

@@ -79,13 +79,13 @@ internal class FormDataService
 
         if (invalidSaMandatoryFields.Length > 0)
         {
-            throw new CisValidationException(99999, $"Sales arrangement mandatory fields not provided [{String.Join(StringJoinSeparator, invalidSaMandatoryFields)}]."); //TODO: ErrorCode
+            throw new CisValidationException(16064, $"Sales arrangement mandatory fields not provided [{String.Join(StringJoinSeparator, invalidSaMandatoryFields)}].");
         }
 
         // check if Offer exists
         if (!arrangement.OfferId.HasValue)
         {
-            throw new CisNotFoundException(16000, $"Sales Arrangement #{arrangement.SalesArrangementId} is not linked to Offer");
+            throw new CisNotFoundException(16065, $"Sales Arrangement #{arrangement.SalesArrangementId} is not linked to Offer");
         }
     }
 
@@ -108,7 +108,7 @@ internal class FormDataService
         if (invalidIncomes.Length > 0)
         {
             var details = invalidIncomes.Select(i => $"{i.Id}[{String.Join(StringJoinSeparator, i.InvalidFields)}]");
-            throw new CisValidationException(99999, $"Income mandatory fields not provided [{String.Join(StringJoinSeparator, details)}]."); //TODO: ErrorCode
+            throw new CisValidationException(16066, $"Income mandatory fields not provided [{String.Join(StringJoinSeparator, details)}].");
         }
     }
 
@@ -129,7 +129,7 @@ internal class FormDataService
 
         if (customerIdsInvalid.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement customers [{String.Join(StringJoinSeparator, customerIdsInvalid)}] don't contain both [KB,MP] identities."); //TODO: ErrorCode
+            throw new CisValidationException(16067, $"Sales arrangement customers [{String.Join(StringJoinSeparator, customerIdsInvalid)}] don't contain both [KB,MP] identities.");
         }
     }
 
@@ -139,28 +139,28 @@ internal class FormDataService
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
         if (duplicitHouseholdTypeIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement contains duplicit household types [{String.Join(StringJoinSeparator, duplicitHouseholdTypeIds)}]."); //TODO: ErrorCode
+            throw new CisValidationException(16068, $"Sales arrangement contains duplicit household types [{String.Join(StringJoinSeparator, duplicitHouseholdTypeIds)}].");
         }
 
         // check if MAIN household is available
         var mainHouseholdCount = households.Count(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         if (mainHouseholdCount != 1)
         {
-            throw new CisValidationException(99999, $"Sales arrangement must contain just one '{CIS.Foms.Enums.HouseholdTypes.Main}' household."); //TODO: ErrorCode
+            throw new CisValidationException(16069, $"Sales arrangement must contain just one '{CIS.Foms.Enums.HouseholdTypes.Main}' household.");
         }
 
         // check if any household contains CustomerOnSAId2 without CustomerOnSAId1
         var invalidHouseholdIds = households.Where(i => !i.CustomerOnSAId1.HasValue && i.CustomerOnSAId2.HasValue).Select(i => i.HouseholdId);
         if (invalidHouseholdIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement contains households [{String.Join(StringJoinSeparator, invalidHouseholdIds)}] with CustomerOnSAId2 but without CustomerOnSAId1."); //TODO: ErrorCode
+            throw new CisValidationException(16070, $"Sales arrangement contains households [{String.Join(StringJoinSeparator, invalidHouseholdIds)}] with CustomerOnSAId2 but without CustomerOnSAId1.");
         }
 
         // check if CustomerOnSAId1 is available on Main households
         var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         if (!mainHousehold.CustomerOnSAId1.HasValue)
         {
-            throw new CisValidationException(99999, $"Main household´s CustomerOnSAId1 not defined [{mainHousehold.HouseholdId}]."); //TODO: ErrorCode
+            throw new CisValidationException(16071, $"Main household´s CustomerOnSAId1 not defined [{mainHousehold.HouseholdId}].");
         }
 
         // check if the same CustomerOnSA belongs to only one household
@@ -169,7 +169,7 @@ internal class FormDataService
            .GroupBy(i => i).Where(i => i.Count() > 1).Select(i => i.Key);
         if (duplicitCustomerOnSAIds.Any())
         {
-            throw new CisValidationException(99999, $"Sales arrangement households contain duplicit customers [{String.Join(StringJoinSeparator, duplicitCustomerOnSAIds)}] on sales arrangement."); //TODO: ErrorCode
+            throw new CisValidationException(16072, $"Sales arrangement households contain duplicit customers [{String.Join(StringJoinSeparator, duplicitCustomerOnSAIds)}] on sales arrangement.");
         }
 
         // check if customers on SA correspond to customers on households
@@ -184,7 +184,7 @@ internal class FormDataService
 
         if (customerIdsInvalid.Any())
         {
-            throw new CisValidationException(99999, $"Customers [{String.Join(StringJoinSeparator, customerIdsInvalid)}] on sales arrangement don't correspond to customers on households."); //TODO: ErrorCode
+            throw new CisValidationException(16073, $"Customers [{String.Join(StringJoinSeparator, customerIdsInvalid)}] on sales arrangement don't correspond to customers on households.");
         }
     }
 
@@ -201,19 +201,19 @@ internal class FormDataService
 
         if (salesArrangementType == null)
         {
-            throw new CisNotFoundException(99999, nameof(SalesArrangementTypeItem), salesArrangementTypeId); //TODO: ErrorCode
+            throw new CisNotFoundException(16005, nameof(SalesArrangementTypeItem), salesArrangementTypeId);
         }
 
         if (!salesArrangementType.ProductTypeId.HasValue)
         {
-            throw new CisArgumentNullException(7, $"Sales arrangement type '{salesArrangementTypeId}' with undefined product type", nameof(salesArrangementTypeId));
+            throw new CisValidationException(16074, $"Sales arrangement type '{salesArrangementTypeId}' with undefined product type");
         }
 
         var productType = (await _codebookService.ProductTypes(cancellation)).FirstOrDefault(t => t.Id == salesArrangementType.ProductTypeId);
 
         if (productType == null)
         {
-            throw new CisNotFoundException(13014, nameof(ProductTypeItem), salesArrangementType.ProductTypeId.Value);
+            throw new CisNotFoundException(16075, nameof(ProductTypeItem), salesArrangementType.ProductTypeId.Value);
         }
 
         return productType;
@@ -269,7 +269,7 @@ internal class FormDataService
       result switch
       {
           SuccessfulServiceCallResult<Eas.CommonResponse> r when r.Model.CommonValue != 0 
-          => throw new CisValidationException(99999, $"Invalid result of AddFirstSignatureDate [{r.Model.CommonValue}: {r.Model.CommonText}]."), //TODO: ErrorCode
+          => throw new CisValidationException(16076, $"Invalid result of AddFirstSignatureDate [{r.Model.CommonValue}: {r.Model.CommonText}]."),
           SuccessfulServiceCallResult <Eas.CommonResponse> r => r.Model,
           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
           _ => throw new NotImplementedException()
@@ -339,11 +339,11 @@ internal class FormDataService
 
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))
-            ?? throw new CisNotFoundException(99999, $"Offer ID #{arrangement.OfferId} does not exist."); //TODO: ErrorCode
+                     ?? throw new CisNotFoundException(16001, $"Offer ID #{arrangement.OfferId} does not exist.");
 
         // User load (by arrangement.Created.UserId)
         var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))
-            ?? throw new CisNotFoundException(99999, $"User ID #{arrangement.Created.UserId} does not exist."); //TODO: ErrorCode
+            ?? throw new CisNotFoundException(16077, $"User ID #{arrangement.Created.UserId} does not exist.");
 
         // load customers
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);

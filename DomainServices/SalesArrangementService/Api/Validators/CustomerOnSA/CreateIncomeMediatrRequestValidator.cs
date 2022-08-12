@@ -34,6 +34,6 @@ internal class CreateIncomeMediatrRequestValidator
                 // nelze uvést Cin a BirthNumber zároveň
                 return !(!String.IsNullOrEmpty(t.Employer.Cin) && !String.IsNullOrEmpty(t.Employer.BirthNumber));
             })
-            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("99999"); // TODO
+            .WithMessage("Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]").WithErrorCode("16046");
     }
 }
