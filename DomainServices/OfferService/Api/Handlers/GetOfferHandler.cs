@@ -28,7 +28,7 @@ internal class GetOfferHandler
                CreatedUserName = t.CreatedUserName, 
                CreatedTime = t.CreatedTime 
            })
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
         return new _OS.GetOfferResponse
         {

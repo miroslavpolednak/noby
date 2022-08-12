@@ -81,7 +81,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// Update detailu dat o prijmu
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; IncomeId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16055; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -89,7 +89,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// Update zakladnich dat o prijmu
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; IncomeId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16055; IncomeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -106,7 +106,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// Smazani zavazku
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; Obligation ID {ObligationId} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -114,7 +114,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// Vraci instanci pozadovaneho zavazku
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Obligation" /></returns>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; Obligation ID {request.ObligationId} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -129,7 +129,7 @@ public interface ICustomerOnSAServiceAbstraction
     /// Update detailu dat o zavazku
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16029; ObligationId must be > 0</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<IServiceCallResult> UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -11,11 +11,11 @@ internal class CreateCustomerMediatrRequestValidator
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("13000");
+            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("16010");
         
         RuleFor(t => t.Request.CustomerRoleId)
             .GreaterThan(0)
-            .WithMessage("CustomerRoleId must be > 0").WithErrorCode("13000");
+            .WithMessage("CustomerRoleId must be > 0").WithErrorCode("16045");
 
         RuleFor(t => t.Request.CustomerRoleId)
             .GreaterThan(0)

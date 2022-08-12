@@ -9,6 +9,6 @@ internal class GetSalesArrangementListMediatrRequestValidator
     {
         RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("13000");
+            .WithMessage("CaseId must be > 0").WithErrorCode("16008");
     }
 }

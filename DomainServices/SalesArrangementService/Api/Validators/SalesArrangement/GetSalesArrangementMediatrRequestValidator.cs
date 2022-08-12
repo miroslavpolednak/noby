@@ -8,7 +8,7 @@ internal class GetSalesArrangementMediatrRequestValidator : AbstractValidator<Dt
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangement ID does not exist.").WithErrorCode("16000");
+            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("16010");
     }
 }
 

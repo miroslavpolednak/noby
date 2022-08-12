@@ -37,9 +37,15 @@ internal sealed class RealEasClient
 
             //TODO jak ma vypadat chyba vracena z EAS?
             if (result.commonResult?.return_val != 0)
-                return new ErrorServiceCallResult(0, result.commonResult?.return_text ?? "Unknown error");
-            else
-                return new SuccessfulServiceCallResult<long>(result.caseId);
+            {
+                var message = $"An error occurred when calling the EAS Get_CaseId function – {result.commonResult?.return_val ?? 0}: {result.commonResult?.return_text ?? "Unknown error"}";
+
+                _logger.LogInformation(message);
+
+                return new ErrorServiceCallResult(9102, message);
+            }
+
+            return new SuccessfulServiceCallResult<long>(result.caseId);
         });
     }
 
@@ -57,7 +63,8 @@ internal sealed class RealEasClient
             {
                 var message = $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]";
                 _logger.LogWarning(message);
-                return new ErrorServiceCallResult(99999, message); //TODO: error code
+
+                return new ErrorServiceCallResult(9103, message);
             }
 
             return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
@@ -76,14 +83,16 @@ internal sealed class RealEasClient
             var result = await client.GetKlientData_NewKlientAsync(request);
 
             if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
-                return new ErrorServiceCallResult(0, "EAS GetKlientData_NewKlientResult is empty");
+                return new ErrorServiceCallResult(9104, "EAS GetKlientData_NewKlientResult is empty");
 
             var r = result.GetKlientData_NewKlientResult[0];
             if (r.return_val != 0)
             {
-                _logger.LogInformation("Incorrect inputs to EAS NewKlient {error}: {errorText}", r.return_val, r.return_info);
+                var message = $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}";
 
-                return new ErrorServiceCallResult(r.return_val, r.return_info);
+                _logger.LogInformation(message);
+
+                return new ErrorServiceCallResult(9105, message);
             }
             else
             {

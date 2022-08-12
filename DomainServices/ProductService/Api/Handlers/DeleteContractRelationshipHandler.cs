@@ -24,7 +24,8 @@ internal class DeleteContractRelationshipHandler
         var relationshipExists = await _repository.ExistsRelationship(request.Request.ProductId, request.Request.PartnerId, cancellation);
         if (!relationshipExists)
         {
-            throw new CisNotFoundException(13014, nameof(Repositories.Entities.Relationship)); //TODO: error code
+            throw new CisNotFoundException(12018,
+                $"{nameof(Repositories.Entities.Relationship)} with ProductId {request.Request.ProductId} and PartnerId {request.Request.PartnerId} does not exist.");
         }
 
         // call endpoint

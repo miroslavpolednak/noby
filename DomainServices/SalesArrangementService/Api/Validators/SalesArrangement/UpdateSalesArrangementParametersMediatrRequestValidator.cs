@@ -34,7 +34,7 @@ internal class SalesArrangementParametersMortgageValidator
             {
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
-            .WithMessage("IncomeCurrencyCode not found").WithErrorCode("16034");
+            .WithMessage("IncomeCurrencyCode not found").WithErrorCode("16059");
 
         RuleFor(t => t.ResidencyCurrencyCode)
             .NotEmpty()
@@ -44,7 +44,7 @@ internal class SalesArrangementParametersMortgageValidator
             {
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
-            .WithMessage("ResidencyCurrencyCode not found").WithErrorCode("16035");
+            .WithMessage("ResidencyCurrencyCode not found").WithErrorCode("16060");
 
         RuleFor(t => t.SignatureTypeId)
            .GreaterThan(0)
@@ -54,7 +54,7 @@ internal class SalesArrangementParametersMortgageValidator
             {
                 return (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id);
             })
-            .WithMessage("SignatureTypeId not found").WithErrorCode("16036");
+            .WithMessage("SignatureTypeId not found").WithErrorCode("16061");
 
         RuleForEach(t => t.LoanRealEstates)
             .SetValidator(new MortgageLoanRealEstateValidator(codebookService));

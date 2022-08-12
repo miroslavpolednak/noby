@@ -8,6 +8,6 @@ internal class GetMortgageOfferRequestValidator : AbstractValidator<Dto.GetMortg
     {
         RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferId is not specified").WithErrorCode("10005"); //TODO: ErrorCode
+            .WithMessage("OfferId is not specified").WithErrorCode("10001");
     }
 }

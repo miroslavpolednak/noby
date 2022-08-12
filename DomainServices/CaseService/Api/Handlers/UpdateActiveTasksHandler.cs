@@ -63,7 +63,8 @@ internal class UpdateActiveTasksHandler
 
         var invalidTypeIds = tasksWithInvalidTypeId.Select(t => t.TypeId).Distinct();
         var taskIds = tasksWithInvalidTypeId.Select(t => t.TaskProcessId);
-        throw new CisValidationException(99999, $"Found tasks [{String.Join(",", taskIds)}] with invalid TypeId [{String.Join(",", invalidTypeIds)}]."); //TODO: ErrorCode
+
+        throw new CisValidationException(13007, $"Found tasks [{String.Join(",", taskIds)}] with invalid TypeId [{String.Join(",", invalidTypeIds)}].");
     }
 
 }

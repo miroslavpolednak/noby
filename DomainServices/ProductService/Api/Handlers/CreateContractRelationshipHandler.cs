@@ -26,21 +26,22 @@ internal class CreateContractRelationshipHandler
         var relationshipExists = await _repository.ExistsRelationship(request.Request.ProductId, request.Request.Relationship.PartnerId, cancellation);
         if (relationshipExists)
         {
-            throw new CisAlreadyExistsException(13015, nameof(Repositories.Entities.Relationship)); //TODO: error code
+            throw new CisAlreadyExistsException(12011,
+                $"{nameof(Repositories.Entities.Relationship)} with ProductId {request.Request.ProductId} and PartnerId {request.Request.Relationship.PartnerId} already exists");
         }
 
         // check if loan exists (against KonsDB)
         var loanExists = await _repository.ExistsLoan(request.Request.ProductId, cancellation);
         if (!loanExists)
         {
-            throw new CisNotFoundException(13014, nameof(Repositories.Entities.Loan), request.Request.ProductId); //TODO: error code
+            throw new CisNotFoundException(12001, nameof(Repositories.Entities.Loan), request.Request.ProductId);
         }
 
         // check if partner exists (against KonsDB)
         var partnerExists = await _repository.ExistsPartner(request.Request.Relationship.PartnerId, cancellation);
         if (!partnerExists)
         {
-            throw new CisNotFoundException(13014, nameof(Repositories.Entities.Partner), request.Request.Relationship.PartnerId); //TODO: error code
+            throw new CisNotFoundException(12012, nameof(Repositories.Entities.Partner), request.Request.Relationship.PartnerId);
         }
 
         // get codebook RelationshipCustomerProductTypeItem item
@@ -68,7 +69,7 @@ internal class CreateContractRelationshipHandler
 
         if (item == null)
         {
-            throw new CisNotFoundException(13014, nameof(RelationshipCustomerProductTypeItem), contractRelationshipTypeId);
+            throw new CisNotFoundException(12013, nameof(RelationshipCustomerProductTypeItem), contractRelationshipTypeId);
         }
 
         return item;

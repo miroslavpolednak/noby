@@ -17,7 +17,7 @@ internal class CreateHouseholdHandler
 
         // check household role
         if (!(await _codebookService.HouseholdTypes(cancellation)).Any(t => t.Id == request.Request.HouseholdTypeId))
-            throw new CisArgumentException(16023, $"HouseholdTypeId {request.Request.HouseholdTypeId} does not exist.", "HouseholdTypeId");
+            throw new CisNotFoundException(16023, $"HouseholdTypeId {request.Request.HouseholdTypeId} does not exist.");
 #pragma warning restore CA2208
         
         //TODO check propertySettlement?

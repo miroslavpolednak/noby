@@ -40,8 +40,9 @@ internal class RealSbWebApiClient
 
                 if (result.Result.Return_val.GetValueOrDefault() == 0)
                     return new SuccessfulServiceCallResult();
-                else
-                    return new ErrorServiceCallResult(result.Result.Return_val.GetValueOrDefault(), result.Result.Return_text ?? "");
+
+                return new ErrorServiceCallResult(9602,
+                    $"An error occurred when calling the RIP service (CaseStateChanged) – {result.Result.Return_val.GetValueOrDefault()}: {result.Result.Return_text ?? ""}");
             });
 
         });
@@ -59,7 +60,7 @@ internal class RealSbWebApiClient
         catch (ApiException ex)
         {
             _logger.LogError(ex, ex.Message);
-            return new ErrorServiceCallResult(0, $"Error occured during call external service RIP [{ex.Message}]");
+            return new ErrorServiceCallResult(9603, $"Error occured during call external service RIP [{ex.Message}]");
         }
     }
 }

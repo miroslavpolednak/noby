@@ -23,7 +23,7 @@ internal class LinkOwnerToCaseHandler
         result switch
         {
             SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new CisNotFoundException(13017, $"User not found: {err.Errors[0].Message}"),
+            ErrorServiceCallResult err => throw new CisNotFoundException(13022, $"User not found: {err.Errors[0].Message}"),
             _ => throw new NotImplementedException()
         };
 

@@ -23,7 +23,7 @@ internal class GetMortgageHandler
 
         if (loan == null)
         {
-            throw new CisNotFoundException(13014, nameof(Repositories.Entities.Loan), request.Request.ProductId); //TODO: error code
+            throw new CisNotFoundException(12001, nameof(Repositories.Entities.Loan), request.Request.ProductId);
         }
 
         var relationships = await _repository.GetRelationships(request.Request.ProductId, cancellation);
