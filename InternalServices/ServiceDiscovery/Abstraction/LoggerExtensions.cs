@@ -12,27 +12,27 @@ internal static class LoggerExtensions
     {
         _getServiceStarted = LoggerMessage.Define<string, Contracts.ServiceTypes, string>(
             LogLevel.Debug,
-            new EventId(151, nameof(GetServiceStarted)),
+            new EventId(161, nameof(GetServiceStarted)),
             "Get {ServiceName}:{ServiceType} from {EnvironmentName}");
 
         _servicesNotFoundInCache = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(152, nameof(ServicesNotFoundInCache)),
+            new EventId(162, nameof(ServicesNotFoundInCache)),
             "Services for {EnvironmentName} NOT found in cache");
 
         _serviceFoundInDb = LoggerMessage.Define<string, Contracts.ServiceTypes, string>(
             LogLevel.Debug,
-            new EventId(153, nameof(ServiceFoundInDb)),
+            new EventId(163, nameof(ServiceFoundInDb)),
             "Service {ServiceName}:{ServiceType} from {EnvironmentName} obtained");
 
         _servicesFoundInCache = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(154, nameof(ServicesFoundInCache)),
+            new EventId(164, nameof(ServicesFoundInCache)),
             "Services for {EnvironmentName} FOUND in cache");
 
         _discoveryServiceUrlFound = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            new EventId(155, nameof(DiscoveryServiceUrlFound)),
+            new EventId(165, nameof(DiscoveryServiceUrlFound)),
             "DiscoveryService URL set to '{Url}'");
     }
 

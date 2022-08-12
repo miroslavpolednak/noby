@@ -124,7 +124,7 @@ internal class GetCreditWorthinessHandler
             c.MaritalStatusMp = customerInstance.NaturalPerson?.MaritalStatusStateId;
         }
 
-        // neni tu zadani jake ID posilat, tak beru prvni
+        //TODO neni tu zadani jake ID posilat, tak beru prvni
         if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
             c.IdMp = customer.CustomerIdentifiers.First().IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
