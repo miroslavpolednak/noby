@@ -9,6 +9,6 @@ internal class GetCaseCountsMediatrRequestValidator
     {
         RuleFor(t => t.CaseOwnerUserId)
             .GreaterThan(0)
-            .WithMessage("CaseOwnerUserId must be > 0").WithErrorCode("13000");
+            .WithMessage("CaseOwnerUserId must be > 0").WithErrorCode("13003");
     }
 }

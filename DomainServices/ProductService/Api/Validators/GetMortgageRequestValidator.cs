@@ -8,7 +8,7 @@ internal class GetMortgageRequestValidator : AbstractValidator<Dto.GetMortgageMe
     {
         RuleFor(t => t.Request.ProductId)
             .GreaterThan(0)
-            .WithMessage("ProductId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+            .WithMessage("ProductId is not specified").WithErrorCode("12014");
     }
 }
 

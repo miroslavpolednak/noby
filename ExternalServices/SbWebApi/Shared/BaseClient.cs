@@ -23,12 +23,12 @@ internal abstract class BaseClient<TClient>
         catch (InvalidOperationException e)
         {
             _logger.LogError(e, e.Message);
-            return new ErrorServiceCallResult(10009, $"SbWebApi Endpoint '{_httpClient.BaseAddress}' unavailable");
+            return new ErrorServiceCallResult(9600, $"SbWebApi Endpoint '{_httpClient.BaseAddress}' unavailable");
         }
         catch (EndpointNotFoundException)
         {
             _logger.LogError("SbWebApi Endpoint '{uri}' not found", _httpClient.BaseAddress);
-            return new ErrorServiceCallResult(10008, $"SbWebApi Endpoint '{_httpClient.BaseAddress}' not found");
+            return new ErrorServiceCallResult(9601, $"SbWebApi Endpoint '{_httpClient.BaseAddress}' not found");
         }
         catch (Exception e)
         {

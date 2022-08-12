@@ -15,7 +15,7 @@ internal class DeleteCustomerHandler
 
         // nemuze to byt hlavni dluznik
         if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
-            throw new CisValidationException(0, "CustomerOnSA is in role=Debtor -> can't be deleted");
+            throw new CisValidationException(16053, "CustomerOnSA is in role=Debtor -> can't be deleted");
 
         // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId
         var saParameterInstance = await _dbContext.SalesArrangementsParameters

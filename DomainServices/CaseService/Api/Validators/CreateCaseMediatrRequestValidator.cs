@@ -16,7 +16,7 @@ internal class CreateCaseMediatrRequestValidator : AbstractValidator<Dto.CreateC
 
         RuleFor(t => t.Request.CaseOwnerUserId)
             .GreaterThan(0)
-            .WithMessage("Case Owner Id not must be > 0").WithErrorCode("13003");
+            .WithMessage("CaseOwnerUserId must be > 0").WithErrorCode("13003");
 
         RuleFor(t => t.Request.Customer.Name)
             .NotEmpty()

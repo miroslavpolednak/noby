@@ -90,7 +90,7 @@ namespace ExternalServices.Rip.V1
             catch (ApiException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ErrorServiceCallResult(99999, $"Error occured during call external service RIP [{ex.Message}]"); //TODO: error code
+                return new ErrorServiceCallResult(9502, $"Error occured during call external service RIP [{ex.Message}]");
             }
         }
     }

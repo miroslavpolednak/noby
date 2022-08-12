@@ -20,7 +20,7 @@ internal class CreateIncomeHandler
         int totalIncomesOfType = await _dbContext.CustomersIncomes
             .CountAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellation);
         if (alreadyMaxIncomes(incomeType, totalIncomesOfType))
-            throw new CisValidationException(0, "Max incomes of the type has been reached");
+            throw new CisValidationException(16047, "Max incomes of the type has been reached");
 
         var entity = new Repositories.Entities.CustomerOnSAIncome
         {

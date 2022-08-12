@@ -8,11 +8,11 @@ internal class DeleteContractRelationshipRequestValidator : AbstractValidator<Dt
     {
         RuleFor(t => t.Request.ProductId)
            .GreaterThan(0)
-           .WithMessage("ProductId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+           .WithMessage("ProductId is not specified").WithErrorCode("12014");
 
         RuleFor(t => t.Request.PartnerId)
             .GreaterThan(0)
-            .WithMessage("PartnerId is not specified").WithErrorCode("99999"); //TODO: ErrorCode
+            .WithMessage("PartnerId is not specified").WithErrorCode("12010");
     }
 }
 

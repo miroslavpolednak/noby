@@ -39,12 +39,12 @@ internal abstract class BaseClient<TClient>
         catch (InvalidOperationException e)
         {
             _logger.LogError(e, e.Message);
-            return new ErrorServiceCallResult(10009, $"EAS Endpoint '{_configuration.ServiceUrl}' unavailable");
+            return new ErrorServiceCallResult(9200, $"EAS Endpoint '{_configuration.ServiceUrl}' unavailable");
         }
         catch (EndpointNotFoundException)
         {
             _logger.LogError("EAS Endpoint '{uri}' not found", _configuration.ServiceUrl);
-            return new ErrorServiceCallResult(10008, $"EAS Endpoint '{_configuration.ServiceUrl}' not found");
+            return new ErrorServiceCallResult(9201, $"EAS Endpoint '{_configuration.ServiceUrl}' not found");
         }
         catch (Exception e)
         {

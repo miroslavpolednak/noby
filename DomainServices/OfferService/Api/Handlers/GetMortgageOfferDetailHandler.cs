@@ -22,7 +22,7 @@ internal class GetMortgageOfferDetailHandler
         var entity = await _dbContext.Offers
            .AsNoTracking()
            .Where(t => t.OfferId == request.OfferId)
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(13000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
         var model = new _OS.GetMortgageOfferDetailResponse
         {

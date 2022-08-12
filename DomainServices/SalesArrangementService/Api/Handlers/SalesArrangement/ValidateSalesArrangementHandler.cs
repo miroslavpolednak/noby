@@ -59,7 +59,7 @@ internal class ValidateSalesArrangementHandler
             }
             else
             {
-                throw new CisValidationException(16040, message);   // TODO: return status code 500 instead of 400
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, message, 16040);
             }
         }
 

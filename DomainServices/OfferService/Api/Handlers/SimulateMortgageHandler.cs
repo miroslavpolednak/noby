@@ -94,7 +94,7 @@ internal class SimulateMortgageHandler
 
         if (!input.PaymentDay.HasValue)
         {
-            input.PaymentDay = (await _codebookService.PaymentDays(cancellation)).FirstOrDefault(i => i.IsDefault)?.PaymentDay ?? throw new CisNotFoundException(99999, $"Default 'PaymentDay' not found.");
+            input.PaymentDay = (await _codebookService.PaymentDays(cancellation)).FirstOrDefault(i => i.IsDefault)?.PaymentDay ?? throw new CisNotFoundException(10002, $"Default 'PaymentDay' not found.");
         }
 
         //Sleva z úrokové sazby(dle individuální cenotvorby)
