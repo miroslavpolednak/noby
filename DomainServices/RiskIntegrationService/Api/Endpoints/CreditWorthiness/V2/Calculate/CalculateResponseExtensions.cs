@@ -12,7 +12,7 @@ internal static class CalculateResponseExtensions
             MaxAmount = response.MaxAmount,
             RemainsLivingAnnuity = response.RemainsLivingAnnuity,
             RemainsLivingInst = response.RemainsLivingInst,
-            ResultReason = response.ResultReason is null ? null : new _V2.CreditWorthinessResultReason
+            ResultReason = response.ResultReason is null ? null : new Contracts.Shared.ResultReasonDetail
             {
                 Code = response.ResultReason.Code,
                 Description = response.ResultReason.Description

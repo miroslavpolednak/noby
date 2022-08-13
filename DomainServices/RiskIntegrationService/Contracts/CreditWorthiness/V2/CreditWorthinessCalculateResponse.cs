@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
+
+namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
 [ProtoContract]
 public class CreditWorthinessCalculateResponse
@@ -19,5 +21,5 @@ public class CreditWorthinessCalculateResponse
     public CreditWorthinessResults WorthinessResult { get; set; }
 
     [ProtoMember(6)]
-    public CreditWorthinessResultReason? ResultReason { get; set; }
+    public ResultReasonDetail? ResultReason { get; set; }
 }

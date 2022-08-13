@@ -1,10 +1,12 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
+﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
+
+namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 
 [ProtoContract]
 public class CustomersExposureExistingKBGroupItem
 {
     [ProtoMember(1)]
-    public string? ProductId { get; set; }
+    public IdIdentifier? ProductIdentifier { get; set; }
 
     [ProtoMember(2)]
     public string? LoanType { get; set; }
