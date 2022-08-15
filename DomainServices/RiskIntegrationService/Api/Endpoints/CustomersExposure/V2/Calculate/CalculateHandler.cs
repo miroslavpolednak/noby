@@ -25,10 +25,7 @@ internal sealed class CalculateHandler
 
         var response = await _client.Calculate(requestModel, cancellation);
 
-        var customerRoles = await _codebookService.CustomerRoles(cancellation);
-
-        //return response.ToServiceResponse();
-        return null;
+        return await response.ToServiceResponse(_codebookService, cancellation);
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;

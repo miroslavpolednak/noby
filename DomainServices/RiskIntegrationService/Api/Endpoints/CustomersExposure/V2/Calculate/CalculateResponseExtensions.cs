@@ -1,7 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
-using System.Linq.Expressions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
 

@@ -93,7 +93,7 @@ CREATE TABLE [dbo].[CustomerOnSA](
      [CustomerOnSAId] [int] IDENTITY(1,1) NOT NULL,
      [SalesArrangementId] [int] NOT NULL,
      [CustomerRoleId] [tinyint] NOT NULL,
-     [HasPartner] [bit] NOT NULL,
+     [HasPartner] [bit] NULL,
      [FirstNameNaturalPerson] [nvarchar](100) NULL,
      [Name] [nvarchar](100) NULL,
      [DateOfBirthNaturalPerson] [datetime] NULL,

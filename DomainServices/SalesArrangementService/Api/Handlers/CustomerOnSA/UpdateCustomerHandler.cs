@@ -21,9 +21,9 @@ internal class UpdateCustomerHandler
         var model = new _SA.UpdateCustomerResponse();
 
         // uz ma KB identitu, ale jeste nema MP identitu
-        if (entity.Identities is not null && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
+        if (entity.Identities is not null && !entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
         {
-            var identity = entity.Identities.First(t => t.IdentityScheme != CIS.Foms.Enums.IdentitySchemes.Mp);
+            var identity = entity.Identities.First();
             int? newMpId = await _identifyCustomerService.TryCreateMpIdentity(new CIS.Infrastructure.gRPC.CisTypes.Identity(identity.IdentityId, identity.IdentityScheme), cancellation);
 
             if (newMpId.HasValue)
