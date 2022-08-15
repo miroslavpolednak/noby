@@ -224,7 +224,7 @@
           "description": "roleCode"
         },
         "cbcbRegiterCalled": {
-          "type": "boolean",
+          "type": "string",
           "description": "cbcbRegiterCalled"
         },
         "cbcbReportId": {

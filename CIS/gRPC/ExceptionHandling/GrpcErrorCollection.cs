@@ -38,6 +38,7 @@ public sealed class GrpcErrorCollection : List<GrpcErrorCollection.GrpcErrorColl
     public class GrpcErrorCollectionItem
     {
         public int Code { get; init; }
+        public string? CodeAlt { get; init; }
         public string Message { get; init; }
 
         public GrpcErrorCollectionItem(int code, string message)
@@ -50,6 +51,8 @@ public sealed class GrpcErrorCollection : List<GrpcErrorCollection.GrpcErrorColl
         {
             if (int.TryParse(code, out int code2))
                 Code = code2;
+            else
+                CodeAlt = code;
             Message = message;
         }
 

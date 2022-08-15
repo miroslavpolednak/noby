@@ -380,7 +380,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("cbcbRegiterCalled")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public bool? CbcbRegiterCalled { get; set; }
+        public string CbcbRegiterCalled { get; set; }
 
         /// <summary>
         /// cbcbReportId

@@ -9,18 +9,22 @@ internal sealed class CalculateRequestValidator
     public CalculateRequestValidator()
     {
         RuleFor(t => t.CaseId)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .WithErrorCode("CaseId");
 
         RuleFor(t => t.RiskBusinessCaseId)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode("RiskBusinessCaseId");
 
         RuleFor(t => t.LoanApplicationDataVersion)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode("LoanApplicationDataVersion");
 
         When(t => t.UserIdentity is not null, () =>
         {
             RuleFor(t => t.UserIdentity)
-            .SetValidator(new IdentityValidator());
+                .SetValidator(new IdentityValidator())
+                .WithErrorCode("UserIdentity");
         });
     }
 }

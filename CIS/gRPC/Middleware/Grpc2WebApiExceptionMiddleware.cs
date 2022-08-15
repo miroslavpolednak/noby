@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Net;
 using System.Security.Authentication;
 
@@ -68,36 +69,46 @@ public sealed class Grpc2WebApiExceptionMiddleware
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
-                result = Results.ValidationProblem(errors, title: ex.Message);
+                await getValidationProblemObject(context, errors);
             }
             else if (!string.IsNullOrEmpty(ex.Message))
-                result = Results.ValidationProblem(new Dictionary<string, string[]> { { "0", new[] { ex.Message } } }, title: "One or more validation errors occurred.");
+                await getValidationProblemObject(context, ex.Message);
             else
-                result = Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" });
-
-            await result.ExecuteAsync(context);
+                await Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" }).ExecuteAsync(context);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.InvalidArgument)
         {
-            IResult result;
             // try list of errors first
             var messages = ex.GetErrorMessagesFromRpcException();
             if (messages.Any()) // most likely its validation exception
             {
                 var errors = messages.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
-                result = Results.ValidationProblem(errors!);
+                await getValidationProblemObject(context, errors!);
             }
             else // its single argument exception
             {
-                string message = ex.GetErrorMessageFromRpcException();
-                result = Results.BadRequest(new ProblemDetails() { Title = ex.Message });
+                await getValidationProblemObject(context, ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
             }
-            await result.ExecuteAsync(context);
         }
         // jakakoliv jina chyba
         catch (Exception ex)
         {
             await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
+    }
+
+    public static async Task getValidationProblemObject(HttpContext context, string error, string? argument = null)
+        => await getValidationProblemObject(context, new Dictionary<string, string[]> { { argument ?? "0", new[] { error } } });
+
+    public static async Task getValidationProblemObject(HttpContext context, Dictionary<string, string[]> errors)
+    {
+        await Results.ValidationProblem(
+            errors,
+            title: "One or more validation errors occurred.",
+            extensions: new Dictionary<string, object?>
+            {
+                { "traceId", Activity.Current?.Id ?? context?.TraceIdentifier }
+            })
+            .ExecuteAsync(context!);
     }
 }

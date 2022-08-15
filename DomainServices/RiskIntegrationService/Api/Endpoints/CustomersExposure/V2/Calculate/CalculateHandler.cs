@@ -1,5 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
+using System.Globalization;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
 
@@ -10,7 +11,7 @@ internal sealed class CalculateHandler
     {
         var requestModel = new _C4M.LoanApplicationRelatedExposure
         {
-            LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.CaseId!.ToString(), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.CaseId!.ToString(CultureInfo.InvariantCulture), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             RiskBusinessCaseId = request.RiskBusinessCaseId,
             LoanApplicationDataVersion = request.LoanApplicationDataVersion
         };

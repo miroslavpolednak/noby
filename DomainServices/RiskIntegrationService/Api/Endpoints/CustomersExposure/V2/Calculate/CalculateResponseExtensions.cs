@@ -17,7 +17,7 @@ internal static class CalculateResponseExtensions
         {
             Customers = response.LoanApplicationCounterparty.Select(t => new _V2.CustomersExposureCustomer
             {
-                CbcbRegisterCalled = t.CbcbRegiterCalled.GetValueOrDefault(),
+                //CbcbRegisterCalled = t.CbcbRegiterCalled.GetValueOrDefault(),//TODO c4m ma spatne datovy typ=ma byt bool. Ted vraceji nahodne 0 nebo false.
                 CbcbReportId = t.CbcbReportId,
                 CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == t.RoleCode)?.Id,
                 InternalCustomerId = t.LoanApplicationCounterpartyId,

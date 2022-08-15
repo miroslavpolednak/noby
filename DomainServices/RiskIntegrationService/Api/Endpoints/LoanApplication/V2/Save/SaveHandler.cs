@@ -14,7 +14,6 @@ internal sealed class SaveHandler
         if (FastEnum.TryParse(distrChannel, out _Contracts.LoanApplicationDistributionChannelCode distrChannelEnumValue))
             throw new CisValidationException(0, $"Can't cast DistributionChannelId '{request.DistributionChannelId}' to C4M enum");
         
-
         var requestModel = new _C4M.LoanApplication
         {
             Id = _C4M.ResourceIdentifier.CreateId(request.CaseId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),

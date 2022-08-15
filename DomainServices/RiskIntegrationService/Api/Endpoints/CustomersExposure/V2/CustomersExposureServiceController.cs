@@ -6,7 +6,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.
 
 [Authorize]
 [ApiController]
-[Route("V2/customers-exposure")]
+[Route("v2/customers-exposure")]
 public sealed class CustomersExposureServiceController
     : ControllerBase
 {

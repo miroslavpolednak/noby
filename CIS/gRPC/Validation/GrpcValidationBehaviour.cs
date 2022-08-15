@@ -24,9 +24,8 @@ public class GrpcValidationBehaviour<TRequest, TResponse>
 
         if (validationFailures.Any())
         {
-            var collection = new GrpcErrorCollection(validationFailures.Select(t => new GrpcErrorCollection.GrpcErrorCollectionItem(t.ErrorCode, t.ErrorMessage)));
-            string message = string.Join("; ", collection.Select(t => t.Message));
-            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, message, collection);
+            string message = string.Join("; ", validationFailures.Select(t => t.ErrorMessage));
+            throw new CIS.Core.Exceptions.CisValidationException(validationFailures.Select(t => (Key: t.ErrorCode, Message: t.ErrorMessage)), message);
         }
         
         return next();

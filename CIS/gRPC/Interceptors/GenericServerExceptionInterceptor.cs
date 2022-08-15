@@ -30,7 +30,7 @@ public class GenericServerExceptionInterceptor : Interceptor
             _logger.EntityNotFound(e);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, e.Message, e.ExceptionCode);
         }
-        catch (Core.Exceptions.CisAlreadyExistsException e) // entrita jiz existuje
+        catch (Core.Exceptions.CisAlreadyExistsException e) // entita jiz existuje
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
             _logger.EntityAlreadyExist(e);
@@ -40,6 +40,17 @@ public class GenericServerExceptionInterceptor : Interceptor
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
             throw GrpcExceptionHelpers.CreateRpcExceptionFromServiceCall(e);
+        }
+        catch (Core.Exceptions.CisValidationException e)
+        {
+            setHttpStatus(StatusCodes.Status400BadRequest);
+            if (e.ContainErrorsList)
+            {
+                var collection = new GrpcErrorCollection(e.Errors!.Select(t => new GrpcErrorCollection.GrpcErrorCollectionItem(t.Key, t.Message)));
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, e.Message, collection);
+            }
+            else
+                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, e.Message, 0);
         }
         catch (Core.Exceptions.BaseCisException e)
         {

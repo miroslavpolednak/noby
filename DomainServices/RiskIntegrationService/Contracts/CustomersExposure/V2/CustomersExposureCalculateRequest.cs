@@ -14,5 +14,5 @@ public class CustomersExposureCalculateRequest
     public string LoanApplicationDataVersion { get; set; } = null!;
 
     [ProtoMember(4)]
-    public Shared.Identity UserIdentity { get; set; } = null!;
+    public Shared.Identity? UserIdentity { get; set; } = null!;
 }
