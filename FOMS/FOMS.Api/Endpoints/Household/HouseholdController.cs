@@ -1,4 +1,6 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using DomainServices.SalesArrangementService.Contracts;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Drawing.Drawing2D;
 
 namespace FOMS.Api.Endpoints.Household;
 
@@ -60,8 +62,8 @@ public class HouseholdController : ControllerBase
     /// Vytvoreni nove domacnosti
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/CreateHousehold<br/>
-    /// <i>DS:</i> SalesArrangementService/CreateCustomer
+    /// Vytvoří nový household zavoláním DS: SalesArrangementService/CreateHousehold a zároveň vytvoří prvního CustomerOnSA s rolí odpovídající vytvářené domácnosti (Spolužadatel na spolužadatelské a ručitel na ručitelské domácnosti) pomocí volání DS: SalesArrangementService/CreateCustomer.<br/>
+    /// Prázdná obálka CustomerOnSA je vytvářena, protože neexistuje businessově prázdná domácnost bez členů domácnosti.
     /// </remarks>
     /// <returns>Nove HouseholdId, typ domacnosti a nazev typu domacnosti</returns>
     [HttpPost("")]
