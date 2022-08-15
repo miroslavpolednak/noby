@@ -71,7 +71,7 @@ public sealed class Grpc2WebApiExceptionMiddleware
                 result = Results.ValidationProblem(errors, title: ex.Message);
             }
             else if (!string.IsNullOrEmpty(ex.Message))
-                result = Results.BadRequest(new ProblemDetails() { Title = ex.Message });
+                result = Results.ValidationProblem(new Dictionary<string, string[]> { { "0", new[] { ex.Message } } }, title: "One or more validation errors occurred.");
             else
                 result = Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" });
 

@@ -22,7 +22,8 @@ internal sealed class CalculateHandler
             if (Helpers.IsDealerSchema(request.UserIdentity.IdentityScheme))
                 requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
         }
-
+        
+        // zavolat C4M
         var response = await _client.Calculate(requestModel, cancellation);
 
         return await response.ToServiceResponse(_codebookService, cancellation);
