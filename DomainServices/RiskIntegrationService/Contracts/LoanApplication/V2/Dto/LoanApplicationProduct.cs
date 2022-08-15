@@ -13,7 +13,7 @@ public class LoanApplicationProduct
     public decimal? Ltv { get; set; }
 
     [ProtoMember(4)]
-    public string AplType { get; set; }
+    public string? AplType { get; set; }
 
     [ProtoMember(5)]
     public List<LoanApplicationProductPurpose>? Purposes { get; set; }
@@ -22,16 +22,16 @@ public class LoanApplicationProduct
     public List<LoanApplicationProductCollateral>? Collaterals { get; set; }
 
     [ProtoMember(7)]
-    public decimal? AmountRequired { get; set; }
+    public decimal? RequiredAmount { get; set; }
 
     [ProtoMember(8)]
-    public decimal? AmountInvestment { get; set; }
+    public decimal? InvestmentAmount { get; set; }
 
     [ProtoMember(9)]
-    public decimal? AmountOwnResources { get; set; }
+    public decimal? OwnResourcesAmount { get; set; }
 
     [ProtoMember(10)]
-    public decimal? AmountForeignResources { get; set; }
+    public decimal? ForeignResourcesAmount { get; set; }
 
     [ProtoMember(11)]
     public int? LoanDuration { get; set; }
@@ -62,4 +62,7 @@ public class LoanApplicationProduct
 
     [ProtoMember(20)]
     public DateTime? RepaymentPeriodEnd { get; set; }
+
+    [ProtoMember(21)]
+    public List<int>? MarketingActions { get; set; }
 }

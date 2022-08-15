@@ -15,8 +15,8 @@ internal class UpdateCustomerHandler
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId} does not exist.");
 
         // jestlize uz ma MP identitu, neni co menit - asi vyhod chybu? Nebo ne?
-        if (entity.Identities is not null && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
-            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 16033);
+        /*if (entity.Identities is not null && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp))
+            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, "CustomerOnSA already contains Identity", 16033);*/
 
         var model = new _SA.UpdateCustomerResponse();
 

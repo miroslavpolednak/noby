@@ -69,7 +69,7 @@
       "properties": {
         "cbcbContractId": {
           "description": "cbcbContractId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "customerRoleCode": {
           "type": "string",
@@ -118,7 +118,7 @@
       "properties": {
         "productId": {
           "description": "productId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "loanType": {
           "type": "string",
@@ -217,19 +217,19 @@
         },
         "customerId": {
           "description": "customerId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "roleCode": {
           "type": "string",
           "description": "roleCode"
         },
         "cbcbRegiterCalled": {
-          "type": "string",
+          "type": "boolean",
           "description": "cbcbRegiterCalled"
         },
         "cbcbReportId": {
           "description": "cbcbReportId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "existingKBGroupNaturalPersonExposureItem": {
           "type": "array",
@@ -315,7 +315,7 @@
       "properties": {
         "cbcbContractId": {
           "description": "cbcbContractId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "customerRoleCode": {
           "type": "string",
@@ -355,7 +355,7 @@
       "properties": {
         "riskBusinessCaseId": {
           "description": "riskBusinessCaseId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "loanType": {
           "type": "string",
@@ -474,7 +474,7 @@
         },
         "riskBusinessCaseId": {
           "description": "riskBusinessCaseId",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "loanApplicationDealer": {
           "description": "loanApplicationDealer",

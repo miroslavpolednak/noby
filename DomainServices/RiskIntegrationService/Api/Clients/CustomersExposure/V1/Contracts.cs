@@ -59,7 +59,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("cbcbContractId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier CbcbContractId { get; set; }
+        public string CbcbContractId { get; set; }
 
         /// <summary>
         /// customerRoleCode
@@ -157,7 +157,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("productId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier ProductId { get; set; }
+        public string ProductId { get; set; }
 
         /// <summary>
         /// loanType
@@ -362,7 +362,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("customerId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier CustomerId { get; set; }
+        public string CustomerId { get; set; }
 
         /// <summary>
         /// roleCode
@@ -380,7 +380,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("cbcbRegiterCalled")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string CbcbRegiterCalled { get; set; }
+        public bool? CbcbRegiterCalled { get; set; }
 
         /// <summary>
         /// cbcbReportId
@@ -389,7 +389,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("cbcbReportId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier CbcbReportId { get; set; }
+        public string CbcbReportId { get; set; }
 
         /// <summary>
         /// existingKBGroupNaturalPersonExposureItem
@@ -504,7 +504,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("cbcbContractId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier CbcbContractId { get; set; }
+        public string CbcbContractId { get; set; }
 
         /// <summary>
         /// customerRoleCode
@@ -584,7 +584,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier RiskBusinessCaseId { get; set; }
+        public string RiskBusinessCaseId { get; set; }
 
         /// <summary>
         /// loanType
@@ -792,8 +792,8 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public ResourceIdentifier RiskBusinessCaseId { get; set; } = new ResourceIdentifier();
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RiskBusinessCaseId { get; set; }
 
         /// <summary>
         /// loanApplicationDealer

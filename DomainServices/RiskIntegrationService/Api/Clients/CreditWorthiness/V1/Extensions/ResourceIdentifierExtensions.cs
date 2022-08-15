@@ -2,26 +2,23 @@
 
 internal partial class ResourceIdentifier
 {
-    private static string[] _kbPersonSchemas = new[] { "KBAD", "DMID" };
-    const string _kbInstanceName = "KBCZ";
-    const string _mpInstanceName = "MPSS";
-
     public static ResourceIdentifier Create(string domain, string resource, RiskIntegrationService.Contracts.Shared.Identity humanUser, string? id = null)
         => new ResourceIdentifier
         {
-            Instance = _kbPersonSchemas.Contains(humanUser.IdentityScheme) ? _kbInstanceName : _mpInstanceName,
+            Instance = Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
             Domain = domain,
             Resource = resource,
             Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(0, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
             Variant = humanUser.IdentityScheme!
         };
 
-    public static ResourceIdentifier Create(string instance, string domain, string resource, string? id)
+    public static ResourceIdentifier CreateResourceProcessId(string? id)
         => new ResourceIdentifier
         {
-            Instance = instance,
-            Domain = domain,
-            Resource = resource,
+            Instance = "MPSS",
+            Domain = "OM",
+            Resource = "OfferInstance",
             Id = id
         };
 }
+

@@ -25,9 +25,10 @@ internal class RealSbWebApiClient
                     },
                     Message = new WFS_Event_CaseStateChanged
                     {
+                        Client_benefits = 0,
                         Case_id = request.CaseId,
                         Uver_id = request.CaseId,
-                        Contract_no = request.ContractNumber,
+                        Loan_no = request.ContractNumber,
                         Jmeno_prijmeni = request.ClientFullName,
                         Case_state = request.CaseStateName,
                         Product_type = request.ProductTypeId,

@@ -8,9 +8,13 @@ internal static class XxvDapperConnectionProviderExtensions
 
     public static async Task<Dto.C4mUserInfoData> GetC4mUserInfo(
         this CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> provider,
-        string? identityId,
-        string? identityScheme,
+        Contracts.Shared.Identity? identity,
         CancellationToken cancellationToken)
-        => await provider.ExecuteDapperRawSqlFirstOrDefault<Dto.C4mUserInfoData>(c4mUserInfoSql, new { id = identityId, scheme = identityScheme }, cancellationToken)
-        ?? throw new CisValidationException(0, $"Can not obtain user information from XXV for {identityId}/{identityScheme}");
+    {
+        if (identity is null)
+            throw new CisValidationException(0, $"Can not obtain user information from XXV - identity is null");
+
+        return await provider.ExecuteDapperRawSqlFirstOrDefault<Dto.C4mUserInfoData>(c4mUserInfoSql, new { id = identity.IdentityId, scheme = identity.IdentityScheme }, cancellationToken)
+            ?? throw new CisValidationException(0, $"Can not obtain user information from XXV for {identity.IdentityId}/{identity.IdentityScheme}");
+    }
 }

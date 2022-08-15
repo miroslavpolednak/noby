@@ -534,6 +534,7 @@
       "properties": {
         "value": {
           "type": "number",
+          "format": "decimal",
           "description": "Hodnota částky"
         },
         "currencyCode": {
@@ -1673,7 +1674,7 @@
         },
         "interestRate": {
           "type": "number",
-          "format": "double",
+          "format": "decimal",
           "description": "žádaná roční úroková sazba."
         },
         "repaymentScheduleType": {
@@ -1769,6 +1770,7 @@
       "properties": {
         "amount": {
           "type": "number",
+          "format": "decimal",
           "description": "výše požadované výše úvěru pro daný účel."
         },
         "code": {

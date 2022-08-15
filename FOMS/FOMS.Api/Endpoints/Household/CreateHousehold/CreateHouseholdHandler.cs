@@ -1,5 +1,6 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.CreateHousehold;
 
@@ -20,6 +21,14 @@ internal class CreateHouseholdHandler
         };
         int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(requestModel, cancellationToken));
 
+        // vytvorit customera
+        var customerResponse = ServiceCallResult.ResolveAndThrowIfError<CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new CreateCustomerRequest
+        {
+            SalesArrangementId = request.SalesArrangementId,
+            CustomerRoleId = request.HouseholdTypeId,
+            Customer = new CustomerOnSABase()
+        }, cancellationToken));
+
         return new Dto.HouseholdInList
         {
             HouseholdId = householdId,
@@ -30,9 +39,11 @@ internal class CreateHouseholdHandler
 
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly ILogger<CreateHouseholdHandler> _logger;
 
     public CreateHouseholdHandler(
+        ICustomerOnSAServiceAbstraction customerOnSAService,
         IHouseholdServiceAbstraction householdService,
         ICodebookServiceAbstraction codebookService,
         ILogger<CreateHouseholdHandler> logger)
@@ -40,5 +51,6 @@ internal class CreateHouseholdHandler
         _logger = logger;
         _codebookService = codebookService;
         _householdService = householdService;
+        _customerOnSAService = customerOnSAService;
     }
 }

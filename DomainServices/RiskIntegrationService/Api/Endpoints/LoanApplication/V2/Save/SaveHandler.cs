@@ -1,4 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using _Contracts = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save;
 
@@ -7,12 +9,37 @@ internal sealed class SaveHandler
 {
     public async Task<_V2.LoanApplicationSaveResponse> Handle(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
     {
-        // volani c4m
-        var response = await _client.Save(null, cancellation);
+        // distr channel
+        var distrChannel = (await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code ?? "BR";
+        if (FastEnum.TryParse(distrChannel, out _Contracts.LoanApplicationDistributionChannelCode distrChannelEnumValue))
+            throw new CisValidationException(0, $"Can't cast DistributionChannelId '{request.DistributionChannelId}' to C4M enum");
+        
 
+        var requestModel = new _C4M.LoanApplication
+        {
+            Id = _C4M.ResourceIdentifier.CreateId(request.CaseId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            DistributionChannelCode = distrChannelEnumValue,
+            SignatureType = request.SignatureType.ToString(),
+            LoanApplicationDataVersion = request.LoanApplicationDataVersion,
+            LoanApplicationHousehold = null,
+            LoanApplicationProduct = await request.Product?.ToC4m(_codebookService, cancellation) ?? throw new CisValidationException(0, "Unable to create LoanApplicationProduct"),
+            //LoanApplicationProductRelation = request.ProductRelations.ToC4m()
+        };
+
+        // human user instance
+        var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
+        if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
+        else
+            requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+
+        // volani c4m
+        var response = await _client.Save(requestModel, cancellation);
+
+        var responseVerPriority = requestModel.LoanApplicationHousehold?.SelectMany(t => t.CounterParty.SelectMany(x => x.Income?.EmploymentIncome?.Select(y => y.VerificationPriority))).ToList();
         return new _V2.LoanApplicationSaveResponse
         {
-            RiskSegment = ""
+            RiskSegment = responseVerPriority is null ? "B" : (responseVerPriority.All(t => t.GetValueOrDefault()) ? "A" : "B")
         };
     }
 

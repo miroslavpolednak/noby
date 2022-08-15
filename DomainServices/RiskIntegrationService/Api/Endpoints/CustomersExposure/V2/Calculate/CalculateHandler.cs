@@ -11,15 +11,15 @@ internal sealed class CalculateHandler
         var requestModel = new _C4M.LoanApplicationRelatedExposure
         {
             LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.CaseId!.ToString(), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
-            //RiskBusinessCaseId = request.RiskBusinessCaseId,//TODO C4M predela na string
-            LoanApplicationDataVersion = request.LoanApplicationDataVersion,
+            RiskBusinessCaseId = request.RiskBusinessCaseId,
+            LoanApplicationDataVersion = request.LoanApplicationDataVersion
         };
 
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity!.IdentityId, request.UserIdentity.IdentityScheme, cancellation);
-            if (!Helpers.IsKbGroupPerson(request.UserIdentity.IdentityScheme))
+            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
+            if (Helpers.IsDealerSchema(request.UserIdentity.IdentityScheme))
                 requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
         }
 

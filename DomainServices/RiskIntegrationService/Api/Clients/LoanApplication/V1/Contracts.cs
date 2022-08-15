@@ -181,7 +181,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("value")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Value { get; set; }
+        public decimal? Value { get; set; }
 
         /// <summary>
         /// Kód měny částky (ISO 4217)
@@ -2006,7 +2006,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? InterestRate { get; set; }
+        public decimal? InterestRate { get; set; }
 
         /// <summary>
         /// typ splátkového kalendáře.
@@ -2155,7 +2155,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// účel úvěru.

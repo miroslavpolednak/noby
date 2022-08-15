@@ -6,7 +6,7 @@ namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 public class CustomersExposureExistingKBGroupItem
 {
     [ProtoMember(1)]
-    public IdIdentifier? ProductIdentifier { get; set; }
+    public string? ProductId { get; set; }
 
     [ProtoMember(2)]
     public string? LoanType { get; set; }

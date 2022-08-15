@@ -47,7 +47,7 @@ internal static class CalculateRequestExtensions
             });
 
             // merital status
-            _C4M.LoanApplicationCounterPartyMaritalStatus maritalStatus = FastEnum.TryParse(maritalStatuses.FirstOrDefault(m => m.Id == t.MaritalStatusStateId)?.RdmMaritalStatusCode, out _C4M.LoanApplicationCounterPartyMaritalStatus ms) ? ms : _C4M.LoanApplicationCounterPartyMaritalStatus.M;
+            _C4M.LoanApplicationCounterPartyMaritalStatus maritalStatus = FastEnum.TryParse(maritalStatuses.FirstOrDefault(m => m.Id == t.MaritalStateId)?.RdmMaritalStatusCode, out _C4M.LoanApplicationCounterPartyMaritalStatus ms) ? ms : _C4M.LoanApplicationCounterPartyMaritalStatus.M;
 
             // Id, IsPartner
             return new _C4M.LoanApplicationCounterParty
@@ -120,29 +120,4 @@ internal static class CalculateRequestExtensions
             })
             .ToList();
     #endregion liabilities
-
-    #region human user
-    public static _C4M.Dealer ToC4mDealer(this Dto.C4mUserInfoData userInfo, Contracts.Shared.Identity humanUser)
-        => new()
-        {
-            Id = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser),
-            CompanyId = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser, userInfo.DealerCompanyId?.ToString())
-        };
-
-    public static _C4M.Person ToC4mKbPerson(this Dto.C4mUserInfoData userInfo, Contracts.Shared.Identity humanUser)
-        => new()
-        {
-            Id = _C4M.ResourceIdentifier.Create("PM", "KBGroupPerson", humanUser),
-            Surname = userInfo.PersonSurname,
-            OrgUnit = new _C4M.OrganizationUnit
-            {
-                Id = userInfo.DealerCompanyId.ToString(),
-                JobPost = new _C4M.JobPost
-                {
-                    Id = userInfo.PersonJobPostId
-                },
-                Name = userInfo.PersonOrgUnitName
-            }
-        };
-    #endregion human user
 }

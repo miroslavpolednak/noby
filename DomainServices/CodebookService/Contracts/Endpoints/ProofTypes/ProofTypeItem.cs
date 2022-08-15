@@ -13,7 +13,7 @@
         public string Name { get; set; }
 
         [DataMember(Order = 4)]
-        public string NameEng { get; set; }
+        public string NameEnglish { get; set; }
 
         [DataMember(Order = 5)]
         public bool IsValid { get; set; }

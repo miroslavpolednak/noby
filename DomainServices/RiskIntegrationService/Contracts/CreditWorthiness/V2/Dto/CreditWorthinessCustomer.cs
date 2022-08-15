@@ -10,7 +10,7 @@ public sealed class CreditWorthinessCustomer
     public bool HasPartner { get; set; }
 
     [ProtoMember(3)]
-    public int? MaritalStatusStateId { get; set; }
+    public int? MaritalStateId { get; set; }
 
     [ProtoMember(4)]
     public List<CreditWorthinessIncome>? Incomes { get; set; }

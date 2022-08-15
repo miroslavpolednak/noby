@@ -11,7 +11,7 @@ public class LoanApplicationSaveRequest
     public int? DistributionChannelId { get; set; }
 
     [ProtoMember(3)]
-    public int? SignatureTypeId { get; set; }
+    public CIS.Foms.Enums.SignatureTypes SignatureType { get; set; }
 
     [ProtoMember(4)]
     public string LoanApplicationDataVersion { get; set; } = null!;

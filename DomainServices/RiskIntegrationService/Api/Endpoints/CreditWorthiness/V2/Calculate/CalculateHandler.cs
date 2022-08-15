@@ -17,7 +17,7 @@ internal sealed class CalculateHandler
 
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
-            ResourceProcessId = _C4M.ResourceIdentifier.Create("MPSS", "OM", "OfferInstance", request.ResourceProcessId),
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId),
             ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             //RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseId!),
             LoanApplicationProduct = request.Product.ToC4m(riskApplicationType.C4mAplCode),
@@ -35,12 +35,12 @@ internal sealed class CalculateHandler
         };
 
         // human user instance
-        /*var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity!.IdentityId, request.UserIdentity.IdentityScheme, cancellation);
-        if (Helpers.IsKbGroupPerson(request.UserIdentity.IdentityScheme))
-            requestModel.KbGroupPerson = userInstance.ToC4mKbPerson(request.UserIdentity);
+        var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
+        if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
         else
-            requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);*/
-
+            requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        
         // volani c4m
         var response = await _client.Calculate(requestModel, cancellation);
 
