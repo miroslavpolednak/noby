@@ -53,9 +53,7 @@
 		<Protobuf Include="./Protos/NullableGrpcDecimal.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/GrpcAddress.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 		<Protobuf Include="./Protos/UserIdentity.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
-		<Protobuf Include="Protos\NullableGrpcDateTime.proto" Access="Public" GrpcServices="None">
-		  <ProtoRoot>./Protos</ProtoRoot>
-		</Protobuf>
+		<Protobuf Include="./Protos/NullableGrpcDateTime.proto" ProtoRoot="./Protos" Access="Public" GrpcServices="None" />
 	</ItemGroup>
 
 </Project>

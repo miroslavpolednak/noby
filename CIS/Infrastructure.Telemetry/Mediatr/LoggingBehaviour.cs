@@ -20,7 +20,7 @@ internal class LoggingBehaviour<TRequest, TResponse>
 
         using (_logger.BeginScope(new Dictionary<string, object>
             {
-                { "Payload", request }
+                { "Payload", System.Text.Json.JsonSerializer.Serialize(request) }
             }))
         {
             _logger.RequestHandlerStarted(requestName);
@@ -34,10 +34,10 @@ internal class LoggingBehaviour<TRequest, TResponse>
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                { "Payload", response }
+                { "Payload", System.Text.Json.JsonSerializer.Serialize(response) }
             }))
             {
-                _logger.RequestHandlerStarted(requestName);
+                _logger.RequestHandlerFinished(requestName);
             }
         }
         

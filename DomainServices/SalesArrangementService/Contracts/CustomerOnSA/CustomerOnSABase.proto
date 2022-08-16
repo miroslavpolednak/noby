@@ -5,6 +5,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
+import "NullableGrpcDateTime.proto";
 import "Obligation.proto";
 
 message CustomerOnSABase {
@@ -18,5 +19,5 @@ message CustomerOnSABase {
 
     google.protobuf.BoolValue HasPartner = 5;
 
-    cis.types.NullableGrpcDate LockedIncomeDateTime = 6;
+    cis.types.NullableGrpcDateTime LockedIncomeDateTime = 6;
 }

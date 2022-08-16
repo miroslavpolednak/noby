@@ -62,7 +62,6 @@ public sealed class Grpc2WebApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)
         {
-            IResult result;
             // osetrena validace v pripade, ze se vraci vice validacnich hlasek
             if (ex.ContainErrorsList)
             {
