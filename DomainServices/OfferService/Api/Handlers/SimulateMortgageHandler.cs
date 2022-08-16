@@ -123,6 +123,18 @@ internal class SimulateMortgageHandler
         // Určuje za jakým účelem se generuje seznam poplatků.
         // Default: 0 - za účelem nabídky
         input.FeeSettings.FeeTariffPurpose = input.FeeSettings.FeeTariffPurpose.HasValue ? input.FeeSettings.FeeTariffPurpose.Value : defaultFeeSettings.FeeTariffPurpose;
+        
+        // Rizikové životní pojištění
+        if (input.RiskLifeInsurance != null)
+        {
+            input.RiskLifeInsurance.Frequency = input.RiskLifeInsurance.Frequency ?? 1;         // Default: 1
+        }
+
+        // Pojištění nemovitosti
+        if (input.RealEstateInsurance != null)
+        {
+            input.RealEstateInsurance.Frequency = input.RealEstateInsurance.Frequency ?? 12;    // Default: 12
+        }
 
         return input;
     }

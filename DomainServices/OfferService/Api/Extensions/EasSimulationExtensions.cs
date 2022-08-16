@@ -18,6 +18,16 @@ internal static class EasSimulationExtensions
         enableResponseRpsnToky = 0,
     };
 
+    // settings for Full Payment Schedule [FPT]
+    private static readonly EasWrapper.SimSettings ReqFpsSettings = new EasWrapper.SimSettings
+    {
+        rezimVolani = 2,
+        enableResponseSplatkovyKalendarJednoduchy = 0,
+        enableResponseSplatkovyKalendarPlny = 1,
+        enableResponseOperace = 0,
+        enableResponseRpsnToky = 0,
+    };
+
 
     // loan
     private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs)
@@ -95,6 +105,18 @@ internal static class EasSimulationExtensions
             vypisBu = inputs.FeeSettings.IsStatementCharged ? 1 : 0,
             vypisHu = basicParameters.StatementTypeId!.Value,
         };
+
+        if (inputs.RiskLifeInsurance != null)
+        {
+            nastaveniPoplatku.rzpSuma = inputs.RiskLifeInsurance.Sum;
+            nastaveniPoplatku.rzpFrekvence = inputs.RiskLifeInsurance.Frequency;
+        }
+
+        if (inputs.RealEstateInsurance != null)
+        {
+            nastaveniPoplatku.pojNemovSuma = inputs.RealEstateInsurance.Sum;
+            nastaveniPoplatku.pojNemovFrekvence = inputs.RealEstateInsurance.Frequency;
+        }
 
         return nastaveniPoplatku;
     }
@@ -180,6 +202,18 @@ internal static class EasSimulationExtensions
             poplatky = inputs.ToReqFees(),
         };
     }
+
+    /// <summary>
+    /// Modifies EasSimulationHT object [SimulationHTRequest] to Full Payment Schedule [FPS] request.
+    /// </summary>
+    public static EasWrapper.SimulationHTRequest ToEasSimulationFullPaymentScheduleRequest(this EasWrapper.SimulationHTRequest request)
+    {
+        request.settings = ReqFpsSettings;
+
+        // request
+        return request;
+    }
+
 
     public static EasWrapper.SimulationHTRequest SampleRequest = new EasWrapper.SimulationHTRequest
     {
@@ -341,6 +375,38 @@ internal static class EasSimulationExtensions
             .AddResResults(easSimulationResponse.urokovaSazba);                  // interest rate
 
         return results;
+    }
+
+    /// <summary>
+    /// Converts EAS SplF object [SplF] to Full Payment Schedule item object [PaymentScheduleFull].
+    /// </summary>
+    private static _OS.PaymentScheduleFull? ToPaymentScheduleFull(this EasWrapper.SplF easSplF)
+    {
+        if (easSplF is null)
+            return null;
+
+        return new _OS.PaymentScheduleFull
+        {
+            PaymentIndex = easSplF.n,
+            PaymentNumber = easSplF.c,
+            Date = easSplF.d,
+            Amount = easSplF.p,
+            Principal = easSplF.j,
+            Interest = easSplF.u,
+            RemainingPrincipal = easSplF.z,
+        };
+    }
+
+
+    /// <summary>
+    /// Converts EasSimulationHT object [SimulationHTResponse] to PaymentScheduleFull array [PaymentScheduleFull].
+    /// </summary>
+    public static List<_OS.PaymentScheduleFull>? ToFullPaymentSchedule(this EasWrapper.SimulationHTResponse easSimulationResponse)
+    {
+        if (easSimulationResponse.splatkovyKalendarPlny is null)
+            return null;
+
+        return easSimulationResponse.splatkovyKalendarPlny.Select(i => i.ToPaymentScheduleFull()).ToList()!;
     }
 
     public static _OS.AdditionalMortgageSimulationResults ToAdditionalSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)

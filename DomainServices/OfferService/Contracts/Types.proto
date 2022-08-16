@@ -73,3 +73,13 @@ message PaymentScheduleSimple {
 	string Type = 4;
 	string Amount = 5;
 }
+
+message RiskLifeInsurance {
+	cis.types.GrpcDecimal Sum = 1;
+	google.protobuf.Int32Value Frequency = 2;
+}
+
+message RealEstateInsurance {
+	cis.types.GrpcDecimal Sum = 1;
+	google.protobuf.Int32Value Frequency = 2;
+}
