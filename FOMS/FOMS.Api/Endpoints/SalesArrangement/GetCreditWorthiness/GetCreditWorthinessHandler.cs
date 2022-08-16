@@ -44,16 +44,16 @@ internal class GetCreditWorthinessHandler
         {
             Product = caseInstance.Data.ProductTypeId,
             Maturity = offerInstance.SimulationResults.LoanDuration,
-            InterestRate = (double)offerInstance.SimulationResults.LoanInterestRate,
-            AmountRequired = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
-            Annuity = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
+            InterestRate = (double)(decimal)offerInstance.SimulationResults.LoanInterestRate,
+            AmountRequired = Convert.ToInt32((decimal?)offerInstance.SimulationResults.LoanAmount ?? 0),
+            Annuity = Convert.ToInt32((decimal?)offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
             FixationPeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
         };
 #pragma warning restore CA1305
         
         // domacnosti
         ripRequest.Households = new List<LoanApplicationHousehold>();
-        foreach (var household in households)
+        foreach (var household in households.Where(t => t.CustomerOnSAId1.HasValue)) //neberu domacnosti bez aspon jednoho customera
             ripRequest.Households.Add(await createHousehold(household, cancellationToken));
 
         var ripResult = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculation>(await _ripClient.ComputeCreditWorthiness(ripRequest));
@@ -62,8 +62,8 @@ internal class GetCreditWorthinessHandler
         {
             InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit ?? 0),
             MaxAmount = Convert.ToInt32(ripResult.MaxAmount ?? 0),
-            RemainsLivingAnnuity = Convert.ToInt32(ripResult.RemainsLivingAnnuity ?? 0),
-            RemainsLivingInst = Convert.ToInt32(ripResult.RemainsLivingInst ?? 0),
+            RemainsLivingAnnuity = Convert.ToInt32((decimal?)ripResult.RemainsLivingAnnuity ?? 0),
+            RemainsLivingInst = Convert.ToInt32((decimal?)ripResult.RemainsLivingInst ?? 0),
             WorthinessResult = ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
@@ -131,11 +131,9 @@ internal class GetCreditWorthinessHandler
         if (customer.Incomes is not null && customer.Incomes.Any())
             c.LoanApplicationIncome = customer.Incomes.Select(t => new LoanApplicationIncome
             {
-                Amount = Convert.ToDouble(t.Sum),
+                Amount = Convert.ToDouble((decimal)t.Sum),
                 CategoryMp = t.IncomeTypeId
             }).ToList() ?? new List<LoanApplicationIncome>();
-        else
-            throw new CisValidationException($"Customer #{customer.CustomerOnSAId} does not have any income");
 
         if (customer.Obligations is not null && customer.Obligations.Any())
             c.CreditLiabilities = customer.Obligations.Select(t => new CreditLiability
