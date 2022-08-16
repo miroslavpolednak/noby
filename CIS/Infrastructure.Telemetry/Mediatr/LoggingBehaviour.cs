@@ -7,7 +7,6 @@ internal class LoggingBehaviour<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    static Type _unitType = typeof(MediatR.Unit);
     private readonly ILogger<LoggingBehaviour<TRequest, TResponse>> _logger;
     
     public LoggingBehaviour(ILogger<LoggingBehaviour<TRequest, TResponse>> logger)

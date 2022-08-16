@@ -40,27 +40,21 @@ internal class UpdateCustomerHandler
             && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb))
         {
             var identity = entity.Identities.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await getCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellation);
+            await _updateService.GetCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellation);
 
             // zavolat EAS
-            int? newMpIdentityId = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(getEasClientModel()));
+            int? newMpIdentityId = await _updateService.TryCreateMpIdentity(entity);
 
             // pokud probehlo zadani klienta v eas ok, tak pridej schema
             if (newMpIdentityId.HasValue)
             {
                 model.PartnerId = newMpIdentityId.Value;
-                entity.Identities.Add(new Repositories.Entities.CustomerOnSAIdentity
-                {
-                    CustomerOnSAId = entity.CustomerOnSAId,
-                    IdentityId = newMpIdentityId.Value,
-                    IdentityScheme = CIS.Foms.Enums.IdentitySchemes.Mp
-                });
             }
         }
         // nove byl customer identifikovan KB identitou
         else if (!alreadyKbUpdatedCustomer && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb))
         {
-            await getCustomerAndUpdateEntity(entity, entity.Identities.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellation);
+            await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellation);
         }
 
         // update CustomerOnSA
@@ -69,72 +63,23 @@ internal class UpdateCustomerHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
+        {
+            IdentityScheme = (CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
+            IdentityId = t.IdentityId
+        }).ToList());
+
         return model;
     }
 
-    async Task getCustomerAndUpdateEntity(Repositories.Entities.CustomerOnSA entity, long identityId, CIS.Foms.Enums.IdentitySchemes scheme, CancellationToken cancellation)
-    {
-        if (_cachedCustomerInstance is not null) return;
-
-        var kbIdentity = new CIS.Infrastructure.gRPC.CisTypes.Identity(identityId, scheme);
-
-        _cachedCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_Customer.CustomerResponse>(await _customerService.GetCustomerDetail(new()
-        {
-            Identity = kbIdentity
-        }, cancellation));
-
-        // propsat udaje do customerOnSA
-        entity.DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth;
-        entity.FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName;
-        entity.Name = _cachedCustomerInstance.NaturalPerson?.LastName ?? "";
-
-        // get CaseId
-        var caseId = await _dbContext.SalesArrangements.Where(t => entity.SalesArrangementId == t.SalesArrangementId).Select(t => t.CaseId).FirstAsync(cancellation);
-
-        // update case service
-        await _caseService.UpdateCaseCustomer(caseId, new CaseService.Contracts.CustomerData
-        {
-            DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth,
-            FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName,
-            Name = _cachedCustomerInstance.NaturalPerson?.LastName,
-            Identity = kbIdentity
-        }, cancellation);
-    }
-
-    private ExternalServices.Eas.Dto.ClientDataModel getEasClientModel()
-        => new()
-        {
-            BirthNumber = _cachedCustomerInstance!.NaturalPerson!.BirthNumber,
-            FirstName = _cachedCustomerInstance.NaturalPerson.FirstName,
-            LastName = _cachedCustomerInstance.NaturalPerson.LastName,
-            DateOfBirth = _cachedCustomerInstance.NaturalPerson.DateOfBirth
-        };
-
-    // zalozit noveho klienta v EAS
-    static int? resolveCreateEasClient(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse> r => r.Model.Id,
-            ErrorServiceCallResult r => default(int?), //TODO co se ma v tomhle pripade delat?
-            _ => throw new NotImplementedException("resolveCreateEasClient")
-        };
-
-    private _Customer.CustomerResponse? _cachedCustomerInstance;
-
-    private readonly ICaseServiceAbstraction _caseService;
-    private readonly ICustomerServiceAbstraction _customerService;
-    private readonly Eas.IEasClient _easClient;
+    private readonly Shared.UpdateCustomerService _updateService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     
     public UpdateCustomerHandler(
-        Eas.IEasClient easClient,
-        ICaseServiceAbstraction caseService,
-        ICustomerServiceAbstraction customerService,
+        Shared.UpdateCustomerService updateService,
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
-        _easClient = easClient;
-        _caseService = caseService;
-        _customerService = customerService;
+        _updateService = updateService;
         _dbContext = dbContext;
     }
 }

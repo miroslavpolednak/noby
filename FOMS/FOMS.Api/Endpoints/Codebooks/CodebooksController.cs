@@ -18,6 +18,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
     /// - ActionCodesSavings - obsolete
     /// - ActionCodesSavingsLoan - obsolete
+    /// - BankCodes
     /// - <a href="https://wiki.kb.cz/confluence/display/HT/CaseState">CaseStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216251">ClassificationOfEconomicActivities</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
