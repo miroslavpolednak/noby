@@ -28,4 +28,6 @@ message MortgageSimulationInputs {
 	FeeSettings FeeSettings = 16;
 	InputMarketingAction MarketingActions = 17;
 	repeated InputFee Fees = 18;
+	RiskLifeInsurance RiskLifeInsurance = 19;
+	RealEstateInsurance RealEstateInsurance = 20;
 }

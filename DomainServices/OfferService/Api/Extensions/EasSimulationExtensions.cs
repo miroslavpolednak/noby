@@ -106,6 +106,18 @@ internal static class EasSimulationExtensions
             vypisHu = basicParameters.StatementTypeId!.Value,
         };
 
+        if (inputs.RiskLifeInsurance != null)
+        {
+            nastaveniPoplatku.rzpSuma = inputs.RiskLifeInsurance.Sum;
+            nastaveniPoplatku.rzpFrekvence = inputs.RiskLifeInsurance.Frequency;
+        }
+
+        if (inputs.RealEstateInsurance != null)
+        {
+            nastaveniPoplatku.pojNemovSuma = inputs.RealEstateInsurance.Sum;
+            nastaveniPoplatku.pojNemovFrekvence = inputs.RealEstateInsurance.Frequency;
+        }
+
         return nastaveniPoplatku;
     }
 
