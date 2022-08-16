@@ -29,7 +29,7 @@ internal class LoggingBehaviour<TRequest, TResponse>
         var response = await next();
 
         if (response is null || response is MediatR.Unit)
-            _logger.RequestHandlerFinished(requestName);
+            _logger.RequestHandlerFinishedWithEmptyResult(requestName);
         else
         {
             using (_logger.BeginScope(new Dictionary<string, object>

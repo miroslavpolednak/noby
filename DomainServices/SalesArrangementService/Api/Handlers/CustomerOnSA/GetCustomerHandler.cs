@@ -23,11 +23,12 @@ internal class GetCustomerHandler
         customerInstance.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
 
         // obligations
-        var obligationsBin = await _dbContext.CustomersObligations
+        var obligations = await _dbContext.CustomersObligations
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .Select(CustomerOnSAServiceRepositoryExpressions.Obligation())
-            .FirstOrDefaultAsync(cancellation);
+            .ToListAsync(cancellation);
+        customerInstance.Obligations.AddRange(obligations);
 
         // incomes
         var list = await _dbContext.CustomersIncomes
