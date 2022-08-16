@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+message PaymentScheduleFull {
+	int32 PaymentIndex = 1;
+    string PaymentNumber = 2;
+    string Date = 3;
+    string Amount = 4;
+    string Principal = 5;
+    string Interest = 6;
+    string RemainingPrincipal = 7;
+}
+
+message GetMortgageOfferFPScheduleResponse {
+	repeated PaymentScheduleFull PaymentScheduleFull = 1;
+}
