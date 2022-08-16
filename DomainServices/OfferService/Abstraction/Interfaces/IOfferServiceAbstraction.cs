@@ -57,4 +57,14 @@ public interface IOfferServiceAbstraction
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10018; SimulationInputs.CollateralAmount is not specified</exception>
     Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
+    /// <summary>
+    /// Získání plného splátkového kalendáře KB Hypotéky
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[GetMortgageOfferFPScheduleResponse] - OK
+    /// </returns>
+    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
+    Task<IServiceCallResult> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default(CancellationToken));
+
 }

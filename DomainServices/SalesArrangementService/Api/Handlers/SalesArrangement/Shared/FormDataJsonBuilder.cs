@@ -608,6 +608,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     var developer = Data.Offer.SimulationInputs.Developer;
                     var developerDescription = (developer == null) ? null : String.Join(",", (new List<string> { developer.NewDeveloperName ?? String.Empty, developer.NewDeveloperCin ?? String.Empty, developer.NewDeveloperProjectName ?? String.Empty }));
 
+                    var insuranceSumRiskLife = Data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
+                    var insuranceSumRealEstate = Data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RealEstateInsurance.Sum;
+
                     data = new
                     {
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
@@ -634,7 +637,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         splatnost_uv_mesice = Data.Offer.SimulationResults.LoanDuration.ToJsonString(),                                              // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
                         fixace_uv_mesice = Data.Offer.SimulationInputs.FixedRatePeriod.ToJsonString(),                                               // OfferInstance - na FE je to v rocích a je to číselník ?
                         individualni_cenotvorba_odchylka = Data.Offer.SimulationInputs.InterestRateDiscount.ToJsonString(),
-                        predp_termin_cerpani = Data.Arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
+                        //predp_termin_cerpani = Data.Arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
                         den_splaceni = Data.Offer.SimulationInputs.PaymentDay.ToJsonString(),                                                        // OfferInstance
                         developer_id = Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString(),
                         developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
@@ -661,6 +664,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                                   // OfferInstance
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
+
+                        RZP_suma = insuranceSumRiskLife.ToJsonString(),
+                        pojisteni_nem_suma = insuranceSumRealEstate.ToJsonString(),
 
                         seznam_id_formulare = seznamIdFormulare,
                         ea_kod = "608248",

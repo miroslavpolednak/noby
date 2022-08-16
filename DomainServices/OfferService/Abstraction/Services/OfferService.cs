@@ -90,4 +90,13 @@ internal class OfferService : IOfferServiceAbstraction
         }
     }
 
+    public async Task<IServiceCallResult> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetMortgageOfferFPSchedule), offerId);
+
+        var result = await _service.GetMortgageOfferFPScheduleAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
+
+        return new SuccessfulServiceCallResult<GetMortgageOfferFPScheduleResponse>(result);
+    }
+
 }
