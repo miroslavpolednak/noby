@@ -66,15 +66,12 @@ internal class UpdateCustomerHandler
 
     private readonly Shared.IdentifyCustomerService _identifyCustomerService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<UpdateCustomerHandler> _logger;
     
     public UpdateCustomerHandler(
         Shared.IdentifyCustomerService identifyCustomerService,
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<UpdateCustomerHandler> logger)
+        Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _identifyCustomerService = identifyCustomerService;
         _dbContext = dbContext;
-        _logger = logger;
     }
 }
