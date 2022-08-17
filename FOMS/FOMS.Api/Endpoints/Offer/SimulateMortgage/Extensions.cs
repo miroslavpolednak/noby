@@ -4,13 +4,14 @@ namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
 
 internal static class Extensions
 {
-    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this SimulateMortgageRequest request)
+    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this SimulateMortgageRequest request, DateTime guaranteeDateFrom)
     {
         var model = new DomainServices.OfferService.Contracts.SimulateMortgageRequest()
         {
             ResourceProcessId = request.ResourceProcessId,
             SimulationInputs = new()
             {
+                GuaranteeDateFrom = guaranteeDateFrom,
                 InterestRateDiscount = request.InterestRateDiscount,
                 DrawingType = request.DrawingType,
                 DrawingDuration = request.DrawingDuration,

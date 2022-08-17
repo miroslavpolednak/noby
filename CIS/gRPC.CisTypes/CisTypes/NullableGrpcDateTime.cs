@@ -19,6 +19,11 @@ public sealed partial class NullableGrpcDateTime
         return new NullableGrpcDateTime(value.Value.Year, value.Value.Month, value.Value.Day, value.Value.Hour, value.Value.Minute, value.Value.Second, value.Value.Millisecond);
     }
 
+    public static implicit operator NullableGrpcDateTime(DateTime value)
+    {
+        return new NullableGrpcDateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second, value.Millisecond);
+    }
+
     public static implicit operator DateTime?(NullableGrpcDateTime? grpcDate)
         => grpcDate == null ? default(DateTime?) : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day, grpcDate.Hours, grpcDate.Minutes, grpcDate.Seconds, grpcDate.Nanos);
 }

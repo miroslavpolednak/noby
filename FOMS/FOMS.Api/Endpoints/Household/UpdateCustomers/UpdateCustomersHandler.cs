@@ -51,12 +51,12 @@ internal class UpdateCustomersHandler
             {
                 try
                 {
-                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value));
+                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
 
                     newMpId = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
                     {
                         CustomerOnSAId = customer.CustomerOnSAId!.Value,
-                        Customer = customer.ToDomainServiceRequest(customer.LockedIncome && !((DateTime?)currentCustomerInstance.LockedIncomeDateTime).HasValue ? DateTime.Now : null)
+                        Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
                     }, cancellationToken)).PartnerId;
                 }
                 catch (CisArgumentException ex) when (ex.ExceptionCode == 16033)

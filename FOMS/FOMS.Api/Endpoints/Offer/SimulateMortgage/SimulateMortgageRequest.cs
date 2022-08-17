@@ -10,4 +10,9 @@ public sealed class SimulateMortgageRequest
     /// Musi byt parsovatelny na .NET Guid type.
     /// </summary>
     public string? ResourceProcessId { get; set; }
+
+    /// <summary>
+    /// Simulace s garancí úrokové sazby, default hodnota false
+    /// </summary>
+    public bool? WithGuarantee { get; set; }
 }

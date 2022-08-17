@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Abstraction;
+using DomainServices.SalesArrangementService.Abstraction;
 using DSContract = DomainServices.OfferService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.SimulateMortgage;
@@ -8,8 +9,18 @@ internal class SimulateMortgageHandler
 {
     public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
+        // datum garance
+        DateTime guaranteeDateFrom;
+        if (!request.WithGuarantee.GetValueOrDefault())
+            guaranteeDateFrom = DateTime.Now;
+        else
+        {
+            var saInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(1, cancellationToken));
+            guaranteeDateFrom = saInstance.OfferGuaranteeDateFrom;
+        }
+
         // predelat na DS request
-        var model = request.ToDomainServiceRequest();
+        var model = request.ToDomainServiceRequest(guaranteeDateFrom);
         
         // zavolat DS
         var result = await callOfferService(model, cancellationToken);
@@ -38,10 +49,12 @@ internal class SimulateMortgageHandler
         }
     }
 
+    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IOfferServiceAbstraction _offerService;
     
-    public SimulateMortgageHandler(IOfferServiceAbstraction offerService)
+    public SimulateMortgageHandler(IOfferServiceAbstraction offerService, ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _salesArrangementService = salesArrangementService;
         _offerService = offerService;
     }
 }

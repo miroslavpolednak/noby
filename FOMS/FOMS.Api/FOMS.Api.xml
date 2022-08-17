@@ -39,7 +39,7 @@
             - vyhledat Case podle retezce
             - zobrazit pouze Cases v pozadovanem stavu
             - nastavit strankovani
-            - nastavit razeni [stateUpdated]
+            - nastavit razeni [povolene: stateUpdated, customerName]
             <i>DS:</i> CaseService/SearchCases<br/>
             https://wiki.kb.cz/confluence/display/HT/searchCases
             </remarks>
@@ -922,6 +922,11 @@
             Musi byt parsovatelny na .NET Guid type.
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.WithGuarantee">
+            <summary>
+            Simulace s garancí úrokové sazby, default hodnota false
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferId">
             <summary>
             ID vytvorene simulace.
@@ -1123,6 +1128,16 @@
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.CreatedBy">
             <summary>
             Jmeno a prijmeni uzivatele, ktery vytvoril SA
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.OfferGuaranteeDateFrom">
+            <summary>
+            Rozhodný den sazby (datum založení = datum garance)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.OfferGuaranteeDateTo">
+            <summary>
+            Datum, kdy končí garance pro danou simulaci
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse.Data">
@@ -1351,7 +1366,7 @@
             Detail Sales Arrangement-u.
             </summary>
             <remarks>
-            <i>/Endpoints/SalesArrangement/GetDetail</i><br/>
+            <i>/Endpoints/SalesArrangement/GetDetail</i>\r\n<br />
             Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>

@@ -76,7 +76,7 @@ public class SalesArrangementController : ControllerBase
     /// Detail Sales Arrangement-u.
     /// </summary>
     /// <remarks>
-    /// <i>/Endpoints/SalesArrangement/GetDetail</i><br/>
+    /// <i>/Endpoints/SalesArrangement/GetDetail</i>\r\n<br />
     /// Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>

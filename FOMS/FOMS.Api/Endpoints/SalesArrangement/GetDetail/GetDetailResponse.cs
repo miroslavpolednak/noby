@@ -28,8 +28,14 @@ public sealed class GetDetailResponse
     /// </summary>
     public string? CreatedBy { get; set; }
 
+    /// <summary>
+    /// Rozhodný den sazby (datum založení = datum garance)
+    /// </summary>
     public DateTime OfferGuaranteeDateFrom { get; set; }
 
+    /// <summary>
+    /// Datum, kdy končí garance pro danou simulaci
+    /// </summary>
     public DateTime OfferGuaranteeDateTo { get; set; }
 
     /// <summary>

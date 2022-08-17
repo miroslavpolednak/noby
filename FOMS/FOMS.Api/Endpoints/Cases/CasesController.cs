@@ -39,7 +39,7 @@ public class CasesController : ControllerBase
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
     public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
         => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
-    
+
     /// <summary>
     /// Seznam Cases pro prihlaseneho uzivatele.
     /// </summary>
@@ -48,7 +48,7 @@ public class CasesController : ControllerBase
     /// - vyhledat Case podle retezce
     /// - zobrazit pouze Cases v pozadovanem stavu
     /// - nastavit strankovani
-    /// - nastavit razeni [stateUpdated]
+    /// - nastavit razeni [povolene: stateUpdated, customerName]
     /// <i>DS:</i> CaseService/SearchCases<br/>
     /// https://wiki.kb.cz/confluence/display/HT/searchCases
     /// </remarks>
