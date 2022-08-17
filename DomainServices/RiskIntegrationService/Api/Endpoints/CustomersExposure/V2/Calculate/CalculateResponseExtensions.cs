@@ -80,7 +80,7 @@ internal static class CalculateResponseExtensions
             CbcbContractId = item.CbcbContractId,
             CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == item.CustomerRoleCode)?.Id,
             LoanType = item.LoanType,
-            LoanTypeCategory = "",
+            LoanTypeCategory = "",//TODO neni ciselnik
             MaturityDate = item.MaturityDate?.DateTime,
             LoanAmount = item.LoanAmount?.Value,
             InstallmentAmount = item.InstallmentAmount?.Value,
@@ -96,7 +96,7 @@ internal static class CalculateResponseExtensions
             CbcbContractId = item.CbcbContractId,
             CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == item.CustomerRoleCode)?.Id,
             LoanType = item.LoanType,
-            LoanTypeCategory = "",
+            LoanTypeCategory = "",//TODO neni ciselnik
             MaturityDate = item.MaturityDate?.DateTime,
             LoanAmount = item.LoanAmount?.Value,
             InstallmentAmount = item.InstallmentAmount?.Value,

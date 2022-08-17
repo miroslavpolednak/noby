@@ -1,6 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
-using _Contracts = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save;
 
@@ -11,18 +11,23 @@ internal sealed class SaveHandler
     {
         // distr channel
         var distrChannel = (await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code ?? "BR";
-        if (FastEnum.TryParse(distrChannel, out _Contracts.LoanApplicationDistributionChannelCode distrChannelEnumValue))
+        if (FastEnum.TryParse(distrChannel, out _C4M.LoanApplicationDistributionChannelCode distrChannelEnumValue))
             throw new CisValidationException(0, $"Can't cast DistributionChannelId '{request.DistributionChannelId}' to C4M enum");
-        
+
+        // produkt
+        var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw new CisValidationException(0, $"Can't find RiskApplicationType item");
+
         var requestModel = new _C4M.LoanApplication
         {
-            Id = _C4M.ResourceIdentifier.CreateId(request.CaseId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            AppendixCode = request.AppendixCode,
             DistributionChannelCode = distrChannelEnumValue,
             SignatureType = request.SignatureType.ToString(),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
             LoanApplicationHousehold = null,
-            LoanApplicationProduct = await request.Product?.ToC4m(_codebookService, cancellation) ?? throw new CisValidationException(0, "Unable to create LoanApplicationProduct"),
-            //LoanApplicationProductRelation = request.ProductRelations.ToC4m()
+            LoanApplicationProduct = await request.Product?.ToC4m(riskApplicationType, _codebookService, cancellation) ?? throw new CisValidationException(0, "Unable to create LoanApplicationProduct"),
+            LoanApplicationProductRelation = await request.ProductRelations?.ToC4m(riskApplicationType, _codebookService, cancellation),
+            LoanApplicationDeclaredProductRelation = null
         };
 
         // human user instance
@@ -38,8 +43,44 @@ internal sealed class SaveHandler
         var responseVerPriority = requestModel.LoanApplicationHousehold?.SelectMany(t => t.CounterParty.SelectMany(x => x.Income?.EmploymentIncome?.Select(y => y.VerificationPriority))).ToList();
         return new _V2.LoanApplicationSaveResponse
         {
-            RiskSegment = responseVerPriority is null ? "B" : (responseVerPriority.All(t => t.GetValueOrDefault()) ? "A" : "B")
+            //LoanApplicationId = response.Id,//TODO ResourceIdentifier
+            LoanApplicationDataVersion = response.LoanApplicationDataVersion,
+            RiskSegment = responseVerPriority is null ? _V2.LoanApplicationRiskSegments.B : (responseVerPriority.All(t => t.GetValueOrDefault()) ? _V2.LoanApplicationRiskSegments.A : _V2.LoanApplicationRiskSegments.B)
         };
+    }
+
+    // najit odpovidajici produkt
+    private async Task<_RAT.RiskApplicationTypeItem?> getRiskApplicationType(_V2.LoanApplicationProduct product, CancellationToken cancellation)
+    {
+        // product 
+        var products = (await _codebookService.RiskApplicationTypes(cancellation))
+            .Where(t =>
+                // Dle produktu - vždy vyplněn
+                t.ProductTypeId is not null && t.ProductTypeId.Contains(product.ProductTypeId)
+                // LTV
+                && (product.Ltv <= (t.LtvTo ?? int.MaxValue) && product.Ltv >= (t.LtvFrom ?? 0))
+            )
+            .ToList();
+
+        // MA
+        bool requestContainsMa = product.MarketingActions?.Any() ?? false;
+        var productsFromMA = products
+            .Where(t =>
+                // v req neni MA, hledam jen v items bez MA
+                (!requestContainsMa && !(t.MarketingActions?.Any() ?? false))
+                || (requestContainsMa && (t.MarketingActions?.Any(x => product.MarketingActions!.Contains(x)) ?? false))
+            )
+            .ToList();
+        if (requestContainsMa && !productsFromMA.Any())
+            productsFromMA = products.Where(t => !(t.MarketingActions?.Any() ?? false)).ToList();
+
+        // Druh uveru
+        var productsFromLoanKind = productsFromMA.Where(t => t.LoanKindId == product.LoanKindId).ToList();
+        if (!productsFromLoanKind.Any())
+            productsFromLoanKind = productsFromMA.Where(t => !t.LoanKindId.HasValue).ToList();
+
+        //TODO tady vzit jen prvni?
+        return productsFromLoanKind.FirstOrDefault();
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;

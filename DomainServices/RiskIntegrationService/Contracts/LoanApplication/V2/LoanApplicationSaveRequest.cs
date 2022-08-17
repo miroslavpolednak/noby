@@ -5,7 +5,7 @@ public class LoanApplicationSaveRequest
     : IRequest<LoanApplicationSaveResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
-    public long CaseId { get; set; }
+    public long SalesArrangementId { get; set; }
 
     [ProtoMember(2)]
     public int? DistributionChannelId { get; set; }
@@ -27,4 +27,7 @@ public class LoanApplicationSaveRequest
 
     [ProtoMember(8)]
     public Shared.Identity? UserIdentity { get; set; }
+
+    [ProtoMember(9)]
+    public int? AppendixCode { get; set; }
 }
