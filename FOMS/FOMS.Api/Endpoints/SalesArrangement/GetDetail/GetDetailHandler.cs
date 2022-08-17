@@ -34,6 +34,8 @@ internal class GetDetailHandler
             LoanApplicationAssessmentId = saInstance.LoanApplicationAssessmentId,
             CreatedBy = saInstance.Created.UserName,
             CreatedTime = saInstance.Created.DateTime,
+            OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
+            OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
             Data = data,
             Parameters = parameters
         };

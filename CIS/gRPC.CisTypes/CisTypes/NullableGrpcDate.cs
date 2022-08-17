@@ -29,4 +29,7 @@ public sealed partial class NullableGrpcDate
 
     public static implicit operator DateTime?(NullableGrpcDate? grpcDate)
         => grpcDate == null ? default(DateTime?) : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
+
+    public static implicit operator DateTime(NullableGrpcDate grpcDate)
+        => grpcDate == null ? default(DateTime) : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 }

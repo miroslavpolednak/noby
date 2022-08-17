@@ -1020,11 +1020,6 @@
             Cizí zdroje
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.GuaranteeDateFrom">
-            <summary>
-            uver.rozhodnyDenSazby
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.InterestRateDiscount">
             <summary>
             uver.indCenotvorbaOdchylka

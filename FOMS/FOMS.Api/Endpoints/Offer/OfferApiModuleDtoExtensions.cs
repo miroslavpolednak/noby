@@ -20,7 +20,6 @@ internal static class OfferApiModuleDtoExtensions
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
             StatementTypeId = basicParams.StatementTypeId,
-            GuaranteeDateFrom = (DateTime)input.GuaranteeDateFrom!,
             LoanPurposes = input.LoanPurposes?.Select(t => new Dto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
             Developer = input.Developer is null ? null : new Dto.Developer
             {

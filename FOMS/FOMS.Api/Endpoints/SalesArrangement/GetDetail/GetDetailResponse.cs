@@ -27,7 +27,11 @@ public sealed class GetDetailResponse
     /// Jmeno a prijmeni uzivatele, ktery vytvoril SA
     /// </summary>
     public string? CreatedBy { get; set; }
-    
+
+    public DateTime OfferGuaranteeDateFrom { get; set; }
+
+    public DateTime OfferGuaranteeDateTo { get; set; }
+
     /// <summary>
     /// Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
     /// </summary>

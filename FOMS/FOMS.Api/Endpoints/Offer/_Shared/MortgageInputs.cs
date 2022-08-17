@@ -68,11 +68,6 @@ public class MortgageInputs
     public int? StatementTypeId { get; set; }
 
     /// <summary>
-    /// uver.rozhodnyDenSazby
-    /// </summary>
-    public DateTime GuaranteeDateFrom { get; set; }
-
-    /// <summary>
     /// uver.indCenotvorbaOdchylka
     /// </summary>
     public decimal? InterestRateDiscount { get; set; }
