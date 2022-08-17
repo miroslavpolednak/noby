@@ -24,7 +24,9 @@ internal static class CaseServiceRepositoryExpressions
                 DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
                 FirstNameNaturalPerson = t.FirstNameNaturalPerson ?? "",
                 Name = t.Name ?? "",
-                Cin = t.Cin ?? ""
+                Cin = t.Cin ?? "",
+                EmailForOffer = t.EmailForOffer ?? "",
+                PhoneNumberForOffer = t.PhoneNumberForOffer ?? "",
             },
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
         };

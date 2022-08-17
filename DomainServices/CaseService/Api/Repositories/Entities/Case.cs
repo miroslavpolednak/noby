@@ -26,6 +26,8 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public string Name { get; set; } = "";
     public DateOnly? DateOfBirthNaturalPerson { get; set; }
     public string? Cin { get; set; }
+    public string? EmailForOffer { get; set; }
+    public string? PhoneNumberForOffer { get; set; }
 
     // byznys data
     public string? ContractNumber { get; set; }
@@ -51,11 +53,14 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
             Name = request.Customer.Name,
             FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,
             DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
+            Cin = request.Customer.Cin,
+            EmailForOffer = request.Customer.EmailForOffer,
+            PhoneNumberForOffer = request.Customer.PhoneNumberForOffer,
 
             TargetAmount = request.Data.TargetAmount,
             ContractNumber = request.Data.ContractNumber,
 
-            OwnerUserId = request.CaseOwnerUserId
+            OwnerUserId = request.CaseOwnerUserId,
         };
 
         // pokud je zadany customer
