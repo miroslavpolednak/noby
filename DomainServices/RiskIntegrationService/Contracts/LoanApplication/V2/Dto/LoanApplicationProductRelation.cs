@@ -11,4 +11,13 @@ public class LoanApplicationProductRelation
 
     [ProtoMember(3)]
     public decimal? RemainingExposure { get; set; }
+
+    [ProtoMember(4)]
+    public string ProductType { get; set; } = null!;
+
+    [ProtoMember(5)]
+    public string RelationType { get; set; } = null!;
+
+    [ProtoMember(6)]
+    public List<LoanApplicationProductRelationCustomer>? Customers { get; set; }
 }

@@ -7,7 +7,7 @@ public class LoanApplicationProductCollateral
     public string? Id { get; set; }
 
     [ProtoMember(2)]
-    public int? CollateralTypeId { get; set; }
+    public int? CollateralType { get; set; }
 
     [ProtoMember(3)]
     public decimal? AppraisedValue { get; set; }
