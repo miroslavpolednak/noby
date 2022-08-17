@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace CIS.Infrastructure.Telemetry.Mediatr;
 
@@ -20,7 +21,7 @@ internal class LoggingBehaviour<TRequest, TResponse>
 
         using (_logger.BeginScope(new Dictionary<string, object>
             {
-                { "Payload", (TRequest)request }
+                { "Payload", JsonConvert.SerializeObject(request) }
             }))
         {
             _logger.RequestHandlerStarted(requestName);
@@ -34,7 +35,7 @@ internal class LoggingBehaviour<TRequest, TResponse>
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                { "Payload", response }
+                { "Payload", JsonConvert.SerializeObject(response) }
             }))
             {
                 _logger.RequestHandlerFinished(requestName);
