@@ -479,6 +479,29 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.ProfileCheck(FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckRequest,System.Threading.CancellationToken)">
+            <summary>
+            Profile check s profilem identifikovaný
+            </summary>
+            <remarks>
+            Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+            </remarks>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckRequest.IdentityId">
+            <summary>
+            ID klienta v danem schematu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckRequest.IdentityScheme">
+            <summary>
+            Schema ve kterem je klient ulozeny - Kb | Mp
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckResponse.IsCompliant">
+            <summary>
+            Příznak splnění profilu identifikovaný
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
             <summary>
             Jmeno klienta

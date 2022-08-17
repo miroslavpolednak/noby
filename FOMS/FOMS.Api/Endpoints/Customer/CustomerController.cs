@@ -56,6 +56,20 @@ public class CustomerController : ControllerBase
     public async Task Identify([FromRoute] int customerOnSAId, [FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 
+    /// <summary>
+    /// Profile check s profilem identifikovaný
+    /// </summary>
+    /// <remarks>
+    /// Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+    /// </remarks>
+    [HttpPost("customer/profile-check")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Modelace Hypoteky", "UC: Domacnost" })]
+    [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
+    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] ProfileCheck.ProfileCheckRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
+
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;
 }
