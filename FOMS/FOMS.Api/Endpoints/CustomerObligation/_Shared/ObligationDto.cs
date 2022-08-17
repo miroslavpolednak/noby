@@ -10,17 +10,19 @@ public abstract class ObligationDto
     /// <summary>
     /// Výše splátky
     /// </summary>
-    public int? InstallmentAmount { get; set; }
+    public decimal? InstallmentAmount { get; set; }
 
     /// <summary>
     /// Výše nesplacené jistiny
     /// </summary>
-    public int? LoanPrincipalAmount { get; set; }
+    public decimal? LoanPrincipalAmount { get; set; }
 
     /// <summary>
     /// Výše limitu kreditní karty
     /// </summary>
-    public int? CreditCardLimit { get; set; }
+    public decimal? CreditCardLimit { get; set; }
+
+    public decimal? LoanPrincipalAmountConsolidated { get; set; }
 
     /// <summary>
     /// Určuje stav závazku (prohlášený vs neprohlášený. V MPV bude vždy prohlášený.<br />Z číselníku <a href="https://wiki.kb.cz/display/HT/ObligationState">ObligationState</a>

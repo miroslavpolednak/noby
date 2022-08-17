@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "ObligationShared.proto";
+import "NullableGrpcDecimal.proto";
 
 message Obligation {
     int32 ObligationId = 1;
@@ -12,15 +13,17 @@ message Obligation {
     
     google.protobuf.Int32Value ObligationTypeId = 3;
     
-    google.protobuf.Int32Value InstallmentAmount = 4;
+    cis.types.NullableGrpcDecimal InstallmentAmount = 4;
 
-    google.protobuf.Int32Value LoanPrincipalAmount = 5;
+    cis.types.NullableGrpcDecimal LoanPrincipalAmount = 5;
 
-    google.protobuf.Int32Value CreditCardLimit = 6;
+    cis.types.NullableGrpcDecimal CreditCardLimit = 6;
 
-    google.protobuf.Int32Value ObligationState = 7;
+    cis.types.NullableGrpcDecimal LoanPrincipalAmountConsolidated = 7;
 
-    DomainServices.SalesArrangementService.ObligationCreditor Creditor = 8;
+    google.protobuf.Int32Value ObligationState = 8;
+
+    DomainServices.SalesArrangementService.ObligationCreditor Creditor = 9;
     
-    DomainServices.SalesArrangementService.ObligationCorrection Correction = 9;
+    DomainServices.SalesArrangementService.ObligationCorrection Correction = 10;
 }

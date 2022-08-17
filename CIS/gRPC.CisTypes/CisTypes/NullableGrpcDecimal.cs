@@ -9,6 +9,12 @@ public sealed partial class NullableGrpcDecimal
         Nanos = nanos;
     }
 
+    public static implicit operator double?(NullableGrpcDecimal? grpcDecimal)
+    {
+        if (grpcDecimal == null) return default(double?);
+        return Convert.ToDouble(grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor);
+    }
+
     public static implicit operator decimal?(NullableGrpcDecimal? grpcDecimal)
     {
         if (grpcDecimal == null) return default(decimal?);

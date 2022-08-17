@@ -3,6 +3,7 @@ package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "NullableGrpcDecimal.proto";
 
 message ObligationCreditor {
     google.protobuf.Int32Value CreditorId = 1;
@@ -15,9 +16,9 @@ message ObligationCreditor {
 message ObligationCorrection {
     google.protobuf.Int32Value CorrectionTypeId = 1;
 
-    google.protobuf.Int32Value InstallmentAmountCorrection = 2;
+    cis.types.NullableGrpcDecimal InstallmentAmountCorrection = 2;
 
-    google.protobuf.Int32Value LoanPrincipalAmountCorrection = 3;
+    cis.types.NullableGrpcDecimal LoanPrincipalAmountCorrection = 3;
 
-    google.protobuf.Int32Value CreditCardLimitCorrection = 4;
+    cis.types.NullableGrpcDecimal CreditCardLimitCorrection = 4;
 }

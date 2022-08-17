@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.SalesArrangementService.Api.Repositories.Entities;
@@ -14,11 +15,17 @@ internal class CustomerOnSAObligation
 
     public int ObligationTypeId { get; set; }
 
-    public int? InstallmentAmount { get; set; }
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? InstallmentAmount { get; set; }
 
-    public int? LoanPrincipalAmount { get; set; }
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? LoanPrincipalAmount { get; set; }
 
-    public int? CreditCardLimit { get; set; }
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? CreditCardLimit { get; set; }
 
     public int? ObligationState { get; set; }
 
@@ -30,9 +37,19 @@ internal class CustomerOnSAObligation
 
     public int? CorrectionTypeId { get; set; }
 
-    public int? InstallmentAmountCorrection { get; set; }
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? InstallmentAmountCorrection { get; set; }
 
-    public int? LoanPrincipalAmountCorrection { get; set; }
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? LoanPrincipalAmountCorrection { get; set; }
 
-    public int? CreditCardLimitCorrection { get; set; }
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? CreditCardLimitCorrection { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? LoanPrincipalAmountConsolidated { get; set; }
 }

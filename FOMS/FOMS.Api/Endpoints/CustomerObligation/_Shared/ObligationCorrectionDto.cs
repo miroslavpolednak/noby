@@ -10,15 +10,15 @@ public class ObligationCorrectionDto
     /// <summary>
     /// Výše konsolidace/zrušení splátky daného závazku
     /// </summary>
-    public int? InstallmentAmountCorrection { get; set; }
+    public decimal? InstallmentAmountCorrection { get; set; }
 
     /// <summary>
     /// Výše konsolidace/zrušení/snížení výše úvěru
     /// </summary>
-    public int? LoanPrincipalAmountCorrection { get; set; }
+    public decimal? LoanPrincipalAmountCorrection { get; set; }
 
     /// <summary>
     /// Výše konsolidace/zrušení/snížení limitu KK/PD
     /// </summary>
-    public int? CreditCardLimitCorrection { get; set; }
+    public decimal? CreditCardLimitCorrection { get; set; }
 }

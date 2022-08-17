@@ -927,6 +927,11 @@
             Simulace s garancí úrokové sazby, default hodnota false
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.SalesArrangementId">
+            <summary>
+            ID Sales Arrangement-u
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferId">
             <summary>
             ID vytvorene simulace.
