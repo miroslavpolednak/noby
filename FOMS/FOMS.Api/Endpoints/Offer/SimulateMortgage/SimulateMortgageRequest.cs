@@ -15,4 +15,9 @@ public sealed class SimulateMortgageRequest
     /// Simulace s garancí úrokové sazby, default hodnota false
     /// </summary>
     public bool? WithGuarantee { get; set; }
+
+    /// <summary>
+    /// ID Sales Arrangement-u
+    /// </summary>
+    public int? SalesArrangementId { get; set; }
 }
