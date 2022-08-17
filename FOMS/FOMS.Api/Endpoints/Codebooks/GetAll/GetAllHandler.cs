@@ -1,4 +1,5 @@
 ﻿using DomainServices.CodebookService.Abstraction;
+using FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
 
 namespace FOMS.Api.Endpoints.Codebooks.GetAll;
 
@@ -11,8 +12,15 @@ internal class GetAllHandler
 
         _logger.CodebooksGetAllStarted(request.CodebookCodes);
 
-        foreach (var code in request.CodebookCodes)
-            model.Add(await fillCodebook(code.Key, code.Original, cancellationToken));
+        foreach (var (original, key) in request.CodebookCodes)
+        {
+            var objects = await _codebookMap[key].GetObjects(_codebooks, cancellationToken);
+
+            model.Add(new GetAllResponseItem(original, objects));
+        }
+
+        //foreach (var code in request.CodebookCodes)
+        //    model.Add(await fillCodebook(code.Key, code.Original, cancellationToken));
         
         return model;
     }
@@ -53,7 +61,6 @@ internal class GetAllHandler
             "loaninterestrateannouncedtypes" => new(original, await _codebooks.LoanInterestRateAnnouncedTypes(cancellationToken)),
             "mandants" => new(original, await _codebooks.Mandants(cancellationToken)),
             "maritalstatuses" => new(original, await _codebooks.MaritalStatuses(cancellationToken)),
-            //"marketingactions" => new(original, await _codebooks.MarketingActions(cancellationToken)),
             "obligationcorrectiontypes" => new(original, await _codebooks.ObligationCorrectionTypes(cancellationToken)),
             "obligationtypes" => new(original, await _codebooks.ObligationTypes(cancellationToken)),
             "paymentdays" => new(original, (await _codebooks.PaymentDays(cancellationToken)).Where(t => t.ShowOnPortal).ToList()),
@@ -69,6 +76,9 @@ internal class GetAllHandler
             "workflowtaskstates" => new(original, await _codebooks.WorkflowTaskStates(cancellationToken)),
             "workflowtasktypes" => new(original, await _codebooks.WorkflowTaskTypes(cancellationToken)),
             "worksectors" => new(original, await _codebooks.WorkSectors(cancellationToken)),
+
+
+            //"marketingactions" => new(original, await _codebooks.MarketingActions(cancellationToken)),
 
             //"residencytypes" => new(original, await _codebooks.ResidencyTypes()),//!!!
             //"mktactioncodessavings" => new(original, (await _codebooks.MktActionCodesSavings())),//!!!
@@ -100,11 +110,13 @@ internal class GetAllHandler
     }
 
     private readonly ICodebookServiceAbstraction _codebooks;
+    private readonly ICodebookMap _codebookMap;
     private readonly ILogger<GetAllHandler> _logger;
 
-    public GetAllHandler(ICodebookServiceAbstraction codebooks, ILogger<GetAllHandler> logger)
+    public GetAllHandler(ICodebookServiceAbstraction codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
     {
         _logger = logger;
         _codebooks = codebooks;
+        _codebookMap = codebookMap;
     }
 }
