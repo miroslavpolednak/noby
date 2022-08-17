@@ -20,4 +20,10 @@ message CustomerData {
 
 	// ICO spolecnosti
 	string Cin = 5;
+
+	// Email (pouze pro účel nabídky)
+	string EmailForOffer = 6;
+
+	// Telefon (pouze pro účel nabídky)
+	string PhoneNumberForOffer = 7;
 }

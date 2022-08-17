@@ -143,6 +143,9 @@ internal class CaseServiceRepository
         entity.FirstNameNaturalPerson = customer.FirstNameNaturalPerson;
         entity.CustomerIdentityId = customer.Identity?.IdentityId;
         entity.CustomerIdentityScheme = (CIS.Foms.Enums.IdentitySchemes)Convert.ToInt32(customer.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
+        entity.Cin = customer.Cin;
+        entity.EmailForOffer = customer.EmailForOffer;
+        entity.PhoneNumberForOffer = customer.PhoneNumberForOffer;
 
         await _dbContext.SaveChangesAsync(cancellation);
     }
