@@ -42,11 +42,11 @@ internal class HouseholdRepository
     public async Task CheckCustomers(int salesArrangementId, int? customerId1, int? customerId2, CancellationToken cancellation)
     {
         if (customerId1.HasValue
-            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == customerId1, cancellation))?.SalesArrangementId != salesArrangementId)
-            throw new CisNotFoundException(16020, $"CustomerOnSA ID {customerId1} does not exist in this SA.");
+            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerId1 && t.SalesArrangementId == salesArrangementId, cancellation)))
+            throw new CisNotFoundException(16020, $"CustomerOnSA #1 ID {customerId1} does not exist in this SA {salesArrangementId}.");
         if (customerId2.HasValue
-            && (await _dbContext.Customers.FirstOrDefaultAsync(t => t.CustomerOnSAId == customerId2, cancellation))?.SalesArrangementId != salesArrangementId)
-            throw new CisNotFoundException(16020, $"CustomerOnSA ID {customerId2} does not exist in this SA.");
+            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == customerId2 && t.SalesArrangementId == salesArrangementId, cancellation)))
+            throw new CisNotFoundException(16020, $"CustomerOnSA #2 ID {customerId2} does not exist in this SA {salesArrangementId}.");
     }
     
     private readonly SalesArrangementServiceDbContext _dbContext;
