@@ -2059,741 +2059,761 @@
             loan application verze
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskBusinessCaseCommandState.CommandId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskBusinessCaseCommandState.CommandId">
             <summary>
             ID založeného požadavku 
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskBusinessCaseCommandState.StateCode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskBusinessCaseCommandState.StateCode">
             <summary>
             stateCode 
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskBusinessCaseCommandState.LoanApplicationAssessmentId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskBusinessCaseCommandState.LoanApplicationAssessmentId">
             <summary>
             loanApplicationAssessmentId
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskBusinessCaseCommand.CommandId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskBusinessCaseCommand.CommandId">
             <summary>
             ID založeného požadavku 
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.LoanApplicationId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.LoanApplicationId">
             <summary>
             ID dané úvěrové žádosti.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.LoanApplicationDataVersion">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.LoanApplicationDataVersion">
             <summary>
             Identifikace verze dat žádosti, která jsou uložena v Loan Application.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.ItChannel">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.ItChannel">
             <summary>
             IT Channel.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.ItChannelPrevious">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.ItChannelPrevious">
             <summary>
             Poslední místo/kanál, kde byla žádost zpracována před předáním do továrny.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.AssessmentMode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.AssessmentMode">
             <summary>
             Mód vyhodnocení daného případu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.GrantingProcedureCode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.GrantingProcedureCode">
             <summary>
             Poskytovací procedura.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.SelfApprovalRequired">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.SelfApprovalRequired">
             <summary>
             Příznak, zdali je požadováno samoschválení.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.SystemApprovalRequired">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.SystemApprovalRequired">
             <summary>
             Příznak, zdali je požadováno automatické schválení (systémem).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.RiskCampaignCode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.RiskCampaignCode">
             <summary>
             kód risk kampaně.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.LoanApplicationException">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.LoanApplicationException">
             <summary>
             Parametry metodické vyjímky.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.ExceptionHighestApprovalLevel">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.ExceptionHighestApprovalLevel">
             <summary>
             Kód nejvyšší schvalovací úrovně, která schválila danou metodickou výjimku.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest.Expand">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest.Expand">
             <summary>
             Vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationException">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationException">
             <summary>
             LoanApplicationException
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationException.Arm">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationException.Arm">
             <summary>
             Arm.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationException.ReasonCode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationException.ReasonCode">
             <summary>
             ReasonCode.
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResourceIdentifier">
             <summary>
             ResourceIdentifier
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier.Instance">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResourceIdentifier.Instance">
             <summary>
             The resource instance code, eg. 'KBCZ'
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier.Domain">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResourceIdentifier.Domain">
             <summary>
             The resource domain code, eg. 'CFLM'
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier.Resource">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResourceIdentifier.Resource">
             <summary>
             The resource code (the in-domain resource code, eg. 'LimitModel')
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResourceIdentifier.Id">
             <summary>
             ID
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResourceIdentifier.Variant">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResourceIdentifier.Variant">
             <summary>
             The variant of the resource, eg. distinguishing the origin of the source
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationCreate.RiskBusinessCaseId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationCreate.RiskBusinessCaseId">
             <summary>
             identifikátor obchodního případu v C4M.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CreateRequest.LoanApplicationId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CreateRequest.LoanApplicationId">
             <summary>
             ID dané úvěrové žádosti.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CreateRequest.ResourceProcessId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CreateRequest.ResourceProcessId">
             <summary>
             ID business procesu v rámci kterého Risk Business Case vzniká.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CreateRequest.ItChannel">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CreateRequest.ItChannel">
             <summary>
             Typ zdrojové aplikace (např. NOBY)
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Amount">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Amount">
             <summary>
             Amount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Amount.Value">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Amount.Value">
             <summary>
             Hodnota částky
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Amount.CurrencyCode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Amount.CurrencyCode">
             <summary>
             Kód měny částky (ISO 4217)
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentDetail">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentDetail">
             <summary>
             AssessmentDetail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentDetail.LoanApplicationScore">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentDetail.LoanApplicationScore">
             <summary>
             Assessment detail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentDetail.LoanApplicationLimit">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentDetail.LoanApplicationLimit">
             <summary>
             Assessment detail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentDetail.LoanApplicationRiskCharacteristics">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentDetail.LoanApplicationRiskCharacteristics">
             <summary>
             Assessment detail
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentReasonDetail">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentReasonDetail">
             <summary>
             AssessmentReasonDetail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentReasonDetail.Target">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentReasonDetail.Target">
             <summary>
             Target
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentReasonDetail.Desc">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentReasonDetail.Desc">
             <summary>
             Desc
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentReasonDetail.Result">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentReasonDetail.Result">
             <summary>
             Result
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentReasonDetail.Resource">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentReasonDetail.Resource">
             <summary>
             Target
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Change">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Change">
             <summary>
             Change
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Change.IdentityId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Change.IdentityId">
             <summary>
             Identita actora/uživatele
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Change.Timestamp">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Change.Timestamp">
             <summary>
             Change date and time 
             <br/>Format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX (ISO 8601)
             <br/>
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CollateralRiskCharacteristics">
             <summary>
             CollateralRiskCharacteristics
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.Ltv">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CollateralRiskCharacteristics.Ltv">
             <summary>
             Ltv
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.Ltfv">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CollateralRiskCharacteristics.Ltfv">
             <summary>
             Ltfv
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.Ltp">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CollateralRiskCharacteristics.Ltp">
             <summary>
             Ltp
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.SumAppraisedValue">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CollateralRiskCharacteristics.SumAppraisedValue">
             <summary>
             SumAppraisedValue
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CounterpartyAssessmentDetail">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CounterpartyAssessmentDetail">
             <summary>
             Counterparty Assessment Detail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CounterpartyAssessmentDetail.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CounterpartyAssessmentDetail.Id">
             <summary>
             Id
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CounterpartyAssessmentDetail.CounterPartyId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CounterpartyAssessmentDetail.CounterPartyId">
             <summary>
             Counterparty id
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CounterpartyAssessmentDetail.CustomerId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CounterpartyAssessmentDetail.CustomerId">
             <summary>
             Customer id
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CounterpartyAssessmentDetail.AssessmentDetail">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CounterpartyAssessmentDetail.AssessmentDetail">
             <summary>
             Assessment Detail
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.HouseholdAssessmentDetail">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.HouseholdAssessmentDetail">
             <summary>
             Household Assessment detail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.HouseholdAssessmentDetail.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.HouseholdAssessmentDetail.Id">
             <summary>
             Id
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.HouseholdAssessmentDetail.HouseholdId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.HouseholdAssessmentDetail.HouseholdId">
             <summary>
             Household id
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.HouseholdAssessmentDetail.HouseholdIndex">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.HouseholdAssessmentDetail.HouseholdIndex">
             <summary>
             Household index
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.HouseholdAssessmentDetail.AssessmentDetail">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.HouseholdAssessmentDetail.AssessmentDetail">
             <summary>
             Assessment Detail
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified">
             <summary>
             An identified object
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.Id">
             <summary>
             ID
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.LoanApplicationId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.LoanApplicationId">
             <summary>
             LoanApplication resource-identifier
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.RiskBusinesscaseId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.RiskBusinesscaseId">
             <summary>
             Risk BusinessCase resource-identifier
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.AssessmentResult">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.AssessmentResult">
             <summary>
             Assessment result
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.LoanApplicationAssessmentReason">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.LoanApplicationAssessmentReason">
             <summary>
             LoanApplicationAssessment resource-identifier
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.AssessmentDetail">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.AssessmentDetail">
             <summary>
             Assessment detail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.HouseholdAssessmentDetail">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.HouseholdAssessmentDetail">
             <summary>
             HouseholdAssessmentDetail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.CounterpartyAssessmentDetail">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.CounterpartyAssessmentDetail">
             <summary>
             HouseholdAssessmentDetail
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.CollateralRiskCharacteristics">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.CollateralRiskCharacteristics">
             <summary>
             CollateralRiskCharacteristics
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.Version">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.LoanApplicationApprovalPossibilities">
+            <summary>
+            LoanApplicationApprovalPossibilities
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.Version">
             <summary>
             LoanApplicationAssessment version
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.Created">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.Created">
             <summary>
             created
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Identified.Updated">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Identified.Updated">
             <summary>
             updated
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationAssessmentReason">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationApprovalPossibilities">
+            <summary>
+            Možnosti samo/autoschválení
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationApprovalPossibilities.SelfApprovalPossible">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationApprovalPossibilities.AutoApprovalPossible">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationAssessmentReason">
             <summary>
             LoanApplicationAssessmentReason
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationAssessmentReason.Code">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationAssessmentReason.Code">
             <summary>
             Code
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationAssessmentReason.Level">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationAssessmentReason.Level">
             <summary>
             Level
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationAssessmentReason.Weight">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationAssessmentReason.Weight">
             <summary>
             Weight
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationAssessmentReason.Category">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationAssessmentReason.Category">
             <summary>
             Category
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationAssessmentReason.Detail">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationAssessmentReason.Detail">
             <summary>
             Related Entity Id
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit">
             <summary>
             LoanApplicationLimit
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.LoanApplicationLimit1">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.LoanApplicationLimit1">
             <summary>
             Loan Application Limit
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.LoanApplicationInstallmentLimit">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.LoanApplicationInstallmentLimit">
             <summary>
             Loan Application Installment Limit
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.LoanApplicationCollateralLimit">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.LoanApplicationCollateralLimit">
             <summary>
             Loan Application Collateral Limit
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.RemainingAnnuityLivingAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.RemainingAnnuityLivingAmount">
             <summary>
             Remaining Annuity Living Amount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.CalculationIrStressed">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.CalculationIrStressed">
             <summary>
             Remaining Annuity Living Amount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.Iir">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.Iir">
             <summary>
             iir
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.Cir">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.Cir">
             <summary>
             cir
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.Dti">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.Dti">
             <summary>
             dti
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationLimit.Dsti">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationLimit.Dsti">
             <summary>
             dsti
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationScore">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationScore">
             <summary>
             LoanApplicationScore
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationScore.Value">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationScore.Value">
             <summary>
             Value
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationScore.Scale">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationScore.Scale">
             <summary>
             Scale
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Resource">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Resource">
             <summary>
             Resource
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Resource.Entity">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Resource.Entity">
             <summary>
             Entity
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.Resource.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.Resource.Id">
             <summary>
             id
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics">
             <summary>
             RiskCharacteristics
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyIncomeAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyIncomeAmount">
             <summary>
             monthlyIncomeAmount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyCostsWithoutInstAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyCostsWithoutInstAmount">
             <summary>
             MonthlyCostsWithoutInstAmount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyInstallmentsInKBAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInKBAmount">
             <summary>
             MonthlyCostsWithoutInstAmount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyEntrepreneurInstallmentsInKBAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyEntrepreneurInstallmentsInKBAmount">
             <summary>
             MonhlyEntrepreneurInstallmentsInKBAmount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyInstallmentsInMPSSAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInMPSSAmount">
             <summary>
             MonhlyInstallmentsInMPSSAmount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyInstallmentsInOFIAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInOFIAmount">
             <summary>
             MonhlyInstallmentsInOFIAmount
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.RiskCharacteristics.MonthlyInstallmentsInCBCBAmount">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInCBCBAmount">
             <summary>
             MonhlyInstallmentsInCBCBAmount
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.SemanticVersion">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.SemanticVersion">
             <summary>
             SemanticVersion
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.SemanticVersion.Major">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.SemanticVersion.Major">
             <summary>
             Major part of a version
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.SemanticVersion.Minor">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.SemanticVersion.Minor">
             <summary>
             Minor part of a version
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.SemanticVersion.Bugfix">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.SemanticVersion.Bugfix">
             <summary>
             Bugfix part of a version
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.SemanticVersion.NonSemanticPart">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.SemanticVersion.NonSemanticPart">
             <summary>
             A non-semantic part of a version
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationCommit">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationCommit">
             <summary>
             Response
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationCommit.RiskBusinessCaseId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationCommit.RiskBusinessCaseId">
             <summary>
             identifikátor obchodního případu v C4M
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationCommit.Timestamp">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationCommit.Timestamp">
             <summary>
             Datum a čas odpovědi
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationCommit.OperationResult">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationCommit.OperationResult">
             <summary>
             Status
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationCommit.ResultReasons">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationCommit.ResultReasons">
             <summary>
             Důvod(y) nespočetní výsledků bonity
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResultReason.Code">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResultReason.Code">
             <summary>
             kód důvodu nespočtení výsledku.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.ResultReason.Desc">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.ResultReason.Desc">
             <summary>
             popis důvodu nespočtení výsledku.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralAgreement.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CollateralAgreement.Id">
             <summary>
             Identifikátor obchodního případu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.LoanApplicationId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.LoanApplicationId">
             <summary>
             ID dané úvěrové žádosti.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.ItChannel">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.ItChannel">
             <summary>
             IT Channel.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.LoanApplicationProduct">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.LoanApplicationProduct">
             <summary>
             loanApplicationProduct.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.RiskBusinessCaseFinalResult">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.RiskBusinessCaseFinalResult">
             <summary>
             riskBusinessCaseFinalResult.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.LoanSoldProduct">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.LoanSoldProduct">
             <summary>
             loanSoldProduct.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.ApprovalLevel">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.ApprovalLevel">
             <summary>
             approvalLevel.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.ApprovalDate">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.ApprovalDate">
             <summary>
             Datum schválení. 
             <br/>Format: yyyy-MM-dd
             <br/>
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.LoanAgreement">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.LoanAgreement">
             <summary>
             loanAgreement.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.Creator">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.Creator">
             <summary>
             creator.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.Approver">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.Approver">
             <summary>
             approver.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.LoanApplicationDealer">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.LoanApplicationDealer">
             <summary>
             loanApplicationDealer.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest.CollateralAgreements">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest.CollateralAgreements">
             <summary>
             collateralAgreements.
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.JobPost">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.JobPost">
             <summary>
             JobPost
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.JobPost.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.JobPost.Id">
             <summary>
             LoanApplication identity
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.KBGroupPerson">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.KBGroupPerson">
             <summary>
             KbGroupPerson
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.KBGroupPerson.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.KBGroupPerson.Id">
             <summary>
             osobní číslo přihlášeného uživatele /schvalovatele.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.KBGroupPerson.Surname">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.KBGroupPerson.Surname">
             <summary>
             příjmení přihlášeného uživatele / příjmení schvalovatele.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.KBGroupPerson.OrgUnit">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.KBGroupPerson.OrgUnit">
             <summary>
             OrgUnit
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanAgreement.DistributionChannel">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanAgreement.DistributionChannel">
             <summary>
             Identifikátor obchodního případu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanAgreement.SignatureType">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanAgreement.SignatureType">
             <summary>
             Identifikátor obchodního případu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationDealer.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationDealer.Id">
             <summary>
             Identifikátor obchodního případu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationDealer.CompanyId">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationDealer.CompanyId">
             <summary>
             Identifikátor obchodního případu.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanApplicationProduct.ProductClusterCode">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanApplicationProduct.ProductClusterCode">
             <summary>
             kód produktového shluku (shluk jednoho produktu).
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.LoanSoldProduct.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.LoanSoldProduct.Id">
             <summary>
             Identifikátor obchodního případu.
             </summary>
         </member>
-        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.OrgUnit">
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.OrgUnit">
             <summary>
             OrgUnit
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.OrgUnit.Id">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.OrgUnit.Id">
             <summary>
             pobočka + expozitura přihlášení uživatele / schvalovatele.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.OrgUnit.Name">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.OrgUnit.Name">
             <summary>
             název pobočky přihlášení  uživatele / schvalovatele 
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.OrgUnit.JobPost">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.OrgUnit.JobPost">
             <summary>
             kód pracovní pozice přihlášeného uživatele /schvalovatele
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CreateCase(DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CreateRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient.CreateCase(DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CreateRequest,System.Threading.CancellationToken)">
             <summary>
             Vytvoření nového Risk Business Case
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CaseAssessment(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient.CreateCaseAssessment(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhodnocení úvěrové žádosti
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CaseAssessmentAsync(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.AssessmentRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient.CreateCaseAssessmentAsynchronous(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.AssessmentRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhodnocení úvěrové žádosti - asynchronní
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.IRiskBusinessCaseClient.CaseCommitment(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CommitRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient.CommitCase(System.String,DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts.CommitRequest,System.Threading.CancellationToken)">
             <summary>
             Dokončení úvěrové žádosti
             </summary>
@@ -2833,10 +2853,13 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/LOAN+APPLICATION">https://wiki.kb.cz/display/HT/LOAN+APPLICATION</a>
             </remarks>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.CreateCaseRequest,System.Threading.CancellationToken)">
             <summary>
-            Risk Business Case - Create
+            založení úvěrového případu
             </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+            </remarks>
         </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceController.HalloWorld(DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest,System.Threading.CancellationToken)">
             <summary>

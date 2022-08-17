@@ -1,11 +1,11 @@
-﻿using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase;
+﻿using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2;
 
 [Authorize]
 public class RiskBusinessCaseService
-    : v1.IRiskBusinessCaseService
+    : IRiskBusinessCaseService
 {
     private readonly IMediator _mediator;
 
@@ -14,9 +14,9 @@ public class RiskBusinessCaseService
         _mediator = mediator;
     }
 
-    public async ValueTask<CaseCommitmentResponse> CaseCommitment(CaseCommitmentRequest request, CancellationToken cancellationToken = default)
-        => await _mediator.Send(request, cancellationToken);
-
     public async ValueTask<CreateCaseResponse> CreateCase(CreateCaseRequest request, CancellationToken cancellationToken = default)
         => await _mediator.Send(request, cancellationToken);
+
+    //public async ValueTask<CaseCommitmentResponse> CaseCommitment(CaseCommitmentRequest request, CancellationToken cancellationToken = default)
+    //    => await _mediator.Send(request, cancellationToken);
 }
