@@ -54,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
