@@ -27,7 +27,7 @@ internal sealed class SaveHandler
             LoanApplicationHousehold = null,
             LoanApplicationProduct = await request.Product?.ToC4m(riskApplicationType, _codebookService, cancellation) ?? throw new CisValidationException(0, "Unable to create LoanApplicationProduct"),
             LoanApplicationProductRelation = await request.ProductRelations?.ToC4m(riskApplicationType, _codebookService, cancellation),
-            LoanApplicationDeclaredProductRelation = null
+            LoanApplicationDeclaredProductRelation = request.DeclaredSecuredProducts?.ToC4m()
         };
 
         // human user instance

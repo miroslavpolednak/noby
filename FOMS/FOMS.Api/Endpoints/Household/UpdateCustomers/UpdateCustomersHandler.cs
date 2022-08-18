@@ -71,7 +71,7 @@ internal class UpdateCustomersHandler
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
                     CustomerRoleId = (int)customerRole,
-                    Customer = customer.ToDomainServiceRequest(customer.LockedIncome ? DateTime.Now : null)
+                    Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken));
                 newMpId = createResult.PartnerId;
                 customerId = createResult.CustomerOnSAId;

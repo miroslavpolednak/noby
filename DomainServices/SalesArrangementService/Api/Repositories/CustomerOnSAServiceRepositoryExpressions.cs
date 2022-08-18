@@ -27,7 +27,8 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             IncomeTypeId = (int)t.IncomeTypeId,
             CurrencyCode = t.CurrencyCode ?? "",
             Sum = t.Sum,
-            IncomeSource = t.IncomeSource ?? ""
+            IncomeSource = t.IncomeSource ?? "",
+            ProofOfIncomeToggle = t.ProofOfIncomeToggle
         };
     }
 

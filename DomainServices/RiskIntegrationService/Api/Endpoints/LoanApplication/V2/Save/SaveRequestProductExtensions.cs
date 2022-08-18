@@ -55,41 +55,6 @@ internal static class SaveRequestProductExtensions
         };
     }
 
-    public static async Task<List<LoanApplicationProductRelation>> ToC4m(this List<_V2.LoanApplicationProductRelation> relations, _RAT.RiskApplicationTypeItem riskApplicationType, CodebookService.Abstraction.ICodebookServiceAbstraction codebookService, CancellationToken cancellation)
-    {
-        var customerRoles = (await codebookService.CustomerRoles(cancellation));
-
-        return relations
-            .Select(t => new LoanApplicationProductRelation
-            {
-                ProductId = new ResourceIdentifier(),
-                ProductType = t.ProductType,
-                RelationType = t.RelationType,
-                Value = new LoanApplicationProductRelationValue
-                {
-                    Value = t.RemainingExposure.ToString(),
-                    Type = "REMAINING_EXPOSURE"
-                },
-                LoanApplicationProductRelationCounterparty = t.Customers?.Select(x =>
-                {
-                    if (!FastEnum.TryParse(customerRoles.FirstOrDefault(c => c.Id == x.CustomerRoleId)?.RdmCode, out LoanApplicationProductRelationCounterpartyRoleCode role))
-                        throw new CisValidationException(0, $"Can't cast LoanApplicationProductRelationCounterpartyRoleCode '{x.CustomerRoleId}' to C4M enum");
-
-                    return new LoanApplicationProductRelationCounterparty
-                    {
-                        CustomerId = new ResourceIdentifier
-                        {
-                            Id = x.CustomerId,
-                            Domain = "CM",
-                            Resource = "Customer",
-                            Instance = riskApplicationType.MandantId == (int)CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ"                        },
-                        RoleCode = role
-                    };
-                }).ToList()
-            })
-            .ToList();
-    }
-
     private static Func<_V2.LoanApplicationProductCollateral, LoanApplicationCollateral> tranformCollateral(List<DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes.CollateralTypeItem> collaterals)
     {
         return t => new LoanApplicationCollateral

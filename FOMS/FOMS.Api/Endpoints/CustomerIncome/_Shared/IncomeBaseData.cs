@@ -10,6 +10,8 @@ public class IncomeBaseData
 
     public string? IncomeSource { get; set; }
 
+    public bool? ProofOfIncomeToggle { get; set; }
+
     /// <summary>
     /// Typ prijmu
     /// </summary>

@@ -10,7 +10,7 @@ public sealed class CreditWorthinessHousehold
     public int ChildrenOverTenYearsCount { get; set; }
 
     [ProtoMember(3)]
-    public CreditWorthinessExpenses? ExpensesSummary { get; set; }
+    public Shared.ExpensesSummary.V1.ExpensesSummary? ExpensesSummary { get; set; }
 
     [ProtoMember(4)]
     public List<CreditWorthinessCustomer>? Customers { get; set; }

@@ -16,7 +16,7 @@ public class LoanApplicationHousehold
     public int? ChildrenOverTenYearsCount { get; set; }
 
     [ProtoMember(5)]
-    public List<Shared.ExpensesSummary.V1.ExpensesSummary>? Expenses { get; set; }
+    public Shared.ExpensesSummary.V1.ExpensesSummary? Expenses { get; set; }
 
     [ProtoMember(6)]
     public int? PropertySettlementId { get; set; }

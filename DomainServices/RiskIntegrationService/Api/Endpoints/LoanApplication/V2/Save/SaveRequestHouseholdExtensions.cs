@@ -1,38 +1,51 @@
 ﻿using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save;
 
 internal static class SaveRequestHouseholdExtensions
 {
-    public static async Task<List<LoanApplicationHousehold>> ToC4m(this List<_V2.LoanApplicationHousehold> households, CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService, CancellationToken cancellation)
+    public static async Task<List<LoanApplicationHousehold>> ToC4m(this List<_V2.LoanApplicationHousehold> households, _RAT.RiskApplicationTypeItem riskApplicationType, CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService, CancellationToken cancellation)
     {
-        var convertedHouseholds = new List<LoanApplicationHousehold>();
-        foreach (var household in households)
-        {
-            var roleCode = (await _codebookService.HouseholdTypes(cancellation)).FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode;
+        var householdTypes = await _codebookService.HouseholdTypes(cancellation);
+        var propSettlements = await _codebookService.PropertySettlements(cancellation);
 
-            convertedHouseholds.Add(new LoanApplicationHousehold
+        return households.Select(household => new LoanApplicationHousehold
             {
                 Id = household.HouseholdId,
-                RoleCode = roleCode,
+                RoleCode = householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode,
                 ChildrenUnderAnd10 = household.ChildrenUpToTenYearsCount,
                 ChildrenOver10 = household.ChildrenOverTenYearsCount,
-                SettlementTypeCode = (await _codebookService.PropertySettlements(cancellation)).FirstOrDefault(t => t.Id == household.PropertySettlementId)?.Code,
-                HouseholdExpensesSummary = null,
-                CounterParty = null
-            });
-        }
-        return convertedHouseholds;
+                HouseholdExpensesSummary = household.Expenses?.ToC4m(),
+                SettlementTypeCode = propSettlements.FirstOrDefault(t => t.Id == household.PropertySettlementId)?.Code,
+                CounterParty = household.Customers?.ToC4m(riskApplicationType)
+        })
+            .ToList();
     }
 
-    /*public static List<ExpensesSummary> ToC4m(this Contracts.Shared.ExpensesSummary.V1.ExpensesSummary expenses)
+    public static List<LoanApplicationCounterParty> ToC4m(this List<_V2.LoanApplicationCustomer> customers, _RAT.RiskApplicationTypeItem riskApplicationType)
+        => customers.Select(customer => new LoanApplicationCounterParty
+        {
+            Id = customer.InternalCustomerId,
+            CustomerId = new ResourceIdentifier
+            {
+                Id = customer.PrimaryCustomerId,
+                Instance = Helpers.GetResourceInstanceFromMandant(riskApplicationType.MandantId),
+                Domain = "CM",
+                Resource = "Customer"
+            },
+            GroupEmployee = customer.IsGroupEmployee,
+
+        })
+        .ToList();
+
+    public static List<ExpensesSummary> ToC4m(this Contracts.Shared.ExpensesSummary.V1.ExpensesSummary expenses)
         => new List<ExpensesSummary>()
         {
-            new() { Amount = expenses.Rent.GetValueOrDefault(), Category = ExpensesSummaryCategory.RENT },
-            new() { Amount = expenses.Saving.GetValueOrDefault(), Category = ExpensesSummaryCategory.SAVINGS },
-            new() { Amount = expenses.Insurance.GetValueOrDefault(), Category = ExpensesSummaryCategory.INSURANCE },
-            new() { Amount = expenses.Other.GetValueOrDefault(), Category = ExpensesSummaryCategory.OTHER },
-            new() { Amount = 0, Category = _C4M.ExpensesSummaryCategory.ALIMONY },
-        };*/
+            new() { Amount = expenses.Rent.ToAmount(), Category = ExpensesSummaryCategory.RENT },
+            new() { Amount = expenses.Saving.ToAmount(), Category = ExpensesSummaryCategory.SAVINGS },
+            new() { Amount = expenses.Insurance.ToAmount(), Category = ExpensesSummaryCategory.INSURANCE },
+            new() { Amount = expenses.Other.ToAmount(), Category = ExpensesSummaryCategory.OTHER }
+        };
 }

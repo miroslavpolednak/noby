@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.Shared.ExpensesSummary.V1;
 
-[ProtoContract]
-public class ExpensesSummary
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+public sealed class ExpensesSummary
 {
     [ProtoMember(1)]
     public decimal? Rent { get; set; }

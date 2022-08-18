@@ -1,14 +1,14 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
-public class LoanApplicationProductCollateral
+public class LoanApplicationDeclaredSecuredProduct
 {
     [ProtoMember(1)]
-    public string? Id { get; set; }
+    public string? ProductClusterCode { get; set; }
 
     [ProtoMember(2)]
-    public int? CollateralType { get; set; }
+    public string? AplType { get; set; }
 
     [ProtoMember(3)]
-    public decimal? AppraisedValue { get; set; }
+    public decimal? RemainingExposure { get; set; }
 }
