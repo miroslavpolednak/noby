@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.Shared.ExpensesSummary.V1;
+﻿namespace DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
 public sealed class ExpensesSummary

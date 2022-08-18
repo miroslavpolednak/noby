@@ -16,7 +16,7 @@ internal static class CalculateRequestExtensions
             Maturity = product.LoanDuration
         };
 
-    public static List<_C4M.ExpensesSummary> ToC4m(this Contracts.Shared.ExpensesSummary.V1.ExpensesSummary expenses)
+    public static List<_C4M.ExpensesSummary> ToC4m(this Contracts.Shared.V1.ExpensesSummary expenses)
         => new List<_C4M.ExpensesSummary>()
         {
             new() { Amount = expenses.Rent.GetValueOrDefault(), Category = _C4M.ExpensesSummaryCategory.RENT },

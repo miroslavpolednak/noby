@@ -15,7 +15,7 @@ internal static class SaveRequestLoanApplicationDeclaredProductRelationExtension
                 ProductClusterCode = t.ProductClusterCode,
                 RelationType = "SECURED_PRODUCT",
                 Value = new _C4M.LoanApplicationProductRelationValue { Value = t.RemainingExposure?.ToString(), Type = "REMAINING_EXPOSURE" }
-                })
+            })
             .ToList();
     }
 }

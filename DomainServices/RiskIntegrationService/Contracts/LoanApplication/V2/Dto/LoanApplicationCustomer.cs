@@ -46,7 +46,7 @@ public class LoanApplicationCustomer
     public int? EducationLevelId { get; set; }
 
     [ProtoMember(15)]
-    public int? AcademicDegreeBeforeId { get; set; }
+    public string? AcademicTitlePrefix { get; set; }
 
     [ProtoMember(16)]
     public string? MobilePhoneNumber { get; set; }
@@ -66,6 +66,9 @@ public class LoanApplicationCustomer
     [ProtoMember(21)]
     public Shared.AddressDetail? Address { get; set; }
 
-    public string Income { get; set; }
+    [ProtoMember(22)]
+    public Shared.V1.IdentificationDocumentDetail? IdentificationDocument { get; set; }
 
+    [ProtoMember(23)]
+    public string Income { get; set; }
 }

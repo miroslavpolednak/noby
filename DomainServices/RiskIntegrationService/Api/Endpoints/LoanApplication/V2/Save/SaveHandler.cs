@@ -24,7 +24,7 @@ internal sealed class SaveHandler
             DistributionChannelCode = distrChannelEnumValue,
             SignatureType = request.SignatureType.ToString(),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
-            LoanApplicationHousehold = null,
+            LoanApplicationHousehold = await request.Households?.ToC4m(riskApplicationType, _codebookService, cancellation),
             LoanApplicationProduct = await request.Product?.ToC4m(riskApplicationType, _codebookService, cancellation) ?? throw new CisValidationException(0, "Unable to create LoanApplicationProduct"),
             LoanApplicationProductRelation = await request.ProductRelations?.ToC4m(riskApplicationType, _codebookService, cancellation),
             LoanApplicationDeclaredProductRelation = request.DeclaredSecuredProducts?.ToC4m()

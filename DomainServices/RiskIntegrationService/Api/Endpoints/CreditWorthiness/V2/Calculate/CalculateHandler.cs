@@ -25,7 +25,7 @@ internal sealed class CalculateHandler
             {
                 ChildrenOver10 = h.ChildrenOverTenYearsCount,
                 ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
-                ExpensesSummary = (h.ExpensesSummary ?? new Contracts.Shared.ExpensesSummary.V1.ExpensesSummary()).ToC4m(),
+                ExpensesSummary = (h.ExpensesSummary ?? new Contracts.Shared.V1.ExpensesSummary()).ToC4m(),
                 Clients = h.Customers!.ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
                 CreditLiabilitiesSummary = liabilitiesFlatten.ToC4mCreditLiabilitiesSummary(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 CreditLiabilitiesSummaryOut = liabilitiesFlatten.ToC4mCreditLiabilitiesSummaryOut(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),

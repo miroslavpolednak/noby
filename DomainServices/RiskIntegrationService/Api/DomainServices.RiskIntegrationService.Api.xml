@@ -2855,7 +2855,7 @@
         </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.CreateCaseRequest,System.Threading.CancellationToken)">
             <summary>
-            založení úvěrového případu
+            Založení úvěrového případu
             </summary>
             <remarks>
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
