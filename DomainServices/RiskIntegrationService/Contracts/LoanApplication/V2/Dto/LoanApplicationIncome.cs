@@ -7,5 +7,17 @@ public class LoanApplicationIncome
     public bool IsIncomeConfirmed { get; set; }
 
     [ProtoMember(2)]
-    public DateTime? LastConfirmedDate { get; set; }    
+    public DateTime LastConfirmedDate { get; set; }
+
+    [ProtoMember(3)]
+    public LoanApplicationEmploymentIncome? EmploymentIncome { get; set; }
+
+    [ProtoMember(4)]
+    public LoanApplicationEntrepreneurIncome? EntrepreneurIncome { get; set; }
+
+    [ProtoMember(5)]
+    public LoanApplicationRentIncome? RentIncome { get; set; }
+
+    [ProtoMember(6)]
+    public LoanApplicationOtherIncome? OtherIncome { get; set; }
 }

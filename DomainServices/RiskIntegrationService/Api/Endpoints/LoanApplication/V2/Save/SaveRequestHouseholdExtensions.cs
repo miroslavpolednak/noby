@@ -1,14 +1,14 @@
 ﻿using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
-using Google.Protobuf.Reflection;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save;
 
 internal static class SaveRequestHouseholdExtensions
 {
-    public static async Task<List<LoanApplicationHousehold>> ToC4m(this List<_V2.LoanApplicationHousehold> households, _RAT.RiskApplicationTypeItem riskApplicationType, CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService, CancellationToken cancellation)
+    public static async Task<List<_C4M.LoanApplicationHousehold>> ToC4m(this List<_V2.LoanApplicationHousehold> households, _RAT.RiskApplicationTypeItem riskApplicationType, CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService, CancellationToken cancellation)
     {
         var householdTypes = await _codebookService.HouseholdTypes(cancellation);
         var propSettlements = await _codebookService.PropertySettlements(cancellation);
@@ -20,8 +20,8 @@ internal static class SaveRequestHouseholdExtensions
         var housingConditions = await _codebookService.HousingConditions(cancellation);
         var identificationDocuments = await _codebookService.IdentificationDocumentTypes(cancellation);
 
-        return households.Select(household => new LoanApplicationHousehold
-            {
+        return households.Select(household => new _C4M.LoanApplicationHousehold
+        {
                 Id = household.HouseholdId,
                 RoleCode = householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode,
                 ChildrenUnderAnd10 = household.ChildrenUpToTenYearsCount,
@@ -35,7 +35,7 @@ internal static class SaveRequestHouseholdExtensions
             .ToList();
     }
 
-    public static List<LoanApplicationCounterParty> ToC4m(
+    static List<_C4M.LoanApplicationCounterParty> ToC4m(
         this List<_V2.LoanApplicationCustomer> customers, 
         _RAT.RiskApplicationTypeItem riskApplicationType,
         List<_CB.Countries.CountriesItem> countries,
@@ -50,7 +50,7 @@ internal static class SaveRequestHouseholdExtensions
             if (!FastEnum.TryParse(customerRoles.FirstOrDefault(t => t.Id == customer.CustomerRoleId)?.RdmCode, out LoanApplicationCounterPartyRoleCode customerRole))
                 throw new CisValidationException(0, $"Can't cast LoanApplicationCounterPartyRoleCode '{customer.CustomerRoleId}' to C4M enum");
             
-            var model = new LoanApplicationCounterParty
+            var model = new _C4M.LoanApplicationCounterParty
             {
                 Id = customer.InternalCustomerId,
                 CustomerId = new ResourceIdentifier
@@ -69,7 +69,7 @@ internal static class SaveRequestHouseholdExtensions
                 BirthName = customer.BirthName,
                 BirthDate = customer.BirthDate,
                 BirthPlace = customer.BirthPlace,
-                Address = customer.Address is null ? null : new PrimaryAddress//TODO zmeni c4m long na string?
+                Address = customer.Address is null ? null : new _C4M.PrimaryAddress//TODO zmeni c4m long na string?
                 {
                     City = customer.Address.City,
                     CountryCode = countries.FirstOrDefault(t => t.Id == customer.Address.CountryId)?.ShortName,
@@ -81,12 +81,12 @@ internal static class SaveRequestHouseholdExtensions
                 AcademicTitlePrefix = customer.AcademicTitlePrefix,
                 Phone = string.IsNullOrEmpty(customer.MobilePhoneNumber) ? null : new List<PhoneContact>
                 {
-                    new PhoneContact { ContactType = PhoneContactContactType.MOBILE, PhoneNumber = customer.MobilePhoneNumber }
+                    new _C4M.PhoneContact { ContactType = PhoneContactContactType.MOBILE, PhoneNumber = customer.MobilePhoneNumber }
                 },
                 HasEmail = customer.HasEmail,
                 IsPartner = customer.IsPartner,
                 ManagementType = "XX",
-                Income = null,
+                Income = customer.Income?.ToC4m() ?? new LoanApplicationIncome { IncomeCollected = false },
                 Taxpayer = customer.Taxpayer,
                 CounterpartyType = "FOO",
                 LoanApplicationPersonalDocument = customer.IdentificationDocument is null ? null : new LoanApplicationPersonalDocument
@@ -129,8 +129,21 @@ internal static class SaveRequestHouseholdExtensions
         })
         .ToList();
 
-    public static List<ExpensesSummary> ToC4m(this Contracts.Shared.V1.ExpensesSummary expenses)
-        => new List<ExpensesSummary>()
+    static _C4M.LoanApplicationIncome ToC4m(this _V2.LoanApplicationIncome income)
+    {
+        var model = new _C4M.LoanApplicationIncome
+        {
+            IncomeConfirmed = income.IsIncomeConfirmed,
+            LastConfirmedDate = income.LastConfirmedDate
+        };
+
+        model.IncomeCollected = model.EntrepreneurIncome is not null || model.EmploymentIncome is not null || model.RentIncome is not null || model.OtherIncome is not null;
+        return model;
+    }
+        
+
+    static List<_C4M.ExpensesSummary> ToC4m(this Contracts.Shared.V1.ExpensesSummary expenses)
+        => new()
         {
             new() { Amount = expenses.Rent.ToAmount(), Category = ExpensesSummaryCategory.RENT },
             new() { Amount = expenses.Saving.ToAmount(), Category = ExpensesSummaryCategory.SAVINGS },

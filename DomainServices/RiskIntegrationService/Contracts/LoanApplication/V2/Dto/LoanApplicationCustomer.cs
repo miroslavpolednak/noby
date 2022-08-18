@@ -70,5 +70,5 @@ public class LoanApplicationCustomer
     public Shared.V1.IdentificationDocumentDetail? IdentificationDocument { get; set; }
 
     [ProtoMember(23)]
-    public string Income { get; set; }
+    public LoanApplicationIncome? Income { get; set; }
 }
