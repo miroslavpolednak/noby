@@ -93,11 +93,6 @@
             popis důvodu nespočtení výsledku.
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.CreateCaseResponse.RiskBusinessCaseIdMp">
-            <summary>
-            identifikátor obchodního případu v C4M (ResoureIdentifier.Id)
-            </summary>
-        </member>
         <member name="P:DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.LoanAgreement.DistributionChannel">
             <summary>
             Identifikátor obchodního případu.

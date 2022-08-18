@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.0.2",
-    "title": "RiskBusinessCase"
+    "title": "RiskBusinessCase",
+    "version": "0.2.1"
   },
-  "basePath": "/laa-risk-business-case-service-0.2.0/api",
+  "basePath": "/laa-risk-business-case-service-0.2.1/api",
   "tags": [
     {
       "name": "RiskBusinessCase - async"
@@ -69,7 +69,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
+            "in": "query",
             "description": "riskBusinessCaseId",
             "required": true,
             "type": "string"
@@ -457,6 +457,7 @@
       "properties": {
         "value": {
           "type": "number",
+          "format": "decimal",
           "description": "Hodnota částky"
         },
         "currencyCode": {
@@ -625,7 +626,8 @@
           "description": "Assessment result"
         },
         "standardRiskCosts": {
-          "type": "number"
+          "type": "number",
+          "format": "decimal"
         },
         "glTableCode": {
           "type": "integer",
@@ -660,6 +662,10 @@
           "description": "CollateralRiskCharacteristics",
           "$ref": "#/definitions/CollateralRiskCharacteristics"
         },
+        "loanApplicationApprovalPossibilities": {
+          "description": "LoanApplicationApprovalPossibilities",
+          "$ref": "#/definitions/LoanApplicationApprovalPossibilities"
+        },
         "version": {
           "description": "LoanApplicationAssessment version",
           "$ref": "#/definitions/SemanticVersion"
@@ -674,6 +680,20 @@
         }
       },
       "description": "An identified object"
+    },
+    "LoanApplicationApprovalPossibilities": {
+      "type": "object",
+      "properties": {
+        "selfApprovalPossible": {
+          "type": "boolean",
+          "description": "Id"
+        },
+        "autoApprovalPossible": {
+          "type": "boolean",
+          "description": "Id"
+        }
+      },
+      "description": "Možnosti samo/autoschválení"
     },
     "LoanApplicationAssessmentReason": {
       "type": "object",

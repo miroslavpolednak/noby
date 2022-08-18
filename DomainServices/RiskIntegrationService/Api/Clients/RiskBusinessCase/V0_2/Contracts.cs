@@ -13,7 +13,7 @@
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
-namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts
+namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts
 {
     using System = global::System;
 
@@ -342,7 +342,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("value")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Value { get; set; }
+        public decimal? Value { get; set; }
 
         /// <summary>
         /// Kód měny částky (ISO 4217)
@@ -646,7 +646,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("standardRiskCosts")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? StandardRiskCosts { get; set; }
+        public decimal? StandardRiskCosts { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("glTableCode")]
 
@@ -699,6 +699,15 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         public CollateralRiskCharacteristics CollateralRiskCharacteristics { get; set; }
 
         /// <summary>
+        /// LoanApplicationApprovalPossibilities
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationApprovalPossibilities")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public LoanApplicationApprovalPossibilities LoanApplicationApprovalPossibilities { get; set; }
+
+        /// <summary>
         /// LoanApplicationAssessment version
         /// </summary>
 
@@ -724,6 +733,32 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         public Change Updated { get; set; }
+
+    }
+
+    /// <summary>
+    /// Možnosti samo/autoschválení
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class LoanApplicationApprovalPossibilities
+    {
+        /// <summary>
+        /// Id
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("selfApprovalPossible")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public bool? SelfApprovalPossible { get; set; }
+
+        /// <summary>
+        /// Id
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("autoApprovalPossible")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public bool? AutoApprovalPossible { get; set; }
 
     }
 
@@ -1625,42 +1660,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         }
     }
 
-
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException : System.Exception
-    {
-        public int StatusCode { get; private set; }
-
-        public string Response { get; private set; }
-
-        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
-            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
-        {
-            StatusCode = statusCode;
-            Response = response;
-            Headers = headers;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("HTTP Response: \n\n{0}\n\n{1}", Response, base.ToString());
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException<TResult> : ApiException
-    {
-        public TResult Result { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
-            : base(message, statusCode, response, headers, innerException)
-        {
-            Result = result;
-        }
-    }
 
 }
 
