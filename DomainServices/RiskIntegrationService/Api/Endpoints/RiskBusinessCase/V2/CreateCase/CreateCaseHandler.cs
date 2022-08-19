@@ -13,23 +13,9 @@ internal sealed class CreateCaseHandler
 
         var requestModel = new _C4M.CreateRequest
         {
-            ItChannel = FastEnum.Parse<_C4M.CreateRequestItChannel>(chanel),
-            LoanApplicationId = new _C4M.ResourceIdentifier
-            {
-                Id = $"{request.SalesArrangementId}",
-                Variant = chanel,
-                Instance = Constants.MPSS,
-                Domain = Constants.LA,
-                Resource = Constants.LoanApplication
-            },
-            ResourceProcessId = request.ResourceProcessId != null ? new _C4M.ResourceIdentifier
-            {
-                Id = request.ResourceProcessId,
-                Variant = chanel,
-                Domain = Constants.OM,
-                Instance = Constants.MPSS,
-                Resource = Constants.OfferInstance
-            } : null
+            ItChannel = FastEnum.Parse<_C4M.CreateRequestItChannel>(chanel, true),
+            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcess(request.ResourceProcessId, chanel)
         };
 
         var response = await _client.CreateCase(requestModel, cancellationToken);

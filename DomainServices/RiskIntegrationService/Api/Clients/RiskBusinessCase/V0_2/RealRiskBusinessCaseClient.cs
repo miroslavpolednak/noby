@@ -1,4 +1,5 @@
 ﻿using DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
+using System.Text.Json.Serialization;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2;
 
@@ -23,7 +24,7 @@ internal sealed class RealRiskBusinessCaseClient
             .PostAsJsonAsync(_httpClient.BaseAddress + string.Format(default, _createCaseAssessmentUrl, riskBusinessCaseId), request, cancellationToken)
             .ConfigureAwait(false); ;
 
-        var result = await response.Content.ReadFromJsonAsync<Identified>(cancellationToken: cancellationToken)
+        var result = await response.Content.ReadFromJsonAsync<Identified>(options: _jsonOptions, cancellationToken: cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(Identified));
 
         return result;
@@ -63,5 +64,15 @@ internal sealed class RealRiskBusinessCaseClient
     public RealRiskBusinessCaseClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
+    }
+
+    private static System.Text.Json.JsonSerializerOptions _jsonOptions = new()
+    {
+        NumberHandling = JsonNumberHandling.AllowReadingFromString //TODO odstranit az c4m opravi format cisel
+    };
+
+    static RealRiskBusinessCaseClient()
+    {
+        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse()); //TODO odstranit az c4m opravi format cisel
     }
 }
