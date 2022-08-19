@@ -29,21 +29,38 @@ internal static class CreateAssesmentExtensions
     private static _sh.LoanApplicationAssessmentDetail ToDetail(this _C4M.AssessmentDetail detail)
         => new()
         {
-            Score = detail.LoanApplicationScore != null ?
-            new _sh.LoanApplicationAssessmentScore
-            {
-                Scale = detail.LoanApplicationScore.Scale,
-                Value = detail.LoanApplicationScore.Value
-            } : null,
-            Limit = detail.LoanApplicationLimit != null ?
-            new _sh.LoanApplicationAssesmentLimit
-            {
-                Limit = detail.LoanApplicationLimit.LoanApplicationLimit1.ToAmountDetail(),
-                InstallmentLimit = detail.LoanApplicationLimit.LoanApplicationInstallmentLimit.ToAmountDetail(),
-                CollateralLimit = detail.LoanApplicationLimit.LoanApplicationCollateralLimit.ToAmountDetail(),
-                RemainingAnnuityLivingAmount = detail.LoanApplicationLimit.RemainingAnnuityLivingAmount.ToAmountDetail(),
-                IsCalculationStressed = detail.LoanApplicationLimit.CalculationIrStressed.GetValueOrDefault()
-            } : null
+            Score = detail.LoanApplicationScore?.ToScore(),
+            Limit = detail.LoanApplicationLimit?.ToLimit(),
+            RiskCharacteristics = detail.LoanApplicationRiskCharacteristics?.ToRiskCharacteristics()
+        };
+
+    private static _sh.LoanApplicationAssessmentScore ToScore(this _C4M.LoanApplicationScore score)
+        => new()
+        {
+            Scale = score.Scale,
+            Value = score.Value
+        };
+
+    private static _sh.LoanApplicationAssesmentLimit ToLimit(this _C4M.LoanApplicationLimit limit)
+        => new()
+        {
+            Limit = limit.LoanApplicationLimit1.ToAmountDetail(),
+            InstallmentLimit = limit.LoanApplicationInstallmentLimit.ToAmountDetail(),
+            CollateralLimit = limit.LoanApplicationCollateralLimit.ToAmountDetail(),
+            RemainingAnnuityLivingAmount = limit.RemainingAnnuityLivingAmount.ToAmountDetail(),
+            IsCalculationStressed = limit.CalculationIrStressed.GetValueOrDefault()
+        };
+
+    private static _sh.LoanApplicationAssesmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics riskCharacteristics)
+        => new()
+        {
+            MonthlyIncome = riskCharacteristics.MonthlyIncomeAmount.ToAmountDetail(),
+            MonthlyCostsWithoutInstallments = riskCharacteristics.MonthlyCostsWithoutInstAmount.ToAmountDetail(),
+            MonthlyInstallmentsInKB = riskCharacteristics.MonthlyInstallmentsInKBAmount.ToAmountDetail(),
+            MonthlyEntrepreneurInstallmentsInKB = riskCharacteristics.MonthlyEntrepreneurInstallmentsInKBAmount.ToAmountDetail(),
+            MonthlyInstallmentsInMPSS = riskCharacteristics.MonthlyInstallmentsInMPSSAmount.ToAmountDetail(),
+            MonthlyInstallmentsInOFI = riskCharacteristics.MonthlyInstallmentsInOFIAmount.ToAmountDetail(),
+            MonthlyInstallmentsInCBCB = riskCharacteristics.MonthlyInstallmentsInCBCBAmount.ToAmountDetail(),
         };
 
     private static Func<_C4M.LoanApplicationAssessmentReason, _sh.LoanApplicationAssessmentReason> Reason()
