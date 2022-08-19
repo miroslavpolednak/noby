@@ -1,7 +1,8 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts;
+﻿
+namespace DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 [ProtoContract]
-public sealed class CollateralRiskCharacteristics
+public sealed class LoanApplicationAssessmentCollateralRiskCharacteristics
 {
     [ProtoMember(1)]
     public long? Ltv { get; set; }
