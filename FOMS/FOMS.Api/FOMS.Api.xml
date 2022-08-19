@@ -916,6 +916,15 @@
             <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
             </remarks>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.GetFullPaymentScheduleByOfferId(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Plný splátkový kalendář dle ID simulace.
+            </summary>
+            <remarks>
+            <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
+            </remarks>
+            <returns>Plný splátkový kalendář simulace.</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.ResourceProcessId">
             <summary>
             Unikatni identifikator pro session simulace.
@@ -945,6 +954,11 @@
         <member name="P:FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.SimulationResults">
             <summary>
             Vysledky simulace.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetFullPaymentScheduleResponse.Items">
+            <summary>
+            Položky splátkového kalendáře.
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.Dto.GetMortgageResponse.OfferId">
