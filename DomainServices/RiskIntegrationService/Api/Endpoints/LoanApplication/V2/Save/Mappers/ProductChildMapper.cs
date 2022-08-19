@@ -41,8 +41,8 @@ internal sealed class ProductChildMapper
             HomeCurrencyIncome = product.HomeCurrencyIncome,
             HomeCurrencyResidence = product.HomeCurrencyResidence,
             FinancingType = product.FinancingTypes?.FirstOrDefault(),
-            DeveloperCode = await getDeveloper(product.DeveloperId),
-            ProjectCode = await getDeveloperProject(product.DeveloperProjectId)
+            DeveloperCode = product.DeveloperId.ToString(),
+            ProjectCode = product.DeveloperProjectId.ToString()
         };
     }
 
@@ -119,13 +119,7 @@ internal sealed class ProductChildMapper
             Code = Helpers.GetEnumFromInt<LoanApplicationPurposeCode>(purposes.FirstOrDefault(x => x.Id == t.LoanPurposeId)?.C4mId ?? -1)
         };
     }
-
-    private async Task<string?> getDeveloper(int? developerId)
-        => developerId.HasValue ? (await _codebookService.Developers(_cancellationToken)).FirstOrDefault(t => t.Id == developerId)?.Cin : null;
-
-    private async Task<string?> getDeveloperProject(int? developerProjectId)
-        => developerProjectId.HasValue ? (await _codebookService.DeveloperProjects(_cancellationToken)).FirstOrDefault(t => t.Id == developerProjectId)?.Name : null;
-
+    
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly CancellationToken _cancellationToken;
     private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
