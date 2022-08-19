@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Linq;
 
 using CIS.Infrastructure.gRPC.CisTypes;
 
@@ -231,6 +232,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => Data.Households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
             var firstEmploymentType = Data.EmploymentTypes.OrderBy(i => i.Id).FirstOrDefault();
 
+            int[] idsObligationTypeLoan = new int[] { 1, 2, 5 };  // Hypotéční nebo spotřebitelský úvěr
+            int[] idsObligationTypeCredit = new int[] { 3, 4 };   // Kreditní karta nebo povolený debet
+
             object? MapHousehold(Contracts.Household i)
             {
                 if (i == null)
@@ -384,6 +388,18 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     return null;
                 }
 
+                decimal? vyseKorekceZavazkuJistina = null;
+
+                if (idsObligationTypeLoan. Contains(i.ObligationTypeId ?? 0))
+                {
+                    vyseKorekceZavazkuJistina = i.Correction?.LoanPrincipalAmountCorrection;
+                }
+
+                if (idsObligationTypeCredit.Contains(i.ObligationTypeId ?? 0))
+                {
+                    vyseKorekceZavazkuJistina = i.Correction?.CreditCardLimitCorrection;
+                }
+
                 return new
                 {
                     cislo_zavazku = rowNumber.ToJsonString(),
@@ -391,7 +407,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     vyse_splatky = i.InstallmentAmount.ToJsonString(),
                     vyse_nesplacene_jistiny = i.LoanPrincipalAmount.ToJsonString(),
                     vyse_limitu = i.CreditCardLimit.ToJsonString(),
-                    mimo_entitu_mandanta = i.Creditor?.IsExternal?.ToJsonString()
+                    veritel_kod_banky = i.Creditor?.CreditorId?.ToJsonString(),
+                    veritel_nazev = i.Creditor?.Name,
+                    mimo_entitu_mandanta = i.Creditor?.IsExternal?.ToJsonString(),
+                    zpusob_korekce_zavazku = i.Correction?.CorrectionTypeId?.ToJsonString(),
+                    vyse_korekce_zavazku_o_spl = i.Correction?.InstallmentAmountCorrection?.ToJsonString(),
+                    vyse_korekce_zavazku_o_jistina = vyseKorekceZavazkuJistina.ToJsonString(),
+                    vyse_konsolid_jistiny = i.LoanPrincipalAmountConsolidated?.ToJsonString(),
                 };
             }
 
@@ -435,6 +457,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     typ_dokumentu = 1.ToJsonString(),                                                               // Pro příjem ze zaměstnání default "1"
                     pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                     pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
+                    hruby_rocny_prijem = i.Employement?.Job?.GrossAnnualIncome.ToJsonString(),
                     zamestnavatel_nazov = i.Employement?.Employer?.Name,
                     zamestnavatel_rc_ico = new List<string> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),   // pouze jedna z hodnot, neměly by být zadány obě
                     //zamestnavatel_sidlo_ulice = i.Employement?.Employer?.Address?.Street,
@@ -589,9 +612,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
 
             // root
-            var financialResourcesOwn = Data.Offer.BasicParameters.FinancialResourcesOwn.ToDecimal();
-            var financialResourcesOther = Data.Offer.BasicParameters.FinancialResourcesOther.ToDecimal();
-            decimal? financialResourcesTotal = (financialResourcesOwn.HasValue || financialResourcesOther.HasValue) ? ((financialResourcesOwn ?? 0) + (financialResourcesOther ?? 0)) : null;
+            var loanAmount = (decimal)Data.Offer.SimulationResults.LoanAmount;
+            var financialResourcesOwn = Data.Offer.BasicParameters.FinancialResourcesOwn.ToDecimal() ?? 0;
+            var financialResourcesOther = Data.Offer.BasicParameters.FinancialResourcesOther.ToDecimal() ?? 0;
+            var financialResourcesTotal = (loanAmount + financialResourcesOwn + financialResourcesOther);
+
             DateTime riskBusinessCaseExpirationDate = (Data.Arrangement.RiskBusinessCaseExpirationDate is not null) ? (DateTime)Data.Arrangement.RiskBusinessCaseExpirationDate! : actualDate.AddDays(90).Date;
             DateTime firstSignedDate = (Data.Arrangement.FirstSignedDate is not null) ? (DateTime)Data.Arrangement.FirstSignedDate! : actualDate;
             var seznamIdFormulare = new object[] { new { id_formulare = 0.ToJsonString() } };
