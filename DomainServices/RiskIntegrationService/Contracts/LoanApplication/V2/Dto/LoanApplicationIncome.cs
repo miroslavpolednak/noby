@@ -10,14 +10,14 @@ public class LoanApplicationIncome
     public DateTime LastConfirmedDate { get; set; }
 
     [ProtoMember(3)]
-    public List<LoanApplicationEmploymentIncome>? EmploymentIncome { get; set; }
+    public List<LoanApplicationEmploymentIncome>? EmploymentIncomes { get; set; }
 
     [ProtoMember(4)]
-    public List<LoanApplicationEntrepreneurIncome>? EntrepreneurIncome { get; set; }
+    public LoanApplicationEntrepreneurIncome? EntrepreneurIncome { get; set; }
 
     [ProtoMember(5)]
-    public List<LoanApplicationRentIncome>? RentIncome { get; set; }
+    public LoanApplicationRentIncome? RentIncome { get; set; }
 
     [ProtoMember(6)]
-    public List<LoanApplicationOtherIncome>? OtherIncome { get; set; }
+    public List<LoanApplicationOtherIncome>? OtherIncomes { get; set; }
 }

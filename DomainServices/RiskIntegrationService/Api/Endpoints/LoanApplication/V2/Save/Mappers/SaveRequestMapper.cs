@@ -3,32 +3,43 @@ using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using Azure.Core;
 using CIS.Core.Security;
+using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
+[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class SaveRequestMapper
 {
     public async Task<_C4M.LoanApplication> MapToC4m(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
     {
-        // distr channel
-        var distrChannel = (await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code ?? "BR";
-        if (FastEnum.TryParse(distrChannel, out _C4M.LoanApplicationDistributionChannelCode distrChannelEnumValue))
-            throw new CisValidationException(0, $"Can't cast DistributionChannelId '{request.DistributionChannelId}' to C4M enum");
-
         // produkt
         var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw new CisValidationException(0, $"Can't find RiskApplicationType item");
 
+        bool verification = riskApplicationType.MandantId == (int)CIS.Foms.Enums.Mandants.Kb
+            && request.Product.RequiredAmount <= 9000000
+            && (request.Product.Purposes?.All(p => p.LoanPurposeId == 201 || p.LoanPurposeId == 202) ?? false)
+            && request.Households.Count == 1
+            && request.Households.All(t => t.Customers?.All(c => c.IdentificationDocument?.IdentificationDocumentTypeId == 1) ?? false)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.Count == 1) ?? false)
+            && request.Households.All(t => t.Customers?.All(c => !c.Income?.OtherIncomes?.Any() ?? true) ?? true)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EntrepreneurIncome is null) ?? true)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.RentIncome is null) ?? true)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().EmploymentTypeId == 2) ?? false)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().Address?.CountryId == 16) ?? false);
+
+
         // mappers instances
         var productChildMapper = new ProductChildMapper(_codebookService, riskApplicationType, cancellation);
+        var householdMapper = new HouseholdChildMapper(_codebookService, riskApplicationType, cancellation);
 
         var requestModel = new _C4M.LoanApplication
         {
             Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             AppendixCode = request.AppendixCode,
-            DistributionChannelCode = distrChannelEnumValue,
+            DistributionChannelCode = Helpers.GetEnumFromString<_C4M.LoanApplicationDistributionChannelCode>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, LoanApplicationDistributionChannelCode.BR),
             SignatureType = request.SignatureType.ToString(),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
-            LoanApplicationHousehold = await request.Households?.ToC4m(riskApplicationType, _codebookService, cancellation),
+            LoanApplicationHousehold = await householdMapper.MapHouseholds(request.Households, verification),
             LoanApplicationProduct = await productChildMapper.MapProduct(request.Product),
             LoanApplicationProductRelation = await productChildMapper.MapProductRelations(request.ProductRelations),
             LoanApplicationDeclaredProductRelation = productChildMapper.MapDeclaredProductRelations(request.DeclaredSecuredProducts)

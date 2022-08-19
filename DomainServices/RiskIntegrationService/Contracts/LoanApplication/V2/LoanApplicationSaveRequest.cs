@@ -26,7 +26,7 @@ public class LoanApplicationSaveRequest
     public List<LoanApplicationProductRelation>? ProductRelations { get; set; }
 
     [ProtoMember(8)]
-    public List<LoanApplicationDeclaredSecuredProduct> DeclaredSecuredProducts { get; set; }
+    public List<LoanApplicationDeclaredSecuredProduct>? DeclaredSecuredProducts { get; set; }
 
     [ProtoMember(9)]
     public Shared.Identity? UserIdentity { get; set; }

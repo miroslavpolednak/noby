@@ -12,19 +12,6 @@ internal sealed class ProductChildMapper
     /// </summary>
     public async Task<_C4M.LoanApplicationProduct> MapProduct(_V2.LoanApplicationProduct product)
     {
-        // repayment type
-        var repaymentType = (await _codebookService.RepaymentScheduleTypes(_cancellationToken)).FirstOrDefault(t => t.Id == product.RepaymentScheduleTypeId)?.Code ?? "A";
-        if (!FastEnum.TryParse(repaymentType, out LoanApplicationProductRepaymentScheduleType repaymentTypeEnum))
-            throw new CisValidationException(0, $"Can't cast RepaymentScheduleTypeId '{product.RepaymentScheduleTypeId}' to C4M enum");
-
-        // installment period
-        LoanApplicationProductInstallmentPeriod installmentPeriod;
-        if (string.IsNullOrEmpty(product.InstallmentPeriod))
-            installmentPeriod = LoanApplicationProductInstallmentPeriod.M;
-        else
-            if (!FastEnum.TryParse(product.InstallmentPeriod, out installmentPeriod))
-            throw new CisValidationException(0, $"Can't cast LoanApplicationProductInstallmentPeriod '{product.InstallmentPeriod}' to C4M enum");
-
         var purposes = await _codebookService.LoanPurposes(_cancellationToken);
         var collaterals = await _codebookService.CollateralTypes(_cancellationToken);
 
@@ -44,8 +31,8 @@ internal sealed class ProductChildMapper
             Annuity = Convert.ToInt64(product.LoanPaymentAmount ?? 0),
             FixationPeriod = product.FixedRatePeriod,
             InterestRate = product.LoanInterestRate,
-            RepaymentScheduleType = FastEnum.Parse<LoanApplicationProductRepaymentScheduleType>(repaymentType),
-            InstallmentPeriod = installmentPeriod,
+            RepaymentScheduleType = Helpers.GetEnumFromString<LoanApplicationProductRepaymentScheduleType>((await _codebookService.RepaymentScheduleTypes(_cancellationToken)).FirstOrDefault(t => t.Id == product.RepaymentScheduleTypeId)?.Code, LoanApplicationProductRepaymentScheduleType.A),
+            InstallmentPeriod = Helpers.GetEnumFromString<LoanApplicationProductInstallmentPeriod>(product.InstallmentPeriod, LoanApplicationProductInstallmentPeriod.M),
             InstallmentCount = product.InstallmentCount,
             DrawingPeriodStart = product.DrawingPeriodStart,
             DrawingPeriodEnd = product.DrawingPeriodEnd,
@@ -79,31 +66,25 @@ internal sealed class ProductChildMapper
                     Value = t.RemainingExposure.ToString(),
                     Type = "REMAINING_EXPOSURE"
                 },
-                LoanApplicationProductRelationCounterparty = t.Customers?.Select(x =>
+                LoanApplicationProductRelationCounterparty = t.Customers?.Select(x => new _C4M.LoanApplicationProductRelationCounterparty
                 {
-                    if (!FastEnum.TryParse(customerRoles.FirstOrDefault(c => c.Id == x.CustomerRoleId)?.RdmCode, out _C4M.LoanApplicationProductRelationCounterpartyRoleCode role))
-                        throw new CisValidationException(0, $"Can't cast LoanApplicationProductRelationCounterpartyRoleCode '{x.CustomerRoleId}' to C4M enum");
-
-                    return new _C4M.LoanApplicationProductRelationCounterparty
+                    CustomerId = new _C4M.ResourceIdentifier
                     {
-                        CustomerId = new _C4M.ResourceIdentifier
-                        {
-                            Id = x.CustomerId,
-                            Domain = "CM",
-                            Resource = "Customer",
-                            Instance = Helpers.GetResourceInstanceFromMandant(_riskApplicationType.MandantId)
-                        },
-                        RoleCode = role
-                    };
+                        Id = x.CustomerId,
+                        Domain = "CM",
+                        Resource = "Customer",
+                        Instance = Helpers.GetResourceInstanceFromMandant(_riskApplicationType.MandantId)
+                    },
+                    RoleCode = Helpers.GetRequiredEnumFromString<_C4M.LoanApplicationProductRelationCounterpartyRoleCode>(customerRoles.FirstOrDefault(c => c.Id == x.CustomerRoleId)?.RdmCode ?? "")
                 }).ToList()
             })
             .ToList();
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    public List<_C4M.LoanApplicationDeclaredProductRelation> MapDeclaredProductRelations(List<_V2.LoanApplicationDeclaredSecuredProduct> relations)
+    public List<_C4M.LoanApplicationDeclaredProductRelation>? MapDeclaredProductRelations(List<_V2.LoanApplicationDeclaredSecuredProduct>? relations)
 #pragma warning restore CA1822 // Mark members as static
-        => relations
+        => relations?
             .Select(t => new _C4M.LoanApplicationDeclaredProductRelation
             {
                 ProductType = "KBGROUP",
@@ -132,18 +113,10 @@ internal sealed class ProductChildMapper
 
     private static Func<_V2.LoanApplicationProductPurpose, LoanApplicationPurpose> tranformPurpose(List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes)
     {
-        return t =>
+        return t => new LoanApplicationPurpose
         {
-#pragma warning disable CA1305 // Specify IFormatProvider
-            if (!FastEnum.TryParse((purposes.FirstOrDefault(x => x.Id == t.LoanPurposeId)?.C4mId ?? -1).ToString(), out LoanApplicationPurposeCode code))
-                throw new CisValidationException(0, $"Can't cast LoanApplicationPurposeCode '{t.LoanPurposeId}' to C4M enum");
-#pragma warning restore CA1305 // Specify IFormatProvider
-
-            return new LoanApplicationPurpose
-            {
-                Amount = t.Amount,
-                Code = code
-            };
+            Amount = t.Amount,
+            Code = Helpers.GetEnumFromInt<LoanApplicationPurposeCode>(purposes.FirstOrDefault(x => x.Id == t.LoanPurposeId)?.C4mId ?? -1)
         };
     }
 

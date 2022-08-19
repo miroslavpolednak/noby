@@ -25,5 +25,11 @@ public class LoanApplicationEntrepreneurIncome
     public int? ProofTypeId { get; set; }
 
     [ProtoMember(8)]
-    public Shared.AmountDetail? Amount { get; set; }
+    public Shared.AmountDetail? AnnualIncomeAmount { get; set; }
+
+    [ProtoMember(9)]
+    public bool LumpSumTaxationRegime { get; set; }
+
+    [ProtoMember(10)]
+    public bool LumpSumModified { get; set; }
 }
