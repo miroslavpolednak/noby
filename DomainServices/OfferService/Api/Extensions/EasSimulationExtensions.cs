@@ -388,12 +388,12 @@ internal static class EasSimulationExtensions
         return new _OS.PaymentScheduleFull
         {
             PaymentIndex = easSplF.n,
-            PaymentNumber = easSplF.c,
-            Date = easSplF.d,
-            Amount = easSplF.p,
-            Principal = easSplF.j,
-            Interest = easSplF.u,
-            RemainingPrincipal = easSplF.z,
+            PaymentNumber = easSplF.c ?? String.Empty,
+            Date = easSplF.d ?? String.Empty,
+            Amount = easSplF.p ?? String.Empty,
+            Principal = easSplF.j ?? String.Empty,
+            Interest = easSplF.u ?? String.Empty,
+            RemainingPrincipal = easSplF.z ?? String.Empty,
         };
     }
 
