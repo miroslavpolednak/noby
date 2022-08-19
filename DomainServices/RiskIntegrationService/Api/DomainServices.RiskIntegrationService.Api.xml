@@ -2853,6 +2853,21 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/LOAN+APPLICATION">https://wiki.kb.cz/display/HT/LOAN+APPLICATION</a>
             </remarks>
         </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers.HouseholdChildMapper.mapExpenses(DomainServices.RiskIntegrationService.Contracts.Shared.V1.ExpensesSummary)">
+            <summary>
+            Namapovat vydaje
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers.ProductChildMapper.MapProduct(DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationProduct)">
+            <summary>
+            Mapovani hlavniho produktu
+            </summary>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers.ProductChildMapper.MapProductRelations(System.Collections.Generic.List{DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationProductRelation})">
+            <summary>
+            Mapovani produktovych vazeb
+            </summary>
+        </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.CreateCaseRequest,System.Threading.CancellationToken)">
             <summary>
             Založení úvěrového případu

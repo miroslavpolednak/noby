@@ -86,7 +86,7 @@ internal static class SaveRequestHouseholdExtensions
                 HasEmail = customer.HasEmail,
                 IsPartner = customer.IsPartner,
                 ManagementType = "XX",
-                Income = customer.Income?.ToC4m() ?? new LoanApplicationIncome { IncomeCollected = false },
+                //Income = customer.Income?.ToC4m() ?? new LoanApplicationIncome { IncomeCollected = false },
                 Taxpayer = customer.Taxpayer,
                 CounterpartyType = "FOO",
                 LoanApplicationPersonalDocument = customer.IdentificationDocument is null ? null : new LoanApplicationPersonalDocument
@@ -129,7 +129,7 @@ internal static class SaveRequestHouseholdExtensions
         })
         .ToList();
 
-    static _C4M.LoanApplicationIncome ToC4m(this _V2.LoanApplicationIncome income)
+    /*static _C4M.LoanApplicationIncome ToC4m(this _V2.LoanApplicationIncome income)
     {
         var model = new _C4M.LoanApplicationIncome
         {
@@ -142,9 +142,9 @@ internal static class SaveRequestHouseholdExtensions
 
         model.IncomeCollected = model.EntrepreneurIncome is not null || model.EmploymentIncome is not null || model.RentIncome is not null || model.OtherIncome is not null;
         return model;
-    }
+    }*/
     
-    static List<_C4M.LoanApplicationOtherIncome> ToC4m(this List<_V2.LoanApplicationOtherIncome> incomes)
+    /*static List<_C4M.LoanApplicationOtherIncome> ToC4m(this List<_V2.LoanApplicationOtherIncome> incomes)
     {
         incomes.Select(t => new _C4M.LoanApplicationOtherIncome
         {
@@ -153,7 +153,7 @@ internal static class SaveRequestHouseholdExtensions
             MonthlyIncomeAmount = t.MonthyAmount,
             ProofType = LoanApplicationOtherIncomeProofType
         });
-    }
+    }*/
 
     static List<_C4M.ExpensesSummary> ToC4m(this Contracts.Shared.V1.ExpensesSummary expenses)
         => new()

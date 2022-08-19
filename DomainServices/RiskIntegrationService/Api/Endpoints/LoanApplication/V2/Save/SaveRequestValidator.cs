@@ -8,6 +8,5 @@ internal sealed class SaveRequestValidator
 {
     public SaveRequestValidator()
     {
-
     }
 }
