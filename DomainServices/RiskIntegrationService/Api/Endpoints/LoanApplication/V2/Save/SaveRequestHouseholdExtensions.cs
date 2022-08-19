@@ -134,13 +134,26 @@ internal static class SaveRequestHouseholdExtensions
         var model = new _C4M.LoanApplicationIncome
         {
             IncomeConfirmed = income.IsIncomeConfirmed,
-            LastConfirmedDate = income.LastConfirmedDate
+            LastConfirmedDate = income.LastConfirmedDate,
+            OtherIncome = income.OtherIncome?.ToC4m()
         };
+
+        if (income.OtherIncome is not null)
 
         model.IncomeCollected = model.EntrepreneurIncome is not null || model.EmploymentIncome is not null || model.RentIncome is not null || model.OtherIncome is not null;
         return model;
     }
-        
+    
+    static List<_C4M.LoanApplicationOtherIncome> ToC4m(this List<_V2.LoanApplicationOtherIncome> incomes)
+    {
+        incomes.Select(t => new _C4M.LoanApplicationOtherIncome
+        {
+            AccountNumber = t.BankAccount?.Number,
+            Domiciled = t.IsDomicile,
+            MonthlyIncomeAmount = t.MonthyAmount,
+            ProofType = LoanApplicationOtherIncomeProofType
+        });
+    }
 
     static List<_C4M.ExpensesSummary> ToC4m(this Contracts.Shared.V1.ExpensesSummary expenses)
         => new()
