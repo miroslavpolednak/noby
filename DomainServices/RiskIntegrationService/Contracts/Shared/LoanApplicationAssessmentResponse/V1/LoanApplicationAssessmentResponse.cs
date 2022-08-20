@@ -11,7 +11,7 @@ public sealed class LoanApplicationAssessmentResponse
     public long? SalesArrangementId { get; set; }
 
     [ProtoMember(3)]
-    public string? RiskBusinesscaseIdMp { get; set; }
+    public string? RiskBusinesscaseId { get; set; }
 
     [ProtoMember(4)]
     public DateTime? RiskBusinessCaseExpirationDate { get; set; }
