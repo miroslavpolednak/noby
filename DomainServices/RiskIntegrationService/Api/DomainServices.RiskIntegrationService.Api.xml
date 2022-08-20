@@ -2868,9 +2868,33 @@
             Mapovani produktovych vazeb
             </summary>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.CreateCaseRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateRequest,System.Threading.CancellationToken)">
             <summary>
             Založení úvěrového případu
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+            </remarks>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateAssesment(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateAssesmentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Žádost o vyhodnocení úvěrové žádosti
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+            </remarks>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateAssesmentAsynchronous(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest,System.Threading.CancellationToken)">
+            <summary>
+            Žádost o vyhodnocení úvěrové žádosti - asynchronní
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+            </remarks>
+        </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CommitCase(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest,System.Threading.CancellationToken)">
+            <summary>
+            Dokončení úvěrové žádosti
             </summary>
             <remarks>
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>

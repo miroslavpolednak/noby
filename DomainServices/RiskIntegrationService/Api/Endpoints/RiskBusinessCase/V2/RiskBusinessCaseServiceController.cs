@@ -1,4 +1,5 @@
-﻿using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -26,14 +27,46 @@ public sealed class RiskBusinessCaseServiceController
     [HttpPost()]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
-    [ProducesResponseType(typeof(CreateCaseResponse), StatusCodes.Status200OK)]
-    public async Task<CreateCaseResponse> CreateCase([FromBody] CreateCaseRequest request, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateResponse), StatusCodes.Status200OK)]
+    public async Task<_V2.RiskBusinessCaseCreateResponse> CreateCase([FromBody] _V2.RiskBusinessCaseCreateRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
-    //[HttpPost("commit")]
-    //[Produces("application/json")]
-    //[SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
-    //[ProducesResponseType(typeof(Contracts.RiskBusinessCase.CaseCommitmentResponse), StatusCodes.Status200OK)]
-    //public async Task<Contracts.RiskBusinessCase.CaseCommitmentResponse> CaseCommitment([FromBody] Contracts.RiskBusinessCase.CaseCommitmentRequest request, CancellationToken cancellationToken)
-    //    => await _mediator.Send(request, cancellationToken);
+    /// <summary>
+    /// Žádost o vyhodnocení úvěrové žádosti
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+    /// </remarks>
+    [HttpPost("assessment")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
+    [ProducesResponseType(typeof(_sh.LoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
+    public async Task<_sh.LoanApplicationAssessmentResponse> CreateAssesment([FromBody] _V2.RiskBusinessCaseCreateAssesmentRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
+
+    /// <summary>
+    /// Žádost o vyhodnocení úvěrové žádosti - asynchronní
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+    /// </remarks>
+    [HttpPost("assessment-asynchronous")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
+    [ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse), StatusCodes.Status200OK)]
+    public async Task<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse> CreateAssesmentAsynchronous([FromBody] _V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
+
+    /// <summary>
+    /// Dokončení úvěrové žádosti
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+    /// </remarks>
+    [HttpPost("commitment")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
+    [ProducesResponseType(typeof(_V2.RiskBusinessCaseCommitCaseResponse), StatusCodes.Status200OK)]
+    public async Task<_V2.RiskBusinessCaseCommitCaseResponse> CommitCase([FromBody] _V2.RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
 }

@@ -1,8 +1,9 @@
-﻿namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 [ProtoContract]
-public class CreateAssesmentRequest
-    : IRequest<Shared.V1.LoanApplicationAssessmentResponse>, CIS.Core.Validation.IValidatableRequest
+public class RiskBusinessCaseCreateAssesmentAsynchronousRequest
+    : IRequest<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
     public string RiskBusinessCaseId { get; set; } = null!;
@@ -33,7 +34,4 @@ public class CreateAssesmentRequest
 
     [ProtoMember(10)]
     public string? ExceptionHighestApprovalLevel { get; set; }
-
-    [ProtoMember(11)]
-    public List<RiskBusinessCaseRequestedDetails> RequestedDetails { get; set; } = default!;
 }

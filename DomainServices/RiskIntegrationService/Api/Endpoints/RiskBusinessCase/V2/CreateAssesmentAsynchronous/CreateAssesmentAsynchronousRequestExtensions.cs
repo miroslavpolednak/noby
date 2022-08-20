@@ -1,11 +1,11 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesmentAsynchronous;
 
-internal static class CreateAssesmentRequestExtensions
+internal static class CreateAssesmentAsynchronousRequestExtensions
 {
-    public static _C4M.AssessmentRequest ToC4M(this _V2.RiskBusinessCaseCreateAssesmentRequest request, string chanel)
+    public static _C4M.AssessmentRequest ToC4M(this _V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, string chanel)
         => new _C4M.AssessmentRequest
         {
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
@@ -20,7 +20,6 @@ internal static class CreateAssesmentRequestExtensions
                 Arm = t.Arm,
                 ReasonCode = t.ReasonCode
             }).ToList(),
-            ExceptionHighestApprovalLevel = request.ExceptionHighestApprovalLevel,
-            Expand = request.RequestedDetails?.Select(t => FastEnum.Parse<_C4M.Expand>(t.ToString())).ToList()
+            ExceptionHighestApprovalLevel = request.ExceptionHighestApprovalLevel
         };
 }

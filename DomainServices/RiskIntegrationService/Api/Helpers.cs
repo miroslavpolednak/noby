@@ -37,5 +37,9 @@ internal static class Helpers
     public static TResponse? GetEnumFromInt<TResponse>(int? id, TResponse? defaultValue = default(TResponse?))
         where TResponse : struct
         => id.HasValue ? GetEnumFromString<TResponse>(id.ToString(), defaultValue) : default(TResponse?);
+
+    public static CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem GetRiskApplicationType(List<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> riskApplicationTypes, int productTypeId)
+        => riskApplicationTypes.FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
+        ?? throw new CisValidationException(0, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 }
 

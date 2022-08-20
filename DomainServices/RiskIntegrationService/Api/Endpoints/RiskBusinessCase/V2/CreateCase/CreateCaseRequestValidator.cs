@@ -4,7 +4,7 @@ using FluentValidation;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateCase;
 
 internal sealed class CreateCaseRequestValidator
-    : AbstractValidator<CreateCaseRequest>
+    : AbstractValidator<RiskBusinessCaseCreateRequest>
 {
     public CreateCaseRequestValidator()
     {

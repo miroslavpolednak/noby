@@ -4,9 +4,9 @@ using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
 
 internal sealed class CreateAssesmentHandler
-    : IRequestHandler<_V2.CreateAssesmentRequest, _sh.LoanApplicationAssessmentResponse>
+    : IRequestHandler<_V2.RiskBusinessCaseCreateAssesmentRequest, _sh.LoanApplicationAssessmentResponse>
 {
-    public async Task<_sh.LoanApplicationAssessmentResponse> Handle(_V2.CreateAssesmentRequest request, CancellationToken cancellationToken)
+    public async Task<_sh.LoanApplicationAssessmentResponse> Handle(_V2.RiskBusinessCaseCreateAssesmentRequest request, CancellationToken cancellationToken)
     {
         string chanel = _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name);
 
