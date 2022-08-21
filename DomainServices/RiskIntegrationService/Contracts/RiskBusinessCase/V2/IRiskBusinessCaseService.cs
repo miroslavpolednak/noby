@@ -11,4 +11,6 @@ public interface IRiskBusinessCaseService
     ValueTask<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse> CreateAssesmentAsynchronous(_V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, CancellationToken cancellationToken = default);
 
     ValueTask<_V2.RiskBusinessCaseCommitCaseResponse> CommitCase(_V2.RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken = default);
+
+    ValueTask<_shared.LoanApplicationAssessmentResponse> GetAssesment(_V2.RiskBusinessCaseGetAssesmentRequest request, CancellationToken cancellationToken = default);
 }

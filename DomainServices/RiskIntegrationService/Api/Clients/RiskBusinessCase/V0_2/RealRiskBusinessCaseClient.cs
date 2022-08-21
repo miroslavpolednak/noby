@@ -37,7 +37,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<RiskBusinessCaseCommand>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(RiskBusinessCaseCommand));
+                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessmentAsynchronous), nameof(RiskBusinessCaseCommand));
 
         return result;
     }
@@ -49,7 +49,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationCommit>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationCommit));
+                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CommitCase), nameof(LoanApplicationCommit));
 
         return result;
     }

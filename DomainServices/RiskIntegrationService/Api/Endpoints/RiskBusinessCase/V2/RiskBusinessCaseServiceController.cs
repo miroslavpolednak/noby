@@ -63,10 +63,32 @@ public sealed class RiskBusinessCaseServiceController
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
     /// </remarks>
-    [HttpPost("commitment")]
+    [HttpPut("commitment")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
     [ProducesResponseType(typeof(_V2.RiskBusinessCaseCommitCaseResponse), StatusCodes.Status200OK)]
     public async Task<_V2.RiskBusinessCaseCommitCaseResponse> CommitCase([FromBody] _V2.RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
+
+    ///// <summary>
+    ///// Získání výsledků vyhodnocení
+    ///// </summary>
+    ///// <remarks>
+    ///// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/LOAN+APPLICATION+ASSESSMENT">https://wiki.kb.cz/display/HT/LOAN+APPLICATION+ASSESSMENT</a>
+    ///// </remarks>
+    //[HttpGet("{debil:int}")]
+    //[Produces("application/json")]
+    //[SwaggerOperation(Tags = new[] { "UC: Risk business case" })]
+    //[ProducesResponseType(typeof(_sh.LoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
+    //public async Task<_sh.LoanApplicationAssessmentResponse> GetAssesment([FromRoute] int debil, CancellationToken cancellationToken)
+    //{
+
+    //    throw new NotImplementedException();
+    //}
+        //=> await _mediator.Send(new _V2ass.RiskBusinessCaseAssesmentGetRequest
+        //{
+        //    LoanApplicationAssessmentId = id.ToString(),
+        //    RequestedDetails = null
+        //}, cancellationToken);
+    //, [FromQuery] List<_V2ass.RiskBusinessCaseAssesmentRequestedDetails>? requestedDetails
 }

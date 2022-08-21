@@ -829,6 +829,468 @@
             loanApplicationDealer
             </summary>
         </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Amount">
+            <summary>
+            Amount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Amount.Value">
+            <summary>
+            Hodnota částky
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Amount.CurrencyCode">
+            <summary>
+            Kód měny částky (ISO 4217)
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentDetail">
+            <summary>
+            AssessmentDetail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentDetail.LoanApplicationScore">
+            <summary>
+            Assessment detail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentDetail.LoanApplicationLimit">
+            <summary>
+            Assessment detail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentDetail.LoanApplicationRiskCharacteristics">
+            <summary>
+            Assessment detail
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentReasonDetail">
+            <summary>
+            AssessmentReasonDetail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentReasonDetail.Target">
+            <summary>
+            Target
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentReasonDetail.Desc">
+            <summary>
+            Desc
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentReasonDetail.Result">
+            <summary>
+            Result
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.AssessmentReasonDetail.Resource">
+            <summary>
+            Target
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Change">
+            <summary>
+            Change
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Change.IdentityId">
+            <summary>
+            Identita actora/uživatele
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Change.Timestamp">
+            <summary>
+            Change date and time 
+            <br/>Format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX (ISO 8601)
+            <br/>
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CollateralRiskCharacteristics">
+            <summary>
+            CollateralRiskCharacteristics
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CollateralRiskCharacteristics.Ltv">
+            <summary>
+            Ltv
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CollateralRiskCharacteristics.Ltfv">
+            <summary>
+            Ltfv
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CollateralRiskCharacteristics.Ltp">
+            <summary>
+            Ltp
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CollateralRiskCharacteristics.SumAppraisedValue">
+            <summary>
+            SumAppraisedValue
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CounterpartyAssessmentDetail">
+            <summary>
+            Counterparty Assessment Detail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CounterpartyAssessmentDetail.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CounterpartyAssessmentDetail.CounterPartyId">
+            <summary>
+            Counterparty id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CounterpartyAssessmentDetail.CustomerId">
+            <summary>
+            Customer id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.CounterpartyAssessmentDetail.AssessmentDetail">
+            <summary>
+            Assessment Detail
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.HouseholdAssessmentDetail">
+            <summary>
+            Household Assessment detail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.HouseholdAssessmentDetail.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.HouseholdAssessmentDetail.HouseholdId">
+            <summary>
+            Household id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.HouseholdAssessmentDetail.HouseholdIndex">
+            <summary>
+            Household index
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.HouseholdAssessmentDetail.AssessmentDetail">
+            <summary>
+            Assessment Detail
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified">
+            <summary>
+            An identified object
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.LoanApplicationId">
+            <summary>
+            LoanApplication resource-identifier
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.RiskBusinesscaseId">
+            <summary>
+            Risk BusinessCase resource-identifier
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.AssessmentResult">
+            <summary>
+            Assessment result
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.LoanApplicationAssessmentReason">
+            <summary>
+            LoanApplicationAssessment resource-identifier
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.AssessmentDetail">
+            <summary>
+            Assessment detail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.HouseholdAssessmentDetail">
+            <summary>
+            HouseholdAssessmentDetail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.CounterpartyAssessmentDetail">
+            <summary>
+            HouseholdAssessmentDetail
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.CollateralRiskCharacteristics">
+            <summary>
+            CollateralRiskCharacteristics
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.LoanApplicationApprovalPossibilities">
+            <summary>
+            LoanApplicationApprovalPossibilities
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.Version">
+            <summary>
+            LoanApplicationAssessment version
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.Created">
+            <summary>
+            created
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Identified.Updated">
+            <summary>
+            updated
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationApprovalPossibilities">
+            <summary>
+            Možnosti samo/autoschválení
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationApprovalPossibilities.SelfApprovalPossible">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationApprovalPossibilities.AutoApprovalPossible">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentReason">
+            <summary>
+            LoanApplicationAssessmentReason
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentReason.Code">
+            <summary>
+            Code
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentReason.Level">
+            <summary>
+            Level
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentReason.Weight">
+            <summary>
+            Weight
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentReason.Category">
+            <summary>
+            Category
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentReason.Detail">
+            <summary>
+            Related Entity Id
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit">
+            <summary>
+            LoanApplicationLimit
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.LoanApplicationLimit1">
+            <summary>
+            Loan Application Limit
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.LoanApplicationInstallmentLimit">
+            <summary>
+            Loan Application Installment Limit
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.LoanApplicationCollateralLimit">
+            <summary>
+            Loan Application Collateral Limit
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.RemainingAnnuityLivingAmount">
+            <summary>
+            Remaining Annuity Living Amount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.CalculationIrStressed">
+            <summary>
+            Remaining Annuity Living Amount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.Iir">
+            <summary>
+            iir
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.Cir">
+            <summary>
+            cir
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.Dti">
+            <summary>
+            dti
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationLimit.Dsti">
+            <summary>
+            dsti
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationScore">
+            <summary>
+            LoanApplicationScore
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationScore.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationScore.Scale">
+            <summary>
+            Scale
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Resource">
+            <summary>
+            Resource
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Resource.Entity">
+            <summary>
+            Entity
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.Resource.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.ResourceIdentifier">
+            <summary>
+            ResourceIdentifier
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.ResourceIdentifier.Instance">
+            <summary>
+            The resource instance code, eg. 'KBCZ'
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.ResourceIdentifier.Domain">
+            <summary>
+            The resource domain code, eg. 'CFLM'
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.ResourceIdentifier.Resource">
+            <summary>
+            The resource code (the in-domain resource code, eg. 'LimitModel')
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.ResourceIdentifier.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.ResourceIdentifier.Variant">
+            <summary>
+            The variant of the resource, eg. distinguishing the origin of the source
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics">
+            <summary>
+            RiskCharacteristics
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyIncomeAmount">
+            <summary>
+            monthlyIncomeAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyCostsWithoutInstAmount">
+            <summary>
+            MonthlyCostsWithoutInstAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInKBAmount">
+            <summary>
+            MonthlyCostsWithoutInstAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyEntrepreneurInstallmentsInKBAmount">
+            <summary>
+            MonhlyEntrepreneurInstallmentsInKBAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInMPSSAmount">
+            <summary>
+            MonhlyInstallmentsInMPSSAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInOFIAmount">
+            <summary>
+            MonhlyInstallmentsInOFIAmount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.RiskCharacteristics.MonthlyInstallmentsInCBCBAmount">
+            <summary>
+            MonhlyInstallmentsInCBCBAmount
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.SemanticVersion">
+            <summary>
+            SemanticVersion
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.SemanticVersion.Major">
+            <summary>
+            Major part of a version
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.SemanticVersion.Minor">
+            <summary>
+            Minor part of a version
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.SemanticVersion.Bugfix">
+            <summary>
+            Bugfix part of a version
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.SemanticVersion.NonSemanticPart">
+            <summary>
+            A non-semantic part of a version
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationAssessmentCreate">
+            <summary>
+            LoanApplicationAssessmentCreate
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationException">
+            <summary>
+            LoanApplicationException
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationException.Arm">
+            <summary>
+            Arm
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts.LoanApplicationException.ReasonCode">
+            <summary>
+            Reason Code
+            </summary>
+        </member>
         <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.JobPost">
             <summary>
             JobPost
