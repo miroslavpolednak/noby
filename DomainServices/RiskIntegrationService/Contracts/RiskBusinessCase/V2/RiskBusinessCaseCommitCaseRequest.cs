@@ -14,17 +14,26 @@ public class RiskBusinessCaseCommitCaseRequest
     public int ProductTypeId { get; set; }
 
     [DataMember(Order = 4)]
-    public Shared.IdIdentifier? SoldProduct { get; set; }
+    public RiskBusinessCaseFinalResults FinalResult { get; set; }
 
     [DataMember(Order = 5)]
-    public DateTime? ApprovalDate { get; set; }
+    public Shared.IdIdentifier? SoldProduct { get; set; }
 
     [DataMember(Order = 6)]
-    public Shared.Identity? UserIdentity { get; set; }
+    public string? ApprovalLevel { get; set; }
 
     [DataMember(Order = 7)]
-    public Shared.Identity? Approver { get; set; }
+    public DateTime? ApprovalDate { get; set; }
 
     [DataMember(Order = 8)]
+    public RiskBusinessCaseLoanAgreement? LoanAgreement { get; set; }
+
+    [DataMember(Order = 9)]
+    public Shared.Identity? UserIdentity { get; set; }
+
+    [DataMember(Order = 10)]
+    public Shared.Identity? Approver { get; set; }
+
+    [DataMember(Order = 11)]
     public List<int>? CollateralAgreementsId { get; set; }
 }

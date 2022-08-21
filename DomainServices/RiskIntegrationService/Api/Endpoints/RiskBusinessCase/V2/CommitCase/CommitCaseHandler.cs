@@ -10,6 +10,7 @@ internal sealed class CommitCaseHandler
     {
         string chanel = _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name);
         var riskApplicationType = Helpers.GetRiskApplicationType(await _codebookService.RiskApplicationTypes(cancellationToken), request.ProductTypeId);
+        var channels = await _codebookService.Channels(cancellationToken);
 
         var requestModel = new _C4M.CommitRequest
         {
@@ -23,7 +24,14 @@ internal sealed class CommitCaseHandler
             {
                 Id = request.SoldProduct != null ? _C4M.ResourceIdentifier.CreateLoanSoldProduct(request.SoldProduct.Id, request.SoldProduct.Company, chanel) : null
             },
+            RiskBusinessCaseFinalResult = FastEnum.Parse<_C4M.CommitRequestRiskBusinessCaseFinalResult>(request.FinalResult.ToString(), true),
+            ApprovalLevel = request.ApprovalLevel,
             ApprovalDate = request.ApprovalDate,
+            LoanAgreement = request.LoanAgreement != null ? new _C4M.LoanAgreement
+            {
+                DistributionChannel = channels.FirstOrDefault(t => t.Id == request.LoanAgreement.DistributionChannelId)?.Code,
+                SignatureType = request.LoanAgreement.SignatureType.ToString()
+            } : null,
             CollateralAgreements = request.CollateralAgreementsId?.Select(t => new _C4M.CollateralAgreement
             {
                 Id = _C4M.ResourceIdentifier.CreateCollateralAgreement($"{t}")
