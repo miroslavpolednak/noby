@@ -9,4 +9,6 @@ internal static class Constants
     internal const string OfferInstance = "OfferInstance";
     internal const string PCP = "PCP";
     internal const string LoanSoldProduct = "LoanSoldProduct";
+    internal const string CAM = "CAM";
+    internal const string Collateral = "Collateral";
 }
