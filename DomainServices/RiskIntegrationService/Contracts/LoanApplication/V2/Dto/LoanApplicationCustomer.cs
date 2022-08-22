@@ -7,7 +7,7 @@ public class LoanApplicationCustomer
     public int? InternalCustomerId { get; set; }
 
     [ProtoMember(2)]
-    public string PrimaryCustomerId { get; set; }
+    public string PrimaryCustomerId { get; set; } = null!;
 
     [ProtoMember(3)]
     public bool IsGroupEmployee { get; set; }
@@ -74,4 +74,6 @@ public class LoanApplicationCustomer
 
     [ProtoMember(24)]
     public List<LoanApplicationObligation>? Obligations { get; set; }
+
+    public List<LoanApplicationEmploymentIncomeDeduction>? IncomeDeductions { get; set; }
 }

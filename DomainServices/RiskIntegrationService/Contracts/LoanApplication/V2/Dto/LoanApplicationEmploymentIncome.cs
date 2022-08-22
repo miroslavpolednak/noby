@@ -74,4 +74,7 @@ public class LoanApplicationEmploymentIncome
 
     [ProtoMember(24)]
     public int? IncomeForeignTypeId { get; set; }
+
+    [ProtoMember(25)]
+    public LoanApplicationEmploymentIncomeDeduction? IncomeDeduction { get; set; }
 }

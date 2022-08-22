@@ -64,6 +64,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 CurrentContractTo = t.CurrentWorkContractTo,
                 VerificationPriority = verification,
                 IssuedByExternalAccountant = t.ConfirmationByCompany,
+                IncomeDeduction = getDeductions(t.IncomeDeduction)
         }))
         .ToList();
     }
@@ -97,7 +98,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         {
             AccountNumber = income.BankAccount?.ConvertToString(),
             Domiciled = income.IsDomicile,
-            MonthlyIncomeAmount = income.MonthlyIncomeAmount.ToAmount(),
+            MonthlyIncomeAmount = income.MonthlyAmount.ToAmount(),
             ProofType = await getProofType<LoanApplicationRentIncomeProofType>(income.ProofTypeId)
         };
 
@@ -110,6 +111,14 @@ internal sealed class HouseholdCustomerIncomeChildMapper
             Type = (await _codebookService.IncomeOtherTypes(_cancellationToken)).FirstOrDefault(x => x.Id == income.IncomeOtherTypeId)?.Code,
             ProofType = await getProofType<LoanApplicationOtherIncomeProofType>(income.ProofTypeId)
         })).ToList();
+
+    private static List<_C4M.IncomeDeduction> getDeductions(_V2.LoanApplicationEmploymentIncomeDeduction? deduction)
+        => new List<IncomeDeduction>
+        {
+            new IncomeDeduction { Type = IncomeDeductionType.EXECUTION, Amount = deduction?.Execution.ToAmount() },
+            new IncomeDeduction { Type = IncomeDeductionType.INSTALLMENTS, Amount = deduction?.Installments.ToAmount() },
+            new IncomeDeduction { Type = IncomeDeductionType.OTHER, Amount = deduction?.Other.ToAmount() },
+        };
 
     private async Task<TResponse?> getProofType<TResponse>(int? proofTypeId) where TResponse : struct
         => Helpers.GetEnumFromString<TResponse>((await _codebookService.ProofTypes(_cancellationToken)).FirstOrDefault(t => t.Id == proofTypeId)?.Code);
