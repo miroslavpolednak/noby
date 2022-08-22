@@ -27,12 +27,12 @@ public class ApiExceptionMiddleware
         // neprihlaseny uzivatel
         catch (AuthenticationException ex)
         {
-            logger.ServiceAuthenticationFailed(ex);
+            logger.GeneralException("ApiExceptionMiddleware", ex.Message, ex);
             await Results.Unauthorized().ExecuteAsync(context);
         }
         catch (NotImplementedException ex)
         {
-            logger.GeneralException(ex);
+            logger.GeneralException("ApiExceptionMiddleware", ex.Message, ex);
             await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.NotImplemented).ExecuteAsync(context);
         }
         // DS neni dostupna
