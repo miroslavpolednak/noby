@@ -16,15 +16,15 @@ internal class CreateObligationMediatrRequestValidator
             .WithMessage("ObligationTypeId is not valid").WithErrorCode("16048");
 
         RuleFor(t => t.Request.CreditCardLimit)
-            .Must((r, t) => t == 0M || (r.Request.ObligationTypeId.GetValueOrDefault() != 1 && r.Request.ObligationTypeId.GetValueOrDefault() != 2))
+            .Must((r, t) => t is null || t == 0M || (r.Request.ObligationTypeId.GetValueOrDefault() != 1 && r.Request.ObligationTypeId.GetValueOrDefault() != 2))
             .WithMessage("CreditCardLimit not allowed for current ObligationTypeId").WithErrorCode("16049");
 
         RuleFor(t => t.Request.LoanPrincipalAmount)
-            .Must((r, t) => t == 0M || (r.Request.ObligationTypeId.GetValueOrDefault() != 3 && r.Request.ObligationTypeId.GetValueOrDefault() != 4))
+            .Must((r, t) => t is null || t == 0M || (r.Request.ObligationTypeId.GetValueOrDefault() != 3 && r.Request.ObligationTypeId.GetValueOrDefault() != 4))
             .WithMessage("LoanPrincipalAmount not allowed for current ObligationTypeId").WithErrorCode("16050");
 
         RuleFor(t => t.Request.InstallmentAmount)
-            .Must((r, t) => t == 0M || (r.Request.ObligationTypeId.GetValueOrDefault() != 3 && r.Request.ObligationTypeId.GetValueOrDefault() != 4))
+            .Must((r, t) => t is null || t == 0M || (r.Request.ObligationTypeId.GetValueOrDefault() != 3 && r.Request.ObligationTypeId.GetValueOrDefault() != 4))
             .WithMessage("InstallmentAmount not allowed for current ObligationTypeId").WithErrorCode("16051");
 
         RuleFor(t => t.Request.Creditor)

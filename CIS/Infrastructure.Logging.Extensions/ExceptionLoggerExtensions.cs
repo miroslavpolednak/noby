@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
 
 namespace CIS.Infrastructure.Logging;
 
@@ -41,6 +42,12 @@ public static class ExceptionLoggerExtensions
     public static void InvalidArgument(this ILogger logger, int code, string argumentName, string message, Exception ex)
         => _invalidArgument(logger, code, argumentName, message, ex);
     
-    public static void ValidationException(this ILogger logger, List<(string Key, string Message)> messages)
+    public static void ValidationException(this ILogger logger, IEnumerable<(string Key, string Message)> messages)
         => _validationException(logger, string.Join(";", messages.Select(t => $"{t.Key}: {t.Message}")), null!);
+
+    public static void ValidationException(this ILogger logger, IEnumerable<(int Key, string Message)> messages)
+        => _validationException(logger, string.Join(";", messages.Select(t => $"{t.Key}: {t.Message}")), null!);
+
+    public static void ValidationException(this ILogger logger, Core.Exceptions.CisValidationException exception)
+        => _validationException(logger, string.Join(";", exception.ContainErrorsList ? exception.Errors!.Select(t => $"{t.Key}: {t.Message}") : exception.Message), null!);
 }
