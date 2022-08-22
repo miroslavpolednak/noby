@@ -4,7 +4,7 @@
 public class LoanApplicationObligation
 {
     [ProtoMember(1)]
-    public int? ObligationTypeId { get; set; }
+    public int ObligationTypeId { get; set; }
 
     [ProtoMember(2)]
     public decimal? Amount { get; set; }

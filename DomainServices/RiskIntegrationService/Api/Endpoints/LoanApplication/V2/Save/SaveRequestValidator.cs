@@ -22,6 +22,11 @@ internal sealed class SaveRequestValidator
             .NotNull()
             .SetValidator(new SaveRequestProductValidator());
 
+        RuleFor(t => t.Households)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .ForEach(t => t.SetValidator(new SaveRequestHouseholdValidator()));
+
         When(t => t.UserIdentity is not null, () =>
         {
             RuleFor(t => t.UserIdentity)
@@ -58,19 +63,5 @@ internal sealed class SaveRequestValidator
                         });
                 });
         });
-    }
-}
-
-
-internal sealed class SaveRequestProductValidator
-    : AbstractValidator<Contracts.LoanApplication.V2.LoanApplicationProduct>
-{
-    public SaveRequestProductValidator()
-    {
-        RuleFor(t => t.ProductTypeId)
-            .GreaterThan(0);
-
-        RuleFor(t => t.LoanKindId)
-            .GreaterThan(0);
     }
 }

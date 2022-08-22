@@ -7,7 +7,7 @@ public sealed class IdentificationDocumentDetail
     public string? DocumentNumber { get; set; }
 
     [ProtoMember(2)]
-    public int? IdentificationDocumentTypeId { get; set; }
+    public int IdentificationDocumentTypeId { get; set; }
 
     [ProtoMember(3)]
     public DateTime? IssuedOn { get; set; }

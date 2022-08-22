@@ -4,7 +4,7 @@
 public class LoanApplicationCustomer
 {
     [ProtoMember(1)]
-    public int? InternalCustomerId { get; set; }
+    public int InternalCustomerId { get; set; }
 
     [ProtoMember(2)]
     public string PrimaryCustomerId { get; set; } = null!;
@@ -19,7 +19,7 @@ public class LoanApplicationCustomer
     public string? BirthNumber { get; set; }
 
     [ProtoMember(6)]
-    public int? CustomerRoleId { get; set; }
+    public int CustomerRoleId { get; set; }
 
     [ProtoMember(7)]
     public string? Firstname { get; set; }

@@ -25,7 +25,7 @@ public class LoanApplicationEmploymentIncome
     public string? JobDescription { get; set; }
 
     [ProtoMember(8)]
-    public decimal? MonthlyIncomeAmount { get; set; }
+    public decimal MonthlyAmount { get; set; }
 
     [ProtoMember(9)]
     public bool IsDomicile { get; set; }
