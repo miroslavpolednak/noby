@@ -5,9 +5,9 @@ using DomainServices.RiskIntegrationService.Api.Clients;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateCase;
 
 internal sealed class CreateCaseHandler
-    : IRequestHandler<_V2.CreateCaseRequest, _V2.CreateCaseResponse>
+    : IRequestHandler<_V2.RiskBusinessCaseCreateRequest, _V2.RiskBusinessCaseCreateResponse>
 {
-    public async Task<_V2.CreateCaseResponse> Handle(_V2.CreateCaseRequest request, CancellationToken cancellationToken)
+    public async Task<_V2.RiskBusinessCaseCreateResponse> Handle(_V2.RiskBusinessCaseCreateRequest request, CancellationToken cancellationToken)
     {
         string chanel = _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name);
 
@@ -20,7 +20,7 @@ internal sealed class CreateCaseHandler
 
         var response = await _client.CreateCase(requestModel, cancellationToken);
 
-        return new _V2.CreateCaseResponse()
+        return new _V2.RiskBusinessCaseCreateResponse()
         {
             RiskBusinessCaseId = response.RiskBusinessCaseId.Id
         };

@@ -1,10 +1,10 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.GetAssesment;
 
-internal static class CreateAssesmentExtensions
+internal static class GetAssesmentResponseExtensions
 {
     public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response)
         => new ()
