@@ -3362,6 +3362,14 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
             </remarks>
         </member>
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.GetAssesment(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseGetAssesmentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Získání výsledků vyhodnocení
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/LOAN+APPLICATION+ASSESSMENT">https://wiki.kb.cz/display/HT/LOAN+APPLICATION+ASSESSMENT</a>
+            </remarks>
+        </member>
         <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.TestServiceController.HalloWorld(DomainServices.RiskIntegrationService.Contracts.HalloWorldRequest,System.Threading.CancellationToken)">
             <summary>
             Nazdar endpoint
