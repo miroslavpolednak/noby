@@ -66,7 +66,7 @@ internal sealed class HouseholdCustomerChildMapper
             },
             Gender = Helpers.GetEnumFromString<LoanApplicationCounterPartyGender>(genders.FirstOrDefault(t => t.Id == customer.GenderId)?.KbCmCode),
             MaritalStatus = Helpers.GetEnumFromString<LoanApplicationCounterPartyMaritalStatus>(maritalStatuses.FirstOrDefault(t => t.Id == customer.MaritalStateId)?.RdmMaritalStatusCode),
-            HighestEducation = Helpers.GetEnumFromString<LoanApplicationCounterPartyHighestEducation>(educations.FirstOrDefault(t => t.Id == customer.EducationLevelId)?.RDMCode),
+            HighestEducation = Helpers.GetEnumFromString<LoanApplicationCounterPartyHighestEducation>(educations.FirstOrDefault(t => t.Id == customer.EducationLevelId)?.RdmCode),
             HousingCondition = Helpers.GetEnumFromString<LoanApplicationCounterPartyHousingCondition>(housingConditions.FirstOrDefault(t => t.Id == customer.HousingConditionId)?.Code, LoanApplicationCounterPartyHousingCondition.OW)
         }))
         .ToList();
