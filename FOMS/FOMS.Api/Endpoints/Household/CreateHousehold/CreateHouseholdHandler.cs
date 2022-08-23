@@ -32,6 +32,7 @@ internal class CreateHouseholdHandler
         // vlozit customera na household
         await _householdService.UpdateHousehold(new UpdateHouseholdRequest
         {
+            HouseholdId = householdId,
             CustomerOnSAId1 = customerResponse.CustomerOnSAId
         }, cancellationToken);
 
