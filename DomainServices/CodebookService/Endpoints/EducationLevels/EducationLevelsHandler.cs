@@ -17,7 +17,7 @@ public class EducationLevelsHandler
 
                 result.ForEach(t =>
                 {
-                    t.RDMCode = extMapper.FirstOrDefault(s => s.EducationLevelId == t.Id)?.RDMCode;
+                    t.RdmCode = extMapper.FirstOrDefault(s => s.EducationLevelId == t.Id)?.RDMCode;
                 });
 
                 return result;
@@ -37,7 +37,7 @@ public class EducationLevelsHandler
     }
 
     private const string _sqlQuery =
-        "SELECT ID_VZDELANI 'Id', NAZEV_VZDELANI 'Name' FROM [SBR].[CIS_VZDELANI] ORDER BY ID_VZDELANI ASC";
+        "SELECT ID_VZDELANI 'Id', NAZEV_VZDELANI 'Name', KOD_SCORING 'ScoringCode' FROM [SBR].[CIS_VZDELANI] ORDER BY ID_VZDELANI ASC";
     const string _sqlQueryExtension = "Select * From EducationLevelExtension";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
@@ -55,3 +55,9 @@ public class EducationLevelsHandler
         _connectionProviderCodebooks = connectionProviderCodebooks;
     }
 }
+
+
+//Id = ID_VZDELANI
+//Name = NAZEV_VZDELANI
+//RdmCode = mapping na KB RDM číselník pro zpracování kódů z KB CM(codebook extension) (není v FE API)
+//ScoringCode = KOD_SCORING(není v FE API)
