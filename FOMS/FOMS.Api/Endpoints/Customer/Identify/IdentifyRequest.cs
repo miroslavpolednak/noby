@@ -1,18 +1,53 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FOMS.Api.Endpoints.Customer.Identify;
 
-public class IdentifyRequest
-    : IRequest
+public sealed class IdentifyRequest
+    : IRequest<Search.Dto.CustomerInList>
 {
-    public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
+    /// <summary>
+    /// Jméno customera
+    /// </summary>
+    [Required]
+    public string FirstName { get; set; } = "";
 
-    [JsonIgnore]
-    internal int CustomerOnSAId;
+    /// <summary>
+    /// Příjmení customera
+    /// </summary>
+    [Required]
+    public string LastName { get; set; } = "";
 
-    internal IdentifyRequest InfuseId(int customerOnSAId)
-    {
-        this.CustomerOnSAId = customerOnSAId;
-        return this;
-    }
+    /// <summary>
+    /// Datum narození FO
+    /// </summary>
+    [Required]
+    public DateTime? DateOfBirth { get; set; }
+
+    /// <summary>
+    /// Země vydání dokladu
+    /// </summary>
+    [Required]
+    public int IssuingCountryId { get; set; }
+
+    /// <summary>
+    /// Typ dokladu
+    /// </summary>
+    [Required]
+    public int IdentificationDocumentTypeId { get; set; }
+
+    /// <summary>
+    /// Číslo dokladu
+    /// </summary>
+    [Required]
+    public string IdentificationDocumentNumber { get; set; } = "";
+
+    /// <summary>
+    /// Rodné číslo
+    /// </summary>
+    public string? BirthNumber { get; set; }
+
+    /// <summary>
+    /// ID klienta v MP nebo KB
+    /// </summary>
+    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
 }

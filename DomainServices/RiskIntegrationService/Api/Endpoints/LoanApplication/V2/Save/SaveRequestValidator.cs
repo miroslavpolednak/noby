@@ -9,22 +9,27 @@ internal sealed class SaveRequestValidator
     public SaveRequestValidator()
     {
         RuleFor(t => t.SalesArrangementId)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .WithErrorCode("SalesArrangementId");
 
         RuleFor(t => t.LoanApplicationDataVersion)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode("LoanApplicationDataVersion");
 
         RuleFor(t => t.Households)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode("Households");
 
         RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
             .NotNull()
+            .WithErrorCode("Product")
             .SetValidator(new SaveRequestProductValidator());
 
         RuleFor(t => t.Households)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
+            .WithErrorCode("Households")
             .ForEach(t => t.SetValidator(new SaveRequestHouseholdValidator()));
 
         When(t => t.UserIdentity is not null, () =>
@@ -39,27 +44,33 @@ internal sealed class SaveRequestValidator
                 .ChildRules(x =>
                 {
                     x.RuleFor(x => x.ProductType)
-                        .NotEmpty();
+                        .NotEmpty()
+                        .WithErrorCode("ProductRelations.ProductType");
 
                     x.RuleFor(x => x.RelationType)
-                        .NotEmpty();
+                        .NotEmpty()
+                        .WithErrorCode("ProductRelations.");
 
                     x.RuleFor(x => x.RemainingExposure)
                         .Cascade(CascadeMode.Stop)
                         .NotEmpty()
+                        .WithErrorCode("ProductRelations.RemainingExposure")
                         .GreaterThan(0);
 
                     x.RuleFor(x => x.Customers)
-                        .NotEmpty();
+                        .NotEmpty()
+                        .WithErrorCode("ProductRelations.Customers");
 
                     x.RuleForEach(x => x.Customers)
                         .ChildRules(x2 =>
                         {
                             x2.RuleFor(x2 => x2.CustomerRoleId)
-                                .NotEmpty();
+                                .NotEmpty()
+                                .WithErrorCode("ProductRelations.Customers.CustomerRoleId");
 
                             x2.RuleFor(x2 => x2.CustomerId)
-                                .NotEmpty();
+                                .NotEmpty()
+                                .WithErrorCode("ProductRelations.Customers.CustomerId");
                         });
                 });
         });

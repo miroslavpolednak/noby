@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace FOMS.Api.Endpoints.Customer.Identify;
+namespace FOMS.Api.Endpoints.Customer.IdentifyByIdentity;
 
-public class IdentifyRequestValidator
-    : AbstractValidator<IdentifyRequest>
+public class IdentifyByIdentityRequestValidator
+    : AbstractValidator<IdentifyByIdentityRequest>
 {
-    public IdentifyRequestValidator()
+    public IdentifyByIdentityRequestValidator()
     {
         RuleFor(t => t.CustomerIdentity)
             .Cascade(CascadeMode.Stop)

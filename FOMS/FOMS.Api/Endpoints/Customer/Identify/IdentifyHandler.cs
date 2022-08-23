@@ -1,83 +1,62 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.CaseService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
-using _SA = DomainServices.SalesArrangementService.Contracts;
-using _CS = DomainServices.CustomerService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Contracts;
+using FOMS.Api.Endpoints.Customer.Search;
+using FOMS.Api.Endpoints.Customer.Search.Dto;
+using contracts = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Api.Endpoints.Customer.Identify;
 
 internal sealed class IdentifyHandler
-    : AsyncRequestHandler<IdentifyRequest>
+    : IRequestHandler<IdentifyRequest, Search.Dto.CustomerInList>
 {
-    protected override async Task Handle(IdentifyRequest request, CancellationToken cancellationToken)
+    public async Task<Search.Dto.CustomerInList> Handle(IdentifyRequest request, CancellationToken cancellationToken)
     {
-        // crm customer
-        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_CS.CustomerResponse>(await _customerService.GetCustomerDetail(new _CS.CustomerRequest
+        var dsRequest = new contracts.SearchCustomersRequest
         {
-            Identity = request.CustomerIdentity!
-        }, cancellationToken));
-        // customer On SA
-        var customerOnSaInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken));
-        // SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(customerOnSaInstance.SalesArrangementId, cancellationToken));
-
-        if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
-            throw new CisValidationException(0, "CustomerOnSA has been already identified");
-
-        var modelToUpdate = new _SA.UpdateCustomerRequest
-        {
-            CustomerOnSAId = request.CustomerOnSAId,
-            Customer = new _SA.CustomerOnSABase
+            NaturalPerson = new contracts.SearchNaturalPerson()
             {
-                DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
-                FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
-                Name = customerInstance.NaturalPerson.LastName,
-                HasPartner = customerOnSaInstance.HasPartner,
-                LockedIncomeDateTime = customerOnSaInstance.LockedIncomeDateTime
-            }
+                FirstName = request.FirstName ?? "",
+                LastName = request.LastName ?? "",
+                BirthNumber = request.BirthNumber ?? "",
+                DateOfBirth = request.DateOfBirth
+            },
+            IdentificationDocument = new SearchIdentificationDocument
+            {
+                IdentificationDocumentTypeId = request.IdentificationDocumentTypeId,
+                IssuingCountryId = request.IssuingCountryId,
+                Number = request.IdentificationDocumentNumber ?? ""
+            },
+            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb
         };
-        modelToUpdate.Customer.CustomerIdentifiers.Add(request.CustomerIdentity!);
 
-        var successfulUpdate = ServiceCallResult.IsSuccessResult(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));
-
-        // hlavni klient
-        if (successfulUpdate && customerOnSaInstance.CustomerRoleId == 1)
+        // ID klienta
+        if (request.Identity is not null && request.Identity.Id > 0)
         {
-            // update CASE-u
-            var updateResponse = ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
-            {
-                Identity = request.CustomerIdentity!,
-                DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
-                FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
-                Name = customerInstance.NaturalPerson.LastName
-            }, cancellationToken));
-
-            if (customerInstance.Identities.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp))
-            {
-                var mpid = customerInstance.Identities.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
-                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, mpid);
-                await _mediator.Publish(notification, cancellationToken);
-            }
+            dsRequest.Identity = new Identity(request.Identity.Id, request.Identity.Scheme);
         }
+
+        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
+
+        if (!result.Customers.Any())
+            throw new CisValidationException("Client not found");
+        else if (result.Customers.Count > 1)
+        {
+            _logger.LogInformation("More than 1 client found");
+            throw new CisConflictException("More than 1 client found");
+        }
+
+        var customer = result.Customers.First();
+        return (new CustomerInList())
+            .FillBaseData(customer)
+            .FillIdentification(customer.Identities);
     }
 
-    private readonly IMediator _mediator;
-    private readonly ICaseServiceAbstraction _caseService;
-    private readonly ICustomerServiceAbstraction _customerService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ILogger<IdentifyHandler> _logger;
+    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
-    public IdentifyHandler(
-        IMediator mediator,
-        ISalesArrangementServiceAbstraction salesArrangementService,
-        ICaseServiceAbstraction caseService,
-        ICustomerServiceAbstraction customerService,
-        ICustomerOnSAServiceAbstraction customerOnSAService)
+    public IdentifyHandler(DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService, ILogger<IdentifyHandler> logger)
     {
-        _mediator = mediator;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
         _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
+        _logger = logger;
     }
 }

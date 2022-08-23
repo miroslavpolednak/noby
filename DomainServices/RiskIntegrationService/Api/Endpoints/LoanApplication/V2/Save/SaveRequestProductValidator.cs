@@ -8,9 +8,11 @@ internal sealed class SaveRequestProductValidator
     public SaveRequestProductValidator()
     {
         RuleFor(t => t.ProductTypeId)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .WithErrorCode("Product.ProductTypeId");
 
         RuleFor(t => t.LoanKindId)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .WithErrorCode("Product.LoanKindId");
     }
 }
