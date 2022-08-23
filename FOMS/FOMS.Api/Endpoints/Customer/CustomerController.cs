@@ -67,6 +67,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Domacnost" })]
     [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status409Conflict)]
     public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 

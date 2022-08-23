@@ -42,7 +42,7 @@ internal sealed class IdentifyHandler
         else if (result.Customers.Count > 1)
         {
             _logger.LogInformation("More than 1 client found");
-            throw new CisConflictException("More than 1 client found");
+            throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identities?.FirstOrDefault()?.IdentityId.ToString()))}");
         }
 
         var customer = result.Customers.First();
