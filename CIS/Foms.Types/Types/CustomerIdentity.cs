@@ -5,7 +5,14 @@ namespace CIS.Foms.Types;
 
 public sealed class CustomerIdentity
 {
+    /// <summary>
+    /// ID klienta v danem schematu
+    /// </summary>
     public long Id { get; init; }
+
+    /// <summary>
+    /// Schema ve kterem je klient ulozeny - Kb | Mp
+    /// </summary>
     public IdentitySchemes Scheme { get; init; }
 
     public CustomerIdentity()
