@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace CIS.Foms.Enums;
 
@@ -8,6 +9,7 @@ public enum IdentitySchemes : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]
+    [JsonIgnore]
     Unknown = 0,
 
     [Display(Name = "Modrá pyramida")]

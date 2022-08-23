@@ -470,7 +470,7 @@
             <param name="identityScheme">Schema ve kterem je klient ulozeny - Kb | Mp</param>
             <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Identify(System.Int32,FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.IdentifyByIdentity(System.Int32,FOMS.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest,System.Threading.CancellationToken)">
             <summary>
             Identifikace klienta
             </summary>
@@ -478,6 +478,55 @@
             Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Identify(FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identifikace klienta
+            </summary>
+            <remarks>
+            Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>.<br /><br />
+            V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
+            </remarks>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
+            <summary>
+            Jméno customera
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.LastName">
+            <summary>
+            Příjmení customera
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.DateOfBirth">
+            <summary>
+            Datum narození FO
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.IssuingCountryId">
+            <summary>
+            Země vydání dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.IdentificationDocumentTypeId">
+            <summary>
+            Typ dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.IdentificationDocumentNumber">
+            <summary>
+            Číslo dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.BirthNumber">
+            <summary>
+            Rodné číslo
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.IdentityId">
+            <summary>
+            ID klienta v MP nebo KB
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
             <summary>
