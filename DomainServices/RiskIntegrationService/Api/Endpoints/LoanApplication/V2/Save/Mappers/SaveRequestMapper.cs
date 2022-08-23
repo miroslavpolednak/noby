@@ -21,12 +21,12 @@ internal sealed class SaveRequestMapper
             && request.Households.Count == 1
             && request.Households.All(t => t.Customers?.All(c => c.IdentificationDocument?.IdentificationDocumentTypeId == 1) ?? false)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.Count == 1) ?? false)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.OtherIncomes is null || !c.Income.OtherIncomes.Any() || c.Income.OtherIncomes.All(z => z.MonthlyAmount is null || z.MonthlyAmount.Amount == 0)) ?? true)
             && request.Households.All(t => t.Customers?.All(c => !c.Income?.OtherIncomes?.Any() ?? true) ?? true)
-            && request.Households.All(t => t.Customers?.All(c => c.Income?.EntrepreneurIncome is null) ?? true)
-            && request.Households.All(t => t.Customers?.All(c => c.Income?.RentIncome is null) ?? true)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.EntrepreneurIncome?.AnnualIncomeAmount is null) ?? true)
+            && request.Households.All(t => t.Customers?.All(c => c.Income?.RentIncome?.MonthlyAmount is null) ?? true)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().EmploymentTypeId == 2) ?? false)
             && request.Households.All(t => t.Customers?.All(c => c.Income?.EmploymentIncomes?.First().Address?.CountryId == 16) ?? false);
-
 
         // mappers instances
         var productChildMapper = new ProductChildMapper(_codebookService, riskApplicationType, cancellation);
