@@ -165,7 +165,8 @@
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a> - zatím není na FE API implementováno
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
-            - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a> - zatím není na FE API implementováno
+            - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
+            - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
@@ -195,6 +196,7 @@
             - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
             - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
             - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+            - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
             - <a href="https://wiki.kb.cz/display/HT/WorkflowTaskCategory">WorkflowTaskCategories</a>
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440871662">WorkflowTaskStates</a>
             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440879561">WorkflowTaskTypes</a>
