@@ -108,7 +108,7 @@ public class OfferController : ControllerBase
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře" })]
-    [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
 }

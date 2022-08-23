@@ -20,5 +20,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes
         [DataMember(Order = 5)]
         [JsonIgnore]
         public bool IsValid { get; set; }
+
+        [DataMember(Order = 6)]
+        public int Order { get; set; }
     }
 }
