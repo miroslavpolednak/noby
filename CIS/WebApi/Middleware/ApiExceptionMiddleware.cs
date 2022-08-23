@@ -54,6 +54,11 @@ public class ApiExceptionMiddleware
             logger.EntityNotFound(ex);
             await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
+        // conflict 409
+        catch (Core.Exceptions.CisConflictException ex)
+        {
+            await Results.Problem(ex.Message, statusCode: 409).ExecuteAsync(context);
+        }
         // osetrena validace na urovni api call
         catch (Core.Exceptions.CisValidationException ex)
         {

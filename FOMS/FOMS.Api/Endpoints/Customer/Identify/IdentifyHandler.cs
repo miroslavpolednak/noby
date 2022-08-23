@@ -30,9 +30,9 @@ internal sealed class IdentifyHandler
         };
 
         // ID klienta
-        if (request.IdentityId.HasValue)
+        if (request.Identity is not null && request.Identity.Id > 0)
         {
-            dsRequest.Identity = new Identity(request.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb);
+            dsRequest.Identity = new Identity(request.Identity.Id, request.Identity.Scheme);
         }
 
         var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
@@ -42,7 +42,7 @@ internal sealed class IdentifyHandler
         else if (result.Customers.Count > 1)
         {
             _logger.LogInformation("More than 1 client found");
-            throw new CisValidationException("More than 1 client found");
+            throw new CisConflictException("More than 1 client found");
         }
 
         var customer = result.Customers.First();

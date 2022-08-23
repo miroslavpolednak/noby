@@ -2,6 +2,7 @@
 using FOMS.Api.Endpoints.Codebooks.GetAll;
 using FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -36,6 +37,7 @@ internal static class FomsSwagger
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
+            x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
 
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
         });
