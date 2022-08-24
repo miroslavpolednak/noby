@@ -22,6 +22,22 @@ steps:
 #    version: '6.0.x'
 #    includePreviewVersions: true
 
+- task: InlinePowershell@1
+  inputs:
+    Script: |
+      $file = '$(Build.SourcesDirectory)\FOMS\FOMS.Api\FOMS.Api.csproj'
+      $regex = '(?<=<Version>)[^<]*'
+      
+      $buildVersion='$(Build.BuildNumber)'
+      
+      $versionFromFile = Select-String -Path $file $regex
+      $versionFromFile = $versionFromFile.Matches[0].Value
+      $versionFromFile = $versionFromFile.Substring(0, $versionFromFile.lastIndexOf('.'))
+      
+      $finalVersion = $versionFromFile + "." + $buildVersion.replace(".","_")
+      
+      (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
