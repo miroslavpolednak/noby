@@ -58,7 +58,6 @@ internal class UpdateCustomerHandler
         }
 
         // update CustomerOnSA
-        entity.HasPartner = request.Request.Customer.HasPartner;
         entity.LockedIncomeDateTime = request.Request.Customer.LockedIncomeDateTime;
 
         await _dbContext.SaveChangesAsync(cancellation);

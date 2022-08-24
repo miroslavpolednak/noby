@@ -14,5 +14,4 @@ public class NaturalPersonModel
     public CIS.Foms.Enums.Genders Gender { get; set; }
     public int? MaritalStatusStateId { get; set; }
     public List<int>? CitizenshipCountriesId { get; set; }
-    public bool? HasPartner { get; set; }
 }

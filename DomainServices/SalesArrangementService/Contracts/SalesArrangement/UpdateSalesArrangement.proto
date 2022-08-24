@@ -8,8 +8,6 @@ message UpdateSalesArrangementRequest {
 	
 	string ContractNumber = 2;
 
-	string EaCode = 3;
-
 	string RiskBusinessCaseId = 4;
 
 	cis.types.NullableGrpcDate FirstSignedDate = 5;

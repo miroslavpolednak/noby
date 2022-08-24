@@ -262,6 +262,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     ostatni_vydaje = i.Expenses.OtherExpenseAmount.ToJsonString(),
                     vyporadani_majetku = i.Data.PropertySettlementId.ToJsonString(),
                     manzel_pristupuje_k_dluhu = i.Data.AreBothPartnersDeptors.ToJsonString(),
+                    druh_druzka = i.Data.AreCustomersPartners.ToJsonString(),
                 };
             }
 
@@ -534,7 +535,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
                         seznam_kontaktu = c.Contacts?.Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
                         rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
-                        druh_druzka = (i.HasPartner ?? false).ToJsonString(),
+                        //druh_druzka = (i.HasPartner ?? false).ToJsonString(),
                         vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
                         seznam_prijmu = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                         seznam_zavazku = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
@@ -577,7 +578,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     seznam_dokladu = cIdentificationDocuments,                                      // ??? mělo by to být pole, nikoliv jeden objekt ???
                     seznam_kontaktu = c.Contacts?.Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
                     rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
-                    druh_druzka = (i.HasPartner ?? false).ToJsonString(),
+                    //druh_druzka = (i.HasPartner ?? false).ToJsonString(),
                     vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
                     seznam_prijmu = i.Incomes?.ToList().Select((i, index) => MapCustomerIncome(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                     seznam_zavazku = i.Obligations?.ToList().Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
@@ -643,14 +644,15 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         stav_zadosti = Data.SalesArrangementStatesById[Data.Arrangement.State].StarbuildId.ToJsonString(),
                         business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 // SalesArrangement
                         risk_segment = Data.Arrangement.RiskSegment,
-                        datum_uzavreni_obchodu = riskBusinessCaseExpirationDate.ToJsonString(),                                                 // Default: CurrentDate + 90 dní
+                        laa_id = Data.Arrangement.LoanApplicationAssessmentId,
+                        datum_uzavreni_obchodu = Data.Arrangement.RiskBusinessCaseExpirationDate?.ToJsonString(),
                         kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),                                                              // SalesArrangement - vyplněno na základě usera
                         datum_vytvoreni_zadosti = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                         datum_prvniho_podpisu = firstSignedDate.ToJsonString(),                                                                      // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                         uv_produkt = Data.ProductType.Id.ToJsonString(),
                         uv_druh = Data.Offer.SimulationInputs.LoanKindId.ToJsonString(),                                                             // OfferInstance
                         indikativni_LTV = Data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
-                        indikativni_LTC = Data.Arrangement.LoanToCost.ToJsonString(),                                                                // OfferInstance -> SalesArrangement !!! moved from offer to arrangement in D1-2
+                        //indikativni_LTC = Data.Arrangement.LoanToCost.ToJsonString(),                                                                // OfferInstance -> SalesArrangement !!! moved from offer to arrangement in D1-2
                         termin_cerpani_do = ((DateTime)Data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
                         sazba_vyhlasovana = Data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
                         sazba_skladacka = Data.Offer.SimulationResults.LoanInterestRate.ToJsonString(),                                              // OfferInstance
@@ -687,8 +689,15 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         fin_kryti_vlastni_zdroje = Data.Offer.BasicParameters.FinancialResourcesOwn.ToJsonString(),                                  // OfferInstance
                         fin_kryti_cizi_zdroje = Data.Offer.BasicParameters.FinancialResourcesOther.ToJsonString(),                                   // OfferInstance
                         fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                                   // OfferInstance
-                        zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
+                        zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),                                   // Codebook SignatureTypes
+                        zpusob_podpisu_zadosti = Data.Arrangement.Mortgage?.SalesArrangementSignatureTypeId.ToJsonString(),                             // Codebook SignatureTypes
+                        souhlas_el_forma_komunikace = Data.Arrangement.Mortgage?.AgentConsentWithElCom.ToJsonString(),
+                        zmenovy_navrh = 0.ToJsonString(),                                                                                               // Default: 0
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
+
+                        // TODO: zmocnenec_mp_id
+                        //zmocnenec_mp_id = (i.CustomerOnSAId == Data.Arrangement.Mortgage?.Agent) ???  Data.Arrangement.Mortgage?.Agent
+                        //zmocnenec_mp_id //Pozn.: Přemapování musí proběhnout z CustomerOnSaId na PartnerId, což je ID, kde Identitní schéma je MPID.
 
                         RZP_suma = insuranceSumRiskLife.ToJsonString(),
                         pojisteni_nem_suma = insuranceSumRealEstate.ToJsonString(),
@@ -706,11 +715,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     {
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
                         case_id = Data.Arrangement.CaseId.ToJsonString(),
-                        stav_zadosti = Data.SalesArrangementStatesById[Data.Arrangement.State].StarbuildId.ToJsonString(),
+                        //stav_zadosti = Data.SalesArrangementStatesById[Data.Arrangement.State].StarbuildId.ToJsonString(),
                         business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 // SalesArrangement
                         //risk_segment = Data.Arrangement.RiskSegment,
                         //datum_uzavreni_obchodu = riskBusinessCaseExpirationDate.ToJsonString(),                                                 // Default: CurrentDate + 90 dní
-                        kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),                                                              // SalesArrangement - vyplněno na základě usera
+                        //kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),                                                              // SalesArrangement - vyplněno na základě usera
                         datum_vytvoreni_zadosti = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                         //datum_prvniho_podpisu = firstSignedDate.ToJsonString(),                                                                      // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                         //uv_produkt = Data.ProductType.Id.ToJsonString(),
@@ -751,7 +760,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         //fin_kryti_vlastni_zdroje = Data.Offer.BasicParameters.FinancialResourcesOwn.ToJsonString(),                                  // OfferInstance
                         //fin_kryti_cizi_zdroje = Data.Offer.BasicParameters.FinancialResourcesOther.ToJsonString(),                                   // OfferInstance
                         //fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                                   // OfferInstance
-                        zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.SignatureTypeId.ToJsonString(),                                        // SalesArrangement
+                        zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),                                        // SalesArrangement
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
 
                         seznam_id_formulare = seznamIdFormulare,
