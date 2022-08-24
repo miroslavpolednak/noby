@@ -35,8 +35,10 @@ steps:
       $versionFromFile = $versionFromFile.Substring(0, $versionFromFile.lastIndexOf('.'))
       
       $finalVersion = $versionFromFile + "." + $buildVersion.replace(".","")
-      
+
       (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
+
+      Write-Host $finalVersion
 
 - task: DotNetCoreCLI@2
   inputs:
