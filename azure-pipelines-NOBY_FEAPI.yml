@@ -34,11 +34,16 @@ steps:
       $versionFromFile = $versionFromFile.Matches[0].Value
       $versionFromFile = $versionFromFile.Substring(0, $versionFromFile.lastIndexOf('.'))
       
-      $finalVersion = $versionFromFile + "." + $buildVersion.replace(".","")
+      #$finalVersion = $versionFromFile + "." + $buildVersion.replace(".","")
+      $finalVersion = $versionFromFile
+
 
       (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
 
       Write-Host $finalVersion
+      Write-Host $(Build.BuildNumber)
+      Write-Host $(Build.BuildId)
+
 
 - task: DotNetCoreCLI@2
   inputs:
