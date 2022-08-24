@@ -1491,7 +1491,10 @@
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.ResidencyCurrencyCode">
             <example>CZK</example>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SignatureTypeId">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.ContractSignatureTypeId">
+            <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.SalesArrangementSignatureTypeId">
             <example>1</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.Agent">

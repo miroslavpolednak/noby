@@ -13,7 +13,8 @@ internal class UpdateParametersHandler
             SalesArrangementId = request.SalesArrangementId,
             Mortgage = new _SA.SalesArrangementParametersMortgage
             {
-                SignatureTypeId = request.Parameters?.SignatureTypeId ?? 0,
+                ContractSignatureTypeId = request.Parameters?.ContractSignatureTypeId,
+                SalesArrangementSignatureTypeId = request.Parameters?.SalesArrangementSignatureTypeId,
                 ExpectedDateOfDrawing = request.Parameters?.ExpectedDateOfDrawing,
                 IncomeCurrencyCode = request.Parameters?.IncomeCurrencyCode,
                 ResidencyCurrencyCode = request.Parameters?.ResidencyCurrencyCode,

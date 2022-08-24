@@ -77,7 +77,8 @@ internal class GetDetailHandler
         {
             _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangement.Dto.ParametersMortgage
             {
-                SignatureTypeId = saInstance.Mortgage.SignatureTypeId,
+                ContractSignatureTypeId = saInstance.Mortgage.ContractSignatureTypeId,
+                SalesArrangementSignatureTypeId = saInstance.Mortgage.SalesArrangementSignatureTypeId,
                 ExpectedDateOfDrawing = saInstance.Mortgage.ExpectedDateOfDrawing,
                 IncomeCurrencyCode = saInstance.Mortgage.IncomeCurrencyCode,
                 ResidencyCurrencyCode = saInstance.Mortgage.ResidencyCurrencyCode,

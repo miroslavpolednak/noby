@@ -41,13 +41,9 @@ message SalesArrangement {
 
 	cis.types.NullableGrpcDate OfferGuaranteeDateTo = 14;
 
-	cis.types.NullableGrpcDecimal LoanToCost = 15;
-
 	string CommandId = 16;
 
 	cis.types.NullableGrpcDate RiskBusinessCaseExpirationDate = 17;
-
-	string EaCode = 18;
 
 	cis.types.NullableGrpcDate FirstSignedDate = 19;
 

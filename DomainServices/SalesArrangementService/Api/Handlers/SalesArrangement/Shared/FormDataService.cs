@@ -72,7 +72,7 @@ internal class FormDataService
         {
             ("IncomeCurrencyCode", !String.IsNullOrEmpty(arrangement.Mortgage?.IncomeCurrencyCode)  ),
             ("ResidencyCurrencyCode", !String.IsNullOrEmpty(arrangement.Mortgage?.ResidencyCurrencyCode) ),
-            ("SignatureTypeId", (arrangement.Mortgage?.SignatureTypeId).HasValue ),
+            ("SignatureTypeId", (arrangement.Mortgage?.ContractSignatureTypeId).HasValue ),
         };
 
         var invalidSaMandatoryFields = saMandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
@@ -277,7 +277,7 @@ internal class FormDataService
 
     private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
-        await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber, EaCode = entity.EaCode, RiskBusinessCaseId = entity.RiskBusinessCaseId, FirstSignedDate = entity.FirstSignedDate }), cancellation);
+        await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber, RiskBusinessCaseId = entity.RiskBusinessCaseId, FirstSignedDate = entity.FirstSignedDate }), cancellation);
         entity.ContractNumber = contractNumber;
     }
 

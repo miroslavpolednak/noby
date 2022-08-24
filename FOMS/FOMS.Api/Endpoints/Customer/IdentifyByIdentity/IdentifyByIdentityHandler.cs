@@ -32,7 +32,6 @@ internal sealed class IdentifyByIdentityHandler
                 DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
                 FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
                 Name = customerInstance.NaturalPerson.LastName,
-                HasPartner = customerOnSaInstance.HasPartner,
                 LockedIncomeDateTime = customerOnSaInstance.LockedIncomeDateTime
             }
         };

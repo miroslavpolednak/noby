@@ -18,10 +18,6 @@ message CreateSalesArrangementRequest {
 	
 	string ContractNumber = 4;
 	
-	string EaCode = 5;
-
-	cis.types.NullableGrpcDecimal LoanToCost = 6;
-
 	oneof Data {
         SalesArrangementParametersMortgage Mortgage = 20;
     }
