@@ -723,16 +723,8 @@
           "$ref": "#/definitions/LoanApplicationDeclaredIncome"
         },
         "highestEducation": {
-          "type": "string",
-          "description": "Nejvyšší dosažené vzdělání.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6"
-          ]
+          "type": "integer",
+          "description": "Nejvyšší dosažené vzdělání."
         }
       },
       "description": "Protistrana na žádosti (žadatel, spolužadatel)"
@@ -969,36 +961,12 @@
           "description": "Orientační číslo."
         },
         "employerType": {
-          "type": "string",
-          "description": "Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc..",
-          "enum": [
-            "6",
-            "4",
-            "1",
-            "2",
-            "3",
-            "5"
-          ]
+          "type": "integer",
+          "description": "Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc.."
         },
         "profession": {
-          "type": "string",
-          "description": "povolání.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14"
-          ]
+          "type": "integer",
+          "description": "povolání."
         }
       },
       "description": "LoanApplicationEmploymentIncome"
@@ -1084,24 +1052,8 @@
           "description": "příznak, zda byl využit modifikovaný paušál."
         },
         "profession": {
-          "type": "string",
-          "description": "povolání.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14"
-          ]
+          "type": "integer",
+          "description": "povolání."
         }
       },
       "description": "LoanApplicationEntrepreneurIncome"
@@ -1774,46 +1726,8 @@
           "description": "výše požadované výše úvěru pro daný účel."
         },
         "code": {
-          "type": "string",
-          "description": "účel úvěru.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31",
-            "32",
-            "33",
-            "34",
-            "35",
-            "36"
-          ]
+          "type": "integer",
+          "description": "účel úvěru."
         }
       },
       "description": "Parametry domácnosti."
@@ -1900,7 +1814,7 @@
       "properties": {
         "id": {
           "description": "LoanApplication identity",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "loanApplicationDataVersion": {
           "type": "string",

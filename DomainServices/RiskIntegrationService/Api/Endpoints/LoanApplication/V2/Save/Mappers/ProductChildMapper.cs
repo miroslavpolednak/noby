@@ -116,7 +116,7 @@ internal sealed class ProductChildMapper
         return t => new LoanApplicationPurpose
         {
             Amount = t.Amount,
-            Code = Helpers.GetEnumFromInt<LoanApplicationPurposeCode>(purposes.FirstOrDefault(x => x.Id == t.LoanPurposeId)?.C4mId ?? -1)
+            Code = purposes.FirstOrDefault(x => x.Id == t.LoanPurposeId)?.C4mId ?? -1
         };
     }
     

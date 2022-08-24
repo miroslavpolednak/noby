@@ -13,12 +13,12 @@ internal sealed class SaveHandler
         // volani c4m
         var response = await _client.Save(requestModel, cancellation);
 
-        var responseVerPriority = requestModel.LoanApplicationHousehold?.SelectMany(t => t.CounterParty.SelectMany(x => x.Income?.EmploymentIncome?.Select(y => y.VerificationPriority))).ToList();
+        bool responseVerPriority = requestModel.LoanApplicationHousehold?.All(t => t.CounterParty.All(x => x.Income?.EmploymentIncome?.All(y => y.VerificationPriority.GetValueOrDefault()) ?? false)) ?? false;
         return new _V2.LoanApplicationSaveResponse
         {
-            //LoanApplicationId = response.Id,//TODO ResourceIdentifier
+            LoanApplicationId = response.Id,
             LoanApplicationDataVersion = response.LoanApplicationDataVersion,
-            RiskSegment = responseVerPriority is null ? _V2.LoanApplicationRiskSegments.B : (responseVerPriority.All(t => t.GetValueOrDefault()) ? _V2.LoanApplicationRiskSegments.A : _V2.LoanApplicationRiskSegments.B)
+            RiskSegment = responseVerPriority ? _V2.LoanApplicationRiskSegments.A : _V2.LoanApplicationRiskSegments.B
         };
     }
 

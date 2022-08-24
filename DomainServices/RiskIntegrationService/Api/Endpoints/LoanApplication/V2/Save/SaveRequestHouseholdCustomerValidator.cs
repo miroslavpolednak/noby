@@ -39,9 +39,12 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                         t2.RuleForEach(x => x!.EmploymentIncomes)
                             .ChildRules(x =>
                             {
-                                x.RuleFor(x2 => x2.MonthlyAmount)
-                                    .GreaterThan(0)
-                                    .WithErrorCode("Households.Customers.EmploymentIncomes.MonthlyAmount");
+                                x.When(x2 => x2.MonthlyAmount is not null, () =>
+                                {
+                                    x.RuleFor(t => t.MonthlyAmount!.Amount)
+                                        .GreaterThan(0)
+                                        .WithErrorCode("Households.Customers.EmploymentIncomes.MonthlyAmount.Amount");
+                                });
                             });
                     });
 

@@ -22,7 +22,7 @@ internal static class Helpers
         if (string.IsNullOrEmpty(enumValue)) return defaultValue;
 
         if (!Enum.TryParse(typeof(TResponse), enumValue, out object? outValue))
-            throw new CisValidationException(0, $"Can't cast {nameof(TResponse)} '{enumValue}' to C4M enum");
+            throw new CisValidationException(0, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
         return (TResponse)outValue!;
     }
 
@@ -30,7 +30,7 @@ internal static class Helpers
         where TResponse : struct
     {
         if (!Enum.TryParse(typeof(TResponse), enumValue, out object? outValue))
-            throw new CisValidationException(0, $"Can't cast {nameof(TResponse)} '{enumValue}' to C4M enum");
+            throw new CisValidationException(0, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
         return (TResponse)outValue!;
     }
 

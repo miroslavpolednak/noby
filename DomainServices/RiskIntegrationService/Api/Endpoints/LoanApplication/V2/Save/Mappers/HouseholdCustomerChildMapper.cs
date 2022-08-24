@@ -66,7 +66,7 @@ internal sealed class HouseholdCustomerChildMapper
             },
             Gender = Helpers.GetEnumFromString<LoanApplicationCounterPartyGender>(genders.FirstOrDefault(t => t.Id == customer.GenderId)?.KbCmCode),
             MaritalStatus = Helpers.GetEnumFromString<LoanApplicationCounterPartyMaritalStatus>(maritalStatuses.FirstOrDefault(t => t.Id == customer.MaritalStateId)?.RdmMaritalStatusCode),
-            HighestEducation = Helpers.GetEnumFromString<LoanApplicationCounterPartyHighestEducation>(educations.FirstOrDefault(t => t.Id == customer.EducationLevelId)?.RdmCode),
+            HighestEducation = educations.FirstOrDefault(t => t.Id == customer.EducationLevelId)?.ScoringCode,
             HousingCondition = Helpers.GetEnumFromString<LoanApplicationCounterPartyHousingCondition>(housingConditions.FirstOrDefault(t => t.Id == customer.HousingConditionId)?.Code, LoanApplicationCounterPartyHousingCondition.OW)
         }))
         .ToList();
@@ -82,7 +82,7 @@ internal sealed class HouseholdCustomerChildMapper
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
-        _incomeMapper = new HouseholdCustomerIncomeChildMapper(_codebookService!, cancellationToken);
+        _incomeMapper = new HouseholdCustomerIncomeChildMapper(codebookService, cancellationToken);
         _riskApplicationType = riskApplicationType;
         _cancellationToken = cancellationToken;
         _codebookService = codebookService;

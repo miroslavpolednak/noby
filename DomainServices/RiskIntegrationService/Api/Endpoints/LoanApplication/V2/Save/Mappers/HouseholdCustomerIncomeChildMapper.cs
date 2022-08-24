@@ -3,15 +3,14 @@ using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using CIS.Core;
-using System.Threading;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
 internal sealed class HouseholdCustomerIncomeChildMapper
 {
-    public async Task<_C4M.LoanApplicationIncome> MapIncomes(_V2.LoanApplicationIncome? income, bool verification)
+    public async Task<_C4M.LoanApplicationIncome?> MapIncomes(_V2.LoanApplicationIncome? income, bool verification)
     {
-        if (income is null) return new LoanApplicationIncome { IncomeCollected = false };
+        if (income is null) return null;
 
         var model = new _C4M.LoanApplicationIncome
         {
@@ -35,10 +34,10 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         return (await income.SelectAsync(async t => new _C4M.LoanApplicationEmploymentIncome
             {
                 EmployerIdentificationNumber = t.EmployerIdentificationNumber,
-                EmployerType = Helpers.GetEnumFromInt<LoanApplicationEmploymentIncomeEmployerType>(t.WorkSectorId),
+                EmployerType = t.WorkSectorId,
                 EmployerName = t.EmployerName,
                 Nace = t.ClassficationOfEconomicActivityId,
-                Profession = Helpers.GetEnumFromInt<LoanApplicationEmploymentIncomeProfession>(t.JobTypeId, LoanApplicationEmploymentIncomeProfession._13),
+                Profession = t.JobTypeId,
                 Street = t.Address?.Street,
                 //HouseNumber = t.Address?.BuildingIdentificationNumber,//TODO c4m predela na string
                 //StreetNumber = t.Address?.LandRegistryNumber,
@@ -50,9 +49,9 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 AccountNumber = t.BankAccount?.ConvertToString(),
                 Domiciled = t.IsDomicile,
                 ProofType = await getProofType<LoanApplicationEmploymentIncomeProofType>(t.ProofTypeId),
-                DeclaredMonthIncome = Convert.ToDouble(t.MonthlyAmount),
+                DeclaredMonthIncome = t.MonthlyAmount is null ? null : Convert.ToDouble(t.MonthlyAmount!.Amount),
                 ForeignEmploymentType = (await _codebookService.IncomeForeignTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.IncomeForeignTypeId)?.Code,
-                GrossAnnualIncome = t.GrossAnnualIncome.HasValue ? Convert.ToDouble(t.GrossAnnualIncome) : null,
+                GrossAnnualIncome = t.GrossAnnualIncome.HasValue ? Convert.ToDouble(t.GrossAnnualIncome!) : null,
                 ProofConfirmationContactPhone = t.ConfirmationContactPhone,
                 ProofConfirmationContactSurname = t.ConfirmationPerson,
                 ProofCreatedOn = t.ConfirmationDate,
@@ -77,7 +76,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         {
             EntrepreneurIdentificationNumber = income.EntrepreneurIdentificationNumber,
             Nace = income.ClassficationOfEconomicActivityId,
-            Profession = Helpers.GetEnumFromInt<LoanApplicationEntrepreneurIncomeProfession>(income.JobTypeId),
+            Profession = income.JobTypeId,
             Street = income.Address?.Street,
             //HouseNumber = income.Address?.BuildingIdentificationNumber,
             //StreetNumber = income.Address?.LandRegistryNumber,//TODO zmeni c4m long na string?
