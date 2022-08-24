@@ -1,6 +1,7 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
+using DomainServices.RiskIntegrationService.Api;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
 
@@ -10,8 +11,9 @@ internal static class CreateAssesmentExtensions
         => new ()
         {
             LoanApplicationAssessmentId = response.Id,
-            SalesArrangementId = response.LoanApplicationId?.GetSalesArrangementId(),
-            RiskBusinesscaseId = response.RiskBusinesscaseId?.Id,
+            //TODO C4M 
+            SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(),
+            RiskBusinesscaseId = !string.IsNullOrEmpty(response.RiskBusinesscaseId) ? response.RiskBusinesscaseId : null,
             RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate?.DateTime,
             AssessmentResult = response.AssessmentResult,
             StandardRiskCosts = response.StandardRiskCosts,
@@ -86,7 +88,8 @@ internal static class CreateAssesmentExtensions
         => t => new ()
         {
             InternalCustomerId = t.CounterPartyId,
-            PrimaryCustomerId = t.CustomerId?.GetPrimaryCustomerId(),
+            //TODO C4M 
+            PrimaryCustomerId = t.CustomerId?.ToPrimaryCustomerId(),
             AssessmentDetail = t.AssessmentDetail.ToDetail()
         };
 
@@ -112,9 +115,9 @@ internal static class CreateAssesmentExtensions
         };
 
     private static AmountDetail? ToAmountDetail(this _C4M.Amount amount)
-        => amount.Value != null ? new()
+        => amount != null && amount.Value != null ? new()
         {
             Amount = amount.Value.Value,
             CurrencyCode = amount.CurrencyCode
-        } : null;
+        } : null;    
 }

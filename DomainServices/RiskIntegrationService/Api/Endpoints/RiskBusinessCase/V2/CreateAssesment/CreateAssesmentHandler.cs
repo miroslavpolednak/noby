@@ -10,7 +10,9 @@ internal sealed class CreateAssesmentHandler
     {
         string chanel = _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name);
 
-        var response = await _client.CreateCaseAssessment(request.RiskBusinessCaseId, request.ToC4M(chanel), cancellationToken);
+        var requestModel = request.ToC4M(chanel);
+
+        var response = await _client.CreateCaseAssessment(request.RiskBusinessCaseId, requestModel, cancellationToken);
 
         return response.ToRIP();
     }

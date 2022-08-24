@@ -22,7 +22,7 @@ internal sealed class CommitCaseHandler
             },
             LoanSoldProduct = new _C4M.LoanSoldProduct
             {
-                Id = request.SoldProduct != null ? _C4M.ResourceIdentifier.CreateLoanSoldProduct(request.SoldProduct.Id, request.SoldProduct.Company, chanel) : null
+                Id = request.SoldProduct != null ? _C4M.ResourceIdentifier.CreateLoanSoldProduct(request.SoldProduct.Id, request.SoldProduct.Company) : null
             },
             RiskBusinessCaseFinalResult = FastEnum.Parse<_C4M.CommitRequestRiskBusinessCaseFinalResult>(request.FinalResult.ToString(), true),
             ApprovalLevel = request.ApprovalLevel,
