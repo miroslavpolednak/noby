@@ -11,9 +11,9 @@ internal static class CreateAssesmentRequestExtensions
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
             ItChannel = FastEnum.Parse<_C4M.AssessmentRequestItChannel>(chanel, true),
-            ItChannelPrevious = FastEnum.Parse<_C4M.AssessmentRequestItChannelPrevious>(request.ItChannelPrevious.ToString()),
-            AssessmentMode = FastEnum.Parse<_C4M.AssessmentRequestAssessmentMode>(request.AssessmentMode.ToString()),
-            GrantingProcedureCode = FastEnum.Parse<_C4M.AssessmentRequestGrantingProcedureCode>(request.GrantingProcedureCode.ToString()),
+            ItChannelPrevious = FastEnum.Parse<_C4M.AssessmentRequestItChannelPrevious>(request.ItChannelPrevious.ToString(), true),
+            AssessmentMode = FastEnum.Parse<_C4M.AssessmentRequestAssessmentMode>(request.AssessmentMode.ToString(), true),
+            GrantingProcedureCode = FastEnum.Parse<_C4M.AssessmentRequestGrantingProcedureCode>(request.GrantingProcedureCode.ToString(), true),
             SelfApprovalRequired = request.SelfApprovalRequired,
             LoanApplicationException = request.LoanApplicationExceptions?.Select(t => new _C4M.LoanApplicationException
             {
@@ -21,6 +21,6 @@ internal static class CreateAssesmentRequestExtensions
                 ReasonCode = t.ReasonCode
             }).ToList(),
             ExceptionHighestApprovalLevel = request.ExceptionHighestApprovalLevel,
-            Expand = request.RequestedDetails?.Select(t => FastEnum.Parse<_C4M.Expand>(t.ToString())).ToList()
+            Expand = request.RequestedDetails?.Select(t => FastEnum.Parse<_C4M.Expand>(t.ToString(), true)).ToList()
         };
 }

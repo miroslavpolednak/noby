@@ -228,7 +228,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
         [System.Text.Json.Serialization.JsonPropertyName("customerId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier CustomerId { get; set; }
+        public string CustomerId { get; set; }
 
         /// <summary>
         /// Assessment Detail
@@ -307,7 +307,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier LoanApplicationId { get; set; }
+        public string LoanApplicationId { get; set; }
 
         /// <summary>
         /// Risk BusinessCase resource-identifier
@@ -316,12 +316,11 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier RiskBusinesscaseId { get; set; }
+        public string RiskBusinesscaseId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset? RiskBusinesscaseExpirationDate { get; set; }
 
         /// <summary>

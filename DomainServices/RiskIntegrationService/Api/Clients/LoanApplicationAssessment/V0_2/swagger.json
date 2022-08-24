@@ -212,7 +212,7 @@
         },
         "customerId": {
           "description": "Customer id",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "assessmentDetail": {
           "description": "Assessment Detail",
@@ -255,11 +255,11 @@
         },
         "loanApplicationId": {
           "description": "LoanApplication resource-identifier",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "riskBusinesscaseId": {
           "description": "Risk BusinessCase resource-identifier",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "riskBusinesscaseExpirationDate": {
           "type": "string",

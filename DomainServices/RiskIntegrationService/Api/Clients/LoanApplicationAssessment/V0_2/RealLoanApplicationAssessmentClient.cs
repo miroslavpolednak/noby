@@ -16,7 +16,7 @@ internal sealed class RealLoanApplicationAssessmentClient
             .GetAsync(_httpClient.BaseAddress + path, cancellationToken)
             .ConfigureAwait(false); ;
 
-        var result = await response.Content.ReadFromJsonAsync<Identified>(cancellationToken: cancellationToken)
+        var result = await response.Content.ReadFromJsonAsync<Identified>(_jsonOptions, cancellationToken: cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(GetAssesment), nameof(Identified));
 
         return result;

@@ -22,7 +22,8 @@ internal sealed class CreateCaseHandler
 
         return new _V2.RiskBusinessCaseCreateResponse()
         {
-            RiskBusinessCaseId = response.RiskBusinessCaseId.Id
+            //TODO C4M
+            RiskBusinessCaseId = response.RiskBusinessCaseId//.Id
         };
     }
 

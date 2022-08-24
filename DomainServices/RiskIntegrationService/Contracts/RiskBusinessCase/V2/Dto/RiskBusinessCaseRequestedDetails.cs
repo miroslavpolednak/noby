@@ -10,17 +10,17 @@ public enum RiskBusinessCaseRequestedDetails
     Unknown = 0,
 
     [ProtoEnum]
-    AssessmentDetail = 1,
+    assessmentDetail = 1,
 
     [ProtoEnum]
-    HouseholdAssessmentDetail = 2,
+    householdAssessmentDetail = 2,
 
     [ProtoEnum]
-    CounterpartyAssessmentDetail = 3,
+    counterpartyAssessmentDetail = 3,
 
     [ProtoEnum]
-    LoanApplicationApprovalPossibilities = 4,
+    loanApplicationApprovalPossibilities = 4,
 
     [ProtoEnum]
-    CollateralRiskCharacteristics = 5
+    collateralRiskCharacteristics = 5
 }

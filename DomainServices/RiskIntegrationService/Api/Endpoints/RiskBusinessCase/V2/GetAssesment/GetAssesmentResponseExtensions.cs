@@ -10,8 +10,8 @@ internal static class GetAssesmentResponseExtensions
         => new ()
         {
             LoanApplicationAssessmentId = response.Id,
-            SalesArrangementId = response.LoanApplicationId?.GetSalesArrangementId(),
-            RiskBusinesscaseId = response.RiskBusinesscaseId?.Id,
+            SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(),
+            RiskBusinesscaseId = response.RiskBusinesscaseId,
             RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate?.DateTime,
             AssessmentResult = response.AssessmentResult,
             StandardRiskCosts = response.StandardRiskCosts,
@@ -86,7 +86,8 @@ internal static class GetAssesmentResponseExtensions
         => t => new ()
         {
             InternalCustomerId = t.CounterPartyId,
-            PrimaryCustomerId = t.CustomerId?.GetPrimaryCustomerId(),
+            //TODO C4M 
+            PrimaryCustomerId = t.CustomerId?.ToPrimaryCustomerId(),
             AssessmentDetail = t.AssessmentDetail.ToDetail()
         };
 
@@ -112,7 +113,7 @@ internal static class GetAssesmentResponseExtensions
         };
 
     private static AmountDetail? ToAmountDetail(this _C4M.Amount amount)
-        => amount.Value != null ? new()
+        => amount != null && amount.Value != null ? new()
         {
             Amount = amount.Value.Value,
             CurrencyCode = amount.CurrencyCode
