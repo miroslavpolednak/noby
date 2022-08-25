@@ -1502,6 +1502,11 @@
             Zmocnenec - CustomerOnSAId
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.AgentConsentWithElCom">
+            <summary>
+            Souhlas zmocněnce s elektronickou komunikací
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>
             ID uzivatele - xxvvss.v33id

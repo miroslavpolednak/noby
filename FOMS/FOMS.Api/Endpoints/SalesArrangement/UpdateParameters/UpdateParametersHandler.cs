@@ -18,7 +18,8 @@ internal class UpdateParametersHandler
                 ExpectedDateOfDrawing = request.Parameters?.ExpectedDateOfDrawing,
                 IncomeCurrencyCode = request.Parameters?.IncomeCurrencyCode,
                 ResidencyCurrencyCode = request.Parameters?.ResidencyCurrencyCode,
-                Agent = request.Parameters?.Agent
+                Agent = request.Parameters?.Agent,
+                AgentConsentWithElCom = request.Parameters?.AgentConsentWithElCom,
             }
         };
 
