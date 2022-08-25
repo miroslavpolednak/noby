@@ -40,7 +40,7 @@ internal sealed class ProductChildMapper
             RepaymentPeriodEnd = product.RepaymentPeriodEnd,
             HomeCurrencyIncome = product.HomeCurrencyIncome,
             HomeCurrencyResidence = product.HomeCurrencyResidence,
-            FinancingType = product.FinancingTypes?.FirstOrDefault(),
+            FinancingType = "01",
             DeveloperCode = product.DeveloperId.ToString(),
             ProjectCode = product.DeveloperProjectId.ToString()
         };

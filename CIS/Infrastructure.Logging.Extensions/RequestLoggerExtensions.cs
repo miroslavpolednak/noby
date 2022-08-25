@@ -9,7 +9,7 @@ public static class RequestLoggerExtensions
     private static readonly Action<ILogger, string, long, Exception> _requestHandlerStartedWithId;
     private static readonly Action<ILogger, string, Exception> _requestHandlerFinished;
     private static readonly Action<ILogger, string, string, Exception> _httpRequestPayload;
-    private static readonly Action<ILogger, string, string, Exception> _httpResponsePayload;
+    private static readonly Action<ILogger, string, string, int, Exception> _httpResponsePayload;
 
     static RequestLoggerExtensions()
     {
@@ -18,10 +18,10 @@ public static class RequestLoggerExtensions
             new EventId(EventIdCodes.HttpRequestPayload, nameof(HttpRequestPayload)),
             "Request Payload for {HttpMethod} {Url}");
 
-        _httpResponsePayload = LoggerMessage.Define<string, string>(
+        _httpResponsePayload = LoggerMessage.Define<string, string, int>(
             LogLevel.Information,
             new EventId(EventIdCodes.HttpResponsePayload, nameof(HttpResponsePayload)),
-            "Reponse Payload for {HttpMethod} {Url}");
+            "Reponse Payload for {HttpMethod} {Url} with status code {StatusCode}");
 
         _requestHandlerStarted = LoggerMessage.Define<string>(
             LogLevel.Debug,
@@ -50,11 +50,11 @@ public static class RequestLoggerExtensions
     public static void HttpRequestPayload(this ILogger logger, HttpRequestMessage request)
         => _httpRequestPayload(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);
 
-    public static void HttpResponsePayload(this ILogger logger, string httpMethod, string url)
-        => _httpResponsePayload(logger, httpMethod, url, null!);
+    public static void HttpResponsePayload(this ILogger logger, string httpMethod, string url, int statusCode)
+        => _httpResponsePayload(logger, httpMethod, url, statusCode, null!);
 
-    public static void HttpResponsePayload(this ILogger logger, HttpRequestMessage request)
-        => _httpResponsePayload(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);
+    public static void HttpResponsePayload(this ILogger logger, HttpRequestMessage request, int statusCode)
+        => _httpResponsePayload(logger, request.Method.ToString(), request.RequestUri!.ToString(), statusCode, null!);
 
     public static void RequestHandlerStarted(this ILogger logger, string handlerName)
         => _requestHandlerStarted(logger, handlerName, null!);
