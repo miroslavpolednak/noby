@@ -16,7 +16,7 @@ internal sealed class RealLoanApplicationAssessmentClient
             .GetAsync(_httpClient.BaseAddress + path, cancellationToken)
             .ConfigureAwait(false); ;
 
-        var result = await response.Content.ReadFromJsonAsync<Identified>(_jsonOptions, cancellationToken: cancellationToken)
+        var result = await response.Content.ReadFromJsonAsync<Identified>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(GetAssesment), nameof(Identified));
 
         return result;
@@ -30,15 +30,5 @@ internal sealed class RealLoanApplicationAssessmentClient
     public RealLoanApplicationAssessmentClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
-    }
-
-    private static System.Text.Json.JsonSerializerOptions _jsonOptions = new()
-    {
-        NumberHandling = JsonNumberHandling.AllowReadingFromString //TODO odstranit az c4m opravi format cisel
-    };
-
-    static RealLoanApplicationAssessmentClient()
-    {
-        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse()); //TODO odstranit az c4m opravi format cisel
     }
 }
