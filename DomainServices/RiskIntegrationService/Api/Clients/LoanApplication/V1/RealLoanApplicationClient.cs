@@ -9,10 +9,10 @@ internal sealed class RealLoanApplicationClient
     public async Task<_C4M.LoanApplicationResult> Save(_C4M.LoanApplication request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-                    .PostAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, _jsonOptions, cancellationToken)
-                    .ConfigureAwait(false);
+            .PostAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
+            .ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<_C4M.LoanApplicationResult>(_jsonOptions, cancellationToken)
+        var result = await response.Content.ReadFromJsonAsync<_C4M.LoanApplicationResult>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Save), nameof(_C4M.LoanApplicationResult));
 
         return result;
@@ -20,18 +20,9 @@ internal sealed class RealLoanApplicationClient
 
     private readonly HttpClient _httpClient;
     const string _calculateUrl = "/hf/loan-application";
-    private static System.Text.Json.JsonSerializerOptions _jsonOptions = new()
-    {
-        NumberHandling = JsonNumberHandling.AllowReadingFromString //TODO odstranit az c4m opravi format cisel
-    };
-
+    
     public RealLoanApplicationClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
-    }
-
-    static RealLoanApplicationClient()
-    {
-        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse());
     }
 }

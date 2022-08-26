@@ -20,7 +20,7 @@ internal sealed class HouseholdChildMapper
             return new _C4M.LoanApplicationHousehold
             {
                 Id = household.HouseholdId,
-                RoleCode = householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode,
+                RoleCode = Helpers.GetEnumFromString<LoanApplicationHouseholdRoleCode>(householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode),
                 ChildrenUnderAnd10 = household.ChildrenUpToTenYearsCount,
                 ChildrenOver10 = household.ChildrenOverTenYearsCount,
                 HouseholdExpensesSummary = mapExpenses(household.Expenses),

@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "xxx",
+    "title": "LoanApplication",
     "version": "1.0.0"
   },
   "basePath": "/la-loan-application-hf-adapter-service-1.0.0/api",
@@ -951,11 +951,13 @@
           "description": "Typ zaměstnaní."
         },
         "houseNumber": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "Číslo popisné."
         },
         "streetNumber": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "Orientační číslo."
         },
         "employerType": {
@@ -1028,11 +1030,13 @@
           "$ref": "#/definitions/Amount"
         },
         "houseNumber": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "číslo popisné."
         },
         "streetNumber": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "orientační číslo."
         },
         "street": {
@@ -1247,11 +1251,13 @@
           "description": "inhibitancyFrom"
         },
         "houseNumber": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "Číslo popisné."
         },
         "streetNumber": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "Orientační číslo."
         },
         "regionCode": {
@@ -1324,7 +1330,7 @@
           "$ref": "#/definitions/LoanApplicationProductRelationValue"
         }
       },
-      "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)"
+      "description": "Deklarovane."
     },
     "LoanApplicationProductRelationValue": {
       "type": "object",
@@ -1407,12 +1413,7 @@
         },
         "roleCode": {
           "type": "string",
-          "description": "Role Code.",
-          "enum": [
-            "A",
-            "S",
-            "R"
-          ]
+          "description": "počet vyživovaných dětí do 10 let (včetně)."
         },
         "childrenUnderAnd10": {
           "type": "integer",
@@ -1445,16 +1446,16 @@
             "$ref": "#/definitions/LoanInstallmentsSummary"
           }
         },
-        "counterParty": {
-          "type": "array",
-          "description": "Protistrana na žádosti (žadatel, spolužadatel)",
-          "items": {
-            "$ref": "#/definitions/LoanApplicationCounterParty"
-          }
-        },
         "settlementTypeCode": {
           "type": "string",
           "description": "Shrnutí splátek mimo domácnosti"
+        },
+        "counterParty": {
+          "type": "array",
+          "description": "Shrnutí splátek domácnosti",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationCounterParty"
+          }
         }
       },
       "description": "Parametry domácnosti."
@@ -1506,6 +1507,7 @@
     "LoanApplicationProductRelation": {
       "type": "object",
       "required": [
+        "loanApplicationProductRelationCounterparty",
         "productId",
         "productType",
         "relationType",
@@ -1528,7 +1530,7 @@
           "description": "Navázané parametry na danou vazbu.",
           "$ref": "#/definitions/LoanApplicationProductRelationValue"
         },
-        "counterparty": {
+        "loanApplicationProductRelationCounterparty": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/LoanApplicationProductRelationCounterparty"
@@ -1734,7 +1736,8 @@
       "type": "object",
       "required": [
         "id",
-        "loanApplicationDataVersion"
+        "loanApplicationDeclaredProductRelation",
+        "loanApplicationProductRelation"
       ],
       "properties": {
         "id": {
@@ -1789,7 +1792,7 @@
         },
         "loanApplicationProductRelation": {
           "type": "array",
-          "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)",
+          "description": "konsolidované/zrušené úvěry ",
           "items": {
             "$ref": "#/definitions/LoanApplicationProductRelation"
           }

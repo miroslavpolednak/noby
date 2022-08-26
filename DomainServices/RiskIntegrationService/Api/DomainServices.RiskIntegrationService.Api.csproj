@@ -17,6 +17,7 @@
 	  <Content Remove="Clients\CreditWorthiness\V1\swagger.json" />
 	  <Content Remove="Clients\CustomersExposure\V1\swagger.json" />
 	  <Content Remove="Clients\LoanApplicationAssessment\V0_2\swagger.json" />
+	  <Content Remove="Clients\LoanApplication\V1\swagger - Copy.json" />
 	  <Content Remove="Clients\LoanApplication\V1\swagger.json" />
 	  <Content Remove="Clients\RiskBusinessCase\V0_2\swagger.json" />
 	</ItemGroup>
@@ -25,6 +26,7 @@
 	  <None Include="Clients\CreditWorthiness\V1\swagger.json" />
 	  <None Include="Clients\CustomersExposure\V1\swagger.json" />
 	  <None Include="Clients\LoanApplicationAssessment\V0_2\swagger.json" />
+	  <None Include="Clients\LoanApplication\V1\swagger - Copy.json" />
 	  <None Include="Clients\LoanApplication\V1\swagger.json" />
 	  <None Include="Clients\RiskBusinessCase\V0_2\swagger.json" />
 	</ItemGroup>

@@ -1,12 +1,30 @@
 ﻿using CIS.ExternalServicesHelpers.Configuration;
 using Polly;
 using Polly.Extensions.Http;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
 internal static class HttpClientFactoryExtensions
 {
+    public static System.Text.Json.JsonSerializerOptions CustomJsonOptions
+    {
+        get => _jsonOptions;
+    }
+
+    private static System.Text.Json.JsonSerializerOptions _jsonOptions = new()
+    {
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString //TODO odstranit az c4m opravi format cisel
+    };
+
+    static HttpClientFactoryExtensions()
+    {
+        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse()); //TODO odstranit az c4m opravi format cisel
+    }
+
     public static IHttpClientBuilder ConfigureC4mHttpMessageHandler<TClient>(this IHttpClientBuilder builder, string serviceName)
         => builder.ConfigurePrimaryHttpMessageHandler((serviceProvider) => 
         {

@@ -66,7 +66,7 @@ internal sealed class ProductChildMapper
                     Value = t.RemainingExposure.ToString(),
                     Type = "REMAINING_EXPOSURE"
                 },
-                LoanApplicationProductRelationCounterparty = t.Customers?.Select(x => new _C4M.LoanApplicationProductRelationCounterparty
+                Counterparty = t.Customers?.Select(x => new _C4M.LoanApplicationProductRelationCounterparty
                 {
                     CustomerId = new _C4M.ResourceIdentifier
                     {

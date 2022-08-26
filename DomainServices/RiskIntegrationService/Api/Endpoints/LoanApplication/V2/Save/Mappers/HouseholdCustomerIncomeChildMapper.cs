@@ -39,9 +39,9 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 Nace = t.ClassficationOfEconomicActivityId,
                 Profession = t.JobTypeId,
                 Street = t.Address?.Street,
-                //HouseNumber = t.Address?.BuildingIdentificationNumber,//TODO c4m predela na string
-                //StreetNumber = t.Address?.LandRegistryNumber,
-                //Postcode = t.Address?.Postcode,
+                HouseNumber = t.Address?.BuildingIdentificationNumber,
+                StreetNumber = t.Address?.LandRegistryNumber,
+                //Postcode = t.Address?.Postcode,//TODO c4m predela na string
                 City = t.Address?.City,
                 CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(x => x.Id == t.Address?.CountryId)?.ShortName,
                 JobTitle = t.JobDescription,
@@ -78,9 +78,9 @@ internal sealed class HouseholdCustomerIncomeChildMapper
             Nace = income.ClassficationOfEconomicActivityId,
             Profession = income.JobTypeId,
             Street = income.Address?.Street,
-            //HouseNumber = income.Address?.BuildingIdentificationNumber,
-            //StreetNumber = income.Address?.LandRegistryNumber,//TODO zmeni c4m long na string?
-            //Postcode = income.Address?.Postcode,
+            HouseNumber = income.Address?.BuildingIdentificationNumber,
+            StreetNumber = income.Address?.LandRegistryNumber,
+            //Postcode = income.Address?.Postcode,//TODO zmeni c4m long na string?
             City = income.Address?.City,
             CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(t => t.Id == income.Address?.CountryId)?.ShortName,
             EstablishedOn = income.EstablishedOn,

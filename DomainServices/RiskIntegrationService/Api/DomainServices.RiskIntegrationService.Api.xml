@@ -2093,7 +2093,7 @@
         </member>
         <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationDeclaredProductRelation">
             <summary>
-            Deklarovane.
+            Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)
             </summary>
         </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationDeclaredProductRelation.ProductType">
@@ -2183,7 +2183,7 @@
         </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationHousehold.RoleCode">
             <summary>
-            počet vyživovaných dětí do 10 let (včetně).
+            Role Code.
             </summary>
         </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationHousehold.ChildrenUnderAnd10">
@@ -2211,14 +2211,14 @@
             Shrnutí pasiv úvěru mimo domácnosti
             </summary>
         </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationHousehold.CounterParty">
+            <summary>
+            Protistrana na žádosti (žadatel, spolužadatel)
+            </summary>
+        </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationHousehold.SettlementTypeCode">
             <summary>
             Shrnutí splátek mimo domácnosti
-            </summary>
-        </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationHousehold.CounterParty">
-            <summary>
-            Shrnutí splátek domácnosti
             </summary>
         </member>
         <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanInstallmentsSummary">
@@ -2503,7 +2503,7 @@
         </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplication.LoanApplicationProductRelation">
             <summary>
-            konsolidované/zrušené úvěry 
+            Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)
             </summary>
         </member>
         <member name="T:DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts.LoanApplicationResult">
