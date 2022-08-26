@@ -611,6 +611,21 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
+            long? FindZmocnenecMpId()
+            {
+                //zmocnenec_mp_id, Pozn.: Přemapování musí proběhnout z CustomerOnSaId na PartnerId, což je ID, kde Identitní schéma je MPID.
+                // 1) Z SA vezmu CustomerOnSAId (Data.Arrangement.Mortgage?.Agent)
+                // 2) Najdu si CustomerOnSA odpovídající tomuto CustomerOnSAId
+                // 3) Vezmu MP identitu z toho customera a z ní IdentityId
+
+                var agent = Data.Arrangement.Mortgage?.Agent;
+
+                var customer = agent.HasValue ? Data.CustomersOnSa?.FirstOrDefault(c => c.CustomerOnSAId == agent.Value) : null;
+
+                var identityMp = customer?.CustomerIdentifiers.SingleOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+
+                return identityMp?.IdentityId;
+            }
 
             // root
             var loanAmount = (decimal)Data.Offer.SimulationResults.LoanAmount;
@@ -694,10 +709,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         souhlas_el_forma_komunikace = Data.Arrangement.Mortgage?.AgentConsentWithElCom.ToJsonString(),
                         zmenovy_navrh = 0.ToJsonString(),                                                                                               // Default: 0
                         seznam_domacnosti = Data.Households?.Select(i => MapHousehold(i)).ToArray() ?? Array.Empty<object>(),
-
-                        // TODO: zmocnenec_mp_id
-                        //zmocnenec_mp_id = (i.CustomerOnSAId == Data.Arrangement.Mortgage?.Agent) ???  Data.Arrangement.Mortgage?.Agent
-                        //zmocnenec_mp_id //Pozn.: Přemapování musí proběhnout z CustomerOnSaId na PartnerId, což je ID, kde Identitní schéma je MPID.
+                        zmocnenec_mp_id = FindZmocnenecMpId().ToJsonString(),
 
                         RZP_suma = insuranceSumRiskLife.ToJsonString(),
                         pojisteni_nem_suma = insuranceSumRealEstate.ToJsonString(),

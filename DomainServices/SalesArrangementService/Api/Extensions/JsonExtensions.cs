@@ -41,6 +41,11 @@ internal static class JsonExtensions
         return value.ToString(CultureInfo.InvariantCulture);
     }
 
+    public static string? ToJsonString(this long? value)
+    {
+        return value.HasValue ? value.Value.ToJsonString() : null;
+    }
+
     public static string ToJsonString(this decimal value)
     {
         return value.ToString(FormatDecimal, CultureInfo.GetCultureInfo("cs-CZ"));
