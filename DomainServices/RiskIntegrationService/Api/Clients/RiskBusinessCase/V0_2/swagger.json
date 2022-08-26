@@ -871,7 +871,7 @@
       "properties": {
         "riskBusinessCaseId": {
           "description": "identifikátor obchodního případu v C4M",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "timestamp": {
           "type": "string",

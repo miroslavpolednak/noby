@@ -20,10 +20,10 @@ internal sealed class CommitCaseHandler
             {
                 ProductClusterCode = riskApplicationType!.C4mAplCode
             },
-            LoanSoldProduct = new _C4M.LoanSoldProduct
+            LoanSoldProduct = request.SoldProduct != null ? new _C4M.LoanSoldProduct
             {
-                Id = request.SoldProduct != null ? _C4M.ResourceIdentifier.CreateLoanSoldProduct(request.SoldProduct.Id, request.SoldProduct.Company) : null
-            },
+                Id = _C4M.ResourceIdentifier.CreateLoanSoldProduct(request.SoldProduct.Id, request.SoldProduct.Company)
+            } : null,
             RiskBusinessCaseFinalResult = FastEnum.Parse<_C4M.CommitRequestRiskBusinessCaseFinalResult>(request.FinalResult.ToString(), true),
             ApprovalLevel = request.ApprovalLevel,
             ApprovalDate = request.ApprovalDate,
@@ -39,20 +39,23 @@ internal sealed class CommitCaseHandler
         };
 
         // human user instance
-        var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellationToken);
-        if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
-            requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-        else
-            requestModel.Creator = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        if (request.UserIdentity != null)
+        {
+            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellationToken);
+            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+                requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
+            else
+                requestModel.Creator = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        }        
 
         // approver
         if (request.Approver != null)
         {
             var approverInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.Approver, cancellationToken);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+            if (Helpers.IsDealerSchema(request.Approver!.IdentityScheme))
                 throw new CisValidationException(0, $"Approver can't be dealer.");
             else
-                requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+                requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(approverInstance, request.Approver);
         }
 
         //C4M
@@ -60,7 +63,8 @@ internal sealed class CommitCaseHandler
 
         return new _V2.RiskBusinessCaseCommitCaseResponse
         {
-            RiskBusinessCaseId = response.RiskBusinessCaseId.Id,
+            //TODO C4M
+            RiskBusinessCaseId = response.RiskBusinessCaseId,
             Timestamp = response.Timestamp!.DateTime,
             OperationResult = response.OperationResult,
             ResultReasons = response.ResultReasons?.Select(t => new Contracts.Shared.ResultReasonDetail

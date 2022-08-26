@@ -1083,8 +1083,8 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public ResourceIdentifier RiskBusinessCaseId { get; set; } = new ResourceIdentifier();
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RiskBusinessCaseId { get; set; }
 
         /// <summary>
         /// Datum a čas odpovědi
@@ -1230,7 +1230,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_
         [System.Text.Json.Serialization.JsonPropertyName("approvalDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset? ApprovalDate { get; set; }
 
         /// <summary>

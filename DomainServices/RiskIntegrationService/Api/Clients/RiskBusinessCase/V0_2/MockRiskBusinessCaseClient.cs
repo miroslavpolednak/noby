@@ -34,9 +34,6 @@ internal sealed class MockRiskBusinessCaseClient
                 }
             },
             Timestamp = DateTime.UtcNow,
-            RiskBusinessCaseId = new ResourceIdentifier
-            {
-                Id = riskBusinessCaseId
-            }
+            RiskBusinessCaseId = "RBCID"
         });
 }
