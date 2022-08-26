@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿// using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
 
@@ -14,11 +14,13 @@ public class EducationLevelItem
 
 
     [DataMember(Order = 3)]
-    [JsonIgnore]
+    // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !?
+    // [JsonIgnore]
     public string RdmCode { get; set; }
 
 
     [DataMember(Order = 4)]
-    [JsonIgnore]
+    // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !?
+    // [JsonIgnore]
     public int ScoringCode { get; set; }
 }
