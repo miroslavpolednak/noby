@@ -13,7 +13,6 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.PaymentDays
         public int PaymentAccountDay { get; set; }
 
         [DataMember(Order = 3)]
-        [JsonIgnore]
         public int MandantId { get; set; }
 
         [DataMember(Order = 4)]

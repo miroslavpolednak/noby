@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿// using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes
 {
@@ -18,7 +18,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes
         public List<int> ObligationCorrectionTypeIds { get; set; }
 
         [DataMember(Order = 5)]
-        [JsonIgnore]
+        // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !? 
+        // [JsonIgnore]
         public bool IsValid { get; set; }
 
         [DataMember(Order = 6)]
