@@ -31,7 +31,7 @@ internal class UpdateObligationMediatrRequestValidator
             .ChildRules(v =>
             {
                 v.RuleFor(t => t.CreditorId)
-                    .Must((creditor, t) => creditor.CreditorId.GetValueOrDefault() == 0 || string.IsNullOrEmpty(creditor.Name))
+                    .Must((creditor, t) => !string.IsNullOrEmpty(creditor.CreditorId) && !string.IsNullOrEmpty(creditor.Name))
                     .WithMessage("Creditor.CreditorId and Creditor.Name can't be set in the same time").WithErrorCode("16052");
             });
 

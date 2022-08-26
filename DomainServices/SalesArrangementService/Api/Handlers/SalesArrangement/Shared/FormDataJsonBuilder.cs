@@ -408,7 +408,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     vyse_splatky = i.InstallmentAmount.ToJsonString(),
                     vyse_nesplacene_jistiny = i.LoanPrincipalAmount.ToJsonString(),
                     vyse_limitu = i.CreditCardLimit.ToJsonString(),
-                    veritel_kod_banky = i.Creditor?.CreditorId?.ToJsonString(),
+                    veritel_kod_banky = i.Creditor?.CreditorId,
                     veritel_nazev = i.Creditor?.Name,
                     mimo_entitu_mandanta = i.Creditor?.IsExternal?.ToJsonString(),
                     zpusob_korekce_zavazku = i.Correction?.CorrectionTypeId?.ToJsonString(),

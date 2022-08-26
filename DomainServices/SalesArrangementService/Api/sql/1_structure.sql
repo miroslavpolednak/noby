@@ -128,7 +128,7 @@ CREATE TABLE [dbo].[CustomerOnSAObligation](
 	[LoanPrincipalAmount] decimal(12,2) NULL,
 	[CreditCardLimit] decimal(12,2) NULL,
 	[ObligationState] [int] NULL,
-	[CreditorId] [int] NULL,
+	[CreditorId] [varchar(10)] NULL,
 	[CreditorName] [nvarchar](250) NULL,
 	[CreditorIsExternal] [bit] NULL,
 	[CorrectionTypeId] [int] NULL,
