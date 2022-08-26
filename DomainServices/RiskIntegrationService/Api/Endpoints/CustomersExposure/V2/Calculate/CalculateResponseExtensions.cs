@@ -40,6 +40,8 @@ internal static class CalculateResponseExtensions
         {
             TotalExistingExposureKB = item.TotalExistingExposureKB?.Value,
             TotalExistingExposureKBNaturalPerson = item.TotalExistingExposureKBNonPurpose?.Value,
+            TotalExistingExposureKBNonPurpose = item.TotalExistingExposureKBNonPurpose?.Value,
+            TotalExistingExposureUnsecured = item.TotalExistingExposureUnsecured?.Value
         };
 
     public static _V2.CustomersExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles)
