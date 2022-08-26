@@ -5,14 +5,17 @@ namespace DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 public sealed class LoanApplicationAssessmentCollateralRiskCharacteristics
 {
     [ProtoMember(1)]
-    public long? Ltv { get; set; }
+    public decimal? Ltv { get; set; }
 
     [ProtoMember(2)]
-    public long? Ltfv { get; set; }
+    public decimal? Ltfv { get; set; }
 
     [ProtoMember(3)]
-    public long? Ltp { get; set; }
+    public decimal? Ltp { get; set; }
 
     [ProtoMember(4)]
     public long? SumAppraisedValue { get; set; }
+
+    [ProtoMember(5)]
+    public long? TotalUsedValue { get; set; }
 }

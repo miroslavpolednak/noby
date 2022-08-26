@@ -1,6 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
-using DomainServices.RiskIntegrationService.Api.Clients;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
+using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateCase;
 
@@ -11,9 +11,9 @@ internal sealed class CreateCaseHandler
     {
         string chanel = _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name);
 
-        var requestModel = new _C4M.CreateRequest
+        var requestModel = new _C4M.Create
         {
-            ItChannel = FastEnum.Parse<_C4M.CreateRequestItChannel>(chanel, true),
+            ItChannel = FastEnum.Parse<_C4M.CreateItChannel>(chanel, true),
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
             ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcess(request.ResourceProcessId, chanel)
         };
@@ -27,14 +27,14 @@ internal sealed class CreateCaseHandler
         };
     }
 
-    private readonly Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient _client;
+    private readonly _cl.IRiskBusinessCaseClient _client;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public CreateCaseHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient client)
+        _cl.IRiskBusinessCaseClient client)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;

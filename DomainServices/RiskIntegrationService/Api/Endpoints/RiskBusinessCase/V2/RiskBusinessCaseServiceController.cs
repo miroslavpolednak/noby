@@ -44,18 +44,18 @@ public sealed class RiskBusinessCaseServiceController
     public async Task<_sh.LoanApplicationAssessmentResponse> CreateAssesment([FromBody] _V2.RiskBusinessCaseCreateAssesmentRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
-    /// <summary>
-    /// Žádost o vyhodnocení úvěrové žádosti - asynchronní
-    /// </summary>
-    /// <remarks>
-    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
-    /// </remarks>
-    [HttpPost("assessment-asynchronous")]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
-    [ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse), StatusCodes.Status200OK)]
-    public async Task<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse> CreateAssesmentAsynchronous([FromBody] _V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    ///// <summary>
+    ///// Žádost o vyhodnocení úvěrové žádosti - asynchronní
+    ///// </summary>
+    ///// <remarks>
+    ///// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
+    ///// </remarks>
+    //[HttpPost("assessment-asynchronous")]
+    //[Produces("application/json")]
+    //[SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
+    //[ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse), StatusCodes.Status200OK)]
+    //public async Task<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse> CreateAssesmentAsynchronous([FromBody] _V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, CancellationToken cancellationToken)
+    //    => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
     /// Dokončení úvěrové žádosti
@@ -63,7 +63,7 @@ public sealed class RiskBusinessCaseServiceController
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
     /// </remarks>
-    [HttpPut("commitment")]
+    [HttpPost("commitment")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
     [ProducesResponseType(typeof(_V2.RiskBusinessCaseCommitCaseResponse), StatusCodes.Status200OK)]

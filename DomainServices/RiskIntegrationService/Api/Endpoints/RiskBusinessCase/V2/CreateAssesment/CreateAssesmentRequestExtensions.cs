@@ -1,19 +1,19 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
 
 internal static class CreateAssesmentRequestExtensions
 {
-    public static _C4M.AssessmentRequest ToC4M(this _V2.RiskBusinessCaseCreateAssesmentRequest request, string chanel)
-        => new _C4M.AssessmentRequest
+    public static _C4M.LoanApplicationAssessmentCreate ToC4M(this _V2.RiskBusinessCaseCreateAssesmentRequest request, string chanel)
+        => new ()
         {
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
-            ItChannel = FastEnum.Parse<_C4M.AssessmentRequestItChannel>(chanel, true),
-            ItChannelPrevious = FastEnum.Parse<_C4M.AssessmentRequestItChannelPrevious>(request.ItChannelPrevious.ToString(), true),
-            AssessmentMode = FastEnum.Parse<_C4M.AssessmentRequestAssessmentMode>(request.AssessmentMode.ToString(), true),
-            GrantingProcedureCode = FastEnum.Parse<_C4M.AssessmentRequestGrantingProcedureCode>(request.GrantingProcedureCode.ToString(), true),
+            ItChannel = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateItChannel>(chanel, true),
+            ItChannelPrevious = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateItChannelPrevious>(request.ItChannelPrevious.ToString(), true),
+            AssessmentMode = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateAssessmentMode>(request.AssessmentMode.ToString(), true),
+            GrantingProcedureCode = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateGrantingProcedureCode>(request.GrantingProcedureCode.ToString(), true),
             SelfApprovalRequired = request.SelfApprovalRequired,
             LoanApplicationException = request.LoanApplicationExceptions?.Select(t => new _C4M.LoanApplicationException
             {

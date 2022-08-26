@@ -1,5 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V0_2.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
+using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CommitCase;
 
@@ -12,10 +13,10 @@ internal sealed class CommitCaseHandler
         var riskApplicationType = Helpers.GetRiskApplicationType(await _codebookService.RiskApplicationTypes(cancellationToken), request.ProductTypeId);
         var channels = await _codebookService.Channels(cancellationToken);
 
-        var requestModel = new _C4M.CommitRequest
+        var requestModel = new _C4M.RiskBusinessCaseCommitCreate
         {
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
-            ItChannel = FastEnum.Parse<_C4M.CommitRequestItChannel>(chanel, true),
+            ItChannel = FastEnum.Parse<_C4M.RiskBusinessCaseCommitCreateItChannel>(chanel, true),
             LoanApplicationProduct = new _C4M.LoanApplicationProduct()
             {
                 ProductClusterCode = riskApplicationType!.C4mAplCode
@@ -24,7 +25,7 @@ internal sealed class CommitCaseHandler
             {
                 Id = _C4M.ResourceIdentifier.CreateLoanSoldProduct(request.SoldProduct.Id, request.SoldProduct.Company)
             } : null,
-            RiskBusinessCaseFinalResult = FastEnum.Parse<_C4M.CommitRequestRiskBusinessCaseFinalResult>(request.FinalResult.ToString(), true),
+            RiskBusinessCaseFinalResult = FastEnum.Parse<_C4M.RiskBusinessCaseCommitCreateRiskBusinessCaseFinalResult>(request.FinalResult.ToString(), true),
             ApprovalLevel = request.ApprovalLevel,
             ApprovalDate = request.ApprovalDate,
             LoanAgreement = request.LoanAgreement != null ? new _C4M.LoanAgreement
@@ -75,7 +76,7 @@ internal sealed class CommitCaseHandler
         };
     }
 
-    private readonly Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient _client;
+    private readonly _cl.IRiskBusinessCaseClient _client;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
@@ -84,7 +85,7 @@ internal sealed class CommitCaseHandler
     public CommitCaseHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        Clients.RiskBusinessCase.V0_2.IRiskBusinessCaseClient client,
+        _cl.IRiskBusinessCaseClient client,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider)
     {

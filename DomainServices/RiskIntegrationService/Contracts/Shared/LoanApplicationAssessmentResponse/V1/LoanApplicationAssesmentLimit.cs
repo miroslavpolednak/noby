@@ -26,7 +26,7 @@ public class LoanApplicationAssesmentLimit
     public long? Cir { get; set; }
 
     [ProtoMember(8)]
-    public long? Dti { get; set; }
+    public decimal? Dti { get; set; }
 
     [ProtoMember(9)]
     public long? Dsti { get; set; }

@@ -1,5 +1,5 @@
 ﻿using DomainServices.RiskIntegrationService.Contracts.Shared;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V0_2.Contracts;
+using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V1.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.GetAssesment;
@@ -21,6 +21,7 @@ internal static class GetAssesmentResponseExtensions
             HouseholdsDetails = response.HouseholdAssessmentDetail?.Select(Household()).ToList(),
             CustomersDetails = response.CounterpartyAssessmentDetail?.Select(Customer()).ToList(),
             CollateralRiskCharacteristics = response.CollateralRiskCharacteristics?.ToCollateral(),
+
             Version = response.Version?.ToVersion(),
             Created = response.Created?.ToChangeDetail(),
             Updated = response.Updated?.ToChangeDetail()
@@ -48,7 +49,11 @@ internal static class GetAssesmentResponseExtensions
             InstallmentLimit = limit.LoanApplicationInstallmentLimit.ToAmountDetail(),
             CollateralLimit = limit.LoanApplicationCollateralLimit.ToAmountDetail(),
             RemainingAnnuityLivingAmount = limit.RemainingAnnuityLivingAmount.ToAmountDetail(),
-            IsCalculationStressed = limit.CalculationIrStressed.GetValueOrDefault()
+            IsCalculationStressed = limit.CalculationIrStressed.GetValueOrDefault(),
+            Iir = limit.Iir,
+            Cir = limit.Cir,
+            Dti = limit.Dti,
+            Dsti = limit.Dsti
         };
 
     private static _sh.LoanApplicationAssesmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics riskCharacteristics)
@@ -97,7 +102,8 @@ internal static class GetAssesmentResponseExtensions
             Ltv = collateral.Ltv,
             Ltfv = collateral.Ltfv,
             Ltp = collateral.Ltp,
-            SumAppraisedValue = collateral.SumAppraisedValue
+            SumAppraisedValue = collateral.SumAppraisedValue,
+            TotalUsedValue = collateral.TotalCollUsedValue
         };
 
     private static string ToVersion(this _C4M.SemanticVersion version)
