@@ -41,7 +41,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 Street = t.Address?.Street,
                 HouseNumber = t.Address?.BuildingIdentificationNumber,
                 StreetNumber = t.Address?.LandRegistryNumber,
-                //Postcode = t.Address?.Postcode,//TODO c4m predela na string
+                Postcode = getZipCode(t.Address?.Postcode),//TODO c4m predela na string
                 City = t.Address?.City,
                 CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(x => x.Id == t.Address?.CountryId)?.ShortName,
                 JobTitle = t.JobDescription,
@@ -80,7 +80,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
             Street = income.Address?.Street,
             HouseNumber = income.Address?.BuildingIdentificationNumber,
             StreetNumber = income.Address?.LandRegistryNumber,
-            //Postcode = income.Address?.Postcode,//TODO zmeni c4m long na string?
+            Postcode = getZipCode(income.Address?.Postcode),//TODO zmeni c4m long na string?
             City = income.Address?.City,
             CountryCode = (await _codebookService.Countries(_cancellationToken)).FirstOrDefault(t => t.Id == income.Address?.CountryId)?.ShortName,
             EstablishedOn = income.EstablishedOn,
@@ -121,6 +121,12 @@ internal sealed class HouseholdCustomerIncomeChildMapper
 
     private async Task<TResponse?> getProofType<TResponse>(int? proofTypeId) where TResponse : struct
         => Helpers.GetEnumFromString<TResponse>((await _codebookService.ProofTypes(_cancellationToken)).FirstOrDefault(t => t.Id == proofTypeId)?.Code);
+
+    private static long? getZipCode(string? zip)
+    {
+        long code;
+        return long.TryParse(zip, out code) ? code : null;
+    }
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly CancellationToken _cancellationToken;
