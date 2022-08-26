@@ -43,13 +43,17 @@ internal sealed class HouseholdCustomerChildMapper
                 CountryCode = countries.FirstOrDefault(t => t.Id == customer.Address.CountryId)?.ShortName,
                 Street = customer.Address.Street,
                 StreetNumber = customer.Address.LandRegistryNumber,
-                //PostCode = customer.Address.Postcode,//TODO zmeni c4m long na string?
+                PostCode = getZipCode(customer.Address.Postcode),//TODO zmeni c4m long na string?
                 HouseNumber = customer.Address.BuildingIdentificationNumber
             },
             AcademicTitlePrefix = customer.AcademicTitlePrefix,
             Phone = string.IsNullOrEmpty(customer.MobilePhoneNumber) ? null : new List<PhoneContact>
                 {
-                    new _C4M.PhoneContact { ContactType = PhoneContactContactType.MOBILE, PhoneNumber = customer.MobilePhoneNumber }
+                    new _C4M.PhoneContact 
+                    { 
+                        ContactType = PhoneContactContactType.MOBILE, 
+                        PhoneNumber = customer.MobilePhoneNumber 
+                    }
                 },
             HasEmail = customer.HasEmail,
             IsPartner = customer.IsPartner,
@@ -70,6 +74,12 @@ internal sealed class HouseholdCustomerChildMapper
             HousingCondition = Helpers.GetEnumFromString<LoanApplicationCounterPartyHousingCondition>(housingConditions.FirstOrDefault(t => t.Id == customer.HousingConditionId)?.Code, LoanApplicationCounterPartyHousingCondition.OW)
         }))
         .ToList();
+    }
+
+    private static long? getZipCode(string? zip)
+    {
+        long code;
+        return long.TryParse(zip, out code) ? code : null;
     }
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
