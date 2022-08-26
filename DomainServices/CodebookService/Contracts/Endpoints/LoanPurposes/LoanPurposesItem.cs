@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿// using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
 {
@@ -18,7 +18,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
 
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
+        // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !? 
+        // [JsonIgnore]
         public List<int> ProductTypeIds { get; set; }
 
 
@@ -27,12 +28,14 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
 
 
         [DataMember(Order = 6)]
-        [JsonIgnore]
+        // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !? 
+        // [JsonIgnore] 
         public int? C4mId { get; set; }
 
 
         [DataMember(Order = 7)]
-        [JsonIgnore]
+        // TODO: ačkoliv se to nemá propagovat na FE API, používá to aktuálně RIP na CodebooksAPI !? 
+        // [JsonIgnore]
         public bool IsValid { get; set; }
     }
 }
