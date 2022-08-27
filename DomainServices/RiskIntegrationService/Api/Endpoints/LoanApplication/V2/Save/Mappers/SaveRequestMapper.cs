@@ -37,13 +37,14 @@ internal sealed class SaveRequestMapper
             Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             AppendixCode = request.AppendixCode,
             DistributionChannelCode = Helpers.GetEnumFromString<_C4M.LoanApplicationDistributionChannelCode>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, LoanApplicationDistributionChannelCode.BR),
-            SignatureType = request.SignatureType.ToString(),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
             LoanApplicationHousehold = await householdMapper.MapHouseholds(request.Households, verification),
             LoanApplicationProduct = await productChildMapper.MapProduct(request.Product),
             LoanApplicationProductRelation = await productChildMapper.MapProductRelations(request.ProductRelations),
             LoanApplicationDeclaredProductRelation = productChildMapper.MapDeclaredProductRelations(request.DeclaredSecuredProducts)
         };
+        if (request.SignatureType != CIS.Foms.Enums.SignatureTypes.Unknown)
+            requestModel.SignatureType = request.SignatureType.ToString();
 
         // human user instance
         if (request.UserIdentity is not null)
