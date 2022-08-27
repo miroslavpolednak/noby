@@ -41,11 +41,14 @@ public sealed class LoanApplicationAssessmentResponse
     public LoanApplicationAssessmentCollateralRiskCharacteristics? CollateralRiskCharacteristics { get; set; }
 
     [ProtoMember(13)]
-    public string? Version { get; set; }
+    public LoanApplicationAssessmentApprovalPossibility? ApprovalPossibility { get; set; }
 
     [ProtoMember(14)]
-    public ChangeDetail? Created { get; set; }
+    public string? Version { get; set; }
 
     [ProtoMember(15)]
+    public ChangeDetail? Created { get; set; }
+
+    [ProtoMember(16)]
     public ChangeDetail? Updated { get; set; }
 }

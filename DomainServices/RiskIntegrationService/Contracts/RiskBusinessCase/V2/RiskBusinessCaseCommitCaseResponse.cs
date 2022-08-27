@@ -13,5 +13,8 @@ public class RiskBusinessCaseCommitCaseResponse
     public string OperationResult { get; set; } = default!;
 
     [DataMember(Order = 4)]
+    public string? FinalState { get; set; }
+
+    [DataMember(Order = 5)]
     public List<Shared.ResultReasonDetail>? ResultReasons { get; set; }
 }

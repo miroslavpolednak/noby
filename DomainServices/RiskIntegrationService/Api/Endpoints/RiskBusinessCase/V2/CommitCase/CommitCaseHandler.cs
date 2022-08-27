@@ -68,6 +68,7 @@ internal sealed class CommitCaseHandler
             RiskBusinessCaseId = response.RiskBusinessCaseId,
             Timestamp = response.Timestamp!.DateTime,
             OperationResult = response.OperationResult,
+            FinalState = response.RiskBusinessCaseFinalState,
             ResultReasons = response.ResultReasons?.Select(t => new Contracts.Shared.ResultReasonDetail
             {
                 Code = t.Code,

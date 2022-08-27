@@ -7,7 +7,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V
 internal static class GetAssesmentResponseExtensions
 {
     public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response)
-        => new ()
+        => new()
         {
             LoanApplicationAssessmentId = response.Id,
             SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(),
@@ -17,55 +17,62 @@ internal static class GetAssesmentResponseExtensions
             StandardRiskCosts = response.StandardRiskCosts,
             GlTableCode = response.GlTableCode,
             Reasons = response.LoanApplicationAssessmentReason?.Select(Reason()).ToList(),
-            Detail = response.AssessmentDetail != null ? response.AssessmentDetail.ToDetail() : null,
+            Detail = response.AssessmentDetail?.ToDetail(),
             HouseholdsDetails = response.HouseholdAssessmentDetail?.Select(Household()).ToList(),
             CustomersDetails = response.CounterpartyAssessmentDetail?.Select(Customer()).ToList(),
             CollateralRiskCharacteristics = response.CollateralRiskCharacteristics?.ToCollateral(),
-
+            ApprovalPossibility = response.LoanApplicationApprovalPossibilities?.ToApprovalPossibility(),
             Version = response.Version?.ToVersion(),
             Created = response.Created?.ToChangeDetail(),
             Updated = response.Updated?.ToChangeDetail()
         };
 
-    private static _sh.LoanApplicationAssessmentDetail ToDetail(this _C4M.AssessmentDetail detail)
+    private static _sh.LoanApplicationAssessmentApprovalPossibility ToApprovalPossibility(this _C4M.LoanApplicationApprovalPossibilities model)
         => new()
         {
-            Score = detail.LoanApplicationScore?.ToScore(),
-            Limit = detail.LoanApplicationLimit?.ToLimit(),
-            RiskCharacteristics = detail.LoanApplicationRiskCharacteristics?.ToRiskCharacteristics()
+            SelfApprovalPossible = model.SelfApprovalPossible,
+            AutoApprovalPossible = model.AutoApprovalPossible
         };
 
-    private static _sh.LoanApplicationAssessmentScore ToScore(this _C4M.LoanApplicationScore score)
+    private static _sh.LoanApplicationAssessmentDetail ToDetail(this _C4M.AssessmentDetail model)
         => new()
         {
-            Scale = score.Scale,
-            Value = score.Value
+            Score = model.LoanApplicationScore?.ToScore(),
+            Limit = model.LoanApplicationLimit?.ToLimit(),
+            RiskCharacteristics = model.LoanApplicationRiskCharacteristics?.ToRiskCharacteristics()
         };
 
-    private static _sh.LoanApplicationAssesmentLimit ToLimit(this _C4M.LoanApplicationLimit limit)
+    private static _sh.LoanApplicationAssessmentScore ToScore(this _C4M.LoanApplicationScore model)
         => new()
         {
-            Limit = limit.LoanApplicationLimit1.ToAmountDetail(),
-            InstallmentLimit = limit.LoanApplicationInstallmentLimit.ToAmountDetail(),
-            CollateralLimit = limit.LoanApplicationCollateralLimit.ToAmountDetail(),
-            RemainingAnnuityLivingAmount = limit.RemainingAnnuityLivingAmount.ToAmountDetail(),
-            IsCalculationStressed = limit.CalculationIrStressed.GetValueOrDefault(),
-            Iir = limit.Iir,
-            Cir = limit.Cir,
-            Dti = limit.Dti,
-            Dsti = limit.Dsti
+            Scale = model.Scale,
+            Value = model.Value
         };
 
-    private static _sh.LoanApplicationAssesmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics riskCharacteristics)
+    private static _sh.LoanApplicationAssesmentLimit ToLimit(this _C4M.LoanApplicationLimit model)
         => new()
         {
-            MonthlyIncome = riskCharacteristics.MonthlyIncomeAmount.ToAmountDetail(),
-            MonthlyCostsWithoutInstallments = riskCharacteristics.MonthlyCostsWithoutInstAmount.ToAmountDetail(),
-            MonthlyInstallmentsInKB = riskCharacteristics.MonthlyInstallmentsInKBAmount.ToAmountDetail(),
-            MonthlyEntrepreneurInstallmentsInKB = riskCharacteristics.MonthlyEntrepreneurInstallmentsInKBAmount.ToAmountDetail(),
-            MonthlyInstallmentsInMPSS = riskCharacteristics.MonthlyInstallmentsInMPSSAmount.ToAmountDetail(),
-            MonthlyInstallmentsInOFI = riskCharacteristics.MonthlyInstallmentsInOFIAmount.ToAmountDetail(),
-            MonthlyInstallmentsInCBCB = riskCharacteristics.MonthlyInstallmentsInCBCBAmount.ToAmountDetail(),
+            Limit = model.LoanApplicationLimit1.ToAmountDetail(),
+            InstallmentLimit = model.LoanApplicationInstallmentLimit.ToAmountDetail(),
+            CollateralLimit = model.LoanApplicationCollateralLimit.ToAmountDetail(),
+            RemainingAnnuityLivingAmount = model.RemainingAnnuityLivingAmount.ToAmountDetail(),
+            IsCalculationStressed = model.CalculationIrStressed.GetValueOrDefault(),
+            Iir = model.Iir,
+            Cir = model.Cir,
+            Dti = model.Dti,
+            Dsti = model.Dsti
+        };
+
+    private static _sh.LoanApplicationAssesmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics model)
+        => new()
+        {
+            MonthlyIncome = model.MonthlyIncomeAmount.ToAmountDetail(),
+            MonthlyCostsWithoutInstallments = model.MonthlyCostsWithoutInstAmount.ToAmountDetail(),
+            MonthlyInstallmentsInKB = model.MonthlyInstallmentsInKBAmount.ToAmountDetail(),
+            MonthlyEntrepreneurInstallmentsInKB = model.MonthlyEntrepreneurInstallmentsInKBAmount.ToAmountDetail(),
+            MonthlyInstallmentsInMPSS = model.MonthlyInstallmentsInMPSSAmount.ToAmountDetail(),
+            MonthlyInstallmentsInOFI = model.MonthlyInstallmentsInOFIAmount.ToAmountDetail(),
+            MonthlyInstallmentsInCBCB = model.MonthlyInstallmentsInCBCBAmount.ToAmountDetail(),
         };
 
     private static Func<_C4M.LoanApplicationAssessmentReason, _sh.LoanApplicationAssessmentReason> Reason()
@@ -96,32 +103,32 @@ internal static class GetAssesmentResponseExtensions
             AssessmentDetail = t.AssessmentDetail.ToDetail()
         };
 
-    private static _sh.LoanApplicationAssessmentCollateralRiskCharacteristics ToCollateral(this _C4M.CollateralRiskCharacteristics collateral)
+    private static _sh.LoanApplicationAssessmentCollateralRiskCharacteristics ToCollateral(this _C4M.CollateralRiskCharacteristics model)
         => new()
         {
-            Ltv = collateral.Ltv,
-            Ltfv = collateral.Ltfv,
-            Ltp = collateral.Ltp,
-            SumAppraisedValue = collateral.SumAppraisedValue,
-            TotalUsedValue = collateral.TotalCollUsedValue
+            Ltv = model.Ltv,
+            Ltfv = model.Ltfv,
+            Ltp = model.Ltp,
+            SumAppraisedValue = model.SumAppraisedValue,
+            TotalUsedValue = model.TotalCollUsedValue
         };
 
-    private static string ToVersion(this _C4M.SemanticVersion version)
-        => string.IsNullOrEmpty(version.NonSemanticPart) ?
-        $"{version.Major}.{version.Minor}.{version.Bugfix}" :
-        $"{version.Major}.{version.Minor}.{version.Bugfix}.{version.NonSemanticPart}";
+    private static string ToVersion(this _C4M.SemanticVersion model)
+        => string.IsNullOrEmpty(model.NonSemanticPart) ?
+        $"{model.Major}.{model.Minor}.{model.Bugfix}" :
+        $"{model.Major}.{model.Minor}.{model.Bugfix}.{model.NonSemanticPart}";
 
-    private static ChangeDetail ToChangeDetail(this _C4M.Change change)
+    private static ChangeDetail ToChangeDetail(this _C4M.Change model)
         => new()
         {
-            IdentityId = change.IdentityId,
-            ChangeTime = change.Timestamp?.DateTime
+            IdentityId = model.IdentityId,
+            ChangeTime = model.Timestamp?.DateTime
         };
 
-    private static AmountDetail? ToAmountDetail(this _C4M.Amount amount)
-        => amount != null && amount.Value != null ? new()
+    private static AmountDetail? ToAmountDetail(this _C4M.Amount model)
+        => model != null && model.Value != null ? new()
         {
-            Amount = amount.Value.Value,
-            CurrencyCode = amount.CurrencyCode
+            Amount = model.Value.Value,
+            CurrencyCode = model.CurrencyCode
         } : null;
 }
