@@ -13,5 +13,5 @@ public sealed class LoanApplicationRentIncome
     public int? ProofTypeId { get; set; }
 
     [ProtoMember(4)]
-    public Shared.AmountDetail? MonthlyAmount { get; set; }
+    public Shared.AmountDetail? MonthlyIncomeAmount { get; set; }
 }

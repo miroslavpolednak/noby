@@ -49,7 +49,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 AccountNumber = t.BankAccount?.ConvertToString(),
                 Domiciled = t.IsDomicile,
                 ProofType = await getProofType<LoanApplicationEmploymentIncomeProofType>(t.ProofTypeId),
-                DeclaredMonthIncome = t.MonthlyAmount is null ? null : Convert.ToDouble(t.MonthlyAmount!.Amount),
+                MonthlyIncomeAmount = t.MonthlyIncomeAmount is null ? null : t.MonthlyIncomeAmount!.Amount.ToAmount(),
                 ForeignEmploymentType = (await _codebookService.IncomeForeignTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.IncomeForeignTypeId)?.Code,
                 GrossAnnualIncome = t.GrossAnnualIncome.HasValue ? Convert.ToDouble(t.GrossAnnualIncome!) : null,
                 ProofConfirmationContactPhone = t.ConfirmationContactPhone,
@@ -97,7 +97,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         {
             AccountNumber = income.BankAccount?.ConvertToString(),
             Domiciled = income.IsDomicile,
-            MonthlyIncomeAmount = income.MonthlyAmount.ToAmount(),
+            MonthlyIncomeAmount = income.MonthlyIncomeAmount.ToAmount(),
             ProofType = await getProofType<LoanApplicationRentIncomeProofType>(income.ProofTypeId)
         };
 
@@ -106,7 +106,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         {
             AccountNumber = income.BankAccount?.ConvertToString(),
             Domiciled = income.IsDomicile,
-            MonthlyIncomeAmount = income.MonthlyAmount.ToAmount(),
+            MonthlyIncomeAmount = income.MonthlyIncomeAmount.ToAmount(),
             Type = (await _codebookService.IncomeOtherTypes(_cancellationToken)).FirstOrDefault(x => x.Id == income.IncomeOtherTypeId)?.Code,
             ProofType = await getProofType<LoanApplicationOtherIncomeProofType>(income.ProofTypeId)
         })).ToList();

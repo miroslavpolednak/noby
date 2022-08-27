@@ -7,7 +7,7 @@ public class LoanApplicationOtherIncome
     public int IncomeOtherTypeId { get; set; }
 
     [ProtoMember(2)]
-    public Shared.AmountDetail MonthlyAmount { get; set; } = null!;
+    public Shared.AmountDetail MonthlyIncomeAmount { get; set; } = null!;
 
     [ProtoMember(3)]
     public Shared.BankAccountDetail? BankAccount { get; set; }

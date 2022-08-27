@@ -25,7 +25,7 @@ public class LoanApplicationEmploymentIncome
     public string? JobDescription { get; set; }
 
     [ProtoMember(8)]
-    public Shared.AmountDetail? MonthlyAmount { get; set; }
+    public Shared.AmountDetail? MonthlyIncomeAmount { get; set; }
 
     [ProtoMember(9)]
     public bool IsDomicile { get; set; }
