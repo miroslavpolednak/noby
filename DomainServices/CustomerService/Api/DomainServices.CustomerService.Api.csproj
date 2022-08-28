@@ -20,6 +20,7 @@
 
   <ItemGroup>
 	  <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+	  <ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
