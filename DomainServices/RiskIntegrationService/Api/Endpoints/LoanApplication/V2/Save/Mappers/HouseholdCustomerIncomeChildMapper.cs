@@ -114,9 +114,9 @@ internal sealed class HouseholdCustomerIncomeChildMapper
     private static List<_C4M.IncomeDeduction> getDeductions(_V2.LoanApplicationEmploymentIncomeDeduction? deduction)
         => new List<IncomeDeduction>
         {
-            new IncomeDeduction { Type = IncomeDeductionType.EXECUTION, Amount = deduction?.Execution.ToAmount() },
-            new IncomeDeduction { Type = IncomeDeductionType.INSTALLMENTS, Amount = deduction?.Installments.ToAmount() },
-            new IncomeDeduction { Type = IncomeDeductionType.OTHER, Amount = deduction?.Other.ToAmount() },
+            new IncomeDeduction { Type = IncomeDeductionType.EXECUTION, Amount = (deduction?.Execution).ToAmountDefault() },
+            new IncomeDeduction { Type = IncomeDeductionType.INSTALLMENTS, Amount = (deduction?.Installments).ToAmountDefault() },
+            new IncomeDeduction { Type = IncomeDeductionType.OTHER, Amount = (deduction?.Other).ToAmountDefault() }
         };
 
     private async Task<TResponse?> getProofType<TResponse>(int? proofTypeId) where TResponse : struct

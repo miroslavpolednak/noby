@@ -5,6 +5,9 @@ internal static class AmountExtensions
     public static Amount? ToAmount(this decimal? amount)
         => amount.HasValue ? new Amount { CurrencyCode = "CZK", Value = amount } : null;
 
+    public static Amount ToAmountDefault(this decimal? amount)
+        => amount.HasValue ? amount.ToAmount()! : (0M).ToAmount();
+
     public static Amount ToAmount(this decimal amount)
         => new Amount { CurrencyCode = "CZK", Value = amount };
 

@@ -104,20 +104,19 @@ internal sealed class HouseholdChildMapper
             new() { Amount = (expenses?.Rent ?? 0M).ToAmount(), Category = ExpensesSummaryCategory.RENT },
             new() { Amount = (expenses?.Saving ?? 0).ToAmount(), Category = ExpensesSummaryCategory.SAVINGS },
             new() { Amount = (expenses?.Insurance ?? 0).ToAmount(), Category = ExpensesSummaryCategory.INSURANCE },
-            new() { Amount = (expenses?.Other ?? 0).ToAmount(), Category = ExpensesSummaryCategory.OTHER }
+            new() { Amount = (expenses?.Other ?? 0).ToAmount(), Category = ExpensesSummaryCategory.OTHER },
+            new() { Amount = (0M).ToAmount(), Category = ExpensesSummaryCategory.ALIMONY }
         };
 
     private readonly HouseholdCustomerChildMapper _customerMapper;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly CancellationToken _cancellationToken;
-    private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
 
     public HouseholdChildMapper(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
-        _riskApplicationType = riskApplicationType;
         _cancellationToken = cancellationToken;
         _codebookService = codebookService;
         _customerMapper = new HouseholdCustomerChildMapper(codebookService, riskApplicationType, cancellationToken);
