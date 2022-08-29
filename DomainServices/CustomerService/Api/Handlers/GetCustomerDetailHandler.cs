@@ -2,7 +2,6 @@
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
 using System.Diagnostics;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using NaturalPerson = DomainServices.CustomerService.Contracts.NaturalPerson;
 
 namespace DomainServices.CustomerService.Api.Handlers
@@ -12,20 +11,16 @@ namespace DomainServices.CustomerService.Api.Handlers
         private readonly ILogger<GetCustomerDetailHandler> _logger;
         private readonly CustomerManagement.ICMClient _cm;
         private readonly ICodebookServiceAbstraction _codebooks;
-        private readonly ICustomerManagementClient _customerManagement;
 
-        public GetCustomerDetailHandler(ILogger<GetCustomerDetailHandler> logger, CustomerManagement.ICMClient cm, ICodebookServiceAbstraction codebooks, ICustomerManagementClient customerManagement)
+        public GetCustomerDetailHandler(ILogger<GetCustomerDetailHandler> logger, CustomerManagement.ICMClient cm, ICodebookServiceAbstraction codebooks)
         {
             _logger = logger;
             _cm = cm;
             _codebooks = codebooks;
-            _customerManagement = customerManagement;
         }
 
         public async Task<CustomerResponse> Handle(GetCustomerDetailMediatrRequest request, CancellationToken cancellationToken)
         {
-            return new CustomerResponse();
-
             _logger.LogInformation("Get detail instance ID #{id}", request.Request);
 
             // zavolat CM
