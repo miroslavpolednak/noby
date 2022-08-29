@@ -2,6 +2,7 @@
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
 using System.Diagnostics;
+using NaturalPerson = DomainServices.CustomerService.Contracts.NaturalPerson;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {

@@ -1,4 +1,5 @@
-﻿using DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Api.Dto;
+using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -15,6 +16,9 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
     {
         _mediator = mediator;
     }
+
+    public override Task<ProfileCheckResponse> ProfileCheck(ProfileCheckRequest request, ServerCallContext context)
+        => _mediator.Send(new ProfileCheckMediatrRequest(request), context.CancellationToken);
 
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
         => await _mediator.Send(new SearchCustomersMediatrRequest(request), context.CancellationToken);

@@ -4,6 +4,7 @@ package DomainServices.CustomerService.V1;
 option csharp_namespace = "DomainServices.CustomerService.Contracts.V1";
 
 import "google/protobuf/empty.proto";
+import "ProfileCheck.proto";
 import "Customer.proto";
 import "X.proto";
 
@@ -16,4 +17,6 @@ service CustomerService {
    rpc DeleteContact (DeleteContactRequest) returns (.google.protobuf.Empty);
    rpc UpdateAdress (UpdateAdressRequest) returns (.google.protobuf.Empty);
    rpc UpdateBasicData (UpdateBasicDataRequest) returns (.google.protobuf.Empty);
+
+   rpc ProfileCheck(ProfileCheckRequest) returns (ProfileCheckResponse);
 }
