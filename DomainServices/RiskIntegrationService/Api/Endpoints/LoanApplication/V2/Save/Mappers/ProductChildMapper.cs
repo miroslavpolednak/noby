@@ -104,7 +104,7 @@ internal sealed class ProductChildMapper
             {
                 Id = t.Id,
                 Domain = "CAM",
-                Instance = "MPSS",
+                Instance = "KBCZ",
                 Resource = "Collateral"
             },
             CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
