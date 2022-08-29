@@ -1,4 +1,5 @@
 ﻿
+using DomainServices.CustomerService.Api.Configuration;
 using ExternalServices.Eas;
 using ExternalServices.MpHome;
 using ExternalServices.CustomerManagement;
@@ -26,4 +27,6 @@ internal sealed class AppConfiguration
     /// Konfigurace CustomerManagement sluzby
     /// </summary>
     public CMConfiguration CustomerManagement { get; set; } = new CMConfiguration();
+
+    public CustomerManagementConfiguration CustomerManagement2 { get; set; } = null!;
 }

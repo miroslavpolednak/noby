@@ -4,6 +4,7 @@ using ExternalServices.Eas;
 using ExternalServices.CustomerManagement;
 using FluentValidation;
 using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Api.Clients;
 
 namespace DomainServices.CustomerService.Api;
 
@@ -32,6 +33,8 @@ internal static class StartupExtensions
 
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
+
+        builder.AddCustomerManagementService().AddCustomerProfileService();
 
         // CustomerManagement
         builder.Services.AddExternalServiceCustomerManagement(appConfiguration.CustomerManagement);

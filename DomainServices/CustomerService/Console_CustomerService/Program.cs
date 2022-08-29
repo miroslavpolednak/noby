@@ -1,13 +1,16 @@
 ﻿using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
 using DomainServices.CustomerService.Abstraction;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using System;
 using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;
 using ProtoBuf.Grpc;
 using System.Net.Http;
+using CIS.Core.Security;
+using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
+using DomainServices.CustomerService.Contracts;
 
 Console.WriteLine("run!");
 
@@ -20,6 +23,7 @@ var options = new CallOptions(headers: headers);
 
 var serviceProvider = new ServiceCollection()
     .AddLogging()
+    .AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>()
     .AddSingleton<CIS.Core.Configuration.ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration
     {
         EnvironmentName = "uat",
@@ -28,11 +32,21 @@ var serviceProvider = new ServiceCollection()
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
-    .AddHttpContextAccessor()
-    .AddCustomerService("https://localhost:5052", true)
+    .AddCustomerService("https://localhost:5100")
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction>();
+var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
+
+var test = await service.ProfileCheck(new ProfileCheckRequest
+{
+    Identity = new Identity(123, IdentitySchemes.Kb),
+    CustomerProfileCode = "KYC_SUBJECTS"
+});
+
+//await service.GetCustomerDetail(new CustomerRequest { Identity = new Identity(1231, IdentitySchemes.Kb) });
+
+Console.ReadKey();
+
 //var service = serviceProvider.GetService<DomainServices.CustomerService.Contracts.ICustomerService>();
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
