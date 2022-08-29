@@ -18,8 +18,6 @@ message CustomerOnSA {
     
     int32 CustomerRoleId = 4;
     
-    google.protobuf.BoolValue HasPartner = 5;
-    
     string FirstNameNaturalPerson = 6;
     
     string Name = 7;

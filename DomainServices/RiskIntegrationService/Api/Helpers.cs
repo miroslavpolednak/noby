@@ -15,4 +15,31 @@ internal static class Helpers
 
     public static string GetResourceInstanceFromMandant(int mandantId)
         => mandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS";
+
+    public static TResponse? GetEnumFromString<TResponse>(string? enumValue, TResponse? defaultValue = default(TResponse?)) 
+        where TResponse : struct
+    {
+        if (string.IsNullOrEmpty(enumValue)) return defaultValue;
+
+        if (!Enum.TryParse(typeof(TResponse), enumValue, out object? outValue))
+            throw new CisValidationException(0, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
+        return (TResponse)outValue!;
+    }
+
+    public static TResponse GetRequiredEnumFromString<TResponse>(string enumValue)
+        where TResponse : struct
+    {
+        if (!Enum.TryParse(typeof(TResponse), enumValue, out object? outValue))
+            throw new CisValidationException(0, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
+        return (TResponse)outValue!;
+    }
+
+    public static TResponse? GetEnumFromInt<TResponse>(int? id, TResponse? defaultValue = default(TResponse?))
+        where TResponse : struct
+        => id.HasValue ? GetEnumFromString<TResponse>(id.ToString(), defaultValue) : default(TResponse?);
+
+    public static CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem GetRiskApplicationType(List<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> riskApplicationTypes, int productTypeId)
+        => riskApplicationTypes.FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
+        ?? throw new CisValidationException(0, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 }
+

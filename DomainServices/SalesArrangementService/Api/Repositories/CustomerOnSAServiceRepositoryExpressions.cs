@@ -15,7 +15,6 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             SalesArrangementId = t.SalesArrangementId,
             CustomerRoleId = (int)t.CustomerRoleId,
             LockedIncomeDateTime = t.LockedIncomeDateTime,
-            HasPartner = t.HasPartner
         };
     }
 

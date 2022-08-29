@@ -11,13 +11,21 @@ public class ParametersMortgage
 	public string? ResidencyCurrencyCode { get; set; }
 	
 	/// <example>1</example>
-	public int SignatureTypeId { get; set; }
-	
-	public List<LoanRealEstateDto>? LoanRealEstates { get; set; }
+	public int? ContractSignatureTypeId { get; set; }
+
+    /// <example>1</example>
+    public int? SalesArrangementSignatureTypeId { get; set; }
+
+    public List<LoanRealEstateDto>? LoanRealEstates { get; set; }
 
 	/// <summary>
 	/// Zmocnenec - CustomerOnSAId
 	/// </summary>
 	public int? Agent { get; set; }
+
+    /// <summary>
+    /// Souhlas zmocněnce s elektronickou komunikací
+    /// </summary>
+    public bool? AgentConsentWithElCom { get; set; }
 }
 

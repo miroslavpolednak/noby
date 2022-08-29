@@ -10,6 +10,5 @@ internal class GetCustomerDetailMediatrRequestValidator : AbstractValidator<GetC
             .NotNull()
             .WithMessage("IdentityId must be not empty").WithErrorCode("17000")
             .SetValidator(new IdentityValidator());
-            
     }
 }

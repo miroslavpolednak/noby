@@ -111,7 +111,8 @@ internal class GetCreditWorthinessHandler
 
         var c = new LoanApplicationCounterParty
         {
-            IsPartnerMp = customer.HasPartner
+            // TODO:
+            // IsPartnerMp = customer.HasPartner
         };
 
         // customer instance

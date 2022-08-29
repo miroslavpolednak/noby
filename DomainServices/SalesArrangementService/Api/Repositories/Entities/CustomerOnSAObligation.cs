@@ -29,7 +29,7 @@ internal class CustomerOnSAObligation
 
     public int? ObligationState { get; set; }
 
-    public int? CreditorId { get; set; }
+    public string? CreditorId { get; set; }
 
     public string? CreditorName { get; set; }
 

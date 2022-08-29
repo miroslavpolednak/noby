@@ -33,6 +33,8 @@ internal class CreateHouseholdHandler
             ChildrenOverTenYearsCount = request.Request.Data?.ChildrenOverTenYearsCount,
             ChildrenUpToTenYearsCount = request.Request.Data?.ChildrenUpToTenYearsCount,
             PropertySettlementId = request.Request.Data?.PropertySettlementId,
+            AreBothPartnersDeptors = request.Request.Data?.AreBothPartnersDeptors,
+            AreCustomersPartners = request.Request.Data?.AreCustomersPartners,
             HousingExpenseAmount = request.Request.Expenses?.HousingExpenseAmount,
             SavingExpenseAmount = request.Request.Expenses?.SavingExpenseAmount,
             InsuranceExpenseAmount = request.Request.Expenses?.InsuranceExpenseAmount,

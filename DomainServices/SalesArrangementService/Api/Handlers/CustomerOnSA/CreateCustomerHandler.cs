@@ -21,7 +21,6 @@ internal class CreateCustomerHandler
             DateOfBirthNaturalPerson = request.Request.Customer.DateOfBirthNaturalPerson,
             SalesArrangementId = request.Request.SalesArrangementId,
             CustomerRoleId = (CIS.Foms.Enums.CustomerRoles)request.Request.CustomerRoleId,
-            HasPartner = request.Request.Customer.HasPartner,
             LockedIncomeDateTime = request.Request.Customer.LockedIncomeDateTime,
             Identities = request.Request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };

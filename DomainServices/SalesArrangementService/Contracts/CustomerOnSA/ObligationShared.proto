@@ -6,7 +6,7 @@ import "google/protobuf/wrappers.proto";
 import "NullableGrpcDecimal.proto";
 
 message ObligationCreditor {
-    google.protobuf.Int32Value CreditorId = 1;
+    string CreditorId = 1;
 
     string Name = 2;
 

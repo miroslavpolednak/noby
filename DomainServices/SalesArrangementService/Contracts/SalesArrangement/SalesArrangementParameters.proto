@@ -5,13 +5,16 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "NullableGrpcDate.proto";
 
+
 message SalesArrangementParametersMortgage {
 	cis.types.NullableGrpcDate ExpectedDateOfDrawing = 1;
 	string IncomeCurrencyCode = 2;
 	string ResidencyCurrencyCode = 3;
-	int32 SignatureTypeId = 4;
+	google.protobuf.Int32Value ContractSignatureTypeId = 4;
 	repeated LoanRealEstate LoanRealEstates = 5;
 	google.protobuf.Int32Value Agent = 6;
+	google.protobuf.Int32Value SalesArrangementSignatureTypeId = 7;
+	google.protobuf.BoolValue AgentConsentWithElCom = 8;
 
 	message LoanRealEstate {
 		int32 RealEstateTypeId = 1;
@@ -19,3 +22,4 @@ message SalesArrangementParametersMortgage {
 		int32 RealEstatePurchaseTypeId = 3;
 	}
 }
+

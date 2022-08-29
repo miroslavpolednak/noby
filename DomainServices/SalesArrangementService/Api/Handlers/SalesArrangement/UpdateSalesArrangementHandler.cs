@@ -23,7 +23,6 @@ internal class UpdateSalesArrangementDataHandler
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.Request.RiskBusinessCaseId) && !request.Request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);
 
         entity.ContractNumber = request.Request.ContractNumber;
-        entity.EaCode = request.Request.EaCode;
         entity.RiskBusinessCaseId = request.Request.RiskBusinessCaseId;
         entity.FirstSignedDate = request.Request.FirstSignedDate;
         

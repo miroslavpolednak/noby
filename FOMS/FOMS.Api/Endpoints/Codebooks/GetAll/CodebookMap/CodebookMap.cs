@@ -46,6 +46,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.Developers);
         AddCodebook(s => s.DeveloperProjects);
         AddCodebook(s => s.DrawingDurations);
+        AddCodebook(s => s.DrawingTypes, c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
         AddCodebook(s => s.EducationLevels);
         AddCodebook(s => s.EmploymentTypes);
         AddCodebook(s => s.Fees);
@@ -71,6 +72,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.SalesArrangementStates, c => c.Cast<Codebook.SalesArrangementStates.SalesArrangementStateItem>().Where(t => t.Id > 0));
         AddCodebook(s => s.SalesArrangementTypes);
         AddCodebook(s => s.SignatureTypes, c => c.Cast<Codebook.SignatureTypes.SignatureTypeItem>().Where(t => t.Id > 0));
+        AddCodebook(s => s.StatementTypes);
         AddCodebook(s => s.RealEstateTypes, c => c.Cast<Codebook.RealEstateTypes.RealEstateTypeItem>().Where(t => t.Id > 0));
         AddCodebook(s => s.RealEstatePurchaseTypes);
         AddCodebook(s => s.WorkflowTaskCategories);

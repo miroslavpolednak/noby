@@ -38,6 +38,7 @@ internal static class StartupExtensions
         builder.AddCreditWorthiness();
         builder.AddCustomersExposure();
         builder.AddLoanApplication();
+        builder.AddLoanApplicationAssessment();
 
         // databases
         builder.Services

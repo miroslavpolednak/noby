@@ -80,6 +80,4 @@ public class LoanApplicationProduct
 
     [ProtoMember(26)]
     public int? DeveloperProjectId { get; set; }
-
-    public List<string>? FinancingTypes { get; set; }
 }

@@ -54,7 +54,7 @@ internal static class Extensions
             ).ToList();
     }
 
-    private static CustomerInList FillBaseData(this CustomerInList customer, SearchCustomerResult result)
+    internal static CustomerInList FillBaseData(this CustomerInList customer, SearchCustomerResult result)
     {
         customer.FirstName = result.NaturalPerson?.FirstName;
         customer.LastName = result.NaturalPerson?.LastName;
@@ -67,15 +67,15 @@ internal static class Extensions
         return customer;
     }
 
-    private static CustomerInList FillIdentification(this CustomerInList customer, RepeatedField<Identity>? identities)
+    internal static CustomerInList FillIdentification(this CustomerInList customer, RepeatedField<Identity>? identities)
     {
         if (identities is not null && identities.Any())
         {
             customer.Identity = new CustomerIdentity(identities[0].IdentityId, identities[0].IdentityScheme.ToString());
         }
         return customer;
-    } 
-    
+    }
+
     private static CustomerInList FillAddress(this CustomerInList customer, RepeatedField<DomainServices.CustomerService.Contracts.Address>? result)
     {
         if (result is not null && result.Any())

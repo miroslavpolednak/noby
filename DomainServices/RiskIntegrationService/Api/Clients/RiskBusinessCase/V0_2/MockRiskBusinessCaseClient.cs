@@ -7,13 +7,7 @@ internal sealed class MockRiskBusinessCaseClient
 {
 
     public Task<LoanApplicationCreate> CreateCase(CreateRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new LoanApplicationCreate
-        {
-            RiskBusinessCaseId = new ResourceIdentifier
-            {
-                Id = "new-rbc-id"
-            }
-        });
+        => Task.FromResult(new LoanApplicationCreate());
 
     public Task<Identified> CreateCaseAssessment(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
         => Task.FromResult(new Identified
@@ -40,9 +34,6 @@ internal sealed class MockRiskBusinessCaseClient
                 }
             },
             Timestamp = DateTime.UtcNow,
-            RiskBusinessCaseId = new ResourceIdentifier
-            {
-                Id = riskBusinessCaseId
-            }
+            RiskBusinessCaseId = "RBCID"
         });
 }

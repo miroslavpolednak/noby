@@ -48,6 +48,7 @@ internal static class Extensions
         => new Dto.HouseholdData()
             {
                 AreBothPartnersDeptors = model.AreBothPartnersDeptors,
+                AreCustomersPartners = model.AreCustomersPartners,
                 PropertySettlementId = model.PropertySettlementId,
                 ChildrenOverTenYearsCount = model.ChildrenOverTenYearsCount,
                 ChildrenUpToTenYearsCount = model.ChildrenUpToTenYearsCount

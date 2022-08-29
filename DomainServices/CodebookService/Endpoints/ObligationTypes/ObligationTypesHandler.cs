@@ -20,7 +20,7 @@ public class ObligationTypesHandler
                     Code = i.Code,
                     ObligationCorrectionTypeIds = i.ObligationCorrectionTypeId?.ParseIDs(),
                     IsValid = i.IsValid,
-
+                    Order = i.Order,
                 }).ToList();
             });
         }
@@ -36,7 +36,8 @@ public class ObligationTypesHandler
         public string? ObligationCorrectionTypeId { get; set; }
     }
 
-    const string _sqlQuery = @"SELECT KOD 'Id', CODE 'Code', TEXT 'Name', KOREKCE_ZAVAZKU 'ObligationCorrectionTypeId', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+
+    const string _sqlQuery = @"SELECT KOD 'Id', CODE 'Code', TEXT 'Name', KOREKCE_ZAVAZKU 'ObligationCorrectionTypeId', PORADIE 'Order', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
                                FROM [SBR].CIS_DRUH_ZAVAZKU ORDER BY KOD ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

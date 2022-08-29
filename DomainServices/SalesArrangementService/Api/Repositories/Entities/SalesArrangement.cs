@@ -37,11 +37,9 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     public DateTime? OfferGuaranteeDateTo { get; set; }
 
-    public decimal? LoanToCost { get; set; }
 
     public DateTime? RiskBusinessCaseExpirationDate { get; set; }
 
-    public string? EaCode { get; set; }
 
     public DateTime? FirstSignedDate { get; set; }
 }

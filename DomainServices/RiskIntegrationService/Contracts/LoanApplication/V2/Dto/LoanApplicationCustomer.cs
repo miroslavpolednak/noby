@@ -4,10 +4,10 @@
 public class LoanApplicationCustomer
 {
     [ProtoMember(1)]
-    public int? InternalCustomerId { get; set; }
+    public int InternalCustomerId { get; set; }
 
     [ProtoMember(2)]
-    public string PrimaryCustomerId { get; set; }
+    public string PrimaryCustomerId { get; set; } = null!;
 
     [ProtoMember(3)]
     public bool IsGroupEmployee { get; set; }
@@ -19,7 +19,7 @@ public class LoanApplicationCustomer
     public string? BirthNumber { get; set; }
 
     [ProtoMember(6)]
-    public int? CustomerRoleId { get; set; }
+    public int CustomerRoleId { get; set; }
 
     [ProtoMember(7)]
     public string? Firstname { get; set; }
@@ -71,4 +71,9 @@ public class LoanApplicationCustomer
 
     [ProtoMember(23)]
     public LoanApplicationIncome? Income { get; set; }
+
+    [ProtoMember(24)]
+    public List<LoanApplicationObligation>? Obligations { get; set; }
+
+    public List<LoanApplicationEmploymentIncomeDeduction>? IncomeDeductions { get; set; }
 }

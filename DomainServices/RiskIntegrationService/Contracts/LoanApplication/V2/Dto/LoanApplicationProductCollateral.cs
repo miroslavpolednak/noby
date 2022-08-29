@@ -10,5 +10,5 @@ public class LoanApplicationProductCollateral
     public int? CollateralType { get; set; }
 
     [ProtoMember(3)]
-    public decimal? AppraisedValue { get; set; }
+    public Shared.AmountDetail? AppraisedValue { get; set; }
 }

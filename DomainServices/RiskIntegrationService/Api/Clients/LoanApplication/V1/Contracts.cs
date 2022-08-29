@@ -346,7 +346,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? BirthDate { get; set; }
+        public System.DateTime? BirthDate { get; set; }
 
         /// <summary>
         /// Místo narození.
@@ -511,8 +511,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("highestEducation")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanApplicationCounterPartyHighestEducation? HighestEducation { get; set; }
+        public int? HighestEducation { get; set; }
 
     }
 
@@ -549,7 +548,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? ConsentDate { get; set; }
+        public System.DateTime? ConsentDate { get; set; }
 
         /// <summary>
         /// loanApplicationConsentValue.
@@ -836,7 +835,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? ProofCreatedOn { get; set; }
+        public System.DateTime? ProofCreatedOn { get; set; }
 
         /// <summary>
         /// Je klient ve zkušební době?.
@@ -873,7 +872,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? FirstContractFrom { get; set; }
+        public System.DateTime? FirstContractFrom { get; set; }
 
         /// <summary>
         /// aktuální pracovní smlouva od.
@@ -883,7 +882,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? CurrentContractFrom { get; set; }
+        public System.DateTime? CurrentContractFrom { get; set; }
 
         /// <summary>
         /// aktuální pracovní smlouva do.
@@ -893,7 +892,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? CurrentContractTo { get; set; }
+        public System.DateTime? CurrentContractTo { get; set; }
 
         /// <summary>
         /// Priorita verifikace
@@ -938,7 +937,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("houseNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? HouseNumber { get; set; }
+        public string HouseNumber { get; set; }
 
         /// <summary>
         /// Orientační číslo.
@@ -947,7 +946,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("streetNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? StreetNumber { get; set; }
+        public string StreetNumber { get; set; }
 
         /// <summary>
         /// Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc..
@@ -956,8 +955,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("employerType")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanApplicationEmploymentIncomeEmployerType? EmployerType { get; set; }
+        public int? EmployerType { get; set; }
 
         /// <summary>
         /// povolání.
@@ -966,8 +964,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("profession")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanApplicationEmploymentIncomeProfession? Profession { get; set; }
+        public int? Profession { get; set; }
 
     }
 
@@ -1039,7 +1036,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? EstablishedOn { get; set; }
+        public System.DateTime? EstablishedOn { get; set; }
 
         /// <summary>
         /// Příznak, zdali je příjem domicilován.
@@ -1076,7 +1073,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("houseNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? HouseNumber { get; set; }
+        public string HouseNumber { get; set; }
 
         /// <summary>
         /// orientační číslo.
@@ -1085,7 +1082,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("streetNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? StreetNumber { get; set; }
+        public string StreetNumber { get; set; }
 
         /// <summary>
         /// ulice.
@@ -1121,8 +1118,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("profession")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanApplicationEntrepreneurIncomeProfession? Profession { get; set; }
+        public int? Profession { get; set; }
 
     }
 
@@ -1159,7 +1155,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset LastConfirmedDate { get; set; }
+        public System.DateTime LastConfirmedDate { get; set; }
 
         /// <summary>
         /// Příjmy ze závislé činnosti.
@@ -1285,7 +1281,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? IssuedOn { get; set; }
+        public System.DateTime? IssuedOn { get; set; }
 
         /// <summary>
         /// Datum expirace dokladu
@@ -1295,7 +1291,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? ValidTo { get; set; }
+        public System.DateTime? ValidTo { get; set; }
 
     }
 
@@ -1423,7 +1419,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? InhabitancyFrom { get; set; }
+        public System.DateTime? InhabitancyFrom { get; set; }
 
         /// <summary>
         /// Číslo popisné.
@@ -1432,7 +1428,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("houseNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? HouseNumber { get; set; }
+        public string HouseNumber { get; set; }
 
         /// <summary>
         /// Orientační číslo.
@@ -1441,7 +1437,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("streetNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? StreetNumber { get; set; }
+        public string StreetNumber { get; set; }
 
         /// <summary>
         /// Region.
@@ -1484,7 +1480,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
     }
 
     /// <summary>
-    /// Deklarovane.
+    /// Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal partial class LoanApplicationDeclaredProductRelation
@@ -1650,13 +1646,14 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         public long? Index { get; set; }
 
         /// <summary>
-        /// počet vyživovaných dětí do 10 let (včetně).
+        /// Role Code.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("roleCode")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string RoleCode { get; set; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public LoanApplicationHouseholdRoleCode? RoleCode { get; set; }
 
         /// <summary>
         /// počet vyživovaných dětí do 10 let (včetně).
@@ -1704,16 +1701,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         public System.Collections.Generic.ICollection<LoanInstallmentsSummary> HouseholdInstallmentsSummaryOutHomeCompany { get; set; }
 
         /// <summary>
-        /// Shrnutí splátek mimo domácnosti
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("settlementTypeCode")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string SettlementTypeCode { get; set; }
-
-        /// <summary>
-        /// Shrnutí splátek domácnosti
+        /// Protistrana na žádosti (žadatel, spolužadatel)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("counterParty")]
@@ -1721,6 +1709,15 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<LoanApplicationCounterParty> CounterParty { get; set; } = new System.Collections.ObjectModel.Collection<LoanApplicationCounterParty>();
+
+        /// <summary>
+        /// Shrnutí splátek mimo domácnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("settlementTypeCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string SettlementTypeCode { get; set; }
 
     }
 
@@ -1832,11 +1829,10 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.ComponentModel.DataAnnotations.Required]
         public LoanApplicationProductRelationValue Value { get; set; } = new LoanApplicationProductRelationValue();
 
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationProductRelationCounterparty")]
+        [System.Text.Json.Serialization.JsonPropertyName("counterparty")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<LoanApplicationProductRelationCounterparty> LoanApplicationProductRelationCounterparty { get; set; } = new System.Collections.ObjectModel.Collection<LoanApplicationProductRelationCounterparty>();
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public System.Collections.Generic.ICollection<LoanApplicationProductRelationCounterparty> Counterparty { get; set; }
 
     }
 
@@ -2045,7 +2041,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? DrawingPeriodStart { get; set; }
+        public System.DateTime? DrawingPeriodStart { get; set; }
 
         /// <summary>
         /// termín čerpání obchodu do.
@@ -2055,7 +2051,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? DrawingPeriodEnd { get; set; }
+        public System.DateTime? DrawingPeriodEnd { get; set; }
 
         /// <summary>
         /// datum začátku splácení.
@@ -2065,7 +2061,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? RepaymentPeriodStart { get; set; }
+        public System.DateTime? RepaymentPeriodStart { get; set; }
 
         /// <summary>
         /// konečný den splatnosti.
@@ -2075,7 +2071,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? RepaymentPeriodEnd { get; set; }
+        public System.DateTime? RepaymentPeriodEnd { get; set; }
 
         /// <summary>
         /// vnitrobankovní úroková sazba.
@@ -2164,8 +2160,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("code")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanApplicationPurposeCode? Code { get; set; }
+        public int? Code { get; set; }
 
     }
 
@@ -2219,7 +2214,8 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDataVersion")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LoanApplicationDataVersion { get; set; }
 
         /// <summary>
@@ -2250,20 +2246,18 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         public LoanApplicationProduct LoanApplicationProduct { get; set; }
 
         /// <summary>
-        /// konsolidované/zrušené úvěry 
+        /// Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationProductRelation")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<LoanApplicationProductRelation> LoanApplicationProductRelation { get; set; } = new System.Collections.ObjectModel.Collection<LoanApplicationProductRelation>();
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public System.Collections.Generic.ICollection<LoanApplicationProductRelation> LoanApplicationProductRelation { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDeclaredProductRelation")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<LoanApplicationDeclaredProductRelation> LoanApplicationDeclaredProductRelation { get; set; } = new System.Collections.ObjectModel.Collection<LoanApplicationDeclaredProductRelation>();
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public System.Collections.Generic.ICollection<LoanApplicationDeclaredProductRelation> LoanApplicationDeclaredProductRelation { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDealer")]
 
@@ -2285,7 +2279,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// loan application verze
@@ -2392,30 +2386,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationCounterPartyHighestEducation
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"1")]
-        _1 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"2")]
-        _2 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"3")]
-        _3 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"4")]
-        _4 = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"5")]
-        _5 = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"6")]
-        _6 = 5,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal enum LoanApplicationCounterpartyConsentExternalRegisterType
     {
 
@@ -2458,78 +2428,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationEmploymentIncomeEmployerType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"6")]
-        _6 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"4")]
-        _4 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"1")]
-        _1 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"2")]
-        _2 = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"3")]
-        _3 = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"5")]
-        _5 = 5,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationEmploymentIncomeProfession
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"1")]
-        _1 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"2")]
-        _2 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"3")]
-        _3 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"4")]
-        _4 = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"5")]
-        _5 = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"6")]
-        _6 = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"7")]
-        _7 = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"8")]
-        _8 = 7,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"9")]
-        _9 = 8,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"10")]
-        _10 = 9,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"11")]
-        _11 = 10,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"12")]
-        _12 = 11,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"13")]
-        _13 = 12,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"14")]
-        _14 = 13,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal enum LoanApplicationEntrepreneurIncomeProofType
     {
 
@@ -2559,54 +2457,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Runtime.Serialization.EnumMember(Value = @"XXX")]
         XXX = 8,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationEntrepreneurIncomeProfession
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"1")]
-        _1 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"2")]
-        _2 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"3")]
-        _3 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"4")]
-        _4 = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"5")]
-        _5 = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"6")]
-        _6 = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"7")]
-        _7 = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"8")]
-        _8 = 7,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"9")]
-        _9 = 8,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"10")]
-        _10 = 9,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"11")]
-        _11 = 10,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"12")]
-        _12 = 11,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"13")]
-        _13 = 12,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"14")]
-        _14 = 13,
 
     }
 
@@ -2785,6 +2635,21 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum LoanApplicationHouseholdRoleCode
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"A")]
+        A = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"S")]
+        S = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"R")]
+        R = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal enum LoanInstallmentsSummaryProductClusterCode
     {
 
@@ -2865,120 +2730,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Runtime.Serialization.EnumMember(Value = @"V")]
         V = 8,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum LoanApplicationPurposeCode
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"1")]
-        _1 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"2")]
-        _2 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"3")]
-        _3 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"4")]
-        _4 = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"5")]
-        _5 = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"6")]
-        _6 = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"7")]
-        _7 = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"8")]
-        _8 = 7,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"9")]
-        _9 = 8,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"10")]
-        _10 = 9,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"11")]
-        _11 = 10,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"12")]
-        _12 = 11,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"13")]
-        _13 = 12,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"14")]
-        _14 = 13,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"15")]
-        _15 = 14,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"16")]
-        _16 = 15,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"17")]
-        _17 = 16,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"18")]
-        _18 = 17,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"19")]
-        _19 = 18,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"20")]
-        _20 = 19,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"21")]
-        _21 = 20,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"22")]
-        _22 = 21,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"23")]
-        _23 = 22,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"24")]
-        _24 = 23,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"25")]
-        _25 = 24,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"26")]
-        _26 = 25,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"27")]
-        _27 = 26,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"28")]
-        _28 = 27,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"29")]
-        _29 = 28,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"30")]
-        _30 = 29,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"31")]
-        _31 = 30,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"32")]
-        _32 = 31,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"33")]
-        _33 = 32,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"34")]
-        _34 = 33,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"35")]
-        _35 = 34,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"36")]
-        _36 = 35,
 
     }
 

@@ -25,6 +25,16 @@ internal static class RiskBusinessCaseStartupExtensions
                             .AddC4mPolicyHandler<RiskBusinessCase.V0_2.IRiskBusinessCaseClient>(ServiceName);
                     break;
 
+                case Versions.V1:
+                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
+                        builder.Services.AddScoped<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
+                    else
+                        builder.Services
+                            .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient>(configuration)
+                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName)
+                            .AddC4mPolicyHandler<RiskBusinessCase.V1.IRiskBusinessCaseClient>(ServiceName);
+                    break;
+
                 default:
                     throw new NotImplementedException($"{ServiceName} version {configuration.Version} client not implemented");
             }

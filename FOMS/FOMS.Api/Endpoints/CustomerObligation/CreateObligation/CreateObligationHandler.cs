@@ -19,9 +19,9 @@ internal sealed class CreateObligationHandler
         if (request.Creditor is not null)
             model.Creditor = new DomainServices.SalesArrangementService.Contracts.ObligationCreditor
             {
-                CreditorId = request.Creditor.CreditorId,
+                CreditorId = request.Creditor.CreditorId ?? "",
                 IsExternal = request.Creditor.IsExternal,
-                Name = request.Creditor.Name
+                Name = request.Creditor.Name ?? ""
             };
         if (request.Correction is not null)
             model.Correction = new DomainServices.SalesArrangementService.Contracts.ObligationCorrection
