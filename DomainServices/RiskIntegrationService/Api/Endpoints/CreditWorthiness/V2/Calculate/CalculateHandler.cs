@@ -35,11 +35,14 @@ internal sealed class CalculateHandler
         };
 
         // human user instance
-        var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-        if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
-            requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-        else
-            requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        if (request.UserIdentity is not null)
+        {
+            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
+            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+                requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
+            else
+                requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        }
         
         // volani c4m
         var response = await _client.Calculate(requestModel, cancellation);
