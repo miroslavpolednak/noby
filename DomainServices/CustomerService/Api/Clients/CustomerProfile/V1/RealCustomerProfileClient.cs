@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using CIS.Infrastructure.Logging;
+﻿using CIS.Infrastructure.Logging;
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 
@@ -11,13 +10,13 @@ public class RealCustomerProfileClient : BaseClient, ICustomerProfileClient
     {
     }
 
-    public Task<IServiceCallResult> ValidateProfile(long customerId, string profileCode, string traceId, CancellationToken cancellationToken)
+    public Task<bool> ValidateProfile(long customerId, string profileCode, string traceId, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Run inputs: CustomerProfile ValidateProfile with customerId {customerId} and profileCode {profileCode}", customerId, profileCode);
 
         return CallEndpoint(ValidateCustomerProfile);
 
-        async Task<IServiceCallResult> ValidateCustomerProfile(CustomerProfileWrapper client)
+        async Task<bool> ValidateCustomerProfile(CustomerProfileWrapper client)
         {
             var result = await client.ValidateCustomerProfileAsync(
                 customerId: customerId,
@@ -30,7 +29,7 @@ public class RealCustomerProfileClient : BaseClient, ICustomerProfileClient
 
             _logger.LogSerializedObject("ValidateCustomerProfileResponse", result);
 
-            return new SuccessfulServiceCallResult<bool>(result.ResultCode == ValidateCustomerProfileResponseResultCode.OK);
+            return result.ResultCode == ValidateCustomerProfileResponseResultCode.OK;
         }
     }
 }

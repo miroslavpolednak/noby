@@ -35,9 +35,15 @@ var serviceProvider = new ServiceCollection()
     .AddCustomerService("https://localhost:5100")
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction>();
+var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-await service.GetCustomerDetail(new CustomerRequest { Identity = new Identity(1231, IdentitySchemes.Kb) });
+var test = await service.ProfileCheck(new ProfileCheckRequest
+{
+    Identity = new Identity(123, IdentitySchemes.Kb),
+    CustomerProfileCode = "KYC_SUBJECTS"
+});
+
+//await service.GetCustomerDetail(new CustomerRequest { Identity = new Identity(1231, IdentitySchemes.Kb) });
 
 Console.ReadKey();
 

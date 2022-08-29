@@ -9,8 +9,13 @@ internal class ProfileCheckMediatrRequestValidator : AbstractValidator<ProfileCh
     {
         RuleFor(r => r.Request.Identity)
             .NotNull()
-            .WithMessage("")
+            .WithMessage("Message")
             .WithErrorCode("99999") //TODO: ErrorCode
             .SetValidator(new IdentityValidator());
+
+        RuleFor(r => r.Request.CustomerProfileCode)
+            .NotEmpty()
+            .WithMessage("Message")
+            .WithErrorCode("99999"); //TODO: ErrorCode 
     }
 }

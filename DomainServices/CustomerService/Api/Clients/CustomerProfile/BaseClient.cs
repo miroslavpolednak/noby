@@ -1,6 +1,8 @@
-﻿using CIS.Core.Results;
-using System.ServiceModel;
+﻿using System.ServiceModel;
+using CIS.Core.Exceptions;
 using DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
+using CIS.Infrastructure.gRPC;
+using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile;
 
@@ -15,35 +17,39 @@ public abstract class BaseClient
         _logger = logger;
     }
 
-    protected async Task<IServiceCallResult> CallEndpoint(Func<CustomerProfileWrapper, Task<IServiceCallResult>> func)
+    protected async Task<TResult> CallEndpoint<TResult>(Func<CustomerProfileWrapper, Task<TResult>> func)
     {
         try
         {
             return await func(CreateClientWrapper());
         }
-        catch (InvalidOperationException e)
+        catch (ApiException<Error> ex) when (ex.StatusCode == 404)
         {
-            _logger.LogError(e, e.Message);
-            return new ErrorServiceCallResult(9000, $"CustomerManagement Endpoint '{_httpClient.BaseAddress}' unavailable");
+            _logger.LogError("Customer was not found: {detail}", ex.Result.Detail);
+
+            throw new CisNotFoundException(99999, "Customer not found"); //TODO: ErrorCode
+        }
+        catch (ApiException<Error> ex) when (ex.StatusCode != 500)
+        {
+            _logger.LogError("Incorrect inputs to CustomerManagement: {detail}", ex.Result.Detail);
+
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {ex.Result.Detail}", 99999); //TODO: ErrorCode
         }
         catch (EndpointNotFoundException)
         {
             _logger.LogError("CustomerManagement Endpoint '{uri}' not found", _httpClient.BaseAddress);
-            return new ErrorServiceCallResult(9001, $"CustomerManagement Endpoint '{_httpClient.BaseAddress}' not found");
+
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"CustomerManagement Endpoint '{_httpClient.BaseAddress}' not found", 9001);
         }
-        catch (ApiException<Error> ex)
+        catch (Exception ex) when (ex is InvalidOperationException or ApiException { StatusCode: 500 })
         {
             _logger.LogError(ex, ex.Message);
-            return new SuccessfulServiceCallResult<ApiException<Error>>(ex);
+
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"CustomerManagement Endpoint '{_httpClient.BaseAddress}' unavailable", 9000);
         }
-        catch (ApiException ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
-            return new SuccessfulServiceCallResult<ApiException>(ex);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, e.Message);
             throw;
         }
     }

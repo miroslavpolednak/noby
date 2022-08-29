@@ -2,7 +2,6 @@
 using DomainServices.CustomerService.Api.Dto;
 using DomainServices.CustomerService.Contracts;
 using System.Diagnostics;
-using DomainServices.CustomerService.Api.Extensions;
 
 namespace DomainServices.CustomerService.Api.Handlers;
 
@@ -22,8 +21,7 @@ internal class ProfileCheckHandler : IRequestHandler<ProfileCheckMediatrRequest,
         var result = await _customerProfile.ValidateProfile(input.Identity.IdentityId,
                                                             input.CustomerProfileCode,
                                                             Activity.Current?.TraceId.ToHexString() ?? "",
-                                                            cancellationToken)
-                                           .CheckCustomerProfileResult<bool>();
+                                                            cancellationToken);
 
         return new ProfileCheckResponse
         {
