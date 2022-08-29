@@ -1,8 +1,9 @@
 ﻿using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Dto;
 using FluentValidation;
 namespace DomainServices.CustomerService.Api.Validators;
 
-internal class SearchCustomersMediatrRequestValidator : AbstractValidator<Dto.SearchCustomersMediatrRequest>
+internal class SearchCustomersMediatrRequestValidator : AbstractValidator<SearchCustomersMediatrRequest>
 {
     public SearchCustomersMediatrRequestValidator(ICodebookServiceAbstraction codebooks)
     {

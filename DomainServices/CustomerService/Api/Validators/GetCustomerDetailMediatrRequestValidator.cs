@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using DomainServices.CustomerService.Dto;
+using FluentValidation;
 namespace DomainServices.CustomerService.Api.Validators;
 
-internal class GetCustomerDetailMediatrRequestValidator : AbstractValidator<Dto.GetCustomerDetailMediatrRequest>
+internal class GetCustomerDetailMediatrRequestValidator : AbstractValidator<GetCustomerDetailMediatrRequest>
 {
     public GetCustomerDetailMediatrRequestValidator()
     {

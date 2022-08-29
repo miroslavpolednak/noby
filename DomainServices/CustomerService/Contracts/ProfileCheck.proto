@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Identity.proto";
+
+message ProfileCheckRequest {
+	cis.types.Identity Identity = 1;
+
+	string CustomerProfileCode = 2;
+}
+
+message ProfileCheckResponse {
+	bool IsCompliant = 1;
+}
