@@ -8,14 +8,16 @@ namespace DomainServices.CodebookService.Abstraction;
 public static class CodebookServiceExtensions
 {
     public static IServiceCollection AddCodebookService(this IServiceCollection services)
-        => services.TryAddGrpcClient<Contracts.ICodebookService>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.ICodebookService>("DS:CodebookService")
+        => services
+            .TryAddGrpcClient<Contracts.ICodebookService>(a =>
+                a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.ICodebookService>("DS:CodebookService")
             .registerServices()
         );
 
     public static IServiceCollection AddCodebookService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<Contracts.ICodebookService>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.ICodebookService>(serviceUrl)
+        => services
+            .TryAddGrpcClient<Contracts.ICodebookService>(a =>
+                a.AddGrpcServiceUriSettings<Contracts.ICodebookService>(serviceUrl)
             .registerServices()
         );
 

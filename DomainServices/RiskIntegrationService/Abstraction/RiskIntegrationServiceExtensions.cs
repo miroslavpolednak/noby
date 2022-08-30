@@ -2,35 +2,50 @@
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
+using _Abstraction = DomainServices.RiskIntegrationService.Abstraction;
+using _Contracts = DomainServices.RiskIntegrationService.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Abstraction;
 
 public static class RiskIntegrationServiceExtensions
 {
     public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services)
-        => services.TryAddGrpcClient<CreditWorthiness.V2.ICreditWorthinessService>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.IGrpcSettingsMarker>("DS:RiskIntegrationService")
+        => services
+            .TryAddGrpcClient<_Contracts.CreditWorthiness.V2.ICreditWorthinessService>(a =>
+                a.AddGrpcServiceUriSettingsFromServiceDiscovery<_Contracts.IGrpcSettingsMarker>("DS:RiskIntegrationService")
             .registerServices()
         );
 
     public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<CreditWorthiness.V2.ICreditWorthinessService>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.IGrpcSettingsMarker>(serviceUrl)
+        => services
+            .TryAddGrpcClient<_Contracts.CreditWorthiness.V2.ICreditWorthinessService>(a =>
+                a.AddGrpcServiceUriSettings<_Contracts.IGrpcSettingsMarker>(serviceUrl)
             .registerServices()
         );
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        // register storage services
-        services.AddTransient<CreditWorthiness.V2.ICreditWorthinessService, Services.CreditWorthiness.V2.CreditWorthinessService>();
-
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
 
-        services
-            .AddCodeFirstGrpcClient<CreditWorthiness.V2.ICreditWorthinessService>((provider, options) =>
+        services.register<_Contracts.CreditWorthiness.V2.ICreditWorthinessService, _Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction, Services.CreditWorthiness.V2.CreditWorthinessService>();
+
+        services.register<_Contracts.CustomersExposure.V2.ICustomersExposureService, _Abstraction.CustomersExposure.V2.ICustomersExposureServiceAbstraction, Services.CustomersExposure.V2.CustomersExposureService>();
+
+        services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction, Services.LoanApplication.V2.LoanApplicationService>();
+
+        return services;
+    }
+
+    static void register<IService, IAbstraction, TAbstraction>(this IServiceCollection services)
+        where IService : class
+        where IAbstraction : class
+        where TAbstraction : class
+        => services
+            .AddTransient(typeof(IAbstraction), typeof(TAbstraction))
+            .AddCodeFirstGrpcClient<IService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<Contracts.IGrpcSettingsMarker>>();
+                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<_Contracts.IGrpcSettingsMarker>>();
                 options.Address = serviceUri.Url;
             })
             .CisConfigureChannel()
@@ -38,7 +53,4 @@ public static class RiskIntegrationServiceExtensions
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()
             .AddCisCallCredentials();
-
-        return services;
-    }
 }

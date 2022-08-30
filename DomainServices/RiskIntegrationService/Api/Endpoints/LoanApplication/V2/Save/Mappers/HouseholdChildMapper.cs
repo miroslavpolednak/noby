@@ -11,20 +11,19 @@ internal sealed class HouseholdChildMapper
     public async Task<List<_C4M.LoanApplicationHousehold>> MapHouseholds(List<_V2.LoanApplicationHousehold> households, bool verification)
     {
         var householdTypes = await _codebookService.HouseholdTypes(_cancellationToken);
-        var propSettlements = await _codebookService.PropertySettlements(_cancellationToken);
-
+        
         return (await households.SelectAsync(async household =>
         {
             var obligations = household?.Customers?.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!);
 
             return new _C4M.LoanApplicationHousehold
             {
-                Id = household.HouseholdId,
+                Id = household!.HouseholdId,
                 RoleCode = Helpers.GetEnumFromString<LoanApplicationHouseholdRoleCode>(householdTypes.FirstOrDefault(t => t.Id == household.HouseholdTypeId)?.RdmCode),
                 ChildrenUnderAnd10 = household.ChildrenUpToTenYearsCount,
                 ChildrenOver10 = household.ChildrenOverTenYearsCount,
                 HouseholdExpensesSummary = mapExpenses(household.Expenses),
-                SettlementTypeCode = propSettlements.FirstOrDefault(t => t.Id == household.PropertySettlementId)?.Code,
+                SettlementTypeCode = household.PropertySettlementId?.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 CounterParty = household.Customers is null ? null : await _customerMapper.MapCustomers(household.Customers!, verification),
                 HouseholdCreditLiabilitiesSummaryOutHomeCompany = await mapObligations(obligations),
                 HouseholdInstallmentsSummaryOutHomeCompany = await mapInstallments(obligations)
