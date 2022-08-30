@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Results;
+using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 using Microsoft.Extensions.Logging;
 
@@ -24,6 +25,13 @@ namespace DomainServices.CustomerService.Abstraction
             return new SuccessfulServiceCallResult<ProfileCheckResponse>(result);
         }
 
+        public async Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken);
+
+            return new SuccessfulServiceCallResult<CustomerDetailResponse>(result);
+        }
+
         public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
@@ -34,12 +42,6 @@ namespace DomainServices.CustomerService.Abstraction
         {
             var result = await _service.GetCustomerListAsync(request, cancellationToken: cancellationToken);
             return new SuccessfulServiceCallResult<CustomerListResponse>(result);
-        }
-
-        public async Task<IServiceCallResult> GetCustomerDetail(CustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var result = await _service.GetCustomerDetailAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult<CustomerResponse>(result);
         }
 
         public async Task<IServiceCallResult> Create(CreateRequest request, CancellationToken cancellationToken = default(CancellationToken))

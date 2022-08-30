@@ -20,14 +20,19 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
     public override Task<ProfileCheckResponse> ProfileCheck(ProfileCheckRequest request, ServerCallContext context)
         => _mediator.Send(new ProfileCheckMediatrRequest(request), context.CancellationToken);
 
+    public override Task<CustomerDetailResponse> GetCustomerDetail(CustomerDetailRequest request, ServerCallContext context)
+        => _mediator.Send(new GetCustomerDetailMediatrRequest(request), context.CancellationToken);
+
+
+
     public override async Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, ServerCallContext context)
         => await _mediator.Send(new SearchCustomersMediatrRequest(request), context.CancellationToken);
 
     public override async Task<CustomerListResponse> GetCustomerList(CustomerListRequest request, ServerCallContext context)
         => await _mediator.Send(new GetCustomerListMediatrRequest(request), context.CancellationToken);
 
-    public override async Task<CustomerResponse> GetCustomerDetail(CustomerRequest request, ServerCallContext context)
-        => await _mediator.Send(new GetCustomerDetailMediatrRequest(request), context.CancellationToken);
+    //public override async Task<CustomerResponse> GetCustomerDetail(CustomerRequest request, ServerCallContext context)
+    //    => await _mediator.Send(new GetCustomerDetailMediatrRequest(request), context.CancellationToken);
 
     public override async Task<CreateResponse> Create(CreateRequest request, ServerCallContext context)
         => await _mediator.Send(new CreateMediatrRequest(request), context.CancellationToken);

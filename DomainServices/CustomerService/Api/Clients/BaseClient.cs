@@ -1,14 +1,13 @@
 ﻿using System.ServiceModel;
 using CIS.Core.Exceptions;
-using DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 
-namespace DomainServices.CustomerService.Api.Clients.CustomerProfile;
+namespace DomainServices.CustomerService.Api.Clients;
 
-public abstract class BaseClient
+public abstract class BaseClient<TApiException> where TApiException : Exception
 {
-    private readonly HttpClient _httpClient;
+    protected readonly HttpClient _httpClient;
     protected readonly ILogger _logger;
 
     protected BaseClient(HttpClient httpClient, ILogger logger)
@@ -17,23 +16,23 @@ public abstract class BaseClient
         _logger = logger;
     }
 
-    protected async Task<TResult> CallEndpoint<TResult>(Func<CustomerProfileWrapper, Task<TResult>> func)
+    protected async Task<TResult> CallEndpoint<TResult>(Func<Task<TResult>> func)
     {
         try
         {
-            return await func(CreateClientWrapper());
+            return await func();
         }
-        catch (ApiException<Error> ex) when (ex.StatusCode == 404)
+        catch (TApiException ex) when (GetApiExceptionStatusCode(ex) == 404)
         {
-            _logger.LogError("Customer was not found: {detail}", ex.Result.Detail);
+            _logger.LogError("Customer was not found: {detail}", GetApiExceptionDetail(ex));
 
             throw new CisNotFoundException(99999, "Customer not found"); //TODO: ErrorCode
         }
-        catch (ApiException<Error> ex) when (ex.StatusCode != 500)
+        catch (TApiException ex) when (GetApiExceptionStatusCode(ex) != 500)
         {
-            _logger.LogError("Incorrect inputs to CustomerManagement: {detail}", ex.Result.Detail);
+            _logger.LogError("Incorrect inputs to CustomerManagement: {detail}", GetApiExceptionDetail(ex));
 
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {ex.Result.Detail}", 99999); //TODO: ErrorCode
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {GetApiExceptionDetail(ex)}", 99999); //TODO> ErrorCode
         }
         catch (EndpointNotFoundException)
         {
@@ -41,7 +40,7 @@ public abstract class BaseClient
 
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"CustomerManagement Endpoint '{_httpClient.BaseAddress}' not found", 9001);
         }
-        catch (Exception ex) when (ex is InvalidOperationException or ApiException { StatusCode: 500 })
+        catch (Exception ex) when (ex is InvalidOperationException || (ex is TApiException api && GetApiExceptionStatusCode(api) == 500))
         {
             _logger.LogError(ex, ex.Message);
 
@@ -54,5 +53,7 @@ public abstract class BaseClient
         }
     }
 
-    private CustomerProfileWrapper CreateClientWrapper() => new(_httpClient);
+    protected abstract int GetApiExceptionStatusCode(TApiException ex);
+
+    protected abstract object GetApiExceptionDetail(TApiException ex);
 }

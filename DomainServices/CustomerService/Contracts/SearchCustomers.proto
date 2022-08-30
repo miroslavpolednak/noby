@@ -1,0 +1,5 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "Identity.proto";
