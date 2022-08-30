@@ -652,6 +652,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     var insuranceSumRiskLife = Data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
                     var insuranceSumRealEstate = Data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RealEstateInsurance.Sum;
 
+                    var typCerpani = Data.Offer.SimulationInputs.DrawingType.HasValue ? Data.DrawingTypeById.GetValueOrDefault(Data.Offer.SimulationInputs.DrawingType.Value)?.StarbuildId : null;
+
                     data = new
                     {
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
@@ -698,7 +700,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            // SalesArrangement
                         zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),                                         // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId -> Offerinstance.BasicParameters.StatementTypeId
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),                                   // Offerinstance
-                        typ_cerpani = Data.Offer.SimulationInputs.DrawingType.ToJsonString(),
+                        typ_cerpani = typCerpani.ToJsonString(),
                         datum_garance_us = Data.Arrangement.OfferGuaranteeDateFrom.ToJsonString(),
                         garance_us_platnost_do = Data.Offer.BasicParameters.GuaranteeDateTo.ToJsonString(),                                          // Data.Offer.BasicParameters.GuaranteeDateTo
                         fin_kryti_vlastni_zdroje = Data.Offer.BasicParameters.FinancialResourcesOwn.ToJsonString(),                                  // OfferInstance
