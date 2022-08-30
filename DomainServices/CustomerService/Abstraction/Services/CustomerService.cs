@@ -17,6 +17,13 @@ namespace DomainServices.CustomerService.Abstraction
             _logger = logger;
         }
 
+        public async Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.ProfileCheckAsync(request, cancellationToken: cancellationToken);
+
+            return new SuccessfulServiceCallResult<ProfileCheckResponse>(result);
+        }
+
         public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);

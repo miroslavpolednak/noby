@@ -5,29 +5,18 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 internal sealed class MockRiskBusinessCaseClient
     : IRiskBusinessCaseClient
 {
-    public Task<LoanApplicationCreate> CreateCase(CreateRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new LoanApplicationCreate
-        {
-            RiskBusinessCaseId = new ResourceIdentifier
-            {
-                Id = "new-rbc-id"
-            }
-        });
 
-    public Task<Identified> CaseAssessment(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new Identified
-        {
-            
-        });
+    public Task<Contracts.RiskBusinessCase> CreateCase(Create request, CancellationToken cancellationToken)
+        => Task.FromResult(new Contracts.RiskBusinessCase());
 
-    public Task<RiskBusinessCaseCommand> CaseAssessmentAsync(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new RiskBusinessCaseCommand
-        {
-            CommandId = 123456L
-        });
+    public Task<Identified> CreateCaseAssessment(string riskBusinessCaseId, LoanApplicationAssessmentCreate request, CancellationToken cancellationToken)
+        => Task.FromResult(new Identified());
 
-    public Task<LoanApplicationCommit> CaseCommitment(string riskBusinessCaseId, CommitRequest request, CancellationToken cancellationToken)
-        => Task.FromResult(new LoanApplicationCommit
+    public Task<RiskBusinessCaseCommitCommandInstance> CreateCaseAssessmentAsynchronous(string riskBusinessCaseId, RiskBusinessCaseCommitCommand request, CancellationToken cancellationToken)
+        => Task.FromResult(new RiskBusinessCaseCommitCommandInstance());
+
+    public Task<RiskBusinessCaseCommit> CommitCase(string riskBusinessCaseId, RiskBusinessCaseCommitCreate request, CancellationToken cancellationToken)
+        => Task.FromResult(new RiskBusinessCaseCommit
         {
             OperationResult = "vysledek",
             ResultReasons = new List<ResultReason>
@@ -39,10 +28,6 @@ internal sealed class MockRiskBusinessCaseClient
                 }
             },
             Timestamp = DateTime.UtcNow,
-            RiskBusinessCaseId = new ResourceIdentifier
-            {
-                Id = riskBusinessCaseId
-            }
+            RiskBusinessCaseId = "RBCID"
         });
-
 }

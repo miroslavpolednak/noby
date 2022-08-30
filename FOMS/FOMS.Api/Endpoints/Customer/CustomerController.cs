@@ -31,15 +31,14 @@ public class CustomerController : ControllerBase
     /// <remarks>
     /// <i>DS:</i> CustomerService/GetCustomer
     /// </remarks>
-    /// <param name="identityId">ID klienta v danem schematu</param>
-    /// <param name="identityScheme">Schema ve kterem je klient ulozeny - Kb | Mp</param>
     /// <returns>Kompletni detail klienta vraceny z KB CM nebo KonsDb.</returns>
-    [HttpGet("customer/get")]
+    [HttpPost("customer/get")]
+    [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "UC: Identifikace klienta", "UC: Domacnost" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetDetail.GetDetailResponse> GetDetail([FromQuery] long identityId, [FromQuery] CIS.Foms.Enums.IdentitySchemes identityScheme, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDetail.GetDetailRequest(identityId, identityScheme), cancellationToken);
+    public async Task<GetDetail.GetDetailResponse> GetDetail([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDetail.GetDetailRequest(request.Id, request.Scheme), cancellationToken);
 
     /// <summary>
     /// Identifikace klienta
@@ -48,13 +47,29 @@ public class CustomerController : ControllerBase
     /// Slouzi pro idenfifikaci klienta.<br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br/>
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer-on-sa/{customerOnSAId:int}/identify")]
+    [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Modelace Hypoteky", "Klient", "UC: Domacnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task Identify([FromRoute] int customerOnSAId, [FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
+    public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
+
+    /// <summary>
+    /// Identifikace klienta
+    /// </summary>
+    /// <remarks>
+    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>.<br /><br />
+    /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
+    /// </remarks>
+    [HttpPost("customer/identify")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Domacnost" })]
+    [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
     /// Profile check s profilem identifikovaný

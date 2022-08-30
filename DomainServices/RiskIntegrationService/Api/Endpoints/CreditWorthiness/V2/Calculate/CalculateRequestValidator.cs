@@ -71,10 +71,11 @@ internal sealed class CalculateRequestValidator
             })
             .WithErrorCode("Households");
 
-        RuleFor(t => t.UserIdentity)
-            .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .WithErrorCode("UserIdentity")
-            .SetValidator(new IdentityValidator());
+        When(t => t.UserIdentity is not null, () =>
+        {
+            RuleFor(t => t.UserIdentity)
+                .SetValidator(new IdentityValidator())
+                .WithErrorCode("UserIdentity");
+        });
     }
 }

@@ -80,7 +80,6 @@ internal static class OfferApiModuleDtoExtensions
         {
             Amount = resultItem.Amount,
             Date = resultItem.Date,
-            PaymentIndex = resultItem.PaymentIndex,
             PaymentNumber = resultItem.PaymentNumber,
             Type = resultItem.Type,
         };

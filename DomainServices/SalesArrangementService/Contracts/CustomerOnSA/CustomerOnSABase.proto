@@ -17,7 +17,5 @@ message CustomerOnSABase {
     
     cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 4;
 
-    google.protobuf.BoolValue HasPartner = 5;
-
     cis.types.NullableGrpcDateTime LockedIncomeDateTime = 6;
 }

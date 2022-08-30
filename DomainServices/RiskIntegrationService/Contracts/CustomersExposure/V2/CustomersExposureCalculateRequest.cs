@@ -5,7 +5,7 @@ public class CustomersExposureCalculateRequest
     : IRequest<CustomersExposureCalculateResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
-    public long CaseId { get; set; }
+    public long SalesArrangementId { get; set; }
 
     [ProtoMember(2)]
     public string RiskBusinessCaseId { get; set; } = null!;

@@ -11,7 +11,7 @@ internal sealed class CalculateHandler
     {
         var requestModel = new _C4M.LoanApplicationRelatedExposure
         {
-            LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.CaseId!.ToString(CultureInfo.InvariantCulture), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            LoanApplicationId = _C4M.ResourceIdentifier.Create("MPSS", "LA", "LoanApplication", request.SalesArrangementId!.ToString(CultureInfo.InvariantCulture), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             RiskBusinessCaseId = request.RiskBusinessCaseId,
             LoanApplicationDataVersion = request.LoanApplicationDataVersion
         };

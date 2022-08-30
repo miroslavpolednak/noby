@@ -97,4 +97,18 @@ public class OfferController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
+
+    /// <summary>
+    /// Plný splátkový kalendář dle ID simulace.
+    /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
+    /// </remarks>
+    /// <returns>Plný splátkový kalendář simulace.</returns>
+    [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře" })]
+    [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
+    public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
 }

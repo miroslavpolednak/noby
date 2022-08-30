@@ -3,5 +3,9 @@
 [ProtoContract]
 public class LoanApplicationSaveResponse
 {
-    public string? RiskSegment { get; set; }
+    public LoanApplicationRiskSegments RiskSegment { get; set; }
+
+    public string LoanApplicationDataVersion { get; set; } = null!;
+
+    public string LoanApplicationId { get; set; } = null!; 
 }

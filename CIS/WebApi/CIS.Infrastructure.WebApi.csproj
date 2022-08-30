@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

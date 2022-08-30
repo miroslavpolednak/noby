@@ -9,6 +9,7 @@ public static class ServiceLoggerExtensions
     private static readonly Action<ILogger, string, int, double, Exception> _extServiceRetryCall;
     private static readonly Action<ILogger, string, string, object, Exception> _extServiceRequest;
     private static readonly Action<ILogger, string, string, object, Exception> _extServiceResponse;
+    private static readonly Action<ILogger, Exception> _extServiceAuthenticationFailed;
 
     static ServiceLoggerExtensions()
     {
@@ -36,7 +37,15 @@ public static class ServiceLoggerExtensions
             LogLevel.Debug,
             new EventId(EventIdCodes.ExtServiceRequest, nameof(ExtServiceResponse)),
             "{Service} from {Url} responded with {@Response}");
+
+        _extServiceAuthenticationFailed = LoggerMessage.Define(
+            LogLevel.Warning,
+            new EventId(EventIdCodes.ExtServiceAuthenticationFailed, nameof(ExtServiceAuthenticationFailed)),
+            "Authentication failed");
     }
+
+    public static void ExtServiceAuthenticationFailed(this ILogger logger, Exception ex)
+        => _extServiceAuthenticationFailed(logger, ex);
 
     public static void ServiceUnavailable(this ILogger logger, string serviceName, Exception ex)
         => _serviceUnavailable(logger, serviceName, ex);

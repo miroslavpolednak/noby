@@ -1,8 +1,5 @@
 ﻿using CIS.ExternalServicesHelpers;
 using DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase;
-using Polly;
-using Polly.Extensions.Http;
-using System.Net.Http.Headers;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
@@ -12,39 +9,35 @@ internal static class RiskBusinessCaseStartupExtensions
 
     public static WebApplicationBuilder AddRiskBusinessCase(this WebApplicationBuilder builder)
     {
-        var configuration = builder.CreateAndCheckExternalServiceConfiguration<RiskBusinessCase.Configuration.RiskBusinessCaseConfiguration>(ServiceName);
+        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskBusinessCase.Configuration.RiskBusinessCaseConfiguration>(ServiceName);
 
-        switch (configuration.Version)
+        foreach (var configuration in configurations)
         {
-            case Versions.V1:
-                if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                    builder.Services.AddScoped<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
-                else
-                    builder.Services
-                        .AddHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient>((services, client) =>
-                        {
-                            // service url
-                            client.BaseAddress = new Uri(configuration.ServiceUrl);
+            switch (configuration.Version)
+            {
+                case Versions.V0_2:
+                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
+                        builder.Services.AddScoped<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.MockRiskBusinessCaseClient>();
+                    else
+                        builder.Services
+                            .AddC4mHttpClient<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(configuration)
+                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(ServiceName)
+                            .AddC4mPolicyHandler<RiskBusinessCase.V0_2.IRiskBusinessCaseClient>(ServiceName);
+                    break;
 
-                            // auth
-                            var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}"));
-                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-                        })
-                        .AddPolicyHandler((services, request) => HttpPolicyExtensions
-                            .HandleTransientHttpError()
-                            .WaitAndRetryAsync(new[]
-                            {
-                                TimeSpan.FromSeconds(1)
-                            },
-                            onRetry: (outcome, timespan, retryAttempt, context) =>
-                            {
-                                services.GetService<ILogger<RiskBusinessCase.V1.IRiskBusinessCaseClient>>()?.ExtServiceRetryCall(ServiceName, retryAttempt, timespan.TotalMilliseconds);
-                            }
-                            ));
-                break;
+                case Versions.V1:
+                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
+                        builder.Services.AddScoped<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
+                    else
+                        builder.Services
+                            .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient>(configuration)
+                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName)
+                            .AddC4mPolicyHandler<RiskBusinessCase.V1.IRiskBusinessCaseClient>(ServiceName);
+                    break;
 
-            default:
-                throw new NotImplementedException($"{ServiceName} version {configuration.Version} client not implemented");
+                default:
+                    throw new NotImplementedException($"{ServiceName} version {configuration.Version} client not implemented");
+            }
         }
 
         return builder;

@@ -5,7 +5,7 @@ public class ObligationCreditorDto
     /// <summary>
     /// Id věřitele z číselníku bank <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCode (CIS_KODY_BANK)</a>
     /// </summary>
-    public int? CreditorId { get; set; }
+    public string? CreditorId { get; set; }
 
     /// <summary>
     /// Jméno věřitele z číselníku bank <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCode (CIS_KODY_BANK)</a> nebo jméno věřitele zadané uživatelem

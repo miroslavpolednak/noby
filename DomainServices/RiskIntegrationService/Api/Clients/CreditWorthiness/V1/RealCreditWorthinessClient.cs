@@ -8,10 +8,10 @@ internal sealed class RealCreditWorthinessClient
     public async Task<CreditWorthinessCalculation> Calculate(CreditWorthinessCalculationArguments request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-                    .PutAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, cancellationToken)
+                    .PutAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
                     .ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(cancellationToken: cancellationToken)
+        var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(CreditWorthinessCalculation));
 
         return result;

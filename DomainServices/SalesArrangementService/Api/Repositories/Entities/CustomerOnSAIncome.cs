@@ -21,6 +21,8 @@ internal class CustomerOnSAIncome
     
     public string? IncomeSource { get; set; }
 
+    public bool? ProofOfIncomeToggle { get; set; }
+
     public string? Data { get; set; }
     
     public byte[]? DataBin { get; set; }

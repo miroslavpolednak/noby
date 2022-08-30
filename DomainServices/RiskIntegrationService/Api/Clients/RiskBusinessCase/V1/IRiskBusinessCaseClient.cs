@@ -7,20 +7,20 @@ internal interface IRiskBusinessCaseClient
     /// <summary>
     /// Vytvoření nového Risk Business Case
     /// </summary>
-    Task<LoanApplicationCreate> CreateCase(CreateRequest request, CancellationToken cancellationToken);
+    Task<Contracts.RiskBusinessCase> CreateCase(Create request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Vyhodnocení úvěrové žádosti
     /// </summary>
-    Task<Identified> CaseAssessment(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken);
+    Task<Identified> CreateCaseAssessment(string riskBusinessCaseId, LoanApplicationAssessmentCreate request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Vyhodnocení úvěrové žádosti - asynchronní
     /// </summary>
-    Task<RiskBusinessCaseCommand> CaseAssessmentAsync(string riskBusinessCaseId, AssessmentRequest request, CancellationToken cancellationToken);
+    Task<RiskBusinessCaseCommitCommandInstance> CreateCaseAssessmentAsynchronous(string riskBusinessCaseId, RiskBusinessCaseCommitCommand request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Dokončení úvěrové žádosti
     /// </summary>
-    Task<LoanApplicationCommit> CaseCommitment(string riskBusinessCaseId, CommitRequest request, CancellationToken cancellationToken);
+    Task<RiskBusinessCaseCommit> CommitCase(string riskBusinessCaseId, RiskBusinessCaseCommitCreate request, CancellationToken cancellationToken);
 }

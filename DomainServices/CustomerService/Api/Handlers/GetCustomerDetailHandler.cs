@@ -2,6 +2,7 @@
 using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Dto;
 using System.Diagnostics;
+using NaturalPerson = DomainServices.CustomerService.Contracts.NaturalPerson;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {
@@ -58,7 +59,7 @@ namespace DomainServices.CustomerService.Api.Handlers
                 BirthCountryId = countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
                 MaritalStatusStateId = maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
                 DegreeBeforeId = titles.FirstOrDefault(t => String.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
-                EducationLevelId = educations.FirstOrDefault(t => t.RDMCode.Equals(cmResponse.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
+                EducationLevelId = educations.FirstOrDefault(t => t.RdmCode.Equals(cmResponse.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
                 IsPoliticallyExposed = cmResponse.IsPoliticallyExposed
             };
 

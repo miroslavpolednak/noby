@@ -9,10 +9,10 @@ internal sealed class RealCustomersExposureClient
     public async Task<LoanApplicationRelatedExposureResult> Calculate(LoanApplicationRelatedExposure request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-            .PutAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
             .ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<LoanApplicationRelatedExposureResult>(_jsonOptions, cancellationToken)
+        var result = await response.Content.ReadFromJsonAsync<LoanApplicationRelatedExposureResult>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
             ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(LoanApplicationRelatedExposureResult));
 
         return result;
@@ -20,18 +20,9 @@ internal sealed class RealCustomersExposureClient
 
     private readonly HttpClient _httpClient;
     const string _calculateUrl = "/loan-application-exposure-calculation";
-    private static System.Text.Json.JsonSerializerOptions _jsonOptions = new()
-    {
-        NumberHandling = JsonNumberHandling.AllowReadingFromString //TODO odstranit az c4m opravi format cisel
-    };
 
     public RealCustomersExposureClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
-    }
-
-    static RealCustomersExposureClient()
-    {
-        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse()); //TODO odstranit az c4m opravi format cisel
     }
 }

@@ -29,6 +29,13 @@ internal class CreateHouseholdHandler
             Customer = new CustomerOnSABase()
         }, cancellationToken));
 
+        // vlozit customera na household
+        await _householdService.UpdateHousehold(new UpdateHouseholdRequest
+        {
+            HouseholdId = householdId,
+            CustomerOnSAId1 = customerResponse.CustomerOnSAId
+        }, cancellationToken);
+
         return new Dto.HouseholdInList
         {
             HouseholdId = householdId,

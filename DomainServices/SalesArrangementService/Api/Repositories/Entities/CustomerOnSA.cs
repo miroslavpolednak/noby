@@ -13,8 +13,6 @@ internal class CustomerOnSA
     public int SalesArrangementId { get; set; }
     
     public CIS.Foms.Enums.CustomerRoles CustomerRoleId { get; set; }
-    
-    public bool? HasPartner { get; set; }
 
     public string? FirstNameNaturalPerson { get; set; } = null!;
     

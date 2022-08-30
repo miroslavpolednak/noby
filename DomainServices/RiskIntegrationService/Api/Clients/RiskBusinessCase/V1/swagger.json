@@ -1,13 +1,25 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.0.2",
-    "title": "RiskBusinessCase"
+    "title": "RiskBusinessCase",
+    "version": "1"
   },
-  "basePath": "/laa-risk-business-case-service-0.2.0/api",
+  "basePath": "/laa-risk-business-case-service-1.0.0/api",
   "tags": [
     {
+      "name": "RiskBusinessCaseAssessment - async"
+    },
+    {
+      "name": "RiskBusinessCaseAssessment"
+    },
+    {
       "name": "RiskBusinessCase - async"
+    },
+    {
+      "name": "RiskBusinessCaseCommit - async"
+    },
+    {
+      "name": "RiskBusinessCaseCommit"
     },
     {
       "name": "RiskBusinessCase"
@@ -18,68 +30,29 @@
     "https"
   ],
   "paths": {
-    "/assessment/command/{id}": {
-      "get": {
-        "tags": [
-          "RiskBusinessCase - async"
-        ],
-        "summary": "Zjištění stavu vyhodnocení",
-        "description": "",
-        "operationId": "assessmentResult",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "commandId",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/RiskBusinessCaseCommandState"
-            }
-          }
-        }
-      }
-    },
-    "/assessment/command?riskBusinessCaseId={id}": {
+    "/risk-business-case/{riskBusinessCaseId}/command/assessment": {
       "post": {
         "tags": [
-          "RiskBusinessCase - async"
+          "RiskBusinessCaseAssessment - async"
         ],
-        "summary": "Vyhodnocení úvěrové žádosti - asynchronní",
-        "description": "",
-        "operationId": "assessmentCreate",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "summary": "doCreateAssessment",
+        "description": "Vyhodnocení úvěrové žádosti - asynchronní",
+        "operationId": "doCreateAssessment_1",
         "parameters": [
           {
-            "name": "id",
+            "name": "riskBusinessCaseId",
             "in": "path",
-            "description": "riskBusinessCaseId",
+            "description": "ID dané úvěrové žádosti.",
             "required": true,
             "type": "string"
           },
           {
             "in": "body",
             "name": "body",
+            "description": "command",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AssessmentRequest"
+              "$ref": "#/definitions/CreateAssessmentCommand"
             }
           }
         ],
@@ -87,52 +60,55 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/RiskBusinessCaseCommand"
+              "$ref": "#/definitions/CreateAssessmentCommandInstance"
             }
           }
         }
       }
     },
-    "/riskBusinessCase": {
-      "post": {
+    "/risk-business-case/{riskBusinessCaseId}/assessment/{assessmentId}": {
+      "get": {
         "tags": [
-          "RiskBusinessCase"
+          "RiskBusinessCaseAssessment"
         ],
-        "summary": "Vytvoření nového Risk Business Case",
+        "summary": "Získání Risk Business Case",
         "description": "",
-        "operationId": "createBusinessCase_1",
+        "operationId": "get_1",
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "body",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/CreateRequest"
-            }
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "assessmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/LoanApplicationCreate"
+              "$ref": "#/definitions/Identified"
             }
           }
         }
       }
     },
-    "/riskBusinessCase/{id}/assessment": {
+    "/risk-business-case/{riskBusinessCaseId}/assessment": {
       "post": {
         "tags": [
-          "RiskBusinessCase"
+          "RiskBusinessCaseAssessment"
         ],
         "summary": "Vyhodnocení úvěrové žádosti",
         "description": "",
-        "operationId": "getAssessment_1",
+        "operationId": "create_1",
         "parameters": [
           {
-            "name": "id",
+            "name": "riskBusinessCaseId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -143,7 +119,7 @@
             "description": "body",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/AssessmentRequest"
+              "$ref": "#/definitions/LoanApplicationAssessmentCreate"
             }
           }
         ],
@@ -157,17 +133,189 @@
         }
       }
     },
-    "/riskBusinessCase/{id}/commitment": {
-      "put": {
+    "/risk-business-case/{riskBusinessCaseId}/command/{commandId}": {
+      "get": {
         "tags": [
-          "RiskBusinessCase"
+          "RiskBusinessCase - async"
+        ],
+        "summary": "doGet",
+        "description": "Zjištění stavu commandu - asynchronní",
+        "operationId": "getCommand_1",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commandId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RiskBusinessCaseCommandFilter"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CommandInstance"
+            }
+          }
+        }
+      }
+    },
+    "/risk-business-case/command/create": {
+      "post": {
+        "tags": [
+          "RiskBusinessCase - async"
+        ],
+        "summary": "doCreateRiskBusinessCase",
+        "description": "Vytvoření nového Risk Business Case - asynchronní",
+        "operationId": "doCreateRiskBusinessCase_1",
+        "parameters": [
+          {
+            "name": "loanApplicationId",
+            "in": "query",
+            "description": "ID dané úvěrové žádosti.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceProcessId",
+            "in": "query",
+            "description": "ID business procesu v rámci kterého Risk Business Case vzniká.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "itChannel",
+            "in": "query",
+            "description": "Typ zdrojové aplikace (např. NOBY)",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "NOBY",
+              "STARBUILD",
+              "DCS",
+              "PF",
+              "PFO",
+              "AON"
+            ]
+          },
+          {
+            "name": "assessment",
+            "in": "query",
+            "description": "Create assessment flag",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "versionId",
+            "in": "query",
+            "description": "Form entity version id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "command",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRiskBusinessCaseCommand"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateRiskBusinessCaseCommandInstance"
+            }
+          }
+        }
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/command/commit": {
+      "post": {
+        "tags": [
+          "RiskBusinessCaseCommit - async"
+        ],
+        "summary": "doRiskBusinessCaseCommit",
+        "description": "Dokončení úvěrové žádosti - asynchronní",
+        "operationId": "doRiskBusinessCaseCommit_1",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "description": "Risk business case resource identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "command",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RiskBusinessCaseCommitCommand"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RiskBusinessCaseCommitCommandInstance"
+            }
+          }
+        }
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}/commitment": {
+      "get": {
+        "tags": [
+          "RiskBusinessCaseCommit"
+        ],
+        "operationId": "get_2",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {},
+            "schema": {
+              "$ref": "#/definitions/RiskBusinessCaseCommit"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "RiskBusinessCaseCommit"
         ],
         "summary": "Dokončení úvěrové žádosti",
         "description": "",
-        "operationId": "businessCommit_1",
+        "operationId": "create_2",
         "parameters": [
           {
-            "name": "id",
+            "name": "riskBusinessCaseId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -178,7 +326,7 @@
             "description": "body",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/CommitRequest"
+              "$ref": "#/definitions/RiskBusinessCaseCommitCreate"
             }
           }
         ],
@@ -186,7 +334,76 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/LoanApplicationCommit"
+              "$ref": "#/definitions/RiskBusinessCaseCommit"
+            }
+          }
+        }
+      }
+    },
+    "/risk-business-case/{riskBusinessCaseId}": {
+      "get": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "summary": "Získání Risk Business Case",
+        "description": "",
+        "operationId": "get_3",
+        "parameters": [
+          {
+            "name": "riskBusinessCaseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "vrácený objekt RiskBusinessCase je možné rozšířit o tyto položky",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "assessment"
+              ]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RiskBusinessCase"
+            }
+          }
+        }
+      }
+    },
+    "/risk-business-case": {
+      "post": {
+        "tags": [
+          "RiskBusinessCase"
+        ],
+        "summary": "Vytvoření nového Risk Business Case",
+        "description": "",
+        "operationId": "create_3",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RiskBusinessCase"
             }
           }
         }
@@ -194,166 +411,124 @@
     }
   },
   "definitions": {
-    "RiskBusinessCaseCommandState": {
-      "type": "object",
-      "required": [
-        "commandId",
-        "loanApplicationAssessmentId",
-        "stateCode"
-      ],
-      "properties": {
-        "commandId": {
-          "type": "integer",
-          "format": "int64",
-          "description": "ID založeného požadavku "
-        },
-        "stateCode": {
-          "type": "string",
-          "description": "stateCode "
-        },
-        "loanApplicationAssessmentId": {
-          "type": "integer",
-          "format": "int64",
-          "description": "loanApplicationAssessmentId"
-        }
-      }
-    },
-    "RiskBusinessCaseCommand": {
-      "type": "object",
-      "required": [
-        "commandId"
-      ],
-      "properties": {
-        "commandId": {
-          "type": "integer",
-          "format": "int64",
-          "description": "ID založeného požadavku "
-        }
-      }
-    },
-    "AssessmentRequest": {
-      "type": "object",
-      "required": [
-        "assessmentMode",
-        "grantingProcedureCode",
-        "itChannel",
-        "itChannelPrevious",
-        "loanApplicationDataVersion",
-        "loanApplicationId",
-        "selfApprovalRequired",
-        "systemApprovalRequired"
-      ],
-      "properties": {
-        "loanApplicationId": {
-          "description": "ID dané úvěrové žádosti.",
-          "$ref": "#/definitions/ResourceIdentifier"
-        },
-        "loanApplicationDataVersion": {
-          "type": "string",
-          "description": "Identifikace verze dat žádosti, která jsou uložena v Loan Application."
-        },
-        "itChannel": {
-          "type": "string",
-          "description": "IT Channel.",
-          "enum": [
-            "NOBY",
-            "STARBUILD",
-            "DCS",
-            "PF",
-            "PFO",
-            "AON"
-          ]
-        },
-        "itChannelPrevious": {
-          "type": "string",
-          "description": "Poslední místo/kanál, kde byla žádost zpracována před předáním do továrny.",
-          "enum": [
-            "NOBY",
-            "STARBUILD",
-            "DCS",
-            "PF",
-            "PFO",
-            "AON"
-          ]
-        },
-        "assessmentMode": {
-          "type": "string",
-          "description": "Mód vyhodnocení daného případu.",
-          "enum": [
-            "PS",
-            "SC",
-            "FI"
-          ]
-        },
-        "grantingProcedureCode": {
-          "type": "string",
-          "description": "Poskytovací procedura.",
-          "enum": [
-            "CPG",
-            "SC",
-            "EMP",
-            "NCR",
-            "NSR",
-            "QLC",
-            "SEL",
-            "STD",
-            "STU",
-            "XM",
-            "XT"
-          ]
-        },
-        "selfApprovalRequired": {
-          "type": "boolean",
-          "description": "Příznak, zdali je požadováno samoschválení."
-        },
-        "systemApprovalRequired": {
-          "type": "boolean",
-          "description": "Příznak, zdali je požadováno automatické schválení (systémem)."
-        },
-        "riskCampaignCode": {
-          "type": "string",
-          "description": "kód risk kampaně."
-        },
-        "loanApplicationException": {
-          "type": "array",
-          "description": "Parametry metodické vyjímky.",
-          "items": {
-            "$ref": "#/definitions/LoanApplicationException"
-          }
-        },
-        "exceptionHighestApprovalLevel": {
-          "type": "string",
-          "description": "Kód nejvyšší schvalovací úrovně, která schválila danou metodickou výjimku."
-        },
-        "expand": {
-          "type": "array",
-          "description": "Vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky",
-          "items": {
-            "type": "string",
-            "enum": [
-              "assessmentDetail",
-              "householdAssessmentDetail",
-              "counterpartyAssessmentDetail",
-              "loanApplicationApprovalPossibilities",
-              "collateralRiskCharacteristics"
-            ]
-          }
-        }
-      }
-    },
-    "LoanApplicationException": {
+    "Command": {
       "type": "object",
       "properties": {
-        "arm": {
-          "type": "string",
-          "description": "Arm."
-        },
-        "reasonCode": {
-          "type": "string",
-          "description": "ReasonCode."
+        "identifier": {
+          "description": "Identifier of type of the command",
+          "$ref": "#/definitions/CommandIdentifier"
         }
       },
-      "description": "LoanApplicationException"
+      "description": "A command abstraction"
+    },
+    "CommandCommandIdentifiers": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "description": "Identifier of type of the command",
+          "enum": [
+            "CREATE_ASSESSMENT",
+            "CREATE_BUSINESS_CASE",
+            "COMMIT_BUSINESS_CASE",
+            "GET_ASSESSMENT"
+          ]
+        }
+      },
+      "description": "A command abstraction"
+    },
+    "CommandIdentifier": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID"
+        }
+      },
+      "description": "A command identification"
+    },
+    "CreateAssessmentCommandInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "command": {
+          "description": "command",
+          "$ref": "#/definitions/CommandCommandIdentifiers"
+        },
+        "result": {
+          "description": "Result",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "status": {
+          "description": "Command Status",
+          "$ref": "#/definitions/DefaultCommandStates"
+        }
+      },
+      "description": "The CreateAssessment command instance"
+    },
+    "DefaultCommandStates": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "A code of an object",
+          "enum": [
+            "CREATED",
+            "PROCESSING",
+            "SUCCEEDED",
+            "FAILED"
+          ]
+        },
+        "completionType": {
+          "type": "string",
+          "enum": [
+            "INCOMPLETE",
+            "COMPLETED"
+          ]
+        },
+        "reason": {
+          "$ref": "#/definitions/Reason"
+        }
+      },
+      "description": "DefaultCommandStates command status enumeration"
+    },
+    "Reason": {
+      "type": "object",
+      "required": [
+        "code",
+        "level"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Code of the reason / symptom"
+        },
+        "level": {
+          "type": "string",
+          "description": "Level",
+          "enum": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ]
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Weight"
+        },
+        "parameters": {
+          "type": "object",
+          "description": "Parameters",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Reason"
     },
     "ResourceIdentifier": {
       "type": "object",
@@ -397,43 +572,48 @@
       },
       "description": "ResourceIdentifier"
     },
-    "LoanApplicationCreate": {
+    "CreateAssessmentCommand": {
       "type": "object",
       "required": [
-        "riskBusinessCaseId"
+        "identifier"
       ],
       "properties": {
-        "riskBusinessCaseId": {
-          "xml": {
-            "name": "ID_BUSINESS_CASE"
-          },
-          "description": "identifikátor obchodního případu v C4M.",
-          "$ref": "#/definitions/ResourceIdentifier"
+        "identifier": {
+          "type": "string",
+          "description": "Identifier of type of the command",
+          "enum": [
+            "CREATE_ASSESSMENT",
+            "CREATE_BUSINESS_CASE",
+            "COMMIT_BUSINESS_CASE",
+            "GET_ASSESSMENT"
+          ]
+        },
+        "loanApplicationAssessmentCreate": {
+          "$ref": "#/definitions/LoanApplicationAssessmentCreate"
         }
       },
-      "xml": {
-        "name": "RESPONSE",
-        "namespace": "cz:kb:c4m:pgs:applicationrating:createbusinesscase:response"
-      }
+      "description": "The CreateAssessment command"
     },
-    "CreateRequest": {
+    "LoanApplicationAssessmentCreate": {
       "type": "object",
       "required": [
+        "assessmentMode",
+        "grantingProcedureCode",
         "itChannel",
-        "loanApplicationId"
+        "loanApplicationDataVersion",
+        "loanApplicationId",
+        "selfApprovalRequired",
+        "systemApprovalRequired"
       ],
       "properties": {
         "loanApplicationId": {
-          "description": "ID dané úvěrové žádosti.",
           "$ref": "#/definitions/ResourceIdentifier"
         },
-        "resourceProcessId": {
-          "description": "ID business procesu v rámci kterého Risk Business Case vzniká.",
-          "$ref": "#/definitions/ResourceIdentifier"
+        "loanApplicationDataVersion": {
+          "type": "string"
         },
         "itChannel": {
           "type": "string",
-          "description": "Typ zdrojové aplikace (např. NOBY)",
           "enum": [
             "NOBY",
             "STARBUILD",
@@ -442,12 +622,89 @@
             "PFO",
             "AON"
           ]
+        },
+        "itChannelPrevious": {
+          "type": "string",
+          "enum": [
+            "NOBY",
+            "STARBUILD",
+            "DCS",
+            "PF",
+            "PFO",
+            "AON"
+          ]
+        },
+        "assessmentMode": {
+          "type": "string",
+          "enum": [
+            "PS",
+            "SC",
+            "FI"
+          ]
+        },
+        "grantingProcedureCode": {
+          "type": "string",
+          "enum": [
+            "CPG",
+            "SC",
+            "EMP",
+            "NCR",
+            "NSR",
+            "QLC",
+            "SEL",
+            "STD",
+            "STU",
+            "XM",
+            "XT"
+          ]
+        },
+        "selfApprovalRequired": {
+          "type": "boolean"
+        },
+        "systemApprovalRequired": {
+          "type": "boolean"
+        },
+        "riskCampaignCode": {
+          "type": "string"
+        },
+        "loanApplicationException": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationException"
+          }
+        },
+        "exceptionHighestApprovalLevel": {
+          "type": "string"
+        },
+        "expand": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "assessmentDetail",
+              "householdAssessmentDetail",
+              "counterpartyAssessmentDetail",
+              "loanApplicationApprovalPossibilities",
+              "collateralRiskCharacteristics"
+            ]
+          }
         }
       },
-      "xml": {
-        "name": "REQUEST",
-        "namespace": "cz:kb:c4m:pgs:applicationrating:createbusinesscase"
-      }
+      "description": "LoanApplicationAssessmentCreate"
+    },
+    "LoanApplicationException": {
+      "type": "object",
+      "properties": {
+        "arm": {
+          "type": "string",
+          "description": "Arm"
+        },
+        "reasonCode": {
+          "type": "string",
+          "description": "Reason Code"
+        }
+      },
+      "description": "LoanApplicationException"
     },
     "Amount": {
       "type": "object",
@@ -457,6 +714,7 @@
       "properties": {
         "value": {
           "type": "number",
+          "format": "decimal",
           "description": "Hodnota částky"
         },
         "currencyCode": {
@@ -529,24 +787,29 @@
       "type": "object",
       "properties": {
         "ltv": {
-          "type": "integer",
-          "format": "int64",
+          "type": "number",
+          "format": "decimal",
           "description": "Ltv"
         },
         "ltfv": {
-          "type": "integer",
-          "format": "int64",
+          "type": "number",
+          "format": "decimal",
           "description": "Ltfv"
         },
         "ltp": {
-          "type": "integer",
-          "format": "int64",
+          "type": "number",
+          "format": "decimal",
           "description": "Ltp"
         },
         "sumAppraisedValue": {
           "type": "integer",
           "format": "int64",
           "description": "SumAppraisedValue"
+        },
+        "totalCollUsedValue": {
+          "type": "integer",
+          "format": "int64",
+          "description": "TotalCollUsedValue"
         }
       },
       "description": "CollateralRiskCharacteristics"
@@ -565,8 +828,8 @@
           "description": "Counterparty id"
         },
         "customerId": {
-          "description": "Customer id",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string",
+          "description": "Customer id"
         },
         "assessmentDetail": {
           "description": "Assessment Detail",
@@ -608,16 +871,17 @@
           "description": "ID"
         },
         "loanApplicationId": {
-          "description": "LoanApplication resource-identifier",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string",
+          "description": "LoanApplication resource-identifier"
         },
         "riskBusinesscaseId": {
-          "description": "Risk BusinessCase resource-identifier",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string",
+          "description": "Risk BusinessCase ID"
         },
         "riskBusinesscaseExpirationDate": {
           "type": "string",
-          "format": "date"
+          "format": "date-time",
+          "description": "riskBusinesscaseExpirationDate"
         },
         "assessmentResult": {
           "type": "integer",
@@ -625,7 +889,8 @@
           "description": "Assessment result"
         },
         "standardRiskCosts": {
-          "type": "number"
+          "type": "number",
+          "format": "decimal"
         },
         "glTableCode": {
           "type": "integer",
@@ -660,6 +925,10 @@
           "description": "CollateralRiskCharacteristics",
           "$ref": "#/definitions/CollateralRiskCharacteristics"
         },
+        "loanApplicationApprovalPossibilities": {
+          "description": "LoanApplicationApprovalPossibilities",
+          "$ref": "#/definitions/LoanApplicationApprovalPossibilities"
+        },
         "version": {
           "description": "LoanApplicationAssessment version",
           "$ref": "#/definitions/SemanticVersion"
@@ -674,6 +943,20 @@
         }
       },
       "description": "An identified object"
+    },
+    "LoanApplicationApprovalPossibilities": {
+      "type": "object",
+      "properties": {
+        "selfApprovalPossible": {
+          "type": "boolean",
+          "description": "Id"
+        },
+        "autoApprovalPossible": {
+          "type": "boolean",
+          "description": "Id"
+        }
+      },
+      "description": "Možnosti samo/autoschválení"
     },
     "LoanApplicationAssessmentReason": {
       "type": "object",
@@ -736,8 +1019,8 @@
           "description": "cir"
         },
         "dti": {
-          "type": "integer",
-          "format": "int64",
+          "type": "number",
+          "format": "decimal",
           "description": "dti"
         },
         "dsti": {
@@ -840,53 +1123,148 @@
       },
       "description": "SemanticVersion"
     },
-    "LoanApplicationCommit": {
+    "CommandInstance": {
       "type": "object",
-      "required": [
-        "operationResult",
-        "resultReasons",
-        "riskBusinessCaseId",
-        "timestamp"
-      ],
       "properties": {
-        "riskBusinessCaseId": {
-          "description": "identifikátor obchodního případu v C4M",
-          "$ref": "#/definitions/ResourceIdentifier"
+        "result": {
+          "type": "object",
+          "description": "Result"
         },
-        "timestamp": {
-          "type": "string",
-          "format": "date-time",
-          "xml": {
-            "name": "RESPONSE_TIMESTAMP"
-          },
-          "description": "Datum a čas odpovědi"
-        },
-        "operationResult": {
-          "type": "string",
-          "xml": {
-            "name": "OPERATION_RESULT"
-          },
-          "description": "Status"
-        },
-        "resultReasons": {
-          "type": "array",
-          "xml": {
-            "name": "RESULT_REASONS"
-          },
-          "description": "Důvod(y) nespočetní výsledků bonity",
-          "items": {
-            "xml": {
-              "name": "RESULT_REASONS"
-            },
-            "$ref": "#/definitions/ResultReason"
-          }
+        "status": {
+          "description": "Command Status",
+          "$ref": "#/definitions/CommandStateObject"
         }
       },
-      "xml": {
-        "name": "RESPONSE",
-        "namespace": "cz:kb:c4m:pgs:applicationrating:businesscommit:response"
+      "description": "A command instance abstraction"
+    },
+    "CommandState": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "A code of an object",
+          "$ref": "#/definitions/Enum"
+        },
+        "completionType": {
+          "type": "string",
+          "enum": [
+            "INCOMPLETE",
+            "COMPLETED"
+          ]
+        },
+        "reason": {
+          "$ref": "#/definitions/Reason"
+        }
       },
-      "description": "Response"
+      "description": "A command state"
+    },
+    "CommandStateObject": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "object",
+          "description": "A code of an object"
+        },
+        "completionType": {
+          "type": "string",
+          "enum": [
+            "INCOMPLETE",
+            "COMPLETED"
+          ]
+        },
+        "reason": {
+          "$ref": "#/definitions/Reason"
+        }
+      },
+      "description": "A command state"
+    },
+    "Enum": {
+      "type": "object"
+    },
+    "RiskBusinessCaseCommandFilter": {
+      "type": "object",
+      "description": "RiskBusinessCaseCommandFilter"
+    },
+    "CreateRiskBusinessCaseCommandInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "command": {
+          "description": "command",
+          "$ref": "#/definitions/CommandCommandIdentifiers"
+        },
+        "result": {
+          "description": "Result",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "status": {
+          "description": "Command Status",
+          "$ref": "#/definitions/DefaultCommandStates"
+        }
+      },
+      "description": "The CreateRiskBusinessCase command instance"
+    },
+    "CreateRiskBusinessCaseCommand": {
+      "type": "object",
+      "required": [
+        "identifier"
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "description": "Identifier of type of the command",
+          "enum": [
+            "CREATE_ASSESSMENT",
+            "CREATE_BUSINESS_CASE",
+            "COMMIT_BUSINESS_CASE",
+            "GET_ASSESSMENT"
+          ]
+        }
+      },
+      "description": "The CreateRiskBusinessCase command"
+    },
+    "RiskBusinessCaseCommitCommandInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "command": {
+          "description": "command",
+          "$ref": "#/definitions/CommandCommandIdentifiers"
+        },
+        "result": {
+          "description": "Result",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "status": {
+          "description": "Command Status",
+          "$ref": "#/definitions/DefaultCommandStates"
+        }
+      },
+      "description": "The RiskBusinessCaseCommit command instance"
+    },
+    "RiskBusinessCaseCommitCommand": {
+      "type": "object",
+      "required": [
+        "identifier"
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "description": "Identifier of type of the command",
+          "enum": [
+            "CREATE_ASSESSMENT",
+            "CREATE_BUSINESS_CASE",
+            "COMMIT_BUSINESS_CASE",
+            "GET_ASSESSMENT"
+          ]
+        }
+      },
+      "description": "The RiskBusinessCaseCommit command"
     },
     "ResultReason": {
       "type": "object",
@@ -897,25 +1275,49 @@
       "properties": {
         "code": {
           "type": "string",
-          "xml": {
-            "name": "CODE",
-            "attribute": true
-          },
           "description": "kód důvodu nespočtení výsledku."
         },
         "desc": {
           "type": "string",
-          "xml": {
-            "name": "DESC",
-            "attribute": true
-          },
           "description": "popis důvodu nespočtení výsledku."
         }
-      },
-      "xml": {
-        "name": "RESULT_REASON",
-        "namespace": "cz:kb:c4m:pgs:applicationrating:businesscommit:response"
       }
+    },
+    "RiskBusinessCaseCommit": {
+      "type": "object",
+      "required": [
+        "operationResult",
+        "resultReasons",
+        "riskBusinessCaseId",
+        "timestamp"
+      ],
+      "properties": {
+        "riskBusinessCaseId": {
+          "type": "string",
+          "description": "identifikátor obchodního případu v C4M"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datum a čas odpovědi"
+        },
+        "operationResult": {
+          "type": "string",
+          "description": "Status"
+        },
+        "riskBusinessCaseFinalState": {
+          "type": "string",
+          "description": "Změněný  stav ukončení obchodu ze strany business commit, oproti požadovanému stavu obchodní aplikace"
+        },
+        "resultReasons": {
+          "type": "array",
+          "description": "Důvod(y) nespočetní výsledků bonity",
+          "items": {
+            "$ref": "#/definitions/ResultReason"
+          }
+        }
+      },
+      "description": "Response"
     },
     "CollateralAgreement": {
       "type": "object",
@@ -929,7 +1331,111 @@
         }
       }
     },
-    "CommitRequest": {
+    "JobPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "LoanApplication identity"
+        }
+      },
+      "description": "JobPost"
+    },
+    "KBGroupPerson": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "osobní číslo přihlášeného uživatele /schvalovatele.",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "surname": {
+          "type": "string",
+          "description": "příjmení přihlášeného uživatele / příjmení schvalovatele."
+        },
+        "orgUnit": {
+          "description": "OrgUnit",
+          "$ref": "#/definitions/OrgUnit"
+        }
+      },
+      "description": "KbGroupPerson"
+    },
+    "LoanAgreement": {
+      "type": "object",
+      "required": [
+        "distributionChannel",
+        "signatureType"
+      ],
+      "properties": {
+        "distributionChannel": {
+          "type": "string",
+          "description": "Identifikátor obchodního případu."
+        },
+        "signatureType": {
+          "type": "string",
+          "description": "Identifikátor obchodního případu."
+        }
+      }
+    },
+    "LoanApplicationDealer": {
+      "type": "object",
+      "required": [
+        "companyId",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "Identifikátor obchodního případu.",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "companyId": {
+          "description": "Identifikátor obchodního případu.",
+          "$ref": "#/definitions/ResourceIdentifier"
+        }
+      }
+    },
+    "LoanApplicationProduct": {
+      "type": "object",
+      "required": [
+        "productClusterCode"
+      ],
+      "properties": {
+        "productClusterCode": {
+          "type": "string",
+          "description": "kód produktového shluku (shluk jednoho produktu)."
+        }
+      }
+    },
+    "LoanSoldProduct": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "Identifikátor obchodního případu.",
+          "$ref": "#/definitions/ResourceIdentifier"
+        }
+      }
+    },
+    "OrgUnit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "pobočka + expozitura přihlášení uživatele / schvalovatele."
+        },
+        "name": {
+          "type": "string",
+          "description": "název pobočky přihlášení  uživatele / schvalovatele "
+        },
+        "jobPost": {
+          "description": "kód pracovní pozice přihlášeného uživatele /schvalovatele",
+          "$ref": "#/definitions/JobPost"
+        }
+      },
+      "description": "OrgUnit"
+    },
+    "RiskBusinessCaseCommitCreate": {
       "type": "object",
       "required": [
         "itChannel",
@@ -1006,115 +1512,61 @@
             "$ref": "#/definitions/CollateralAgreement"
           }
         }
-      }
+      },
+      "description": "RiskBusinessCaseCommitCreate"
     },
-    "JobPost": {
+    "RiskBusinessCase": {
       "type": "object",
+      "discriminator": "@type",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "LoanApplication identity"
+        "riskBusinessCaseId": {
+          "description": "RiskBusinessCase resource-identifier",
+          "type": "string"
         }
       },
-      "description": "JobPost"
+      "description": "RiskBusinessCase"
     },
-    "KBGroupPerson": {
+    "RiskBusinessCaseExpanded": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/RiskBusinessCase"
+        },
+        {
+          "type": "object",
+          "properties": {},
+          "description": "RiskBusinessCaseExpanded"
+        }
+      ]
+    },
+    "Create": {
       "type": "object",
+      "required": [
+        "itChannel",
+        "loanApplicationId"
+      ],
       "properties": {
-        "id": {
-          "description": "osobní číslo přihlášeného uživatele /schvalovatele.",
+        "loanApplicationId": {
+          "description": "ID dané úvěrové žádosti.",
           "$ref": "#/definitions/ResourceIdentifier"
         },
-        "surname": {
-          "type": "string",
-          "description": "příjmení přihlášeného uživatele / příjmení schvalovatele."
+        "resourceProcessId": {
+          "description": "ID business procesu v rámci kterého Risk Business Case vzniká.",
+          "$ref": "#/definitions/ResourceIdentifier"
         },
-        "orgUnit": {
-          "description": "OrgUnit",
-          "$ref": "#/definitions/OrgUnit"
+        "itChannel": {
+          "type": "string",
+          "description": "Typ zdrojové aplikace (např. NOBY)",
+          "enum": [
+            "NOBY",
+            "STARBUILD",
+            "DCS",
+            "PF",
+            "PFO",
+            "AON"
+          ]
         }
       },
-      "description": "KbGroupPerson"
-    },
-    "LoanAgreement": {
-      "type": "object",
-      "required": [
-        "distributionChannel",
-        "signatureType"
-      ],
-      "properties": {
-        "distributionChannel": {
-          "type": "string",
-          "description": "Identifikátor obchodního případu."
-        },
-        "signatureType": {
-          "type": "string",
-          "description": "Identifikátor obchodního případu."
-        }
-      }
-    },
-    "LoanApplicationDealer": {
-      "type": "object",
-      "required": [
-        "companyId",
-        "id"
-      ],
-      "properties": {
-        "id": {
-          "description": "Identifikátor obchodního případu.",
-          "$ref": "#/definitions/ResourceIdentifier"
-        },
-        "companyId": {
-          "description": "Identifikátor obchodního případu.",
-          "$ref": "#/definitions/ResourceIdentifier"
-        }
-      },
-      "xml": {
-        "name": "LOAN_APPLICATION_DEALER",
-        "namespace": "cz:kb:c4m:pgs:applicationrating:businesscommit"
-      }
-    },
-    "LoanApplicationProduct": {
-      "type": "object",
-      "required": [
-        "productClusterCode"
-      ],
-      "properties": {
-        "productClusterCode": {
-          "type": "string",
-          "description": "kód produktového shluku (shluk jednoho produktu)."
-        }
-      }
-    },
-    "LoanSoldProduct": {
-      "type": "object",
-      "required": [
-        "id"
-      ],
-      "properties": {
-        "id": {
-          "description": "Identifikátor obchodního případu.",
-          "$ref": "#/definitions/ResourceIdentifier"
-        }
-      }
-    },
-    "OrgUnit": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "pobočka + expozitura přihlášení uživatele / schvalovatele."
-        },
-        "name": {
-          "type": "string",
-          "description": "název pobočky přihlášení  uživatele / schvalovatele "
-        },
-        "jobPost": {
-          "description": "kód pracovní pozice přihlášeného uživatele /schvalovatele",
-          "$ref": "#/definitions/JobPost"
-        }
-      },
-      "description": "OrgUnit"
+      "description": "filtr sloužící pro založení RiskBusinessCase"
     }
   }
 }

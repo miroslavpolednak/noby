@@ -20,11 +20,9 @@ internal static class SalesArrangementServiceRepositoryExpressions
             RiskSegment = t.RiskSegment ?? "",
             CommandId = t.CommandId ?? "",
             Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
-            LoanToCost = t.LoanToCost,
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
             RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
-            EaCode = t.EaCode ?? "",
             FirstSignedDate = t.FirstSignedDate,
         };
     }

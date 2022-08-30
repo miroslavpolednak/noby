@@ -19,201 +19,175 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
     
 
+    /// <summary>
+    /// A command abstraction
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RiskBusinessCaseCommandState
+    internal partial class Command
     {
         /// <summary>
-        /// ID založeného požadavku 
+        /// Identifier of type of the command
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("commandId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public long CommandId { get; set; }
-
-        /// <summary>
-        /// stateCode 
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("stateCode")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string StateCode { get; set; }
-
-        /// <summary>
-        /// loanApplicationAssessmentId
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationAssessmentId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public long LoanApplicationAssessmentId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RiskBusinessCaseCommand
-    {
-        /// <summary>
-        /// ID založeného požadavku 
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("commandId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public long CommandId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AssessmentRequest
-    {
-        /// <summary>
-        /// ID dané úvěrové žádosti.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public ResourceIdentifier LoanApplicationId { get; set; } = new ResourceIdentifier();
-
-        /// <summary>
-        /// Identifikace verze dat žádosti, která jsou uložena v Loan Application.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDataVersion")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string LoanApplicationDataVersion { get; set; }
-
-        /// <summary>
-        /// IT Channel.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("itChannel")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public AssessmentRequestItChannel ItChannel { get; set; }
-
-        /// <summary>
-        /// Poslední místo/kanál, kde byla žádost zpracována před předáním do továrny.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("itChannelPrevious")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public AssessmentRequestItChannelPrevious ItChannelPrevious { get; set; }
-
-        /// <summary>
-        /// Mód vyhodnocení daného případu.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("assessmentMode")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public AssessmentRequestAssessmentMode AssessmentMode { get; set; }
-
-        /// <summary>
-        /// Poskytovací procedura.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("grantingProcedureCode")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public AssessmentRequestGrantingProcedureCode GrantingProcedureCode { get; set; }
-
-        /// <summary>
-        /// Příznak, zdali je požadováno samoschválení.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("selfApprovalRequired")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public bool SelfApprovalRequired { get; set; }
-
-        /// <summary>
-        /// Příznak, zdali je požadováno automatické schválení (systémem).
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("systemApprovalRequired")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        public bool SystemApprovalRequired { get; set; }
-
-        /// <summary>
-        /// kód risk kampaně.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("riskCampaignCode")]
+        [System.Text.Json.Serialization.JsonPropertyName("identifier")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string RiskCampaignCode { get; set; }
-
-        /// <summary>
-        /// Parametry metodické vyjímky.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationException")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public System.Collections.Generic.ICollection<LoanApplicationException> LoanApplicationException { get; set; }
-
-        /// <summary>
-        /// Kód nejvyšší schvalovací úrovně, která schválila danou metodickou výjimku.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("exceptionHighestApprovalLevel")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string ExceptionHighestApprovalLevel { get; set; }
-
-        /// <summary>
-        /// Vrácený objekt LoanApplicationAssessment je možné rozšířit o tyto položky
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("expand")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-
-        // TODO(system.text.json): Add string enum item converter
-        public System.Collections.Generic.ICollection<Expand> Expand { get; set; }
+        public CommandIdentifier Identifier { get; set; }
 
     }
 
     /// <summary>
-    /// LoanApplicationException
+    /// A command abstraction
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationException
+    internal partial class CommandCommandIdentifiers
     {
         /// <summary>
-        /// Arm.
+        /// Identifier of type of the command
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("arm")]
+        [System.Text.Json.Serialization.JsonPropertyName("identifier")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string Arm { get; set; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public CommandCommandIdentifiersIdentifier? Identifier { get; set; }
+
+    }
+
+    /// <summary>
+    /// A command identification
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CommandIdentifier
+    {
+        /// <summary>
+        /// ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string Id { get; set; }
+
+    }
+
+    /// <summary>
+    /// The CreateAssessment command instance
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CreateAssessmentCommandInstance
+    {
+        /// <summary>
+        /// id
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string Id { get; set; }
 
         /// <summary>
-        /// ReasonCode.
+        /// command
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("reasonCode")]
+        [System.Text.Json.Serialization.JsonPropertyName("command")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string ReasonCode { get; set; }
+        public CommandCommandIdentifiers Command { get; set; }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("result")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public ResourceIdentifier Result { get; set; }
+
+        /// <summary>
+        /// Command Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("status")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public DefaultCommandStates Status { get; set; }
+
+    }
+
+    /// <summary>
+    /// DefaultCommandStates command status enumeration
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class DefaultCommandStates
+    {
+        /// <summary>
+        /// A code of an object
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public DefaultCommandStatesCode? Code { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("completionType")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public DefaultCommandStatesCompletionType? CompletionType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("reason")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public Reason Reason { get; set; }
+
+    }
+
+    /// <summary>
+    /// Reason
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class Reason
+    {
+        /// <summary>
+        /// Code of the reason / symptom
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// Level
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("level")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ReasonLevel Level { get; set; }
+
+        /// <summary>
+        /// Weight
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("weight")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public int? Weight { get; set; }
+
+        /// <summary>
+        /// Parameters
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("parameters")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public System.Collections.Generic.IDictionary<string, string> Parameters { get; set; }
 
     }
 
@@ -279,27 +253,36 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
     }
 
+    /// <summary>
+    /// The CreateAssessment command
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationCreate
+    internal partial class CreateAssessmentCommand
     {
         /// <summary>
-        /// identifikátor obchodního případu v C4M.
+        /// Identifier of type of the command
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
+        [System.Text.Json.Serialization.JsonPropertyName("identifier")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public ResourceIdentifier RiskBusinessCaseId { get; set; } = new ResourceIdentifier();
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public CreateAssessmentCommandIdentifier Identifier { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationAssessmentCreate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public LoanApplicationAssessmentCreate LoanApplicationAssessmentCreate { get; set; }
 
     }
 
+    /// <summary>
+    /// LoanApplicationAssessmentCreate
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreateRequest
+    internal partial class LoanApplicationAssessmentCreate
     {
-        /// <summary>
-        /// ID dané úvěrové žádosti.
-        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
 
@@ -307,25 +290,96 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.ComponentModel.DataAnnotations.Required]
         public ResourceIdentifier LoanApplicationId { get; set; } = new ResourceIdentifier();
 
-        /// <summary>
-        /// ID business procesu v rámci kterého Risk Business Case vzniká.
-        /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDataVersion")]
 
-        [System.Text.Json.Serialization.JsonPropertyName("resourceProcessId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier ResourceProcessId { get; set; }
-
-        /// <summary>
-        /// Typ zdrojové aplikace (např. NOBY)
-        /// </summary>
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string LoanApplicationDataVersion { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("itChannel")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CreateRequestItChannel ItChannel { get; set; }
+        public LoanApplicationAssessmentCreateItChannel ItChannel { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("itChannelPrevious")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public LoanApplicationAssessmentCreateItChannelPrevious? ItChannelPrevious { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("assessmentMode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public LoanApplicationAssessmentCreateAssessmentMode AssessmentMode { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("grantingProcedureCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public LoanApplicationAssessmentCreateGrantingProcedureCode GrantingProcedureCode { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("selfApprovalRequired")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public bool SelfApprovalRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("systemApprovalRequired")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        public bool SystemApprovalRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskCampaignCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string RiskCampaignCode { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationException")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public System.Collections.Generic.ICollection<LoanApplicationException> LoanApplicationException { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("exceptionHighestApprovalLevel")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string ExceptionHighestApprovalLevel { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("expand")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+
+        // TODO(system.text.json): Add string enum item converter
+        public System.Collections.Generic.ICollection<Expand> Expand { get; set; }
+
+    }
+
+    /// <summary>
+    /// LoanApplicationException
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class LoanApplicationException
+    {
+        /// <summary>
+        /// Arm
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("arm")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string Arm { get; set; }
+
+        /// <summary>
+        /// Reason Code
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("reasonCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string ReasonCode { get; set; }
 
     }
 
@@ -342,7 +396,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("value")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Value { get; set; }
+        public decimal? Value { get; set; }
 
         /// <summary>
         /// Kód měny částky (ISO 4217)
@@ -476,7 +530,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("ltv")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? Ltv { get; set; }
+        public decimal? Ltv { get; set; }
 
         /// <summary>
         /// Ltfv
@@ -485,7 +539,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("ltfv")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? Ltfv { get; set; }
+        public decimal? Ltfv { get; set; }
 
         /// <summary>
         /// Ltp
@@ -494,7 +548,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("ltp")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? Ltp { get; set; }
+        public decimal? Ltp { get; set; }
 
         /// <summary>
         /// SumAppraisedValue
@@ -504,6 +558,15 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         public long? SumAppraisedValue { get; set; }
+
+        /// <summary>
+        /// TotalCollUsedValue
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("totalCollUsedValue")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public long? TotalCollUsedValue { get; set; }
 
     }
 
@@ -538,7 +601,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("customerId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier CustomerId { get; set; }
+        public string CustomerId { get; set; }
 
         /// <summary>
         /// Assessment Detail
@@ -617,21 +680,24 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier LoanApplicationId { get; set; }
+        public string LoanApplicationId { get; set; }
 
         /// <summary>
-        /// Risk BusinessCase resource-identifier
+        /// Risk BusinessCase ID
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public ResourceIdentifier RiskBusinesscaseId { get; set; }
+        public string RiskBusinesscaseId { get; set; }
+
+        /// <summary>
+        /// riskBusinesscaseExpirationDate
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset? RiskBusinesscaseExpirationDate { get; set; }
 
         /// <summary>
@@ -646,7 +712,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("standardRiskCosts")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? StandardRiskCosts { get; set; }
+        public decimal? StandardRiskCosts { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("glTableCode")]
 
@@ -699,6 +765,15 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         public CollateralRiskCharacteristics CollateralRiskCharacteristics { get; set; }
 
         /// <summary>
+        /// LoanApplicationApprovalPossibilities
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationApprovalPossibilities")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public LoanApplicationApprovalPossibilities LoanApplicationApprovalPossibilities { get; set; }
+
+        /// <summary>
         /// LoanApplicationAssessment version
         /// </summary>
 
@@ -724,6 +799,32 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
         public Change Updated { get; set; }
+
+    }
+
+    /// <summary>
+    /// Možnosti samo/autoschválení
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class LoanApplicationApprovalPossibilities
+    {
+        /// <summary>
+        /// Id
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("selfApprovalPossible")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public bool? SelfApprovalPossible { get; set; }
+
+        /// <summary>
+        /// Id
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("autoApprovalPossible")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public bool? AutoApprovalPossible { get; set; }
 
     }
 
@@ -856,7 +957,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("dti")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public long? Dti { get; set; }
+        public decimal? Dti { get; set; }
 
         /// <summary>
         /// dsti
@@ -1037,50 +1138,225 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     }
 
     /// <summary>
-    /// Response
+    /// A command instance abstraction
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class LoanApplicationCommit
+    internal partial class CommandInstance
     {
         /// <summary>
-        /// identifikátor obchodního případu v C4M
+        /// Result
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
+        [System.Text.Json.Serialization.JsonPropertyName("result")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public ResourceIdentifier RiskBusinessCaseId { get; set; } = new ResourceIdentifier();
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public object Result { get; set; }
 
         /// <summary>
-        /// Datum a čas odpovědi
+        /// Command Status
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
+        [System.Text.Json.Serialization.JsonPropertyName("status")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public CommandStateObject Status { get; set; }
+
+    }
+
+    /// <summary>
+    /// A command state
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CommandState
+    {
+        /// <summary>
+        /// A code of an object
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public Enum Code { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("completionType")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public CommandStateCompletionType? CompletionType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("reason")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public Reason Reason { get; set; }
+
+    }
+
+    /// <summary>
+    /// A command state
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CommandStateObject
+    {
+        /// <summary>
+        /// A code of an object
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public object Code { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("completionType")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public CommandStateObjectCompletionType? CompletionType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("reason")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public Reason Reason { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class Enum
+    {
+
+    }
+
+    /// <summary>
+    /// RiskBusinessCaseCommandFilter
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class RiskBusinessCaseCommandFilter
+    {
+
+    }
+
+    /// <summary>
+    /// The CreateRiskBusinessCase command instance
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CreateRiskBusinessCaseCommandInstance
+    {
+        /// <summary>
+        /// id
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string Id { get; set; }
+
+        /// <summary>
+        /// command
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("command")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public CommandCommandIdentifiers Command { get; set; }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("result")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public ResourceIdentifier Result { get; set; }
+
+        /// <summary>
+        /// Command Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("status")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public DefaultCommandStates Status { get; set; }
+
+    }
+
+    /// <summary>
+    /// The CreateRiskBusinessCase command
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CreateRiskBusinessCaseCommand
+    {
+        /// <summary>
+        /// Identifier of type of the command
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identifier")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset Timestamp { get; set; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public CreateRiskBusinessCaseCommandIdentifier Identifier { get; set; }
 
+    }
+
+    /// <summary>
+    /// The RiskBusinessCaseCommit command instance
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class RiskBusinessCaseCommitCommandInstance
+    {
         /// <summary>
-        /// Status
+        /// id
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("operationResult")]
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string Id { get; set; }
+
+        /// <summary>
+        /// command
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("command")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public CommandCommandIdentifiers Command { get; set; }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("result")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public ResourceIdentifier Result { get; set; }
+
+        /// <summary>
+        /// Command Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("status")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public DefaultCommandStates Status { get; set; }
+
+    }
+
+    /// <summary>
+    /// The RiskBusinessCaseCommit command
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class RiskBusinessCaseCommitCommand
+    {
+        /// <summary>
+        /// Identifier of type of the command
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identifier")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string OperationResult { get; set; }
-
-        /// <summary>
-        /// Důvod(y) nespočetní výsledků bonity
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("resultReasons")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<ResultReason> ResultReasons { get; set; } = new System.Collections.ObjectModel.Collection<ResultReason>();
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public RiskBusinessCaseCommitCommandIdentifier Identifier { get; set; }
 
     }
 
@@ -1109,6 +1385,63 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
     }
 
+    /// <summary>
+    /// Response
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class RiskBusinessCaseCommit
+    {
+        /// <summary>
+        /// identifikátor obchodního případu v C4M
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RiskBusinessCaseId { get; set; }
+
+        /// <summary>
+        /// Datum a čas odpovědi
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset Timestamp { get; set; }
+
+        /// <summary>
+        /// Status
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("operationResult")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string OperationResult { get; set; }
+
+        /// <summary>
+        /// Změněný  stav ukončení obchodu ze strany business commit, oproti požadovanému stavu obchodní aplikace
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseFinalState")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string RiskBusinessCaseFinalState { get; set; }
+
+        /// <summary>
+        /// Důvod(y) nespočetní výsledků bonity
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("resultReasons")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<ResultReason> ResultReasons { get; set; } = new System.Collections.ObjectModel.Collection<ResultReason>();
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal partial class CollateralAgreement
     {
@@ -1121,128 +1454,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required]
         public ResourceIdentifier Id { get; set; } = new ResourceIdentifier();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CommitRequest
-    {
-        /// <summary>
-        /// ID dané úvěrové žádosti.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public ResourceIdentifier LoanApplicationId { get; set; } = new ResourceIdentifier();
-
-        /// <summary>
-        /// IT Channel.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("itChannel")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CommitRequestItChannel ItChannel { get; set; }
-
-        /// <summary>
-        /// loanApplicationProduct.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationProduct")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required]
-        public LoanApplicationProduct LoanApplicationProduct { get; set; } = new LoanApplicationProduct();
-
-        /// <summary>
-        /// riskBusinessCaseFinalResult.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseFinalResult")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public CommitRequestRiskBusinessCaseFinalResult RiskBusinessCaseFinalResult { get; set; }
-
-        /// <summary>
-        /// loanSoldProduct.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanSoldProduct")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public LoanSoldProduct LoanSoldProduct { get; set; }
-
-        /// <summary>
-        /// approvalLevel.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("approvalLevel")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public string ApprovalLevel { get; set; }
-
-        /// <summary>
-        /// Datum schválení. 
-        /// <br/>Format: yyyy-MM-dd
-        /// <br/>
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("approvalDate")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? ApprovalDate { get; set; }
-
-        /// <summary>
-        /// loanAgreement.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanAgreement")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public LoanAgreement LoanAgreement { get; set; }
-
-        /// <summary>
-        /// creator.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("creator")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public KBGroupPerson Creator { get; set; }
-
-        /// <summary>
-        /// approver.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("approver")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public KBGroupPerson Approver { get; set; }
-
-        /// <summary>
-        /// loanApplicationDealer.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDealer")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public LoanApplicationDealer LoanApplicationDealer { get; set; }
-
-        /// <summary>
-        /// collateralAgreements.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("collateralAgreements")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public System.Collections.Generic.ICollection<CollateralAgreement> CollateralAgreements { get; set; }
 
     }
 
@@ -1413,8 +1624,201 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
     }
 
+    /// <summary>
+    /// RiskBusinessCaseCommitCreate
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum AssessmentRequestItChannel
+    internal partial class RiskBusinessCaseCommitCreate
+    {
+        /// <summary>
+        /// ID dané úvěrové žádosti.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required]
+        public ResourceIdentifier LoanApplicationId { get; set; } = new ResourceIdentifier();
+
+        /// <summary>
+        /// IT Channel.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itChannel")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public RiskBusinessCaseCommitCreateItChannel ItChannel { get; set; }
+
+        /// <summary>
+        /// loanApplicationProduct.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationProduct")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required]
+        public LoanApplicationProduct LoanApplicationProduct { get; set; } = new LoanApplicationProduct();
+
+        /// <summary>
+        /// riskBusinessCaseFinalResult.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseFinalResult")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public RiskBusinessCaseCommitCreateRiskBusinessCaseFinalResult RiskBusinessCaseFinalResult { get; set; }
+
+        /// <summary>
+        /// loanSoldProduct.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanSoldProduct")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public LoanSoldProduct LoanSoldProduct { get; set; }
+
+        /// <summary>
+        /// approvalLevel.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("approvalLevel")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string ApprovalLevel { get; set; }
+
+        /// <summary>
+        /// Datum schválení. 
+        /// <br/>Format: yyyy-MM-dd
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("approvalDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+        public System.DateTimeOffset? ApprovalDate { get; set; }
+
+        /// <summary>
+        /// loanAgreement.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAgreement")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public LoanAgreement LoanAgreement { get; set; }
+
+        /// <summary>
+        /// creator.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("creator")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public KBGroupPerson Creator { get; set; }
+
+        /// <summary>
+        /// approver.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("approver")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public KBGroupPerson Approver { get; set; }
+
+        /// <summary>
+        /// loanApplicationDealer.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationDealer")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public LoanApplicationDealer LoanApplicationDealer { get; set; }
+
+        /// <summary>
+        /// collateralAgreements.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateralAgreements")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public System.Collections.Generic.ICollection<CollateralAgreement> CollateralAgreements { get; set; }
+
+    }
+
+    /// <summary>
+    /// RiskBusinessCase
+    /// </summary>
+    // [JsonInheritanceConverter(typeof(RiskBusinessCase), "@type")]
+    [JsonInheritanceAttribute("RiskBusinessCaseExpanded", typeof(RiskBusinessCaseExpanded))]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class RiskBusinessCase
+    {
+        /// <summary>
+        /// RiskBusinessCase resource-identifier
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public string RiskBusinessCaseId { get; set; }
+
+    }
+
+    /// <summary>
+    /// RiskBusinessCaseExpanded
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class RiskBusinessCaseExpanded : RiskBusinessCase
+    {
+
+    }
+
+    /// <summary>
+    /// filtr sloužící pro založení RiskBusinessCase
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class Create
+    {
+        /// <summary>
+        /// ID dané úvěrové žádosti.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required]
+        public ResourceIdentifier LoanApplicationId { get; set; } = new ResourceIdentifier();
+
+        /// <summary>
+        /// ID business procesu v rámci kterého Risk Business Case vzniká.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("resourceProcessId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        public ResourceIdentifier ResourceProcessId { get; set; }
+
+        /// <summary>
+        /// Typ zdrojové aplikace (např. NOBY)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itChannel")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public CreateItChannel ItChannel { get; set; }
+
+    }
+
+    /// <summary>
+    /// Typ zdrojové aplikace (např. NOBY)
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum ItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
@@ -1438,7 +1842,97 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum AssessmentRequestItChannelPrevious
+    internal enum Anonymous
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"assessment")]
+        Assessment = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum CommandCommandIdentifiersIdentifier
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_ASSESSMENT")]
+        CREATE_ASSESSMENT = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_BUSINESS_CASE")]
+        CREATE_BUSINESS_CASE = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMMIT_BUSINESS_CASE")]
+        COMMIT_BUSINESS_CASE = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"GET_ASSESSMENT")]
+        GET_ASSESSMENT = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum DefaultCommandStatesCode
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATED")]
+        CREATED = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PROCESSING")]
+        PROCESSING = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SUCCEEDED")]
+        SUCCEEDED = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FAILED")]
+        FAILED = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum DefaultCommandStatesCompletionType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"INCOMPLETE")]
+        INCOMPLETE = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMPLETED")]
+        COMPLETED = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum ReasonLevel
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"INFO")]
+        INFO = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"WARNING")]
+        WARNING = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ERROR")]
+        ERROR = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum CreateAssessmentCommandIdentifier
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_ASSESSMENT")]
+        CREATE_ASSESSMENT = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_BUSINESS_CASE")]
+        CREATE_BUSINESS_CASE = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMMIT_BUSINESS_CASE")]
+        COMMIT_BUSINESS_CASE = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"GET_ASSESSMENT")]
+        GET_ASSESSMENT = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum LoanApplicationAssessmentCreateItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
@@ -1462,7 +1956,31 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum AssessmentRequestAssessmentMode
+    internal enum LoanApplicationAssessmentCreateItChannelPrevious
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
+        NOBY = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"STARBUILD")]
+        STARBUILD = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DCS")]
+        DCS = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PF")]
+        PF = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PFO")]
+        PFO = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AON")]
+        AON = 5,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum LoanApplicationAssessmentCreateAssessmentMode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"PS")]
@@ -1477,7 +1995,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum AssessmentRequestGrantingProcedureCode
+    internal enum LoanApplicationAssessmentCreateGrantingProcedureCode
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CPG")]
@@ -1537,7 +2055,67 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CreateRequestItChannel
+    internal enum CommandStateCompletionType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"INCOMPLETE")]
+        INCOMPLETE = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMPLETED")]
+        COMPLETED = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum CommandStateObjectCompletionType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"INCOMPLETE")]
+        INCOMPLETE = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMPLETED")]
+        COMPLETED = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum CreateRiskBusinessCaseCommandIdentifier
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_ASSESSMENT")]
+        CREATE_ASSESSMENT = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_BUSINESS_CASE")]
+        CREATE_BUSINESS_CASE = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMMIT_BUSINESS_CASE")]
+        COMMIT_BUSINESS_CASE = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"GET_ASSESSMENT")]
+        GET_ASSESSMENT = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum RiskBusinessCaseCommitCommandIdentifier
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_ASSESSMENT")]
+        CREATE_ASSESSMENT = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CREATE_BUSINESS_CASE")]
+        CREATE_BUSINESS_CASE = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"COMMIT_BUSINESS_CASE")]
+        COMMIT_BUSINESS_CASE = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"GET_ASSESSMENT")]
+        GET_ASSESSMENT = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum RiskBusinessCaseCommitCreateItChannel
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
@@ -1561,31 +2139,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CommitRequestItChannel
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
-        NOBY = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"STARBUILD")]
-        STARBUILD = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DCS")]
-        DCS = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PF")]
-        PF = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PFO")]
-        PFO = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"AON")]
-        AON = 5,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum CommitRequestRiskBusinessCaseFinalResult
+    internal enum RiskBusinessCaseCommitCreateRiskBusinessCaseFinalResult
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_BY_CLIENT")]
@@ -1603,6 +2157,161 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Runtime.Serialization.EnumMember(Value = @"TIMEOUT_BY_EXT_SYS")]
         TIMEOUT_BY_EXT_SYS = 4,
 
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum CreateItChannel
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NOBY")]
+        NOBY = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"STARBUILD")]
+        STARBUILD = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DCS")]
+        DCS = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PF")]
+        PF = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PFO")]
+        PFO = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AON")]
+        AON = 5,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Interface, AllowMultiple = true)]
+    internal class JsonInheritanceAttribute : System.Attribute
+    {
+        public JsonInheritanceAttribute(string key, System.Type type)
+        {
+            Key = key;
+            Type = type;
+        }
+
+        public string Key { get; }
+
+        public System.Type Type { get; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal class JsonInheritanceConverterAttribute : System.Text.Json.Serialization.JsonConverterAttribute
+    {
+        public string DiscriminatorName { get; }
+
+        public JsonInheritanceConverterAttribute(System.Type baseType, string discriminatorName = "discriminator")
+            : base(typeof(JsonInheritanceConverter<>).MakeGenericType(baseType))
+        {
+            DiscriminatorName = discriminatorName;
+        }
+    }
+
+    public class JsonInheritanceConverter<TBase> : System.Text.Json.Serialization.JsonConverter<TBase>
+    {
+        private readonly string _discriminatorName;
+
+        public JsonInheritanceConverter()
+        {
+            var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute<JsonInheritanceConverterAttribute>(typeof(TBase));
+            _discriminatorName = attribute?.DiscriminatorName ?? "discriminator";
+        }
+
+        public JsonInheritanceConverter(string discriminatorName)
+        {
+            _discriminatorName = discriminatorName;
+        }
+
+        public string DiscriminatorName { get { return _discriminatorName; } }
+
+        public override TBase Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
+        {
+            var document = System.Text.Json.JsonDocument.ParseValue(ref reader);
+            var hasDiscriminator = document.RootElement.TryGetProperty(_discriminatorName, out var discriminator);
+            var subtype = GetDiscriminatorType(document.RootElement, typeToConvert, hasDiscriminator ? discriminator.GetString() : null);
+
+            var bufferWriter = new System.IO.MemoryStream();
+            using (var writer = new System.Text.Json.Utf8JsonWriter(bufferWriter))
+            {
+                document.RootElement.WriteTo(writer);
+            }
+
+            return (TBase)System.Text.Json.JsonSerializer.Deserialize(bufferWriter.ToArray(), subtype, options);
+        }
+
+        public override void Write(System.Text.Json.Utf8JsonWriter writer, TBase value, System.Text.Json.JsonSerializerOptions options)
+        {
+            writer.WriteStartObject();
+            writer.WriteString(_discriminatorName, GetDiscriminatorValue(value.GetType()));
+
+            var bytes = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes((object)value, options);
+            var document = System.Text.Json.JsonDocument.Parse(bytes);
+            foreach (var property in document.RootElement.EnumerateObject())
+            {
+                property.WriteTo(writer);
+            }
+
+            writer.WriteEndObject();
+        }
+
+        public string GetDiscriminatorValue(System.Type type)
+        {
+            var jsonInheritanceAttributeDiscriminator = GetSubtypeDiscriminator(type);
+            if (jsonInheritanceAttributeDiscriminator != null)
+            {
+                return jsonInheritanceAttributeDiscriminator;
+            }
+
+            return type.Name;
+        }
+
+        protected System.Type GetDiscriminatorType(System.Text.Json.JsonElement jObject, System.Type objectType, string discriminatorValue)
+        {
+            var jsonInheritanceAttributeSubtype = GetObjectSubtype(objectType, discriminatorValue);
+            if (jsonInheritanceAttributeSubtype != null)
+            {
+                return jsonInheritanceAttributeSubtype;
+            }
+
+            if (objectType.Name == discriminatorValue)
+            {
+                return objectType;
+            }
+
+            var typeName = objectType.Namespace + "." + discriminatorValue;
+            var subtype = System.Reflection.IntrospectionExtensions.GetTypeInfo(objectType).Assembly.GetType(typeName);
+            if (subtype != null)
+            {
+                return subtype;
+            }
+
+            throw new System.InvalidOperationException("Could not find subtype of '" + objectType.Name + "' with discriminator '" + discriminatorValue + "'.");
+        }
+
+        private System.Type GetObjectSubtype(System.Type objectType, string discriminator)
+        {
+            foreach (var attribute in System.Reflection.CustomAttributeExtensions.GetCustomAttributes<JsonInheritanceAttribute>(System.Reflection.IntrospectionExtensions.GetTypeInfo(objectType), true))
+            {
+                if (attribute.Key == discriminator)
+                    return attribute.Type;
+            }
+
+            return objectType;
+        }
+
+        private string GetSubtypeDiscriminator(System.Type objectType)
+        {
+            foreach (var attribute in System.Reflection.CustomAttributeExtensions.GetCustomAttributes<JsonInheritanceAttribute>(System.Reflection.IntrospectionExtensions.GetTypeInfo(objectType), true))
+            {
+                if (attribute.Type == objectType)
+                    return attribute.Key;
+            }
+
+            return objectType.Name;
+        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1625,42 +2334,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         }
     }
 
-
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException : System.Exception
-    {
-        public int StatusCode { get; private set; }
-
-        public string Response { get; private set; }
-
-        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
-            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
-        {
-            StatusCode = statusCode;
-            Response = response;
-            Headers = headers;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("HTTP Response: \n\n{0}\n\n{1}", Response, base.ToString());
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException<TResult> : ApiException
-    {
-        public TResult Result { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
-            : base(message, statusCode, response, headers, innerException)
-        {
-            Result = result;
-        }
-    }
 
 }
 

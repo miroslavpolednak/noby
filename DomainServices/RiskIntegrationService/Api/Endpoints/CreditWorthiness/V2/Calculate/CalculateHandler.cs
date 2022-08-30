@@ -19,13 +19,13 @@ internal sealed class CalculateHandler
         {
             ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId),
             ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
-            //RiskBusinessCaseId = Convert.ToInt64(request.RiskBusinessCaseId!),
+            //RiskBusinessCaseId = request.RiskBusinessCaseId!,//TODO ResourceIdentifier
             LoanApplicationProduct = request.Product.ToC4m(riskApplicationType.C4mAplCode),
             Households = request.Households!.Select(h => new _C4M.LoanApplicationHousehold
             {
                 ChildrenOver10 = h.ChildrenOverTenYearsCount,
                 ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
-                ExpensesSummary = (h.ExpensesSummary ?? new _V2.CreditWorthinessExpenses()).ToC4m(),
+                ExpensesSummary = (h.ExpensesSummary ?? new Contracts.Shared.V1.ExpensesSummary()).ToC4m(),
                 Clients = h.Customers!.ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
                 CreditLiabilitiesSummary = liabilitiesFlatten.ToC4mCreditLiabilitiesSummary(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 CreditLiabilitiesSummaryOut = liabilitiesFlatten.ToC4mCreditLiabilitiesSummaryOut(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
@@ -35,11 +35,14 @@ internal sealed class CalculateHandler
         };
 
         // human user instance
-        var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-        if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
-            requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-        else
-            requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        if (request.UserIdentity is not null)
+        {
+            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
+            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
+                requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
+            else
+                requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
+        }
         
         // volani c4m
         var response = await _client.Calculate(requestModel, cancellation);

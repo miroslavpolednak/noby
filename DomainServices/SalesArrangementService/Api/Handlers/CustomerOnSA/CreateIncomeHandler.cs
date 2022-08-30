@@ -28,6 +28,7 @@ internal class CreateIncomeHandler
             Sum = request.Request.BaseData?.Sum,
             CurrencyCode = request.Request.BaseData?.CurrencyCode,
             IncomeSource = await getIncomeSource(request.Request, cancellation),
+            ProofOfIncomeToggle = getProofOfIncomeToggle(request.Request),
             IncomeTypeId = incomeType
         };
 
@@ -57,6 +58,13 @@ internal class CreateIncomeHandler
             CustomerIncomeTypes.Rent => count >= 1,
             CustomerIncomeTypes.Other => count >= 10,
             _ => throw new NotImplementedException("This customer income type count check is not implemented")
+        };
+
+    static bool? getProofOfIncomeToggle(CreateIncomeRequest request)
+        => (CustomerIncomeTypes)request.IncomeTypeId switch
+        {
+            CustomerIncomeTypes.Employement => request.Employement?.ProofOfIncomeToggle,
+            _ => false
         };
 
     async Task<string?> getIncomeSource(CreateIncomeRequest request, CancellationToken cancellationToken)

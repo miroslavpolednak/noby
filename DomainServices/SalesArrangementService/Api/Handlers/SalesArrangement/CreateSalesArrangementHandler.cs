@@ -23,8 +23,6 @@ internal class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             StateUpdateTime = _dateTime.Now,
             ContractNumber = request.Request.ContractNumber,
-            EaCode = request.Request.EaCode,
-            LoanToCost = request.Request.LoanToCost,
             ChannelId = 4 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss...
         };
 

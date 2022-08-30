@@ -8,9 +8,9 @@ internal sealed class CalculateRequestValidator
 {
     public CalculateRequestValidator()
     {
-        RuleFor(t => t.CaseId)
+        RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithErrorCode("CaseId");
+            .WithErrorCode("SalesArrangementId");
 
         RuleFor(t => t.RiskBusinessCaseId)
             .NotEmpty()

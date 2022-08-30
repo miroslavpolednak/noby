@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 
-[ProtoContract]
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
 public class LoanApplicationProduct
 {
     [ProtoMember(1)]
@@ -65,4 +65,19 @@ public class LoanApplicationProduct
 
     [ProtoMember(21)]
     public List<int>? MarketingActions { get; set; }
+
+    [ProtoMember(22)]
+    public string? InstallmentPeriod { get; set; }
+
+    [ProtoMember(23)]
+    public string? HomeCurrencyIncome { get; set; }
+
+    [ProtoMember(24)]
+    public string? HomeCurrencyResidence { get; set; }
+
+    [ProtoMember(25)]
+    public int? DeveloperId { get; set; }
+
+    [ProtoMember(26)]
+    public int? DeveloperProjectId { get; set; }
 }

@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using DomainServices.CustomerService.Dto;
+using FluentValidation;
 namespace DomainServices.CustomerService.Api.Validators;
 
-internal class GetCustomerDetailMediatrRequestValidator : AbstractValidator<Dto.GetCustomerDetailMediatrRequest>
+internal class GetCustomerDetailMediatrRequestValidator : AbstractValidator<GetCustomerDetailMediatrRequest>
 {
     public GetCustomerDetailMediatrRequestValidator()
     {
@@ -9,6 +10,5 @@ internal class GetCustomerDetailMediatrRequestValidator : AbstractValidator<Dto.
             .NotNull()
             .WithMessage("IdentityId must be not empty").WithErrorCode("17000")
             .SetValidator(new IdentityValidator());
-            
     }
 }

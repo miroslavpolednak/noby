@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "LoanApplication",
+    "title": "xxx",
     "version": "1.0.0"
   },
   "basePath": "/la-loan-application-hf-adapter-service-1.0.0/api",
@@ -723,16 +723,8 @@
           "$ref": "#/definitions/LoanApplicationDeclaredIncome"
         },
         "highestEducation": {
-          "type": "string",
-          "description": "Nejvyšší dosažené vzdělání.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6"
-          ]
+          "type": "integer",
+          "description": "Nejvyšší dosažené vzdělání."
         }
       },
       "description": "Protistrana na žádosti (žadatel, spolužadatel)"
@@ -959,46 +951,20 @@
           "description": "Typ zaměstnaní."
         },
         "houseNumber": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "Číslo popisné."
         },
         "streetNumber": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "Orientační číslo."
         },
         "employerType": {
-          "type": "string",
-          "description": "Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc..",
-          "enum": [
-            "6",
-            "4",
-            "1",
-            "2",
-            "3",
-            "5"
-          ]
+          "type": "integer",
+          "description": "Typ zaměstnavatele - státní společnost, spol. se zahraniční účastí, podnikatel, etc.."
         },
         "profession": {
-          "type": "string",
-          "description": "povolání.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14"
-          ]
+          "type": "integer",
+          "description": "povolání."
         }
       },
       "description": "LoanApplicationEmploymentIncome"
@@ -1062,13 +1028,11 @@
           "$ref": "#/definitions/Amount"
         },
         "houseNumber": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "číslo popisné."
         },
         "streetNumber": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "orientační číslo."
         },
         "street": {
@@ -1084,24 +1048,8 @@
           "description": "příznak, zda byl využit modifikovaný paušál."
         },
         "profession": {
-          "type": "string",
-          "description": "povolání.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14"
-          ]
+          "type": "integer",
+          "description": "povolání."
         }
       },
       "description": "LoanApplicationEntrepreneurIncome"
@@ -1299,13 +1247,11 @@
           "description": "inhibitancyFrom"
         },
         "houseNumber": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "Číslo popisné."
         },
         "streetNumber": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "Orientační číslo."
         },
         "regionCode": {
@@ -1378,7 +1324,7 @@
           "$ref": "#/definitions/LoanApplicationProductRelationValue"
         }
       },
-      "description": "Deklarovane."
+      "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)"
     },
     "LoanApplicationProductRelationValue": {
       "type": "object",
@@ -1461,7 +1407,12 @@
         },
         "roleCode": {
           "type": "string",
-          "description": "počet vyživovaných dětí do 10 let (včetně)."
+          "description": "Role Code.",
+          "enum": [
+            "A",
+            "S",
+            "R"
+          ]
         },
         "childrenUnderAnd10": {
           "type": "integer",
@@ -1494,16 +1445,16 @@
             "$ref": "#/definitions/LoanInstallmentsSummary"
           }
         },
-        "settlementTypeCode": {
-          "type": "string",
-          "description": "Shrnutí splátek mimo domácnosti"
-        },
         "counterParty": {
           "type": "array",
-          "description": "Shrnutí splátek domácnosti",
+          "description": "Protistrana na žádosti (žadatel, spolužadatel)",
           "items": {
             "$ref": "#/definitions/LoanApplicationCounterParty"
           }
+        },
+        "settlementTypeCode": {
+          "type": "string",
+          "description": "Shrnutí splátek mimo domácnosti"
         }
       },
       "description": "Parametry domácnosti."
@@ -1555,7 +1506,6 @@
     "LoanApplicationProductRelation": {
       "type": "object",
       "required": [
-        "loanApplicationProductRelationCounterparty",
         "productId",
         "productType",
         "relationType",
@@ -1578,7 +1528,7 @@
           "description": "Navázané parametry na danou vazbu.",
           "$ref": "#/definitions/LoanApplicationProductRelationValue"
         },
-        "loanApplicationProductRelationCounterparty": {
+        "counterparty": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/LoanApplicationProductRelationCounterparty"
@@ -1774,46 +1724,8 @@
           "description": "výše požadované výše úvěru pro daný účel."
         },
         "code": {
-          "type": "string",
-          "description": "účel úvěru.",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31",
-            "32",
-            "33",
-            "34",
-            "35",
-            "36"
-          ]
+          "type": "integer",
+          "description": "účel úvěru."
         }
       },
       "description": "Parametry domácnosti."
@@ -1822,8 +1734,7 @@
       "type": "object",
       "required": [
         "id",
-        "loanApplicationDeclaredProductRelation",
-        "loanApplicationProductRelation"
+        "loanApplicationDataVersion"
       ],
       "properties": {
         "id": {
@@ -1878,7 +1789,7 @@
         },
         "loanApplicationProductRelation": {
           "type": "array",
-          "description": "konsolidované/zrušené úvěry ",
+          "description": "Vazba žádosti na existující úvěrový produkt (např.pro konsolidace, dodatky, apod.)",
           "items": {
             "$ref": "#/definitions/LoanApplicationProductRelation"
           }
@@ -1900,7 +1811,7 @@
       "properties": {
         "id": {
           "description": "LoanApplication identity",
-          "$ref": "#/definitions/ResourceIdentifier"
+          "type": "string"
         },
         "loanApplicationDataVersion": {
           "type": "string",

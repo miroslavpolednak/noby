@@ -46,8 +46,11 @@ internal class SimulateMortgageRequestValidator : AbstractValidator<Dto.Simulate
            .Must(p => p != null)
            .WithMessage("SimulationInputs.CollateralAmount is not specified").WithErrorCode("10018");
 
-        RuleFor(t => t.Request.BasicParameters.GuaranteeDateTo)
-            .Must(t => t.Year == 0)
-            .WithMessage("BasicParameters.GuaranteeDateTo is auto generated parameter - can't be set by consumer").WithErrorCode("10019");
+        When(t => t.Request.BasicParameters?.GuaranteeDateTo is not null, () =>
+        {
+            RuleFor(t => t.Request.BasicParameters.GuaranteeDateTo)
+                .Must(t => t.Year == 0)
+                .WithMessage("BasicParameters.GuaranteeDateTo is auto generated parameter - can't be set by consumer").WithErrorCode("10019");
+        });
     }
 }

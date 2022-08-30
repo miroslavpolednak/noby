@@ -15,11 +15,12 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
 	<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
 	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.47.0" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.9.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup>
 	  <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+	  <ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
