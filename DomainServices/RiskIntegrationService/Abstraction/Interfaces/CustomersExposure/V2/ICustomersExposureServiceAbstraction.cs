@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Abstraction.CustomersExposure.V2;
 
-public interface ICustomersExposureService
+public interface ICustomersExposureServiceAbstraction
 {
     /// <summary>
     /// Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti(Loan Applicaiton).

@@ -4,7 +4,7 @@ using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 namespace DomainServices.RiskIntegrationService.Abstraction.Services.LoanApplication.V2;
 
 internal class LoanApplicationService
-    : Abstraction.LoanApplication.V2.ILoanApplicationService
+    : Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction
 {
     public async Task<IServiceCallResult> Save(LoanApplicationSaveRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {

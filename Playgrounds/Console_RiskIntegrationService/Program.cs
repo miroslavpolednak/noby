@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.RiskIntegrationService.Abstraction;
 using CIS.DomainServicesSecurity.ContextUser;
 
 Console.WriteLine("run!");
@@ -16,15 +16,14 @@ var serviceProvider = new ServiceCollection()
     })
     .AddScoped<CIS.Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>()
     .AddHttpContextAccessor()
-    .AddCodebookService()
+    .AddRiskIntegrationService()
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction>() ?? throw new Exception();
+var service = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction>() ?? throw new Exception();
 
 Console.WriteLine("RUN 1");
-var result = await service.ProductTypes();
+var result = await service.Calculate(new DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.CreditWorthinessCalculateRequest
+{
+    RiskBusinessCaseId = "xxx"
+});
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));
-
-Console.WriteLine("RUN 2");
-var result2 = await service.MyTestCodebook();
-Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));

@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2;
 
-public interface ILoanApplicationService
+public interface ILoanApplicationServiceAbstraction
 {
     /// <summary>
     /// Založí LoanApplication
