@@ -353,8 +353,9 @@ internal class FormDataService
         var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
         var salesArrangementStatesById = (await _codebookService.SalesArrangementStates(cancellation)).ToDictionary(i => i.Id);
         var employmentTypes = await _codebookService.EmploymentTypes(cancellation);
+        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
 
-        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById, salesArrangementStatesById, employmentTypes);
+        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById, salesArrangementStatesById, employmentTypes, drawingTypeById);
 
         return (formData);
     }
