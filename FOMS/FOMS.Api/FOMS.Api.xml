@@ -494,6 +494,14 @@
             V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
             </remarks>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.ProfileCheck(CIS.Foms.Types.CustomerIdentity,System.Threading.CancellationToken)">
+            <summary>
+            Profile check s profilem identifikovaný
+            </summary>
+            <remarks>
+            Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+            </remarks>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
             <summary>
             Jméno customera
@@ -533,14 +541,6 @@
             <summary>
             ID klienta v MP nebo KB
             </summary>
-        </member>
-        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.ProfileCheck(CIS.Foms.Types.CustomerIdentity,System.Threading.CancellationToken)">
-            <summary>
-            Profile check s profilem identifikovaný
-            </summary>
-            <remarks>
-            Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
-            </remarks>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckResponse.IsCompliant">
             <summary>
