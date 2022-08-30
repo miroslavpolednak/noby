@@ -534,6 +534,19 @@
             ID klienta v MP nebo KB
             </summary>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.ProfileCheck(CIS.Foms.Types.CustomerIdentity,System.Threading.CancellationToken)">
+            <summary>
+            Profile check s profilem identifikovaný
+            </summary>
+            <remarks>
+            Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+            </remarks>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckResponse.IsCompliant">
+            <summary>
+            Příznak splnění profilu identifikovaný
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
             <summary>
             Jmeno klienta

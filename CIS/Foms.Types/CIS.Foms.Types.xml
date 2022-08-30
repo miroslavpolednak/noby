@@ -4,5 +4,15 @@
         <name>CIS.Foms.Types</name>
     </assembly>
     <members>
+        <member name="P:CIS.Foms.Types.CustomerIdentity.Id">
+            <summary>
+            ID klienta v danem schematu
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.CustomerIdentity.Scheme">
+            <summary>
+            Schema ve kterem je klient ulozeny - Kb | Mp
+            </summary>
+        </member>
     </members>
 </doc>
