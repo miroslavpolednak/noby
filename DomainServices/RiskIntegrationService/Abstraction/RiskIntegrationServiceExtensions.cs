@@ -34,6 +34,8 @@ public static class RiskIntegrationServiceExtensions
 
         services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction, Services.LoanApplication.V2.LoanApplicationService>();
 
+        services.register<_Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, _Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction, Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
+
         return services;
     }
 
