@@ -1,6 +1,7 @@
 ﻿using ExternalServices.Rip.V1.RipWrapper;
 using CIS.Infrastructure.Logging;
 
+
 namespace ExternalServices.Rip.V1
 {
     internal sealed class RealRipClient : BaseClient<RealRipClient>, IRipClient
@@ -55,7 +56,9 @@ namespace ExternalServices.Rip.V1
 
                 return await callMethod(async () => {
 
+                    _logger.LogSerializedObject("CreateLoanApplicationRequest", arguments);
                     var result = await c.CreateLoanApplicationAsync(arguments);
+                    _logger.LogSerializedObject("CreateLoanApplicationResponse", result);
 
                     return new SuccessfulServiceCallResult<string>(result.RiskSegment);
                 });

@@ -153,7 +153,7 @@ internal static class Extensions
                 Id = "38000119",
                 System = "NOBY"
             },
-            LoanApplicationDataVersion = DateTime.Now.ToLongTimeString(),
+            LoanApplicationDataVersion = "2022-05-31T12:16:00.7777", //  Guid.NewGuid().ToString(),
             LoanApplicationHousehold = new List<LoanApplicationHousehold2> {
                 new LoanApplicationHousehold2 {
                      Id = 1,
