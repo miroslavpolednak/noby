@@ -1,0 +1,444 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "xxx",
+    "version": "1.0.0"
+  },
+  "basePath": "/laa-loan-application-risk-characteristics-calculation-service-1.0.0/api",
+  "tags": [
+    {
+      "name": "LoanApplicationRiskCharacteristicsCalculationService"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/dti-explicit-calculation": {
+      "put": {
+        "tags": [
+          "LoanApplicationRiskCharacteristicsCalculationService"
+        ],
+        "summary": "výpočet na základě hodnot zaslaných na vstupu (modelace), identifikována pomocí resourceProcessId",
+        "description": "",
+        "operationId": "dtiExplicitCalculation_1",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/DTICalculationArguments"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DTICalculation"
+            }
+          }
+        }
+      }
+    },
+    "/dsti-explicit-calculation": {
+      "put": {
+        "tags": [
+          "LoanApplicationRiskCharacteristicsCalculationService"
+        ],
+        "summary": "výpočet na základě hodnot zaslaných na vstupu (modelace), identifikována pomocí resourceProcessId",
+        "description": "",
+        "operationId": "dstiExplicitCalculation_1",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/DSTICalculationArguments"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DSTICalculation"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "DTICalculation": {
+      "type": "object",
+      "properties": {
+        "dti": {
+          "type": "number",
+          "description": "DTI"
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "Amount": {
+      "type": "object",
+      "required": [
+        "currencyCode"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "Hodnota částky"
+        },
+        "currencyCode": {
+          "type": "string",
+          "description": "Kód měny částky (ISO 4217)"
+        }
+      },
+      "description": "Amount"
+    },
+    "CreditLiabilitiesSummary": {
+      "type": "object",
+      "properties": {
+        "productClusterCode": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CC",
+            "AD",
+            "ML",
+            "CL"
+          ]
+        },
+        "amount": {
+          "description": "Množství.",
+          "$ref": "#/definitions/Amount"
+        },
+        "amountConsolidated": {
+          "description": "Množství.",
+          "$ref": "#/definitions/Amount"
+        }
+      },
+      "description": "HouseholdCreditLiabilitiesSummaryOutHomeCompany."
+    },
+    "DTICalculationArguments": {
+      "type": "object",
+      "required": [
+        "itChannel",
+        "loanApplicationHousehold",
+        "loanApplicationProduct"
+      ],
+      "properties": {
+        "resourceProcessId": {
+          "description": "resourceProcessId",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "itChannel": {
+          "type": "string",
+          "description": "itChannel",
+          "enum": [
+            "AON",
+            "DCS",
+            "NOBY",
+            "PF",
+            "PFO",
+            "STARBUILD"
+          ]
+        },
+        "loanApplicationProduct": {
+          "description": "loanApplicationProduct",
+          "$ref": "#/definitions/DTILoanApplicationProduct"
+        },
+        "loanApplicationHousehold": {
+          "type": "array",
+          "description": "loanApplicationHousehold",
+          "items": {
+            "$ref": "#/definitions/DTILoanApplicationHousehold"
+          }
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "DTILoanApplicationHousehold": {
+      "type": "object",
+      "required": [
+        "loanApplicationCounterparty"
+      ],
+      "properties": {
+        "creditLiabilitiesSummaryOutHomeCompany": {
+          "type": "array",
+          "description": "Výše závazků mimo KB",
+          "items": {
+            "$ref": "#/definitions/CreditLiabilitiesSummary"
+          }
+        },
+        "creditLiabilitiesSummaryHomeCompany": {
+          "type": "array",
+          "description": "Výše závazků v KB",
+          "items": {
+            "$ref": "#/definitions/CreditLiabilitiesSummary"
+          }
+        },
+        "loanApplicationCounterparty": {
+          "type": "array",
+          "description": "loanApplication Counterparty",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationCounterparty"
+          }
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "DTILoanApplicationProduct": {
+      "type": "object",
+      "required": [
+        "amountRequired"
+      ],
+      "properties": {
+        "amountRequired": {
+          "xml": {
+            "name": "AMOUNT_REQUIRED"
+          },
+          "description": "Požadovaná výše úvěru",
+          "$ref": "#/definitions/Amount"
+        }
+      }
+    },
+    "LoanApplicationCounterparty": {
+      "type": "object",
+      "properties": {
+        "customerId": {
+          "description": "customerId",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "monthlyEmploymentIncomeSumAmount": {
+          "description": "Suma příjmů ze závislé činnosti",
+          "$ref": "#/definitions/Amount"
+        },
+        "entrepreneurAnnualIncomeAmount": {
+          "description": "Suma příjmů z podnikání",
+          "$ref": "#/definitions/Amount"
+        },
+        "monthlyRentIncomeSumAmount": {
+          "description": "Suma příjmů z pronájmu",
+          "$ref": "#/definitions/Amount"
+        },
+        "monthlyOtherIncomeAmount": {
+          "description": "Suma ostatních příjmů",
+          "$ref": "#/definitions/Amount"
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "ResourceIdentifier": {
+      "type": "object",
+      "required": [
+        "domain",
+        "id",
+        "instance",
+        "resource"
+      ],
+      "properties": {
+        "instance": {
+          "type": "string",
+          "description": "The resource instance code, eg. 'KBCZ'",
+          "minLength": 0,
+          "maxLength": 16
+        },
+        "domain": {
+          "type": "string",
+          "description": "The resource domain code, eg. 'CFLM'",
+          "minLength": 0,
+          "maxLength": 16
+        },
+        "resource": {
+          "type": "string",
+          "description": "The resource code (the in-domain resource code, eg. 'LimitModel')",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "id": {
+          "type": "string",
+          "description": "ID",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "variant": {
+          "type": "string",
+          "description": "The variant of the resource, eg. distinguishing the origin of the source",
+          "minLength": 0,
+          "maxLength": 16
+        }
+      },
+      "description": "ResourceIdentifier"
+    },
+    "DSTICalculation": {
+      "type": "object",
+      "properties": {
+        "dsti": {
+          "type": "number",
+          "description": "DSTI"
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "DSTICalculationArguments": {
+      "type": "object",
+      "required": [
+        "itChannel",
+        "loanApplicationHousehold",
+        "loanApplicationProduct"
+      ],
+      "properties": {
+        "resourceProcessId": {
+          "description": "resourceProcessId",
+          "$ref": "#/definitions/ResourceIdentifier"
+        },
+        "itChannel": {
+          "type": "string",
+          "description": "itChannel",
+          "enum": [
+            "AON",
+            "DCS",
+            "NOBY",
+            "PF",
+            "PFO",
+            "STARBUILD"
+          ]
+        },
+        "loanApplicationProduct": {
+          "description": "loanApplicationProduct",
+          "$ref": "#/definitions/DSTILoanApplicationProduct"
+        },
+        "loanApplicationHousehold": {
+          "type": "array",
+          "description": "loanApplicationHousehold",
+          "items": {
+            "$ref": "#/definitions/DSTILoanApplicationHousehold"
+          }
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "DSTICreditLiabilitiesSummary": {
+      "type": "object",
+      "properties": {
+        "productClusterCode": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CC",
+            "AD"
+          ]
+        },
+        "amount": {
+          "description": "Množství.",
+          "$ref": "#/definitions/Amount"
+        },
+        "amountConsolidated": {
+          "description": "Množství.",
+          "$ref": "#/definitions/Amount"
+        }
+      },
+      "description": "DSTICreditLiabilitiesSummary."
+    },
+    "DSTILoanApplicationHousehold": {
+      "type": "object",
+      "required": [
+        "loanApplicationCounterparty"
+      ],
+      "properties": {
+        "creditLiabilitiesSummaryOutHomeCompany": {
+          "type": "array",
+          "description": "Výše závazků mimo KB",
+          "items": {
+            "$ref": "#/definitions/DSTICreditLiabilitiesSummary"
+          }
+        },
+        "creditLiabilitiesSummaryHomeCompany": {
+          "type": "array",
+          "description": "Výše závazků v KB",
+          "items": {
+            "$ref": "#/definitions/DSTICreditLiabilitiesSummary"
+          }
+        },
+        "loanInstallmentsSummaryOutHomeCompany": {
+          "type": "array",
+          "description": "Výše splátek úvěrových produků mimo KB",
+          "items": {
+            "$ref": "#/definitions/LoanInstallmentsSummary"
+          }
+        },
+        "loanInstallmentsSummaryHomeCompany": {
+          "type": "array",
+          "description": "Výše splátek úvěrových produktů v KB",
+          "items": {
+            "$ref": "#/definitions/LoanInstallmentsSummary"
+          }
+        },
+        "loanApplicationCounterparty": {
+          "type": "array",
+          "description": "loanApplication Counterparty",
+          "items": {
+            "$ref": "#/definitions/LoanApplicationCounterparty"
+          }
+        }
+      },
+      "description": "Abstract DTO - should be overwritten by successors of this abstract class"
+    },
+    "DSTILoanApplicationProduct": {
+      "type": "object",
+      "required": [
+        "productClusterCode"
+      ],
+      "properties": {
+        "productClusterCode": {
+          "type": "string",
+          "xml": {
+            "name": "PRODUCT_CLUSTER_CODE"
+          },
+          "description": "kód produktového shluku"
+        },
+        "amountRequired": {
+          "xml": {
+            "name": "AMOUNT_REQUIRED"
+          },
+          "description": "požadovaná výše úvěru",
+          "$ref": "#/definitions/Amount"
+        },
+        "annuity": {
+          "xml": {
+            "name": "ANUITY"
+          },
+          "description": "požadovaná splátka",
+          "$ref": "#/definitions/Amount"
+        }
+      }
+    },
+    "LoanInstallmentsSummary": {
+      "type": "object",
+      "properties": {
+        "productClusterCode": {
+          "type": "string",
+          "description": "Product group.",
+          "enum": [
+            "CL",
+            "ML"
+          ]
+        },
+        "amount": {
+          "description": "Množství.",
+          "$ref": "#/definitions/Amount"
+        },
+        "amountConsolidated": {
+          "description": "Množství.",
+          "$ref": "#/definitions/Amount"
+        }
+      },
+      "description": "householdInstallmentsSummaryOutHomeCompany"
+    }
+  }
+}
