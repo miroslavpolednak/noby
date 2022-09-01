@@ -3,6 +3,8 @@ using Grpc.Core.Interceptors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
+using CIS.Core.Exceptions;
+using System.Net;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -23,6 +25,19 @@ public class GenericServerExceptionInterceptor : Interceptor
         try
         {
             return await continuation(request, context);
+        }
+        // DS neni dostupna
+        catch (CisServiceUnavailableException ex)
+        {
+            _logger.ExtServiceUnavailable(ex.ServiceName, ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' unavailable", 0);
+        }
+        // 500 z volane externi sluzby
+        catch (CisServiceServerErrorException ex)
+        {
+            setHttpStatus(StatusCodes.Status424FailedDependency);
+            _logger.ExtServiceUnavailable(ex.ServiceName, ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' failed with HTTP 500", 0);
         }
         catch (Core.Exceptions.CisNotFoundException e) // entity neexistuje
         {

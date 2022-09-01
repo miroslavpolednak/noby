@@ -21,8 +21,7 @@ internal static class RiskBusinessCaseStartupExtensions
                     else
                         builder.Services
                             .AddC4mHttpClient<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(ServiceName)
-                            .AddC4mPolicyHandler<RiskBusinessCase.V0_2.IRiskBusinessCaseClient>(ServiceName);
+                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(ServiceName);
                     break;
 
                 case Versions.V1:
@@ -31,8 +30,7 @@ internal static class RiskBusinessCaseStartupExtensions
                     else
                         builder.Services
                             .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName)
-                            .AddC4mPolicyHandler<RiskBusinessCase.V1.IRiskBusinessCaseClient>(ServiceName);
+                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName);
                     break;
 
                 default:

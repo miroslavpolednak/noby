@@ -11,24 +11,24 @@ internal static class CustomersExposureStartupExtensions
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CustomersExposure.Configuration.CustomersExposureConfiguration>(ServiceName);
 
-        foreach (var configuration in configurations)
+        configurations.ForEach(configuration =>
         {
-            switch (configuration.Version)
+            switch (configuration.Version, configuration.ImplementationType)
             {
-                case Versions.V1:
-                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                        builder.Services.AddScoped<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.MockCustomersExposureClient>();
-                    else
-                        builder.Services
-                            .AddC4mHttpClient<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.RealCustomersExposureClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<CustomersExposure.V1.RealCustomersExposureClient>(ServiceName)
-                            .AddC4mPolicyHandler<CustomersExposure.V1.ICustomersExposureClient>(ServiceName);
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Mock):
+                    builder.Services.AddScoped<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.MockCustomersExposureClient>();
+                    break;
+
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
+                    builder.Services
+                        .AddC4mHttpClient<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.RealCustomersExposureClient>(configuration)
+                        .ConfigureC4mHttpMessageHandler<CustomersExposure.V1.RealCustomersExposureClient>(ServiceName);
                     break;
 
                 default:
                     throw new NotImplementedException($"{ServiceName} version {configuration.Version} client not implemented");
             }
-        }
+        });
 
         return builder;
     }

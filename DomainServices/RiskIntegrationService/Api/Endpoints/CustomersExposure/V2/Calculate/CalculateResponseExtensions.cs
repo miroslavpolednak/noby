@@ -1,6 +1,7 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.V1.Contracts;
 using _CB = DomainServices.CodebookService.Contracts.Endpoints;
+using DomainServices.RiskIntegrationService.Contracts.Shared;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.Calculate;
 
@@ -12,7 +13,7 @@ internal static class CalculateResponseExtensions
         CancellationToken cancellation)
     {
         var customerRoles = await _codebookService.CustomerRoles(cancellation);
-
+        
         return new _V2.CustomersExposureCalculateResponse
         {
             Customers = response.LoanApplicationCounterparty.Select(t => new _V2.CustomersExposureCustomer
@@ -47,7 +48,7 @@ internal static class CalculateResponseExtensions
     public static _V2.CustomersExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureItem item, List<_CB.CustomerRoles.CustomerRoleItem> customerRoles)
         => new _V2.CustomersExposureExistingKBGroupItem
         {
-            ProductId = item.ProductId,
+            BankAccount = getBankAccountFromIdentifier(item.ProductId),
             LoanType = item.LoanType,
             LoanTypeCategory = "",//TODO neni ciselnik
             CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == item.CustomerRoleCode)?.Id,
@@ -105,4 +106,15 @@ internal static class CalculateResponseExtensions
             KbGroupInstanceCode = item.KbGroupInstanceCode,
             CbcbDataLastUpdate = item.CbcbDataLastUpdate?.DateTime
         };
+
+    private static BankAccountDetail? getBankAccountFromIdentifier(string? identifier)
+    {
+        if (string.IsNullOrEmpty(identifier) || identifier.Length < 20) return null;
+        return new()
+        {
+            BankCode = "0100",
+            Number = identifier[^10..].TrimStart('0'),
+            NumberPrefix = identifier[^16..^10].TrimStart('0')
+        };
+    }
 }

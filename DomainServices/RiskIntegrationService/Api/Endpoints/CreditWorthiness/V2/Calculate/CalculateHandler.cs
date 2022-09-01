@@ -29,8 +29,8 @@ internal sealed class CalculateHandler
                 Clients = h.Customers!.ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
                 CreditLiabilitiesSummary = liabilitiesFlatten.ToC4mCreditLiabilitiesSummary(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
                 CreditLiabilitiesSummaryOut = liabilitiesFlatten.ToC4mCreditLiabilitiesSummaryOut(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
-                InstallmentsSummary = liabilitiesFlatten.ToC4mInstallmentsSummary(obligationTypes.Where(o => o.Id == 1 || o.Id == 2)),
-                InstallmentsSummaryOut = liabilitiesFlatten.ToC4mInstallmentsSummaryOut(obligationTypes.Where(o => o.Id == 1 || o.Id == 2))
+                InstallmentsSummary = liabilitiesFlatten.ToC4mInstallmentsSummary(obligationTypes.Where(o => o.Id != 3 && o.Id != 4)),
+                InstallmentsSummaryOut = liabilitiesFlatten.ToC4mInstallmentsSummaryOut(obligationTypes.Where(o => o.Id != 3 && o.Id != 4))
             }).ToList()
         };
 

@@ -1,0 +1,71 @@
+syntax = "proto3";
+package DomainServices.RiskIntegrationService.CreditWorthinessService;
+
+message CreditWorthinessCalculateRequest {
+   string ResourceProcessId = 1;
+   string RiskBusinessCaseId = 3;
+   Identity UserIdentity = 4;
+   CreditWorthinessProduct Product = 5;
+   repeated CreditWorthinessHousehold Households = 6;
+}
+message CreditWorthinessCalculateResponse {
+   int64 InstallmentLimit = 1;
+   int64 MaxAmount = 2;
+   int64 RemainsLivingAnnuity = 3;
+   int64 RemainsLivingInst = 4;
+   CreditWorthinessResults WorthinessResult = 5;
+   ResultReasonDetail ResultReason = 6;
+}
+message CreditWorthinessCustomer {
+   string InternalCustomerId = 1;
+   bool HasPartner = 2;
+   int32 MaritalStateId = 3;
+   repeated CreditWorthinessIncome Incomes = 4;
+   repeated CreditWorthinessObligation Obligations = 5;
+}
+message CreditWorthinessHousehold {
+   int32 ChildrenUpToTenYearsCount = 1;
+   int32 ChildrenOverTenYearsCount = 2;
+   ExpensesSummary ExpensesSummary = 3;
+   repeated CreditWorthinessCustomer Customers = 4;
+}
+message CreditWorthinessIncome {
+   int32 IncomeTypeId = 1;
+   string Amount = 2;
+}
+message CreditWorthinessObligation {
+   int32 ObligationTypeId = 1;
+   string Amount = 2;
+   string AmountConsolidated = 3;
+   bool IsObligationCreditorExternal = 4;
+}
+message CreditWorthinessProduct {
+   int32 ProductTypeId = 1;
+   int32 LoanDuration = 2;
+   string LoanInterestRate = 3;
+   int32 LoanAmount = 4;
+   int32 LoanPaymentAmount = 5;
+   int32 FixedRatePeriod = 6;
+}
+enum CreditWorthinessResults {
+   Unknown = 0;
+   Success = 1;
+   Failed = 2;
+}
+message ExpensesSummary {
+   string Rent = 1;
+   string Saving = 2;
+   string Insurance = 3;
+   string Other = 4;
+}
+message Identity {
+   string IdentityId = 1;
+   string IdentityScheme = 2;
+}
+message ResultReasonDetail {
+   string Code = 1;
+   string Description = 2;
+}
+service V2 {
+   rpc Calculate (CreditWorthinessCalculateRequest) returns (CreditWorthinessCalculateResponse);
+}

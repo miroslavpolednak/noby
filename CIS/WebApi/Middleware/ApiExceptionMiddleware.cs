@@ -42,6 +42,12 @@ public class ApiExceptionMiddleware
             logger.ExtServiceUnavailable(ex.ServiceName, ex);
             await Results.Problem(ex.MethodName, $"Service '{ex.ServiceName}' unavailable", statusCode: (int)HttpStatusCode.ServiceUnavailable).ExecuteAsync(context);
         }
+        // 500 z volane externi sluzby
+        catch (CisServiceServerErrorException ex)
+        {
+            logger.ExtServiceUnavailable(ex.ServiceName, ex);
+            await Results.Problem(ex.MethodName, $"Service '{ex.ServiceName}' failed with HTTP 500", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
+        }
         // serviceCallResult error
         catch (CisServiceCallResultErrorException ex)
         {
