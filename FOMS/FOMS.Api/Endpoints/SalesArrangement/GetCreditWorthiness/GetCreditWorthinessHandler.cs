@@ -1,6 +1,7 @@
 ﻿using ExternalServices.Rip.V1.RipWrapper;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
+using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using CIS.Core;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +12,7 @@ internal class GetCreditWorthinessHandler
 {
     public async Task<GetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)
     {
-        CreditWorthinessCalculationArguments ripRequest = new();
+        _Rip.CreditWorthinessCalculateRequest ripRequest = new();
 
         // SA instance
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
@@ -29,33 +30,33 @@ internal class GetCreditWorthinessHandler
         if (!households.Any())
             throw new CisValidationException("There is no household bound for this SA");
         
-        ripRequest.ResourceProcessIdMp = offerInstance.ResourceProcessId;
-        ripRequest.RiskBusinessCaseIdMp = saInstance.RiskBusinessCaseId;
-        ripRequest.ItChannel = "NOBY";
+        ripRequest.ResourceProcessId = offerInstance.ResourceProcessId;
+        ripRequest.RiskBusinessCaseId = saInstance.RiskBusinessCaseId;
 #pragma warning disable CA1305 // Specify IFormatProvider
-        ripRequest.HumanUser = new HumanUser
+        ripRequest.UserIdentity = new()
         {
             IdentityScheme = ((CIS.Foms.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
-            Identity = userInstance.UserIdentifiers[0].Identity
+            IdentityId = userInstance.UserIdentifiers[0].Identity
         };
 
         // modelace
-        ripRequest.LoanApplicationProduct = new LoanApplicationProduct
+        ripRequest.Product = new()
         {
-            Product = caseInstance.Data.ProductTypeId,
-            Maturity = offerInstance.SimulationResults.LoanDuration,
-            InterestRate = (double)(decimal)offerInstance.SimulationResults.LoanInterestRate,
-            AmountRequired = Convert.ToInt32((decimal?)offerInstance.SimulationResults.LoanAmount ?? 0),
-            Annuity = Convert.ToInt32((decimal?)offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
-            FixationPeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
+            ProductTypeId = caseInstance.Data.ProductTypeId,
+            LoanDuration = offerInstance.SimulationResults.LoanDuration,
+            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
+            LoanPaymentAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
         };
 #pragma warning restore CA1305
-        
-        // domacnosti
-        ripRequest.Households = new List<LoanApplicationHousehold>();
-        foreach (var household in households.Where(t => t.CustomerOnSAId1.HasValue)) //neberu domacnosti bez aspon jednoho customera
-            ripRequest.Households.Add(await createHousehold(household, cancellationToken));
 
+        // domacnosti, neberu domacnosti bez aspon jednoho customera
+        ripRequest.Households = (await households
+            .Where(t => t.CustomerOnSAId1.HasValue)
+            .SelectAsync(async household => await createHousehold(household, cancellationToken))
+            ).ToList();
+        
         var ripResult = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculation>(await _ripClient.ComputeCreditWorthiness(ripRequest));
 
         return new GetCreditWorthinessResponse
@@ -72,18 +73,18 @@ internal class GetCreditWorthinessHandler
         };
     }
 
-    private async Task<LoanApplicationHousehold> createHousehold(_SA.Household household, CancellationToken cancellationToken)
+    private async Task<_Rip.CreditWorthinessHousehold> createHousehold(_SA.Household household, CancellationToken cancellationToken)
     {
-        var h = new LoanApplicationHousehold
+        var h = new _Rip.CreditWorthinessHousehold
         {
-            ChildrenUnderAnd10 = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
-            ChildrenOver10 = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
-            Clients = new List<LoanApplicationCounterParty>()
+            ChildrenUpToTenYearsCount = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
+            ChildrenOverTenYearsCount = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
+            Customers = new()
         };
 
         // expenses
         if (household.Expenses is not null)
-            h.ExpensesSummary = new ExpensesSummary
+            h.ExpensesSummary = new()
             {
                 Rent = household.Expenses.HousingExpenseAmount.GetValueOrDefault(0),
                 Saving = household.Expenses.SavingExpenseAmount.GetValueOrDefault(0),
@@ -93,12 +94,12 @@ internal class GetCreditWorthinessHandler
 
         // clients
         if (household.CustomerOnSAId1.HasValue)
-            h.Clients.Add(await createClient(household.CustomerOnSAId1.Value, cancellationToken));
+            h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, cancellationToken));
         if (household.CustomerOnSAId2.HasValue)
-            h.Clients.Add(await createClient(household.CustomerOnSAId2.Value, cancellationToken));
+            h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, cancellationToken));
 
         // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
-        if (!h.Clients.Any(t => t.LoanApplicationIncome.Any()))
+        if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
             throw new CisValidationException("At least one customer in household must have some income");
 
         return h;
@@ -150,7 +151,7 @@ internal class GetCreditWorthinessHandler
         return c;
     }
 
-    private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
+    private readonly DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction _creditWorthinessService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
@@ -161,7 +162,7 @@ internal class GetCreditWorthinessHandler
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public GetCreditWorthinessHandler(
-        ExternalServices.Rip.V1.IRipClient ripClient,
+        DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction creditWorthinessService,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
@@ -171,8 +172,8 @@ internal class GetCreditWorthinessHandler
         DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction householdService,
         DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
     {
+        _creditWorthinessService = creditWorthinessService;
         _customerService = customerService;
-        _ripClient = ripClient;
         _userService = userService;
         _caseService = caseService;
         _userAccessor = userAccessor;
