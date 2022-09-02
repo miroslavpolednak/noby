@@ -513,7 +513,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public System.DateTimeOffset? Timestamp { get; set; }
+        public System.DateTime? Timestamp { get; set; }
 
     }
 
@@ -698,7 +698,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public System.DateTimeOffset? RiskBusinesscaseExpirationDate { get; set; }
+        public System.DateTime? RiskBusinesscaseExpirationDate { get; set; }
 
         /// <summary>
         /// Assessment result
@@ -1409,7 +1409,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset Timestamp { get; set; }
+        public System.DateTime Timestamp { get; set; }
 
         /// <summary>
         /// Status
@@ -1698,8 +1698,9 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonPropertyName("approvalDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
-        public System.DateTimeOffset? ApprovalDate { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ApprovalDate { get; set; }
 
         /// <summary>
         /// loanAgreement.

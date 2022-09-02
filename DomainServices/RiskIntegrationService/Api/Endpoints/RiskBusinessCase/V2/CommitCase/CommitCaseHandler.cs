@@ -27,7 +27,7 @@ internal sealed class CommitCaseHandler
             } : null,
             RiskBusinessCaseFinalResult = FastEnum.Parse<_C4M.RiskBusinessCaseCommitCreateRiskBusinessCaseFinalResult>(request.FinalResult.ToString(), true),
             ApprovalLevel = request.ApprovalLevel,
-            ApprovalDate = request.ApprovalDate,
+            ApprovalDate = request.ApprovalDate,//?.ToString("yyyy-MM-dd", default),
             LoanAgreement = request.LoanAgreement != null ? new _C4M.LoanAgreement
             {
                 DistributionChannel = channels.FirstOrDefault(t => t.Id == request.LoanAgreement.DistributionChannelId)?.Code,
@@ -66,7 +66,7 @@ internal sealed class CommitCaseHandler
         {
             //TODO C4M
             RiskBusinessCaseId = response.RiskBusinessCaseId,
-            Timestamp = response.Timestamp!.DateTime,
+            Timestamp = response.Timestamp,
             OperationResult = response.OperationResult,
             FinalState = response.RiskBusinessCaseFinalState,
             ResultReasons = response.ResultReasons?.Select(t => new Contracts.Shared.ResultReasonDetail

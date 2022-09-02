@@ -12,7 +12,7 @@ internal static class GetAssesmentResponseExtensions
             LoanApplicationAssessmentId = response.Id,
             SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(),
             RiskBusinesscaseId = response.RiskBusinesscaseId,
-            RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate?.DateTime,
+            RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate,
             AssessmentResult = response.AssessmentResult,
             StandardRiskCosts = response.StandardRiskCosts,
             GlTableCode = response.GlTableCode,
@@ -122,7 +122,7 @@ internal static class GetAssesmentResponseExtensions
         => new()
         {
             IdentityId = model.IdentityId,
-            ChangeTime = model.Timestamp?.DateTime
+            ChangeTime = model.Timestamp
         };
 
     private static AmountDetail? ToAmountDetail(this _C4M.Amount model)
