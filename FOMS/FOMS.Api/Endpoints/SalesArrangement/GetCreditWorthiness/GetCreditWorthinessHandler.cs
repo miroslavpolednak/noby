@@ -1,5 +1,4 @@
-﻿using ExternalServices.Rip.V1.RipWrapper;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using CIS.Core;
@@ -12,52 +11,41 @@ internal class GetCreditWorthinessHandler
 {
     public async Task<GetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)
     {
-        _Rip.CreditWorthinessCalculateRequest ripRequest = new();
-
         // SA instance
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, $"Offer instance not found for SA {saInstance.SalesArrangementId}");
-
         // case instance
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
         // offer instance
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
         // user instance
         var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
-        // seznam domacnosti na SA
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<_SA.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
-        if (!households.Any())
-            throw new CisValidationException("There is no household bound for this SA");
-        
-        ripRequest.ResourceProcessId = offerInstance.ResourceProcessId;
-        ripRequest.RiskBusinessCaseId = saInstance.RiskBusinessCaseId;
+
 #pragma warning disable CA1305 // Specify IFormatProvider
-        ripRequest.UserIdentity = new()
+        var ripRequest = new _Rip.CreditWorthinessCalculateRequest
         {
-            IdentityScheme = ((CIS.Foms.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
-            IdentityId = userInstance.UserIdentifiers[0].Identity
+            ResourceProcessId = offerInstance.ResourceProcessId,
+            RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
+            UserIdentity = new()
+            {
+                IdentityScheme = ((CIS.Foms.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
+                IdentityId = userInstance.UserIdentifiers[0].Identity
+            },
+            Product = new()
+            {
+                ProductTypeId = caseInstance.Data.ProductTypeId,
+                LoanDuration = offerInstance.SimulationResults.LoanDuration,
+                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+                LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
+                LoanPaymentAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
+                FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
+            },
+            Households = await _creditWorthinessHouseholdService.CreateHouseholds(request.SalesArrangementId, cancellationToken)
         };
+#pragma warning restore CA1305 // Specify IFormatProvider
 
-        // modelace
-        ripRequest.Product = new()
-        {
-            ProductTypeId = caseInstance.Data.ProductTypeId,
-            LoanDuration = offerInstance.SimulationResults.LoanDuration,
-            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
-            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
-            LoanPaymentAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
-            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
-        };
-#pragma warning restore CA1305
-
-        // domacnosti, neberu domacnosti bez aspon jednoho customera
-        ripRequest.Households = (await households
-            .Where(t => t.CustomerOnSAId1.HasValue)
-            .SelectAsync(async household => await createHousehold(household, cancellationToken))
-            ).ToList();
-        
-        var ripResult = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculation>(await _ripClient.ComputeCreditWorthiness(ripRequest));
+        var ripResult = ServiceCallResult.ResolveAndThrowIfError<_Rip.CreditWorthinessCalculateResponse>(await _creditWorthinessService.Calculate(ripRequest, cancellationToken));
 
         return new GetCreditWorthinessResponse
         {
@@ -73,113 +61,29 @@ internal class GetCreditWorthinessHandler
         };
     }
 
-    private async Task<_Rip.CreditWorthinessHousehold> createHousehold(_SA.Household household, CancellationToken cancellationToken)
-    {
-        var h = new _Rip.CreditWorthinessHousehold
-        {
-            ChildrenUpToTenYearsCount = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
-            ChildrenOverTenYearsCount = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
-            Customers = new()
-        };
-
-        // expenses
-        if (household.Expenses is not null)
-            h.ExpensesSummary = new()
-            {
-                Rent = household.Expenses.HousingExpenseAmount.GetValueOrDefault(0),
-                Saving = household.Expenses.SavingExpenseAmount.GetValueOrDefault(0),
-                Insurance = household.Expenses.InsuranceExpenseAmount.GetValueOrDefault(0),
-                Other = household.Expenses.OtherExpenseAmount.GetValueOrDefault(0)
-            };
-
-        // clients
-        if (household.CustomerOnSAId1.HasValue)
-            h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, cancellationToken));
-        if (household.CustomerOnSAId2.HasValue)
-            h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, cancellationToken));
-
-        // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
-        if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
-            throw new CisValidationException("At least one customer in household must have some income");
-
-        return h;
-    }
-
-    private async Task<LoanApplicationCounterParty> createClient(int customerOnSAId, CancellationToken cancellationToken)
-    {
-        // customer on SA instance
-        var customer = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
-
-        var c = new LoanApplicationCounterParty
-        {
-            // TODO:
-            // IsPartnerMp = customer.HasPartner
-        };
-
-        // customer instance
-        if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
-        {
-            var customerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
-            {
-                Identity = customer.CustomerIdentifiers.First()
-            }, cancellationToken));
-            c.MaritalStatusMp = customerInstance.NaturalPerson?.MaritalStatusStateId;
-        }
-
-        //TODO neni tu zadani jake ID posilat, tak beru prvni
-        if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
-            c.IdMp = customer.CustomerIdentifiers.First().IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture);
-
-        if (customer.Incomes is not null && customer.Incomes.Any())
-            c.LoanApplicationIncome = customer.Incomes.Select(t => new LoanApplicationIncome
-            {
-                Amount = Convert.ToDouble((decimal)t.Sum),
-                CategoryMp = t.IncomeTypeId
-            }).ToList() ?? new List<LoanApplicationIncome>();
-
-        if (customer.Obligations is not null && customer.Obligations.Any())
-            c.CreditLiabilities = customer.Obligations.Select(t => new CreditLiability
-            {
-                LiabilityType = t.ObligationTypeId.GetValueOrDefault(),
-                Installment = t.InstallmentAmount,
-                Limit = t.CreditCardLimit,
-                InstallmentConsolidated = t.Correction?.InstallmentAmountCorrection,//asi?
-                AmountConsolidated = t.Correction?.CreditCardLimitCorrection,//asi?
-                OutHomeCompanyFlag = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
-            }).ToList();
-
-        return c;
-    }
-
+    private readonly CreditWorthinessHouseholdService _creditWorthinessHouseholdService;
     private readonly DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction _creditWorthinessService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction _householdService;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSaService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
-
+    
     public GetCreditWorthinessHandler(
+        CreditWorthinessHouseholdService creditWorthinessHouseholdService,
         DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction creditWorthinessService,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
-        DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction householdService,
-        DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
+        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _creditWorthinessService = creditWorthinessService;
-        _customerService = customerService;
         _userService = userService;
         _caseService = caseService;
         _userAccessor = userAccessor;
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
-        _householdService = householdService;
-        _customerOnSaService = customerOnSaService;
+        _creditWorthinessHouseholdService = creditWorthinessHouseholdService;
     }
 }
