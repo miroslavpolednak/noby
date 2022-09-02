@@ -513,7 +513,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public System.DateTime? Timestamp { get; set; }
+        public System.DateTimeOffset? Timestamp { get; set; }
 
     }
 
@@ -698,7 +698,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public System.DateTime? RiskBusinesscaseExpirationDate { get; set; }
+        public System.DateTimeOffset? RiskBusinesscaseExpirationDate { get; set; }
 
         /// <summary>
         /// Assessment result
@@ -1409,7 +1409,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime Timestamp { get; set; }
+        public System.DateTimeOffset Timestamp { get; set; }
 
         /// <summary>
         /// Status

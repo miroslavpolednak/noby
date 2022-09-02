@@ -66,7 +66,7 @@ internal sealed class CommitCaseHandler
         {
             //TODO C4M
             RiskBusinessCaseId = response.RiskBusinessCaseId,
-            Timestamp = response.Timestamp,
+            Timestamp = response.Timestamp.DateTime,
             OperationResult = response.OperationResult,
             FinalState = response.RiskBusinessCaseFinalState,
             ResultReasons = response.ResultReasons?.Select(t => new Contracts.Shared.ResultReasonDetail
