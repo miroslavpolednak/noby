@@ -1,14 +1,7 @@
 ﻿using CIS.Core.Validation;
 using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Dto;
+namespace DomainServices.CustomerService.Api.Dto;
 
-internal sealed class SearchCustomersMediatrRequest : IRequest<SearchCustomersResponse>, IValidatableRequest
-{
-    public SearchCustomersRequest Request { get; init; }
-
-    public SearchCustomersMediatrRequest(SearchCustomersRequest request)
-    {
-        this.Request = request;
-    }
-}
+internal record SearchCustomersMediatrRequest(SearchCustomersRequest Request)
+    : IRequest<SearchCustomersResponse>, IValidatableRequest;

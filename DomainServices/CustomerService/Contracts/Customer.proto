@@ -11,20 +11,6 @@ import "Contact.proto";
 
 import "google/protobuf/wrappers.proto";
 
-message SearchCustomersRequest {
-
-    cis.types.Identity Identity = 1;
-
-    cis.types.Mandants Mandant = 2;
-
-    SearchNaturalPerson NaturalPerson = 3;
-
-    SearchIdentificationDocument IdentificationDocument = 4;
-
-    string Email = 5;
-
-    string PhoneNumber = 6;
-}
 
 message SearchCustomerResult {
     
@@ -43,42 +29,9 @@ message SearchCustomerResult {
     google.protobuf.Int32Value CountryId = 7;
 }
 
-message SearchCustomersResponse {
-
-    repeated SearchCustomerResult Customers = 1;
-
-}
-
-message CustomerListRequest {
-
-    repeated cis.types.Identity Identities = 1;
-
-}
-
-message CustomerListResult {
-    
-    repeated cis.types.Identity Identities = 1;
-
-    NaturalPersonBaseData NaturalPerson = 2;
-
-    IdentificationDocument IdentificationDocument = 3;
-
-    repeated cis.types.GrpcAddress Addresses = 4;
-
-    repeated Contact Contacts = 5;
-
-}
-
-message CustomerListResponse {
-
-    repeated CustomerListResult Customers = 1;
-
-}
-
 message CustomerRequest {
 
     cis.types.Identity Identity = 1;
-
 }
 
 message CustomerResponse {

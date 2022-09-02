@@ -44,7 +44,7 @@ internal static class StartupExtensions
 
         // add validators
         builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(IApiAssembly))
+                .FromAssembliesOf(typeof(Program))
                 .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());

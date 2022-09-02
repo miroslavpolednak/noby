@@ -59,3 +59,27 @@ message NaturalPerson {
 
    int32 EducationLevelId = 14;
 }
+
+message NaturalPersonBasicInfo {
+	
+   string FirstName = 1;
+
+   string LastName = 2;
+
+   cis.types.NullableGrpcDate DateOfBirth = 3;
+
+   string BirthNumber = 4;
+
+   int32 GenderId = 5;
+}
+
+message NaturalPersonSearch {
+	
+   string FirstName = 1;
+
+   string LastName = 2;
+
+   cis.types.NullableGrpcDate DateOfBirth = 3;
+
+   string BirthNumber = 4;
+}

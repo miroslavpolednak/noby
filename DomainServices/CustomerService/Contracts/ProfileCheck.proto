@@ -2,7 +2,6 @@
 package DomainServices.CustomerService;
 option csharp_namespace = "DomainServices.CustomerService.Contracts";
 
-import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 
 message ProfileCheckRequest {

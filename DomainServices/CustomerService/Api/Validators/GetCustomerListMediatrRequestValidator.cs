@@ -1,4 +1,5 @@
-﻿using DomainServices.CustomerService.Dto;
+﻿using DomainServices.CustomerService.Api.Dto;
+using DomainServices.CustomerService.Dto;
 using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Validators;

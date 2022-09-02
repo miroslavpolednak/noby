@@ -37,11 +37,13 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-var test = await service.ProfileCheck(new ProfileCheckRequest
-{
-    Identity = new Identity(123, IdentitySchemes.Kb),
-    CustomerProfileCode = "KYC_SUBJECTS"
-});
+var test = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+
+//var test = await service.ProfileCheck(new ProfileCheckRequest
+//{
+//    Identity = new Identity(123, IdentitySchemes.Kb),
+//    CustomerProfileCode = "KYC_SUBJECTS"
+//});
 
 //await service.GetCustomerDetail(new CustomerRequest { Identity = new Identity(1231, IdentitySchemes.Kb) });
 

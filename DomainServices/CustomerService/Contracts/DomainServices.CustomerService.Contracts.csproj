@@ -25,6 +25,7 @@
 		<Protobuf Include="CustomerService.V1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="ProfileCheck.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="SearchCustomers.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./Customer.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./X.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

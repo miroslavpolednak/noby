@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Results;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api;
@@ -17,7 +18,7 @@ internal static class CMExtension
             IdentityScheme = Identity.Types.IdentitySchemes.Kb
         };
 
-    public static GrpcAddress ToAddress(this CustomerManagement.CMWrapper.Address model, CustomerManagement.CMWrapper.ComponentAddress componentAddress, CIS.Foms.Enums.AddressTypes addressType, bool isPrimary, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries)
+    public static GrpcAddress ToAddress(this Address model, ComponentAddress componentAddress, CIS.Foms.Enums.AddressTypes addressType, bool isPrimary, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries)
         => new ()
         {
             AddressTypeId = (int)addressType,
@@ -32,7 +33,7 @@ internal static class CMExtension
             DeliveryDetails = model.DeliveryDetails ?? ""
         };
 
-    public static Contracts.IdentificationDocument ToIdentificationDocument(this CustomerManagement.CMWrapper.IdentificationDocument model, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries, List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> identificationDocumentTypes)
+    public static Contracts.IdentificationDocument ToIdentificationDocument(this IdentificationDocument model, List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries, List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> identificationDocumentTypes)
         => new ()
         {
             RegisterPlace = model.RegisterPlace ?? "",
