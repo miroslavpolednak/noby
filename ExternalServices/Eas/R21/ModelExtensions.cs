@@ -38,4 +38,42 @@ internal static class ModelExtensions
             };
         }
     }
+
+    public static string[] FindDifferentProps(S_KLIENTDATA input, S_KLIENTDATA output)
+    {
+        var values = new List<string>();
+
+
+        if (input.klient_type != default(int) && input.klient_type != output.klient_type)
+        {
+            values.Add("klient_type");
+        }
+
+        if (input.rodne_cislo_ico != default(string) && input.rodne_cislo_ico != output.rodne_cislo_ico)
+        {
+            values.Add("rodne_cislo_ico");
+        }
+
+        if (input.priezvisko != default(string) && input.priezvisko != output.priezvisko)
+        {
+            values.Add("priezvisko");
+        }
+
+        if (input.meno != default(string) && input.meno != output.meno)
+        {
+            values.Add("meno");
+        }
+
+        if (input.datum_narodenia != default(DateTime) && input.datum_narodenia != output.datum_narodenia)
+        {
+            values.Add("datum_narodenia");
+        }
+
+        if (input.pohlavie != default(string) && input.pohlavie != output.pohlavie)
+        {
+            values.Add("pohlavie");
+        }
+
+        return values.ToArray();
+    }
 }
