@@ -89,15 +89,20 @@ internal sealed class RealEasClient
             if (r.return_val != 0)
             {
                 var message = $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}";
-
                 _logger.LogInformation(message);
-
                 return new ErrorServiceCallResult(9105, message);
+            }
+
+            var differentProps = ModelExtensions.FindDifferentProps(request[0], r);
+            if (differentProps.Length > 0)
+            {
+                var message = $"Detected differences between input and output data during call EAS NewKlient [{String.Join(",",differentProps)}]";
+                _logger.LogInformation(message);
+                return new ErrorServiceCallResult(99999, message); // TODO: error code
             }
             else
             {
                 _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
-
                 return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
                 {
                     Id = r.klient_id,
