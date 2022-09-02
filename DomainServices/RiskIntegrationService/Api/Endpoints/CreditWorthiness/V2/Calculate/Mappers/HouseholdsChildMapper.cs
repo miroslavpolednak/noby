@@ -12,22 +12,25 @@ internal sealed class HouseholdsChildMapper
         int mandantId,
         CancellationToken cancellation)
     {
-        var obligationTypes = await _codebookService.ObligationTypes(cancellation);
-        var liabilitiesFlatten = households.SelectMany(
-            h => h.Customers!.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!)
-            ).ToList();
-
-        return (await households.SelectAsync(async h => new _C4M.LoanApplicationHousehold
+        // inicializovat ciselniky
+        _obligationTypes = await _codebookService.ObligationTypes(cancellation);
+        
+        return (await households.SelectAsync(async h =>
         {
-            ChildrenOver10 = h.ChildrenOverTenYearsCount,
-            ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
-            ExpensesSummary = toC4m(h.ExpensesSummary ?? new Contracts.Shared.V1.ExpensesSummary()),
-            Clients = await _customersMapper.MapCustomers(h.Customers!, mandantId, cancellation),
-            CreditLiabilitiesSummary = toC4mCreditLiabilitiesSummary(liabilitiesFlatten, obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
-            CreditLiabilitiesSummaryOut = toC4mCreditLiabilitiesSummaryOut(liabilitiesFlatten, obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
-            InstallmentsSummary = toC4mInstallmentsSummary(liabilitiesFlatten, obligationTypes.Where(o => o.Id != 3 && o.Id != 4)),
-            InstallmentsSummaryOut = toC4mInstallmentsSummaryOut(liabilitiesFlatten, obligationTypes.Where(o => o.Id != 3 && o.Id != 4))
-        })).ToList();
+            var liabilitiesFlatten = h.Customers!.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!).ToList();
+
+            return new _C4M.LoanApplicationHousehold
+            {
+                ChildrenOver10 = h.ChildrenOverTenYearsCount,
+                ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
+                ExpensesSummary = toC4m(h.ExpensesSummary ?? new Contracts.Shared.V1.ExpensesSummary()),
+                Clients = await _customersMapper.MapCustomers(h.Customers!, mandantId, cancellation),
+                CreditLiabilitiesSummary = createCreditLiabilitiesSummary(liabilitiesFlatten),
+                CreditLiabilitiesSummaryOut = createCreditLiabilitiesSummaryOut(liabilitiesFlatten),
+                InstallmentsSummary = createInstallmentsSummary(liabilitiesFlatten),
+                InstallmentsSummaryOut = createInstallmentsSummaryOut(liabilitiesFlatten)
+            };
+        })).ToList();   
     }
 
     private static List<_C4M.ExpensesSummary> toC4m(Contracts.Shared.V1.ExpensesSummary expenses)
@@ -41,63 +44,90 @@ internal sealed class HouseholdsChildMapper
         };
 
     #region liabilities
-    private static List<_C4M.CreditLiabilitiesSummaryHomeCompany> toC4mCreditLiabilitiesSummary(List<_V2.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
-        => obligationTypes
-            .Select(t =>
+    private List<_C4M.CreditLiabilitiesSummaryHomeCompany> createCreditLiabilitiesSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.CreditLiabilitiesSummaryHomeCompany>
+       {
+            new()
             {
-                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && !x.IsObligationCreditorExternal).ToList();
-                return new _C4M.CreditLiabilitiesSummaryHomeCompany
-                {
-                    Amount = coll?.Sum(x => x.Amount) ?? 0,
-                    AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup>(t.Code)
-                };
-            })
-            .ToList();
+                ProductGroup = _C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup.AD,
+                Amount = sumObligations(liabilitiesFlatten, "AD", false, _fcSumObligationsAmount),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", false, _fcSumObligationsAmountConsolidated)
+            },
+            new()
+            {
+                ProductGroup = _C4M.CreditLiabilitiesSummaryHomeCompanyProductGroup.CC,
+                Amount = sumObligations(liabilitiesFlatten, "CC", false, _fcSumObligationsAmount),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", false, _fcSumObligationsAmountConsolidated)
+            }
+       };
 
-    private static List<_C4M.CreditLiabilitiesSummary> toC4mCreditLiabilitiesSummaryOut(List<_V2.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
-        => obligationTypes
-            .Select(t =>
+    private List<_C4M.CreditLiabilitiesSummary> createCreditLiabilitiesSummaryOut(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.CreditLiabilitiesSummary>
+       {
+            new()
             {
-                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && x.IsObligationCreditorExternal).ToList();
-                return new _C4M.CreditLiabilitiesSummary
-                {
-                    Amount = coll?.Sum(x => x.Amount) ?? 0,
-                    AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = FastEnum.Parse<_C4M.CreditLiabilitiesSummaryProductGroup>(t.Code)
-                };
-            })
-            .ToList();
+                ProductGroup = _C4M.CreditLiabilitiesSummaryProductGroup.AD,
+                Amount = sumObligations(liabilitiesFlatten, "AD", true, _fcSumObligationsAmount),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", true, _fcSumObligationsAmountConsolidated)
+            },
+            new()
+            {
+                ProductGroup = _C4M.CreditLiabilitiesSummaryProductGroup.CC,
+                Amount = sumObligations(liabilitiesFlatten, "CC", true, _fcSumObligationsAmount),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", true, _fcSumObligationsAmountConsolidated)
+            }
+       };
 
-    private static List<_C4M.InstallmentsSummaryHomeCompany> toC4mInstallmentsSummary(List<_V2.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
-        => obligationTypes
-            .Select(t =>
+    private List<_C4M.InstallmentsSummaryHomeCompany> createInstallmentsSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.InstallmentsSummaryHomeCompany>
+       {
+            new()
             {
-                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && !x.IsObligationCreditorExternal).ToList();
-                return new _C4M.InstallmentsSummaryHomeCompany
-                {
-                    Amount = coll?.Sum(x => x.Amount) ?? 0,
-                    AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryHomeCompanyProductGroup>(t.Code)
-                };
-            })
-            .ToList();
+                ProductGroup = _C4M.InstallmentsSummaryHomeCompanyProductGroup.CL,
+                Amount = sumObligations(liabilitiesFlatten, "CL", false, _fcSumObligationsInstallment),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", false, _fcSumObligationsInstallmentConsolidated)
+            },
+            new()
+            {
+                ProductGroup = _C4M.InstallmentsSummaryHomeCompanyProductGroup.ML,
+                Amount = sumObligations(liabilitiesFlatten, "ML", false, _fcSumObligationsInstallment),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", false, _fcSumObligationsInstallmentConsolidated)
+            }
+       };
 
-    private static List<_C4M.InstallmentsSummaryOutHomeCompany> toC4mInstallmentsSummaryOut(List<_V2.CreditWorthinessObligation>? liabilites, IEnumerable<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes)
-        => obligationTypes
-            .Select(t =>
+    private List<_C4M.InstallmentsSummaryOutHomeCompany> createInstallmentsSummaryOut(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten)
+       => new List<_C4M.InstallmentsSummaryOutHomeCompany>
+       {
+            new()
             {
-                var coll = liabilites?.Where(x => x.ObligationTypeId == t.Id && x.IsObligationCreditorExternal).ToList();
-                return new _C4M.InstallmentsSummaryOutHomeCompany
-                {
-                    Amount = coll?.Sum(x => x.Amount) ?? 0,
-                    AmountConsolidated = coll?.Sum(x => x.AmountConsolidated) ?? 0,
-                    ProductGroup = FastEnum.Parse<_C4M.InstallmentsSummaryOutHomeCompanyProductGroup>(t.Code)
-                };
-            })
-            .ToList();
+                ProductGroup = _C4M.InstallmentsSummaryOutHomeCompanyProductGroup.CL,
+                Amount = sumObligations(liabilitiesFlatten, "CL", true, _fcSumObligationsInstallment),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", true, _fcSumObligationsInstallmentConsolidated)
+            },
+            new()
+            {
+                ProductGroup = _C4M.InstallmentsSummaryOutHomeCompanyProductGroup.ML,
+                Amount = sumObligations(liabilitiesFlatten, "ML", true, _fcSumObligationsInstallment),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", true, _fcSumObligationsInstallmentConsolidated)
+            }
+       };
     #endregion liabilities
 
+    private decimal sumObligations(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten, string productGroup, bool isObligationCreditorExternal, Func<_V2.CreditWorthinessObligation, decimal> fcSum)
+    {
+        var arr = _obligationTypes!.Where(t => t.Code == productGroup).Select(t => t.Id).ToArray();
+        return liabilitiesFlatten?
+            .Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId))
+            .Sum(fcSum) ?? 0;
+    }
+
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsAmount = t => t.Amount.GetValueOrDefault();
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsAmountConsolidated = t => t.AmountConsolidated.GetValueOrDefault();
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallment = t => t.Installment.GetValueOrDefault();
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallmentConsolidated = t => t.InstallmentConsolidated.GetValueOrDefault();
+
+    private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
+    
     private readonly CustomersChildMapper _customersMapper;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 

@@ -5,13 +5,15 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 
 internal static class CalculateResponseExtensions
 {
-    public static _V2.CreditWorthinessCalculateResponse ToServiceResponse(this _C4M.CreditWorthinessCalculation response)
+    public static _V2.CreditWorthinessCalculateResponse ToServiceResponse(this _C4M.CreditWorthinessCalculation response, decimal? dti, decimal? dsti)
         => new()
         {
             InstallmentLimit = response.InstallmentLimit,
             MaxAmount = response.MaxAmount,
             RemainsLivingAnnuity = response.RemainsLivingAnnuity,
             RemainsLivingInst = response.RemainsLivingInst,
+            Dti = dti,
+            Dsti = dsti,
             ResultReason = response.ResultReason is null ? null : new Contracts.Shared.ResultReasonDetail
             {
                 Code = response.ResultReason.Code,

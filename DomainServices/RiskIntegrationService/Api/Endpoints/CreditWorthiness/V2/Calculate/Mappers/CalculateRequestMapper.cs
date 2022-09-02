@@ -6,20 +6,23 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class CalculateRequestMapper
 {
-    public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CancellationToken cancellation)
+    public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
     {
-        // appl type pro aktualni produkt
-        var riskApplicationType = await getRiskApplicationType(request.Product!.ProductTypeId, cancellation);
-        
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
-            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId),
+            ResourceProcessId = new()
+            {
+                Instance = "MPSS",
+                Domain = "OM",
+                Resource = "OfferInstance",
+                Id = request.ResourceProcessId
+            },
             ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             //RiskBusinessCaseId = request.RiskBusinessCaseId!,//TODO ResourceIdentifier
             LoanApplicationProduct = new()
             {
                 ProductClusterCode = riskApplicationType.C4mAplCode,
-                AmountRequired = request.Product.LoanAmount,
+                AmountRequired = request.Product!.LoanAmount,
                 Annuity = request.Product.LoanPaymentAmount,
                 FixationPeriod = request.Product.FixedRatePeriod,
                 InterestRate = request.Product.LoanInterestRate,
@@ -41,14 +44,8 @@ internal sealed class CalculateRequestMapper
         return requestModel;
     }
 
-    private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
-        => (await _codebookService.RiskApplicationTypes(cancellationToken))
-            .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
-        ?? throw new CisValidationException(0, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
-
     private readonly HouseholdsChildMapper _householdMapper;
     private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
@@ -56,13 +53,11 @@ internal sealed class CalculateRequestMapper
         HouseholdsChildMapper householdMapper,
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider)
     {
         _householdMapper = householdMapper;
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
-        _codebookService = codebookService;
         _xxvConnectionProvider = xxvConnectionProvider;
     }
 }

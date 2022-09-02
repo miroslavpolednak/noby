@@ -32,7 +32,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.
         [System.Text.Json.Serialization.JsonPropertyName("dti")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Dti { get; set; }
+        public decimal? Dti { get; set; }
 
     }
 
@@ -49,7 +49,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.
         [System.Text.Json.Serialization.JsonPropertyName("value")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Value { get; set; }
+        public decimal? Value { get; set; }
 
         /// <summary>
         /// Kód měny částky (ISO 4217)
@@ -326,7 +326,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.
         [System.Text.Json.Serialization.JsonPropertyName("dsti")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public double? Dsti { get; set; }
+        public decimal? Dsti { get; set; }
 
     }
 

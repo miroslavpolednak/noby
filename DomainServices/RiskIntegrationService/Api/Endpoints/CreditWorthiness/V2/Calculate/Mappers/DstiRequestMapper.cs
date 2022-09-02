@@ -5,14 +5,14 @@ using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
-internal sealed class DtiRequestMapper
+internal sealed class DstiRequestMapper
 {
-    public async Task<_C4M.DTICalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
+    public async Task<_C4M.DSTICalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
     {
         // inicializovat ciselniky
         _obligationTypes = await _codebookService.ObligationTypes(cancellation);
 
-        return new _C4M.DTICalculationArguments
+        return new _C4M.DSTICalculationArguments
         {
             ResourceProcessId = new()
             {
@@ -21,9 +21,11 @@ internal sealed class DtiRequestMapper
                 Resource = "OfferInstance",
                 Id = request.ResourceProcessId
             },
-            ItChannel = FastEnum.Parse<_C4M.DTICalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            ItChannel = FastEnum.Parse<_C4M.DSTICalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             LoanApplicationProduct = new()
             {
+                ProductClusterCode = riskApplicationType.C4mAplCode,
+                Annuity = request.Product!.LoanPaymentAmount.ToAmount(),
                 AmountRequired = new()
                 {
                     CurrencyCode = GlobalConstants.CurrencyCode,
@@ -34,43 +36,18 @@ internal sealed class DtiRequestMapper
         };
     }
 
-    private List<_C4M.DTILoanApplicationHousehold> mapHouseholds(List<_V2.CreditWorthinessHousehold> households, int mandantId)
+    private List<_C4M.DSTILoanApplicationHousehold> mapHouseholds(List<_V2.CreditWorthinessHousehold> households, int mandantId)
         => households.Select(household =>
         {
             var liabilitiesFlatten = household.Customers!.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!).ToList();
 
-            return new _C4M.DTILoanApplicationHousehold
+            return new _C4M.DSTILoanApplicationHousehold
             {
-                LoanApplicationCounterparty = mapCustomers(household.Customers!, mandantId),
-                CreditLiabilitiesSummaryHomeCompany = new List<_C4M.CreditLiabilitiesSummary>
-                {
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.ML, liabilitiesFlatten, false),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.AD, liabilitiesFlatten, false),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CC, liabilitiesFlatten, false),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CL, liabilitiesFlatten, false)
-                },
-                CreditLiabilitiesSummaryOutHomeCompany = new List<_C4M.CreditLiabilitiesSummary>
-                {
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.ML, liabilitiesFlatten, true),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.AD, liabilitiesFlatten, true),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CC, liabilitiesFlatten, true),
-                    createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode.CL, liabilitiesFlatten, true)
-                }
+                LoanApplicationCounterparty = mapCustomers(household.Customers!, mandantId)
             };
         })
         .ToList();
 
-    private _C4M.CreditLiabilitiesSummary createObligation(_C4M.CreditLiabilitiesSummaryProductClusterCode clusterCode, List<_V2.CreditWorthinessObligation>? obligations, bool isObligationCreditorExternal)
-    {
-        var arr = _obligationTypes!.Where(t => t.Code == clusterCode.FastToString()).Select(t => t.Id).ToArray();
-        return new CreditLiabilitiesSummary
-        {
-            ProductClusterCode = clusterCode,
-            Amount = (obligations?.Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId)).Sum(t => t.Amount) ?? 0).ToAmount(),
-            AmountConsolidated = (obligations?.Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId)).Sum(t => t.AmountConsolidated) ?? 0).ToAmount()
-        };
-    }
-    
     private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int mandantId)
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
@@ -92,7 +69,7 @@ internal sealed class DtiRequestMapper
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 
-    public DtiRequestMapper(
+    public DstiRequestMapper(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor)

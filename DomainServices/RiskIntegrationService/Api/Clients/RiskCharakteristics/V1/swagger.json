@@ -78,6 +78,7 @@
       "properties": {
         "dti": {
           "type": "number",
+          "format": "decimal",
           "description": "DTI"
         }
       },
@@ -91,6 +92,7 @@
       "properties": {
         "value": {
           "type": "number",
+          "format": "decimal",
           "description": "Hodnota částky"
         },
         "currencyCode": {
@@ -280,6 +282,7 @@
       "properties": {
         "dsti": {
           "type": "number",
+          "format": "decimal",
           "description": "DSTI"
         }
       },
