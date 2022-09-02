@@ -57,7 +57,7 @@
       "responseClass": "SwaggerResponse",
       "namespace": "DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V1",
       "requiredPropertiesMustBeDefined": true,
-      "dateType": "System.DateTimeOffset",
+      "dateType": "System.DateTime",
       "jsonConverters": null,
       "anyType": "object",
       "dateTimeType": "System.DateTimeOffset",
