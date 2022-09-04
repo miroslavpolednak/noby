@@ -29,12 +29,12 @@ internal sealed class CreditWorthinessHouseholdService
                     },
                     Customers = new()
                 };
-
+                
                 // clients
                 if (household.CustomerOnSAId1.HasValue)
-                    h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, cancellationToken));
+                    h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, household.Data.AreCustomersPartners.GetValueOrDefault(), cancellationToken));
                 if (household.CustomerOnSAId2.HasValue)
-                    h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, cancellationToken));
+                    h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, household.Data.AreCustomersPartners.GetValueOrDefault(), cancellationToken));
 
                 // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
                 if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
@@ -44,15 +44,14 @@ internal sealed class CreditWorthinessHouseholdService
             })).ToList();
     }
 
-    private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, CancellationToken cancellationToken)
+    private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, bool hasPartner, CancellationToken cancellationToken)
     {
         // customer on SA instance
         var customer = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
 
         var c = new _Rip.CreditWorthinessCustomer
         {
-            // TODO:
-            //HasPartner = customer.HasPartner
+            HasPartner = hasPartner
         };
 
         // customer instance
@@ -67,7 +66,7 @@ internal sealed class CreditWorthinessHouseholdService
 
         //TODO neni tu zadani jake ID posilat, tak beru prvni
         if (customer.CustomerIdentifiers?.Any() ?? false)
-            c.IdMp = customer.CustomerIdentifiers.First().IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            c.InternalCustomerId = customer.CustomerIdentifiers.First().IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
         if (customer.Incomes?.Any() ?? false)
             c.Incomes = customer.Incomes.Select(t => new _Rip.CreditWorthinessIncome
@@ -77,14 +76,24 @@ internal sealed class CreditWorthinessHouseholdService
             }).ToList();
 
         if (customer.Obligations?.Any() ?? false)
-            c.Obligations = customer.Obligations.Select(t => new _Rip.CreditWorthinessObligation
+            c.Obligations = customer.Obligations.Select(t =>
             {
-                ObligationTypeId = t.ObligationTypeId.GetValueOrDefault(),
-                Installment = t.InstallmentAmount,
-                Limit = t.CreditCardLimit,
-                InstallmentConsolidated = t.Correction?.InstallmentAmountCorrection,//asi?
-                AmountConsolidated = t.Correction?.CreditCardLimitCorrection,//asi?
-                IsObligationCreditorExternal = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
+                if (t.ObligationTypeId == 3 || t.ObligationTypeId == 4)
+                    return new _Rip.CreditWorthinessObligation
+                    {
+                        ObligationTypeId = t.ObligationTypeId.GetValueOrDefault(),
+                        Amount = t.CreditCardLimit,
+                        AmountConsolidated = t.Correction?.CreditCardLimitCorrection,
+                        IsObligationCreditorExternal = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
+                    };
+                else
+                    return new _Rip.CreditWorthinessObligation
+                    {
+                        ObligationTypeId = t.ObligationTypeId.GetValueOrDefault(),
+                        Amount = t.InstallmentAmount,
+                        AmountConsolidated = t.Correction?.InstallmentAmountCorrection,
+                        IsObligationCreditorExternal = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
+                    };
             }).ToList();
 
         return c;

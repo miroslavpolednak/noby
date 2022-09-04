@@ -53,7 +53,7 @@ internal class GetCreditWorthinessHandler
             MaxAmount = Convert.ToInt32(ripResult.MaxAmount ?? 0),
             RemainsLivingAnnuity = Convert.ToInt32((decimal?)ripResult.RemainsLivingAnnuity ?? 0),
             RemainsLivingInst = Convert.ToInt32((decimal?)ripResult.RemainsLivingInst ?? 0),
-            WorthinessResult = ripResult.WorthinessResult,
+            WorthinessResult = (CreditWorthinessResults)(int)ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
             LoanAmount = offerInstance.SimulationInputs.LoanAmount,
