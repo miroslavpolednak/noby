@@ -8,7 +8,7 @@ internal sealed class RealRiskCharakteristicsClient
     public async Task<_C4M.DTICalculation> CalculateDti(_C4M.DTICalculationArguments request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + "/dti-explicit-calculation", request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + "/dti-explicit-calculation", request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
             .ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<_C4M.DTICalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
@@ -18,7 +18,7 @@ internal sealed class RealRiskCharakteristicsClient
     public async Task<_C4M.DSTICalculation> CalculateDsti(_C4M.DSTICalculationArguments request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + "/dsti-explicit-calculation", request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + "/dsti-explicit-calculation", request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
             .ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<_C4M.DSTICalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
