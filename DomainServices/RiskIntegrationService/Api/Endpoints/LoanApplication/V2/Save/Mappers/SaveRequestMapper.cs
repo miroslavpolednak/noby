@@ -1,7 +1,6 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
-using Azure.Core;
 using CIS.Core.Security;
 using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 

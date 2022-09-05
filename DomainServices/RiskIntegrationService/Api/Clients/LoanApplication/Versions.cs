@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication;
 
-public enum Versions
+internal enum Versions
 {
     Unknown,
     V1

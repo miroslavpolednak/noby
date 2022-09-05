@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+﻿namespace DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts;
 
 internal static class AmountExtensions
 {
@@ -9,6 +9,9 @@ internal static class AmountExtensions
         => amount.HasValue ? amount.ToAmount()! : (0M).ToAmount();
 
     public static Amount ToAmount(this decimal amount)
+        => new Amount { CurrencyCode = GlobalConstants.CurrencyCode, Value = amount };
+
+    public static Amount ToAmount(this int amount)
         => new Amount { CurrencyCode = GlobalConstants.CurrencyCode, Value = amount };
 
     public static Amount? ToAmount(this DomainServices.RiskIntegrationService.Contracts.Shared.AmountDetail? amount)

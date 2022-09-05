@@ -1,5 +1,4 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate;
 
@@ -10,44 +9,22 @@ internal sealed class CalculateHandler
     {
         // appl type pro aktualni produkt
         var riskApplicationType = await getRiskApplicationType(request.Product!.ProductTypeId, cancellation);
-        var maritalStatuses = await _codebookService.MaritalStatuses(cancellation);
-        var mainIncomeTypes = await _codebookService.IncomeMainTypes(cancellation);
-        var obligationTypes = await _codebookService.ObligationTypes(cancellation);
-        var liabilitiesFlatten = request.Households!.SelectMany(h => h.Customers!.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!)).ToList();
 
-        var requestModel = new _C4M.CreditWorthinessCalculationArguments
-        {
-            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId),
-            ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
-            //RiskBusinessCaseId = request.RiskBusinessCaseId!,//TODO ResourceIdentifier
-            LoanApplicationProduct = request.Product.ToC4m(riskApplicationType.C4mAplCode),
-            Households = request.Households!.Select(h => new _C4M.LoanApplicationHousehold
-            {
-                ChildrenOver10 = h.ChildrenOverTenYearsCount,
-                ChildrenUnderAnd10 = h.ChildrenUpToTenYearsCount,
-                ExpensesSummary = (h.ExpensesSummary ?? new Contracts.Shared.V1.ExpensesSummary()).ToC4m(),
-                Clients = h.Customers!.ToC4m(riskApplicationType.MandantId, maritalStatuses, mainIncomeTypes),
-                CreditLiabilitiesSummary = liabilitiesFlatten.ToC4mCreditLiabilitiesSummary(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
-                CreditLiabilitiesSummaryOut = liabilitiesFlatten.ToC4mCreditLiabilitiesSummaryOut(obligationTypes.Where(o => o.Id == 3 || o.Id == 4)),
-                InstallmentsSummary = liabilitiesFlatten.ToC4mInstallmentsSummary(obligationTypes.Where(o => o.Id != 3 && o.Id != 4)),
-                InstallmentsSummaryOut = liabilitiesFlatten.ToC4mInstallmentsSummaryOut(obligationTypes.Where(o => o.Id != 3 && o.Id != 4))
-            }).ToList()
-        };
-
-        // human user instance
-        if (request.UserIdentity is not null)
-        {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (Helpers.IsDealerSchema(request.UserIdentity!.IdentityScheme))
-                requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-            else
-                requestModel.KbGroupPerson = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
-        }
+        // request pro hlavni bonita sluzbu
+        var requestModel = await _requestMapper.MapToC4m(request, riskApplicationType, cancellation);
         
-        // volani c4m
+        // volani c4m hlavni bonita sluzby
         var response = await _client.Calculate(requestModel, cancellation);
 
-        return response.ToServiceResponse();
+        // get DTI
+        var dtiRequestModel = await _dtiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
+        var dtiResponse = await _riskCharacteristicsClient.CalculateDti(dtiRequestModel, cancellation);
+
+        // get DSTI
+        var dstiRequestModel = await _dstiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
+        var dstiResponse = await _riskCharacteristicsClient.CalculateDsti(dstiRequestModel, cancellation);
+
+        return response.ToServiceResponse(dtiResponse.Dti, dstiResponse.Dsti);
     }
 
     private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
@@ -55,23 +32,26 @@ internal sealed class CalculateHandler
             .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
         ?? throw new CisValidationException(0, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly AppConfiguration _configuration;
-    private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
+    private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;
+    private readonly Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient _riskCharacteristicsClient;
+    private readonly Mappers.CalculateRequestMapper _requestMapper;
+    private readonly Mappers.DtiRequestMapper _dtiRequestMapper;
+    private readonly Mappers.DstiRequestMapper _dstiRequestMapper;
 
     public CalculateHandler(
-        AppConfiguration configuration,
-        CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        Clients.CreditWorthiness.V1.ICreditWorthinessClient client, 
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+        Mappers.CalculateRequestMapper requestMapper,
+        Mappers.DtiRequestMapper dtiRequestMapper,
+        Mappers.DstiRequestMapper dstiRequestMapper,
+        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient riskCharacteristicsClient,
+        Clients.CreditWorthiness.V1.ICreditWorthinessClient client)
     {
-        _serviceUserAccessor = serviceUserAccessor;
-        _configuration = configuration;
         _codebookService = codebookService;
-        _xxvConnectionProvider = xxvConnectionProvider;
+        _riskCharacteristicsClient = riskCharacteristicsClient;
+        _dtiRequestMapper = dtiRequestMapper;
+        _dstiRequestMapper = dstiRequestMapper;
+        _requestMapper = requestMapper;
         _client = client;
     }
 }

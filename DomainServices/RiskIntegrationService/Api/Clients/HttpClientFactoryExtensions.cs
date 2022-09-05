@@ -19,7 +19,7 @@ internal static class HttpClientFactoryExtensions
 
     static HttpClientFactoryExtensions()
     {
-        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse()); //TODO odstranit az c4m opravi format cisel
+        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse());
     }
 
     public static IHttpClientBuilder ConfigureC4mHttpMessageHandler<TClient>(this IHttpClientBuilder builder, string serviceName)

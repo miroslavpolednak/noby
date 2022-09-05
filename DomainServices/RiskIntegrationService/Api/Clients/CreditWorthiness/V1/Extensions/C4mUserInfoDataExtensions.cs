@@ -9,15 +9,15 @@ internal static class C4mUserInfoDataExtensions
 #pragma warning disable CA1305 // Specify IFormatProvider
     => new()
     {
-        Id = ResourceIdentifier.Create("BM", "Broker", humanUser),
-        CompanyId = ResourceIdentifier.Create("BM", "Broker", humanUser, userInfo.DealerCompanyId?.ToString())
+        Id = createResourceIdentifier("BM", "Broker", humanUser),
+        CompanyId = createResourceIdentifier("BM", "Broker", humanUser, userInfo.DealerCompanyId?.ToString())
     };
 #pragma warning restore CA1305 // Specify IFormatProvider
 
     public static Person ToC4mPerson(this C4mUserInfoData userInfo, Identity humanUser)
         => new()
         {
-            Id = ResourceIdentifier.Create("PM", "KBGroupPerson", humanUser),
+            Id = createResourceIdentifier("PM", "KBGroupPerson", humanUser),
             Surname = userInfo.PersonSurname,
             OrgUnit = new OrganizationUnit
             {
@@ -28,5 +28,15 @@ internal static class C4mUserInfoDataExtensions
                 },
                 Name = userInfo.PersonOrgUnitName
             }
+        };
+
+    public static ResourceIdentifier createResourceIdentifier(string domain, string resource, RiskIntegrationService.Contracts.Shared.Identity humanUser, string? id = null)
+        => new ResourceIdentifier
+        {
+            Instance = Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
+            Domain = domain,
+            Resource = resource,
+            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(0, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
+            Variant = humanUser.IdentityScheme!
         };
 }
