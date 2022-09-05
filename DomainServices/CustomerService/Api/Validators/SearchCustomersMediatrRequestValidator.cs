@@ -1,12 +1,10 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Api.Dto;
+﻿using DomainServices.CustomerService.Api.Dto;
 using FluentValidation;
 namespace DomainServices.CustomerService.Api.Validators;
 
 internal class SearchCustomersMediatrRequestValidator : AbstractValidator<SearchCustomersMediatrRequest>
 {
-    public SearchCustomersMediatrRequestValidator(ICodebookServiceAbstraction codebooks)
+    public SearchCustomersMediatrRequestValidator()
     {
         RuleFor(t => t.Request.Identity)
             .SetValidator(new IdentityValidator())
@@ -39,12 +37,10 @@ internal class SearchCustomersMediatrRequestValidator : AbstractValidator<Search
 
             RuleFor(t => t.Request.IdentificationDocument.IdentificationDocumentTypeId)
                 .GreaterThan(0)
-                .MustAsync(async (t, cancellationToken) => (await codebooks.IdentificationDocumentTypes(cancellationToken)).Any(c => c.Id == t))
                 .WithMessage("IdentificationDocumentTypeId is not valid").WithErrorCode("11013");
 
             RuleFor(t => t.Request.IdentificationDocument.IssuingCountryId)
                 .GreaterThan(0)
-                .MustAsync(async (t, cancellationToken) => (await codebooks.Countries(cancellationToken)).Any(c => c.Id == t))
                 .WithMessage("IssuingCountryId is not valid").WithErrorCode("11014");
         });
 

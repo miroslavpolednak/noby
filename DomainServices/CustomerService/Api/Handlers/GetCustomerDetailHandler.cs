@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Api.Dto;
 using DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
 using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;

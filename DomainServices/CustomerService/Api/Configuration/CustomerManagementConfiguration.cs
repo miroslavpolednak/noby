@@ -1,9 +1,9 @@
 ﻿using CIS.ExternalServicesHelpers.Configuration;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement;
+using DomainServices.CustomerService.Api.Clients;
 
 namespace DomainServices.CustomerService.Api.Configuration;
 
 public class CustomerManagementConfiguration : ExternalServiceBaseConfiguration
 {
-    public Versions Version { get; set; } = Versions.Unknown;
+    public CMVersion Version { get; set; } = CMVersion.Unknown;
 }

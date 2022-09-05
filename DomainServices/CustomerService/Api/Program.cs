@@ -1,8 +1,8 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CustomerService.Api;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
+using DomainServices.CustomerService.Api.Extensions;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -14,22 +14,7 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-
-AppConfiguration appConfiguration = new();
-
-var x = builder.Configuration.GetSection("AppConfiguration");
-
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-
-appConfiguration.CheckAppConfiguration();
-
-#endregion strongly typed configuration
-
 #region register builder.Services
-// strongly-typed konfigurace aplikace
-builder.Services.AddSingleton(appConfiguration);
-
 // globalni nastaveni prostredi
 builder.AddCisEnvironmentConfiguration();
 
@@ -47,11 +32,11 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 
 // add storage services
-builder.AddCutomerService(appConfiguration);
+builder.AddCustomerService();
 
 builder.Services.AddGrpc(options =>
 {
-    options.Interceptors.Add<CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor>();
+    options.Interceptors.Add<GenericServerExceptionInterceptor>();
 });
 builder.Services.AddGrpcReflection();
 #endregion register builder.Services

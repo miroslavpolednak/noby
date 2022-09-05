@@ -30,12 +30,3 @@ message IdentificationDocumentSearch {
    
    string Number = 3;
 }
-
-message SearchIdentificationDocument {
-   
-   int32 IdentificationDocumentTypeId = 1;
-	
-   int32 IssuingCountryId = 2;
-   
-   string Number = 3;
-}

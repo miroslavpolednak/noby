@@ -25,7 +25,6 @@
     <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
-    <ProjectReference Include="..\..\..\ExternalServices\CustomerManagement\ExternalServices.CustomerManagement.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
     <ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
@@ -33,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
     <Folder Include="Services\CustomerSource\KonsDb\Dto\" />
   </ItemGroup>
 

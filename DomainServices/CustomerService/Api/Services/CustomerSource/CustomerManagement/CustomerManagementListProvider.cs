@@ -2,8 +2,6 @@
 using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using System.Diagnostics;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CustomerService.Contracts;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;

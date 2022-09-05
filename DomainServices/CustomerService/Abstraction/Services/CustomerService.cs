@@ -32,46 +32,20 @@ namespace DomainServices.CustomerService.Abstraction
             return new SuccessfulServiceCallResult<CustomerDetailResponse>(result);
         }
 
-        public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IServiceCallResult> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)
         {
-            var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
-        }
+            var request = new CustomerListRequest();
+            request.Identities.AddRange(identities);
 
-        public async Task<IServiceCallResult> GetCustomerList(CustomerListRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {
             var result = await _service.GetCustomerListAsync(request, cancellationToken: cancellationToken);
+
             return new SuccessfulServiceCallResult<CustomerListResponse>(result);
         }
 
-        public async Task<IServiceCallResult> Create(CreateRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
         {
-            var result = await _service.CreateAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult<CreateResponse>(result);
-        }
-
-        public async Task<IServiceCallResult> CreateContact(CreateContactRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var result = await _service.CreateContactAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult<CreateContactResponse>(result);
-        }
-
-        public async Task<IServiceCallResult> DeleteContact(DeleteContactRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await _service.DeleteContactAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult();
-        }
-
-        public async Task<IServiceCallResult> UpdateAdress(UpdateAdressRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await _service.UpdateAdressAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult();
-        }
-
-        public async Task<IServiceCallResult> UpdateBasicData(UpdateBasicDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await _service.UpdateBasicDataAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult();
+            var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
+            return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
         }
     }
 }

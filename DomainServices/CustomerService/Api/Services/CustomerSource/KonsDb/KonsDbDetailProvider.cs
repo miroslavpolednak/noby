@@ -3,11 +3,9 @@ using CIS.Core.Data;
 using CIS.Core.Exceptions;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
-using CIS.Infrastructure.gRPC.CisTypes;
 using Dapper;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Dto;
-using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
 
@@ -35,7 +33,7 @@ public class KonsDbDetailProvider
         {
             Identity = new Identity(partner.PartnerId, IdentitySchemes.Mp),
             NaturalPerson = CreateNaturalPerson(partner),
-            IdentificationDocument = CreateIdentificationDocument(partner),
+            IdentificationDocument = partner.ToIdentificationDocument(),
         };
 
         AddAddress(AddressTypes.PERMANENT, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City);
@@ -46,11 +44,9 @@ public class KonsDbDetailProvider
         return response;
     }
 
-    private Task InitializeCodebooks(CancellationToken cancellationToken)
+    private async Task InitializeCodebooks(CancellationToken cancellationToken)
     {
-        return Titles();
-
-        async Task Titles() => _titles = await _codebook.AcademicDegreesBefore(cancellationToken);
+        _titles = await _codebook.AcademicDegreesBefore(cancellationToken);
     }
 
     private async Task<Partner> GetPartnerDetail(long partnerId, CancellationToken cancellationToken)
@@ -93,19 +89,6 @@ public class KonsDbDetailProvider
             person.CitizenshipCountriesId.Add(partner.CitizenshipCountryId.Value);
 
         return person;
-    }
-
-    private IdentificationDocument? CreateIdentificationDocument(Partner partner)
-    {
-        return new IdentificationDocument
-        {
-            Number = partner.IdentificationDocumentNumber ?? string.Empty,
-            IdentificationDocumentTypeId = partner.IdentificationDocumentTypeId,
-            IssuedOn = partner.IdentificationDocumentIssuedOn,
-            IssuedBy = partner.IdentificationDocumentIssuedBy ?? string.Empty,
-            IssuingCountryId = partner.IdentificationDocumentIssuingCountryId,
-            ValidTo = partner.IdentificationDocumentValidTo
-        };
     }
 
     private static void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAdd, string? street, string? houseNumber, string? streetNumber, string? postCode, string? city)

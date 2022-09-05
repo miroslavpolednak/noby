@@ -1,9 +1,7 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using System.Diagnostics;
-using DomainServices.CustomerService.Contracts;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
@@ -103,7 +101,7 @@ public class CustomerManagementDetailProvider
         };
     }
 
-    private void AddAddress(Clients.CustomerManagement.V1.Address? address,
+    private void AddAddress(Address? address,
                             ComponentAddress? componentAddress,
                             AddressTypes addressType,
                             Action<GrpcAddress> onAddAddress)

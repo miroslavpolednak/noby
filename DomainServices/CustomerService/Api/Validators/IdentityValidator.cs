@@ -1,9 +1,8 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Validators;
 
-public class IdentityValidator : AbstractValidator<CIS.Infrastructure.gRPC.CisTypes.Identity>
+public class IdentityValidator : AbstractValidator<Identity>
 {
     public IdentityValidator()
     {

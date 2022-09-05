@@ -163,8 +163,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.ESignature
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Logging.Extensions", "CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj", "{14E6A65E-30EE-4F78-A76D-8D6ED3467A0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.CustomerManagement", "ExternalServices\CustomerManagement\ExternalServices.CustomerManagement.csproj", "{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Foms.Types", "CIS\Foms.Types\CIS.Foms.Types.csproj", "{3428A3F8-F671-406E-B1E0-63885A96F527}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Services", "FOMS\FOMS.Services\FOMS.Services.csproj", "{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}"
@@ -189,7 +187,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.ExternalServicesHelpers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.EasSimulationHT", "ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj", "{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_RiskIntegrationService", "Playgrounds\Console_RiskIntegrationService\Console_RiskIntegrationService.csproj", "{7C6DA138-865C-417A-9AC2-1CA77817BB63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_RiskIntegrationService", "Playgrounds\Console_RiskIntegrationService\Console_RiskIntegrationService.csproj", "{7C6DA138-865C-417A-9AC2-1CA77817BB63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -647,14 +645,6 @@ Global
 		{14E6A65E-30EE-4F78-A76D-8D6ED3467A0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{14E6A65E-30EE-4F78-A76D-8D6ED3467A0B}.Release|x64.ActiveCfg = Release|Any CPU
 		{14E6A65E-30EE-4F78-A76D-8D6ED3467A0B}.Release|x64.Build.0 = Release|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Debug|x64.Build.0 = Debug|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Release|x64.ActiveCfg = Release|Any CPU
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719}.Release|x64.Build.0 = Release|Any CPU
 		{3428A3F8-F671-406E-B1E0-63885A96F527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3428A3F8-F671-406E-B1E0-63885A96F527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3428A3F8-F671-406E-B1E0-63885A96F527}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -823,7 +813,6 @@ Global
 		{7EAA0FCD-8CBB-437B-B820-64E62CBE6F48} = {C038444F-9A42-4473-BCA8-C50E9E0A5416}
 		{66BDC101-1194-4772-AEC7-609CC994DF55} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{14E6A65E-30EE-4F78-A76D-8D6ED3467A0B} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
-		{31EAB4D9-B148-46AF-A7C2-56E3E8A2E719} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{3428A3F8-F671-406E-B1E0-63885A96F527} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{FA204FC0-70AF-4FBB-A148-49FD214AC1DF} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}

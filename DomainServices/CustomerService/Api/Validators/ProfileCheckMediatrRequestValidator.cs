@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CustomerService.Api.Dto;
+﻿using DomainServices.CustomerService.Api.Dto;
 using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Validators;
@@ -11,7 +10,7 @@ internal class ProfileCheckMediatrRequestValidator : AbstractValidator<ProfileCh
         RuleFor(r => r.Request.Identity).SetValidator(new IdentityValidator());
 
         RuleFor(r => r.Request.Identity.IdentityScheme)
-            .NotEqual(Identity.Types.IdentitySchemes.Kb)
+            .Equal(Identity.Types.IdentitySchemes.Kb)
             .WithMessage("Invalid identity scheme.")
             .WithErrorCode("11004");
 

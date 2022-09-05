@@ -2,9 +2,7 @@
 using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Dto;
-using DomainServices.CustomerService.Contracts;
 using System.Data;
-using CIS.Infrastructure.gRPC.CisTypes;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
 
@@ -36,12 +34,12 @@ public class KonsDbSearchProvider
 
         var customers = await SearchCustomers(request, cancellationToken);
 
-        return customers.Select(c => new SearchCustomersItem
+        return customers.Select(p => new SearchCustomersItem
         {
-            NaturalPerson = CreateNaturalPerson(c),
-            Street = c.Street ?? string.Empty,
-            City = c.City ?? string.Empty,
-            Postcode = c.PostCode ?? string.Empty
+            NaturalPerson = p.ToNaturalPersonBasicInfo(),
+            Street = p.Street ?? string.Empty,
+            City = p.City ?? string.Empty,
+            Postcode = p.PostCode ?? string.Empty
         });
 
         static IEnumerable<long> PartnerIdAsEnumerable(Identity? identity)
@@ -77,17 +75,5 @@ public class KonsDbSearchProvider
        return _connectionProvider.ExecuteDapperQuery(SearchContacts, cancellationToken);
 
         Task<IEnumerable<long>> SearchContacts(IDbConnection conn) => conn.QueryAsync<long>(command);
-    }
-
-    private static NaturalPersonBasicInfo CreateNaturalPerson(Partner partner)
-    {
-        return new NaturalPersonBasicInfo
-        {
-            FirstName = partner.FirstName ?? string.Empty,
-            LastName = partner.LastName ?? string.Empty,
-            GenderId = partner.GenderId,
-            BirthNumber = partner.BirthNumber ?? string.Empty,
-            DateOfBirth = partner.BirthDate
-        };
     }
 }

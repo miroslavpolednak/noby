@@ -1,9 +1,7 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using DomainServices.CustomerService.Contracts;
 using System.Diagnostics;
 using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
@@ -99,7 +97,7 @@ public class CustomerManagementSearchProvider
         };
     }
 
-    private void FillAddressData(SearchCustomersItem result, Clients.CustomerManagement.V1.Address? address)
+    private void FillAddressData(SearchCustomersItem result, Address? address)
     {
         if (address is null)
             return;

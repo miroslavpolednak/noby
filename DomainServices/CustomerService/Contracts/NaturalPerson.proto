@@ -5,30 +5,6 @@ option csharp_namespace = "DomainServices.CustomerService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "NullableGrpcDate.proto";
 
-message SearchNaturalPerson {
-	
-   string FirstName = 1;
-
-   string LastName = 2;
-
-   cis.types.NullableGrpcDate DateOfBirth = 3;
-
-   string BirthNumber = 4;
-}
-
-message NaturalPersonBaseData {
-	
-   string FirstName = 1;
-
-   string LastName = 2;
-
-   cis.types.NullableGrpcDate DateOfBirth = 3;
-
-   string BirthNumber = 4;
-
-   int32 GenderId = 5;
-}
-
 message NaturalPerson {
 	
    string FirstName = 1;

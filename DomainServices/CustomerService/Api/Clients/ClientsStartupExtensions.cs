@@ -13,7 +13,6 @@ namespace DomainServices.CustomerService.Api.Clients;
 public static class ClientsStartupExtensions
 {
     private const string CustomerManagementServiceName = "CustomerManagement";
-    private const string CustomerProfileServiceName = "CustomerProfile";
 
     public static WebApplicationBuilder AddCustomerManagementService(this WebApplicationBuilder builder)
     {
@@ -21,14 +20,7 @@ public static class ClientsStartupExtensions
 
         builder.Services.AddCustomerManagementService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
 
-        return builder;
-    }
-
-    public static WebApplicationBuilder AddCustomerProfileService(this WebApplicationBuilder builder)
-    {
-        var config = builder.CreateAndCheckExternalServiceConfiguration<CustomerProfileConfiguration>(CustomerProfileServiceName);
-
-        builder.Services.AddCustomerProfileService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerProfileServiceName);
+        builder.Services.AddCustomerProfileService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
 
         return builder;
     }

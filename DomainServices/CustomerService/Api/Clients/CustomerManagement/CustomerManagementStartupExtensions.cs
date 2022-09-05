@@ -9,14 +9,14 @@ public static class CustomerManagementStartupExtensions
     {
         switch (config.Version, config.ImplementationType)
         {
-            case (Versions.V1, ServiceImplementationTypes.Real):
+            case (CMVersion.V1, ServiceImplementationTypes.Real):
                 services.AddHttpClient<V1.ICustomerManagementClient, V1.RealCustomerManagementClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
                 });
                 break;
 
-            case (Versions.V1, _):
+            case (CMVersion.V1, _):
                 services.AddScoped<V1.ICustomerManagementClient, V1.MockCustomerManagementClient>();
                 break;
 
