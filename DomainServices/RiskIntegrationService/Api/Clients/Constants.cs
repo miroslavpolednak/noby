@@ -11,4 +11,5 @@ internal static class Constants
     internal const string LoanSoldProduct = "LoanSoldProduct";
     internal const string CAM = "CAM";
     internal const string Collateral = "Collateral";
+    internal const string KBCZ = "KBCZ";
 }
