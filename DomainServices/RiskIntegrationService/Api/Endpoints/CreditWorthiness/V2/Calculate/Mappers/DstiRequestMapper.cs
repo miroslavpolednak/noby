@@ -43,7 +43,11 @@ internal sealed class DstiRequestMapper
 
             return new _C4M.DSTILoanApplicationHousehold
             {
-                LoanApplicationCounterparty = mapCustomers(household.Customers!, mandantId)
+                LoanApplicationCounterparty = mapCustomers(household.Customers!, mandantId),
+                CreditLiabilitiesSummaryHomeCompany = createCreditLiabilitiesSummary(liabilitiesFlatten, false),
+                CreditLiabilitiesSummaryOutHomeCompany = createCreditLiabilitiesSummary(liabilitiesFlatten, true),
+                LoanInstallmentsSummaryHomeCompany = createInstallmentsSummary(liabilitiesFlatten, false),
+                LoanInstallmentsSummaryOutHomeCompany = createInstallmentsSummary(liabilitiesFlatten, true)
             };
         })
         .ToList();
@@ -62,6 +66,55 @@ internal sealed class DstiRequestMapper
             MonthlyOtherIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 4).Sum(t => t.Amount) ?? 0).ToAmount()
         })
         .ToList();
+
+    #region liabilities
+    private List<_C4M.DSTICreditLiabilitiesSummary> createCreditLiabilitiesSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten, bool isExternal)
+       => new List<_C4M.DSTICreditLiabilitiesSummary>
+       {
+            new()
+            {
+                ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryProductClusterCode.AD,
+                Amount = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmount).ToAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmountConsolidated).ToAmount()
+            },
+            new()
+            {
+                ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryProductClusterCode.CC,
+                Amount = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmount).ToAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmountConsolidated).ToAmount()
+            }
+       };
+
+    private List<_C4M.LoanInstallmentsSummary> createInstallmentsSummary(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten, bool isExternal)
+       => new List<_C4M.LoanInstallmentsSummary>
+       {
+            new()
+            {
+                ProductClusterCode = _C4M.LoanInstallmentsSummaryProductClusterCode.CL,
+                Amount = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallment).ToAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallmentConsolidated).ToAmount()
+            },
+            new()
+            {
+                ProductClusterCode = _C4M.LoanInstallmentsSummaryProductClusterCode.ML,
+                Amount = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallment).ToAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallmentConsolidated).ToAmount()
+            }
+       };
+    #endregion liabilities
+
+    private decimal sumObligations(List<_V2.CreditWorthinessObligation>? liabilitiesFlatten, string productGroup, bool isObligationCreditorExternal, Func<_V2.CreditWorthinessObligation, decimal> fcSum)
+    {
+        var arr = _obligationTypes!.Where(t => t.Code == productGroup).Select(t => t.Id).ToArray();
+        return liabilitiesFlatten?
+            .Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId))
+            .Sum(fcSum) ?? 0;
+    }
+
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsAmount = t => t.Amount.GetValueOrDefault();
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsAmountConsolidated = t => t.AmountConsolidated.GetValueOrDefault();
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallment = t => t.Installment.GetValueOrDefault();
+    Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsInstallmentConsolidated = t => t.InstallmentConsolidated.GetValueOrDefault();
 
     private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
 
