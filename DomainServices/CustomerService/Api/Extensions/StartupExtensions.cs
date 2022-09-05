@@ -25,6 +25,8 @@ internal static class StartupExtensions
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
 
+        builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb"));
+
         // add repos helpers
         builder.Services.AddDapper<Repositories.KonsDbRepository>(builder.Configuration.GetConnectionString("KonsDb"));
 

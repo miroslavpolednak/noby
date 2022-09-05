@@ -1,32 +1,60 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using DomainServices.CustomerService.Contracts;
+using System.Diagnostics;
+using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
 
-public class KBSearchCustomersParser
+[ScopedService, SelfService]
+public class CustomerManagementSearchProvider
 {
+    private readonly ICustomerManagementClient _customerManagement;
+    private readonly ICodebookServiceAbstraction _codebook;
+
     private List<Endpoints.Countries.CountriesItem> _countries = null!;
     private List<Endpoints.Genders.GenderItem> _genders = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    private KBSearchCustomersParser()
+    public CustomerManagementSearchProvider(ICustomerManagementClient customerManagement, ICodebookServiceAbstraction codebook)
     {
+        _customerManagement = customerManagement;
+        _codebook = codebook;
     }
 
-    public static async Task<KBSearchCustomersParser> CreateInstance(ICodebookServiceAbstraction codebook, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SearchCustomersItem>> Search(SearchCustomersRequest searchRequest, CancellationToken cancellationToken)
     {
-        var instance = new KBSearchCustomersParser();
+        await InitializeCodebooks(cancellationToken);
 
-        await instance.Initialize(codebook, cancellationToken);
+        var foundCustomers = await _customerManagement.Search(ParseRequest(searchRequest), Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
 
-        return instance;
+        return foundCustomers.Where(c => c.Party is NaturalPersonSearchResult)
+                             .Select(c =>
+                             {
+                                 var item = new SearchCustomersItem
+                                 {
+                                     Identity = new Identity(c.CustomerId, IdentitySchemes.Kb),
+                                     NaturalPerson = CreateNaturalPerson(c)
+                                 };
+
+                                 FillAddressData(item, c.PrimaryAddress.Address);
+
+                                 return item;
+                             });
     }
 
-    public CustomerManagementSearchRequest ParseRequest(SearchCustomersRequest searchRequest)
+    private Task InitializeCodebooks(CancellationToken cancellationToken)
+    {
+        return Task.WhenAll(Countries(), Genders(), DocTypes());
+
+        async Task Countries() => _countries = await _codebook.Countries(cancellationToken);
+        async Task Genders() => _genders = await _codebook.Genders(cancellationToken);
+        async Task DocTypes() => _docTypes = await _codebook.IdentificationDocumentTypes(cancellationToken);
+    }
+
+    private CustomerManagementSearchRequest ParseRequest(SearchCustomersRequest searchRequest)
     {
         var cmRequest = new CustomerManagementSearchRequest
         {
@@ -57,38 +85,16 @@ public class KBSearchCustomersParser
         static string? GetValueOrNull(string? str) => string.IsNullOrWhiteSpace(str) ? null : str;
     }
 
-    public SearchCustomersItem ParseResult(CustomerSearchResultRow customer)
-    {
-        var result = new SearchCustomersItem
-        {
-            Identity = new Identity(customer.CustomerId, IdentitySchemes.Kb),
-            NaturalPerson = CreateNaturalPerson(customer)
-        };
-
-        FillAddressData(result, customer.PrimaryAddress.Address);
-
-        return result;
-    }
-
-    private Task Initialize(ICodebookServiceAbstraction codebook, CancellationToken cancellationToken)
-    {
-        return Task.WhenAll(Countries(), Genders(), DocTypes());
-
-        async Task Countries() => _countries = await codebook.Countries(cancellationToken);
-        async Task Genders() => _genders = await codebook.Genders(cancellationToken);
-        async Task DocTypes() => _docTypes = await codebook.IdentificationDocumentTypes(cancellationToken);
-    }
-
     private NaturalPersonBasicInfo CreateNaturalPerson(CustomerSearchResultRow customer)
     {
         var np = (NaturalPersonSearchResult)customer.Party;
 
         return new NaturalPersonBasicInfo
         {
-            BirthNumber = np.CzechBirthNumber ?? "",
+            BirthNumber = np.CzechBirthNumber ?? string.Empty,
             DateOfBirth = np.BirthDate,
-            FirstName = np.FirstName ?? "",
-            LastName = np.Surname ?? "",
+            FirstName = np.FirstName ?? string.Empty,
+            LastName = np.Surname ?? string.Empty,
             GenderId = _genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id
         };
     }
@@ -97,10 +103,10 @@ public class KBSearchCustomersParser
     {
         if (address is null)
             return;
-
-        result.Street = address.Street ?? "";
-        result.City = address.City ?? "";
-        result.Postcode = address.PostCode ?? "";
+        
+        result.Street = address.Street ?? string.Empty;
+        result.City = address.City ?? string.Empty;
+        result.Postcode = address.PostCode ?? string.Empty;
         result.CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id;
     }
 }

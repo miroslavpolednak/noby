@@ -32,4 +32,24 @@
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+    <Folder Include="Services\CustomerSource\KonsDb\Dto\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Services\CustomerSource\KonsDb\Sql\SqlScripts.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SqlScripts.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Services\CustomerSource\KonsDb\Sql\SqlScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

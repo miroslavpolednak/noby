@@ -1,4 +1,5 @@
-﻿using DomainServices.CustomerService.Api.Dto;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Api.Dto;
 using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Validators;
@@ -7,15 +8,16 @@ internal class ProfileCheckMediatrRequestValidator : AbstractValidator<ProfileCh
 {
     public ProfileCheckMediatrRequestValidator()
     {
-        RuleFor(r => r.Request.Identity)
-            .NotNull()
-            .WithMessage("Message")
-            .WithErrorCode("99999") //TODO: ErrorCode
-            .SetValidator(new IdentityValidator());
+        RuleFor(r => r.Request.Identity).SetValidator(new IdentityValidator());
+
+        RuleFor(r => r.Request.Identity.IdentityScheme)
+            .NotEqual(Identity.Types.IdentitySchemes.Kb)
+            .WithMessage("Invalid identity scheme.")
+            .WithErrorCode("11004");
 
         RuleFor(r => r.Request.CustomerProfileCode)
             .NotEmpty()
-            .WithMessage("Message")
-            .WithErrorCode("99999"); //TODO: ErrorCode 
+            .WithMessage("CustomerProfileCode must be specified")
+            .WithErrorCode("11007");
     }
 }

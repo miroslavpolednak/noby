@@ -1,14 +1,19 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
+using System.Diagnostics;
 using DomainServices.CustomerService.Contracts;
+using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
 
-public class KBCustomerDetailParser
+[ScopedService, SelfService]
+public class CustomerManagementDetailProvider
 {
+    private readonly ICustomerManagementClient _customerManagement;
+    private readonly ICodebookServiceAbstraction _codebook;
+
     private List<Endpoints.Countries.CountriesItem> _countries = null!;
     private List<Endpoints.Genders.GenderItem> _genders = null!;
     private List<Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
@@ -16,21 +21,18 @@ public class KBCustomerDetailParser
     private List<Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    private KBCustomerDetailParser()
+    public CustomerManagementDetailProvider(ICustomerManagementClient customerManagement, ICodebookServiceAbstraction codebook)
     {
+        _customerManagement = customerManagement;
+        _codebook = codebook;
     }
 
-    public static async Task<KBCustomerDetailParser> CreateInstance(ICodebookServiceAbstraction codebook, CancellationToken cancellationToken)
+    public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)
     {
-        var instance = new KBCustomerDetailParser();
+        var customer = await _customerManagement.GetDetail(customerId, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
 
-        await instance.Initialize(codebook, cancellationToken);
+        await InitializeCodebooks(cancellationToken);
 
-        return instance;
-    }
-
-    public CustomerDetailResponse Parse(CustomerBaseInfo customer)
-    {
         var response = new CustomerDetailResponse
         {
             Identity = new Identity(customer.CustomerId, IdentitySchemes.Kb),
@@ -46,16 +48,16 @@ public class KBCustomerDetailParser
         return response;
     }
 
-    private Task Initialize(ICodebookServiceAbstraction codebook, CancellationToken cancellationToken)
+    private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
         return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes());
 
-        async Task Countries() => _countries = await codebook.Countries(cancellationToken);
-        async Task Genders() => _genders = await codebook.Genders(cancellationToken);
-        async Task Maritals() => _maritals = await codebook.MaritalStatuses(cancellationToken);
-        async Task Titles() => _titles = await codebook.AcademicDegreesBefore(cancellationToken);
-        async Task Educations() => _educations = await codebook.EducationLevels(cancellationToken);
-        async Task DocTypes() => _docTypes = await codebook.IdentificationDocumentTypes(cancellationToken);
+        async Task Countries() => _countries = await _codebook.Countries(cancellationToken);
+        async Task Genders() => _genders = await _codebook.Genders(cancellationToken);
+        async Task Maritals() => _maritals = await _codebook.MaritalStatuses(cancellationToken);
+        async Task Titles() => _titles = await _codebook.AcademicDegreesBefore(cancellationToken);
+        async Task Educations() => _educations = await _codebook.EducationLevels(cancellationToken);
+        async Task DocTypes() => _docTypes = await _codebook.IdentificationDocumentTypes(cancellationToken);
     }
 
     private Contracts.NaturalPerson CreateNaturalPerson(CustomerBaseInfo customer)
@@ -64,13 +66,13 @@ public class KBCustomerDetailParser
 
         var person = new Contracts.NaturalPerson
         {
-            BirthNumber = np.CzechBirthNumber ?? "",
+            BirthNumber = np.CzechBirthNumber ?? string.Empty,
             DateOfBirth = np.BirthDate,
-            FirstName = np.FirstName ?? "",
-            LastName = np.Surname ?? "",
+            FirstName = np.FirstName ?? string.Empty,
+            LastName = np.Surname ?? string.Empty,
             GenderId = _genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id,
-            BirthName = np.BirthName ?? "",
-            PlaceOfBirth = np.BirthPlace ?? "",
+            BirthName = np.BirthName ?? string.Empty,
+            PlaceOfBirth = np.BirthPlace ?? string.Empty,
             BirthCountryId = _countries.FirstOrDefault(t => t.ShortName == np.BirthCountryCode)?.Id,
             MaritalStatusStateId = _maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
@@ -91,11 +93,11 @@ public class KBCustomerDetailParser
 
         return new Contracts.IdentificationDocument
         {
-            RegisterPlace = document.RegisterPlace ?? "",
+            RegisterPlace = document.RegisterPlace ?? string.Empty,
             ValidTo = document.ValidTo,
             IssuedOn = document.IssuedOn,
-            IssuedBy = document.IssuedBy ?? "",
-            Number = document.DocumentNumber ?? "",
+            IssuedBy = document.IssuedBy ?? string.Empty,
+            Number = document.DocumentNumber ?? string.Empty,
             IssuingCountryId = _countries.FirstOrDefault(t => t.ShortName == document.IssuingCountryCode)?.Id,
             IdentificationDocumentTypeId = _docTypes.First(t => t.RdmCode == document.TypeCode).Id
         };
@@ -112,26 +114,26 @@ public class KBCustomerDetailParser
         onAddAddress(new GrpcAddress
         {
             AddressTypeId = (int)addressType,
-            BuildingIdentificationNumber = componentAddress?.HouseNumber ?? "",
-            LandRegistryNumber = componentAddress?.StreetNumber ?? "",
-            EvidenceNumber = componentAddress?.EvidenceNumber ?? "",
-            City = address.City ?? "",
+            BuildingIdentificationNumber = componentAddress?.HouseNumber ?? string.Empty,
+            LandRegistryNumber = componentAddress?.StreetNumber ?? string.Empty,
+            EvidenceNumber = componentAddress?.EvidenceNumber ?? string.Empty,
+            City = address.City ?? string.Empty,
             IsPrimary = true,
             CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id,
-            Postcode = address.PostCode ?? "",
-            Street = (componentAddress?.Street ?? address.Street) ?? "",
-            DeliveryDetails = address.DeliveryDetails ?? ""
+            Postcode = address.PostCode ?? string.Empty,
+            Street = (componentAddress?.Street ?? address.Street) ?? string.Empty,
+            DeliveryDetails = address.DeliveryDetails ?? string.Empty
         });
     }
 
-    private void AddContacts(CustomerBaseInfo customer, Action<Contact> onAddContact)
+    private static void AddContacts(CustomerBaseInfo customer, Action<Contact> onAddContact)
     {
         if (customer.PrimaryPhone is not null)
         {
             onAddContact(new Contact
             {
                 ContactTypeId = (int)ContactTypes.MobilPrivate,
-                Value = customer.PrimaryPhone.PhoneNumber, 
+                Value = customer.PrimaryPhone.PhoneNumber,
                 IsPrimary = true
             });
         }

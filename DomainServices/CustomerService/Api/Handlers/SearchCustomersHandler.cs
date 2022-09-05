@@ -1,17 +1,22 @@
-﻿using DomainServices.CustomerService.Contracts;
+﻿using System.ComponentModel;
+using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Contracts;
 using DomainServices.CustomerService.Api.Dto;
-using DomainServices.CustomerService.Api.Services.CustomerSource;
+using DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
+using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {
     internal class SearchCustomersHandler : IRequestHandler<SearchCustomersMediatrRequest, SearchCustomersResponse>
     {
-        private readonly CustomerSourceManager _customerSource;
+        private readonly CustomerManagementSearchProvider _cmSearchProvider;
+        private readonly KonsDbSearchProvider _konsDbSearchProvider;
         private readonly ILogger<SearchCustomersHandler> _logger;
 
-        public SearchCustomersHandler(CustomerSourceManager customerSource, ILogger<SearchCustomersHandler> logger)
+        public SearchCustomersHandler(CustomerManagementSearchProvider cmSearchProvider, KonsDbSearchProvider konsDbSearchProvider, ILogger<SearchCustomersHandler> logger)
         {
-            _customerSource = customerSource;
+            _cmSearchProvider = cmSearchProvider;
+            _konsDbSearchProvider = konsDbSearchProvider;
             _logger = logger;
         }
 
@@ -21,9 +26,14 @@ namespace DomainServices.CustomerService.Api.Handlers
 
             var response = new SearchCustomersResponse();
 
-            var result = await _customerSource.Search(request.Request, cancellationToken);
+            var customers = request.Request.Mandant switch
+            {
+                Mandants.Kb => await _cmSearchProvider.Search(request.Request, cancellationToken),
+                Mandants.Mp => await _konsDbSearchProvider.Search(request.Request, cancellationToken),
+                _ => throw new InvalidEnumArgumentException()
+            };
 
-            response.Customers.AddRange(result);
+            response.Customers.AddRange(customers);
 
             return response;
         }

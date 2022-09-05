@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Validators;
 
@@ -8,10 +9,13 @@ public class IdentityValidator : AbstractValidator<CIS.Infrastructure.gRPC.CisTy
     {
         RuleFor(t => t.IdentityId)
             .GreaterThan(0)
-            .WithMessage("IdentityId must be > 0").WithErrorCode("17000");
+            .WithMessage("IdentityId must be > 0")
+            .WithErrorCode("11005");
 
         RuleFor(t => t.IdentityScheme)
-            .Equal(CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
-            .WithMessage("IdentityScheme must be 2").WithErrorCode("17000");
+            .IsInEnum()
+            .NotEqual(Identity.Types.IdentitySchemes.Unknown)
+            .WithMessage("IdentityScheme must be specified")
+            .WithErrorCode("11006");
     }
 }

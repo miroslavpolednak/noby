@@ -11,6 +11,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
 using DomainServices.CustomerService.Contracts;
+using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 Console.WriteLine("run!");
 
@@ -37,7 +38,25 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-var test = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+//var search = await service.SearchCustomers(new SearchCustomersRequest
+//{
+//    Mandant = Mandants.Mp,
+//    IdentificationDocument = new IdentificationDocumentSearch
+//    {
+//        IssuingCountryId = 16,
+//        Number = "205721585",
+//        IdentificationDocumentTypeId = 1
+//    }
+//});
+
+//var test = await service.GetCustomerList(new CustomerListRequest
+//{
+//    Identities =
+//    {
+//        new Identity(34, IdentitySchemes.Mp),
+//        new Identity(123, IdentitySchemes.Kb)
+//    }
+//});
 
 //var test = await service.ProfileCheck(new ProfileCheckRequest
 //{
@@ -45,7 +64,7 @@ var test = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb)
 //    CustomerProfileCode = "KYC_SUBJECTS"
 //});
 
-//await service.GetCustomerDetail(new CustomerRequest { Identity = new Identity(1231, IdentitySchemes.Kb) });
+var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 Console.ReadKey();
 
