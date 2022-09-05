@@ -23,4 +23,7 @@ public class AddressDetail
 
     [ProtoMember(7)]
     public string? Postcode { get; set; }
+
+    [ProtoMember(8)]
+    public int? RegionCode { get; set; }
 }
