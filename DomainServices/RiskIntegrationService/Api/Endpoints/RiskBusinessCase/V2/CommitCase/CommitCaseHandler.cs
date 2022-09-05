@@ -35,7 +35,7 @@ internal sealed class CommitCaseHandler
             } : null,
             CollateralAgreements = request.CollateralAgreementsId?.Select(t => new _C4M.CollateralAgreement
             {
-                Id = _C4M.ResourceIdentifier.CreateCollateralAgreement($"{t}")
+                Id = _C4M.ResourceIdentifier.CreateCollateralAgreement(t)
             }).ToList()
         };
 
