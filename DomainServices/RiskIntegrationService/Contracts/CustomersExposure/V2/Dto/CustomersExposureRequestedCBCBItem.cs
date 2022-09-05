@@ -7,10 +7,10 @@ public class CustomersExposureRequestedCBCBItem
     public string? CbcbContractId { get; set; }
 
     [ProtoMember(2)]
-    public string? LoanType { get; set; }
+    public int? LoanType { get; set; }
 
     [ProtoMember(3)]
-    public string? LoanTypeCategory { get; set; }
+    public int? LoanTypeCategory { get; set; }
 
     [ProtoMember(4)]
     public DateTime? MaturityDate { get; set; }

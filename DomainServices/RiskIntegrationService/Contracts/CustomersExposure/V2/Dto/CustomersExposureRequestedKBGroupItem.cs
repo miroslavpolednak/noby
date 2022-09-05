@@ -7,10 +7,10 @@ public class CustomersExposureRequestedKBGroupItem
     public string? RiskBusinessCaseId { get; set; }
 
     [ProtoMember(2)]
-    public string? LoanType { get; set; }
+    public int? LoanType { get; set; }
 
     [ProtoMember(3)]
-    public string? LoanTypeCategory { get; set; }
+    public int? LoanTypeCategory { get; set; }
 
     [ProtoMember(4)]
     public int? CustomerRoleId { get; set; }
