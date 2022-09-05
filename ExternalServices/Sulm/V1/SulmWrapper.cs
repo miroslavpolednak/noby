@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ExternalServices.Sulm.V1.EasWrapper
+namespace ExternalServices.Sulm.V1.SulmWrapper
 {
     
     
@@ -182,24 +182,24 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", ConfigurationName="ExternalServices.Sulm.V1.EasWrapper.SulmService")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", ConfigurationName="ExternalServices.Sulm.V1.SulmWrapper.SulmService")]
     internal interface SulmService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ExternalServices.Sulm.V1.EasWrapper.SystemExceptionDetails), Action="", Name="system_fault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ExternalServices.Sulm.V1.SulmWrapper.SystemExceptionDetails), Action="", Name="system_fault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.startUseResponse1> startUseAsync(ExternalServices.Sulm.V1.EasWrapper.startUseRequest1 request);
+        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.startUseResponse1> startUseAsync(ExternalServices.Sulm.V1.SulmWrapper.startUseRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ExternalServices.Sulm.V1.EasWrapper.SystemExceptionDetails), Action="", Name="system_fault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ExternalServices.Sulm.V1.SulmWrapper.SystemExceptionDetails), Action="", Name="system_fault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.stopUseResponse1> stopUseAsync(ExternalServices.Sulm.V1.EasWrapper.stopUseRequest1 request);
+        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.stopUseResponse1> stopUseAsync(ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ExternalServices.Sulm.V1.EasWrapper.SystemExceptionDetails), Action="", Name="system_fault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ExternalServices.Sulm.V1.SulmWrapper.SystemExceptionDetails), Action="", Name="system_fault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.getStateResponse1> getStateAsync(ExternalServices.Sulm.V1.EasWrapper.getStateRequest1 request);
+        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.getStateResponse1> getStateAsync(ExternalServices.Sulm.V1.SulmWrapper.getStateRequest1 request);
     }
     
     /// <remarks/>
@@ -306,19 +306,19 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://esb.kb.cz/core/dataTypes/1/0")]
-        public ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext;
+        public ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://correlation.kb.cz/datatypes/1/0")]
-        public ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext;
+        public ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", Order=0)]
-        public ExternalServices.Sulm.V1.EasWrapper.startUseRequest startUseRequest;
+        public ExternalServices.Sulm.V1.SulmWrapper.startUseRequest startUseRequest;
         
         public startUseRequest1()
         {
         }
         
-        public startUseRequest1(ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.EasWrapper.startUseRequest startUseRequest)
+        public startUseRequest1(ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.SulmWrapper.startUseRequest startUseRequest)
         {
             this.callerContext = callerContext;
             this.correlationContext = correlationContext;
@@ -334,13 +334,13 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", Order=0)]
-        public ExternalServices.Sulm.V1.EasWrapper.startUseResponse startUseResponse;
+        public ExternalServices.Sulm.V1.SulmWrapper.startUseResponse startUseResponse;
         
         public startUseResponse1()
         {
         }
         
-        public startUseResponse1(ExternalServices.Sulm.V1.EasWrapper.startUseResponse startUseResponse)
+        public startUseResponse1(ExternalServices.Sulm.V1.SulmWrapper.startUseResponse startUseResponse)
         {
             this.startUseResponse = startUseResponse;
         }
@@ -402,19 +402,19 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://esb.kb.cz/core/dataTypes/1/0")]
-        public ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext;
+        public ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://correlation.kb.cz/datatypes/1/0")]
-        public ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext;
+        public ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", Order=0)]
-        public ExternalServices.Sulm.V1.EasWrapper.stopUseRequest stopUseRequest;
+        public ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest stopUseRequest;
         
         public stopUseRequest1()
         {
         }
         
-        public stopUseRequest1(ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.EasWrapper.stopUseRequest stopUseRequest)
+        public stopUseRequest1(ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest stopUseRequest)
         {
             this.callerContext = callerContext;
             this.correlationContext = correlationContext;
@@ -430,13 +430,13 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", Order=0)]
-        public ExternalServices.Sulm.V1.EasWrapper.stopUseResponse stopUseResponse;
+        public ExternalServices.Sulm.V1.SulmWrapper.stopUseResponse stopUseResponse;
         
         public stopUseResponse1()
         {
         }
         
-        public stopUseResponse1(ExternalServices.Sulm.V1.EasWrapper.stopUseResponse stopUseResponse)
+        public stopUseResponse1(ExternalServices.Sulm.V1.SulmWrapper.stopUseResponse stopUseResponse)
         {
             this.stopUseResponse = stopUseResponse;
         }
@@ -514,19 +514,19 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://esb.kb.cz/core/dataTypes/1/0")]
-        public ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext;
+        public ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://correlation.kb.cz/datatypes/1/0")]
-        public ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext;
+        public ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", Order=0)]
-        public ExternalServices.Sulm.V1.EasWrapper.getStateRequest getStateRequest;
+        public ExternalServices.Sulm.V1.SulmWrapper.getStateRequest getStateRequest;
         
         public getStateRequest1()
         {
         }
         
-        public getStateRequest1(ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.EasWrapper.getStateRequest getStateRequest)
+        public getStateRequest1(ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.SulmWrapper.getStateRequest getStateRequest)
         {
             this.callerContext = callerContext;
             this.correlationContext = correlationContext;
@@ -542,26 +542,26 @@ namespace ExternalServices.Sulm.V1.EasWrapper
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://esb.kb.cz/Sulm/interface/1/0", Order=0)]
-        public ExternalServices.Sulm.V1.EasWrapper.getStateResponse getStateResponse;
+        public ExternalServices.Sulm.V1.SulmWrapper.getStateResponse getStateResponse;
         
         public getStateResponse1()
         {
         }
         
-        public getStateResponse1(ExternalServices.Sulm.V1.EasWrapper.getStateResponse getStateResponse)
+        public getStateResponse1(ExternalServices.Sulm.V1.SulmWrapper.getStateResponse getStateResponse)
         {
             this.getStateResponse = getStateResponse;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    internal interface SulmServiceChannel : ExternalServices.Sulm.V1.EasWrapper.SulmService, System.ServiceModel.IClientChannel
+    internal interface SulmServiceChannel : ExternalServices.Sulm.V1.SulmWrapper.SulmService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
-    internal partial class SulmServiceClient : System.ServiceModel.ClientBase<ExternalServices.Sulm.V1.EasWrapper.SulmService>, ExternalServices.Sulm.V1.EasWrapper.SulmService
+    internal partial class SulmServiceClient : System.ServiceModel.ClientBase<ExternalServices.Sulm.V1.SulmWrapper.SulmService>, ExternalServices.Sulm.V1.SulmWrapper.SulmService
     {
         
         /// <summary>
@@ -605,48 +605,48 @@ namespace ExternalServices.Sulm.V1.EasWrapper
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.startUseResponse1> ExternalServices.Sulm.V1.EasWrapper.SulmService.startUseAsync(ExternalServices.Sulm.V1.EasWrapper.startUseRequest1 request)
+        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.startUseResponse1> ExternalServices.Sulm.V1.SulmWrapper.SulmService.startUseAsync(ExternalServices.Sulm.V1.SulmWrapper.startUseRequest1 request)
         {
             return base.Channel.startUseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.startUseResponse1> startUseAsync(ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.EasWrapper.startUseRequest startUseRequest)
+        public System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.startUseResponse1> startUseAsync(ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.SulmWrapper.startUseRequest startUseRequest)
         {
-            ExternalServices.Sulm.V1.EasWrapper.startUseRequest1 inValue = new ExternalServices.Sulm.V1.EasWrapper.startUseRequest1();
+            ExternalServices.Sulm.V1.SulmWrapper.startUseRequest1 inValue = new ExternalServices.Sulm.V1.SulmWrapper.startUseRequest1();
             inValue.callerContext = callerContext;
             inValue.correlationContext = correlationContext;
             inValue.startUseRequest = startUseRequest;
-            return ((ExternalServices.Sulm.V1.EasWrapper.SulmService)(this)).startUseAsync(inValue);
+            return ((ExternalServices.Sulm.V1.SulmWrapper.SulmService)(this)).startUseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.stopUseResponse1> ExternalServices.Sulm.V1.EasWrapper.SulmService.stopUseAsync(ExternalServices.Sulm.V1.EasWrapper.stopUseRequest1 request)
+        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.stopUseResponse1> ExternalServices.Sulm.V1.SulmWrapper.SulmService.stopUseAsync(ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest1 request)
         {
             return base.Channel.stopUseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.stopUseResponse1> stopUseAsync(ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.EasWrapper.stopUseRequest stopUseRequest)
+        public System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.stopUseResponse1> stopUseAsync(ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest stopUseRequest)
         {
-            ExternalServices.Sulm.V1.EasWrapper.stopUseRequest1 inValue = new ExternalServices.Sulm.V1.EasWrapper.stopUseRequest1();
+            ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest1 inValue = new ExternalServices.Sulm.V1.SulmWrapper.stopUseRequest1();
             inValue.callerContext = callerContext;
             inValue.correlationContext = correlationContext;
             inValue.stopUseRequest = stopUseRequest;
-            return ((ExternalServices.Sulm.V1.EasWrapper.SulmService)(this)).stopUseAsync(inValue);
+            return ((ExternalServices.Sulm.V1.SulmWrapper.SulmService)(this)).stopUseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.getStateResponse1> ExternalServices.Sulm.V1.EasWrapper.SulmService.getStateAsync(ExternalServices.Sulm.V1.EasWrapper.getStateRequest1 request)
+        System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.getStateResponse1> ExternalServices.Sulm.V1.SulmWrapper.SulmService.getStateAsync(ExternalServices.Sulm.V1.SulmWrapper.getStateRequest1 request)
         {
             return base.Channel.getStateAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.Sulm.V1.EasWrapper.getStateResponse1> getStateAsync(ExternalServices.Sulm.V1.EasWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.EasWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.EasWrapper.getStateRequest getStateRequest)
+        public System.Threading.Tasks.Task<ExternalServices.Sulm.V1.SulmWrapper.getStateResponse1> getStateAsync(ExternalServices.Sulm.V1.SulmWrapper.CallerContext callerContext, ExternalServices.Sulm.V1.SulmWrapper.CorrelationContext correlationContext, ExternalServices.Sulm.V1.SulmWrapper.getStateRequest getStateRequest)
         {
-            ExternalServices.Sulm.V1.EasWrapper.getStateRequest1 inValue = new ExternalServices.Sulm.V1.EasWrapper.getStateRequest1();
+            ExternalServices.Sulm.V1.SulmWrapper.getStateRequest1 inValue = new ExternalServices.Sulm.V1.SulmWrapper.getStateRequest1();
             inValue.callerContext = callerContext;
             inValue.correlationContext = correlationContext;
             inValue.getStateRequest = getStateRequest;
-            return ((ExternalServices.Sulm.V1.EasWrapper.SulmService)(this)).getStateAsync(inValue);
+            return ((ExternalServices.Sulm.V1.SulmWrapper.SulmService)(this)).getStateAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

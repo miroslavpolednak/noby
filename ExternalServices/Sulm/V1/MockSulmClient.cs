@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ExternalServices.Sulm.V1;
 
-namespace ExternalServices.Sulm.V1
+internal sealed class MockSulmClient : ISulmClient
 {
-    internal class MockSulmClient
+    public Versions Version { get; } = Versions.V1;
+
+    public Task<IServiceCallResult> StopUse(long partyId, string usageCode)
     {
+        return Task.FromResult((IServiceCallResult)new SuccessfulServiceCallResult());
+    }
+
+    public Task<IServiceCallResult> StartUse(long partyId, string usageCode)
+    {
+        return Task.FromResult((IServiceCallResult)new SuccessfulServiceCallResult());
     }
 }
