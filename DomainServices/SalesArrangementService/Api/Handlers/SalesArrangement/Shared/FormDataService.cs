@@ -244,17 +244,17 @@ internal class FormDataService
         return incomes.ToDictionary(i => i.IncomeId);
     }
 
-    private async Task<Dictionary<string, CustomerResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, CustomerDetailResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         // vrací pouze pro KB identity
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
-        var results = new List<CustomerResponse>();
+        var results = new List<CustomerDetailResponse>();
         for (int i = 0; i < customerIdentities.Count; i++)
         {
-            var customer = ServiceCallResult.ResolveToDefault<CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest { Identity = customerIdentities[i] }, cancellation));
+            var customer = ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
             results.Add(customer!);
         }
-        return results.ToDictionary(i => i.Identities.First().ToCode());
+        return results.ToDictionary(i => i.Identity.ToCode());
     }
 
     private static string ResolveGetContractNumber(IServiceCallResult result) =>

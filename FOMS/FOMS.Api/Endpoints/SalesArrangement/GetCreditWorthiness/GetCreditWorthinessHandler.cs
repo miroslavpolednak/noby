@@ -118,10 +118,7 @@ internal class GetCreditWorthinessHandler
         // customer instance
         if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
         {
-            var customerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
-            {
-                Identity = customer.CustomerIdentifiers.First()
-            }, cancellationToken));
+            var customerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(customer.CustomerIdentifiers.First(), cancellationToken));
             c.MaritalStatusMp = customerInstance.NaturalPerson?.MaritalStatusStateId;
         }
 

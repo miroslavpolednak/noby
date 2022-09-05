@@ -12,10 +12,7 @@ internal sealed class IdentifyByIdentityHandler
     protected override async Task Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
         // crm customer
-        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_CS.CustomerResponse>(await _customerService.GetCustomerDetail(new _CS.CustomerRequest
-        {
-            Identity = request.CustomerIdentity!
-        }, cancellationToken));
+        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_CS.CustomerDetailResponse>(await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken));
         // customer On SA
         var customerOnSaInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken));
         // SA
@@ -51,9 +48,9 @@ internal sealed class IdentifyByIdentityHandler
                 Name = customerInstance.NaturalPerson.LastName
             }, cancellationToken));
 
-            if (customerInstance.Identities.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp))
+            if (customerInstance.Identity.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)
             {
-                var mpid = customerInstance.Identities.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
+                var mpid = customerInstance.Identity.IdentityId;
                 var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, mpid);
                 await _mediator.Publish(notification, cancellationToken);
             }

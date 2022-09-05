@@ -5,7 +5,7 @@ namespace FOMS.Api.Endpoints.Customer.GetDetail;
 
 public static class Extensions
 {
-    public static GetDetailResponse ToResponseDto(this CustomerResponse customer)
+    public static GetDetailResponse ToResponseDto(this CustomerDetailResponse customer)
     {
         var model = new GetDetailResponse();
         

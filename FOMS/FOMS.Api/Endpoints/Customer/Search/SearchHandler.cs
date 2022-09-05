@@ -20,7 +20,7 @@ internal class SearchHandler
 
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
         var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
-        _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomerResult));
+        _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomersItem));
 
         // transform
         return new SearchResponse

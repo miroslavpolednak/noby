@@ -13,14 +13,14 @@ internal sealed class IdentifyHandler
     {
         var dsRequest = new contracts.SearchCustomersRequest
         {
-            NaturalPerson = new contracts.SearchNaturalPerson()
+            NaturalPerson = new contracts.NaturalPersonSearch
             {
                 FirstName = request.FirstName ?? "",
                 LastName = request.LastName ?? "",
                 BirthNumber = request.BirthNumber ?? "",
                 DateOfBirth = request.DateOfBirth
             },
-            IdentificationDocument = new SearchIdentificationDocument
+            IdentificationDocument = new IdentificationDocumentSearch
             {
                 IdentificationDocumentTypeId = request.IdentificationDocumentTypeId,
                 IssuingCountryId = request.IssuingCountryId,
@@ -42,13 +42,13 @@ internal sealed class IdentifyHandler
         else if (result.Customers.Count > 1)
         {
             _logger.LogInformation("More than 1 client found");
-            throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identities?.FirstOrDefault()?.IdentityId.ToString()))}");
+            throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identity?.IdentityId.ToString()))}");
         }
 
         var customer = result.Customers.First();
         return (new CustomerInList())
             .FillBaseData(customer)
-            .FillIdentification(customer.Identities);
+            .FillIdentification(customer.Identity);
     }
 
     private readonly ILogger<IdentifyHandler> _logger;
