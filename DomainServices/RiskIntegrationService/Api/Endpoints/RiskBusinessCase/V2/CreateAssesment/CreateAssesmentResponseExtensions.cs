@@ -49,7 +49,7 @@ internal static class CreateAssesmentExtensions
             Value = model.Value
         };
 
-    private static _sh.LoanApplicationAssesmentLimit ToLimit(this _C4M.LoanApplicationLimit model)
+    private static _sh.LoanApplicationAssessmentLimit ToLimit(this _C4M.LoanApplicationLimit model)
         => new()
         {
             Limit = model.LoanApplicationLimit1.ToAmountDetail(),
@@ -63,7 +63,7 @@ internal static class CreateAssesmentExtensions
             Dsti = model.Dsti
         };
 
-    private static _sh.LoanApplicationAssesmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics model)
+    private static _sh.LoanApplicationAssessmentRiskCharacteristics ToRiskCharacteristics(this _C4M.RiskCharacteristics model)
         => new()
         {
             MonthlyIncome = model.MonthlyIncomeAmount.ToAmountDetail(),
@@ -82,9 +82,13 @@ internal static class CreateAssesmentExtensions
             Level = t.Level,
             Weight = t.Weight,
             Category = t.Category,
-            Target = t?.Detail.Target,
-            Description = t?.Detail.Desc,
-            Result = t?.Detail.Result
+            Target = t.Detail?.Target,
+            Description = t.Detail?.Desc,
+            Result = t.Detail?.Result,
+            Resources = t.Detail?.Resource?.Select(r => new _sh.LoanApplicationAssessmentResource { 
+                Entity = r.Entity,
+                Identifier = null //TODO Pavel Tomšík dodá jak bude vypadat rozparsování
+            }).ToList()
         };
 
     private static Func<_C4M.HouseholdAssessmentDetail, _sh.LoanApplicationAssessmentHouseholdDetail> Household()

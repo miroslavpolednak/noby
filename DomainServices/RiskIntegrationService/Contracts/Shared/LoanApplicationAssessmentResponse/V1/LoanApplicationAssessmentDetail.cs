@@ -8,8 +8,8 @@ public sealed class LoanApplicationAssessmentDetail
     public LoanApplicationAssessmentScore? Score { get; set; }
 
     [ProtoMember(2)]
-    public LoanApplicationAssesmentLimit? Limit { get; set; }
+    public LoanApplicationAssessmentLimit? Limit { get; set; }
 
     [ProtoMember(3)]
-    public LoanApplicationAssesmentRiskCharacteristics? RiskCharacteristics { get; set; }
+    public LoanApplicationAssessmentRiskCharacteristics? RiskCharacteristics { get; set; }
 }
