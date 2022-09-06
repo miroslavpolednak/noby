@@ -1,4 +1,5 @@
-﻿using _OS = DomainServices.OfferService.Contracts;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
+using _OS = DomainServices.OfferService.Contracts;
 using EasWrapper = ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper;
 
 namespace DomainServices.OfferService.Api;
@@ -30,7 +31,7 @@ internal static class EasSimulationExtensions
 
 
     // loan
-    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs)
+    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs, Dictionary<int, DrawingTypeItem> drawingTypeById)
     {
         var uver = new EasWrapper.SimSettingsUver
         {
@@ -43,11 +44,15 @@ internal static class EasSimulationExtensions
             indCenotvorbaOdchylka = -1 * ((decimal)inputs.InterestRateDiscount!),
             periodaFixace = inputs.FixedRatePeriod!.Value,
             predpokladanaHodnotaZajisteni = inputs.CollateralAmount,
-            typCerpani = inputs.DrawingType!.Value,
             lhutaDocerpani = inputs.DrawingDuration,
+            denSplatky = inputs.PaymentDay!.Value,
         };
 
-        uver.denSplatky = inputs.PaymentDay!.Value;
+        var typCerpani = inputs.DrawingType.HasValue ? drawingTypeById.GetValueOrDefault(inputs.DrawingType.Value)?.StarbuildId : null;
+        if (typCerpani.HasValue)
+        {
+            uver.typCerpani = typCerpani.Value;
+        }
 
         if (inputs.GuaranteeDateFrom != null)
         {
@@ -185,7 +190,7 @@ internal static class EasSimulationExtensions
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
     /// </summary>
-    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters)
+    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters, Dictionary<int, DrawingTypeItem> drawingTypeById)
     {
         //return SampleRequest;
 
@@ -193,7 +198,7 @@ internal static class EasSimulationExtensions
         return new EasWrapper.SimulationHTRequest
         {
             settings = ReqDefaultSettings,
-            uver = inputs.ToReqLoan(),
+            uver = inputs.ToReqLoan(drawingTypeById),
             urokovaSazba = inputs.ToReqInterestRate(),
             ucelyUveru = inputs.ToReqLoanPurposes(),
             nastaveniPoplatku = inputs.ToReqFeeSettings(basicParameters),

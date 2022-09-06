@@ -32,31 +32,25 @@ internal class C4mHttpHandler : DelegatingHandler
             var response = await base.SendAsync(request, cancellationToken);
 
             int statusCode = (int)response.StatusCode;
-            if (response!.IsSuccessStatusCode)
+            // logovat vsechen respones
+            if (response?.Content is not null)
             {
-                if (response?.Content is not null)
-                {
-                    using (_logger.BeginScope(new Dictionary<string, object>
+                using (_logger.BeginScope(new Dictionary<string, object>
                     {
                         { "Payload", await getRawResponse() }
                     }))
-                    {
-                        _logger.HttpResponsePayload(request, statusCode);
-                    }
+                {
+                    _logger.HttpResponsePayload(request, statusCode);
                 }
+            }
 
+            if (response!.IsSuccessStatusCode)
+            {
                 return response!;
             }
             else if (statusCode >= 400 && statusCode < 500)
             {
                 var message = await getRawResponse();
-                using (_logger.BeginScope(new Dictionary<string, object>
-                    {
-                        { "Payload", message }
-                    }))
-                {
-                    _logger.HttpResponsePayload(request, statusCode);
-                }
 
                 // chyba spravne reportovana z c4m - bude to nekdy takto vypadat?
                 var result = await response.Content.ReadFromJsonAsync<Dto.ErrorModel>(cancellationToken: cancellationToken);
@@ -76,8 +70,6 @@ internal class C4mHttpHandler : DelegatingHandler
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
                 throw new CisServiceUnavailableException(_serviceName, request.RequestUri!.ToString(), await getRawResponse());
-            else if ((int)response.StatusCode >= 500)
-                throw new CisServiceServerErrorException(_serviceName, request.RequestUri!.ToString(), await getRawResponse());
             else
                 throw new CisServiceServerErrorException(_serviceName, request.RequestUri!.ToString(), $"{response.StatusCode}: {await getRawResponse()}");
 

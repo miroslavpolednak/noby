@@ -4686,6 +4686,281 @@
             Dokončení úvěrové žádosti
             </summary>
         </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculation">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculation.Dti">
+            <summary>
+            DTI
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.Amount">
+            <summary>
+            Amount
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.Amount.Value">
+            <summary>
+            Hodnota částky
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.Amount.CurrencyCode">
+            <summary>
+            Kód měny částky (ISO 4217)
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.CreditLiabilitiesSummary">
+            <summary>
+            HouseholdCreditLiabilitiesSummaryOutHomeCompany.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.CreditLiabilitiesSummary.ProductClusterCode">
+            <summary>
+            Product group.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.CreditLiabilitiesSummary.Amount">
+            <summary>
+            Množství.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.CreditLiabilitiesSummary.AmountConsolidated">
+            <summary>
+            Množství.
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculationArguments">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculationArguments.ResourceProcessId">
+            <summary>
+            resourceProcessId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculationArguments.ItChannel">
+            <summary>
+            itChannel
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculationArguments.LoanApplicationProduct">
+            <summary>
+            loanApplicationProduct
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTICalculationArguments.LoanApplicationHousehold">
+            <summary>
+            loanApplicationHousehold
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTILoanApplicationHousehold">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTILoanApplicationHousehold.CreditLiabilitiesSummaryOutHomeCompany">
+            <summary>
+            Výše závazků mimo KB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTILoanApplicationHousehold.CreditLiabilitiesSummaryHomeCompany">
+            <summary>
+            Výše závazků v KB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTILoanApplicationHousehold.LoanApplicationCounterparty">
+            <summary>
+            loanApplication Counterparty
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DTILoanApplicationProduct.AmountRequired">
+            <summary>
+            Požadovaná výše úvěru
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanApplicationCounterparty">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanApplicationCounterparty.CustomerId">
+            <summary>
+            customerId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanApplicationCounterparty.MonthlyEmploymentIncomeSumAmount">
+            <summary>
+            Suma příjmů ze závislé činnosti
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanApplicationCounterparty.EntrepreneurAnnualIncomeAmount">
+            <summary>
+            Suma příjmů z podnikání
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanApplicationCounterparty.MonthlyRentIncomeSumAmount">
+            <summary>
+            Suma příjmů z pronájmu
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanApplicationCounterparty.MonthlyOtherIncomeAmount">
+            <summary>
+            Suma ostatních příjmů
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.ResourceIdentifier">
+            <summary>
+            ResourceIdentifier
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.ResourceIdentifier.Instance">
+            <summary>
+            The resource instance code, eg. 'KBCZ'
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.ResourceIdentifier.Domain">
+            <summary>
+            The resource domain code, eg. 'CFLM'
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.ResourceIdentifier.Resource">
+            <summary>
+            The resource code (the in-domain resource code, eg. 'LimitModel')
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.ResourceIdentifier.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.ResourceIdentifier.Variant">
+            <summary>
+            The variant of the resource, eg. distinguishing the origin of the source
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculation">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculation.Dsti">
+            <summary>
+            DSTI
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculationArguments">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculationArguments.ResourceProcessId">
+            <summary>
+            resourceProcessId
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculationArguments.ItChannel">
+            <summary>
+            itChannel
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculationArguments.LoanApplicationProduct">
+            <summary>
+            loanApplicationProduct
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICalculationArguments.LoanApplicationHousehold">
+            <summary>
+            loanApplicationHousehold
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICreditLiabilitiesSummary">
+            <summary>
+            DSTICreditLiabilitiesSummary.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICreditLiabilitiesSummary.ProductClusterCode">
+            <summary>
+            Product group.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICreditLiabilitiesSummary.Amount">
+            <summary>
+            Množství.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTICreditLiabilitiesSummary.AmountConsolidated">
+            <summary>
+            Množství.
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationHousehold">
+            <summary>
+            Abstract DTO - should be overwritten by successors of this abstract class
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationHousehold.CreditLiabilitiesSummaryOutHomeCompany">
+            <summary>
+            Výše závazků mimo KB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationHousehold.CreditLiabilitiesSummaryHomeCompany">
+            <summary>
+            Výše závazků v KB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationHousehold.LoanInstallmentsSummaryOutHomeCompany">
+            <summary>
+            Výše splátek úvěrových produků mimo KB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationHousehold.LoanInstallmentsSummaryHomeCompany">
+            <summary>
+            Výše splátek úvěrových produktů v KB
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationHousehold.LoanApplicationCounterparty">
+            <summary>
+            loanApplication Counterparty
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationProduct.ProductClusterCode">
+            <summary>
+            kód produktového shluku
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationProduct.AmountRequired">
+            <summary>
+            požadovaná výše úvěru
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.DSTILoanApplicationProduct.Annuity">
+            <summary>
+            požadovaná splátka
+            </summary>
+        </member>
+        <member name="T:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanInstallmentsSummary">
+            <summary>
+            householdInstallmentsSummaryOutHomeCompany
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanInstallmentsSummary.ProductClusterCode">
+            <summary>
+            Product group.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanInstallmentsSummary.Amount">
+            <summary>
+            Množství.
+            </summary>
+        </member>
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1.Contracts.LoanInstallmentsSummary.AmountConsolidated">
+            <summary>
+            Množství.
+            </summary>
+        </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.AppConfiguration.ServiceUser2ItChannelBinding">
             <summary>
             Nastaveni mapovani technickych uzivatelu sluzby vs. ItChannel C4M

@@ -13,5 +13,11 @@ public sealed class CreditWorthinessObligation
     public decimal? AmountConsolidated { get; set; }
 
     [ProtoMember(4)]
+    public decimal? Installment { get; set; }
+
+    [ProtoMember(5)]
+    public decimal? InstallmentConsolidated { get; set; }
+
+    [ProtoMember(6)]
     public bool IsObligationCreditorExternal { get; set; }
 }

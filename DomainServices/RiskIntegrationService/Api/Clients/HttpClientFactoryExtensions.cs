@@ -1,7 +1,4 @@
 ﻿using CIS.ExternalServicesHelpers.Configuration;
-using Polly;
-using Polly.Extensions.Http;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
@@ -22,7 +19,7 @@ internal static class HttpClientFactoryExtensions
 
     static HttpClientFactoryExtensions()
     {
-        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse()); //TODO odstranit az c4m opravi format cisel
+        _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse());
     }
 
     public static IHttpClientBuilder ConfigureC4mHttpMessageHandler<TClient>(this IHttpClientBuilder builder, string serviceName)
@@ -36,21 +33,6 @@ internal static class HttpClientFactoryExtensions
             }, logger, serviceName);
         });
 
-    public static IHttpClientBuilder AddC4mPolicyHandler<TService>(this IHttpClientBuilder builder, string serviceName)
-        => builder.AddPolicyHandler((services, request) => 
-            HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .WaitAndRetryAsync(new[]
-                    {
-                        TimeSpan.FromSeconds(1)
-                    },
-                    onRetry: (outcome, timespan, retryAttempt, context) =>
-                    {
-                        services.GetService<ILogger<TService>>()?.ExtServiceRetryCall(serviceName, retryAttempt, timespan.TotalMilliseconds);
-                    }
-                )
-        );
-    
     public static IHttpClientBuilder AddC4mHttpClient<TClient, TImplementation>(this IServiceCollection services, IExternalServiceBasicAuthenticationConfiguration configuration)
         where TClient : class
         where TImplementation : class, TClient

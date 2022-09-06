@@ -7,9 +7,9 @@ using contracts = DomainServices.CustomerService.Contracts;
 namespace FOMS.Api.Endpoints.Customer.Identify;
 
 internal sealed class IdentifyHandler
-    : IRequestHandler<IdentifyRequest, Search.Dto.CustomerInList>
+    : IRequestHandler<IdentifyRequest, CustomerInList>
 {
-    public async Task<Search.Dto.CustomerInList> Handle(IdentifyRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerInList?> Handle(IdentifyRequest request, CancellationToken cancellationToken)
     {
         var dsRequest = new contracts.SearchCustomersRequest
         {
@@ -26,7 +26,7 @@ internal sealed class IdentifyHandler
                 IssuingCountryId = request.IssuingCountryId,
                 Number = request.IdentificationDocumentNumber ?? ""
             },
-            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb
+            Mandant = Mandants.Kb
         };
 
         // ID klienta
@@ -38,7 +38,7 @@ internal sealed class IdentifyHandler
         var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
 
         if (!result.Customers.Any())
-            throw new CisValidationException("Client not found");
+            return null;
         else if (result.Customers.Count > 1)
         {
             _logger.LogInformation("More than 1 client found");

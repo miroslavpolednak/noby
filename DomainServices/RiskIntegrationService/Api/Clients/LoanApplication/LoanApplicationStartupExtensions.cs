@@ -11,24 +11,24 @@ internal static class LoanApplicationStartupExtensions
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<LoanApplication.Configuration.LoanApplicationConfiguration>(ServiceName);
 
-        foreach (var configuration in configurations)
+        configurations.ForEach(configuration =>
         {
-            switch (configuration.Version)
+            switch (configuration.Version, configuration.ImplementationType)
             {
-                case Versions.V1:
-                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                        builder.Services.AddScoped<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.MockLoanApplicationClient>();
-                    else
-                        builder.Services
-                            .AddC4mHttpClient<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.RealLoanApplicationClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<LoanApplication.V1.RealLoanApplicationClient>(ServiceName)
-                            .AddC4mPolicyHandler<LoanApplication.V1.ILoanApplicationClient>(ServiceName);
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Mock):
+                    builder.Services.AddScoped<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.MockLoanApplicationClient>();
+                    break;
+
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
+                    builder.Services
+                        .AddC4mHttpClient<LoanApplication.V1.ILoanApplicationClient, LoanApplication.V1.RealLoanApplicationClient>(configuration)
+                        .ConfigureC4mHttpMessageHandler<LoanApplication.V1.RealLoanApplicationClient>(ServiceName);
                     break;
 
                 default:
                     throw new NotImplementedException($"{ServiceName} version {configuration.Version} client not implemented");
             }
-        }
+        });
 
         return builder;
     }

@@ -55,8 +55,8 @@ internal sealed class HouseholdChildMapper
                 .ForEach(g =>
                 {
                     var o = list.First(t => t.ProductClusterCode == g.Key);
-                    o.Amount = new Amount() { Value = g.Sum(t => t.Amount.GetValueOrDefault()), CurrencyCode = "CZK" };
-                    o.AmountConsolidated = new Amount() { Value = g.Sum(t => t.AmountConsolidated.GetValueOrDefault()), CurrencyCode = "CZK" };
+                    o.Amount = g.Sum(t => t.Amount.GetValueOrDefault() + t.Installment.GetValueOrDefault()).ToAmount();
+                    o.AmountConsolidated = g.Sum(t => t.AmountConsolidated.GetValueOrDefault() + t.InstallmentConsolidated.GetValueOrDefault()).ToAmount();
                 });
         }
 
@@ -86,8 +86,8 @@ internal sealed class HouseholdChildMapper
                 .ForEach(g =>
                 {
                     var o = list.First(t => t.ProductClusterCode == g.Key);
-                    o.Amount = new Amount() { Value = g.Sum(t => t.Installment.GetValueOrDefault()), CurrencyCode = "CZK" };
-                    o.AmountConsolidated = new Amount() { Value = g.Sum(t => t.InstallmentConsolidated.GetValueOrDefault()), CurrencyCode = "CZK" };
+                    o.Amount = g.Sum(t => t.Installment.GetValueOrDefault()).ToAmount();
+                    o.AmountConsolidated = g.Sum(t => t.InstallmentConsolidated.GetValueOrDefault()).ToAmount();
                 });
         }
 

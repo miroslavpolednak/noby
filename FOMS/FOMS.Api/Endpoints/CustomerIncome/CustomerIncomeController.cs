@@ -19,8 +19,8 @@ public class CustomerIncomeController : ControllerBase
     [HttpDelete("{customerOnSAId:int}/income/{incomeId:int}")]
     [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
-        => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId), cancellationToken);
+    public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId)
+        => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId));
 
     /// <summary>
     /// Detail prijmu customera
@@ -56,8 +56,8 @@ public class CustomerIncomeController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
+    public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request)
+        => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     /// <summary>
     /// Vytvoreni prijmu customera
@@ -71,8 +71,8 @@ public class CustomerIncomeController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
+    public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request)
+        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     private readonly IMediator _mediator;
     public CustomerIncomeController(IMediator mediator) => _mediator = mediator;

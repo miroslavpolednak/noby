@@ -6,7 +6,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V
 
 [Authorize]
 public class RiskBusinessCaseService
-    : IRiskBusinessCaseService
+    : _V2.IRiskBusinessCaseService
 {
     private readonly IMediator _mediator;
 

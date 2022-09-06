@@ -16,8 +16,6 @@ internal sealed class SaveHandler
         bool responseVerPriority = requestModel.LoanApplicationHousehold?.All(t => t.CounterParty.All(x => x.Income?.EmploymentIncome?.All(y => y.VerificationPriority.GetValueOrDefault()) ?? false)) ?? false;
         return new _V2.LoanApplicationSaveResponse
         {
-            LoanApplicationId = response.Id,
-            LoanApplicationDataVersion = response.LoanApplicationDataVersion,
             RiskSegment = responseVerPriority ? _V2.LoanApplicationRiskSegments.A : _V2.LoanApplicationRiskSegments.B
         };
     }

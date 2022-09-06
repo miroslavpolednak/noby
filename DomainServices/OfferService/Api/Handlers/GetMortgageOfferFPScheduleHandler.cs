@@ -1,6 +1,7 @@
 ﻿using _OS = DomainServices.OfferService.Contracts;
-using Microsoft.EntityFrameworkCore;
+using DomainServices.CodebookService.Abstraction;
 
+using Microsoft.EntityFrameworkCore;
 
 using Grpc.Core;
 using CIS.Infrastructure.gRPC;
@@ -14,13 +15,14 @@ internal class GetMortgageOfferFPScheduleHandler
     #region Construction
 
     private readonly Repositories.OfferServiceDbContext _dbContext;
-
+    private readonly ICodebookServiceAbstraction _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
     public GetMortgageOfferFPScheduleHandler(
-        Repositories.OfferServiceDbContext dbContext, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
+        Repositories.OfferServiceDbContext dbContext, ICodebookServiceAbstraction codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
     {
         _dbContext = dbContext;
+        _codebookService = codebookService;
         _easSimulationHTClient = easSimulationHTClient;
     }
 
@@ -33,12 +35,14 @@ internal class GetMortgageOfferFPScheduleHandler
            .Where(t => t.OfferId == request.OfferId)
            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
+        // load codebook DrawingType for remaping Id -> StarbildId
+        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
 
         var basicParameters = _OS.BasicParameters.Parser.ParseFrom(entity.BasicParametersBin);
         var inputs = _OS.MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin);
 
         // get simulation outputs
-        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters).ToEasSimulationFullPaymentScheduleRequest();
+        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingTypeById).ToEasSimulationFullPaymentScheduleRequest();
         var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
 
         var fullPaymentSchedule = easSimulationRes.ToFullPaymentSchedule();

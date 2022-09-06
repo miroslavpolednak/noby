@@ -7,7 +7,9 @@ public class IncomeDataSwaggerSchema : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
-        if (context.Type != typeof(CreateIncome.CreateIncomeRequest) && context.Type != typeof(UpdateIncome.UpdateIncomeRequest))
+        if (context.Type != typeof(CreateIncome.CreateIncomeRequest) && 
+            context.Type != typeof(UpdateIncome.UpdateIncomeRequest) &&
+            context.Type != typeof(GetIncome.GetIncomeResponse))
             return;
 
         var possibleTypes = new[]
