@@ -19,8 +19,8 @@ internal abstract class BaseClient<TClient>
     {
         var basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
 
-        basicHttpBinding.SendTimeout = TimeSpan.FromSeconds(_configuration.Timeout);
-        basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(_configuration.Timeout);
+        basicHttpBinding.SendTimeout = TimeSpan.FromSeconds(5);
+        basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(5);
         basicHttpBinding.MaxReceivedMessageSize = 1500000;
         basicHttpBinding.ReaderQuotas.MaxArrayLength = 1500000;
 
