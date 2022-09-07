@@ -28,6 +28,7 @@ internal class FormDataService
 
     private static readonly string StringJoinSeparator = ",";
 
+    private readonly SulmService.ISulmClient _sulmClient;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
@@ -40,6 +41,7 @@ internal class FormDataService
     private readonly IMediator _mediator;
 
     public FormDataService(
+        SulmService.ISulmClient sulmClient,
         ICodebookServiceAbstraction codebookService,
         ICaseServiceAbstraction caseService,
         IOfferServiceAbstraction offerService,
@@ -50,6 +52,7 @@ internal class FormDataService
         Eas.IEasClient easClient,
         IMediator mediator)
     {
+        _sulmClient = sulmClient;
         _codebookService = codebookService;
         _caseService = caseService;
         _offerService = offerService;
@@ -332,6 +335,17 @@ internal class FormDataService
         {
             // Add first signature date (pro KB produkty caseId = UverID)
             ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
+        }
+
+        // HFICH-2426
+        foreach (var customer in customersOnSA)
+        {
+            var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            if (kbIdentity is not null)
+            {
+                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP");
+                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP");
+            }
         }
 
         // ProductType load
