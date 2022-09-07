@@ -2,7 +2,7 @@
 namespace DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 [ProtoContract]
-public class LoanApplicationAssesmentLimit
+public class LoanApplicationAssessmentLimit
 {
     [ProtoMember(1)]
     public AmountDetail? Limit { get; set; }

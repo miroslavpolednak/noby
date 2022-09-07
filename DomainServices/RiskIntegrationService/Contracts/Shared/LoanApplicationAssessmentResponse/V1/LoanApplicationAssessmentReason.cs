@@ -23,4 +23,7 @@ public sealed class LoanApplicationAssessmentReason
 
     [ProtoMember(7)]
     public string? Result { get; set; }
+
+    [ProtoMember(8)]
+    public List<LoanApplicationAssessmentResource>? Resources { get; set; }
 }

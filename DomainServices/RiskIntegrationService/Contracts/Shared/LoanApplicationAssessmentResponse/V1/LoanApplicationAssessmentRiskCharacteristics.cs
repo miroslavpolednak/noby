@@ -2,7 +2,7 @@
 namespace DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 [ProtoContract]
-public sealed class LoanApplicationAssesmentRiskCharacteristics
+public sealed class LoanApplicationAssessmentRiskCharacteristics
 {
     [ProtoMember(1)]
     public AmountDetail? MonthlyIncome { get; set; }
