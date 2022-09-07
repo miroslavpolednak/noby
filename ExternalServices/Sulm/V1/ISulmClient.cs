@@ -2,8 +2,6 @@
 
 public interface ISulmClient
 {
-    Versions Version { get; }
-
     Task<IServiceCallResult> StopUse(long partyId, string usageCode);
 
     Task<IServiceCallResult> StartUse(long partyId, string usageCode);

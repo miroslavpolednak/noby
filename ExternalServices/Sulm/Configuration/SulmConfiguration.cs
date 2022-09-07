@@ -1,7 +1,7 @@
 ﻿namespace ExternalServices.Sulm;
 
 public sealed class SulmConfiguration
-    : CIS.ExternalServicesHelpers.Configuration.ExternalServiceBaseConfiguration
+    : CIS.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration
 {
     public Versions Version { get; set; } = Versions.Unknown;
 }
