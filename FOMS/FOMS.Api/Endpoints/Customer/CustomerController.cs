@@ -71,6 +71,20 @@ public class CustomerController : ControllerBase
     public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
+    /// <summary>
+    /// Profile check s profilem identifikovaný
+    /// </summary>
+    /// <remarks>
+    /// Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+    /// </remarks>
+    [HttpPost("customer/profile-check")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Modelace Hypoteky", "UC: Domacnost" })]
+    [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
+    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
+        => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme), cancellationToken);
+
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;
 }

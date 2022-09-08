@@ -35,5 +35,5 @@ public class RiskBusinessCaseCommitCaseRequest
     public Shared.Identity? Approver { get; set; }
 
     [DataMember(Order = 11)]
-    public List<int>? CollateralAgreementsId { get; set; }
+    public List<string>? CollateralAgreementsId { get; set; }
 }

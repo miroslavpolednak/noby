@@ -55,6 +55,142 @@
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)" -->
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ProductType">
+            <summary>
+            Typ úvěru (číselník).
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ContractNumber">
+            <summary>
+            ČÍslo smlouvy.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanAmount">
+            <summary>
+            Výše úvěru.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRate">
+            <summary>
+            Aktuální úroková sazba.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ContractSignedDate">
+            <summary>
+            Datum poskytnutí uvěrové smlouvy.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRateValidTo">
+            <summary>
+            Platnost úrokové sazby do.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Principal">
+            <summary>
+            Aktuální zůstatek jistiny.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.AvailableForDrawing">
+            <summary>
+            Nevyčerpaná částka
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.DrawingDateTo">
+            <summary>
+            Datum ukončení čerpání.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanKind">
+            <summary>
+            Druh uveru (číselník).
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.CurrentAmount">
+            <summary>
+            Dlužná částka včetně příslušenství.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRatePeriod">
+            <summary>
+            Délka fixace úrokové sazby.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.PaymentAccount">
+            <summary>
+            Číslo účtu pro splátky.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.CurrentOverdueAmount">
+            <summary>
+            Aktuální částka po splatnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.AllOverdueFees">
+            <summary>
+            Všechny poplatky po splatnosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.OverdueDaysNumber">
+            <summary>
+            Počet dní po splatnosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanPurposes">
+            <summary>
+            Účely úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ExpectedDateOfDrawing">
+            <summary>
+            Datum zahájení čerpání.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.InterestInArrears">
+            <summary>
+            Úrok z prodlení.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanDueDate">
+            <summary>
+            Datum splatnosti - předpoklad/skutečnost.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.PaymentDay">
+            <summary>
+            Den splácení.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRateRefix">
+            <summary>
+            Nová úroková sazba.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRateValidFromRefix">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRatePeriodRefix">
+            <summary>
+            Délka nové fixace v měsících.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Cpm">
+            <summary>
+            Pobočka banky, pod kterou spadá úvěr.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Icp">
+            <summary>
+            Poradce třetí strana.
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
@@ -265,7 +401,7 @@
             Detailni informace o prijmu
             </summary>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Delete(System.Int32,System.Int32)">
             <summary>
             Smazani prijmu customera
             </summary>
@@ -292,7 +428,7 @@
             <see cref="T:FOMS.Api.Endpoints.CustomerIncome.Dto.IncomeDataEmployement"/>
             </returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest)">
             <summary>
             Update detailu prijmu customera
             </summary>
@@ -304,7 +440,7 @@
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID prijmu</param>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Create(System.Int32,FOMS.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.CustomerIncome.CustomerIncomeController.Create(System.Int32,FOMS.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest)">
             <summary>
             Vytvoreni prijmu customera
             </summary>
@@ -352,7 +488,7 @@
             </summary>
             <example>1</example>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Delete(System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Delete(System.Int32,System.Int32)">
             <summary>
             Smazání závazku customera
             </summary>
@@ -375,7 +511,7 @@
             <see cref="T:FOMS.Api.Endpoints.CustomerObligation.Dto.ObligationFullDto"/>
             </returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerObligation.UpdateObligation.UpdateObligationRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Update(System.Int32,System.Int32,FOMS.Api.Endpoints.CustomerObligation.UpdateObligation.UpdateObligationRequest)">
             <summary>
             Update detailu závazku customera
             </summary>
@@ -385,7 +521,7 @@
             <param name="customerOnSAId">ID customera</param>
             <param name="obligationId">ID závazku</param>
         </member>
-        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Create(System.Int32,FOMS.Api.Endpoints.CustomerObligation.CreateObligation.CreateObligationRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.CustomerObligation.CustomerObligationController.Create(System.Int32,FOMS.Api.Endpoints.CustomerObligation.CreateObligation.CreateObligationRequest)">
             <summary>
             Vytvoření závazku customera
             </summary>
@@ -494,6 +630,14 @@
             V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
             </remarks>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.ProfileCheck(CIS.Foms.Types.CustomerIdentity,System.Threading.CancellationToken)">
+            <summary>
+            Profile check s profilem identifikovaný
+            </summary>
+            <remarks>
+            Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+            </remarks>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
             <summary>
             Jméno customera
@@ -532,6 +676,11 @@
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.Identity">
             <summary>
             ID klienta v MP nebo KB
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.ProfileCheck.ProfileCheckResponse.IsCompliant">
+            <summary>
+            Příznak splnění profilu identifikovaný
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.FirstName">
@@ -698,7 +847,7 @@
             <param name="householdId">ID domacnosti</param>
             <returns><see cref="T:FOMS.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Delete(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Delete(System.Int32)">
             <summary>
             Smazani domacnosti
             </summary>
@@ -708,7 +857,7 @@
             <param name="householdId">ID domacnosti</param>
             <returns>ID smazane domacnosti</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Create(FOMS.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Create(FOMS.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest)">
             <summary>
             Vytvoreni nove domacnosti
             </summary>
@@ -718,7 +867,7 @@
             </remarks>
             <returns>Nove HouseholdId, typ domacnosti a nazev typu domacnosti</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Update(System.Int32,FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.Update(System.Int32,FOMS.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest)">
             <summary>
             Update existujici domacnosti
             </summary>
@@ -727,7 +876,7 @@
             </remarks>
             <param name="householdId">ID domacnosti</param>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.UpdateCustomers(System.Int32,FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Household.HouseholdController.UpdateCustomers(System.Int32,FOMS.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest)">
             <summary>
             Update customeru na domacnosti
             </summary>
@@ -941,7 +1090,7 @@
             </remarks>
             <returns>Vstupy a vystupy ulozene simulace.</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.CreateMortgageCase(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.CreateMortgageCase(FOMS.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest)">
             <summary>
             Vytvoreni noveho pripadu (hypoteky) ze simulace.
             </summary>
@@ -961,7 +1110,7 @@
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nove vytvoreneho Case</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.LinkModelation(FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.Offer.OfferController.LinkModelation(FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest)">
             <summary>
             Nalinkuje novou modelaci na stavajici SA.
             </summary>
@@ -1446,12 +1595,12 @@
             <param name="salesArrangementId">ID Sales Arrangement</param>
             <returns><see cref="T:FOMS.Api.Endpoints.SalesArrangement.GetDetail.GetDetailResponse"/> detail SA vcetne dalsich parametru uveru</returns>
         </member>
-        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateParameters(System.Int32,FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateParameters(System.Int32,FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest)">
             <summary>
             Update ostatnich parametru produktu / uveru.
             </summary>
         </member>
-        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32)">
             <summary>
             Odeslani SA do SB
             </summary>

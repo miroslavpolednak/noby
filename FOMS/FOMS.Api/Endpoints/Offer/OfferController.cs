@@ -80,8 +80,8 @@ public class OfferController : ControllerBase
     [SwaggerOperation(Tags = new [] { "UC: Modelace Hypoteky" })]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Nalinkuje novou modelaci na stavajici SA.
@@ -95,8 +95,8 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Modelace Hypoteky" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
+    public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request)
+        => await _mediator.Send(request);
 
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.

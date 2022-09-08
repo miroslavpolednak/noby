@@ -1698,8 +1698,9 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
 
         [System.Text.Json.Serialization.JsonPropertyName("approvalDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
-        public System.DateTimeOffset? ApprovalDate { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ApprovalDate { get; set; }
 
         /// <summary>
         /// loanAgreement.

@@ -27,9 +27,9 @@ internal static class Extensions
                 Developer = request.Developer is null ? null : new Developer
                 {
                     DeveloperId = request.Developer.DeveloperId,
-                    NewDeveloperCin = request.Developer.NewDeveloperCin,
-                    NewDeveloperName = request.Developer.NewDeveloperName,
-                    NewDeveloperProjectName = request.Developer.NewDeveloperProjectName,
+                    NewDeveloperCin = request.Developer.NewDeveloperCin ?? "" ,
+                    NewDeveloperName = request.Developer.NewDeveloperName ?? "",
+                    NewDeveloperProjectName = request.Developer.NewDeveloperProjectName ?? "",
                     ProjectId = request.Developer.ProjectId
                 }
             },

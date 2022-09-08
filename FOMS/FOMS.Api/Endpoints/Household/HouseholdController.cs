@@ -55,8 +55,8 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<int> Delete([FromRoute] int householdId, CancellationToken cancellationToken)
-        => await _mediator.Send(new DeleteHousehold.DeleteHouseholdRequest(householdId), cancellationToken);
+    public async Task<int> Delete([FromRoute] int householdId)
+        => await _mediator.Send(new DeleteHousehold.DeleteHouseholdRequest(householdId));
 
     /// <summary>
     /// Vytvoreni nove domacnosti
@@ -70,8 +70,8 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
     [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
-    public async Task<Dto.HouseholdInList> Create([FromBody] CreateHousehold.CreateHouseholdRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
+    public async Task<Dto.HouseholdInList> Create([FromBody] CreateHousehold.CreateHouseholdRequest? request)
+        => await _mediator.Send(request ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     /// <summary>
     /// Update existujici domacnosti
@@ -84,8 +84,8 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
+    public async Task Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request)
+        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     /// <summary>
     /// Update customeru na domacnosti
@@ -99,8 +99,8 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
     [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
-    public async Task<UpdateCustomers.UpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] UpdateCustomers.UpdateCustomersRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), cancellationToken);
+    public async Task<UpdateCustomers.UpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] UpdateCustomers.UpdateCustomersRequest? request)
+        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     private readonly IMediator _mediator;
     public HouseholdController(IMediator mediator) =>  _mediator = mediator;

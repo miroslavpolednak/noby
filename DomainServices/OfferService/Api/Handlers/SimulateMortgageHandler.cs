@@ -42,8 +42,11 @@ internal class SimulateMortgageHandler
         var basicParameters = setUpDefaults(request.Request.BasicParameters, request.Request.SimulationInputs.GuaranteeDateFrom);
         var inputs = await setUpDefaults(request.Request.SimulationInputs, cancellation);
 
+        // load codebook DrawingType for remaping Id -> StarbildId
+        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
+
         // get simulation outputs
-        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters);
+        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingTypeById);
         var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
         var results = easSimulationRes.ToSimulationResults();
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();

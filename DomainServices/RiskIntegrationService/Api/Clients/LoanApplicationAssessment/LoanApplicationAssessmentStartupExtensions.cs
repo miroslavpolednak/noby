@@ -21,8 +21,7 @@ internal static class LoanApplicationAssessmentStartupExtensions
                     else
                         builder.Services
                             .AddC4mHttpClient<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient>(ServiceName)
-                            .AddC4mPolicyHandler<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient>(ServiceName);
+                            .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient>(ServiceName);
                     break;
 
                 case Versions.V1:
@@ -31,8 +30,7 @@ internal static class LoanApplicationAssessmentStartupExtensions
                     else
                         builder.Services
                             .AddC4mHttpClient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(ServiceName)
-                            .AddC4mPolicyHandler<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient>(ServiceName);
+                            .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(ServiceName);
                     break;
 
                 default:

@@ -18,10 +18,10 @@
 	  <Content Remove="Clients\CustomersExposure\V1\swagger.json" />
 	  <Content Remove="Clients\LoanApplicationAssessment\V1\swagger.json" />
 	  <Content Remove="Clients\LoanApplicationAssessment\V0_2\swagger.json" />
-	  <Content Remove="Clients\LoanApplication\V1\swagger - Copy.json" />
 	  <Content Remove="Clients\LoanApplication\V1\swagger.json" />
 	  <Content Remove="Clients\RiskBusinessCase\V1\swagger.json" />
 	  <Content Remove="Clients\RiskBusinessCase\V0_2\swagger.json" />
+	  <Content Remove="Clients\RiskCharakteristics\V1\swagger.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,10 +29,10 @@
 	  <None Include="Clients\CustomersExposure\V1\swagger.json" />
 	  <None Include="Clients\LoanApplicationAssessment\V1\swagger.json" />
 	  <None Include="Clients\LoanApplicationAssessment\V0_2\swagger.json" />
-	  <None Include="Clients\LoanApplication\V1\swagger - Copy.json" />
 	  <None Include="Clients\LoanApplication\V1\swagger.json" />
 	  <None Include="Clients\RiskBusinessCase\V1\swagger.json" />
 	  <None Include="Clients\RiskBusinessCase\V0_2\swagger.json" />
+	  <None Include="Clients\RiskCharakteristics\V1\swagger.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,7 +40,6 @@
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.8" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.152" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />

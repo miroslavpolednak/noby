@@ -95,8 +95,8 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request.InfuseId(salesArrangementId), cancellationToken);
+    public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
+        => await _mediator.Send(request.InfuseId(salesArrangementId));
 
     /// <summary>
     /// Odeslani SA do SB
@@ -105,8 +105,8 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: SendToCmp" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new SendToCmp.SendToCmpRequest{ SalesArrangementId = salesArrangementId }, cancellationToken);
+    public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId)
+        => await _mediator.Send(new SendToCmp.SendToCmpRequest{ SalesArrangementId = salesArrangementId });
 
     private readonly IMediator _mediator;
     public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;

@@ -36,7 +36,7 @@ internal partial class ResourceIdentifier
         {
             Id = id,
             Domain = Constants.CAM,
-            Instance = Constants.MPSS,
+            Instance = Constants.KBCZ,
             Resource = Constants.Collateral,
         };
 

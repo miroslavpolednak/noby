@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using DomainServices.CodebookService.Abstraction;
+using CIS.DomainServicesSecurity.ContextUser;
 
 Console.WriteLine("run!");
 
@@ -13,6 +14,7 @@ var serviceProvider = new ServiceCollection()
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
+    .AddScoped<CIS.Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>()
     .AddHttpContextAccessor()
     .AddCodebookService()
     .BuildServiceProvider();

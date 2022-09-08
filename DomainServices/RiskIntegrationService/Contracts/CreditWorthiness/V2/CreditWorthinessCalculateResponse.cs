@@ -18,8 +18,14 @@ public class CreditWorthinessCalculateResponse
     public long? RemainsLivingInst { get; set; }
 
     [ProtoMember(5)]
-    public CreditWorthinessResults WorthinessResult { get; set; }
+    public decimal? Dti { get; set; }
 
     [ProtoMember(6)]
+    public decimal? Dsti { get; set; }
+
+    [ProtoMember(7)]
+    public CreditWorthinessResults WorthinessResult { get; set; }
+
+    [ProtoMember(8)]
     public ResultReasonDetail? ResultReason { get; set; }
 }

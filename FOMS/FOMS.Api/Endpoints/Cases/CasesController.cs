@@ -75,4 +75,18 @@ public class CasesController : ControllerBase
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetTaskList.GetTaskListRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// Parametry Case-u.
+    /// </summary>
+    /// <remarks>
+    ///// <i>DS:</i> CaseService/GetTaskList<br/>
+    /// </remarks>
+    /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
+    [HttpGet("{caseId:long}/parameters")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Case Detail" })]
+    [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]
+    public async Task<GetCaseParameters.GetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCaseParameters.GetCaseParametersRequest(caseId), cancellationToken);
 }

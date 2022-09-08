@@ -10,10 +10,10 @@ public class CustomersExposureExistingCBCBItem
     public int? CustomerRoleId { get; set; }
 
     [ProtoMember(3)]
-    public string? LoanType { get; set; }
+    public int? LoanType { get; set; }
 
     [ProtoMember(4)]
-    public string? LoanTypeCategory { get; set; }
+    public int? LoanTypeCategory { get; set; }
 
     [ProtoMember(5)]
     public DateTime? MaturityDate { get; set; }

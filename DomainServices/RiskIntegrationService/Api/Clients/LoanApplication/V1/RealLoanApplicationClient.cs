@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+﻿using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1;
 
@@ -12,10 +11,8 @@ internal sealed class RealLoanApplicationClient
             .PostAsJsonAsync(_httpClient.BaseAddress + _calculateUrl, request, HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
             .ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<_C4M.LoanApplicationResult>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Save), nameof(_C4M.LoanApplicationResult));
-
-        return result;
+        return await response.Content.ReadFromJsonAsync<_C4M.LoanApplicationResult>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
+                ?? throw new CisExtServiceResponseDeserializationException(0, LoanApplicationStartupExtensions.ServiceName, nameof(Save), nameof(_C4M.LoanApplicationResult));
     }
 
     private readonly HttpClient _httpClient;
