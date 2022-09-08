@@ -28,6 +28,14 @@ internal class CreateCustomerHandler
         bool containsKbIdentity = request.Request.Customer?.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false;
         bool containsMpIdentity = request.Request.Customer?.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
 
+        // provolat sulm
+        if (containsKbIdentity)
+        {
+            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+            await _sulmClient.StopUse(identity.IdentityId, "MPAP");
+            await _sulmClient.StartUse(identity.IdentityId, "MPAP");
+        }
+
         // uz ma KB identitu, ale jeste nema MP identitu
         if (containsKbIdentity && !containsMpIdentity)
         {
@@ -66,17 +74,20 @@ internal class CreateCustomerHandler
         return model;
     }
 
+    private readonly SulmService.ISulmClient _sulmClient;
     private readonly Shared.UpdateCustomerService _updateService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly Repositories.SalesArrangementServiceRepository _saRepository;
     private readonly ILogger<CreateCustomerHandler> _logger;
     
     public CreateCustomerHandler(
+        SulmService.ISulmClient sulmClient,
         Shared.UpdateCustomerService updateService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         Repositories.SalesArrangementServiceRepository saRepository,
         ILogger<CreateCustomerHandler> logger)
     {
+        _sulmClient = sulmClient;
         _updateService = updateService;
         _dbContext = dbContext;
         _saRepository = saRepository;

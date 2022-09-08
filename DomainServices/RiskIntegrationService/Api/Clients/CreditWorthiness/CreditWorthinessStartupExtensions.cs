@@ -21,8 +21,8 @@ internal static class CreditWorthinessStartupExtensions
 
                 case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
                     builder.Services
-                            .AddC4mHttpClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient>(configuration)
-                            .ConfigureC4mHttpMessageHandler<CreditWorthiness.V1.RealCreditWorthinessClient>(ServiceName);
+                        .AddC4mHttpClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient>(configuration)
+                        .ConfigureC4mHttpMessageHandler<CreditWorthiness.V1.RealCreditWorthinessClient>(ServiceName);
                     break;
 
                 default:

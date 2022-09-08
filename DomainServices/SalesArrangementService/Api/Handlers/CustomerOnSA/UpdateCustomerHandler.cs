@@ -3,6 +3,7 @@ using _Customer = DomainServices.CustomerService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using DomainServices.CaseService.Abstraction;
+using ExternalServices.Sulm.V1;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -25,6 +26,14 @@ internal class UpdateCustomerHandler
 
         // customerOnSA byl jiz updatovan z KB CM
         bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+
+        // provolat sulm
+        if (alreadyKbUpdatedCustomer)
+        {
+            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+            await _sulmClient.StopUse(identity.IdentityId, "MPAP");
+            await _sulmClient.StartUse(identity.IdentityId, "MPAP");
+        }
 
         // vychazim z toho, ze identitu klienta nelze menit. Tj. z muze prijit prazdna kolekce CustomerIdentifiers v requestu, ale to neznamena, ze jiz existujici identity na COnSA odstranim.
         if (request.Request.Customer.CustomerIdentifiers is not null && request.Request.Customer.CustomerIdentifiers.Any())
@@ -71,13 +80,16 @@ internal class UpdateCustomerHandler
         return model;
     }
 
+    private readonly SulmService.ISulmClient _sulmClient;
     private readonly Shared.UpdateCustomerService _updateService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     
     public UpdateCustomerHandler(
+        SulmService.ISulmClient sulmClient,
         Shared.UpdateCustomerService updateService,
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
+        _sulmClient = sulmClient;
         _updateService = updateService;
         _dbContext = dbContext;
     }

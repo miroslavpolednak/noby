@@ -17,6 +17,12 @@ internal class DeleteCustomerHandler
         if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
             throw new CisValidationException(16053, "CustomerOnSA is in role=Debtor -> can't be deleted");
 
+        if (entity.Identities?.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb) ?? false)
+        {
+            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+            await _sulmClient.StopUse(identity.IdentityId, "MPAP");
+        }
+
         // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId
         var saParameterInstance = await _dbContext.SalesArrangementsParameters
             .FirstOrDefaultAsync(t => t.SalesArrangementId == entity.SalesArrangementId, cancellation);
@@ -47,11 +53,14 @@ internal class DeleteCustomerHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly SulmService.ISulmClient _sulmClient;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
 
     public DeleteCustomerHandler(
+        SulmService.ISulmClient sulmClient,
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
+        _sulmClient = sulmClient;
         _dbContext = dbContext;
     }
 }
