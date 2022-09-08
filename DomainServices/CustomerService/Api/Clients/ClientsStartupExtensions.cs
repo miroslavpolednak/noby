@@ -18,14 +18,16 @@ public static class ClientsStartupExtensions
     {
         var config = builder.CreateAndCheckExternalServiceConfiguration<CustomerManagementConfiguration>(CustomerManagementServiceName);
 
-        builder.Services.AddCustomerManagementService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
-
-        builder.Services.AddCustomerProfileService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
+        builder.Services
+               .AddCustomerManagementService(config)
+               .AddCustomerProfileService(config)
+               .ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
 
         return builder;
     }
 
-    private static void ResolveServiceDiscoveryUriIfEnabled<TConfig>(this IServiceCollection services, TConfig config, string serviceName) where TConfig : class, IExternalServiceConfiguration
+    private static void ResolveServiceDiscoveryUriIfEnabled<TConfig>(this IServiceCollection services, TConfig config, string serviceName) 
+        where TConfig : class, IExternalServiceConfiguration
     {
         if (!config.UseServiceDiscovery)
             return;

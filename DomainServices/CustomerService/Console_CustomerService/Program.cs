@@ -58,12 +58,12 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 //    }
 //});
 
-var test = await service.ProfileCheck(new ProfileCheckRequest
-{
-    Identity = new Identity(123, IdentitySchemes.Kb),
-    CustomerProfileCode = "KYC_SUBJECT"
-});
+//var test = await service.ProfileCheck(new ProfileCheckRequest
+//{
+//    Identity = new Identity(123, IdentitySchemes.Kb),
+//    CustomerProfileCode = "KYC_SUBJECT"
+//});
 
-//var detail = await service.GetCustomerDetail(new Identity(34, IdentitySchemes.Mp));
+var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 Console.ReadKey();
