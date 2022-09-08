@@ -72,7 +72,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
 	/// Číslo účtu pro splátky.
 	/// </summary>
-    public dto.PaymentAccount? PaymentAccount { get; set; }
+    public dto.BankAccount? PaymentAccount { get; set; }
 
     /// <summary>
 	/// Aktuální částka po splatnosti
