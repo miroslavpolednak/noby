@@ -55,6 +55,142 @@
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)" -->
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ProductType">
+            <summary>
+            Typ úvěru (číselník).
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ContractNumber">
+            <summary>
+            ČÍslo smlouvy.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanAmount">
+            <summary>
+            Výše úvěru.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRate">
+            <summary>
+            Aktuální úroková sazba.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ContractSignedDate">
+            <summary>
+            Datum poskytnutí uvěrové smlouvy.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRateValidTo">
+            <summary>
+            Platnost úrokové sazby do.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Principal">
+            <summary>
+            Aktuální zůstatek jistiny.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.AvailableForDrawing">
+            <summary>
+            Nevyčerpaná částka
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.DrawingDateTo">
+            <summary>
+            Datum ukončení čerpání.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanKind">
+            <summary>
+            Druh uveru (číselník).
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.CurrentAmount">
+            <summary>
+            Dlužná částka včetně příslušenství.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRatePeriod">
+            <summary>
+            Délka fixace úrokové sazby.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.PaymentAccount">
+            <summary>
+            Číslo účtu pro splátky.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.CurrentOverdueAmount">
+            <summary>
+            Aktuální částka po splatnosti
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.AllOverdueFees">
+            <summary>
+            Všechny poplatky po splatnosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.OverdueDaysNumber">
+            <summary>
+            Počet dní po splatnosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanPurposes">
+            <summary>
+            Účely úvěru
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ExpectedDateOfDrawing">
+            <summary>
+            Datum zahájení čerpání.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.InterestInArrears">
+            <summary>
+            Úrok z prodlení.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanDueDate">
+            <summary>
+            Datum splatnosti - předpoklad/skutečnost.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.PaymentDay">
+            <summary>
+            Den splácení.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRateRefix">
+            <summary>
+            Nová úroková sazba.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRateValidFromRefix">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRatePeriodRefix">
+            <summary>
+            Délka nové fixace v měsících.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Cpm">
+            <summary>
+            Pobočka banky, pod kterou spadá úvěr.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Icp">
+            <summary>
+            Poradce třetí strana.
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
