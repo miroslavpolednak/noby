@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "CIS.InternalServices.NotificationService.Api": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5079;https://localhost:7079",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

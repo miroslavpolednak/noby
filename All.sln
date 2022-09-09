@@ -193,6 +193,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_RiskIntegrationServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Sulm", "ExternalServices\Sulm\ExternalServices.Sulm.csproj", "{FC70376D-F556-4758-B80F-81E3DFB7F6AB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{46414B85-D1B6-411D-B232-C6CC8B35FE57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Abstraction", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Abstraction\CIS.InternalServices.NotificationService.Abstraction.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Contracts", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj", "{67BB0077-7777-4F58-AE62-99072014325C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Api", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Api\CIS.InternalServices.NotificationService.Api.csproj", "{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -761,6 +769,30 @@ Global
 		{FC70376D-F556-4758-B80F-81E3DFB7F6AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC70376D-F556-4758-B80F-81E3DFB7F6AB}.Release|x64.ActiveCfg = Release|Any CPU
 		{FC70376D-F556-4758-B80F-81E3DFB7F6AB}.Release|x64.Build.0 = Release|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Debug|x64.Build.0 = Debug|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}.Release|x64.Build.0 = Release|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Debug|x64.Build.0 = Debug|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Release|x64.ActiveCfg = Release|Any CPU
+		{67BB0077-7777-4F58-AE62-99072014325C}.Release|x64.Build.0 = Release|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -848,6 +880,10 @@ Global
 		{E6AB80FE-1647-4D1C-BEB8-9380964DB3BD} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{7C6DA138-865C-417A-9AC2-1CA77817BB63} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
 		{FC70376D-F556-4758-B80F-81E3DFB7F6AB} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
+		{46414B85-D1B6-411D-B232-C6CC8B35FE57} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
+		{FCD3AC0C-04FE-4DD1-8279-21FA0510D633} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
+		{67BB0077-7777-4F58-AE62-99072014325C} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
+		{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
