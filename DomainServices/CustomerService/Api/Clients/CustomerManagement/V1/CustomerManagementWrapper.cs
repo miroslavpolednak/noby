@@ -20,7 +20,6 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CustomerManagementWrapper 
     {
-        private string _baseUrl = "https://cm-dev.kb.cz/be-cm/api";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
@@ -35,12 +34,6 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -139,7 +132,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
                 throw new System.ArgumentNullException("customerId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/public/v1/customers/{customerId}/base-info?");
+            urlBuilder_.Append("public/v1/customers/{customerId}/base-info?");
             urlBuilder_.Replace("{customerId}", System.Uri.EscapeDataString(ConvertToString(customerId, System.Globalization.CultureInfo.InvariantCulture)));
             if (showPrimaryAddress != null)
             {
@@ -468,7 +461,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
                 throw new System.ArgumentNullException("body");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/public/v1/customers/base-info?");
+            urlBuilder_.Append("public/v1/customers/base-info?");
             if (showPrimaryAddress != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("showPrimaryAddress") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showPrimaryAddress, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -766,7 +759,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
         public virtual async System.Threading.Tasks.Task<CustomerSearchResult> SearchCustomerAsync(int? numberOfEntries, long? customerId, string name, string firstName, System.DateTime? birthEstablishedDate, string identifierValue, string identifierTypeCode, string idDocumentTypeCode, string idDocumentNumber, string idDocumentIssuingCountryCode, string email, string phoneNumber, bool? isInKbi, System.Collections.Generic.IEnumerable<Anonymous> legalStatusCode, bool? includeArchived, bool? showSegment, string x_B3_TraceId, string x_KB_Caller_System_Identity, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/public/v1/customers?");
+            urlBuilder_.Append("public/v1/customers?");
             if (numberOfEntries != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("numberOfEntries") + "=").Append(System.Uri.EscapeDataString(ConvertToString(numberOfEntries, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -984,7 +977,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
                 throw new System.ArgumentNullException("customerId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/public/v1/customers/{customerId}/natural-person-personal-data?");
+            urlBuilder_.Append("public/v1/customers/{customerId}/natural-person-personal-data?");
             urlBuilder_.Replace("{customerId}", System.Uri.EscapeDataString(ConvertToString(customerId, System.Globalization.CultureInfo.InvariantCulture)));
             if (showFirstNameVocative != null)
             {

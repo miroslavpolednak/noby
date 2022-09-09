@@ -53,19 +53,16 @@ internal sealed class CalculateRequestValidator
                 t.RuleForEach(t => t!.Customers)
                     .ChildRules(x =>
                     {
-                        x.RuleFor(t => t!.InternalCustomerId)
-                            .NotEmpty()
-                            .WithErrorCode("Households.Customers.InternalCustomerId");
-                        x.RuleFor(t => t!.Incomes)
-                            .NotEmpty()
-                            .WithErrorCode("Households.Customers.Incomes");
-                        x.RuleForEach(t => t!.Incomes)
-                            .ChildRules(y =>
-                            {
-                                y.RuleFor(t => t!.IncomeTypeId)
-                                    .GreaterThan(0);
-                            })
-                            .WithErrorCode("Households.Customers.Incomes");
+                        x.When(z => z.Incomes is not null, () =>
+                        {
+                            x.RuleForEach(t => t!.Incomes)
+                                .ChildRules(y =>
+                                {
+                                    y.RuleFor(t => t!.IncomeTypeId)
+                                        .GreaterThan(0);
+                                })
+                                .WithErrorCode("Households.Customers.Incomes");
+                        });
                     })
                     .WithErrorCode("Households.Customers");
             })

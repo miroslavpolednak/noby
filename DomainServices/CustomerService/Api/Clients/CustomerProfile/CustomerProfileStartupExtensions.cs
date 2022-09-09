@@ -5,18 +5,19 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerProfile;
 
 public static class CustomerProfileStartupExtensions
 {
-    public static IServiceCollection AddCustomerProfileService(this IServiceCollection services, CustomerProfileConfiguration config)
+    public static IServiceCollection AddCustomerProfileService(this IServiceCollection services, CustomerManagementConfiguration config)
     {
         switch (config.Version, config.ImplementationType)
         {
-            case (Versions.V1, ServiceImplementationTypes.Real):
+            case (CMVersion.V1, ServiceImplementationTypes.Real):
                 services.AddHttpClient<V1.ICustomerProfileClient, V1.RealCustomerProfileClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
+                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
                 });
                 break;
 
-            case (Versions.V1, _):
+            case (CMVersion.V1, _):
                 services.AddScoped<V1.ICustomerProfileClient, V1.MockCustomerProfileClient>();
                 break;
 

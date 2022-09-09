@@ -11,6 +11,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
 using DomainServices.CustomerService.Contracts;
+using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 Console.WriteLine("run!");
 
@@ -37,31 +38,32 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-var test = await service.ProfileCheck(new ProfileCheckRequest
-{
-    Identity = new Identity(123, IdentitySchemes.Kb),
-    CustomerProfileCode = "KYC_SUBJECTS"
-});
+//var search = await service.SearchCustomers(new SearchCustomersRequest
+//{
+//    Mandant = Mandants.Mp,
+//    IdentificationDocument = new IdentificationDocumentSearch
+//    {
+//        IssuingCountryId = 16,
+//        Number = "205721585",
+//        IdentificationDocumentTypeId = 1
+//    }
+//});
 
-//await service.GetCustomerDetail(new CustomerRequest { Identity = new Identity(1231, IdentitySchemes.Kb) });
+//var test = await service.GetCustomerList(new CustomerListRequest
+//{
+//    Identities =
+//    {
+//        new Identity(34, IdentitySchemes.Mp),
+//        new Identity(123, IdentitySchemes.Kb)
+//    }
+//});
+
+//var test = await service.ProfileCheck(new ProfileCheckRequest
+//{
+//    Identity = new Identity(123, IdentitySchemes.Kb),
+//    CustomerProfileCode = "KYC_SUBJECT"
+//});
+
+var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 Console.ReadKey();
-
-//var service = serviceProvider.GetService<DomainServices.CustomerService.Contracts.ICustomerService>();
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-//var result = await service.GetBasicDataByIdentifier(new () { Identifier = "123456" });
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-//var result = await service.GetDetail(new() { Identity = 1 });
-//var result = await service.GetList(new() { Identity = new() { 1 } });
-//var result = await service.Create(new() { LastName = "Kojot" });
-//var result = await service.UpdateBasicData(new() { Identity = 1, Customer = new() { LastName = "Kojot" } });
-//var result = await service.DeleteContact(new() { Identity = 1, ContactId = 1 });
-
-//var o = ((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.CustomerService.Contracts.GetBasicDataByIdentifierResponse>)result).Model;
-//var o = ((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.CustomerService.Contracts.GetCustomerDetailResponse>)result).Model;
-//var o = ((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.CustomerService.Contracts.GetListResponse>)result).Model;
-//var o = ((CIS.Core.Results.SuccessfulServiceCallResult<DomainServices.CustomerService.Contracts.CreateResponse>)result).Model;
-
-//Console.WriteLine($"{result.LastName}");
-//Console.WriteLine($"{result.Success}");

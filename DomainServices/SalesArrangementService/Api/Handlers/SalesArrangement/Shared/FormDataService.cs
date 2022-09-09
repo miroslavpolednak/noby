@@ -28,6 +28,7 @@ internal class FormDataService
 
     private static readonly string StringJoinSeparator = ",";
 
+    private readonly SulmService.ISulmClient _sulmClient;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
@@ -40,6 +41,7 @@ internal class FormDataService
     private readonly IMediator _mediator;
 
     public FormDataService(
+        SulmService.ISulmClient sulmClient,
         ICodebookServiceAbstraction codebookService,
         ICaseServiceAbstraction caseService,
         IOfferServiceAbstraction offerService,
@@ -50,6 +52,7 @@ internal class FormDataService
         Eas.IEasClient easClient,
         IMediator mediator)
     {
+        _sulmClient = sulmClient;
         _codebookService = codebookService;
         _caseService = caseService;
         _offerService = offerService;
@@ -244,17 +247,17 @@ internal class FormDataService
         return incomes.ToDictionary(i => i.IncomeId);
     }
 
-    private async Task<Dictionary<string, CustomerResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, CustomerDetailResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         // vrací pouze pro KB identity
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
-        var results = new List<CustomerResponse>();
+        var results = new List<CustomerDetailResponse>();
         for (int i = 0; i < customerIdentities.Count; i++)
         {
-            var customer = ServiceCallResult.ResolveToDefault<CustomerResponse>(await _customerService.GetCustomerDetail(new CustomerRequest { Identity = customerIdentities[i] }, cancellation));
+            var customer = ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
             results.Add(customer!);
         }
-        return results.ToDictionary(i => i.Identities.First().ToCode());
+        return results.ToDictionary(i => i.Identity.ToCode());
     }
 
     private static string ResolveGetContractNumber(IServiceCallResult result) =>
@@ -332,6 +335,17 @@ internal class FormDataService
         {
             // Add first signature date (pro KB produkty caseId = UverID)
             ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
+        }
+
+        // HFICH-2426
+        foreach (var customer in customersOnSA)
+        {
+            var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            if (kbIdentity is not null)
+            {
+                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP");
+                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP");
+            }
         }
 
         // ProductType load

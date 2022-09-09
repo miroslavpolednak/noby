@@ -7,15 +7,16 @@ internal class ProfileCheckMediatrRequestValidator : AbstractValidator<ProfileCh
 {
     public ProfileCheckMediatrRequestValidator()
     {
-        RuleFor(r => r.Request.Identity)
-            .NotNull()
-            .WithMessage("Message")
-            .WithErrorCode("99999") //TODO: ErrorCode
-            .SetValidator(new IdentityValidator());
+        RuleFor(r => r.Request.Identity).SetValidator(new IdentityValidator());
+
+        RuleFor(r => r.Request.Identity.IdentityScheme)
+            .Equal(Identity.Types.IdentitySchemes.Kb)
+            .WithMessage("Invalid identity scheme.")
+            .WithErrorCode("11004");
 
         RuleFor(r => r.Request.CustomerProfileCode)
             .NotEmpty()
-            .WithMessage("Message")
-            .WithErrorCode("99999"); //TODO: ErrorCode 
+            .WithMessage("CustomerProfileCode must be specified")
+            .WithErrorCode("11007");
     }
 }

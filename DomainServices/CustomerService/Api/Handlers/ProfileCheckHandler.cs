@@ -1,6 +1,5 @@
 ﻿using DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 using DomainServices.CustomerService.Api.Dto;
-using DomainServices.CustomerService.Contracts;
 using System.Diagnostics;
 
 namespace DomainServices.CustomerService.Api.Handlers;

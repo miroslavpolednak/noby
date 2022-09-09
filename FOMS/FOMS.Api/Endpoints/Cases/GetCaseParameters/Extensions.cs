@@ -54,14 +54,14 @@ internal static class Extensions
 
     #endregion
 
-    public static dto.PaymentAccount? ToPaymentAccount(this DomainServices.ProductService.Contracts.PaymentAccount paymentAccount)
+    public static dto.BankAccount? ToPaymentAccount(this DomainServices.ProductService.Contracts.PaymentAccount paymentAccount)
     {
         if (paymentAccount == null)
         {
             return null;
         }
 
-        return new dto.PaymentAccount
+        return new dto.BankAccount
         {
             Prefix = paymentAccount.Prefix,
             Number = paymentAccount.Number,

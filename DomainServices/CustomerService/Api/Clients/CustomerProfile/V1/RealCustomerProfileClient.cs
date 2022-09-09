@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 
-public class RealCustomerProfileClient : BaseClient, ICustomerProfileClient
+public class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICustomerProfileClient
 {
     private const string CallerSys = "{\"app\":\"DOMAIN_SERVICES\",\"appComp\":\"DOMAIN_SERVICES.CUSTOMER_SERVICE\"}";
 
@@ -16,9 +16,9 @@ public class RealCustomerProfileClient : BaseClient, ICustomerProfileClient
 
         return CallEndpoint(ValidateCustomerProfile);
 
-        async Task<bool> ValidateCustomerProfile(CustomerProfileWrapper client)
+        async Task<bool> ValidateCustomerProfile()
         {
-            var result = await client.ValidateCustomerProfileAsync(
+            var result = await CreateClient().ValidateCustomerProfileAsync(
                 customerId: customerId,
                 profileCode: profileCode,
                 x_B3_TraceId: traceId,
@@ -32,4 +32,10 @@ public class RealCustomerProfileClient : BaseClient, ICustomerProfileClient
             return result.ResultCode == ValidateCustomerProfileResponseResultCode.OK;
         }
     }
+
+    protected CustomerProfileWrapper CreateClient() => new(_httpClient);
+
+    protected override int GetApiExceptionStatusCode(ApiException<Error> ex) => ex.StatusCode;
+
+    protected override object GetApiExceptionDetail(ApiException<Error> ex) => ex.Result.Detail;
 }

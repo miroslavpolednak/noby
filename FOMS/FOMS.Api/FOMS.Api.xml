@@ -56,6 +56,26 @@
             <returns>Seznam wf tasks z SB.</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)" -->
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Prefix">
+            <summary>
+            Předčíslí účtu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Number">
+            <summary>
+            Číslo účtu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.BankCode">
+            <summary>
+            Kód banky
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
+            <summary>
+            Výše účelu v Kč
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ProductType">
             <summary>
             Typ úvěru (číselník).
@@ -626,7 +646,7 @@
             Identifikace klienta
             </summary>
             <remarks>
-            Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>.<br /><br />
+            Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null při nenalezení klienta v KB customer managementu.<br /><br />
             V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
             </remarks>
         </member>

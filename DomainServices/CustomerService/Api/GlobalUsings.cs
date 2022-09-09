@@ -1,4 +1,4 @@
-﻿global using MediatR;
-global using Eas = ExternalServices.Eas.R21;
-global using MpHome = ExternalServices.MpHome.V1;
-global using CustomerManagement = ExternalServices.CustomerManagement.V1;
+﻿global using CIS.Infrastructure.Attributes;
+global using CIS.Infrastructure.gRPC.CisTypes;
+global using DomainServices.CustomerService.Contracts;
+global using MediatR;
