@@ -55,8 +55,8 @@ internal sealed class HouseholdChildMapper
                 .ForEach(g =>
                 {
                     var o = list.First(t => t.ProductClusterCode == g.Key);
-                    o.Amount = g.Sum(t => t.Amount.GetValueOrDefault() + t.Installment.GetValueOrDefault()).ToAmount();
-                    o.AmountConsolidated = g.Sum(t => t.AmountConsolidated.GetValueOrDefault() + t.InstallmentConsolidated.GetValueOrDefault()).ToAmount();
+                    o.Amount = g.Sum(t => t.Amount.GetValueOrDefault()).ToAmount();
+                    o.AmountConsolidated = g.Sum(t => t.AmountConsolidated.GetValueOrDefault()).ToAmount();
                 });
         }
 

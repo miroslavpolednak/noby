@@ -1446,8 +1446,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
         [System.Text.Json.Serialization.JsonPropertyName("regionCode")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public PrimaryAddressRegionCode? RegionCode { get; set; }
+        public string RegionCode { get; set; }
 
     }
 
@@ -2538,60 +2537,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.C
 
         [System.Runtime.Serialization.EnumMember(Value = @"MOBILE")]
         MOBILE = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum PrimaryAddressRegionCode
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"1")]
-        _1 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"2")]
-        _2 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"3")]
-        _3 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"4")]
-        _4 = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"5")]
-        _5 = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"6")]
-        _6 = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"7")]
-        _7 = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"8")]
-        _8 = 7,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"9")]
-        _9 = 8,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"10")]
-        _10 = 9,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"11")]
-        _11 = 10,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"12")]
-        _12 = 11,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"13")]
-        _13 = 12,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"14")]
-        _14 = 13,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"15")]
-        _15 = 14,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"16")]
-        _16 = 15,
 
     }
 

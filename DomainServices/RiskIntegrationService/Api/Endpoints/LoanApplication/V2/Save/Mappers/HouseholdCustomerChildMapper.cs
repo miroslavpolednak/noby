@@ -45,7 +45,7 @@ internal sealed class HouseholdCustomerChildMapper
                 StreetNumber = customer.Address.LandRegistryNumber,
                 PostCode = getZipCode(customer.Address.Postcode),//TODO zmeni c4m long na string?
                 HouseNumber = customer.Address.BuildingIdentificationNumber,
-                RegionCode = PrimaryAddressRegionCode._16
+                RegionCode = "16"
             },
             AcademicTitlePrefix = customer.AcademicTitlePrefix,
             Phone = string.IsNullOrEmpty(customer.MobilePhoneNumber) ? null : new List<PhoneContact>
