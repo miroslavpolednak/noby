@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 
-public class MockCustomerManagementClient : ICustomerManagementClient
+internal class MockCustomerManagementClient : ICustomerManagementClient
 {
     public Task<CustomerBaseInfo> GetDetail(long customerId, string traceId, CancellationToken cancellationToken)
     {

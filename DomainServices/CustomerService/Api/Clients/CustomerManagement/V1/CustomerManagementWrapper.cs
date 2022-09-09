@@ -18,7 +18,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CustomerManagementWrapper 
+    internal partial class CustomerManagementWrapper 
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;

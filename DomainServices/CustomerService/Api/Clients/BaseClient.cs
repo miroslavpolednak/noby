@@ -5,7 +5,7 @@ using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api.Clients;
 
-public abstract class BaseClient<TApiException> where TApiException : Exception
+internal abstract class BaseClient<TApiException> where TApiException : Exception
 {
     protected readonly HttpClient _httpClient;
     protected readonly ILogger _logger;

@@ -7,7 +7,7 @@ using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
 
 [ScopedService, SelfService]
-public class CustomerManagementDetailProvider
+internal class CustomerManagementDetailProvider
 {
     private readonly ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceAbstraction _codebook;

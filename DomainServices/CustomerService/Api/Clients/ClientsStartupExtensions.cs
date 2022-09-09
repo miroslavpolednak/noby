@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices.CustomerService.Api.Clients;
 
-public static class ClientsStartupExtensions
+internal static class ClientsStartupExtensions
 {
     private const string CustomerManagementServiceName = "CustomerManagement";
 

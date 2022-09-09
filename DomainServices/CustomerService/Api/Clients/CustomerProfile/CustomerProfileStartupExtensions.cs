@@ -3,7 +3,7 @@ using DomainServices.CustomerService.Api.Configuration;
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile;
 
-public static class CustomerProfileStartupExtensions
+internal static class CustomerProfileStartupExtensions
 {
     public static IServiceCollection AddCustomerProfileService(this IServiceCollection services, CustomerManagementConfiguration config)
     {

@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 
-public class RealCustomerManagementClient : BaseClient<ApiException<Error>>, ICustomerManagementClient
+internal class RealCustomerManagementClient : BaseClient<ApiException<Error>>, ICustomerManagementClient
 {
     public RealCustomerManagementClient(HttpClient httpClient, ILogger<RealCustomerManagementClient> logger) : base(httpClient, logger)
     {

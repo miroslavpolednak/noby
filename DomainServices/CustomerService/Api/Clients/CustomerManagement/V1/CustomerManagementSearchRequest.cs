@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 
-public class CustomerManagementSearchRequest
+internal class CustomerManagementSearchRequest
 {
     /// <summary>
     /// Number of entries to return. When not specified or when is greater than 100 then 100 is applied.

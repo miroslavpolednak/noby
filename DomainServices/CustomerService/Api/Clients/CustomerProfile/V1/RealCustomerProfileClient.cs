@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 
-public class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICustomerProfileClient
+internal class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICustomerProfileClient
 {
     private const string CallerSys = "{\"app\":\"DOMAIN_SERVICES\",\"appComp\":\"DOMAIN_SERVICES.CUSTOMER_SERVICE\"}";
 
