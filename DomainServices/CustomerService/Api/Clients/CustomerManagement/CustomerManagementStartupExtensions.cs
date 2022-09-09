@@ -3,20 +3,21 @@ using DomainServices.CustomerService.Api.Configuration;
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerManagement;
 
-public static class CustomerManagementStartupExtensions
+internal static class CustomerManagementStartupExtensions
 {
     public static IServiceCollection AddCustomerManagementService(this IServiceCollection services, CustomerManagementConfiguration config)
     {
         switch (config.Version, config.ImplementationType)
         {
-            case (Versions.V1, ServiceImplementationTypes.Real):
+            case (CMVersion.V1, ServiceImplementationTypes.Real):
                 services.AddHttpClient<V1.ICustomerManagementClient, V1.RealCustomerManagementClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
+                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
                 });
                 break;
 
-            case (Versions.V1, _):
+            case (CMVersion.V1, _):
                 services.AddScoped<V1.ICustomerManagementClient, V1.MockCustomerManagementClient>();
                 break;
 

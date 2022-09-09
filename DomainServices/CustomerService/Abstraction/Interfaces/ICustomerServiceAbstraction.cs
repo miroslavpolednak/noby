@@ -1,4 +1,6 @@
-﻿using CIS.Core.Results;
+﻿using CIS.Core.Exceptions;
+using CIS.Core.Results;
+using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Abstraction
@@ -6,45 +8,43 @@ namespace DomainServices.CustomerService.Abstraction
     public interface ICustomerServiceAbstraction
     {
         /// <summary>
-        /// Vyhledani customeru
+        /// Kontrola zda klient v KB CM splňuje plně identifikovaný profil.
         /// </summary>
-        /// <returns><see cref="SuccessfulServiceCallResult{}"/> of <see cref="SearchCustomersResponse"/> - OK;</returns>
-        /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17000; Validation problem</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17001; Customer Management error</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-        Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Vyhledani customeru podle identities
-        /// </summary>
-        /// <returns><see cref="SuccessfulServiceCallResult{}"/> of <see cref="CustomerListResponse"/> - OK;</returns>
-        /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17000; Validation problem</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17001; Customer Management error</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-        Task<IServiceCallResult> GetCustomerList(CustomerListRequest request, CancellationToken cancellationToken = default(CancellationToken));
+        /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="ProfileCheckResponse"/> - OK;</returns>
+        /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+        /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
+        /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
+        /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
+        Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Detail customera podle identity
         /// </summary>
-        /// <returns><see cref="SuccessfulServiceCallResult{}"/> of <see cref="CustomerResponse"/> - OK;</returns>
-        /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17000; Validation problem</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 17001; Customer Management error</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 17002; Customer not found: {}</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
-        /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-        Task<IServiceCallResult> GetCustomerDetail(CustomerRequest request, CancellationToken cancellationToken = default(CancellationToken));
+        /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CustomerDetailResponse"/> - OK;</returns>
+        /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+        /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
+        /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
+        /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
+        Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default);
 
-        Task<IServiceCallResult> Create(CreateRequest request, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Vyhledaní customeru podle identities
+        /// </summary>
+        /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CustomerListResponse"/> - OK;</returns>
+        /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+        /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
+        /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
+        /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
+        Task<IServiceCallResult> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default);
 
-        Task<IServiceCallResult> CreateContact(CreateContactRequest request, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<IServiceCallResult> DeleteContact(DeleteContactRequest request, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<IServiceCallResult> UpdateAdress(UpdateAdressRequest request, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<IServiceCallResult> UpdateBasicData(UpdateBasicDataRequest request, CancellationToken cancellationToken = default(CancellationToken));
-        Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Vyhledaní customeru
+        /// </summary>
+        /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="SearchCustomersResponse"/> - OK;</returns>
+        /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+        /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
+        /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
+        /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
+        Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default);
     }
 }

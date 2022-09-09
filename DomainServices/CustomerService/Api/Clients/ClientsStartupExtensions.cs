@@ -10,30 +10,24 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices.CustomerService.Api.Clients;
 
-public static class ClientsStartupExtensions
+internal static class ClientsStartupExtensions
 {
     private const string CustomerManagementServiceName = "CustomerManagement";
-    private const string CustomerProfileServiceName = "CustomerProfile";
 
     public static WebApplicationBuilder AddCustomerManagementService(this WebApplicationBuilder builder)
     {
         var config = builder.CreateAndCheckExternalServiceConfiguration<CustomerManagementConfiguration>(CustomerManagementServiceName);
 
-        builder.Services.AddCustomerManagementService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
+        builder.Services
+               .AddCustomerManagementService(config)
+               .AddCustomerProfileService(config)
+               .ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
 
         return builder;
     }
 
-    public static WebApplicationBuilder AddCustomerProfileService(this WebApplicationBuilder builder)
-    {
-        var config = builder.CreateAndCheckExternalServiceConfiguration<CustomerProfileConfiguration>(CustomerProfileServiceName);
-
-        builder.Services.AddCustomerProfileService(config).ResolveServiceDiscoveryUriIfEnabled(config, CustomerProfileServiceName);
-
-        return builder;
-    }
-
-    private static void ResolveServiceDiscoveryUriIfEnabled<TConfig>(this IServiceCollection services, TConfig config, string serviceName) where TConfig : class, IExternalServiceConfiguration
+    private static void ResolveServiceDiscoveryUriIfEnabled<TConfig>(this IServiceCollection services, TConfig config, string serviceName) 
+        where TConfig : class, IExternalServiceConfiguration
     {
         if (!config.UseServiceDiscovery)
             return;

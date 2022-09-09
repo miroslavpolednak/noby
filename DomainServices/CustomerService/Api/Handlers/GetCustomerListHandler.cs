@@ -1,83 +1,72 @@
-﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.CustomerService.Dto;
-using System.Diagnostics;
+﻿using CIS.Core.Exceptions;
+using DomainServices.CustomerService.Api.Dto;
+using DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
+using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {
-    internal class GetCustomerListHandler : IRequestHandler<GetCustomerListMediatrRequest, Contracts.CustomerListResponse>
+    internal class GetCustomerListHandler : IRequestHandler<GetCustomerListMediatrRequest, CustomerListResponse>
     {
+        private readonly CustomerManagementListProvider _cmListProvider;
+        private readonly KonsDbListProvider _konsDbListProvider;
         private readonly ILogger<GetCustomerListHandler> _logger;
-        private readonly CustomerManagement.ICMClient _cm;
-        private readonly ICodebookServiceAbstraction _codebooks;
 
-        public GetCustomerListHandler(ILogger<GetCustomerListHandler> logger, CustomerManagement.ICMClient cm, ICodebookServiceAbstraction codebooks)
+        public GetCustomerListHandler(CustomerManagementListProvider cmListProvider, KonsDbListProvider konsDbListProvider, ILogger<GetCustomerListHandler> logger)
         {
+            _cmListProvider = cmListProvider;
+            _konsDbListProvider = konsDbListProvider;
             _logger = logger;
-            _cm = cm;
-            _codebooks = codebooks;
         }
 
         public async Task<CustomerListResponse> Handle(GetCustomerListMediatrRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Get list instance Identities #{id}", string.Join(",", request.Request.Identities));
+            _logger.LogInformation("Get list instance Identities #{id}", string.Join(",", request.Identities));
 
-            // zavolat CM
-            var cmResponse = (
-                await _cm.GetList(
-                    request.Request.Identities.Select(t => t.IdentityId), Activity.Current?.TraceId.ToHexString() ?? "", 
-                    cancellationToken)
-                ).CheckCMResult<IEnumerable<CustomerManagement.CMWrapper.CustomerBaseInfo>>();
+            var identitiesLookup = request.Identities.ToLookup(x => x.IdentityScheme, y => y.IdentityId);
+
+            var customers = Enumerable.Concat(await GetCMCustomers(identitiesLookup[Identity.Types.IdentitySchemes.Kb], cancellationToken),
+                                              await GetKonsDbCustomers(identitiesLookup[Identity.Types.IdentitySchemes.Mp], cancellationToken));
 
             var response = new CustomerListResponse();
 
-            // ciselniky
-            var docTypes = await _codebooks.IdentificationDocumentTypes();
-            var countries = await _codebooks.Countries();
-            var genders = await _codebooks.Genders();
+            response.Customers.AddRange(customers);
 
-            // jen FO
-            foreach (var item in cmResponse.Where(t => t.Party is CustomerManagement.CMWrapper.NaturalPerson))
-            {
-                var customer = new CustomerListResult();
-
-                // identity
-                customer.Identities.Add(item.CustomerId.ToIdentity());
-
-                // FO
-                var np = (CustomerManagement.CMWrapper.NaturalPerson)item.Party;
-
-                // customer
-                customer.NaturalPerson = new NaturalPersonBaseData
-                {
-                    BirthNumber = np.CzechBirthNumber ?? "",
-                    DateOfBirth = np.BirthDate,
-                    FirstName = np.FirstName ?? "",
-                    LastName = np.Surname ?? "",
-                    GenderId = genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id
-                };
-
-                // doklad
-                if (item.PrimaryIdentificationDocument != null)
-                    customer.IdentificationDocument = item.PrimaryIdentificationDocument.ToIdentificationDocument(countries, docTypes);
-
-                // adresa
-                if (item.PrimaryAddress?.Address != null)
-                    customer.Addresses.Add(item.PrimaryAddress.Address.ToAddress(item.PrimaryAddress.ComponentAddress, CIS.Foms.Enums.AddressTypes.PERMANENT, true, countries));
-                if (item.ContactAddress?.Address != null)
-                    customer.Addresses.Add(item.ContactAddress.Address.ToAddress(item.ContactAddress.ComponentAddress, CIS.Foms.Enums.AddressTypes.MAILING, true, countries));
-
-                // kontakty - mobil
-                if (item.PrimaryPhone != null)
-                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.MobilPrivate, Value = item.PrimaryPhone.PhoneNumber, IsPrimary = true });
-                // email
-                if (item.PrimaryEmail != null)
-                    customer.Contacts.Add(new Contact { ContactTypeId = (int)CIS.Foms.Enums.ContactTypes.Email, Value = item.PrimaryEmail.EmailAddress, IsPrimary = true });
-
-                response.Customers.Add(customer);
-            }
+            CheckMissingCustomers(response.Customers, request.Identities);
 
             return response;
+        }
+
+        private async Task<IEnumerable<CustomerListItem>> GetCMCustomers(IEnumerable<long> customerIds, CancellationToken cancellationToken)
+        {
+            if (!customerIds.Any())
+                return Enumerable.Empty<CustomerListItem>();
+
+            return await _cmListProvider.GetList(customerIds, cancellationToken);
+        }
+
+        private async Task<IEnumerable<CustomerListItem>> GetKonsDbCustomers(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
+        {
+            if (!partnerIds.Any())
+                return Enumerable.Empty<CustomerListItem>();
+
+            return await _konsDbListProvider.GetList(partnerIds, cancellationToken);
+        }
+
+        private static void CheckMissingCustomers(ICollection<CustomerListItem> customers, ICollection<Identity> identities)
+        {
+            if (customers.Count == identities.Count)
+                return;
+
+            var missingCustomers = identities.Except(customers.Join(identities,
+                                                                    x => new { x.Identity.IdentityId, x.Identity.IdentityScheme },
+                                                                    y => new { y.IdentityId, y.IdentityScheme },
+                                                                    (_, x) => x)).ToList();
+
+            if (!missingCustomers.Any())
+                return;
+
+            var messageIds = string.Join(", ", missingCustomers.Select(c => $"{c.IdentityScheme} - {c.IdentityId}"));
+            throw new CisNotFoundException(11000, $"Customers with ID: {messageIds} do not exist.");
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "Identity.proto";
+import "NaturalPerson.proto";
+import "IdentificationDocument.proto";
+
+message CustomerListRequest {
+    repeated cis.types.Identity Identities = 1;
+}
+
+message CustomerListResponse {
+	repeated CustomerListItem Customers = 1;
+}
+
+message CustomerListItem {
+	cis.types.Identity Identity = 1;
+
+	NaturalPersonBasicInfo NaturalPerson = 2;
+
+	IdentificationDocument IdentificationDocument = 3;
+}

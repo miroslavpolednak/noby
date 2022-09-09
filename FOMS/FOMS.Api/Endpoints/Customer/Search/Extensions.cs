@@ -14,7 +14,7 @@ internal static class Extensions
         {
             Email = request.Email ?? "",
             PhoneNumber = request.Phone ?? "",
-            NaturalPerson = new SearchNaturalPerson()
+            NaturalPerson = new NaturalPersonSearch
             {
                 FirstName = request.FirstName ?? "",
                 LastName = request.LastName ?? "",
@@ -35,7 +35,7 @@ internal static class Extensions
             && request.IdentificationDocumentTypeId.HasValue
             && request.IssuingCountryId.HasValue)
         {
-            model.IdentificationDocument = new SearchIdentificationDocument
+            model.IdentificationDocument = new IdentificationDocumentSearch
             {
                 IdentificationDocumentTypeId = request.IdentificationDocumentTypeId!.Value,
                 IssuingCountryId = request.IssuingCountryId!.Value,
@@ -46,15 +46,15 @@ internal static class Extensions
         return model;
     }
     
-    public static List<CustomerInList> ToApiResponse(this RepeatedField<SearchCustomerResult> request)
+    public static List<CustomerInList> ToApiResponse(this RepeatedField<SearchCustomersItem> request)
     {
         return request.Select(t => (new CustomerInList())
             .FillBaseData(t)
-            .FillIdentification(t.Identities)
+            .FillIdentification(t.Identity)
             ).ToList();
     }
 
-    internal static CustomerInList FillBaseData(this CustomerInList customer, SearchCustomerResult result)
+    internal static CustomerInList FillBaseData(this CustomerInList customer, SearchCustomersItem result)
     {
         customer.FirstName = result.NaturalPerson?.FirstName;
         customer.LastName = result.NaturalPerson?.LastName;
@@ -67,22 +67,11 @@ internal static class Extensions
         return customer;
     }
 
-    internal static CustomerInList FillIdentification(this CustomerInList customer, RepeatedField<Identity>? identities)
+    internal static CustomerInList FillIdentification(this CustomerInList customer, Identity? identity)
     {
-        if (identities is not null && identities.Any())
+        if (identity is not null)
         {
-            customer.Identity = new CustomerIdentity(identities[0].IdentityId, identities[0].IdentityScheme.ToString());
-        }
-        return customer;
-    }
-
-    private static CustomerInList FillAddress(this CustomerInList customer, RepeatedField<DomainServices.CustomerService.Contracts.Address>? result)
-    {
-        if (result is not null && result.Any())
-        {
-            customer.Street = $"{result[0].Street} {result[0].BuildingIdentificationNumber} {result[0].LandRegistryNumber}";//TODO ???
-            customer.City = result[0].City;
-            customer.Postcode = result[0].Postcode;
+            customer.Identity = new CustomerIdentity(identity.IdentityId, identity.IdentityScheme.ToString());
         }
         return customer;
     }

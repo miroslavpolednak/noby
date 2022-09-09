@@ -4,7 +4,6 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.UserService.Contracts;
-
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.Genders;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates;
@@ -25,7 +24,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         public List<Contracts.Household> Households { get; init; }
         public List<Contracts.CustomerOnSA> CustomersOnSa { get; init; }
         public Dictionary<int, Income> IncomesById { get; init; }
-        public Dictionary<string, CustomerResponse> CustomersByIdentityCode { get; init; }
+        public Dictionary<string, CustomerDetailResponse> CustomersByIdentityCode { get; init; }
         public Dictionary<int, GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
         public Dictionary<int, GenderItem> GendersById { get; init; }
         public Dictionary<int, SalesArrangementStateItem> SalesArrangementStatesById { get; init; }
@@ -45,7 +44,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             List<Contracts.Household> households,
             List<Contracts.CustomerOnSA> customersOnSa,
             Dictionary<int, Income> incomesById,
-            Dictionary<string, CustomerResponse> customersByIdentityCode,
+            Dictionary<string, CustomerDetailResponse> customersByIdentityCode,
             Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
             Dictionary<int, GenderItem> gendersById,
             Dictionary<int, SalesArrangementStateItem> salesArrangementStatesById,

@@ -5,15 +5,6 @@ option csharp_namespace = "DomainServices.CustomerService.Contracts";
 import "google/protobuf/wrappers.proto";
 import "NullableGrpcDate.proto";
 
-message SearchIdentificationDocument {
-   
-   int32 IdentificationDocumentTypeId = 1;
-	
-   int32 IssuingCountryId = 2;
-   
-   string Number = 3;
-}
-
 message IdentificationDocument {
    
    int32 IdentificationDocumentTypeId = 1;
@@ -29,4 +20,13 @@ message IdentificationDocument {
    string IssuedBy = 6;
 
    string RegisterPlace = 7;
+}
+
+message IdentificationDocumentSearch {
+   
+   int32 IdentificationDocumentTypeId = 1;
+	
+   int32 IssuingCountryId = 2;
+   
+   string Number = 3;
 }

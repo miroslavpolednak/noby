@@ -1,4 +1,4 @@
-﻿using DomainServices.CustomerService.Dto;
+﻿using DomainServices.CustomerService.Api.Dto;
 using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Validators;
@@ -7,12 +7,6 @@ internal class GetCustomerListMediatrRequestValidator : AbstractValidator<GetCus
 {
     public GetCustomerListMediatrRequestValidator()
     {
-        RuleFor(t => t.Request.Identities)
-            .Must(t => t != null && t.Any())
-            .WithMessage("At least one of field is required").WithErrorCode("17000")
-            .ForEach(item =>
-            {
-                item.SetValidator(new IdentityValidator());
-            });
+        RuleFor(r => r.Identities).ForEach(item => item.SetValidator(new IdentityValidator()));
     }
 }
