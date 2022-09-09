@@ -1,6 +1,8 @@
-﻿using DomainServices.OfferService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
-using ExternalServices.Rip.V1.RipWrapper;
+﻿using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2;
+using DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2;
+using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -11,21 +13,22 @@ internal class GetLoanApplicationAssessmentHandler
     #region Construction
 
     private readonly LoanApplicationDataService _loanApplicationDataService;
-    private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
-    private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ILoanApplicationServiceAbstraction _loanApplicationService;
+    private readonly IRiskBusinessCaseServiceAbstraction _riskBusinessCaseService;
 
     public GetLoanApplicationAssessmentHandler(
         LoanApplicationDataService loanApplicationDataService,
-        IOfferServiceAbstraction offerService,
         ISalesArrangementServiceAbstraction salesArrangementService,
-        ExternalServices.Rip.V1.IRipClient ripClient
+        ILoanApplicationServiceAbstraction loanApplicationService,
+        IRiskBusinessCaseServiceAbstraction riskBusinessCaseService
+
         )
     {
         _loanApplicationDataService = loanApplicationDataService;
-        _offerService = offerService;
         _salesArrangementService = salesArrangementService;
-        _ripClient = ripClient;
+        _loanApplicationService = loanApplicationService;
+        _riskBusinessCaseService = riskBusinessCaseService;
     }
 
     #endregion
@@ -39,31 +42,37 @@ internal class GetLoanApplicationAssessmentHandler
         if (!request.NewAssessmentRequired && string.IsNullOrEmpty(saInstance.LoanApplicationAssessmentId))
             throw new CisValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
-        // instance Offer
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
-
         var loanApplicationAssessmentId = saInstance.LoanApplicationAssessmentId;
 
-        if (request.NewAssessmentRequired) // vytvorit novy assessment
+        // create new assesment, if required
+        if (request.NewAssessmentRequired)
         {
+            // load data
             var loanApplicationData = await _loanApplicationDataService.LoadData(request.SalesArrangementId, cancellationToken);
-            var loanApplicationRequest = loanApplicationData.ToLoanApplicationRequest();
-            loanApplicationAssessmentId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateLoanApplication(loanApplicationRequest));
-            ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(request.SalesArrangementId, loanApplicationAssessmentId, saInstance.RiskSegment, saInstance.CommandId, cancellationToken));
+
+            // loan application save
+            var loanApplicationSaveRequest = loanApplicationData.ToLoanApplicationSaveRequest();
+            var loanApplicationSaveResponse = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationSaveResponse>(await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken));
+            var riskSegment = loanApplicationSaveResponse.RiskSegment.ToString();
+
+            // create assesment
+            var createAssesmentRequest = loanApplicationData.ToRiskBusinessCaseCreateAssesmentRequest();
+            var createAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.CreateAssesment(createAssesmentRequest, cancellationToken));
+            loanApplicationAssessmentId = createAssesmentResponse.LoanApplicationAssessmentId;
+
+            // update sales arrangement (loanApplicationAssessmentId, riskSegment)
+            ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(request.SalesArrangementId, loanApplicationAssessmentId, riskSegment, saInstance.CommandId, cancellationToken));
         }
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationAssessmentResponse>(await _ripClient.GetLoanApplication(loanApplicationAssessmentId, new List<string>
-            {
-                "assessmentDetail",
-                "householdAssessmentDetail",
-                "counterpartyAssessmentDetail",
-                "collateralRiskCharacteristics"
-            }));
+        // load assesment by ID
+        var getAssesmentRequest = new RiskBusinessCaseGetAssesmentRequest
+        {
+            LoanApplicationAssessmentId = loanApplicationAssessmentId!,
+            RequestedDetails = new List<RiskBusinessCaseRequestedDetails> { RiskBusinessCaseRequestedDetails.assessmentDetail, RiskBusinessCaseRequestedDetails.householdAssessmentDetail, RiskBusinessCaseRequestedDetails.counterpartyAssessmentDetail, RiskBusinessCaseRequestedDetails.collateralRiskCharacteristics }
+        };
+        var getAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.GetAssesment(getAssesmentRequest, cancellationToken));
 
-        var model = result.ToApiResponse();
-        model.Application!.LoanAmount = offerInstance.SimulationResults.LoanAmount ?? 0;
-        model.Application!.LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0;
-
-        return model;
+        // convert to ApiResponse
+        return getAssesmentResponse.ToApiResponse();
     }
 }

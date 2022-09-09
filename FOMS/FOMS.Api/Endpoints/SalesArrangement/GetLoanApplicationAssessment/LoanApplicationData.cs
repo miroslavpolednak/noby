@@ -25,7 +25,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
         public Dictionary<int, cArrangement.Income> IncomesById { get; init; }
 
-        public Dictionary<string, cCustomer.CustomerResponse> CustomersByIdentityCode { get; init; }
+        public Dictionary<string, cCustomer.CustomerDetailResponse> CustomersByIdentityCode { get; init; }
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             List<cArrangement.Household> households,
             List<cArrangement.CustomerOnSA> customersOnSa,
             Dictionary<int, cArrangement.Income> incomesById,
-            Dictionary<string, cCustomer.CustomerResponse> customersByIdentityCode
+            Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode
             )
         {
             Arrangement = arrangement;

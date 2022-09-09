@@ -101,17 +101,17 @@ internal class LoanApplicationDataService
         return incomes.ToDictionary(i => i.IncomeId);
     }
 
-    private async Task<Dictionary<string, cCustomer.CustomerResponse>> GetCustomersByIdentityCode(List<cArrangement.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, cCustomer.CustomerDetailResponse>> GetCustomersByIdentityCode(List<cArrangement.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         // vrací pouze pro KB identity
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => IdentityToCode(i)).Select(i => i.First()).ToList();
-        var results = new List<cCustomer.CustomerResponse>();
+        var results = new List<cCustomer.CustomerDetailResponse>();
         for (int i = 0; i < customerIdentities.Count; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<cCustomer.CustomerResponse>(await _customerService.GetCustomerDetail(new cCustomer.CustomerRequest { Identity = customerIdentities[i] }, cancellation));
+            var customer = ServiceCallResult.ResolveAndThrowIfError<cCustomer.CustomerDetailResponse>(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
             results.Add(customer!);
         }
-        return results.ToDictionary(i => IdentityToCode( i.Identities.First()));
+        return results.ToDictionary(i => IdentityToCode( i.Identity));
     }
 
     #endregion
