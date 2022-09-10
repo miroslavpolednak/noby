@@ -44,6 +44,9 @@ internal class LoggerBootstraper
             loggerConfiguration
                 .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => !t.StartsWith("/api/", StringComparison.OrdinalIgnoreCase)));
         }
+        // remove health checks from logging
+        loggerConfiguration
+            .Filter.ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
     }
 
     public void EnrichLogger(LoggerConfiguration loggerConfiguration)
