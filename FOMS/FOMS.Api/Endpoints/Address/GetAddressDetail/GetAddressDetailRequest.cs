@@ -1,5 +1,9 @@
-﻿namespace FOMS.Api.Endpoints.Address.GetAddressDetail;
+﻿using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace FOMS.Api.Endpoints.Address.GetAddressDetail;
+
+[SwaggerSchema(Required = new[] { "SessionId", "AddressId" })]
 public sealed class GetAddressDetailRequest
     : IRequest<GetAddressDetailResponse>
 {

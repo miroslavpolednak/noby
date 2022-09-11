@@ -1,5 +1,9 @@
-﻿namespace FOMS.Api.Endpoints.Address.AddressSearch;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
+namespace FOMS.Api.Endpoints.Address.AddressSearch;
+
+[SwaggerSchema(Required = new[] { "SessionId", "SearchText", "PageSize" })]
 public class AddressSearchRequest
     : IRequest<AddressSearchResponse>
 {
