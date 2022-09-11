@@ -658,6 +658,41 @@
             Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
             </remarks>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.BirthNumber">
+            <summary>
+            Rodné číslo CZ
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.PlaceOfBirth">
+            <summary>
+            Místo narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.Gender">
+            <summary>
+            Pohlaví
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.CitizenshipCountriesId">
+            <summary>
+            Státní příslušnost/občanství
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
             <summary>
             Jméno customera

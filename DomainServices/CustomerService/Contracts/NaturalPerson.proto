@@ -34,6 +34,8 @@ message NaturalPerson {
    google.protobuf.BoolValue IsPoliticallyExposed = 13;
 
    int32 EducationLevelId = 14;
+
+   bool IsBrSubscribed = 15;
 }
 
 message NaturalPersonBasicInfo {
