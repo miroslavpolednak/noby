@@ -113,14 +113,8 @@ internal class GetCreditWorthinessHandler
         {
             // TODO:
             // IsPartnerMp = customer.HasPartner
+            MaritalStatusMp = customer.MaritalStatusId
         };
-
-        // customer instance
-        if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
-        {
-            var customerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(customer.CustomerIdentifiers.First(), cancellationToken));
-            c.MaritalStatusMp = customerInstance.NaturalPerson?.MaritalStatusStateId;
-        }
 
         //TODO neni tu zadani jake ID posilat, tak beru prvni
         if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
@@ -155,12 +149,10 @@ internal class GetCreditWorthinessHandler
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction _householdService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSaService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public GetCreditWorthinessHandler(
         ExternalServices.Rip.V1.IRipClient ripClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
@@ -168,7 +160,6 @@ internal class GetCreditWorthinessHandler
         DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction householdService,
         DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
     {
-        _customerService = customerService;
         _ripClient = ripClient;
         _userService = userService;
         _caseService = caseService;
