@@ -658,6 +658,11 @@
             Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
             </remarks>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.IsBrSubscribed">
+            <summary>
+            Přihlášen k aktualizaci dat ze základních registrů
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
             <summary>
             Jméno customera

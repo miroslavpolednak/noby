@@ -9,8 +9,9 @@ public static class Extensions
     {
         var model = new GetDetailResponse();
         
-        model.NaturalPerson = new NaturalPersonModel()
+        model.NaturalPerson = new()
         {
+            IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed,
             FirstName = customer.NaturalPerson?.FirstName,
             LastName = customer.NaturalPerson?.LastName,
             DateOfBirth = customer.NaturalPerson?.DateOfBirth,
