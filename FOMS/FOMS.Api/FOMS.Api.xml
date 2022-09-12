@@ -740,6 +740,11 @@
             Státní příslušnost/občanství
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.IsBrSubscribed">
+            <summary>
+            Přihlášen k aktualizaci dat ze základních registrů
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
             <summary>
             Jméno customera

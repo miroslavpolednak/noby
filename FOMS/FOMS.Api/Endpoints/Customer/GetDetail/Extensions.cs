@@ -11,7 +11,6 @@ public static class Extensions
         
         model.NaturalPerson = new()
         {
-            IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed,
             FirstName = customer.NaturalPerson?.FirstName,
             LastName = customer.NaturalPerson?.LastName,
             DateOfBirth = customer.NaturalPerson?.DateOfBirth,
