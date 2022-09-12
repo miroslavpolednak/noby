@@ -29,4 +29,6 @@ message CustomerOnSA {
     repeated IncomeInList Incomes = 10;
 
     cis.types.NullableGrpcDateTime LockedIncomeDateTime = 11;
+
+    google.protobuf.Int32Value MaritalStatusId = 12;
 }

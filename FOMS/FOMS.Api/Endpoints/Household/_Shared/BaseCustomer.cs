@@ -21,4 +21,6 @@ public abstract class BaseCustomer
     /// Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
+
+    public int? MaritalStatusId { get; set; }
 }

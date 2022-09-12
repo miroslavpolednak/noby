@@ -10,7 +10,8 @@ internal static class Extensions
         {
             DateOfBirthNaturalPerson = customer.DateOfBirth,
             FirstNameNaturalPerson = customer.FirstName,
-            Name = customer.LastName
+            Name = customer.LastName,
+            MaritalStatusId = customer.MaritalStatusId
         };
 
         if (customer.LockedIncome)
