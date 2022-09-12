@@ -35,7 +35,15 @@ internal sealed class IdentifyHandler
             dsRequest.Identity = new Identity(request.Identity.Id, request.Identity.Scheme);
         }
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
+        contracts.SearchCustomersResponse result;
+        try
+        {
+            result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
+        }
+        catch (CisNotFoundException)
+        {
+            return null;
+        }
 
         if (!result.Customers.Any())
             return null;
