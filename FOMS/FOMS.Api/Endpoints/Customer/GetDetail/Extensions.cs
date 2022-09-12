@@ -23,7 +23,8 @@ public static class Extensions
             PlaceOfBirth = customer.NaturalPerson?.PlaceOfBirth,
             Gender = (CIS.Foms.Enums.Genders)(customer.NaturalPerson?.GenderId ?? 0),
             BirthCountryId = customer.NaturalPerson?.BirthCountryId,
-            CitizenshipCountriesId = customer.NaturalPerson?.CitizenshipCountriesId?.Select(t => t).ToList()
+            CitizenshipCountriesId = customer.NaturalPerson?.CitizenshipCountriesId?.Select(t => t).ToList(),
+            IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed
         };
 
         /*model.JuridicalPerson = new JuridicalPersonModel

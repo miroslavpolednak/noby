@@ -4,6 +4,53 @@
         <name>FOMS.Api</name>
     </assembly>
     <members>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.AddressSearch(FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(System.String,System.String,System.Threading.CancellationToken)" -->
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
+            <summary>
+            SessionId generované přímo na frontendu (unikátní GUID)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SearchText">
+            <summary>
+            Pattern, podle kterého vyhledáváme
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.CountryId">
+            <summary>
+            Id státu z číselníku Country
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.PageSize">
+            <summary>
+            Počet vrácených záznamů
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchResponse.PageSize">
+            <summary>
+            Počet vrácených záznamů
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.Dto.AddressLine.Title">
+            <summary>
+            Textová reprezentace adresy
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.Dto.AddressLine.Id">
+            <summary>
+            Id adresy
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.SessionId">
+            <summary>
+            SessionId generované přímo na frontendu (unikátní GUID)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.AddressId">
+            <summary>
+            Id adresy
+            </summary>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Admin.AdminController.GetDiscoveryServices(System.Threading.CancellationToken)">
             <summary>
             Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
@@ -658,9 +705,39 @@
             Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
             </remarks>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.IsBrSubscribed">
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.BirthNumber">
             <summary>
-            Přihlášen k aktualizaci dat ze základních registrů
+            Rodné číslo CZ
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.PlaceOfBirth">
+            <summary>
+            Místo narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.Gender">
+            <summary>
+            Pohlaví
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.CitizenshipCountriesId">
+            <summary>
+            Státní příslušnost/občanství
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
