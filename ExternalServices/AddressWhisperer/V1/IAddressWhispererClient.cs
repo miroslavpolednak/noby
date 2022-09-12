@@ -6,5 +6,5 @@ public interface IAddressWhispererClient
 {
     List<FoundSuggestion>? GetSuggestions(string sessionId, string text, int pageSize, int? countryid);
 
-    AddressDetail? GetAddressDetail(string sessionId, long addressId);
+    AddressDetail? GetAddressDetail(string sessionId, string addressId);
 }

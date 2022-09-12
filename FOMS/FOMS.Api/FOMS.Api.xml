@@ -5,7 +5,7 @@
     </assembly>
     <members>
         <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.AddressSearch(FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest,System.Threading.CancellationToken)" -->
-        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(System.Int64,System.String,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(System.String,System.String,System.Threading.CancellationToken)" -->
         <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
             <summary>
             SessionId generované přímo na frontendu (unikátní GUID)

@@ -31,11 +31,11 @@ public class AddressController : ControllerBase
     /// Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.<br/><br/>
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
     /// </remarks>
-    [HttpGet("{addressId:long}")]
+    [HttpGet("{addressId}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Klient" })]
     [ProducesResponseType(typeof(GetAddressDetail.GetAddressDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetAddressDetail.GetAddressDetailResponse> GetAddressDetail([FromRoute] long addressId, [FromQuery] string sessionId, CancellationToken cancellationToken)
+    public async Task<GetAddressDetail.GetAddressDetailResponse> GetAddressDetail([FromRoute] string addressId, [FromQuery] string sessionId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetAddressDetail.GetAddressDetailRequest
         {
             SessionId = sessionId,

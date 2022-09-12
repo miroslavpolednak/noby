@@ -5,7 +5,7 @@ namespace ExternalServices.AddressWhisperer.V1;
 internal sealed class MockAddressWhispererClient
     : IAddressWhispererClient
 {
-    public AddressDetail? GetAddressDetail(string sessionId, long addressId)
+    public AddressDetail? GetAddressDetail(string sessionId, string addressId)
     {
         throw new NotImplementedException();
     }

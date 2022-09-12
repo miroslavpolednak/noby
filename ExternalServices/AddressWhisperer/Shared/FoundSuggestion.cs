@@ -2,7 +2,7 @@
 
 public sealed class FoundSuggestion
 {
-    public long AddressId { get; set; }
+    public string AddressId { get; set; } = null!;
 
     public string Title { get; set; } = null!;
 }
