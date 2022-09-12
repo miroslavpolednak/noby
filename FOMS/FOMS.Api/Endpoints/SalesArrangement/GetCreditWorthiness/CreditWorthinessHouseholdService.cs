@@ -51,22 +51,24 @@ internal sealed class CreditWorthinessHouseholdService
 
         var c = new _Rip.CreditWorthinessCustomer
         {
+            InternalCustomerId = customer
+                .CustomerIdentifiers
+                .FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
+                ?.IdentityId
+                .ToString(System.Globalization.CultureInfo.InvariantCulture),
             HasPartner = areCustomersPartners.GetValueOrDefault()
         };
 
         // customer instance
         if (customer.CustomerIdentifiers is not null && customer.CustomerIdentifiers.Any())
         {
+            //TODO bude casem na CustomerOnSA?
             var customerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerResponse>(await _customerService.GetCustomerDetail(new DomainServices.CustomerService.Contracts.CustomerRequest
             {
                 Identity = customer.CustomerIdentifiers.First()
             }, cancellationToken));
             c.MaritalStateId = customerInstance.NaturalPerson?.MaritalStatusStateId;
         }
-
-        //TODO neni tu zadani jake ID posilat, tak beru prvni
-        if (customer.CustomerIdentifiers?.Any() ?? false)
-            c.InternalCustomerId = customer.CustomerIdentifiers.First().IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
         if (customer.Incomes?.Any() ?? false)
             c.Incomes = customer.Incomes.Select(t => new _Rip.CreditWorthinessIncome
