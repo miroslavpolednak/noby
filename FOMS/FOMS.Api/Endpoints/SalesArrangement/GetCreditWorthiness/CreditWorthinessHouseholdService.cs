@@ -32,9 +32,9 @@ internal sealed class CreditWorthinessHouseholdService
                 
                 // clients
                 if (household.CustomerOnSAId1.HasValue)
-                    h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, household.Data.AreCustomersPartners.GetValueOrDefault(), cancellationToken));
+                    h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, household.Data.AreCustomersPartners, cancellationToken));
                 if (household.CustomerOnSAId2.HasValue)
-                    h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, household.Data.AreCustomersPartners.GetValueOrDefault(), cancellationToken));
+                    h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, household.Data.AreCustomersPartners, cancellationToken));
 
                 // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
                 if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
@@ -44,14 +44,14 @@ internal sealed class CreditWorthinessHouseholdService
             })).ToList();
     }
 
-    private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, bool hasPartner, CancellationToken cancellationToken)
+    private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, bool? areCustomersPartners, CancellationToken cancellationToken)
     {
         // customer on SA instance
         var customer = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
 
         var c = new _Rip.CreditWorthinessCustomer
         {
-            HasPartner = hasPartner
+            HasPartner = areCustomersPartners.GetValueOrDefault()
         };
 
         // customer instance
