@@ -233,7 +233,7 @@ CREATE TABLE [dbo].[CustomerOnSAIncome](
 	[Sum] decimal(12,2) NULL,
 	[CurrencyCode] [varchar](3) NULL,
     [IncomeSource] [nvarchar](255) NULL,
-    [ProofOfIncomeToggle] [bit] NULL,
+    [HasProofOfIncome] [bit] NULL,
 	[Data] [nvarchar](max) NULL,
     [DataBin] [varbinary](max) NULL,
 	[CreatedUserName] [nvarchar](100) NULL,

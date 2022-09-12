@@ -451,8 +451,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     poradi_prijmu = rowNumber.ToJsonString(),
                     zdroj_prijmu_hlavni = iil.IncomeTypeId.ToJsonString(),
                     typ_pracovniho_pomeru = employmentTypeId.ToJsonString(),
-                    klient_ve_vypovedni_lhute = i.Employement?.Job?.JobNoticePeriod.ToJsonString(),                 // Pokud je parametr null, mapujeme 0
-                    klient_ve_zkusebni_lhute = i.Employement?.Job?.JobTrialPeriod.ToJsonString(),                   // Pokud je parametr null, mapujeme 0
+                    klient_ve_vypovedni_lhute = i.Employement?.Job?.IsInProbationaryPeriod.ToJsonString(),                 // Pokud je parametr null, mapujeme 0
+                    klient_ve_zkusebni_lhute = i.Employement?.Job?.IsInTrialPeriod.ToJsonString(),                   // Pokud je parametr null, mapujeme 0
                     prijem_ze_zahranici = countryId.HasValue ? (countryId.Value != 16).ToJsonString() : null,       // Pokud Employer.Address.CountryId = 16 mapujeme 0(= ne), v ostatních případech 1(= ano)
                     domicilace_prijmu_ze_zamestnani = 0.ToJsonString(),
                     typ_dokumentu = 1.ToJsonString(),                                                               // Pro příjem ze zaměstnání default "1"
@@ -477,7 +477,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     zrazky_ze_mzdy_rozhodnuti = i.Employement?.WageDeduction?.DeductionDecision.ToJsonString(),
                     zrazky_ze_mzdy_splatky = i.Employement?.WageDeduction?.DeductionPayments.ToJsonString(),
                     zrazky_ze_mzdy_ostatni = i.Employement?.WageDeduction?.DeductionOther.ToJsonString(),
-                    prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.ConfirmationByCompany.ToJsonString(),
+                    prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.IsIssuedByExternalAccountant.ToJsonString(),
                     //prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
                     prijem_potvrzeni_datum = i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
                     prijem_potvrzeni_osoba = i.Employement?.IncomeConfirmation?.ConfirmationPerson,

@@ -18,7 +18,7 @@ internal sealed class UpdateIncomeHandler
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
         entity.IncomeSource = await getIncomeSource(request.Request, entity.IncomeTypeId, cancellation);
-        entity.ProofOfIncomeToggle = getProofOfIncomeToggle(request.Request, entity.IncomeTypeId);
+        entity.HasProofOfIncome = getProofOfIncomeToggle(request.Request, entity.IncomeTypeId);
         entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject((object)dataObject);
         entity.DataBin = dataObject?.ToByteArray();
 
@@ -30,7 +30,7 @@ internal sealed class UpdateIncomeHandler
     static bool? getProofOfIncomeToggle(_SA.UpdateIncomeRequest request, CustomerIncomeTypes typeId)
         => typeId switch
         {
-            CustomerIncomeTypes.Employement =>request.Employement?.ProofOfIncomeToggle,
+            CustomerIncomeTypes.Employement =>request.Employement?.HasProofOfIncome,
             _ => default(bool?)
         };
 

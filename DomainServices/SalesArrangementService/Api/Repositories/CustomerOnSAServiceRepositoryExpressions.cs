@@ -27,7 +27,7 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             CurrencyCode = t.CurrencyCode ?? "",
             Sum = t.Sum,
             IncomeSource = t.IncomeSource ?? "",
-            ProofOfIncomeToggle = t.ProofOfIncomeToggle
+            HasProofOfIncome = t.HasProofOfIncome
         };
     }
 

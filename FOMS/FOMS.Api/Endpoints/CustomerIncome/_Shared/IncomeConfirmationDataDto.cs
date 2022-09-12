@@ -2,7 +2,7 @@
 
 public class IncomeConfirmationDataDto
 {
-    public bool ConfirmationByCompany { get; set; }
+    public bool IsIssuedByExternalAccountant { get; set; }
     public DateTime? ConfirmationDate { get; set; }
     public string? ConfirmationPerson { get; set; }
     public string? ConfirmationContact { get; set; }
