@@ -8,7 +8,7 @@ public interface IRiskBusinessCaseServiceAbstraction
     /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<IServiceCallResult> CreateCase(Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Žádost o vyhodnocení úvěrové žádosti
