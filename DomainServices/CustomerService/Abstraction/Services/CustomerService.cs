@@ -1,4 +1,5 @@
-﻿using CIS.Core.Results;
+﻿using CIS.Core.Exceptions;
+using CIS.Core.Results;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 using Microsoft.Extensions.Logging;
@@ -44,8 +45,15 @@ namespace DomainServices.CustomerService.Abstraction
 
         public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
         {
-            var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
-            return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
+            try
+            {
+                var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
+                return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
+            }
+            catch (CisNotFoundException)
+            {
+                return new EmptyServiceCallResult();
+            }
         }
     }
 }
