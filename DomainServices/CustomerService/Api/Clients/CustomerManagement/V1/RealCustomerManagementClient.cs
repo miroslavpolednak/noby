@@ -144,7 +144,7 @@ internal class RealCustomerManagementClient : BaseClient<ApiException<Error>>, I
         }
     }
 
-    protected CustomerManagementWrapper CreateClient() => new(_httpClient);
+    protected CustomerManagementWrapper CreateClient() => new(_httpClient.BaseAddress?.ToString(), _httpClient);
 
     protected override int GetApiExceptionStatusCode(ApiException<Error> ex) => ex.StatusCode;
 
