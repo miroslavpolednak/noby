@@ -1,5 +1,21 @@
 ﻿using cLA = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using cRB = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
+
+using cArrangement = DomainServices.SalesArrangementService.Contracts;
+using cOffer = DomainServices.OfferService.Contracts;
+using cCis = CIS.Infrastructure.gRPC.CisTypes;
+using cCustomer = DomainServices.CustomerService.Contracts;
+
+using DomainServices.CaseService.Contracts;
+using System;
+using DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes;
+using Google.Protobuf.WellKnownTypes;
+using DomainServices.ProductService.Contracts;
+using Microsoft.AspNetCore.Routing;
+using StackExchange.Redis;
+using DomainServices.SalesArrangementService.Contracts;
+using Microsoft.JSInterop.Implementation;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -78,100 +94,314 @@ internal static class Extensions
             "'Households' must not be empty." 
          */
 
+        cLA.LoanApplicationHousehold MapHousehold(cArrangement.Household h)
+        {
+            cLA.LoanApplicationCustomer MapCustomer(cArrangement.CustomerOnSA cOnSA)
+            {
+                var obligationTypeLoanPrincipalIds = new List<int> { 1, 2, 5 };
+
+                var MapAddress = (cCis.GrpcAddress a) => new cRS.AddressDetail
+                {
+                    Street = a.Street,
+                    BuildingIdentificationNumber = a.BuildingIdentificationNumber,
+                    LandRegistryNumber = a.LandRegistryNumber,
+                    EvidenceNumber = a.EvidenceNumber,
+                    City = a.City,
+                    CountryId = a.CountryId,
+                    Postcode = a.Postcode,
+                };
+
+                var MapIdentificationDocument = (cCustomer.IdentificationDocument id) => new cRS.V1.IdentificationDocumentDetail
+                {
+                   DocumentNumber = id.Number,
+                   IdentificationDocumentTypeId = id.IdentificationDocumentTypeId,
+                   IssuedOn = id.IssuedOn,
+                   ValidTo = id.ValidTo,
+                };
+
+                var MapObligation = (cArrangement.Obligation o) => new cLA.LoanApplicationObligation
+                {
+                    ObligationTypeId = o.ObligationId,
+                    Amount = obligationTypeLoanPrincipalIds.Contains(o.ObligationTypeId!.Value) ? o.LoanPrincipalAmount : o.CreditCardLimit, // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.LoanPrincipalAmount; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.CreditCardLimit;
+                    AmountConsolidated = obligationTypeLoanPrincipalIds.Contains(o.ObligationTypeId!.Value) ? o.Correction.LoanPrincipalAmountCorrection : o.Correction.CreditCardLimitCorrection,  // // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.Correction.LoanPrincipalAmountCorrection; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.Correction.CreditCardLimitCorrection;
+                    Installment = o.InstallmentAmount,
+                    InstallmentConsolidated = o.Correction.InstallmentAmountCorrection,
+                };
+
+                cLA.LoanApplicationIncome MapIncome() {
+
+                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(IncomeInList iil) {
+
+                        var i = data.IncomesById[iil.IncomeId];
+
+                        return new cLA.LoanApplicationEmploymentIncome
+                        {
+                            EmployerIdentificationNumber = new List<string> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+                            //WorkSectorId
+                            EmployerName = i.Employement?.Employer?.Name,
+                            //ClassficationOfEconomicActivityId
+                            //JobTypeId
+                            Address = new cRS.AddressDetail {
+                                //Postcode = i.Employement?.Employer?.Postcode,
+                                //City = i.Employement?.Employer?.City,
+                                CountryId = i.Employement?.Employer?.CountryId,
+                                //Street = i.Employement?.Employer?.Street,
+                                //BuildingIdentificationNumber = i.Employement?.Employer?.BuildingIdentificationNumber,
+                                //LandRegistryNumber = i.Employement?.Employer?.LandRegistryNumber,
+                            },
+
+                            //JobTitle =                // nemá to být JobDescription ???
+                            //JobDescription = i.Employement?.Job?.JobDescription,
+
+                            //PhoneNumber = i.Employement?.Employer?.PhoneNumber,
+                            MonthlyIncomeAmount = new cRS.AmountDetail
+                            {
+                                Amount = iil.Sum is not null ? (decimal)iil.Sum! : default(decimal),
+                                // CurrencyCode = iil.CurrencyCode,         // Do doby než bude služba na přepočet cizích měn na CZK nemá smysl posílat - RIP při neposlání doplňuje default CZK
+                            },
+                            // BankAccount = new cRS.BankAccountDetail { },
+                            // IsDomicile = i.IsDomicile,
+                            ProofTypeId = 1,                                  // Default = 1 (PVP - Potvrzení o příjmu), ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
+                            IncomeForeignTypeId = i.Employement?.ForeignIncomeTypeId,
+                            GrossAnnualIncome = i.Employement?.Job?.GrossAnnualIncome,
+                            ConfirmationPerson = i.Employement?.IncomeConfirmation?.ConfirmationPerson,
+                            ConfirmationContactPhone = i.Employement?.IncomeConfirmation?.ConfirmationContact,
+                            ConfirmationDate = i.Employement?.IncomeConfirmation?.ConfirmationDate,
+                            JobTrialPeriod = (i.Employement?.Job?.JobTrialPeriod == true),
+                            NoticePeriod = (i.Employement?.Job?.JobNoticePeriod == true),
+                            EmploymentTypeId = i.Employement?.Job?.EmploymentTypeId,
+                            FirstWorkContractSince = i.Employement?.Job?.FirstWorkContractSince,
+                            CurrentWorkContractSince = i.Employement?.Job?.CurrentWorkContractSince,
+                            CurrentWorkContractTo = i.Employement?.Job?.CurrentWorkContractTo,
+                            ConfirmationByCompany = (i.Employement?.IncomeConfirmation?.ConfirmationByCompany == true), // IsIssuedByExternalAccountant ... nemá být ConfirmationByCompany ???
+                            IncomeDeduction = new cLA.LoanApplicationEmploymentIncomeDeduction
+                            {
+                                Execution = i.Employement?.WageDeduction?.DeductionDecision,
+                                Installments = i.Employement?.WageDeduction?.DeductionPayments,
+                                Other = i.Employement?.WageDeduction?.DeductionOther,
+                            },
+                        };
+                    };
+
+                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(IncomeInList? iil) {
+
+                        if (iil == null)
+                        {
+                            return null;
+                        }
+
+                        var i = data.IncomesById[iil.IncomeId];
+                        
+                        return new cLA.LoanApplicationEntrepreneurIncome {
+                            EntrepreneurIdentificationNumber = new List<string> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+                            Address = new cRS.AddressDetail
+                            {
+                                //Postcode = i.Employement?.Employer?.Postcode,
+                                //City = i.Employement?.Employer?.City,
+                                //CountryId = i.Employement?.Employer?.CountryOfResidenceId == true,                    //???
+                                //Street = i.Employement?.Employer?.Street,
+                                //BuildingIdentificationNumber = i.Employement?.Employer?.BuildingIdentificationNumber,
+                                //LandRegistryNumber = i.Employement?.Employer?.LandRegistryNumber,
+                            },
+                            ProofTypeId = 2,            // Default = 2 (DAP - Daňové přiznání), ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
+                            AnnualIncomeAmount = new cRS.AmountDetail
+                            {
+                                Amount = iil.Sum is not null ? (decimal)iil.Sum! : default(decimal),
+                                //CurrencyCode
+                            },
+                        };
+                    };
+
+                    cLA.LoanApplicationRentIncome? MapRentIncome(IncomeInList? iil)
+                    {
+
+                        if (iil == null)
+                        {
+                            return null;
+                        }
+
+                        var i = data.IncomesById[iil.IncomeId];
+
+                        return new cLA.LoanApplicationRentIncome
+                        {
+                            // ProofTypeId            // Pro tento typ příjmu není v MVP relevantní, ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
+                            MonthlyIncomeAmount = new cRS.AmountDetail
+                            {
+                                Amount = iil.Sum is not null ? (decimal)iil.Sum! : default(decimal),
+                                //CurrencyCode
+                            },
+                        };
+                    };
+
+                    cLA.LoanApplicationOtherIncome MapOtherIncome(IncomeInList iil)
+                    {
+                        var i = data.IncomesById[iil.IncomeId];
+
+                        return new cLA.LoanApplicationOtherIncome
+                        {
+                            //IncomeOtherTypeId = i.IncomeTypeId,                     // IncomeOtherTypeId ... nemá být IncomeTypeId?
+                            // ProofTypeId            // Pro tento typ příjmu není v MVP relevantní, ProofType(CIS_TYP_POTVRDENIE_PRIJMU)
+                            MonthlyIncomeAmount = new cRS.AmountDetail
+                            {
+                                Amount = iil.Sum is not null ? (decimal)iil.Sum! : default(decimal),
+                                //CurrencyCode
+                            },
+                        };
+                    };
+
+                    // TODO:
+                    return new cLA.LoanApplicationIncome
+                    {
+                        IsIncomeConfirmed = cOnSA.LockedIncomeDateTime is not null,
+                        LastConfirmedDate = cOnSA.LockedIncomeDateTime is not null ? (DateTime)cOnSA.LockedIncomeDateTime! : default(DateTime),
+                        EmploymentIncomes = cOnSA.Incomes.Where(i => i.IncomeTypeId == 1).Select(i => MapEmploymentIncome(i)).ToList(),     // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 1 //TODO find by codebook MainIncomeType !!! 
+                        EntrepreneurIncome = MapEntrepreneurIncome(cOnSA.Incomes.FirstOrDefault(i => i.IncomeTypeId == 2)),                 // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 2 //TODO find by codebook MainIncomeType !!! 
+                        RentIncome = MapRentIncome(cOnSA.Incomes.FirstOrDefault(i => i.IncomeTypeId == 3)),                                 // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 3 //TODO find by codebook MainIncomeType !!! 
+                        OtherIncomes = cOnSA.Incomes.Where(i => i.IncomeTypeId == 4).Select(i => MapOtherIncome(i)).ToList(),               // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 4 //TODO find by codebook MainIncomeType !!! 
+                    };
+                }
+
+                // do JSON věty jdou pouze Customers s Kb identitou // ???
+                var identityKb = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
+                var identityMp = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp); // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!  ???
+                var c = data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode(identityKb)];
+
+                var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);   //TODO find by codebook ???
+                var contactEmail = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 5 && i.IsPrimary);   //TODO find by codebook ???
+
+                var addressPermanent = c.Addresses.FirstOrDefault(i => i.AddressTypeId == 1 );  // Pouze trvalá adresa, WHERE podmínka:Customer.Addresses.AddressTypeId = PERMANENT  //TODO find by codebook !!! 
+
+                return new cLA.LoanApplicationCustomer
+                {
+                    BirthNumber = c.NaturalPerson?.BirthNumber,
+                    CustomerRoleId = cOnSA.CustomerRoleId,
+                    Firstname = c.NaturalPerson?.FirstName,
+                    Surname = c.NaturalPerson?.LastName,
+                    BirthName = c.NaturalPerson?.BirthName,
+                    BirthDate = c.NaturalPerson?.DateOfBirth,
+                    BirthPlace = c.NaturalPerson?.PlaceOfBirth,
+                    GenderId = c.NaturalPerson?.GenderId,
+                    MaritalStateId = c.NaturalPerson?.MaritalStatusStateId,
+                    EducationLevelId = c.NaturalPerson?.EducationLevelId,
+                    // AcademicTitlePrefix = c.NaturalPerson?.DegreeBeforeId,   // ??? type
+                    MobilePhoneNumber = contactMobilePhone?.Value,
+                    HasEmail = !String.IsNullOrEmpty(contactEmail?.Value),
+                    IsPartner = (h.Data?.AreCustomersPartners == true),
+                    // Taxpayer =       // Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"
+                    Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),
+                    IdentificationDocument = MapIdentificationDocument(c.IdentificationDocument),
+                    Obligations = cOnSA.Obligations.Where(i => i.Creditor?.IsExternal == true).Select(i => MapObligation(i)).ToList(),
+                    Income = MapIncome(),
+                };
+            };
+
+            var expenses = new cRS.V1.ExpensesSummary
+            {
+                Rent = h.Expenses.HousingExpenseAmount,
+                Saving = h.Expenses.SavingExpenseAmount,
+                Insurance = h.Expenses.InsuranceExpenseAmount,
+                Other = h.Expenses.OtherExpenseAmount,
+            };
+
+            return new cLA.LoanApplicationHousehold
+            {
+                HouseholdId = h.HouseholdTypeId,        // nemá být HouseholdId ???
+                HouseholdTypeId = h.HouseholdTypeId,
+                PropertySettlementId = h.Data.PropertySettlementId,
+                ChildrenUpToTenYearsCount = h.Data.ChildrenUpToTenYearsCount,
+                ChildrenOverTenYearsCount = h.Data.ChildrenOverTenYearsCount,
+                Expenses = expenses,
+                Customers = data.CustomersOnSa.Select(i=>MapCustomer(i)).ToList(),
+            };
+        }
+
+        cLA.LoanApplicationProduct MapProduct()
+        {
+            var MapLoanPurpose = (cOffer.LoanPurpose i) => new cLA.LoanApplicationProductPurpose
+            {
+                LoanPurposeId = i.LoanPurposeId,
+                Amount = i.Sum,
+            };
+
+            var loanAmount = (decimal)data.Offer.SimulationResults.LoanAmount;
+            var financialResourcesOwn = data.Offer.BasicParameters.FinancialResourcesOwn ?? 0;
+            var financialResourcesOther = data.Offer.BasicParameters.FinancialResourcesOther ?? 0;
+            var investmentAmount = (loanAmount + financialResourcesOwn + financialResourcesOther);  //Jako součet Offer.SimulationResults.LoanAmount +Offer.SimulationInputs.FinancialResourcesOwn + Offer.SimulationInputs.FinancialResourcesOther
+
+            var productCollateral = new cLA.LoanApplicationProductCollateral
+            {
+                // CollateralType   // NOBY nebude plnit - na straně RIP dojde k doplnění hodnoty "nemovitost"
+                AppraisedValue = new cRS.AmountDetail
+                {
+                    Amount = data.Offer.SimulationInputs.CollateralAmount,
+                    // CurrencyCode //???
+                }
+            };
+
+            return new cLA.LoanApplicationProduct
+            {
+                ProductTypeId = data.CaseData.Data.ProductTypeId,
+                LoanKindId = data.Offer.SimulationInputs.LoanKindId,
+                Ltv = data.Offer.SimulationResults.LoanToValue,
+                LoanDuration = data.Offer.SimulationResults.LoanDuration,
+                LoanPaymentAmount = data.Offer.SimulationResults.LoanPaymentAmount,
+                FixedRatePeriod = data.Offer.SimulationInputs.FixedRatePeriod,
+                LoanInterestRate = data.Offer.SimulationResults.LoanInterestRate,
+                // RepaymentScheduleTypeId  // Pro všechny produkty, které aktuálně NOBY bude posílat v MVP je relevantní pouze hodnota anuitní splácení (pro C4M hodnota "A").
+                // InstallmentPeriod        // Bude doplněn default na straně RIP, pokud na vstupu nic nepřijde
+                InstallmentCount = data.Offer.SimulationResults.AnnuityPaymentsCount,
+                DrawingPeriodStart = data.Arrangement.Mortgage.ExpectedDateOfDrawing,
+                DrawingPeriodEnd = data.Offer.SimulationResults.DrawingDateTo,
+                RepaymentPeriodStart = data.Offer.SimulationResults.AnnuityPaymentsDateFrom,
+                RepaymentPeriodEnd = data.Offer.SimulationResults.LoanDueDate,
+                HomeCurrencyIncome = data.Arrangement.Mortgage.IncomeCurrencyCode,
+                HomeCurrencyResidence = data.Arrangement.Mortgage.ResidencyCurrencyCode,
+                DeveloperId = data.Offer.SimulationInputs.Developer.DeveloperId,
+                DeveloperProjectId = data.Offer.SimulationInputs.Developer.ProjectId,
+                RequiredAmount = data.Offer.SimulationResults.LoanAmount,
+                InvestmentAmount = investmentAmount,
+                OwnResourcesAmount = financialResourcesOwn,
+                ForeignResourcesAmount = financialResourcesOther,
+                MarketingActions = data.Offer.AdditionalSimulationResults.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
+                Purposes = data.Offer.SimulationInputs.LoanPurposes.Select(i=> MapLoanPurpose(i)).ToList(),
+                Collaterals = new List<cLA.LoanApplicationProductCollateral> { productCollateral },
+            };
+        }
+
+        cRS.Identity? MapUserIdentity()
+        {
+            // pokud více identit, tak identita se řídí dle produktu (nelze mít dvě MP nebo KB identity) ???
+            //var identity = data.User.UserIdentifiers.FirstOrDefault(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes. );
+            var identity = data.User.UserIdentifiers.FirstOrDefault();
+
+            if (identity == null)
+            {
+                return null;
+            }
+
+            return new cRS.Identity
+            {
+                IdentityId = identity.Identity,
+                IdentityScheme = identity.IdentityScheme.ToString(),
+                //Identity = "10009819",
+                //IdentityScheme = "DMID"
+            };
+        }
+
+        var appendixCode = data.CaseData.Data.ProductTypeId == 20004 ? 25 : 0;      // IF Case.Data.ProductInstanceTypeId = 20004  => poslat "25" ELSE => poslat "0"
+
         return new cLA.LoanApplicationSaveRequest
         {
             SalesArrangementId = data.Arrangement.SalesArrangementId,
+            AppendixCode = appendixCode,
+            DistributionChannelId = data.Arrangement.ChannelId,                     // DistributionChannelCode???
+            //SignatureType                                                         // pro NOBY nerelevantní
             LoanApplicationDataVersion = Guid.NewGuid().ToString(),
-            Product = new cLA.LoanApplicationProduct
-            {
-                
-            }
+            Households = data.Households.Select(i => MapHousehold(i)).ToList(),
+            Product = MapProduct(),
+            //ProductRelations                                                      // V MVP neplníme; Objekt plníme pouze pro produkt doprodej neúčelové části
+            UserIdentity = MapUserIdentity(),
         };
-
-
-        //return data.ToLoanApplicationSampleRequest();
-
-        //LoanApplicationHousehold2? MapHousehold(cArrangement.Household i)
-        //{
-        //    if (i == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    LoanApplicationCounterParty2? MapCustomer(int? customerOnSaId)
-        //    {
-
-        //        if (!customerOnSaId.HasValue)
-        //        {
-        //            return null;
-        //        }
-
-        //        var customer = data.CustomersOnSa.First(i => i.CustomerOnSAId == customerOnSaId);
-
-        //        return new LoanApplicationCounterParty2
-        //        {
-        //            Id = customerOnSaId.Value,
-        //            //CustomerId = customer.CustomerIdentifiers  data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode() ]
-        //            RoleCodeMp = customer.CustomerRoleId,
-
-        //            CustomerId = "970182896",
-        //            // "id": 1,
-        //            //"customerId": "970182896",
-        //            //"roleCodeMp": 1
-
-
-        //        };
-
-        //    };
-
-        //    return new LoanApplicationHousehold2
-        //    {
-        //        Id = i.HouseholdTypeId,
-        //        RoleCodeMp = i.HouseholdTypeId,
-        //        SettlementTypeCodeMp = i.Data?.PropertySettlementId,
-        //        CounterParty = (new List<LoanApplicationCounterParty2?> { MapCustomer(i.CustomerOnSAId1), MapCustomer(i.CustomerOnSAId2) }).Where(i => i is not null).ToList(),
-        //    };
-
-        //}
-
-
-        //var id = new SystemId
-        //{
-        //    Id = data.Arrangement.SalesArrangementId.ToString(CultureInfo.InvariantCulture),
-        //    System = "NOBY",
-        //};
-
-        //var loanApplicationProduct = new LoanApplicationProduct2
-        //{
-        //    // DrawingPeriodStart = SalesArrangement.Parameters.ExpectedDateOfDrawing
-        //    // HomeCurrencyIncome = SalesArrangement.Parameters.IncomeCurrencyCode
-        //    // HomeCurrencyResidence = SalesArrangement.Parameters.ResidencyCurrencyCode
-
-
-
-        //    //Product = data.Arrangement.SalesArrangementTypeId,      // Case.Data.ProductInstanceTypeId . . . do DV se bere z SA !?
-        //    Product = data.CaseData.Data.ProductTypeId,
-        //    LoanType = data.Offer.SimulationInputs.LoanKindId
-        //};
-
-        //var userIdentity = data.User.UserIdentifiers.First();       // jak vybrat konkrétní identitu?
-        //var humanUser = new HumanUser
-        //{
-        //    Identity = userIdentity.Identity,                           //  "10009819",      // ??? User.UserIdentifiers.Identity        (přihlášeného uživatele)
-        //    IdentityScheme = userIdentity.IdentityScheme.ToString()    // "DMID",    // ??? User.UserIdentifiers.IdentityScheme  (přihlášeného uživatele)
-        //};
-
-        //var loanApplicationRequest = new LoanApplicationRequest
-        //{
-        //    Id = id,
-        //    LoanApplicationDataVersion = DateTime.Now.ToLongTimeString(), // POZOR - pro každé volání nutné upravit (navýšit timestamp) loanApplicationDataVersion
-        //    DistributionChannelCodeMp = data.Arrangement.ChannelId,
-        //    LoanApplicationProduct = loanApplicationProduct,
-        //    LoanApplicationHousehold = data.Households.Select(i => MapHousehold(i)).ToList(),
-        //    HumanUser = humanUser,
-        //};
-
-        //return loanApplicationRequest;
     }
 
     public static cRB.RiskBusinessCaseCreateAssesmentRequest ToRiskBusinessCaseCreateAssesmentRequest(this LoanApplicationData data)
@@ -179,7 +409,7 @@ internal static class Extensions
         //TODO:
         return new cRB.RiskBusinessCaseCreateAssesmentRequest
         {
-            SalesArrangementId = data.Arrangement.SalesArrangementId
+            SalesArrangementId = data.Arrangement.SalesArrangementId,
         };
     }
 

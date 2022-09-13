@@ -13,7 +13,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
         public cArrangement.SalesArrangement Arrangement { get; init; }
        
-        public cOffer.GetMortgageOfferResponse Offer { get; init; }
+        public cOffer.GetMortgageOfferDetailResponse Offer { get; init; }
 
         public cCase.Case CaseData { get; init; }
 
@@ -33,7 +33,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
         public LoanApplicationData(
             cArrangement.SalesArrangement arrangement,
-            cOffer.GetMortgageOfferResponse offer,
+            cOffer.GetMortgageOfferDetailResponse offer,
             cUser.User user,
             cCase.Case caseData,
             List<cArrangement.Household> households,

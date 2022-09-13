@@ -20,8 +20,6 @@ internal class LoanApplicationDataService
 
     #region Construction
 
-    private static readonly string StringJoinSeparator = ",";
-
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
@@ -119,12 +117,13 @@ internal class LoanApplicationDataService
     public async Task<LoanApplicationData> LoadData(int salesArrangementId, CancellationToken cancellation)
     {
         var arrangement = ServiceCallResult.ResolveAndThrowIfError<cArrangement.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation));
-        var offer = ServiceCallResult.ResolveAndThrowIfError<cOffer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(arrangement.OfferId!.Value, cancellation));
+        var offer = ServiceCallResult.ResolveAndThrowIfError<cOffer.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation));
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
         var households = await GetHouseholds(arrangement.SalesArrangementId, cancellation);
         var incomesById = await GetIncomesById(customersOnSA, cancellation);
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<cCase.Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation));
-        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
+        //var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
+        Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode = null;
         var user = ServiceCallResult.ResolveAndThrowIfError<cUser.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation));
         return new LoanApplicationData(arrangement, offer, user, caseInstance, households, customersOnSA, incomesById, customersByIdentityCode);
     }
