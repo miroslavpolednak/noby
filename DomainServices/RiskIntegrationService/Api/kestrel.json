@@ -2,11 +2,11 @@
   "CustomKestrel": {
     "Endpoints": [
       {
-        "Port": 5003,
+        "Port": 30012,
         "Protocol": 2
       },
       {
-        "Port": 5004,
+        "Port": 30013,
         "Protocol": 1
       }
     ],
