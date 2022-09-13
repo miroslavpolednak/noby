@@ -76,7 +76,7 @@ internal class CustomerManagementDetailProvider
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
-            IsBrSubscribed = customer.BrSubscription.IsSubscribed
+            IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false
         };
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
