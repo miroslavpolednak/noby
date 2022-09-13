@@ -2,7 +2,6 @@
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
-using ExternalServices.Rip.V1.RipWrapper;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -19,7 +18,7 @@ internal class GetLoanApplicationAssessmentHandler
         // instance Offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
 
-        if (request.NewAssessmentRequired) // vytvorit novy assessment
+        /*if (request.NewAssessmentRequired) // vytvorit novy assessment
         {
             return null;
         }
@@ -38,20 +37,18 @@ internal class GetLoanApplicationAssessmentHandler
             model.Application!.LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount ?? 0;
 
             return model;
-        }
+        }*/
+        return null;
     }
 
-    private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public GetLoanApplicationAssessmentHandler( 
         IOfferServiceAbstraction offerService,
-        ISalesArrangementServiceAbstraction salesArrangementService,
-        ExternalServices.Rip.V1.IRipClient ripClient)
+        ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
-        _ripClient = ripClient;
     }
 }

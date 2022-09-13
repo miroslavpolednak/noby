@@ -1,4 +1,4 @@
-﻿using ExternalServices.Rip.V1.RipWrapper;
+﻿using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -8,7 +8,7 @@ internal static class Extensions
     {
         return new GetLoanApplicationAssessmentResponse
         {
-            Application = new()
+            /*Application = new()
             {
                 LoanApplicationLimit = response.AssessmentDetail?.LoanApplicationLimit?._LoanApplicationLimit.Value,
                 LoanApplicationInstallmentLimit = response.AssessmentDetail?.LoanApplicationLimit?.LoanApplicationInstallmentLimit?.Value,
@@ -49,7 +49,7 @@ internal static class Extensions
                 Result = r.Detail?.Result,
                 Target = r.Detail?.Target,
                 Weight = r.Weight
-            }).ToList()
+            }).ToList()*/
         };
     }
 }

@@ -1,8 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using ExternalServices.Eas;
-using ExternalServices.Rip;
 using ExternalServices.SbWebApi;
 
 namespace DomainServices.SalesArrangementService.Api;
@@ -34,8 +32,6 @@ internal static class StartupExtensions
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 
-        // Rip svc
-        builder.AddExternalServiceRip();
         // sb web api
         builder.AddExternalServiceSbWebApi();
 
