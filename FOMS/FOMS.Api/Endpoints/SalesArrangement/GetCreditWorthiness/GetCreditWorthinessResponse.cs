@@ -2,7 +2,7 @@
 
 public sealed class GetCreditWorthinessResponse
 {
-    public int WorthinessResult { get; set; }
+    public CreditWorthinessResults WorthinessResult { get; set; }
     public int MaxAmount { get; set; }
     public int InstallmentLimit { get; set; }
     public int RemainsLivingAnnuity { get; set; }
@@ -14,4 +14,10 @@ public sealed class GetCreditWorthinessResponse
     public decimal? LoanPaymentAmount { get; set; }
     public int DTI { get; set; }
     public int DSTI { get; set; }
+}
+
+public enum CreditWorthinessResults
+{
+    Success = 1,
+    Failed = 2
 }

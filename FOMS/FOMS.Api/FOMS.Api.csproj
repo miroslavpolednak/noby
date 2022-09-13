@@ -46,10 +46,11 @@
     <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Abstraction\DomainServices.RiskIntegrationService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
-    <ProjectReference Include="..\..\ExternalServices\Rip\ExternalServices.Rip.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
     <ProjectReference Include="..\FOMS.Services\FOMS.Services.csproj" />
   </ItemGroup>

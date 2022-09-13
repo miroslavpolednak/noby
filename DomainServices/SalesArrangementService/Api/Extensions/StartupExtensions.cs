@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
 using ExternalServices.Eas;
-using ExternalServices.Rip;
 using ExternalServices.SbWebApi;
 using ExternalServices.Sulm;
 
@@ -35,8 +34,6 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // sulm
         builder.AddExternalServiceSulm();
-        // Rip svc
-        builder.AddExternalServiceRip();
         // sb web api
         builder.AddExternalServiceSbWebApi();
 

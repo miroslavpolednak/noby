@@ -7,10 +7,14 @@ namespace DomainServices.RiskIntegrationService.Abstraction.Services.RiskBusines
 internal class RiskBusinessCaseService
     : Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateCase(RiskBusinessCaseCreateRequest request, CancellationToken cancellationToken = default)
+    public async Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default)
     {
         _logger.RequestHandlerStarted(nameof(CreateCase));
-        var result = await _service.CreateCase(request, cancellationToken: cancellationToken);
+        var result = await _service.CreateCase(new RiskBusinessCaseCreateRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            ResourceProcessId = resourceProcessId
+        }, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult<RiskBusinessCaseCreateResponse>(result);
     }
 
