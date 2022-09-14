@@ -37,7 +37,7 @@ internal class CustomerManagementSearchProvider
                                      NaturalPerson = CreateNaturalPerson(c)
                                  };
 
-                                 FillAddressData(item, c.PrimaryAddress.Address);
+                                 FillAddressData(item, c.PrimaryAddress?.Address);
 
                                  return item;
                              });
