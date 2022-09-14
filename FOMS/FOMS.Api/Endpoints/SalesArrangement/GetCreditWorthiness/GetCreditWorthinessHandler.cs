@@ -37,8 +37,8 @@ internal class GetCreditWorthinessHandler
                 ProductTypeId = caseInstance.Data.ProductTypeId,
                 LoanDuration = offerInstance.SimulationResults.LoanDuration,
                 LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
-                LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount ?? 0),
-                LoanPaymentAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanPaymentAmount ?? 0),
+                LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
+                LoanPaymentAmount = Convert.ToInt32((decimal?)offerInstance.SimulationResults.LoanPaymentAmount ?? 0M),
                 FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
             },
             Households = await _creditWorthinessHouseholdService.CreateHouseholds(request.SalesArrangementId, cancellationToken)

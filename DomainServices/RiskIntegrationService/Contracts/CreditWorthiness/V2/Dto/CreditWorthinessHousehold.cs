@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
-[ProtoContract]
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
 public sealed class CreditWorthinessHousehold
 {
     [ProtoMember(1)]

@@ -2,7 +2,7 @@
 
 namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
-[ProtoContract]
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
 public class CreditWorthinessCalculateResponse
 {
     [ProtoMember(1)]
