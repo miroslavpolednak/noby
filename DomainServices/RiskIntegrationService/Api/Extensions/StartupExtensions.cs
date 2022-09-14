@@ -34,12 +34,12 @@ internal static class StartupExtensions
         builder.Services.AddControllers();
 
         // register c4m clients
-        builder.AddRiskBusinessCase();
-        builder.AddCreditWorthiness();
-        builder.AddCustomersExposure();
-        builder.AddLoanApplication();
-        builder.AddLoanApplicationAssessment();
-        builder.AddRiskCharakteristics();
+        builder.AddRiskBusinessCaseClient();
+        builder.AddCreditWorthinessClient();
+        builder.AddCustomersExposureClient();
+        builder.AddLoanApplicationClient();
+        builder.AddLoanApplicationAssessmentClient();
+        builder.AddRiskCharakteristicsClient();
 
         // databases
         builder.Services

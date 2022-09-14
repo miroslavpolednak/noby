@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class LoanApplicationCustomer
 {
     [ProtoMember(1)]

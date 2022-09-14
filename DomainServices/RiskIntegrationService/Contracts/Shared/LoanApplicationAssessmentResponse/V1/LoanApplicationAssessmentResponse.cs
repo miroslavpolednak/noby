@@ -1,7 +1,7 @@
 ﻿
 namespace DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public sealed class LoanApplicationAssessmentResponse
 {
     [ProtoMember(1)]

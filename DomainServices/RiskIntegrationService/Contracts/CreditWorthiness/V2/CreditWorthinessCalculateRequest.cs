@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class CreditWorthinessCalculateRequest
     : IRequest<CreditWorthinessCalculateResponse>, CIS.Core.Validation.IValidatableRequest
 {
