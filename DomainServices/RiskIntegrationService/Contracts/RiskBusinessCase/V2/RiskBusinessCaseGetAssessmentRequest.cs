@@ -10,7 +10,4 @@ public class RiskBusinessCaseGetAssessmentRequest
 
     [ProtoMember(2)]
     public List<RiskBusinessCaseRequestedDetails>? RequestedDetails { get; set; }
-
-    [ProtoMember(3)]
-    public Shared.AmountDetail? Amount { get; set; }
 }
