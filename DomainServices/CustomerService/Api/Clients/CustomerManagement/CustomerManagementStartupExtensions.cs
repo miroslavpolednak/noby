@@ -12,7 +12,7 @@ internal static class CustomerManagementStartupExtensions
             case (CMVersion.V1, ServiceImplementationTypes.Real):
                 services.AddHttpClient<V1.ICustomerManagementClient, V1.RealCustomerManagementClient>((provider, client) =>
                 {
-                    client.BaseAddress = GetClientBaseAddress(provider);
+                    //client.BaseAddress = GetClientBaseAddress(provider);
                     client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
                 }).ConfigurePrimaryHttpMessageHandler<CertificationValidatorHttpHandler>();
                 break;
