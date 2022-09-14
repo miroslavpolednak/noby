@@ -2,7 +2,7 @@
 namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 [ProtoContract]
-public class RiskBusinessCaseGetAssesmentRequest
+public class RiskBusinessCaseGetAssessmentRequest
     : IRequest<Shared.V1.LoanApplicationAssessmentResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
@@ -10,4 +10,7 @@ public class RiskBusinessCaseGetAssesmentRequest
 
     [ProtoMember(2)]
     public List<RiskBusinessCaseRequestedDetails>? RequestedDetails { get; set; }
+
+    [ProtoMember(3)]
+    public Shared.AmountDetail? Amount { get; set; }
 }

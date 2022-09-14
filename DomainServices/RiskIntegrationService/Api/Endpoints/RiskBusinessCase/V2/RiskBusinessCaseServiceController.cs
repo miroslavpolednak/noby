@@ -41,7 +41,7 @@ public sealed class RiskBusinessCaseServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
     [ProducesResponseType(typeof(_sh.LoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
-    public async Task<_sh.LoanApplicationAssessmentResponse> CreateAssesment([FromBody] _V2.RiskBusinessCaseCreateAssesmentRequest request, CancellationToken cancellationToken)
+    public async Task<_sh.LoanApplicationAssessmentResponse> CreateAssessment([FromBody] _V2.RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
     ///// <summary>
@@ -53,8 +53,8 @@ public sealed class RiskBusinessCaseServiceController
     //[HttpPost("assessment-asynchronous")]
     //[Produces("application/json")]
     //[SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
-    //[ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse), StatusCodes.Status200OK)]
-    //public async Task<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse> CreateAssesmentAsynchronous([FromBody] _V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, CancellationToken cancellationToken)
+    //[ProducesResponseType(typeof(_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse), StatusCodes.Status200OK)]
+    //public async Task<_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse> CreateAssessmentAsynchronous([FromBody] _V2.RiskBusinessCaseCreateAssessmentAsynchronousRequest request, CancellationToken cancellationToken)
     //    => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
@@ -80,6 +80,6 @@ public sealed class RiskBusinessCaseServiceController
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
     [ProducesResponseType(typeof(_sh.LoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
-    public async Task<_sh.LoanApplicationAssessmentResponse> GetAssesment([FromBody] _V2.RiskBusinessCaseGetAssesmentRequest request, CancellationToken cancellationToken)
+    public async Task<_sh.LoanApplicationAssessmentResponse> GetAssessment([FromBody] _V2.RiskBusinessCaseGetAssessmentRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 }

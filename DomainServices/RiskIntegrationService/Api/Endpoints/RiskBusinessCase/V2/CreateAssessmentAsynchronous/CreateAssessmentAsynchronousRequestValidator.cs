@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesmentAsynchronous;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessmentAsynchronous;
 
-internal sealed class CreateAssesmentAsynchronousValidator
-    : AbstractValidator<_V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest>
+internal sealed class CreateAssessmentAsynchronousValidator
+    : AbstractValidator<_V2.RiskBusinessCaseCreateAssessmentAsynchronousRequest>
 {
-    public CreateAssesmentAsynchronousValidator()
+    public CreateAssessmentAsynchronousValidator()
     {
         RuleFor(t => t.RiskBusinessCaseId)
             .NotEmpty()

@@ -4,5 +4,5 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
 
 internal interface ILoanApplicationAssessmentClient
 {
-    Task<Identified> GetAssesment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken);
+    Task<Identified> GetAssessment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken);
 }

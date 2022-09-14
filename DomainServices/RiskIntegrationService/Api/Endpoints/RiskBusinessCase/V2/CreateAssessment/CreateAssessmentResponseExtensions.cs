@@ -2,9 +2,9 @@
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessment;
 
-internal static class CreateAssesmentExtensions
+internal static class CreateAssessmentExtensions
 {
     public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response)
         => new()
@@ -87,7 +87,7 @@ internal static class CreateAssesmentExtensions
             Result = t.Detail?.Result,
             Resources = t.Detail?.Resource?.Select(r => new _sh.LoanApplicationAssessmentResource { 
                 Entity = r.Entity,
-                Identifier = null //TODO Pavel Tomšík dodá jak bude vypadat rozparsování
+                Identifier = null //TODO C4M
             }).ToList()
         };
 

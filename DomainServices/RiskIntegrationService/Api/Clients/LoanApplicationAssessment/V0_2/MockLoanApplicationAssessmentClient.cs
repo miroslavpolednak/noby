@@ -5,6 +5,6 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
 internal sealed class MockLoanApplicationAssessmentClient
     : ILoanApplicationAssessmentClient
 {
-    public Task<Identified> GetAssesment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken)
+    public Task<Identified> GetAssessment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken)
         => Task.FromResult(new Identified());
 }

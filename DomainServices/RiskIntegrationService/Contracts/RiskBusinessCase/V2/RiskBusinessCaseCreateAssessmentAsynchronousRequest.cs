@@ -2,8 +2,8 @@
 namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 [ProtoContract]
-public class RiskBusinessCaseCreateAssesmentAsynchronousRequest
-    : IRequest<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse>, CIS.Core.Validation.IValidatableRequest
+public class RiskBusinessCaseCreateAssessmentAsynchronousRequest
+    : IRequest<_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]
     public string RiskBusinessCaseId { get; set; } = null!;

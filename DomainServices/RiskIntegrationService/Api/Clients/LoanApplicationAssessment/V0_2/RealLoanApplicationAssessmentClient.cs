@@ -6,7 +6,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
 internal sealed class RealLoanApplicationAssessmentClient
     : ILoanApplicationAssessmentClient
 {
-    public async Task<Identified> GetAssesment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken)
+    public async Task<Identified> GetAssessment(string loanApplicationAssessmentId, List<string>? requestedDetails, CancellationToken cancellationToken)
     {
         string path = requestedDetails != null && requestedDetails.Any()
             ? string.Format(default, _getUrlWithExpand, loanApplicationAssessmentId, string.Join("&expand=", requestedDetails))
@@ -17,7 +17,7 @@ internal sealed class RealLoanApplicationAssessmentClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<Identified>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(GetAssesment), nameof(Identified));
+                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(GetAssessment), nameof(Identified));
 
         return result;
     }

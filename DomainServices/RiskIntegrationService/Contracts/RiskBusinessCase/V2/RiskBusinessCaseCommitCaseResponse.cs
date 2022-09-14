@@ -3,18 +3,18 @@
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
 public class RiskBusinessCaseCommitCaseResponse
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public string RiskBusinessCaseId { get; set; } = default!;
 
-    [DataMember(Order = 2)]
+    [ProtoMember(2)]
     public DateTime Timestamp { get; set; }
 
-    [DataMember(Order = 3)]
+    [ProtoMember(3)]
     public string OperationResult { get; set; } = default!;
 
-    [DataMember(Order = 4)]
+    [ProtoMember(4)]
     public string? FinalState { get; set; }
 
-    [DataMember(Order = 5)]
+    [ProtoMember(5)]
     public List<Shared.ResultReasonDetail>? ResultReasons { get; set; }
 }
