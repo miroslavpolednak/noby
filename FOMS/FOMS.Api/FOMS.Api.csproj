@@ -13,6 +13,8 @@
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DocumentationFile>FOMS.Api.xml</DocumentationFile>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<PublishDocumentationFile>true</PublishDocumentationFile>
     <NoWarn>1701;1702;CS1573</NoWarn>
   </PropertyGroup>
 
@@ -23,6 +25,16 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="FOMS.Api.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="FOMS.Api.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
