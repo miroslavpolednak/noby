@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class RiskBusinessCaseCommitCaseResponse
 {
     [ProtoMember(1)]
