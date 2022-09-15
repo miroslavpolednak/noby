@@ -13,7 +13,7 @@ internal static class CustomerProfileStartupExtensions
                 services.AddHttpClient<V1.ICustomerProfileClient, V1.RealCustomerProfileClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
-                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
+                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuthenticationHeader;
                 }).ConfigurePrimaryHttpMessageHandler<CertificationValidatorHttpHandler>();
                 break;
 

@@ -1,5 +1,6 @@
 ﻿using CIS.ExternalServicesHelpers;
 using DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment;
+using DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
@@ -9,7 +10,7 @@ internal static class LoanApplicationAssessmentStartupExtensions
 
     public static WebApplicationBuilder AddLoanApplicationAssessmentClient(this WebApplicationBuilder builder)
     {
-        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<LoanApplicationAssessment.Configuration.LoanApplicationAssessmentConfiguration>(ServiceName);
+        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<LoanApplicationAssessmentConfiguration>(ServiceName);
 
         foreach (var configuration in configurations)
         {
@@ -20,7 +21,7 @@ internal static class LoanApplicationAssessmentStartupExtensions
                         builder.Services.AddScoped<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V0_2.MockLoanApplicationAssessmentClient>();
                     else
                         builder.Services
-                            .AddC4mHttpClient<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient>(configuration)
+                            .AddC4mHttpClient<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient, LoanApplicationAssessmentConfiguration>(Versions.V0_2.ToString())
                             .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient>(ServiceName);
                     break;
 
@@ -29,7 +30,7 @@ internal static class LoanApplicationAssessmentStartupExtensions
                         builder.Services.AddScoped<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.MockLoanApplicationAssessmentClient>();
                     else
                         builder.Services
-                            .AddC4mHttpClient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(configuration)
+                            .AddC4mHttpClient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient, LoanApplicationAssessmentConfiguration>(Versions.V1.ToString())
                             .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(ServiceName);
                     break;
 

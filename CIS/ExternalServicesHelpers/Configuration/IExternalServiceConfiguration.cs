@@ -4,6 +4,8 @@ namespace CIS.ExternalServicesHelpers.Configuration;
 
 public interface IExternalServiceConfiguration
 {
+    string GetVersion();
+
     /// <summary>
     /// Default request timeout in seconds
     /// </summary>

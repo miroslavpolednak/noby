@@ -1,5 +1,6 @@
 ﻿using CIS.ExternalServicesHelpers;
 using DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness;
+using DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
@@ -9,7 +10,7 @@ internal static class CreditWorthinessStartupExtensions
 
     public static WebApplicationBuilder AddCreditWorthinessClient(this WebApplicationBuilder builder)
     {
-        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CreditWorthiness.Configuration.CreditWorthinessConfiguration>(ServiceName);
+        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CreditWorthinessConfiguration>(ServiceName);
 
         configurations.ForEach(configuration =>
         {
@@ -21,7 +22,7 @@ internal static class CreditWorthinessStartupExtensions
 
                 case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
                     builder.Services
-                        .AddC4mHttpClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient>(configuration)
+                        .AddC4mHttpClient<CreditWorthiness.V1.ICreditWorthinessClient, CreditWorthiness.V1.RealCreditWorthinessClient, CreditWorthinessConfiguration>(Versions.V1.ToString())
                         .ConfigureC4mHttpMessageHandler<CreditWorthiness.V1.RealCreditWorthinessClient>(ServiceName);
                     break;
 
