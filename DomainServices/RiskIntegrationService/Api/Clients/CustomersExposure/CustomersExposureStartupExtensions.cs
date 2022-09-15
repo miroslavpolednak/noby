@@ -7,7 +7,7 @@ internal static class CustomersExposureStartupExtensions
 {
     internal const string ServiceName = "C4MCustomersExposure";
 
-    public static WebApplicationBuilder AddCustomersExposure(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddCustomersExposureClient(this WebApplicationBuilder builder)
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CustomersExposure.Configuration.CustomersExposureConfiguration>(ServiceName);
 

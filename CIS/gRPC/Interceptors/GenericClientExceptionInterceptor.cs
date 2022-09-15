@@ -63,7 +63,7 @@ public sealed class GenericClientExceptionInterceptor
                 throw new CisArgumentException(code, message, arg);
             }
         }
-        catch (Exception ex)
+        catch (RpcException ex)
         {
             _logger.GeneralException(methodFullName, ex.Message, ex);
             throw;

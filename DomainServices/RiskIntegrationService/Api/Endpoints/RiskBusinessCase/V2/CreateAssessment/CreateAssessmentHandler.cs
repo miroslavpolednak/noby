@@ -2,12 +2,12 @@
 using _sh = DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessment;
 
-internal sealed class CreateAssesmentHandler
-    : IRequestHandler<_V2.RiskBusinessCaseCreateAssesmentRequest, _sh.LoanApplicationAssessmentResponse>
+internal sealed class CreateAssessmentHandler
+    : IRequestHandler<_V2.RiskBusinessCaseCreateAssessmentRequest, _sh.LoanApplicationAssessmentResponse>
 {
-    public async Task<_sh.LoanApplicationAssessmentResponse> Handle(_V2.RiskBusinessCaseCreateAssesmentRequest request, CancellationToken cancellationToken)
+    public async Task<_sh.LoanApplicationAssessmentResponse> Handle(_V2.RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken)
     {
         string chanel = _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name);
 
@@ -22,7 +22,7 @@ internal sealed class CreateAssesmentHandler
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
-    public CreateAssesmentHandler(
+    public CreateAssessmentHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.IRiskBusinessCaseClient client)

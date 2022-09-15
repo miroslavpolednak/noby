@@ -7,7 +7,7 @@ internal static class CreditWorthinessStartupExtensions
 {
     internal const string ServiceName = "C4MCreditWorthiness";
 
-    public static WebApplicationBuilder AddCreditWorthiness(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddCreditWorthinessClient(this WebApplicationBuilder builder)
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CreditWorthiness.Configuration.CreditWorthinessConfiguration>(ServiceName);
 

@@ -2,7 +2,7 @@
 namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 [ProtoContract]
-public class RiskBusinessCaseGetAssesmentRequest
+public class RiskBusinessCaseGetAssessmentRequest
     : IRequest<Shared.V1.LoanApplicationAssessmentResponse>, CIS.Core.Validation.IValidatableRequest
 {
     [ProtoMember(1)]

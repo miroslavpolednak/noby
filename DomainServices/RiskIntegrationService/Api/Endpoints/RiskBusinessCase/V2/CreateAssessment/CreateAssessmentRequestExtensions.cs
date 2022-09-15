@@ -1,11 +1,11 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesment;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessment;
 
-internal static class CreateAssesmentRequestExtensions
+internal static class CreateAssessmentRequestExtensions
 {
-    public static _C4M.LoanApplicationAssessmentCreate ToC4M(this _V2.RiskBusinessCaseCreateAssesmentRequest request, string chanel)
+    public static _C4M.LoanApplicationAssessmentCreate ToC4M(this _V2.RiskBusinessCaseCreateAssessmentRequest request, string chanel)
         => new ()
         {
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),

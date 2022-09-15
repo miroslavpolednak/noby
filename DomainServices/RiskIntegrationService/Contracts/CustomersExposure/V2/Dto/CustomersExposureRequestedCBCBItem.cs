@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class CustomersExposureRequestedCBCBItem
 {
     [ProtoMember(1)]

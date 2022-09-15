@@ -77,6 +77,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapCisHealthChecks();
 
+    endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.CustomersExposure.V2.CustomersExposureService>();
     endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseService>();
     endpoints.MapGrpcService< DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.CreditWorthinessService>();
     endpoints.MapGrpcService<DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.LoanApplicationService>();
@@ -93,6 +94,7 @@ app.UseRipSwagger();
 // print gRPC PROTO file
 //var schemaGenerator = new ProtoBuf.Grpc.Reflection.SchemaGenerator();
 //var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.ICreditWorthinessService>();
+//var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService>();
 //File.WriteAllText("d:\\proto1.proto", proto1);
 
 try

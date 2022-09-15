@@ -40,8 +40,8 @@
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.152" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.177" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.177" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />

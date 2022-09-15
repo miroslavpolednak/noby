@@ -1,12 +1,12 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
 
-namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssesmentAsynchronous;
+namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CreateAssessmentAsynchronous;
 
-internal sealed class CreateAssesmentAsynchronousHandler
-    : IRequestHandler<_V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest, _V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse>
+internal sealed class CreateAssessmentAsynchronousHandler
+    : IRequestHandler<_V2.RiskBusinessCaseCreateAssessmentAsynchronousRequest, _V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse>
 {
-    public async Task<_V2.RiskBusinessCaseCreateAssesmentAsynchronousResponse> Handle(_V2.RiskBusinessCaseCreateAssesmentAsynchronousRequest request, CancellationToken cancellationToken)
+    public async Task<_V2.RiskBusinessCaseCreateAssessmentAsynchronousResponse> Handle(_V2.RiskBusinessCaseCreateAssessmentAsynchronousRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException("Verze c4m 0.2 vs 1 je uplne jina. At to nekdo nejdriv popise na confl.");
 
@@ -21,7 +21,7 @@ internal sealed class CreateAssesmentAsynchronousHandler
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
-    public CreateAssesmentAsynchronousHandler(
+    public CreateAssessmentAsynchronousHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.IRiskBusinessCaseClient client)

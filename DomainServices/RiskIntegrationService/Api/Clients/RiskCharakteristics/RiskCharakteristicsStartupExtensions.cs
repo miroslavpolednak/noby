@@ -7,7 +7,7 @@ internal static class RiskCharakteristicsStartupExtensions
 {
     internal const string ServiceName = "C4MRiskCharakteristics";
 
-    public static WebApplicationBuilder AddRiskCharakteristics(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddRiskCharakteristicsClient(this WebApplicationBuilder builder)
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskCharakteristics.Configuration.RiskCharakteristicsConfiguration>(ServiceName);
 
