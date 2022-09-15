@@ -20,6 +20,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal partial class CustomerProfileWrapper 
     {
+        private string _baseUrl = "https://cm-dev.kb.cz/be-cm/api";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
@@ -34,6 +35,12 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
+        }
+
+        public string BaseUrl
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -81,7 +88,7 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1
                 throw new System.ArgumentNullException("profileCode");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("public/v1/customers/{customerId}/validate-customer-profile?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/public/v1/customers/{customerId}/validate-customer-profile?");
             urlBuilder_.Replace("{customerId}", System.Uri.EscapeDataString(ConvertToString(customerId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("profileCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(profileCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;

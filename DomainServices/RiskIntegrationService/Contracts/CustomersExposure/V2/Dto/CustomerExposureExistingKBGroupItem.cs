@@ -2,7 +2,7 @@
 
 namespace DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class CustomersExposureExistingKBGroupItem
 {
     [ProtoMember(1)]

@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using DomainServices.RiskIntegrationService.Abstraction;
 using CIS.DomainServicesSecurity.ContextUser;
+using CIS.Core.Results;
+using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+using Console_RiskIntegrationService;
+using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+using DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 
 Console.WriteLine("run!");
 
@@ -16,14 +21,20 @@ var serviceProvider = new ServiceCollection()
     })
     .AddScoped<CIS.Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>()
     .AddHttpContextAccessor()
-    .AddRiskIntegrationService()
+    .AddRiskIntegrationService("https://127.0.0.1:5022")
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction>() ?? throw new Exception();
+/*Console.WriteLine("RUN 1");
+var service1 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction>() ?? throw new Exception();
+var result1 = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculateResponse>(await service1.Calculate(CreditWorthinessTest._test1));
+Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result1));*/
 
-Console.WriteLine("RUN 1");
-var result = await service.Calculate(new DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.CreditWorthinessCalculateRequest
-{
-    RiskBusinessCaseId = "xxx"
-});
-Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));
+/*Console.WriteLine("RUN 2");
+var service2 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction>() ?? throw new Exception();
+var result2 = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationSaveResponse>(await service2.Save(LoanApplicationTest._test1));
+Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));*/
+
+Console.WriteLine("RUN 3");
+var service3 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CustomersExposure.V2.ICustomersExposureServiceAbstraction>() ?? throw new Exception();
+var result3 = ServiceCallResult.ResolveAndThrowIfError<CustomersExposureCalculateResponse>(await service3.Calculate(ExposureTest._test1));
+Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result3));

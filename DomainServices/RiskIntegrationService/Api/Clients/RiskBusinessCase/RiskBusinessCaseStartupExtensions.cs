@@ -7,7 +7,7 @@ internal static class RiskBusinessCaseStartupExtensions
 {
     internal const string ServiceName = "C4MRiskBusinessCase";
 
-    public static WebApplicationBuilder AddRiskBusinessCase(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddRiskBusinessCaseClient(this WebApplicationBuilder builder)
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskBusinessCase.Configuration.RiskBusinessCaseConfiguration>(ServiceName);
 

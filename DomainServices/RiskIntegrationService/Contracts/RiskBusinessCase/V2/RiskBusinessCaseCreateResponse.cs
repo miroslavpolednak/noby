@@ -1,8 +1,8 @@
 ﻿namespace DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
-[DataContract]
+[ProtoContract]
 public class RiskBusinessCaseCreateResponse
 {
-    [DataMember(Order = 1)]
+    [ProtoMember(1)]
     public string RiskBusinessCaseId { get; set; } = null!;
 }

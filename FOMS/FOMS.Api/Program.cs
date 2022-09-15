@@ -6,6 +6,7 @@ using DomainServices.ProductService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.UserService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.RiskIntegrationService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 
@@ -30,6 +31,7 @@ builder
 // add domain services
 builder.Services
     .AddOfferService()
+    .AddRiskIntegrationService()
     .AddCodebookService()
     .AddCustomerService()
     .AddProductService()

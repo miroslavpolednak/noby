@@ -7,7 +7,7 @@ internal static class LoanApplicationStartupExtensions
 {
     internal const string ServiceName = "C4MLoanApplication";
 
-    public static WebApplicationBuilder AddLoanApplication(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddLoanApplicationClient(this WebApplicationBuilder builder)
     {
         var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<LoanApplication.Configuration.LoanApplicationConfiguration>(ServiceName);
 
