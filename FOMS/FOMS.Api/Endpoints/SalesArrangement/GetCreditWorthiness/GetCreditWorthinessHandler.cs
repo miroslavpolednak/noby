@@ -68,7 +68,7 @@ internal class GetCreditWorthinessHandler
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    
+
     public GetCreditWorthinessHandler(
         CreditWorthinessHouseholdService creditWorthinessHouseholdService,
         DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction creditWorthinessService,
