@@ -7,7 +7,7 @@ internal static class LoanApplicationTest
     public static LoanApplicationSaveRequest _test1 = new LoanApplicationSaveRequest
     {
         SalesArrangementId = 1,
-        LoanApplicationDataVersion = "00001",
+        LoanApplicationDataVersion = "00003",
         Product = new LoanApplicationProduct
         {
             ProductTypeId = 20001,

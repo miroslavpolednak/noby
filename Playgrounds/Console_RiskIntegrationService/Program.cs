@@ -21,7 +21,8 @@ var serviceProvider = new ServiceCollection()
     })
     .AddScoped<CIS.Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>()
     .AddHttpContextAccessor()
-    .AddRiskIntegrationService("https://127.0.0.1:5022")
+    //.AddRiskIntegrationService("https://127.0.0.1:5022")
+    .AddRiskIntegrationService("https://172.30.35.51:30012")
     .BuildServiceProvider();
 
 /*Console.WriteLine("RUN 1");
@@ -29,12 +30,12 @@ var service1 = serviceProvider.GetService<DomainServices.RiskIntegrationService.
 var result1 = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculateResponse>(await service1.Calculate(CreditWorthinessTest._test1));
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result1));*/
 
-/*Console.WriteLine("RUN 2");
+Console.WriteLine("RUN 2");
 var service2 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction>() ?? throw new Exception();
 var result2 = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationSaveResponse>(await service2.Save(LoanApplicationTest._test1));
-Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));*/
+Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));
 
-Console.WriteLine("RUN 3");
+/*Console.WriteLine("RUN 3");
 var service3 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.CustomersExposure.V2.ICustomersExposureServiceAbstraction>() ?? throw new Exception();
 var result3 = ServiceCallResult.ResolveAndThrowIfError<CustomersExposureCalculateResponse>(await service3.Calculate(ExposureTest._test1));
-Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result3));
+Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result3));*/
