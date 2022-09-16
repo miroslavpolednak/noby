@@ -12,7 +12,6 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.Developers
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
-        [JsonIgnore]
         public string Cin { get; set; }
 
         [DataMember(Order = 4)]

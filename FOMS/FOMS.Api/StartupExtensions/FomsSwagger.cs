@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using FOMS.Api.Endpoints.Codebooks.GetAll;
 using FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -37,9 +38,10 @@ internal static class FomsSwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
-
+            
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
+            x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
 
         // Adds FluentValidationRules staff to Swagger.
@@ -68,6 +70,30 @@ internal static class FomsSwagger
             {
                 codebookCollectionProperty.Items.OneOf.Add(context.SchemaGenerator.GenerateSchema(type, context.SchemaRepository));
             }
+        }
+    }
+
+    private class EnumValuesDescriptionSchemaFilter : ISchemaFilter
+    {
+        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+        {
+            if (!context.Type.IsEnum)
+                return;
+
+            var sb = new StringBuilder(schema.Description ?? string.Empty);
+
+            sb.Append("\n\n<small>Enum Values</small>");
+
+            sb.Append("<ul>");
+
+            foreach (var enumValue in Enum.GetValues(context.Type))
+            {
+                sb.Append($"<li>{Convert.ToInt32(enumValue)} - {enumValue}</li>");
+            }
+
+            sb.Append("</ul>");
+
+            schema.Description = sb.ToString();
         }
     }
 }

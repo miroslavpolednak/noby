@@ -13,6 +13,8 @@
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DocumentationFile>FOMS.Api.xml</DocumentationFile>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<PublishDocumentationFile>true</PublishDocumentationFile>
     <NoWarn>1701;1702;CS1573</NoWarn>
   </PropertyGroup>
 
@@ -24,9 +26,19 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="FOMS.Api.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="FOMS.Api.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.8" />
@@ -47,9 +59,10 @@
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Abstraction\DomainServices.RiskIntegrationService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
-    <ProjectReference Include="..\..\ExternalServices\Rip\ExternalServices.Rip.csproj" />
+    <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
     <ProjectReference Include="..\FOMS.Services\FOMS.Services.csproj" />
   </ItemGroup>

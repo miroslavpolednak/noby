@@ -38,66 +38,67 @@ internal class CreateRiskBusinessCaseHandler
             caseInstance.Data.ProductTypeId, 
             offerInstance.SimulationInputs.LoanKindId,
             notification.CustomerOnSAId,
-            notification.NewMpCustomerId.Value);
+            notification.NewMpCustomerId.Value,
+            cancellationToken);
 
         bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, cancellationToken));
 
         // get rbcId
-        string riskBusinessId = ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateRiskBusinesCase(notification.SalesArrangementId, offerInstance.ResourceProcessId));
-
+        var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
+        
         // ulozit na SA
-        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, riskBusinessId, null, cancellationToken));
+        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken));
     }
 
-    async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, long mpId)
+    async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, long mpId, CancellationToken cancellationToken)
     {
-        var loanApplicationRequest = new ExternalServices.Rip.V1.RipWrapper.LoanApplicationRequest
+        var loanApplicationRequest = new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationSaveRequest
         {
-            Id = new ExternalServices.Rip.V1.RipWrapper.SystemId
-            {
-                Id = salesArrangementId.ToString(),
-                System = "NOBY"
-            },
+            SalesArrangementId = salesArrangementId,
             LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-            LoanApplicationHousehold = new List<ExternalServices.Rip.V1.RipWrapper.LoanApplicationHousehold2>
+            Households = new()
             {
-                new ExternalServices.Rip.V1.RipWrapper.LoanApplicationHousehold2
+                new()
                 {
-                    Id = householdId,
-                    CounterParty = new List<ExternalServices.Rip.V1.RipWrapper.LoanApplicationCounterParty2>
+                    HouseholdId = householdId,
+                    Customers = new()
                     {
-                        new ExternalServices.Rip.V1.RipWrapper.LoanApplicationCounterParty2
+                        new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationCustomer
                         {
-                            Id = customerOnSAId,
-                            CustomerId = mpId.ToString(),
-                            RoleCodeMp = (int)CustomerRoles.Debtor
+                            InternalCustomerId = customerOnSAId,
+                            PrimaryCustomerId = mpId.ToString(),
+                            CustomerRoleId = (int)CustomerRoles.Debtor
                         }
                     }
                 },
             },
-            LoanApplicationProduct = new ExternalServices.Rip.V1.RipWrapper.LoanApplicationProduct2
+            Product = new()
             {
-                Product = productTypeId,
-                LoanType = loanKindId
+                ProductTypeId = productTypeId,
+                LoanKindId = loanKindId
             }
         };
-        return ServiceCallResult.ResolveAndThrowIfError<string>(await _ripClient.CreateLoanApplication(loanApplicationRequest));
+        
+        return ServiceCallResult.ResolveAndThrowIfError<string>(await _loanApplicationService.Save(loanApplicationRequest, cancellationToken));
     }
 
-    private readonly ExternalServices.Rip.V1.IRipClient _ripClient;
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction _loanApplicationService;
+    private readonly DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction _riskBusinessCaseService;
 
     public CreateRiskBusinessCaseHandler(
-        ExternalServices.Rip.V1.IRipClient ripClient,
+        DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction loanApplicationService,
+        DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction riskBusinessCaseService,
         IHouseholdServiceAbstraction householdService,
         IOfferServiceAbstraction offerService,
         ICaseServiceAbstraction caseService,
         ISalesArrangementServiceAbstraction salesArrangementService)
     {
-        _ripClient = ripClient;
+        _loanApplicationService = loanApplicationService;
+        _riskBusinessCaseService = riskBusinessCaseService;
         _householdService = householdService;
         _offerService = offerService;
         _caseService = caseService;

@@ -1,5 +1,4 @@
-﻿using ExternalServices.Rip;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 
 namespace FOMS.Api.StartupExtensions;
@@ -21,7 +20,7 @@ internal static class FomsServices
             {
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                options.JsonSerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
+                options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
 
             })
             .AddFluentValidation(fv =>
@@ -29,9 +28,6 @@ internal static class FomsServices
                 fv.RegisterValidatorsFromAssemblyContaining<IApiAssembly>(includeInternalTypes: true);
                 fv.DisableDataAnnotationsValidation = true;
             });
-
-        // RIP
-        builder.AddExternalServiceRip();
 
         return builder;
     }

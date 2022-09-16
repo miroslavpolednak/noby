@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 
-public class RealCustomerManagementClient : BaseClient<ApiException<Error>>, ICustomerManagementClient
+internal class RealCustomerManagementClient : BaseClient<ApiException<Error>>, ICustomerManagementClient
 {
     public RealCustomerManagementClient(HttpClient httpClient, ILogger<RealCustomerManagementClient> logger) : base(httpClient, logger)
     {
@@ -144,7 +144,7 @@ public class RealCustomerManagementClient : BaseClient<ApiException<Error>>, ICu
         }
     }
 
-    protected CustomerManagementWrapper CreateClient() => new(_httpClient);
+    protected CustomerManagementWrapper CreateClient() => new(_httpClient.BaseAddress?.ToString(), _httpClient);
 
     protected override int GetApiExceptionStatusCode(ApiException<Error> ex) => ex.StatusCode;
 

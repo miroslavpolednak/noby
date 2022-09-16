@@ -35,20 +35,26 @@ internal sealed class IdentifyHandler
             dsRequest.Identity = new Identity(request.Identity.Id, request.Identity.Scheme);
         }
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
+        // zavolat sluzbu
+        var rawResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
 
-        if (!result.Customers.Any())
+        if (rawResult is EmptyServiceCallResult)
             return null;
-        else if (result.Customers.Count > 1)
+        else
         {
-            _logger.LogInformation("More than 1 client found");
-            throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identity?.IdentityId.ToString()))}");
-        }
+            var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(rawResult);
 
-        var customer = result.Customers.First();
-        return (new CustomerInList())
-            .FillBaseData(customer)
-            .FillIdentification(customer.Identity);
+            if (result.Customers.Count > 1)
+            {
+                _logger.LogInformation("More than 1 client found");
+                throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identity?.IdentityId.ToString()))}");
+            }
+
+            var customer = result.Customers.First();
+            return (new CustomerInList())
+                .FillBaseData(customer)
+                .FillIdentification(customer.Identity);
+        }
     }
 
     private readonly ILogger<IdentifyHandler> _logger;

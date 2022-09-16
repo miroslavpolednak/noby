@@ -1,21 +1,4 @@
-﻿using cLA = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using cRB = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
-using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
-
-using cArrangement = DomainServices.SalesArrangementService.Contracts;
-using cOffer = DomainServices.OfferService.Contracts;
-using cCis = CIS.Infrastructure.gRPC.CisTypes;
-using cCustomer = DomainServices.CustomerService.Contracts;
-
-using DomainServices.CaseService.Contracts;
-using System;
-using DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes;
-using Google.Protobuf.WellKnownTypes;
-using DomainServices.ProductService.Contracts;
-using Microsoft.AspNetCore.Routing;
-using StackExchange.Redis;
-using DomainServices.SalesArrangementService.Contracts;
-using Microsoft.JSInterop.Implementation;
+﻿using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -26,7 +9,7 @@ internal static class Extensions
     {
         return new GetLoanApplicationAssessmentResponse
         {
-            Application = new()
+            /*Application = new()
             {
                 Limit = response.Detail?.Limit?.Limit?.Amount,
                 InstallmentLimit = response.Detail?.Limit?.InstallmentLimit?.Amount,
@@ -67,7 +50,7 @@ internal static class Extensions
                 Result = r.Result,
                 Target = r.Target,
                 Weight = r.Weight
-            }).ToList()
+            }).ToList()*/
         };
     }
 

@@ -91,6 +91,13 @@ public class HouseholdController : ControllerBase
     /// Update customeru na domacnosti
     /// </summary>
     /// <remarks>
+    /// Založí, případně updatuje CustomerOnSAId1 a CustomerOnSAId2 podle objektu v requestu Customer1 a Customer2.
+    /// <ul>
+    /// <li>Customer1 = NULL; pokud je v puvodni domacnosti v CustomerOnSAId1 existujici ID, je toto ID smazano, vcetne entity CustomerOnSA</li>
+    /// <li>Customer1.CustomerOnSAId = NULL; vola se CustomerOnSAService.CreateCustomer; pote se doplni Household.CustomerOnSAId1 nove vytvorenym ID</li>
+    /// <li>Customer1.CustomerOnSAId = existujici customer; vola se CustomerOnSAService.UpdateCustomer</li>
+    /// </ul>
+    /// Pokud je pri update nebo create klient identifikovan, rezervuje se mu modre ID a pousti se flow identifikovaneho klienta.<br/>
     /// při opakovaném zavolání API s locked income = true nedochází k přepisování timestamp
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>

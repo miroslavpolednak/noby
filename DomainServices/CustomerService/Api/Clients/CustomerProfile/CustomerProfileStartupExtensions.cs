@@ -3,7 +3,7 @@ using DomainServices.CustomerService.Api.Configuration;
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile;
 
-public static class CustomerProfileStartupExtensions
+internal static class CustomerProfileStartupExtensions
 {
     public static IServiceCollection AddCustomerProfileService(this IServiceCollection services, CustomerManagementConfiguration config)
     {
@@ -13,8 +13,8 @@ public static class CustomerProfileStartupExtensions
                 services.AddHttpClient<V1.ICustomerProfileClient, V1.RealCustomerProfileClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
-                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
-                });
+                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuthenticationHeader;
+                }).ConfigurePrimaryHttpMessageHandler<CertificationValidatorHttpHandler>();
                 break;
 
             case (CMVersion.V1, _):

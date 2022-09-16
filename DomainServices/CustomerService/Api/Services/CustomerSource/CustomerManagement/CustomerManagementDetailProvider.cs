@@ -7,7 +7,7 @@ using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
 
 [ScopedService, SelfService]
-public class CustomerManagementDetailProvider
+internal class CustomerManagementDetailProvider
 {
     private readonly ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceAbstraction _codebook;
@@ -75,7 +75,8 @@ public class CustomerManagementDetailProvider
             MaritalStatusStateId = _maritals.FirstOrDefault(t => t.RdmMaritalStatusCode == np.MaritalStatusCode)?.Id ?? 0,
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
-            IsPoliticallyExposed = customer.IsPoliticallyExposed
+            IsPoliticallyExposed = customer.IsPoliticallyExposed,
+            IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false
         };
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())

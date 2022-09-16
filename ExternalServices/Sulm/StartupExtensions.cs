@@ -10,7 +10,7 @@ public static class StartupExtensions
 {
     public static WebApplicationBuilder AddExternalServiceSulm(this WebApplicationBuilder builder)
     {
-        var configuration = builder.CreateAndCheckExternalServiceConfigurationWithServiceDiscovery<SulmConfiguration>("Sulm");
+        var configuration = builder.CreateAndCheckExternalServiceConfiguration<SulmConfiguration>("Sulm");
 
         switch (configuration.Version, configuration.ImplementationType)
         {

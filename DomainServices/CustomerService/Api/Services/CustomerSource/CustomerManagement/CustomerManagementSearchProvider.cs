@@ -7,7 +7,7 @@ using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
 
 [ScopedService, SelfService]
-public class CustomerManagementSearchProvider
+internal class CustomerManagementSearchProvider
 {
     private readonly ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceAbstraction _codebook;
@@ -37,7 +37,7 @@ public class CustomerManagementSearchProvider
                                      NaturalPerson = CreateNaturalPerson(c)
                                  };
 
-                                 FillAddressData(item, c.PrimaryAddress.Address);
+                                 FillAddressData(item, c.PrimaryAddress?.Address);
 
                                  return item;
                              });

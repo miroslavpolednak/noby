@@ -5019,7 +5019,7 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
             </remarks>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateAssesment(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateAssesmentRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.CreateAssessment(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateAssessmentRequest,System.Threading.CancellationToken)">
             <summary>
             Žádost o vyhodnocení úvěrové žádosti
             </summary>
@@ -5035,7 +5035,7 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE">https://wiki.kb.cz/display/HT/RISK+BUSINESS+CASE+SERVICE</a>
             </remarks>
         </member>
-        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.GetAssesment(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseGetAssesmentRequest,System.Threading.CancellationToken)">
+        <member name="M:DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.RiskBusinessCaseServiceController.GetAssessment(DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseGetAssessmentRequest,System.Threading.CancellationToken)">
             <summary>
             Získání výsledků vyhodnocení
             </summary>

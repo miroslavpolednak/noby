@@ -1,8 +1,7 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2;
-using DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2;
-using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+using DomainServices.OfferService.Abstraction;
+using DomainServices.SalesArrangementService.Abstraction;
+using _SA = DomainServices.SalesArrangementService.Contracts;
+using _Offer = DomainServices.OfferService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 

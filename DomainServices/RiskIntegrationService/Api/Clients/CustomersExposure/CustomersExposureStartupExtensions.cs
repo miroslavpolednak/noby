@@ -1,5 +1,6 @@
 ﻿using CIS.ExternalServicesHelpers;
 using DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure;
+using DomainServices.RiskIntegrationService.Api.Clients.CustomersExposure.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
@@ -7,9 +8,9 @@ internal static class CustomersExposureStartupExtensions
 {
     internal const string ServiceName = "C4MCustomersExposure";
 
-    public static WebApplicationBuilder AddCustomersExposure(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddCustomersExposureClient(this WebApplicationBuilder builder)
     {
-        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CustomersExposure.Configuration.CustomersExposureConfiguration>(ServiceName);
+        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<CustomersExposureConfiguration>(ServiceName);
 
         configurations.ForEach(configuration =>
         {
@@ -21,7 +22,7 @@ internal static class CustomersExposureStartupExtensions
 
                 case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
                     builder.Services
-                        .AddC4mHttpClient<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.RealCustomersExposureClient>(configuration)
+                        .AddC4mHttpClient<CustomersExposure.V1.ICustomersExposureClient, CustomersExposure.V1.RealCustomersExposureClient, CustomersExposureConfiguration>(Versions.V1.ToString())
                         .ConfigureC4mHttpMessageHandler<CustomersExposure.V1.RealCustomersExposureClient>(ServiceName);
                     break;
 

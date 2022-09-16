@@ -80,8 +80,8 @@ internal static class FomsAppBuilder
         => context.Request.Path.StartsWithSegments("/api");
 
     private static readonly Func<HttpContext, bool> _isHealthCheck = (HttpContext context) 
-        => context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);
+        => context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
 
     private static readonly Func<HttpContext, bool> _isSpaCall = (HttpContext context) 
-        => !context.Request.Path.StartsWithSegments("/api") && !context.Request.Path.StartsWithSegments("/swagger") && !context.Request.Path.StartsWithSegments(CisHealthChecks.HealthCheckEndpoint);       
+        => !context.Request.Path.StartsWithSegments("/api") && !context.Request.Path.StartsWithSegments("/swagger") && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);       
 }

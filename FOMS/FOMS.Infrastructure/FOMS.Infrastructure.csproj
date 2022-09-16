@@ -25,7 +25,6 @@
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
     <ProjectReference Include="..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
-    <ProjectReference Include="..\..\ExternalServices\Rip\ExternalServices.Rip.csproj" />
     <ProjectReference Include="..\FOMS.Core\FOMS.Core.csproj" />
   </ItemGroup>
 

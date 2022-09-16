@@ -7,24 +7,28 @@ namespace DomainServices.RiskIntegrationService.Abstraction.Services.RiskBusines
 internal class RiskBusinessCaseService
     : Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction
 {
-    public async Task<IServiceCallResult> CreateCase(RiskBusinessCaseCreateRequest request, CancellationToken cancellationToken = default)
+    public async Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default)
     {
         _logger.RequestHandlerStarted(nameof(CreateCase));
-        var result = await _service.CreateCase(request, cancellationToken: cancellationToken);
+        var result = await _service.CreateCase(new RiskBusinessCaseCreateRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            ResourceProcessId = resourceProcessId
+        }, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult<RiskBusinessCaseCreateResponse>(result);
     }
 
-    public async Task<IServiceCallResult> CreateAssesment(RiskBusinessCaseCreateAssesmentRequest request, CancellationToken cancellationToken = default)
+    public async Task<IServiceCallResult> CreateAssessment(RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(CreateAssesment));
-        var result = await _service.CreateAssesment(request, cancellationToken: cancellationToken);
+        _logger.RequestHandlerStarted(nameof(CreateAssessment));
+        var result = await _service.CreateAssessment(request, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult<LoanApplicationAssessmentResponse>(result);
     }
 
-    public async Task<IServiceCallResult> GetAssesment(RiskBusinessCaseGetAssesmentRequest request, CancellationToken cancellationToken = default)
+    public async Task<IServiceCallResult> GetAssessment(RiskBusinessCaseGetAssessmentRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(GetAssesment));
-        var result = await _service.GetAssesment(request, cancellationToken: cancellationToken);
+        _logger.RequestHandlerStarted(nameof(GetAssessment));
+        var result = await _service.GetAssessment(request, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult<LoanApplicationAssessmentResponse>(result);
     }
 

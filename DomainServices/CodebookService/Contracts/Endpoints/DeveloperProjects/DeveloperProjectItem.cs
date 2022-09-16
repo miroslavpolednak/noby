@@ -9,30 +9,24 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.DeveloperProjects
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        [JsonIgnore]
         public int DeveloperId { get; set; }
 
         [DataMember(Order = 3)]
         public string Name { get; set; }
 
         [DataMember(Order = 4)]
-        [JsonIgnore]
         public string WarningForKb { get; set; }
 
         [DataMember(Order = 5)]
-        [JsonIgnore]
         public string WarningForMp { get; set; }
 
         [DataMember(Order = 6)]
-        [JsonIgnore]
         public string Web { get; set; }
 
         [DataMember(Order = 7)]
-        [JsonIgnore]
         public int MassValuation { get; set; }
 
         [DataMember(Order = 8)]
-        [JsonIgnore]
         public string Recommandation { get; set; }
 
         [DataMember(Order = 9)]

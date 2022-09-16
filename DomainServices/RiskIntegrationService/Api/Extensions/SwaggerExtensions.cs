@@ -35,7 +35,7 @@ internal static class SwaggerExtensions
                                     Id = "basic"
                                 }
                             },
-                            new string[] {}
+                            Array.Empty<string>()
                     }
                 });
 

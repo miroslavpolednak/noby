@@ -5,6 +5,8 @@ namespace CIS.ExternalServicesHelpers.Configuration;
 public abstract class ExternalServiceBaseConfiguration
     : IExternalServiceConfiguration
 {
+    public abstract string GetVersion();
+
     public int? RequestTimeout { get; set; } = 10;
 
     public string ServiceUrl { get; set; } = "";

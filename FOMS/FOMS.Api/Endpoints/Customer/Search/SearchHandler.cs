@@ -19,15 +19,26 @@ internal class SearchHandler
         _logger.LogSerializedObject(nameof(dsRequest), dsRequest);
 
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(await _customerService.SearchCustomers(dsRequest, cancellationToken));
-        _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomersItem));
-
-        // transform
-        return new SearchResponse
+        var rawResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
+        if (rawResult is EmptyServiceCallResult)
         {
-            Rows = result.Customers.ToApiResponse(),
-            Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Customers.Count)
-        };
+            return new SearchResponse
+            {
+                Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, 0)
+            };
+        }
+        else
+        {
+            var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(rawResult);
+            _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomersItem));
+
+            // transform
+            return new SearchResponse
+            {
+                Rows = result.Customers.ToApiResponse(),
+                Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Customers.Count)
+            };
+        }
     }
 
     private static List<Paginable.MapperField> sortingMapper = new()

@@ -1,5 +1,4 @@
 ﻿using CIS.ExternalServicesHelpers.Configuration;
-using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
@@ -33,16 +32,21 @@ internal static class HttpClientFactoryExtensions
             }, logger, serviceName);
         });
 
-    public static IHttpClientBuilder AddC4mHttpClient<TClient, TImplementation>(this IServiceCollection services, IExternalServiceBasicAuthenticationConfiguration configuration)
+    public static IHttpClientBuilder AddC4mHttpClient<TClient, TImplementation, TConfiguration>(this IServiceCollection services, string version)
         where TClient : class
         where TImplementation : class, TClient
+        where TConfiguration : class, IExternalServiceBasicAuthenticationConfiguration
         => services.AddHttpClient<TClient, TImplementation>((services, client) =>
         {
+            var configuration = services
+                .GetService<List<TConfiguration>>()
+                ?.FirstOrDefault(t => t.GetVersion() == version)
+                ?? throw new CisConfigurationNotFound($"External service configuration of type {typeof(TConfiguration)} for {typeof(TClient)} version {version} not found");
+
             // service url
             client.BaseAddress = new Uri(configuration.ServiceUrl);
 
             // auth
-            var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+            client.DefaultRequestHeaders.Authorization = configuration.HttpBasicAuthenticationHeader;
         });
 }

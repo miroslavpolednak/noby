@@ -17,6 +17,7 @@ internal class DeleteCustomerHandler
         if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
             throw new CisValidationException(16053, "CustomerOnSA is in role=Debtor -> can't be deleted");
 
+        // SULM
         if (entity.Identities?.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb) ?? false)
         {
             var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);

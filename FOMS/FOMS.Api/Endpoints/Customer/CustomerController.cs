@@ -59,7 +59,7 @@ public class CustomerController : ControllerBase
     /// Identifikace klienta
     /// </summary>
     /// <remarks>
-    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null při nenalezení klienta v KB customer managementu.<br /><br />
+    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br />
     /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
     /// </remarks>
     [HttpPost("customer/identify")]
@@ -67,6 +67,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Domacnost" })]
     [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status409Conflict)]
     public async Task<Search.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
