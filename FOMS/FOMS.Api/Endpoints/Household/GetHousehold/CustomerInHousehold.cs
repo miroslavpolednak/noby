@@ -3,6 +3,8 @@
 public class CustomerInHousehold
     : Dto.BaseCustomer
 {
+    public int? MaritalStatusId { get; set; }
+
     /// <summary>
     /// Prijmy customera
     /// </summary>
