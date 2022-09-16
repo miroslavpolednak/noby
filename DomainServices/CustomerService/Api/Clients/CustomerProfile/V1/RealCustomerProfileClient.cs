@@ -33,7 +33,7 @@ internal class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICus
         }
     }
 
-    protected CustomerProfileWrapper CreateClient() => new(_httpClient.BaseAddress?.ToString(), _httpClient);
+    protected CustomerProfileWrapper CreateClient() => new(_httpClient) { BaseUrl = _httpClient.BaseAddress?.ToString() };
 
     protected override int GetApiExceptionStatusCode(ApiException<Error> ex) => ex.StatusCode;
 

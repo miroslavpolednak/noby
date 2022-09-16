@@ -1,0 +1,684 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "Identified subject service with verification in basic registry",
+    "title": "IdentifiedSubjectBrService.v1",
+    "version": "1.0.4"
+  },
+  "servers": [
+    {
+      "url": "https://cm-dev.kb.cz/be-cm/api",
+      "description": "DEV environment"
+    },
+    {
+      "url": "https://cm-fat.kb.cz/be-cm/api",
+      "description": "SIT environment"
+    },
+    {
+      "url": "https://cm-uat.kb.cz/be-cm/api",
+      "description": "UAT environment"
+    },
+    {
+      "url": "https://cm-edu.kb.cz/be-cm/api",
+      "description": "EDU environment"
+    },
+    {
+      "url": "https://cm.kb.cz/be-cm/api",
+      "description": "Production environment"
+    }
+  ],
+  "paths": {
+    "/v1/identified-subject": {
+      "post": {
+        "operationId": "createIdentifiedSubject",
+        "tags": [
+          "IdentifiedSubjectBrService.v1"
+        ],
+        "summary": "createIdentifiedSubject",
+        "description": "The operation will attempt to create an identifiable subject. Identification is still done before the creation itself. <ul> <li>If subject is identified (already in KB exists), then the new entity is not created, but a list of identifiers of identified subjects is returned. <li>If the subject is not identified, it is verified in the base registry before creation. <li>If the hardCreate parameter is set to true, the subject is created even if it is not verified in the base registry. <li>If the hardCreate parameter is set to false, the subject is not created if it is not verified in the base registry </ul>",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/IdentifiedSubject"
+        },
+        "parameters": [
+          {
+            "name": "hardCreate",
+            "in": "query",
+            "description": "flag indicating whether the subject will be created even if it is not verified in the base registry",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "$ref": "#/components/parameters/X-B3-TraceId"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Party-Identity-In-Service"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Orig-System-Identity"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Caller-System-Identity"
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateIdentifiedSubjectResponse"
+                }
+              }
+            },
+            "description": "Successful response of creation or identification. In both cases subject's IDs are returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Validation error - mostly invalid data in request is provided provided"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Authentication information is missing or is invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "You are not authorized to run this operation"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unexpected error occured"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "IdentifiedSubject": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/IdentifiedSubject"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "IdentifiedSubject": {
+        "description": "Identified subject. In order to be identifiable, an entity must meet the following criteria. <ul> <li> For party type NaturalPerson (party.legalStatus=P): <ul> <li> party.naturalPersonAttributes.firstName, party.naturalPersonAttributes.surname, party.naturalPersonAttributes.birthDate, party.naturalPersonAttributes.genderCode filled in <li> Filled with one of the combinations <ul> <li> party.naturalPersonAttributes.czechBirthNumber <li> one of the primaryAddress, contactAddress, temporaryStay, or one of the primaryEmail, primaryPhone or primaryIdentificationDocument document </ul> </ul> </ul> Other validations: <ul> <li> The completion of the contactAddress is conditional upon the completion of the primaryAddress. <li> In case the primaryAddress has a country code different from CZ, then it is necessary to fill in the temporaryStay address, which is in the territory of the Czech Republic. If the primaryAddress is with country code CZ, then the temporary residence address should be empty. <li> When completing the identificationMethod, the primaryIdentificationDocument by which the customer was identified must also be completed. <ul>",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          },
+          "primaryAddress": {
+            "$ref": "#/components/schemas/PrimaryAddress"
+          },
+          "contactAddress": {
+            "$ref": "#/components/schemas/ContactAddress"
+          },
+          "temporaryStay": {
+            "$ref": "#/components/schemas/TemporaryStayAddress"
+          },
+          "primaryIdentificationDocument": {
+            "$ref": "#/components/schemas/IdentificationDocument"
+          },
+          "customerIdentification": {
+            "$ref": "#/components/schemas/CustomerIdentification"
+          },
+          "primaryPhone": {
+            "$ref": "#/components/schemas/PrimaryPhone"
+          },
+          "primaryEmail": {
+            "$ref": "#/components/schemas/PrimaryEmail"
+          }
+        },
+        "required": [
+          "party"
+        ],
+        "type": "object"
+      },
+      "Party": {
+        "description": "A common entity for all legal statuses. Natural person data is in the naturalPersonAttributes section.",
+        "type": "object",
+        "required": [
+          "legalStatus"
+        ],
+        "properties": {
+          "legalStatus": {
+            "type": "string",
+            "description": "P - for Natural Person, E - for Entrepreneur, B - for Legal Person",
+            "enum": [
+              "P",
+              "E",
+              "B"
+            ]
+          },
+          "naturalPersonAttributes": {
+            "$ref": "#/components/schemas/NaturalPersonAttributes"
+          }
+        }
+      },
+      "NaturalPersonAttributes": {
+        "description": "Attributes for Natural Person type of party",
+        "type": "object",
+        "required": [
+          "firstName",
+          "surname",
+          "genderCode",
+          "birthDate"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title before name, CSC codebook CISTIT.C_TITUL_KBI",
+            "minLength": 1,
+            "maxLength": 15,
+            "example": "ING."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name",
+            "minLength": 1,
+            "maxLength": 50,
+            "example": "Michal"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Surname",
+            "minLength": 1,
+            "maxLength": 200,
+            "example": "Prouza"
+          },
+          "genderCode": {
+            "type": "string",
+            "description": "Gender. M - MALE, F - FEMALE",
+            "enum": [
+              "M",
+              "F"
+            ],
+            "example": "M"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of birth",
+            "example": "2000-05-22T00:00:00.000Z"
+          },
+          "czechBirthNumber": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 10,
+            "pattern": "^[0-9]{9,10}$",
+            "description": "Czech birth number",
+            "example": 7908205184
+          },
+          "citizenshipCodes": {
+            "type": "array",
+            "description": "List of customer citizenships",
+            "items": {
+              "type": "string",
+              "description": "Citizenship code - RDM codebook CB_Country",
+              "minLength": 2,
+              "maxLength": 2,
+              "example": "CZ"
+            }
+          },
+          "birthCountryCode": {
+            "type": "string",
+            "description": "Land of birth - ISO 2 character code - RDM codebook CB_Country",
+            "minLength": 2,
+            "maxLength": 2,
+            "example": "CZ"
+          },
+          "maritalStatusCode": {
+            "type": "string",
+            "description": "Marital status code, RDM codebook CB_MaritalStatus",
+            "minLength": 1,
+            "maxLength": 1,
+            "example": "M"
+          },
+          "birthPlace": {
+            "type": "string",
+            "description": "Place of birth. For example, information for Czech citizens is displayed in an ID card, i.e. Ostrava",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "Ostrava"
+          },
+          "birthName": {
+            "type": "string",
+            "description": "Birth surname",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "Prouza"
+          }
+        }
+      },
+      "IdentificationDocument": {
+        "type": "object",
+        "required": [
+          "documentNumber",
+          "typeCode",
+          "issuedBy",
+          "issuingCountryCode"
+        ],
+        "properties": {
+          "typeCode": {
+            "type": "string",
+            "description": "Type of identification document. RDM codebook CB_IdentificationDocumentType",
+            "maxLength": 2,
+            "example": "A"
+          },
+          "documentNumber": {
+            "type": "string",
+            "description": "Official number of identification document.",
+            "maxLength": 24,
+            "example": "AB 123123"
+          },
+          "issuingCountryCode": {
+            "type": "string",
+            "description": "Document issuing country - RDM codebook CB_Country",
+            "maxLength": 2,
+            "example": "CZ"
+          },
+          "issuedBy": {
+            "type": "string",
+            "description": "Identification document issuing authority",
+            "maxLength": 255,
+            "example": "Praha"
+          },
+          "issuedOn": {
+            "type": "string",
+            "format": "date",
+            "description": "When document was issued",
+            "example": "2020-05-22T00:00:00.000Z"
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date",
+            "description": "Document is valid until this date",
+            "example": "2030-05-22T00:00:00.000Z"
+          }
+        },
+        "description": "Identification document"
+      },
+      "PrimaryPhone": {
+        "description": "Customer's primary phone",
+        "properties": {
+          "phoneIDC": {
+            "type": "string",
+            "pattern": "^[+]{1}[1-9]{1}[0-9]{0,3}$",
+            "description": "Phone international destination code, i.e. +420, +1 etc.",
+            "maxLength": 5,
+            "minLength": 2,
+            "example": "+420"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "pattern": "^[0-9]{1,13}$",
+            "description": "Local part of phone number, including national destination code i.e. 777112233.",
+            "maxLength": 13,
+            "minLength": 1,
+            "example": 777569933
+          },
+          "confirmed": {
+            "type": "boolean",
+            "description": "Flag indicating that phone is confirmed by client",
+            "example": true
+          }
+        },
+        "required": [
+          "phoneIDC",
+          "phoneNumber",
+          "confirmed"
+        ],
+        "type": "object"
+      },
+      "PrimaryEmail": {
+        "description": "Customer's primary email.",
+        "properties": {
+          "emailAddress": {
+            "type": "string",
+            "description": "Email address value",
+            "maxLength": 254,
+            "example": "jefim_xaver_vyskocil@seznam.cz"
+          },
+          "confirmed": {
+            "type": "boolean",
+            "description": "Flag indicating that email is confirmed by client",
+            "example": true
+          }
+        },
+        "required": [
+          "emailAddress",
+          "confirmed"
+        ],
+        "type": "object"
+      },
+      "PrimaryAddress": {
+        "description": "For citizens of the Czech Republic, this is the address of permanent residence that appears on the ID card. For foreigners, it is an address of permanent residence abroad.",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "primaryAddressFrom": {
+            "type": "string",
+            "format": "date",
+            "description": "For natural person place of residence - date when customer starts live there",
+            "example": "2020-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "address"
+        ]
+      },
+      "ContactAddress": {
+        "description": "Contact address. Bank correspondence delivery address. If it is not filled out, correspondence is delivered to a permanent residence address. A contact address can also be entered as a P.O. BOX. You must fill in one of the address or postOfficeBox attributes on the object. If both attributes are filled in simultaneously, the operation returns an error.",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "confirmed": {
+            "type": "boolean",
+            "description": "Flag indicating that contact address is confirmed by client",
+            "example": true
+          }
+        },
+        "required": [
+          "confirmed"
+        ]
+      },
+      "TemporaryStayAddress": {
+        "description": "Temporary residence address. The address is obligatory for foreigners who do not have the Czech Republic filled in at their permanent address. Conversely, for subjects who have the Czech Republic completed in the State field for a permanent address, it is forbidden to fill in the address.",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        },
+        "required": [
+          "address"
+        ]
+      },
+      "Address": {
+        "description": "Component address. For the Czech address, it is mandatory to fill in: <ul> <li> either the houseNumber or the evidenceNumber. <li> cityDistrict - must always be filled in. We will fill in even if cityDistrict matches the city. <li> pragueDistrict - if the city is Prague, it needs to be filled in as well <li> postcode - is mandatory to fill in at all times and must be in the form of a five-digit number between 10000 - 79999 </ul> For foreign addresses, in addition to mandatory fields, it is mandatory to fill <ul> <li> houseNumber <li> street or cityDistrict </ul> For foreign address, forbidden fields: <ul> <li> evidenceNumber <li> streetNumber <li> praqueDistrict </ul> ",
+        "type": "object",
+        "required": [
+          "city",
+          "postCode",
+          "countryCode"
+        ],
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street name without a house number. The field is not mandatory for cities without an street network.",
+            "maxLength": 100,
+            "example": "Masarykova"
+          },
+          "houseNumber": {
+            "type": "string",
+            "description": "The house number. Mandatory for all foreign addresses. For Czech addresses, either the houseNumber or the evidenceNumber must be filled in.",
+            "maxLength": 16,
+            "example": 22
+          },
+          "evidenceNumber": {
+            "type": "string",
+            "description": "Evidence number. Used only for Czech addresses. The evidence number has objects that are not assigned a house number. These are, for example, chalets. Filled for foreign addresses not desirable will be treated as an error.",
+            "maxLength": 4,
+            "example": 20
+          },
+          "streetNumber": {
+            "type": "string",
+            "description": "Used only for Czech addresses. A number that helps locate a house on a given street. Filled for foreign addresses not desirable will be treated as an error.",
+            "maxLength": 4,
+            "example": "9A"
+          },
+          "cityDistrict": {
+            "type": "string",
+            "description": "City district, compulsory for Czech addresses. It is not mandatory for foreign ones, but it is desirable to fill the field for large cities, which are divided into smaller administrative units.",
+            "maxLength": 100,
+            "example": "Vinoř"
+          },
+          "pragueDistrict": {
+            "type": "string",
+            "description": "Territory of the city district in the capital Prague (Praha 1 - 10 not Praha 1 - 22). If countryCode is CZ and city is Praque, then it is compulsory to fill it in.",
+            "maxLength": 40,
+            "example": "Praha 9"
+          },
+          "deliveryDetails": {
+            "type": "string",
+            "description": "A note of delivery specifying to whom delivery is intended.",
+            "maxLength": 100,
+            "example": "Marketing department"
+          },
+          "postBox": {
+            "type": "string",
+            "description": "P.O. Box number. For Czech addresses the value is validated to a number.",
+            "maxLength": 16,
+            "example": 756
+          },
+          "city": {
+            "type": "string",
+            "description": "The city name. Only the name of the city without its parts is given, i.e. for Prague we only mention Prague and not Prague 6 or Prague Dejvice.",
+            "maxLength": 100,
+            "example": "Praha"
+          },
+          "postCode": {
+            "type": "string",
+            "description": "Post code, Postal code, ZIP code.  For czech address must be in the form of a five-digit number between 10000 - 79999",
+            "maxLength": 16,
+            "example": 19017
+          },
+          "countrySubdivision": {
+            "type": "string",
+            "description": "It is used only for foreign addresses and mainly for states which are divided into large self-governing entities. E.g. U.S., when we fill in a U.S. state like Texas, Florida. For a Czech address, filling in the field is considered an error.",
+            "maxLength": 35,
+            "example": "Texas"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Country code - two characters ISO code - CB_Country",
+            "maxLength": 2,
+            "example": "CZ"
+          },
+          "addressPointId": {
+            "type": "string",
+            "description": "Address point id. The field is completed for Czech and Slovak addresses. To obtain it, the address needs to be verified in the Register of Territorial Identification of Addresses and Properties in the Czech Republic or its equivalent in the Slovak Republic.",
+            "maxLength": 100,
+            "example": 879784564
+          }
+        }
+      },
+      "CustomerIdentification": {
+        "type": "object",
+        "description": "The customer's identification entity. Entity contains method, identificaiton date and identifying company.",
+        "required": [
+          "identificationMethodCode"
+        ],
+        "properties": {
+          "identificationMethodCode": {
+            "type": "string",
+            "description": "Code of the method of identifying the subject. Value is defined in the code list CB_IdentificationMethodType",
+            "maxLength": 2,
+            "example": "1"
+          },
+          "identificationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the subject was first identified.",
+            "example": "2020-10-10T17:32:28Z"
+          },
+          "czechIdentificationNumber": {
+            "type": "string",
+            "description": "Czech identification number of the company that made the subject identification. Value is mandatory only for specific identification method codes. See CB_IdentificationMethodType.",
+            "minLength": 1,
+            "maxLength": 30,
+            "example": "45317054"
+          }
+        }
+      },
+      "CreateIdentifiedSubjectResponse": {
+        "type": "object",
+        "description": "The responseCode determines whether the subject has been created, identified, not found in basic registry or basic registry is unavailbale.",
+        "properties": {
+          "responseCode": {
+            "description": "Response code <ul> <li> CREATED  - New subject has been created <li> IDENTIFIED - Existing subject(s) has been identified <li> NOT_FOUND_IN_BR - Subject not found in basic registry. Can only be returned if parameter hardCreate is set to false. <li> UNAVAILABLE_BR - Basic registry is unavailable. Can only be returned if parameter hardCreate is set to false. </ul>",
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "IDENTIFIED",
+              "NOT_FOUND_IN_BR",
+              "UNAVAILABLE_BR"
+            ]
+          },
+          "createdSubject": {
+            "type": "object",
+            "description": "Filled only if responseCode is equal to CREATED. Contains customerId of the newly created subject and whether the subject has been verified in the basic registry.",
+            "required": [
+              "customerId",
+              "verifiedInBr"
+            ],
+            "properties": {
+              "customerId": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "verifiedInBr": {
+                "type": "boolean"
+              }
+            }
+          },
+          "identifiedSubjects": {
+            "type": "array",
+            "description": "Filled only if responseCode is equal to IDENTIFIED. Contains a list of customerId identified subjects.",
+            "items": {
+              "type": "object",
+              "required": [
+                "customerId"
+              ],
+              "properties": {
+                "customerId": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "Http status code"
+          },
+          "category": {
+            "type": "integer",
+            "description": "Error category"
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "Error uuid"
+          },
+          "detail": {
+            "description": "Error detail"
+          }
+        },
+        "required": [
+          "httpStatusCode",
+          "category",
+          "code",
+          "message",
+          "uuid"
+        ]
+      }
+    },
+    "parameters": {
+      "X-KB-Caller-System-Identity": {
+        "name": "X-KB-Caller-System-Identity",
+        "description": "[Caller system](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-CallerSystemIdentity)",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "{\"app\":\"CM\",\"appComp\":\"cm-dch-prs-consumer\"}"
+        }
+      },
+      "X-KB-Orig-System-Identity": {
+        "name": "X-KB-Orig-System-Identity",
+        "description": "[System that as a first triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-OrigSystemIdentity)",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "{\"app\":\"CM\",\"appComp\":\"CM_FE.INT\"}"
+        }
+      },
+      "X-KB-Party-Identity-In-Service": {
+        "name": "X-KB-Party-Identity-In-Service",
+        "description": "[Human user identity that triggered the request](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-PartyIdentityInService)",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "{\"partyIdIS\":[{\"partyId\":{\"id\":\"A09FK3\",\"idScheme\":{\"code\":\"KBUID\"}},\"usg\":\"BA\"},{\"partyId\":{\"id\":\"JMARKOVA\",\"idScheme\":{\"code\":\"KBAD\"}},\"usg\":\"BA\"}]}"
+        }
+      },
+      "X-B3-TraceId": {
+        "name": "X-B3-TraceId",
+        "description": "[Trace Id](https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116#Komunika%C4%8Dn%C3%ADhlavi%C4%8Dkyverze2REST-TraceId)",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "614b21fe65a3e6cbf8507e2a3d304691"
+        }
+      }
+    }
+  }
+}

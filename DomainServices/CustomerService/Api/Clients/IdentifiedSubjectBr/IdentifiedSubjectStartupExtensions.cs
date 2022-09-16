@@ -1,16 +1,16 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CustomerService.Api.Configuration;
 
-namespace DomainServices.CustomerService.Api.Clients.CustomerProfile;
+namespace DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr;
 
-internal static class CustomerProfileStartupExtensions
+public static class IdentifiedSubjectStartupExtensions
 {
-    public static IServiceCollection AddCustomerProfileService(this IServiceCollection services, CustomerManagementConfiguration config)
+    public static IServiceCollection AddIdentifiedSubjectService(this IServiceCollection services, CustomerManagementConfiguration config)
     {
-        switch (config.CustomerProfileVersion, config.ImplementationType)
+        switch (config.IdentifiedSubjectVersion, config.ImplementationType)
         {
             case (Version.V1, ServiceImplementationTypes.Real):
-                services.AddHttpClient<V1.ICustomerProfileClient, V1.RealCustomerProfileClient>((provider, client) =>
+                services.AddHttpClient<V1.IIdentifiedSubjectClient, V1.RealIdentifiedSubjectClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
                     client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
@@ -18,7 +18,7 @@ internal static class CustomerProfileStartupExtensions
                 break;
 
             case (Version.V1, _):
-                services.AddScoped<V1.ICustomerProfileClient, V1.MockCustomerProfileClient>();
+                services.AddScoped<V1.IIdentifiedSubjectClient, V1.MockIdentifiedSubjectClient>();
                 break;
 
             default:

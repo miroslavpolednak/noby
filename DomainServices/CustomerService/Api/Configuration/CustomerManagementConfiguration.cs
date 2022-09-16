@@ -1,17 +1,20 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using CIS.ExternalServicesHelpers.Configuration;
-using DomainServices.CustomerService.Api.Clients;
 
 namespace DomainServices.CustomerService.Api.Configuration;
 
 public class CustomerManagementConfiguration : ExternalServiceBaseConfiguration
 {
-    public CMVersion Version { get; set; } = CMVersion.Unknown;
-
     public string Username { get; set; } = string.Empty;
 
     public string Password { get; set; } = string.Empty;
+
+    public Clients.CustomerManagement.Version CustomerManagementVersion { get; set; }
+
+    public Clients.CustomerProfile.Version CustomerProfileVersion { get; set; }
+
+    public Clients.IdentifiedSubjectBr.Version IdentifiedSubjectVersion { get; set; }
 
     public AuthenticationHeaderValue HttpBasicAuth
     {

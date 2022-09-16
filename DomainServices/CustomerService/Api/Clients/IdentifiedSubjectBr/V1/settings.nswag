@@ -40,7 +40,7 @@
       "useRequestAndResponseSerializationSettings": false,
       "serializeTypeInformation": false,
       "queryNullValue": "",
-      "className": "{controller}CustomerProfileWrapper",
+      "className": "{controller}IdentifiedSubjectBrWrapper",
       "operationGenerationMode": "MultipleClientsFromOperationId",
       "additionalNamespaceUsages": [],
       "additionalContractNamespaceUsages": [],
@@ -55,7 +55,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "DomainServices.CustomerService.Api.Clients.CustomerProfile.V1",
+      "namespace": "DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1",
       "requiredPropertiesMustBeDefined": false,
       "dateType": "System.DateTime",
       "jsonConverters": null,
@@ -92,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "CustomerProfileWrapper.cs",
+      "output": "IdentifiedSubjectBrWrapper.cs",
       "newLineBehavior": "Auto"
     }
   }
