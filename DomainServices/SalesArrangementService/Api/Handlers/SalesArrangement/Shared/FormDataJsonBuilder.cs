@@ -260,7 +260,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     pojisteni = i.Expenses.InsuranceExpenseAmount.ToJsonString(),
                     naklady_na_bydleni = i.Expenses.HousingExpenseAmount.ToJsonString(),
                     ostatni_vydaje = i.Expenses.OtherExpenseAmount.ToJsonString(),
-                    vyporadani_majetku = i.Data.PropertySettlementId.ToJsonString(),
+                    vyporadani_majetku = (i.Data.PropertySettlementId ?? 0).ToJsonString(),
                     manzel_pristupuje_k_dluhu = i.Data.AreBothPartnersDeptors.ToJsonString(),
                     druh_druzka = i.Data.AreCustomersPartners.ToJsonString(),
                 };
