@@ -28,7 +28,7 @@ internal class CreateIncomeHandler
             Sum = request.Request.BaseData?.Sum,
             CurrencyCode = request.Request.BaseData?.CurrencyCode,
             IncomeSource = await getIncomeSource(request.Request, cancellation),
-            ProofOfIncomeToggle = getProofOfIncomeToggle(request.Request),
+            HasProofOfIncome = getProofOfIncomeToggle(request.Request),
             IncomeTypeId = incomeType
         };
 
@@ -63,7 +63,7 @@ internal class CreateIncomeHandler
     static bool? getProofOfIncomeToggle(CreateIncomeRequest request)
         => (CustomerIncomeTypes)request.IncomeTypeId switch
         {
-            CustomerIncomeTypes.Employement => request.Employement?.ProofOfIncomeToggle,
+            CustomerIncomeTypes.Employement => request.Employement?.HasProofOfIncome,
             _ => false
         };
 

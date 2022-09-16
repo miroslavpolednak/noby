@@ -23,8 +23,8 @@ internal static class Extensions
         {
             ForeignIncomeTypeId = request.ForeignIncomeTypeId,
             Employer = request.Employer?.ToDomainServiceRequest(),
-            ProofOfIncomeToggle = request.ProofOfIncomeToggle,
-            WageDeductionToggle = request.WageDeductionToggle,
+            HasProofOfIncome = request.HasProofOfIncome,
+            HasWageDeduction = request.HasWageDeduction,
             IncomeConfirmation = request.IncomeConfirmation?.ToDomainServiceRequest(),
             Job = request.Job?.ToDomainServiceRequest(),
             WageDeduction = request.WageDeduction?.ToDomainServiceRequest()
@@ -42,7 +42,7 @@ internal static class Extensions
     public static _SA.IncomeConfirmationData ToDomainServiceRequest(this Dto.IncomeConfirmationDataDto contract)
         => new _SA.IncomeConfirmationData
         {
-            ConfirmationByCompany = contract.ConfirmationByCompany,
+            IsIssuedByExternalAccountant = contract.IsIssuedByExternalAccountant,
             ConfirmationContact = contract.ConfirmationContact ?? "",
             ConfirmationDate = contract.ConfirmationDate,
             ConfirmationPerson = contract.ConfirmationPerson ?? ""
@@ -56,8 +56,8 @@ internal static class Extensions
             CurrentWorkContractTo = contract.CurrentWorkContractTo,
             EmploymentTypeId = contract.EmploymentTypeId,
             JobDescription = contract.JobDescription ?? "",
-            JobNoticePeriod = contract.JobNoticePeriod,
-            JobTrialPeriod = contract.JobTrialPeriod,
+            IsInProbationaryPeriod = contract.IsInProbationaryPeriod,
+            IsInTrialPeriod = contract.IsInTrialPeriod,
             GrossAnnualIncome = contract.GrossAnnualIncome
         };
 

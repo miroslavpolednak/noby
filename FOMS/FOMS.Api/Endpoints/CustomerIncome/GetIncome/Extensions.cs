@@ -22,8 +22,8 @@ internal static class Extensions
         => new Dto.IncomeDataEmployement
         {
             ForeignIncomeTypeId = contract.ForeignIncomeTypeId,
-            ProofOfIncomeToggle = contract.ProofOfIncomeToggle,
-            WageDeductionToggle = contract.WageDeductionToggle,
+            HasProofOfIncome = contract.HasProofOfIncome,
+            HasWageDeduction = contract.HasWageDeduction,
             Employer = contract.Employer?.ToApiResponse(),
             IncomeConfirmation = contract.IncomeConfirmation?.ToApiResponse(),
             Job = contract.Job?.ToApiResponse(),
@@ -42,7 +42,7 @@ internal static class Extensions
     public static Dto.IncomeConfirmationDataDto ToApiResponse(this _SA.IncomeConfirmationData contract)
         => new Dto.IncomeConfirmationDataDto
         {
-            ConfirmationByCompany = contract.ConfirmationByCompany,
+            IsIssuedByExternalAccountant = contract.IsIssuedByExternalAccountant,
             ConfirmationContact = contract.ConfirmationContact,
             ConfirmationDate = contract.ConfirmationDate,
             ConfirmationPerson = contract.ConfirmationPerson
@@ -56,8 +56,8 @@ internal static class Extensions
             CurrentWorkContractTo = contract.CurrentWorkContractTo,
             EmploymentTypeId = contract.EmploymentTypeId,
             JobDescription = contract.JobDescription,
-            JobNoticePeriod = contract.JobNoticePeriod,
-            JobTrialPeriod = contract.JobTrialPeriod,
+            IsInProbationaryPeriod = contract.IsInProbationaryPeriod,
+            IsInTrialPeriod = contract.IsInTrialPeriod,
             GrossAnnualIncome = contract.GrossAnnualIncome
         };
 
