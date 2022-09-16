@@ -6,6 +6,8 @@ namespace CIS.InternalServices.NotificationService.Contracts;
 [ServiceContract(Name = "CIS.InternalServices.NotificationService")]
 public interface INotificationService
 {
-    Task<SmsPushResponse> PushSms(SmsPushRequest request, CancellationToken token);
-    Task<SmsFromTemplatePushResponse> PushSmsFromTemplate(SmsFromTemplatePushRequest request, CancellationToken token);
+    [OperationContract]
+    ValueTask<SmsPushResponse> PushSms(SmsPushRequest request, CancellationToken token);
+    [OperationContract]
+    ValueTask<SmsFromTemplatePushResponse> PushSmsFromTemplate(SmsFromTemplatePushRequest request, CancellationToken token);
 }

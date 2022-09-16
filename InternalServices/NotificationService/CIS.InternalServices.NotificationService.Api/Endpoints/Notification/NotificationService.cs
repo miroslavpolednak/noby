@@ -13,9 +13,9 @@ public class NotificationService : INotificationService
         _mediator = mediator;
     }
     
-    public async Task<SmsPushResponse> PushSms(SmsPushRequest request, CancellationToken token)
+    public async ValueTask<SmsPushResponse> PushSms(SmsPushRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
     
-    public async Task<SmsFromTemplatePushResponse> PushSmsFromTemplate(SmsFromTemplatePushRequest request, CancellationToken token)
+    public async ValueTask<SmsFromTemplatePushResponse> PushSmsFromTemplate(SmsFromTemplatePushRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 }
