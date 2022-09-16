@@ -17,7 +17,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
         public string LoanApplicationDataVersion { get; init; }
 
         public cArrangement.SalesArrangement Arrangement { get; init; }
-       
+
         public cOffer.GetMortgageOfferDetailResponse Offer { get; init; }
 
         public cCase.Case CaseData { get; init; }

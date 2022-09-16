@@ -1,7 +1,8 @@
-using DomainServices.OfferService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
-using _SA = DomainServices.SalesArrangementService.Contracts;
-using _Offer = DomainServices.OfferService.Contracts;
+using DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2;
+using DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2;
+using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -56,7 +57,7 @@ internal class GetLoanApplicationAssessmentHandler
 
             // create assesment
             var createAssesmentRequest = loanApplicationData.ToRiskBusinessCaseCreateAssesmentRequest();
-            var createAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.CreateAssesment(createAssesmentRequest, cancellationToken));
+            var createAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.CreateAssessment(createAssesmentRequest, cancellationToken));
             loanApplicationAssessmentId = createAssesmentResponse.LoanApplicationAssessmentId;
 
             // update sales arrangement (loanApplicationAssessmentId, riskSegment)
@@ -64,12 +65,12 @@ internal class GetLoanApplicationAssessmentHandler
         }
 
         // load assesment by ID
-        var getAssesmentRequest = new RiskBusinessCaseGetAssesmentRequest
+        var getAssesmentRequest = new  RiskBusinessCaseGetAssessmentRequest
         {
             LoanApplicationAssessmentId = loanApplicationAssessmentId!,
             RequestedDetails = new List<RiskBusinessCaseRequestedDetails> { RiskBusinessCaseRequestedDetails.assessmentDetail, RiskBusinessCaseRequestedDetails.householdAssessmentDetail, RiskBusinessCaseRequestedDetails.counterpartyAssessmentDetail, RiskBusinessCaseRequestedDetails.collateralRiskCharacteristics }
         };
-        var getAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.GetAssesment(getAssesmentRequest, cancellationToken));
+        var getAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.GetAssessment(getAssesmentRequest, cancellationToken));
 
         // convert to ApiResponse
         return getAssesmentResponse.ToApiResponse();

@@ -1,15 +1,22 @@
-﻿using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
+﻿using cLA = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
+using cRB = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
+using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
+
+using cArrangement = DomainServices.SalesArrangementService.Contracts;
+using cOffer = DomainServices.OfferService.Contracts;
+using cCis = CIS.Infrastructure.gRPC.CisTypes;
+using cCustomer = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 internal static class Extensions
 {
- 
+
     public static GetLoanApplicationAssessmentResponse ToApiResponse(this DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse response)
     {
         return new GetLoanApplicationAssessmentResponse
         {
-            /*Application = new()
+            Application = new()
             {
                 Limit = response.Detail?.Limit?.Limit?.Amount,
                 InstallmentLimit = response.Detail?.Limit?.InstallmentLimit?.Amount,
@@ -50,7 +57,7 @@ internal static class Extensions
                 Result = r.Result,
                 Target = r.Target,
                 Weight = r.Weight
-            }).ToList()*/
+            }).ToList()
         };
     }
 
@@ -77,10 +84,10 @@ internal static class Extensions
 
                 var MapIdentificationDocument = (cCustomer.IdentificationDocument id) => new cRS.V1.IdentificationDocumentDetail
                 {
-                   DocumentNumber = id.Number,
-                   IdentificationDocumentTypeId = id.IdentificationDocumentTypeId,
-                   IssuedOn = id.IssuedOn,
-                   ValidTo = id.ValidTo,
+                    DocumentNumber = id.Number,
+                    IdentificationDocumentTypeId = id.IdentificationDocumentTypeId,
+                    IssuedOn = id.IssuedOn,
+                    ValidTo = id.ValidTo,
                 };
 
                 var MapObligation = (cArrangement.Obligation o) => new cLA.LoanApplicationObligation
@@ -92,9 +99,11 @@ internal static class Extensions
                     InstallmentConsolidated = o.Correction.InstallmentAmountCorrection,
                 };
 
-                cLA.LoanApplicationIncome MapIncome() {
+                cLA.LoanApplicationIncome MapIncome()
+                {
 
-                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(IncomeInList iil) {
+                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(cArrangement.IncomeInList iil)
+                    {
 
                         var i = data.IncomesById[iil.IncomeId];
 
@@ -105,7 +114,8 @@ internal static class Extensions
                             EmployerName = i.Employement?.Employer?.Name,
                             //ClassficationOfEconomicActivityId
                             //JobTypeId
-                            Address = new cRS.AddressDetail {
+                            Address = new cRS.AddressDetail
+                            {
                                 //Postcode = i.Employement?.Employer?.Postcode,
                                 //City = i.Employement?.Employer?.City,
                                 CountryId = i.Employement?.Employer?.CountryId,
@@ -146,7 +156,8 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(IncomeInList? iil) {
+                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(cArrangement.IncomeInList? iil)
+                    {
 
                         if (iil == null)
                         {
@@ -154,8 +165,9 @@ internal static class Extensions
                         }
 
                         var i = data.IncomesById[iil.IncomeId];
-                        
-                        return new cLA.LoanApplicationEntrepreneurIncome {
+
+                        return new cLA.LoanApplicationEntrepreneurIncome
+                        {
                             EntrepreneurIdentificationNumber = new List<string> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                             Address = new cRS.AddressDetail
                             {
@@ -175,7 +187,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationRentIncome? MapRentIncome(IncomeInList? iil)
+                    cLA.LoanApplicationRentIncome? MapRentIncome(cArrangement.IncomeInList? iil)
                     {
 
                         if (iil == null)
@@ -196,7 +208,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationOtherIncome MapOtherIncome(IncomeInList iil)
+                    cLA.LoanApplicationOtherIncome MapOtherIncome(cArrangement.IncomeInList iil)
                     {
                         var i = data.IncomesById[iil.IncomeId];
 
@@ -232,7 +244,7 @@ internal static class Extensions
                 var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);   //TODO find by codebook ???
                 var contactEmail = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 5 && i.IsPrimary);   //TODO find by codebook ???
 
-                var addressPermanent = c.Addresses.FirstOrDefault(i => i.AddressTypeId == 1 );  // Pouze trvalá adresa, WHERE podmínka:Customer.Addresses.AddressTypeId = PERMANENT  //TODO find by codebook !!! 
+                var addressPermanent = c.Addresses.FirstOrDefault(i => i.AddressTypeId == 1);  // Pouze trvalá adresa, WHERE podmínka:Customer.Addresses.AddressTypeId = PERMANENT  //TODO find by codebook !!! 
 
                 return new cLA.LoanApplicationCustomer
                 {
@@ -279,7 +291,7 @@ internal static class Extensions
                 ChildrenUpToTenYearsCount = h.Data.ChildrenUpToTenYearsCount,
                 ChildrenOverTenYearsCount = h.Data.ChildrenOverTenYearsCount,
                 Expenses = expenses,
-                Customers = data.CustomersOnSa.Select(i=>MapCustomer(i)).ToList(),
+                Customers = data.CustomersOnSa.Select(i => MapCustomer(i)).ToList(),
             };
         }
 
@@ -331,7 +343,7 @@ internal static class Extensions
                 OwnResourcesAmount = financialResourcesOwn,
                 ForeignResourcesAmount = financialResourcesOther,
                 MarketingActions = data.Offer.AdditionalSimulationResults.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
-                Purposes = data.Offer.SimulationInputs.LoanPurposes.Select(i=> MapLoanPurpose(i)).ToList(),
+                Purposes = data.Offer.SimulationInputs.LoanPurposes.Select(i => MapLoanPurpose(i)).ToList(),
                 Collaterals = new List<cLA.LoanApplicationProductCollateral> { productCollateral },
             };
         }
@@ -372,11 +384,11 @@ internal static class Extensions
         };
     }
 
-    public static cRB.RiskBusinessCaseCreateAssesmentRequest ToRiskBusinessCaseCreateAssesmentRequest(this LoanApplicationData data)
+    public static cRB.RiskBusinessCaseCreateAssessmentRequest ToRiskBusinessCaseCreateAssesmentRequest(this LoanApplicationData data)
     {
         // https://wiki.kb.cz/pages/viewpage.action?pageId=472504461
 
-        return new cRB.RiskBusinessCaseCreateAssesmentRequest
+        return new cRB.RiskBusinessCaseCreateAssessmentRequest
         {
             SalesArrangementId = data.Arrangement.SalesArrangementId,
             RiskBusinessCaseId = data.Arrangement.RiskBusinessCaseId,
