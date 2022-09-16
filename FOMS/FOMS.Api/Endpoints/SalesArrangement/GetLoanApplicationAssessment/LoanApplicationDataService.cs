@@ -122,8 +122,8 @@ internal class LoanApplicationDataService
         var households = await GetHouseholds(arrangement.SalesArrangementId, cancellation);
         var incomesById = await GetIncomesById(customersOnSA, cancellation);
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<cCase.Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation));
-        //var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
-        Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode = null;
+        var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
+        //Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode = null;
         var user = ServiceCallResult.ResolveAndThrowIfError<cUser.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation));
         return new LoanApplicationData(arrangement, offer, user, caseInstance, households, customersOnSA, incomesById, customersByIdentityCode);
     }

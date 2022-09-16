@@ -21,84 +21,65 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 internal static class Extensions
 {
-    //https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
-
-    /*
-    public static GetLoanApplicationAssessmentResponse ToApiResponse(this LoanApplicationAssessmentResponse response)
+ 
+    public static GetLoanApplicationAssessmentResponse ToApiResponse(this DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse response)
     {
         return new GetLoanApplicationAssessmentResponse
         {
             Application = new()
             {
-                LoanApplicationLimit = response.AssessmentDetail?.LoanApplicationLimit?._LoanApplicationLimit.Value,
-                LoanApplicationInstallmentLimit = response.AssessmentDetail?.LoanApplicationLimit?.LoanApplicationInstallmentLimit?.Value,
-                RemainingAnnuityLivingAmount = response.AssessmentDetail?.LoanApplicationLimit?.RemainingAnnuityLivingAmount?.Value,
-                MonthlyIncomeAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyIncomeAmount.Value,
-                MonthlyCostsWithoutInstAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyCostsWithoutInstAmount.Value,
-                MonthlyInstallmentsInKBAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInKBAmount.Value,
-                MonthlyEntrepreneurInstallmentsInKBAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyEntrepreneurInstallmentsInKBAmount.Value,
-                MonthlyInstallmentsInMPSSAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInMPSSAmount.Value,
-                MonthlyInstallmentsInOFIAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInOFIAmount.Value,
-                MonthlyInstallmentsInCBCBAmount = response.AssessmentDetail?.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInCBCBAmount.Value,
-                CIR = response.AssessmentDetail?.LoanApplicationLimit?.Cir,
-                DTI = response.AssessmentDetail?.LoanApplicationLimit?.Dti,
-                DSTI = response.AssessmentDetail?.LoanApplicationLimit?.Dsti,
-                LTC = response.CollateralRiskCharacteristics?.Ltp,
-                LFTV = response.CollateralRiskCharacteristics?.Ltfv,
+                Limit = response.Detail?.Limit?.Limit?.Amount,
+                InstallmentLimit = response.Detail?.Limit?.InstallmentLimit?.Amount,
+                RemainingAnnuityLivingAmount = response.Detail?.Limit?.RemainingAnnuityLivingAmount?.Amount,
+                MonthlyIncome = response.Detail?.RiskCharacteristics?.MonthlyIncome?.Amount,
+                MonthlyCostsWithoutInstallments = response.Detail?.RiskCharacteristics?.MonthlyCostsWithoutInstallments?.Amount,
+                MonthlyInstallmentsInKB = response.Detail?.RiskCharacteristics?.MonthlyInstallmentsInKB?.Amount,
+                MonthlyEntrepreneurInstallmentsInKB = response.Detail?.RiskCharacteristics?.MonthlyEntrepreneurInstallmentsInKB?.Amount,
+                MonthlyInstallmentsInMPSS = response.Detail?.RiskCharacteristics?.MonthlyInstallmentsInMPSS?.Amount,
+                MonthlyInstallmentsInOFI = response.Detail?.RiskCharacteristics?.MonthlyInstallmentsInOFI?.Amount,
+                MonthlyInstallmentsInCBCB = response.Detail?.RiskCharacteristics?.MonthlyInstallmentsInCBCB?.Amount,
+                CIR = response.Detail?.Limit?.Cir,
+                DTI = response.Detail?.Limit?.Dti,
+                DSTI = response.Detail?.Limit?.Dsti,
+                LTCP = response.CollateralRiskCharacteristics?.Ltp,
+                LTFV = response.CollateralRiskCharacteristics?.Ltfv,
                 LTV = response.CollateralRiskCharacteristics?.Ltv
             },
-            Households = response.HouseholdAssessmentDetail?.Select(h => new Dto.Household
+            Households = response?.HouseholdsDetails?.Select(h => new Dto.Household
             {
                 HouseholdId = h.HouseholdId,
-                MonthlyIncomeAmount = h.AssessmentDetail.LoanApplicationRiskCharacteristics?.MonthlyIncomeAmount.Value,
-                MonthlyCostsWithoutInstAmount = h.AssessmentDetail.LoanApplicationRiskCharacteristics?.MonthlyCostsWithoutInstAmount.Value,
-                MonthlyInstallmentsInMPSSAmount = h.AssessmentDetail.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInMPSSAmount.Value,
-                MonthlyInstallmentsInOFIAmount = h.AssessmentDetail.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInOFIAmount.Value,
-                MonthlyInstallmentsInCBCBAmount = h.AssessmentDetail.LoanApplicationRiskCharacteristics?.MonthlyInstallmentsInCBCBAmount.Value,
-                CIR = h.AssessmentDetail?.LoanApplicationLimit?.Cir,
-                DTI = h.AssessmentDetail?.LoanApplicationLimit?.Dti,
-                DSTI = h.AssessmentDetail?.LoanApplicationLimit?.Dsti
+                MonthlyIncome = h.Detail?.RiskCharacteristics?.MonthlyIncome?.Amount,
+                MonthlyCostsWithoutInstallments = h.Detail?.RiskCharacteristics?.MonthlyCostsWithoutInstallments?.Amount,
+                MonthlyInstallmentsInMPSS = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInMPSS?.Amount,
+                MonthlyInstallmentsInOFI = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInOFI?.Amount,
+                MonthlyInstallmentsInCBCB = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInCBCB?.Amount,
+                CIR = h.Detail?.Limit?.Cir,
+                DTI = h.Detail?.Limit?.Dti,
+                DSTI = h.Detail?.Limit?.Dsti
             }).ToList(),
-            RiskBusinesscaseExpirationDate = response.RiskBusinesscaseExpirationDate,
-            AssessmentResult = response.AssessmentResult,
-            Reasons = response.LoanApplicationAssessmentReason?.Select(r => new Dto.AssessmentReason
+            RiskBusinesscaseExpirationDate = response!.RiskBusinessCaseExpirationDate,
+            AssessmentResult = response!.AssessmentResult,
+            Reasons = response!.Reasons?.Select(r => new Dto.AssessmentReason
             {
                 Code = r.Code,
-                Desc = r.Detail?.Desc,
+                Description = r.Description,
                 Level = r.Level,
-                Result = r.Detail?.Result,
-                Target = r.Detail?.Target,
+                Result = r.Result,
+                Target = r.Target,
                 Weight = r.Weight
             }).ToList()
-        };
-    }
-    */
-
-    public static GetLoanApplicationAssessmentResponse ToApiResponse(this DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse response)
-    {
-        //TODO:
-        return new GetLoanApplicationAssessmentResponse
-        {
-
         };
     }
 
     public static cLA.LoanApplicationSaveRequest ToLoanApplicationSaveRequest(this LoanApplicationData data)
     {
-        //TODO:
-        /*
-         "'Sales Arrangement Id' must be greater than '0'.",
-            "'Loan Application Data Version' must not be empty.",
-            "'Households' must not be empty.",
-            "'Product' must not be empty.",
-            "'Households' must not be empty." 
-         */
+        // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
 
         cLA.LoanApplicationHousehold MapHousehold(cArrangement.Household h)
         {
             cLA.LoanApplicationCustomer MapCustomer(cArrangement.CustomerOnSA cOnSA)
             {
-                var obligationTypeLoanPrincipalIds = new List<int> { 1, 2, 5 };
+                var obligationTypeLoanPrincipalIds = new List<int> { 1, 2, 5 }; // nemělo by se brát dle pole Code v číselníku ??
 
                 var MapAddress = (cCis.GrpcAddress a) => new cRS.AddressDetail
                 {
@@ -150,8 +131,7 @@ internal static class Extensions
                                 //LandRegistryNumber = i.Employement?.Employer?.LandRegistryNumber,
                             },
 
-                            //JobTitle =                // nemá to být JobDescription ???
-                            //JobDescription = i.Employement?.Job?.JobDescription,
+                            JobDescription = i.Employement?.Job?.JobDescription,
 
                             //PhoneNumber = i.Employement?.Employer?.PhoneNumber,
                             MonthlyIncomeAmount = new cRS.AmountDetail
@@ -174,12 +154,12 @@ internal static class Extensions
                             CurrentWorkContractSince = i.Employement?.Job?.CurrentWorkContractSince,
                             CurrentWorkContractTo = i.Employement?.Job?.CurrentWorkContractTo,
                             ConfirmationByCompany = (i.Employement?.IncomeConfirmation?.ConfirmationByCompany == true), // IsIssuedByExternalAccountant ... nemá být ConfirmationByCompany ???
-                            IncomeDeduction = new cLA.LoanApplicationEmploymentIncomeDeduction
+                            IncomeDeduction = i.Employement?.WageDeduction is not null ? new cLA.LoanApplicationEmploymentIncomeDeduction
                             {
-                                Execution = i.Employement?.WageDeduction?.DeductionDecision,
-                                Installments = i.Employement?.WageDeduction?.DeductionPayments,
-                                Other = i.Employement?.WageDeduction?.DeductionOther,
-                            },
+                                Execution = i.Employement.WageDeduction.DeductionDecision,
+                                Installments = i.Employement.WageDeduction.DeductionPayments,
+                                Other = i.Employement.WageDeduction.DeductionOther,
+                            } : null,
                         };
                     };
 
@@ -198,7 +178,7 @@ internal static class Extensions
                             {
                                 //Postcode = i.Employement?.Employer?.Postcode,
                                 //City = i.Employement?.Employer?.City,
-                                //CountryId = i.Employement?.Employer?.CountryOfResidenceId == true,                    //???
+                                //CountryId = i.Employement?.Employer?.CountryOfResidenceId == true,                    //??? ---
                                 //Street = i.Employement?.Employer?.Street,
                                 //BuildingIdentificationNumber = i.Employement?.Employer?.BuildingIdentificationNumber,
                                 //LandRegistryNumber = i.Employement?.Employer?.LandRegistryNumber,
@@ -263,7 +243,7 @@ internal static class Extensions
 
                 // do JSON věty jdou pouze Customers s Kb identitou // ???
                 var identityKb = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
-                var identityMp = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp); // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!  ???
+                //var identityMp = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp); // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!  ???
                 var c = data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode(identityKb)];
 
                 var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);   //TODO find by codebook ???
@@ -273,6 +253,11 @@ internal static class Extensions
 
                 return new cLA.LoanApplicationCustomer
                 {
+                    InternalCustomerId = cOnSA.CustomerOnSAId,
+                    PrimaryCustomerId = identityKb!.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    // customer !!!
+                    //IsGroupEmployee = c.NaturalPerson?.KbRelationshipCode //TRUE IF: Customer.NaturalPerson.KbRelationshipCode = A nebo Customer.NaturalPerson.KbRelationshipCode = E, V CM customerKbRelationship.code = "A" nebo "E" ??? KbRelationshipCode na žádné entitě neevidujeme
+                    //SpecialRelationsWithKB = // TRUE IF: Customer.NaturalPerson.KbRelationshipCode = R nebo Customer.NaturalPerson.KbRelationshipCode = D, V CM customerKbRelationship.code = "R" nebo "D" ???
                     BirthNumber = c.NaturalPerson?.BirthNumber,
                     CustomerRoleId = cOnSA.CustomerRoleId,
                     Firstname = c.NaturalPerson?.FirstName,
@@ -287,10 +272,10 @@ internal static class Extensions
                     MobilePhoneNumber = contactMobilePhone?.Value,
                     HasEmail = !String.IsNullOrEmpty(contactEmail?.Value),
                     IsPartner = (h.Data?.AreCustomersPartners == true),
-                    // Taxpayer =       // Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"
+                    //Taxpayer = //c.NaturalPerson.TaxResidencyCountryId      //Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"  //??? TaxResidencyCountryId na žádné entitě nemáme
                     Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),
-                    IdentificationDocument = MapIdentificationDocument(c.IdentificationDocument),
-                    Obligations = cOnSA.Obligations.Where(i => i.Creditor?.IsExternal == true).Select(i => MapObligation(i)).ToList(),
+                    IdentificationDocument = MapIdentificationDocument(c.IdentificationDocument), // WHERE podmínka: Měli bychom pracovat pouze s jedním dokladem = načítáme z CM pouze hlavní doklad klienta - objekt primaryIdentificationDocument ???
+                    Obligations = cOnSA.Obligations.Where(i => i.Creditor?.IsExternal == true).Select(i => MapObligation(i)).ToList(), //WHERE podmínka - pouze ty závazky, kde: Obligation.Creditor.IsExternal = true
                     Income = MapIncome(),
                 };
             };
@@ -307,7 +292,7 @@ internal static class Extensions
             {
                 HouseholdId = h.HouseholdTypeId,        // nemá být HouseholdId ???
                 HouseholdTypeId = h.HouseholdTypeId,
-                PropertySettlementId = h.Data.PropertySettlementId,
+                PropertySettlementId = h.Data.PropertySettlementId.HasValue ? h.Data.PropertySettlementId.Value : 0,
                 ChildrenUpToTenYearsCount = h.Data.ChildrenUpToTenYearsCount,
                 ChildrenOverTenYearsCount = h.Data.ChildrenOverTenYearsCount,
                 Expenses = expenses,
@@ -396,89 +381,32 @@ internal static class Extensions
             AppendixCode = appendixCode,
             DistributionChannelId = data.Arrangement.ChannelId,                     // DistributionChannelCode???
             //SignatureType                                                         // pro NOBY nerelevantní
-            LoanApplicationDataVersion = Guid.NewGuid().ToString(),
+            LoanApplicationDataVersion = data.LoanApplicationDataVersion,
             Households = data.Households.Select(i => MapHousehold(i)).ToList(),
             Product = MapProduct(),
-            //ProductRelations                                                      // V MVP neplníme; Objekt plníme pouze pro produkt doprodej neúčelové části
+            //ProductRelations                                                      // V MVP neplníme; Objekt plníme pouze pro produkt doprodej neúčelové části ???
             UserIdentity = MapUserIdentity(),
         };
     }
 
     public static cRB.RiskBusinessCaseCreateAssesmentRequest ToRiskBusinessCaseCreateAssesmentRequest(this LoanApplicationData data)
     {
-        //TODO:
+        // https://wiki.kb.cz/pages/viewpage.action?pageId=472504461
+
         return new cRB.RiskBusinessCaseCreateAssesmentRequest
         {
             SalesArrangementId = data.Arrangement.SalesArrangementId,
+            RiskBusinessCaseId = data.Arrangement.RiskBusinessCaseId,
+
+            // Timestamp, který jsme si uložili pro danou verzi žádosti (dat žádosti), kterou jsme předali v RIP(v2) - POST LoanApplication a tímto danou verzi požadujeme vyhodnotit:
+            LoanApplicationDataVersion = data.LoanApplicationDataVersion,
+
+            // Konstanta SC:
+            AssessmentMode = cRB.RiskBusinessCaseAssessmentModes.SC,
+
+            // Pokud uložený atribut Offer.SimulationInputs.IsEmployeeBonusRequested = true, pak poslat kód "EMP". Jinak posílat kód "STD".:
+            GrantingProcedureCode = data.Offer.SimulationInputs.IsEmployeeBonusRequested == true ? cRB.RiskBusinessCaseGrantingProcedureCodes.EMP : cRB.RiskBusinessCaseGrantingProcedureCodes.STD,
         };
     }
 
-    /*
-    public static LoanApplicationRequest ToLoanApplicationSampleRequest(this LoanApplicationData data)
-    {
-        return new LoanApplicationRequest
-        {
-            Id = new SystemId
-            {
-                Id = "38000119",
-                System = "NOBY"
-            },
-            LoanApplicationDataVersion = "2022-05-31T12:16:00.7777", //  Guid.NewGuid().ToString(),
-            LoanApplicationHousehold = new List<LoanApplicationHousehold2> {
-                new LoanApplicationHousehold2 {
-                     Id = 1,
-                     CounterParty = new List<LoanApplicationCounterParty2>{
-                         new LoanApplicationCounterParty2
-                         {
-                             Id = 1,
-                             CustomerId = "970182896",
-                             RoleCodeMp = 1
-                         }
-                     },
-            }
-            },
-            LoanApplicationProduct = new LoanApplicationProduct2
-            {
-                Product = 20001,
-                LoanType = 2000
-            },
-            HumanUser = new HumanUser
-            {
-                Identity = "10009819",
-                IdentityScheme = "DMID"
-            }
-        };
-    }
-    */
 }
-
-
-/* MIN REQ
-{
-    "id": {
-        "id": "38000119",
-        "system": "NOBY"
-    },
-    "loanApplicationDataVersion": "2022-05-31T12:16:00.626Z",
-    "loanApplicationHousehold": [
-        {
-            "id": 1,
-            "counterParty": [
-                {
-                    "id": 1,
-                    "customerId": "970182896",
-                    "roleCodeMp": 1
-                }
-            ]
-        }
-    ],
-    "loanApplicationProduct": {
-        "product": 20001,
-        "loanType": 2000
-    },
-    "humanUser": {
-        "identity": "10009819",
-        "identityScheme": "DMID"
-    }
-}
- * */

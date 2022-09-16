@@ -25,7 +25,7 @@ public class AssessmentReason
     /// <summary>
     /// Popis důvodu
     /// </summary>
-    public string? Desc { get; set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// Výsledek důvodu

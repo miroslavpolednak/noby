@@ -11,6 +11,11 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
     {
         #region Properties
 
+        /// <summary>
+        /// Tatáž verze data (timestamp), která se používá pro LoanApplicationSave a CreateAssesment:
+        /// </summary>
+        public string LoanApplicationDataVersion { get; init; }
+
         public cArrangement.SalesArrangement Arrangement { get; init; }
        
         public cOffer.GetMortgageOfferDetailResponse Offer { get; init; }
@@ -42,6 +47,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode
             )
         {
+            LoanApplicationDataVersion = Guid.NewGuid().ToString().Replace("-", "");
             Arrangement = arrangement;
             Offer = offer;
             CaseData = caseData;
