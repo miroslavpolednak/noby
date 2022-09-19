@@ -51,7 +51,7 @@ internal sealed class CreditWorthinessHouseholdService
 
         var c = new _Rip.CreditWorthinessCustomer
         {
-            InternalCustomerId = customer
+            PrimaryCustomerId = customer
                 .CustomerIdentifiers
                 .FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
                 ?.IdentityId
