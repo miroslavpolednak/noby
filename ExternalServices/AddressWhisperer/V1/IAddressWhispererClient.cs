@@ -4,7 +4,7 @@ namespace ExternalServices.AddressWhisperer.V1;
 
 public interface IAddressWhispererClient
 {
-    List<FoundSuggestion>? GetSuggestions(string sessionId, string text, int pageSize, int? countryid);
+    Task<IServiceCallResult> GetSuggestions(string sessionId, string text, int pageSize, int? countryid);
 
-    AddressDetail? GetAddressDetail(string sessionId, string addressId);
+    Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId);
 }
