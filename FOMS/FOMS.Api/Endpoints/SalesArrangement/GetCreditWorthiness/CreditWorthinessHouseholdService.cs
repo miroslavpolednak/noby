@@ -15,33 +15,33 @@ internal sealed class CreditWorthinessHouseholdService
             throw new CisValidationException("There is no household bound for this SA");
 
         return (await households.SelectAsync(async household =>
+        {
+            var h = new _Rip.CreditWorthinessHousehold
             {
-                var h = new _Rip.CreditWorthinessHousehold
+                ChildrenUpToTenYearsCount = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
+                ChildrenOverTenYearsCount = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
+                ExpensesSummary = new()
                 {
-                    ChildrenUpToTenYearsCount = household.Data.ChildrenUpToTenYearsCount.GetValueOrDefault(),
-                    ChildrenOverTenYearsCount = household.Data.ChildrenOverTenYearsCount.GetValueOrDefault(),
-                    ExpensesSummary = new()
-                    {
-                        Rent = household.Expenses?.HousingExpenseAmount,
-                        Saving = household.Expenses?.SavingExpenseAmount,
-                        Insurance = household.Expenses?.InsuranceExpenseAmount,
-                        Other = household.Expenses?.OtherExpenseAmount
-                    },
-                    Customers = new()
-                };
-                
-                // clients
-                if (household.CustomerOnSAId1.HasValue)
-                    h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, household.Data.AreCustomersPartners, cancellationToken));
-                if (household.CustomerOnSAId2.HasValue)
-                    h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, household.Data.AreCustomersPartners, cancellationToken));
+                    Rent = household.Expenses?.HousingExpenseAmount,
+                    Saving = household.Expenses?.SavingExpenseAmount,
+                    Insurance = household.Expenses?.InsuranceExpenseAmount,
+                    Other = household.Expenses?.OtherExpenseAmount
+                },
+                Customers = new()
+            };
 
-                // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
-                if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
-                    throw new CisValidationException("At least one customer in household must have some income");
+            // clients
+            if (household.CustomerOnSAId1.HasValue)
+                h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, household.Data.AreCustomersPartners, cancellationToken));
+            if (household.CustomerOnSAId2.HasValue)
+                h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, household.Data.AreCustomersPartners, cancellationToken));
 
-                return h;
-            })).ToList();
+            // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
+            if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
+                throw new CisValidationException("At least one customer in household must have some income");
+
+            return h;
+        })).ToList();
     }
 
     private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, bool? areCustomersPartners, CancellationToken cancellationToken)
@@ -56,7 +56,8 @@ internal sealed class CreditWorthinessHouseholdService
                 .FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
                 ?.IdentityId
                 .ToString(System.Globalization.CultureInfo.InvariantCulture),
-            HasPartner = areCustomersPartners.GetValueOrDefault()
+            HasPartner = areCustomersPartners.GetValueOrDefault(),
+            MaritalStateId = customer.MaritalStatusId
         };
 
         if (customer.Incomes?.Any() ?? false)

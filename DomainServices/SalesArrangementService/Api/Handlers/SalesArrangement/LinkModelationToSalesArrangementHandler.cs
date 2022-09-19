@@ -3,6 +3,7 @@ using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+using Azure.Core;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -27,20 +28,6 @@ internal class LinkModelationToSalesArrangementHandler
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Offer {request.OfferId} is already linked to another SA", 16057);
 
-        if (offerInstance.SimulationInputs.LoanKindId == 2001 || 
-            (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201)))
-        {
-            var saParameters = (await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation));
-            if (saParameters?.ParametersBin is not null)
-            {
-                var parametersModel = _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin);
-                parametersModel.LoanRealEstates.Clear();
-                saParameters.Parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parametersModel);
-                saParameters.ParametersBin = parametersModel.ToByteArray();
-                await _dbContext.SaveChangesAsync(cancellation); //ma se to ulozit hned
-            }
-        }
-
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (salesArrangementInstance.OfferId.HasValue)
         {
@@ -58,7 +45,44 @@ internal class LinkModelationToSalesArrangementHandler
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        // update parametru
+        await updateParameters(salesArrangementInstance, offerInstance, cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+
+    private async Task updateParameters(Repositories.Entities.SalesArrangement salesArrangementInstance, _Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
+    {
+        // parametry SA
+        bool hasChanged = false;
+        var saParameters = (await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementInstance.SalesArrangementId, cancellation));
+        if (saParameters is null)
+        {
+            saParameters = new Repositories.Entities.SalesArrangementParameters();
+            _dbContext.SalesArrangementsParameters.Add(saParameters);
+        }
+        var parametersModel = saParameters?.ParametersBin is not null ? _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin) : new _SA.SalesArrangementParametersMortgage();
+
+        if (offerInstance.SimulationInputs.LoanKindId == 2001 ||
+            (offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201)))
+        {
+            parametersModel.LoanRealEstates.Clear();
+            hasChanged = true;
+        }
+
+        // HFICH-2181
+        if (parametersModel.ExpectedDateOfDrawing != null || (parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1)))
+        {
+            parametersModel.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
+            hasChanged = true;
+        }
+
+        if (hasChanged)
+        {
+            saParameters!.Parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parametersModel);
+            saParameters.ParametersBin = parametersModel.ToByteArray();
+            await _dbContext.SaveChangesAsync(cancellation);
+        }
     }
 
     private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;

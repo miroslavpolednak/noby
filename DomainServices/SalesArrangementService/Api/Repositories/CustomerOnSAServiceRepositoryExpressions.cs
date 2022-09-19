@@ -15,6 +15,7 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             SalesArrangementId = t.SalesArrangementId,
             CustomerRoleId = (int)t.CustomerRoleId,
             LockedIncomeDateTime = t.LockedIncomeDateTime,
+            MaritalStatusId = t.MaritalStatusId
         };
     }
 
@@ -27,7 +28,7 @@ internal static class CustomerOnSAServiceRepositoryExpressions
             CurrencyCode = t.CurrencyCode ?? "",
             Sum = t.Sum,
             IncomeSource = t.IncomeSource ?? "",
-            ProofOfIncomeToggle = t.ProofOfIncomeToggle
+            HasProofOfIncome = t.HasProofOfIncome
         };
     }
 

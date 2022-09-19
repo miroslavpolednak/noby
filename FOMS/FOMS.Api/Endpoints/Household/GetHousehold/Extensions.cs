@@ -22,6 +22,7 @@ internal static class Extensions
             LastName = model.Name,
             DateOfBirth = model.DateOfBirthNaturalPerson,
             RoleId = model.CustomerRoleId,
+            MaritalStatusId = model.MaritalStatusId,
             LockedIncomeDateTime = model.LockedIncomeDateTime,
             Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new CustomerIncome.Dto.IncomeBaseData
             {
@@ -29,7 +30,7 @@ internal static class Extensions
                 CurrencyCode = x.CurrencyCode,
                 IncomeId = x.IncomeId,
                 IncomeSource = x.IncomeSource,
-                ProofOfIncomeToggle = x.ProofOfIncomeToggle,
+                HasProofOfIncome = x.HasProofOfIncome,
                 IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)x.IncomeTypeId
             }).ToList(),
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()

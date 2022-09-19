@@ -29,7 +29,8 @@ internal sealed class IdentifyByIdentityHandler
                 DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
                 FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
                 Name = customerInstance.NaturalPerson.LastName,
-                LockedIncomeDateTime = customerOnSaInstance.LockedIncomeDateTime
+                LockedIncomeDateTime = customerOnSaInstance.LockedIncomeDateTime,
+                MaritalStatusId = customerInstance.NaturalPerson?.MaritalStatusStateId
             }
         };
         modelToUpdate.Customer.CustomerIdentifiers.Add(request.CustomerIdentity!);
@@ -45,7 +46,7 @@ internal sealed class IdentifyByIdentityHandler
                 Identity = request.CustomerIdentity!,
                 DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
                 FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
-                Name = customerInstance.NaturalPerson.LastName
+                Name = customerInstance.NaturalPerson.LastName,
             }, cancellationToken));
 
             if (customerInstance.Identity.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)

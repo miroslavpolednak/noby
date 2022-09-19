@@ -1,7 +1,6 @@
 ﻿using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using CIS.Core;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
@@ -51,7 +50,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 ProofType = await getProofType<LoanApplicationEmploymentIncomeProofType>(t.ProofTypeId),
                 MonthlyIncomeAmount = t.MonthlyIncomeAmount is null ? null : t.MonthlyIncomeAmount!.Amount.ToAmount(),
                 ForeignEmploymentType = (await _codebookService.IncomeForeignTypes(_cancellationToken)).FirstOrDefault(x => x.Id == t.IncomeForeignTypeId)?.Code,
-                GrossAnnualIncome = t.GrossAnnualIncome.HasValue ? Convert.ToDouble(t.GrossAnnualIncome!) : null,
+                GrossAnnualIncome = t.GrossAnnualIncome.HasValue ? Convert.ToDouble(t.GrossAnnualIncome!, System.Globalization.CultureInfo.InvariantCulture) : null,
                 ProofConfirmationContactPhone = t.ConfirmationContactPhone,
                 ProofConfirmationContactSurname = t.ConfirmationPerson,
                 ProofCreatedOn = t.ConfirmationDate,

@@ -1,5 +1,6 @@
 ﻿using CIS.ExternalServicesHelpers;
 using DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase;
+using DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
@@ -9,7 +10,7 @@ internal static class RiskBusinessCaseStartupExtensions
 
     public static WebApplicationBuilder AddRiskBusinessCaseClient(this WebApplicationBuilder builder)
     {
-        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskBusinessCase.Configuration.RiskBusinessCaseConfiguration>(ServiceName);
+        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskBusinessCaseConfiguration>(ServiceName);
 
         foreach (var configuration in configurations)
         {
@@ -20,7 +21,7 @@ internal static class RiskBusinessCaseStartupExtensions
                         builder.Services.AddScoped<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.MockRiskBusinessCaseClient>();
                     else
                         builder.Services
-                            .AddC4mHttpClient<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(configuration)
+                            .AddC4mHttpClient<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.RealRiskBusinessCaseClient, RiskBusinessCaseConfiguration>(Versions.V0_2.ToString())
                             .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(ServiceName);
                     break;
 
@@ -29,7 +30,7 @@ internal static class RiskBusinessCaseStartupExtensions
                         builder.Services.AddScoped<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
                     else
                         builder.Services
-                            .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient>(configuration)
+                            .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient, RiskBusinessCaseConfiguration>(Versions.V1.ToString())
                             .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName);
                     break;
 

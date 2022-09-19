@@ -73,6 +73,7 @@ internal class UpdateCustomersHandler
                     CustomerRoleId = (int)customerRole,
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken));
+
                 newMpId = createResult.PartnerId;
                 customerId = createResult.CustomerOnSAId;
             }

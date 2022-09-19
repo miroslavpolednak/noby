@@ -33,7 +33,7 @@ internal sealed class SaveRequestMapper
 
         var requestModel = new _C4M.LoanApplication
         {
-            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
+            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)),
             AppendixCode = request.AppendixCode,
             DistributionChannelCode = Helpers.GetEnumFromString<_C4M.LoanApplicationDistributionChannelCode>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, LoanApplicationDistributionChannelCode.BR),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
