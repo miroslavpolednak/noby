@@ -33,7 +33,7 @@ internal class DeleteHouseholdHandler
     {
         _dbContext.Customers.Remove(await _dbContext.Customers.FirstAsync(t => t.CustomerOnSAId == customerOnSAId, cancellation));
 
-        var identities = await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={customerOnSAId};DELETE FROM CustomerOnSAIncome WHERE CustomerOnSAId={customerOnSAId};DELETE FROM dbo.CustomerOnSAObligationWHERE CustomerOnSAId={customerOnSAId}", cancellation);
+        var identities = await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={customerOnSAId};DELETE FROM CustomerOnSAIncome WHERE CustomerOnSAId={customerOnSAId};DELETE FROM dbo.CustomerOnSAObligation WHERE CustomerOnSAId={customerOnSAId}", cancellation);
     }
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
