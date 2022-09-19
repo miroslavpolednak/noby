@@ -35,7 +35,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
                 EmployerIdentificationNumber = t.EmployerIdentificationNumber,
                 EmployerType = t.WorkSectorId,
                 EmployerName = t.EmployerName,
-                Nace = t.ClassficationOfEconomicActivityId,
+                Nace = t.ClassificationOfEconomicActivityId,
                 Profession = t.JobTypeId,
                 Street = t.Address?.Street,
                 HouseNumber = t.Address?.BuildingIdentificationNumber,
@@ -74,7 +74,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         return new _C4M.LoanApplicationEntrepreneurIncome
         {
             EntrepreneurIdentificationNumber = income.EntrepreneurIdentificationNumber,
-            Nace = income.ClassficationOfEconomicActivityId,
+            Nace = income.ClassificationOfEconomicActivityId,
             Profession = income.JobTypeId,
             Street = income.Address?.Street,
             HouseNumber = income.Address?.BuildingIdentificationNumber,
