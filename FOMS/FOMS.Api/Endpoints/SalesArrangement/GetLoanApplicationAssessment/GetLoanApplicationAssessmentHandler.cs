@@ -47,6 +47,11 @@ internal class GetLoanApplicationAssessmentHandler
         // create new assesment, if required
         if (request.NewAssessmentRequired)
         {
+            if (String.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
+            {
+                throw new CisValidationException(99999, $"SalesArrangement.RiskBusinessCaseId not defined."); //TODO: error code
+            }
+
             // load data
             var loanApplicationData = await _loanApplicationDataService.LoadData(request.SalesArrangementId, cancellationToken);
 
