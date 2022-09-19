@@ -32,7 +32,7 @@ public class PushSmsFromTemplateRequestValidator : AbstractValidator<SmsFromTemp
             .WithErrorCode(nameof(SmsFromTemplatePushRequest.Type));
         
         RuleFor(request => request.Placeholders)
-            .NotEmpty()
+            .NotNull()
             .WithErrorCode(nameof(SmsFromTemplatePushRequest.Placeholders));
     }
 }

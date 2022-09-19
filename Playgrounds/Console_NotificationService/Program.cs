@@ -9,7 +9,7 @@ using ProtoBuf.Grpc.Client;
 Console.WriteLine("run!");
 
 using var channel = GrpcChannel.ForAddress(
-    "https://localhost:5004",
+    "https://localhost:5003",
     new GrpcChannelOptions
     {
         HttpHandler = new HttpClientHandler
@@ -22,7 +22,7 @@ var client = channel.CreateGrpcService<INotificationService>();
 var token = CancellationToken.None;
 var text = "Text";
 var type = "Type";
-var priority = 1;
+var priority = 5;
 
 var phone = new Phone
 {
@@ -46,7 +46,10 @@ var smsFromTemplatePushRequest = new SmsFromTemplatePushRequest
     Phone = phone,
     Type = type,
     ProcessingPriority = priority,
-    Placeholders = new Dictionary<string, object>(),
+    Placeholders = new List<StringKeyValuePair>()
+    {
+        new () { Key = "a", Value = "b"}
+    },
 };
 
 var smsFromTemplatePushResponse = await client.PushSmsFromTemplate(smsFromTemplatePushRequest, token);
