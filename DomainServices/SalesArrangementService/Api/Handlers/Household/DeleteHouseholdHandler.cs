@@ -32,9 +32,8 @@ internal class DeleteHouseholdHandler
     async Task removeCustomer(int customerOnSAId, CancellationToken cancellation)
     {
         _dbContext.Customers.Remove(await _dbContext.Customers.FirstAsync(t => t.CustomerOnSAId == customerOnSAId, cancellation));
-        _dbContext.CustomersIdentities.RemoveRange(await _dbContext.CustomersIdentities.Where(t => t.CustomerOnSAId == customerOnSAId).FirstAsync(cancellation));
-        _dbContext.CustomersObligations.RemoveRange(await _dbContext.CustomersObligations.Where(t => t.CustomerOnSAId == customerOnSAId).FirstAsync(cancellation));
-        _dbContext.CustomersIncomes.RemoveRange(await _dbContext.CustomersIncomes.Where(t => t.CustomerOnSAId == customerOnSAId).FirstAsync(cancellation));
+
+        var identities = await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={customerOnSAId};DELETE FROM CustomerOnSAIncome WHERE CustomerOnSAId={customerOnSAId};DELETE FROM dbo.CustomerOnSAObligationWHERE CustomerOnSAId={customerOnSAId}", cancellation);
     }
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
