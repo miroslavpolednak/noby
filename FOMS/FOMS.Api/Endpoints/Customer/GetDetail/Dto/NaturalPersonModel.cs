@@ -39,7 +39,7 @@ public class NaturalPersonModel
     /// </summary>
     public CIS.Foms.Enums.Genders Gender { get; set; }
 
-    public int? MaritalStatusStateId { get; set; }
+    public int? MaritalStatusId { get; set; }
 
     /// <summary>
     /// Státní příslušnost/občanství

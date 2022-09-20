@@ -13,7 +13,7 @@ public static class IdentifiedSubjectStartupExtensions
                 services.AddHttpClient<V1.IIdentifiedSubjectClient, V1.RealIdentifiedSubjectClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
-                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
+                    client.DefaultRequestHeaders.Authorization = config.HttpBasicAuthenticationHeader;
                 }).ConfigurePrimaryHttpMessageHandler<CustomerManagementHttpHandler<V1.RealIdentifiedSubjectClient>>();
                 break;
 

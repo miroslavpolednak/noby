@@ -76,7 +76,7 @@ internal sealed class DtiRequestMapper
         {
             CustomerId = new()
             {
-                Id = customer.InternalCustomerId,
+                Id = customer.PrimaryCustomerId,
                 Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
             },
             MonthlyEmploymentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 1).Sum(t => t.Amount) ?? 0).ToAmount(),

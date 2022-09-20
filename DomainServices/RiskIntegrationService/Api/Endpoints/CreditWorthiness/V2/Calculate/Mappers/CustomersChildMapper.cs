@@ -33,9 +33,9 @@ internal sealed class CustomersChildMapper
             // Id, IsPartner
             return new _C4M.LoanApplicationCounterParty
             {
-                Id = string.IsNullOrEmpty(t.InternalCustomerId) ? null : new _C4M.ResourceIdentifier
+                Id = string.IsNullOrEmpty(t.PrimaryCustomerId) ? null : new _C4M.ResourceIdentifier
                 {
-                    Id = t.InternalCustomerId,
+                    Id = t.PrimaryCustomerId,
                     Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
                 },
                 IsPartner = t.HasPartner ? 1 : 0,

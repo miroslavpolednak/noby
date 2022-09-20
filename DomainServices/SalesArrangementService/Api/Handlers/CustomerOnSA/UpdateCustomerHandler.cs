@@ -1,9 +1,5 @@
-﻿using DomainServices.CustomerService.Abstraction;
-using _Customer = DomainServices.CustomerService.Contracts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using DomainServices.CaseService.Abstraction;
-using ExternalServices.Sulm.V1;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.CustomerOnSA;
 
@@ -64,6 +60,11 @@ internal class UpdateCustomerHandler
         else if (!alreadyKbUpdatedCustomer && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb))
         {
             await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellation);
+        }
+        // customer zije zatim jen v NOBY, mohu updatovat maritalState
+        else if (!alreadyKbUpdatedCustomer)
+        {
+            entity.MaritalStatusId = request.Request.Customer.MaritalStatusId;
         }
 
         // update CustomerOnSA

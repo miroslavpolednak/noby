@@ -13,7 +13,7 @@ public class LoanApplicationEmploymentIncome
     public string? EmployerName { get; set; }
 
     [ProtoMember(4)]
-    public int? ClassficationOfEconomicActivityId { get; set; }
+    public int? ClassificationOfEconomicActivityId { get; set; }
 
     [ProtoMember(5)]
     public int? JobTypeId { get; set; }

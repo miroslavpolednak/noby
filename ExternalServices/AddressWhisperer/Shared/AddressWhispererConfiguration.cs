@@ -1,6 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.Configuration;
+﻿namespace ExternalServices.AddressWhisperer.Shared;
 
-internal sealed class RiskBusinessCaseConfiguration
+public sealed class AddressWhispererConfiguration
     : CIS.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration
 {
     public override string GetVersion() => this.Version.ToString();

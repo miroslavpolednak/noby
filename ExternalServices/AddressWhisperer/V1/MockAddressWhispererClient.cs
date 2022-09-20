@@ -5,13 +5,20 @@ namespace ExternalServices.AddressWhisperer.V1;
 internal sealed class MockAddressWhispererClient
     : IAddressWhispererClient
 {
-    public AddressDetail? GetAddressDetail(string sessionId, string addressId)
+    public Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId)
     {
-        throw new NotImplementedException();
+        return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult<AddressDetail>(new AddressDetail
+        {
+            Street = "Moje ulice",
+            City = "Praha"
+        }));
     }
 
-    public List<FoundSuggestion>? GetSuggestions(string sessionId, string text, int pageSize, int? countryid)
+    public Task<IServiceCallResult> GetSuggestions(string sessionId, string text, int pageSize, int? countryid)
     {
-        throw new NotImplementedException();
+        return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult<List<FoundSuggestion>>(new List<FoundSuggestion>
+        {
+            new FoundSuggestion { AddressId = "1", Title = "Moje ulice, Praha" }
+        }));
     }
 }

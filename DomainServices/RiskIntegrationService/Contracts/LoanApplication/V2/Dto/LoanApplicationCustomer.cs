@@ -74,6 +74,4 @@ public class LoanApplicationCustomer
 
     [ProtoMember(24)]
     public List<LoanApplicationObligation>? Obligations { get; set; }
-
-    public List<LoanApplicationEmploymentIncomeDeduction>? IncomeDeductions { get; set; }
 }

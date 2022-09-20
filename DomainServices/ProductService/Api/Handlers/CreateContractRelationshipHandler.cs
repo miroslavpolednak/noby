@@ -47,10 +47,14 @@ internal class CreateContractRelationshipHandler
         // get codebook RelationshipCustomerProductTypeItem item
         var relationshipTypeItem = await GetContractRelationshipType(request.Request.Relationship.ContractRelationshipTypeId);
 
+        // get MpHome.ContractRelationshipType by MpDigiApiCode
+        if (!Enum.TryParse(relationshipTypeItem.MpDigiApiCode, out ContractRelationshipType type))
+            throw new CisArgumentException(1, $"Value of RelationshipCustomerProductType.MpDigiApiCode [{relationshipTypeItem.MpDigiApiCode}] can´t be converted to MpHome.ContractRelationshipType", nameof(RelationshipCustomerProductTypeItem));
+
         // create request
         var loanLinkRequest = new LoanLinkRequest
         {
-            Type = (ContractRelationshipType)relationshipTypeItem.MpHomeContractRelationshipType
+            Type = type
         };
 
         // call endpoint
@@ -74,5 +78,4 @@ internal class CreateContractRelationshipHandler
 
         return item;
     }
-
 }

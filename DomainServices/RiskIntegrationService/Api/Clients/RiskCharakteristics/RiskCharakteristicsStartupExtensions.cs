@@ -1,5 +1,6 @@
 ﻿using CIS.ExternalServicesHelpers;
 using DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics;
+using DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 
@@ -9,7 +10,7 @@ internal static class RiskCharakteristicsStartupExtensions
 
     public static WebApplicationBuilder AddRiskCharakteristicsClient(this WebApplicationBuilder builder)
     {
-        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskCharakteristics.Configuration.RiskCharakteristicsConfiguration>(ServiceName);
+        var configurations = builder.CreateAndCheckExternalServiceConfigurationsList<RiskCharakteristicsConfiguration>(ServiceName);
 
         configurations.ForEach(configuration =>
         {
@@ -21,7 +22,7 @@ internal static class RiskCharakteristicsStartupExtensions
 
                 case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
                     builder.Services
-                        .AddC4mHttpClient<RiskCharakteristics.V1.IRiskCharakteristicsClient, RiskCharakteristics.V1.RealRiskCharakteristicsClient>(configuration)
+                        .AddC4mHttpClient<RiskCharakteristics.V1.IRiskCharakteristicsClient, RiskCharakteristics.V1.RealRiskCharakteristicsClient, RiskCharakteristicsConfiguration>(Versions.V1.ToString())
                         .ConfigureC4mHttpMessageHandler<LoanApplication.V1.RealLoanApplicationClient>(ServiceName);
                     break;
 

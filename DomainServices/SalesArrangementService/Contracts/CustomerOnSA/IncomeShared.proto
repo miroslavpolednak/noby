@@ -22,8 +22,8 @@ message EmployerData {
 message JobData {
     cis.types.NullableGrpcDecimal GrossAnnualIncome = 1;
     string JobDescription = 2;
-    bool JobNoticePeriod = 3;
-    bool JobTrialPeriod = 4;
+    bool IsInProbationaryPeriod = 3;
+    bool IsInTrialPeriod = 4;
     google.protobuf.Int32Value EmploymentTypeId = 5;
     cis.types.NullableGrpcDate CurrentWorkContractSince = 6;
     cis.types.NullableGrpcDate CurrentWorkContractTo = 7;
@@ -37,7 +37,7 @@ message WageDeductionData {
 }
 
 message IncomeConfirmationData {
-    bool ConfirmationByCompany = 1;
+    bool IsIssuedByExternalAccountant = 1;
     cis.types.NullableGrpcDate ConfirmationDate = 2;
     string ConfirmationPerson = 3;
     string ConfirmationContact = 4;
@@ -45,10 +45,10 @@ message IncomeConfirmationData {
 
 message IncomeDataEmployement {
     google.protobuf.Int32Value ForeignIncomeTypeId = 2;
-    bool ProofOfIncomeToggle = 3;
+    bool HasProofOfIncome = 3;
     DomainServices.SalesArrangementService.EmployerData Employer = 4;
     DomainServices.SalesArrangementService.JobData Job = 5;
-    bool WageDeductionToggle = 6;
+    bool HasWageDeduction = 6;
     DomainServices.SalesArrangementService.WageDeductionData WageDeduction = 7;
     DomainServices.SalesArrangementService.IncomeConfirmationData IncomeConfirmation = 8;
 }
@@ -64,5 +64,4 @@ message IncomeDataEntrepreneur {
 }
 
 message IncomeDataRent {
-    google.protobuf.Int32Value x = 1;
 }

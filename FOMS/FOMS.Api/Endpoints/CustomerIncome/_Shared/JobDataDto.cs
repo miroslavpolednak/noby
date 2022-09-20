@@ -4,8 +4,8 @@ public class JobDataDto
 {
     public decimal? GrossAnnualIncome  { get; set; }
     public string? JobDescription { get; set; }
-    public bool JobNoticePeriod { get; set; }
-    public bool JobTrialPeriod { get; set; }
+    public bool IsInProbationaryPeriod { get; set; }
+    public bool IsInTrialPeriod { get; set; }
     public int? EmploymentTypeId { get; set; }
     public DateTime? CurrentWorkContractSince { get; set; }
     public DateTime? CurrentWorkContractTo { get; set; }
