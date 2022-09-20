@@ -34,6 +34,8 @@ builder.AddCisServiceAuthentication();
 // add storage services
 builder.AddCustomerService();
 
+builder.AddExternalServiceMpHome();
+
 builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<GenericServerExceptionInterceptor>();

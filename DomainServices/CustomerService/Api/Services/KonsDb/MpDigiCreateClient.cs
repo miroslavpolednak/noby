@@ -13,6 +13,7 @@ using IdentificationDocument = ExternalServices.MpHome.V1._1.MpHomeWrapper.Ident
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
 
+[ScopedService, SelfService]
 public class MpDigiCreateClient
 {
     private readonly IMpHomeClient _mpHomeClient;
