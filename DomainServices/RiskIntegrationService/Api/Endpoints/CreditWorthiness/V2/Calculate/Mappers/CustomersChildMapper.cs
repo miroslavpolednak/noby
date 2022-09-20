@@ -37,6 +37,8 @@ internal sealed class CustomersChildMapper
                 {
                     Id = t.PrimaryCustomerId,
                     Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
+                    Domain = "CM",
+                    Resource = "Customer"
                 },
                 IsPartner = t.HasPartner ? 1 : 0,
                 MaritalStatus = maritalStatus,

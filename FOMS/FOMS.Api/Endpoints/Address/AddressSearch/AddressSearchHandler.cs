@@ -5,7 +5,12 @@ internal sealed class AddressSearchHandler
 {
     public async Task<AddressSearchResponse> Handle(AddressSearchRequest request, CancellationToken cancellationToken)
     {
-        var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, request.CountryId);
+        // zeme z ciselniku
+        string? country = null;
+        if (request.CountryId.GetValueOrDefault() > 0)
+            country = (await _codebookService.Countries(cancellationToken)).FirstOrDefault(t => t.Id == request.CountryId)?.ShortName;
+
+        var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, country, cancellationToken);
 
         return result switch
         {
@@ -19,16 +24,18 @@ internal sealed class AddressSearchHandler
                 }).ToList()
             },
             
-            EmptyResult => new AddressSearchResponse { PageSize = request.PageSize },
+            EmptyServiceCallResult => new AddressSearchResponse { PageSize = request.PageSize },
             
             _ => throw new NotImplementedException("AddressSearchHandler result not implemented")
         };
     }
 
     private ExternalServices.AddressWhisperer.V1.IAddressWhispererClient _addressWhispererClient;
+    private DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 
-    public AddressSearchHandler(ExternalServices.AddressWhisperer.V1.IAddressWhispererClient addressWhispererClient)
+    public AddressSearchHandler(ExternalServices.AddressWhisperer.V1.IAddressWhispererClient addressWhispererClient, DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
         _addressWhispererClient = addressWhispererClient;
+        _codebookService = codebookService;
     }
 }

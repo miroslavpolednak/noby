@@ -1,9 +1,9 @@
-﻿namespace ExternalServices.AddressWhisperer.Shared;
+﻿namespace ExternalServices.AddressWhisperer;
 
 public sealed class AddressWhispererConfiguration
     : CIS.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration
 {
-    public override string GetVersion() => this.Version.ToString();
+    public override string GetVersion() => Version.ToString();
 
     public Versions Version { get; set; } = Versions.Unknown;
 }
