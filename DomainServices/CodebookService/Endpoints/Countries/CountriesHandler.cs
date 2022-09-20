@@ -20,7 +20,7 @@ namespace DomainServices.CodebookService.Endpoints.Countries
             }
         }
 
-        const string _sqlQuery = "SELECT KOD 'Id', SKRATKA 'ShortName', TEXT 'Name', TEXT_CELY 'LongName', DEF 'IsDefault', RIZIKOVOST 'Risk', CLEN_EU 'EuMember', EUROZONA 'Eurozone' FROM [SBR].[CIS_STATY] ORDER BY KOD ASC";
+        const string _sqlQuery = "SELECT KOD 'Id', SKRATKA 'ShortName', TEXT 'Name', TEXT_CELY 'LongName', DEF 'IsDefault', RIZIKOVOST 'Risk', CLEN_EU 'EuMember', EUROZONA 'Eurozone' FROM [SBR].[CIS_STATY] WHERE KOD != -1 ORDER BY KOD ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<CountriesHandler> _logger;

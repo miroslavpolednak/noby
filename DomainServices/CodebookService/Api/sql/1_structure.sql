@@ -51,15 +51,35 @@ BEGIN
 	(20010, 'KBAmericanMortgage', 7);
 END
 
-
+-- table 'RelationshipCustomerProductTypeExtension'
+DROP TABLE IF EXISTS [dbo].[RelationshipCustomerProductTypeExtension];
 CREATE TABLE [dbo].[RelationshipCustomerProductTypeExtension](
     [RelationshipCustomerProductTypeId] [int] NOT NULL,
-    [MpHomeApiContractRelationshipType] [varchar](50) NOT NULL,
+    [RdmCode] [varchar](50) NULL,
+	[MpDigiApiCode] [varchar](50) NULL,
+	[NameNoby] [varchar](50) NULL,
     CONSTRAINT [PK_RelationshipCustomerProductTypeExtension] PRIMARY KEY CLUSTERED
     (
     [RelationshipCustomerProductTypeId] ASC
      )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+INSERT INTO [dbo].[RelationshipCustomerProductTypeExtension]([RelationshipCustomerProductTypeId],[RdmCode],[MpDigiApiCode],[NameNoby])
+    VALUES
+    (0, null, 'NotSpecified', 'nezadán'),
+	(1, 'A', 'Owner', 'Hlavní dlužník'),
+	(2, 'S', 'CoDebtor', 'Spoludlužník'),
+	(3, null, 'Accessor', 'Přistupitel'),
+	(4, null, 'HusbandOrWife', 'Manžel-ka'),
+	(5, null, 'LegalRepresentative', 'Zákonný zástupce'),
+	(6, null, 'CollisionGuardian', 'Kolizní opatrovník'),
+	(7, null, 'Guardian', 'Opatrovník'),
+	(8, 'R', 'Guarantor', 'Ručitel'),
+	(9, null, 'GuarantorHusbandOrWife', 'Manžel-ka ručitele'),
+	(11, null, 'Intermediary', 'Sprostředkovatel'),
+	(12, null, 'ManagingDirector', 'Jednatel'),
+	(13, null, 'Child', 'Dítě');
 GO
 
 -- table 'WorkflowTaskTypeExtension'
@@ -107,6 +127,27 @@ BEGIN
 	(0, 1),
 	(30, 1);
 END
+
+
+-- table 'ContactTypeExtension'
+DROP TABLE IF EXISTS [dbo].[ContactTypeExtension];
+CREATE TABLE [dbo].[ContactTypeExtension](
+    [ContactTypeId] [int] NOT NULL,
+	[MpDigiApiCode] [varchar](50) NULL,
+    CONSTRAINT [PK_ContactTypeExtension] PRIMARY KEY CLUSTERED
+    (
+    [ContactTypeId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+INSERT INTO [dbo].[ContactTypeExtension]([ContactTypeId],[MpDigiApiCode])
+    VALUES
+    (1, 'Mobile'),
+	(2, 'BusinessMobile'),
+	(3, 'FixedHomeLine'),
+	(5, 'Email');
+GO
 
 
 /*
