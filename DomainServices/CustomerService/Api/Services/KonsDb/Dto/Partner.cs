@@ -82,5 +82,5 @@ public record Partner
     [Column("VypisyMisto")]
     public string? MailingCity { get; init; }
 
-    public ICollection<PartnerContact> Contacts { get; } = new List<PartnerContact>();
+    public ICollection<PartnerContact> Contacts { get; set; } = new List<PartnerContact>();
 }

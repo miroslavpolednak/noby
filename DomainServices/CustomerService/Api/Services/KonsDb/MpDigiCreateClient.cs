@@ -8,6 +8,7 @@ using Dapper;
 using DomainServices.CodebookService.Abstraction;
 using ExternalServices.MpHome.V1._1;
 using ExternalServices.MpHome.V1._1.MpHomeWrapper;
+using FastEnumUtility;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 using IdentificationDocument = ExternalServices.MpHome.V1._1.MpHomeWrapper.IdentificationDocument;
 
@@ -75,7 +76,7 @@ public class MpDigiCreateClient
         string? citizenship = null;
 
         if (request.NaturalPerson.CitizenshipCountriesId.Any())
-            citizenship = _countries.FirstOrDefault(c => c.Id == request.NaturalPerson.CitizenshipCountriesId.First())?.ShortName;
+            citizenship = _countries.First(c => c.Id == request.NaturalPerson.CitizenshipCountriesId.First()).ShortName;
 
         var partnerRequest = new PartnerRequest
         {
@@ -98,7 +99,7 @@ public class MpDigiCreateClient
             }).ToList(),
             Contacts = request.Contacts.Select(c => new ContactRequest
             {
-                Type = 0,
+                Type = FastEnum.Parse<ContactType>(_contactTypes.First(x => x.Id == c.ContactTypeId).MpDigiApiCode),
                 Primary = true,
                 Value = c.Value
             }).ToList()
@@ -116,7 +117,7 @@ public class MpDigiCreateClient
         request.IdentificationDocuments.Add(new IdentificationDocument
         {
             Number = document.Number,
-            Type = IdentificationCardType.IDCard,
+            Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
             ValidTo = document.ValidTo,
             IssuedBy = document.IssuedBy,
             IssuedOn = document.IssuedOn,

@@ -40,7 +40,7 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
 //var search = await service.SearchCustomers(new SearchCustomersRequest
 //{
-//    Mandant = Mandants.Kb,
+//    Mandant = Mandants.Mp,
 //    NaturalPerson = new NaturalPersonSearch
 //    {
 //        LastName = "Novák",
@@ -48,7 +48,12 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 //    }
 //});
 
-var test = await service.GetCustomerList(new Identity[] { new(951011020, IdentitySchemes.Kb) });
+//var test = await service.GetCustomerList(new Identity[]
+//{
+//    new(951011020, IdentitySchemes.Kb),
+//    new(123, IdentitySchemes.Kb),
+//    new(134, IdentitySchemes.Mp)
+//});
 
 //var test = await service.ProfileCheck(new ProfileCheckRequest
 //{
@@ -56,6 +61,6 @@ var test = await service.GetCustomerList(new Identity[] { new(951011020, Identit
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-//var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 Console.ReadKey();

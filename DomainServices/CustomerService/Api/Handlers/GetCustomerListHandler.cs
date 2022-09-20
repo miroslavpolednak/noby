@@ -7,14 +7,14 @@ namespace DomainServices.CustomerService.Api.Handlers;
 
 internal class GetCustomerListHandler : IRequestHandler<GetCustomerListMediatrRequest, CustomerListResponse>
 {
-    private readonly CustomerManagementListProvider _cmListProvider;
-    private readonly KonsDbListProvider _konsDbListProvider;
+    private readonly CustomerManagementDetailProvider _cmDetailProvider;
+    private readonly KonsDbDetailProvider _konsDbDetailProvider;
     private readonly ILogger<GetCustomerListHandler> _logger;
 
-    public GetCustomerListHandler(CustomerManagementListProvider cmListProvider, KonsDbListProvider konsDbListProvider, ILogger<GetCustomerListHandler> logger)
+    public GetCustomerListHandler(CustomerManagementDetailProvider cmDetailProvider, KonsDbDetailProvider konsDbDetailProvider, ILogger<GetCustomerListHandler> logger)
     {
-        _cmListProvider = cmListProvider;
-        _konsDbListProvider = konsDbListProvider;
+        _cmDetailProvider = cmDetailProvider;
+        _konsDbDetailProvider = konsDbDetailProvider;
         _logger = logger;
     }
 
@@ -36,23 +36,23 @@ internal class GetCustomerListHandler : IRequestHandler<GetCustomerListMediatrRe
         return response;
     }
 
-    private async Task<IEnumerable<CustomerListItem>> GetCMCustomers(IEnumerable<long> customerIds, CancellationToken cancellationToken)
+    private async Task<IEnumerable<CustomerDetailResponse>> GetCMCustomers(IEnumerable<long> customerIds, CancellationToken cancellationToken)
     {
         if (!customerIds.Any())
-            return Enumerable.Empty<CustomerListItem>();
+            return Enumerable.Empty<CustomerDetailResponse>();
 
-        return await _cmListProvider.GetList(customerIds, cancellationToken);
+        return await _cmDetailProvider.GetList(customerIds, cancellationToken);
     }
 
-    private async Task<IEnumerable<CustomerListItem>> GetKonsDbCustomers(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
+    private async Task<IEnumerable<CustomerDetailResponse>> GetKonsDbCustomers(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
     {
         if (!partnerIds.Any())
-            return Enumerable.Empty<CustomerListItem>();
+            return Enumerable.Empty<CustomerDetailResponse>();
 
-        return await _konsDbListProvider.GetList(partnerIds, cancellationToken);
+        return await _konsDbDetailProvider.GetList(partnerIds, cancellationToken);
     }
 
-    private static void CheckMissingCustomers(ICollection<CustomerListItem> customers, ICollection<Identity> identities)
+    private static void CheckMissingCustomers(ICollection<CustomerDetailResponse> customers, ICollection<Identity> identities)
     {
         if (customers.Count == identities.Count)
             return;

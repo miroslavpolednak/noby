@@ -85,21 +85,21 @@ namespace DomainServices.CustomerService.Api.Services.KonsDb.Sql {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SELECT Id PartnerId,
-        ///	Jmeno FirstName,
-        ///	Prijmeni LastName,
-        ///	Pohlavi GenderId,
-        ///	RodneCisloIco BirthNumber,
-        ///	DatumNarozeni BirthDate,
-        ///	PrukazTotoznosti IdentificationDocumentNumber,
-        ///	TypDokladu IdentificationDocumentTypeId,
-        ///	PrukazVydalDatum IdentificationDocumentIssuedOn,
-        ///	PrukazVydal IdentificationDocumentIssuedBy,
-        ///	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
-        ///	PreukazPlatnostDo IdentificationDocumentValidTo
-        ///FROM dbo.PARTNER
-        ///WHERE Id IN @partnerIds
-        ///.
+        ///   Looks up a localized string similar to --Old (basic info list)
+        ///--SELECT Id PartnerId,
+        ///--	Jmeno FirstName,
+        ///--	Prijmeni LastName,
+        ///--	Pohlavi GenderId,
+        ///--	RodneCisloIco BirthNumber,
+        ///--	DatumNarozeni BirthDate,
+        ///--	PrukazTotoznosti IdentificationDocumentNumber,
+        ///--	TypDokladu IdentificationDocumentTypeId,
+        ///--	PrukazVydalDatum IdentificationDocumentIssuedOn,
+        ///--	PrukazVydal IdentificationDocumentIssuedBy,
+        ///--	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
+        ///--	PreukazPlatnostDo IdentificationDocumentValidTo
+        ///--FROM dbo.PARTNER
+        ///--WHE [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GetList {
             get {
@@ -127,14 +127,15 @@ namespace DomainServices.CustomerService.Api.Services.KonsDb.Sql {
         ///	DatumNarozeni BirthDate,
         ///	Ulice Street,
         ///	Misto City,
-        ///	Psc PostCode
+        ///	Psc PostCode,
+        ///	PrukazTotoznosti IdentificationDocumentNumber,
+        ///	TypDokladu IdentificationDocumentTypeId,
+        ///	PrukazVydalDatum IdentificationDocumentIssuedOn,
+        ///	PrukazVydal IdentificationDocumentIssuedBy,
+        ///	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
+        ///	PreukazPlatnostDo IdentificationDocumentValidTo
         ///FROM dbo.PARTNER
-        ///WHERE (@SearchByIds = 0 OR Id IN @partnerIds)
-        ///    AND (@firstName IS NULL OR Jmeno = @firstName)
-        ///	AND (@lastName IS NULL OR Prijmeni = @lastName)
-        ///    AND (@birthNumber IS NULL OR RodneCisloIco = @birthNumber)
-        ///    AND (@dateOfBirth IS NULL OR DatumNarozeni = @dateOfBirth)
-        ///    AND (@documentNumber IS NULL O [rest of string was truncated]&quot;;.
+        ///WHERE (@Se [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SearchCustomers {
             get {

@@ -37,6 +37,7 @@ public class KonsDbSearchProvider
         return customers.Select(p => new SearchCustomersItem
         {
             NaturalPerson = p.ToNaturalPersonBasicInfo(),
+            IdentificationDocument = p.ToIdentificationDocument(),
             Street = p.Street ?? string.Empty,
             City = p.City ?? string.Empty,
             Postcode = p.PostCode ?? string.Empty

@@ -6,7 +6,13 @@
 	DatumNarozeni BirthDate,
 	Ulice Street,
 	Misto City,
-	Psc PostCode
+	Psc PostCode,
+	PrukazTotoznosti IdentificationDocumentNumber,
+	TypDokladu IdentificationDocumentTypeId,
+	PrukazVydalDatum IdentificationDocumentIssuedOn,
+	PrukazVydal IdentificationDocumentIssuedBy,
+	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
+	PreukazPlatnostDo IdentificationDocumentValidTo
 FROM dbo.PARTNER
 WHERE (@SearchByIds = 0 OR Id IN @partnerIds)
     AND (@firstName IS NULL OR Jmeno = @firstName)

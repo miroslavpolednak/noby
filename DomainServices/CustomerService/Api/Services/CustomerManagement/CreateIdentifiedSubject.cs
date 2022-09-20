@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Clients;
 using DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
 using DomainServices.CustomerService.Api.Extensions;
+using FastEnumUtility;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 using IdentificationDocument = DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1.IdentificationDocument;
 
@@ -74,7 +75,7 @@ internal class CreateIdentifiedSubject
         {
             FirstName = naturalPerson.FirstName,
             Surname = naturalPerson.LastName,
-            GenderCode = Enum.Parse<NaturalPersonAttributesGenderCode>(_genders.First(g => g.Id == naturalPerson.GenderId).KbCmCode, true),
+            GenderCode = FastEnum.Parse<NaturalPersonAttributesGenderCode>(_genders.First(g => g.Id == naturalPerson.GenderId).KbCmCode, true),
             BirthDate = naturalPerson.DateOfBirth,
             Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name,
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
@@ -95,7 +96,8 @@ internal class CreateIdentifiedSubject
 
         return new PrimaryAddress
         {
-            Address = CreateAddress(primaryAddress)
+            Address = CreateAddress(primaryAddress),
+            PrimaryAddressFrom = primaryAddress.PrimaryAddressFrom
         };
     }
 
@@ -123,7 +125,11 @@ internal class CreateIdentifiedSubject
             Street = address.Street.ToCMString(),
             HouseNumber = address.BuildingIdentificationNumber.ToCMString(),
             StreetNumber = address.LandRegistryNumber.ToCMString(),
-            DeliveryDetails = address.DeliveryDetails.ToCMString()
+            DeliveryDetails = address.DeliveryDetails.ToCMString(),
+            CityDistrict = address.CityDistrict.ToCMString(),
+            PragueDistrict = address.PragueDistrict.ToCMString(),
+            CountrySubdivision = address.CountrySubdivision.ToCMString(),
+            AddressPointId = address.AddressPointId.ToCMString()
         };
     }
 

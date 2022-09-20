@@ -35,7 +35,8 @@ internal class CustomerManagementSearchProvider
                                  var item = new SearchCustomersItem
                                  {
                                      Identity = new Identity(c.CustomerId, IdentitySchemes.Kb),
-                                     NaturalPerson = CreateNaturalPerson(c)
+                                     NaturalPerson = CreateNaturalPerson(c),
+                                     IdentificationDocument = CreateIdentificationDocument(c.PrimaryIdentificationDocument)
                                  };
 
                                  FillAddressData(item, c.PrimaryAddress?.Address);
@@ -93,6 +94,23 @@ internal class CustomerManagementSearchProvider
             FirstName = np.FirstName ?? string.Empty,
             LastName = np.Surname ?? string.Empty,
             GenderId = _genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id
+        };
+    }
+
+    private Contracts.IdentificationDocument? CreateIdentificationDocument(Clients.CustomerManagement.V1.IdentificationDocument? document)
+    {
+        if (document is null)
+            return null;
+
+        return new Contracts.IdentificationDocument
+        {
+            RegisterPlace = document.RegisterPlace ?? string.Empty,
+            ValidTo = document.ValidTo,
+            IssuedOn = document.IssuedOn,
+            IssuedBy = document.IssuedBy ?? string.Empty,
+            Number = document.DocumentNumber ?? string.Empty,
+            IssuingCountryId = _countries.FirstOrDefault(t => t.ShortName == document.IssuingCountryCode)?.Id,
+            IdentificationDocumentTypeId = _docTypes.First(t => t.RdmCode == document.TypeCode).Id
         };
     }
 

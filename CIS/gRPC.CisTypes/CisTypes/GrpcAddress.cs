@@ -13,7 +13,12 @@ public sealed partial class GrpcAddress
             CountryId = address.CountryId,
             LandRegistryNumber = address.LandRegistryNumber,
             Postcode = address.Postcode,
-            AddressTypeId = address.AddressTypeId
+            AddressTypeId = address.AddressTypeId,
+            CityDistrict = address.CityDistrict,
+            PragueDistrict = address.PragueDistrict,
+            CountrySubdivision = address.CountrySubdivision,
+            PrimaryAddressFrom = address.PrimaryAddressFrom,
+            AddressPointId = address.AddressPointId
         };
     }
 
@@ -28,7 +33,12 @@ public sealed partial class GrpcAddress
             CountryId = address.CountryId,
             LandRegistryNumber = address.LandRegistryNumber ?? "",
             Postcode = address.Postcode ?? "",
-            AddressTypeId = address.AddressTypeId
+            AddressTypeId = address.AddressTypeId,
+            CityDistrict = address.CityDistrict ?? string.Empty,
+            PragueDistrict = address.PragueDistrict ?? string.Empty,
+            CountrySubdivision = address.CountrySubdivision ?? string.Empty,
+            PrimaryAddressFrom = address.PrimaryAddressFrom,
+            AddressPointId = address.AddressPointId ?? string.Empty
         };
     }
 }
