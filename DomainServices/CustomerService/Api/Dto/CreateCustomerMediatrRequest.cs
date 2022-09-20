@@ -2,5 +2,5 @@
 
 namespace DomainServices.CustomerService.Api.Dto;
 
-internal record CreateCustomerMediatrRequest : 
+internal record CreateCustomerMediatrRequest(CreateCustomerRequest Request) : 
     IRequest<CreateCustomerResponse>, IValidatableRequest;

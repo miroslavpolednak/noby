@@ -2,5 +2,8 @@
 
 internal class MockIdentifiedSubjectClient : IIdentifiedSubjectClient
 {
-    
+    public Task<CreateIdentifiedSubjectResponse> CreateIdentifiedSubject(IdentifiedSubject request, bool hardCreate, string traceId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

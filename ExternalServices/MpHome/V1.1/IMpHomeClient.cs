@@ -18,5 +18,7 @@ namespace ExternalServices.MpHome.V1._1
         /// deletes row in table dbo.VztahUver in KonsDB (according to provided data)
         /// </summary>
         Task<IServiceCallResult> DeletePartnerLoanLink(long loanId, long partnerId);
+
+        Task<IServiceCallResult> UpdatePartner(long partnerId, PartnerRequest request);
     }
 }

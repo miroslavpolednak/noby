@@ -7,6 +7,8 @@ namespace DomainServices.CustomerService.Api.Clients;
 
 internal abstract class BaseClient<TApiException> where TApiException : Exception
 {
+    protected const string CallerSys = "{\"app\":\"DOMAIN_SERVICES\",\"appComp\":\"DOMAIN_SERVICES.CUSTOMER_SERVICE\"}";
+
     protected readonly HttpClient _httpClient;
     protected readonly ILogger _logger;
 

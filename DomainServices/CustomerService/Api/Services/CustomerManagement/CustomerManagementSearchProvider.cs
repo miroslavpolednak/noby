@@ -1,10 +1,11 @@
-﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using CIS.Foms.Enums;
+using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
+using DomainServices.CustomerService.Api.Extensions;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
+namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal class CustomerManagementSearchProvider
@@ -58,11 +59,11 @@ internal class CustomerManagementSearchProvider
         {
             NumberOfEntries = 20,
             CustomerId = searchRequest.Identity?.IdentityId,
-            FirstName = GetValueOrNull(searchRequest.NaturalPerson?.FirstName),
-            Name = GetValueOrNull(searchRequest.NaturalPerson?.LastName),
+            FirstName = searchRequest.NaturalPerson?.FirstName.ToCMString(),
+            Name = searchRequest.NaturalPerson?.LastName.ToCMString(),
             BirthEstablishedDate = searchRequest.NaturalPerson?.DateOfBirth,
-            Email = GetValueOrNull(searchRequest.Email),
-            PhoneNumber = GetValueOrNull(searchRequest.PhoneNumber)
+            Email = searchRequest.Email.ToCMString(),
+            PhoneNumber = searchRequest.PhoneNumber.ToCMString()
         };
 
         if (!string.IsNullOrEmpty(searchRequest.NaturalPerson?.BirthNumber))
@@ -79,8 +80,6 @@ internal class CustomerManagementSearchProvider
         }
 
         return cmRequest;
-
-        static string? GetValueOrNull(string? str) => string.IsNullOrWhiteSpace(str) ? null : str;
     }
 
     private NaturalPersonBasicInfo CreateNaturalPerson(CustomerSearchResultRow customer)

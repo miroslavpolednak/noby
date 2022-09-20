@@ -1,10 +1,10 @@
-﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using CIS.Foms.Enums;
+using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
+namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal class CustomerManagementDetailProvider

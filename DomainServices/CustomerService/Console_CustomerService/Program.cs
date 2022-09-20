@@ -38,24 +38,17 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-var search = await service.SearchCustomers(new SearchCustomersRequest
-{
-    Mandant = Mandants.Kb,
-    NaturalPerson = new NaturalPersonSearch
-    {
-        LastName = "Novák",
-        FirstName = "Adam"
-    }
-});
-
-//var test = await service.GetCustomerList(new CustomerListRequest
+//var search = await service.SearchCustomers(new SearchCustomersRequest
 //{
-//    Identities =
+//    Mandant = Mandants.Kb,
+//    NaturalPerson = new NaturalPersonSearch
 //    {
-//        new Identity(34, IdentitySchemes.Mp),
-//        new Identity(123, IdentitySchemes.Kb)
+//        LastName = "Novák",
+//        FirstName = "Adam"
 //    }
 //});
+
+var test = await service.GetCustomerList(new Identity[] { new(951011020, IdentitySchemes.Kb) });
 
 //var test = await service.ProfileCheck(new ProfileCheckRequest
 //{

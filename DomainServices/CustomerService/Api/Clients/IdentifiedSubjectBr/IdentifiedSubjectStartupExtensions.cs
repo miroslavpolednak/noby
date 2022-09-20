@@ -22,7 +22,7 @@ public static class IdentifiedSubjectStartupExtensions
                 break;
 
             default:
-                throw new NotImplementedException($"CustomerProfile version {config.CustomerProfileVersion} client is not implemented");
+                throw new NotImplementedException($"IdentifiedSubject version {config.IdentifiedSubjectVersion} client is not implemented");
         }
 
         return services;

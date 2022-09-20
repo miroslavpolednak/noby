@@ -11,15 +11,17 @@ import "Contact.proto";
 message CreateCustomerRequest {
 	cis.types.Identity Identity = 1;
 
-	NaturalPerson NaturalPerson = 2;
+	bool HardCreate = 2;
 
-	IdentificationDocument IdentificationDocument = 3;
+	NaturalPerson NaturalPerson = 3;
 
-	repeated cis.types.GrpcAddress Addresses = 4;
+	IdentificationDocument IdentificationDocument = 4;
 
-	repeated Contact Contacts = 5;
+	repeated cis.types.GrpcAddress Addresses = 5;
+
+	repeated Contact Contacts = 6;
 }
 
 message CreateCustomerResponse {
-
+	cis.types.Identity CreatedCustomerIdentity = 1;
 }

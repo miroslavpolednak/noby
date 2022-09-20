@@ -17,6 +17,8 @@ public interface ICustomerServiceAbstraction
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
     Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default);
 
+    Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Detail customera podle identity
     /// </summary>

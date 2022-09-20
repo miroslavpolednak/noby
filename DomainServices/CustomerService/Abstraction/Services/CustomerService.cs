@@ -20,6 +20,13 @@ internal class CustomerService : ICustomerServiceAbstraction
         return new SuccessfulServiceCallResult<ProfileCheckResponse>(result);
     }
 
+    public async Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
+
+        return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
+    }
+
     public async Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken);

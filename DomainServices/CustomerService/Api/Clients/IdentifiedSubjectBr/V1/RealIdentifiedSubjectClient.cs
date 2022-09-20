@@ -1,4 +1,6 @@
-﻿namespace DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
+﻿using CIS.Infrastructure.Logging;
+
+namespace DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
 
 internal class RealIdentifiedSubjectClient : BaseClient<ApiException<Error>>, IIdentifiedSubjectClient
 {
@@ -6,15 +8,26 @@ internal class RealIdentifiedSubjectClient : BaseClient<ApiException<Error>>, II
     {
     }
 
-    public Task<object> CreateIdentifiedSubject(CreateCustomerRequest request, string traceId, CancellationToken cancellationToken)
+    public Task<CreateIdentifiedSubjectResponse> CreateIdentifiedSubject(IdentifiedSubject request, bool hardCreate, string traceId, CancellationToken cancellationToken)
     {
-        return CallEndpoint(CreateIdentifiedSubject);
+        _logger.LogDebug("Run inputs: IdentifiedSubject CreateIdentifiedSubject with data {request}", request);
 
-        async Task<object> CreateIdentifiedSubject()
+        return CallEndpoint(CreateSubject);
+
+        async Task<CreateIdentifiedSubjectResponse> CreateSubject()
         {
-            //var result = await CreateClient().CreateIdentifiedSubjectAsync();
+            var result = await CreateClient().CreateIdentifiedSubjectAsync(
+                body: request,
+                hardCreate: hardCreate,
+                x_B3_TraceId: traceId,
+                x_KB_Party_Identity_In_Service: string.Empty,
+                x_KB_Orig_System_Identity: CallerSys,
+                x_KB_Caller_System_Identity: CallerSys,
+                cancellationToken);
 
-            return null;
+            _logger.LogSerializedObject("CreateIdentifiedSubjectResponse", result);
+
+            return result;
         }
     }
 

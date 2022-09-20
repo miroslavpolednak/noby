@@ -1,6 +1,6 @@
-﻿using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Dto;
+﻿using DomainServices.CustomerService.Api.Services.KonsDb.Dto;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
+namespace DomainServices.CustomerService.Api.Services.KonsDb;
 
 public static class PartnerExtensions
 {

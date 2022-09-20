@@ -3,9 +3,9 @@ using CIS.Core.Data;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
-using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Dto;
+using DomainServices.CustomerService.Api.Services.KonsDb.Dto;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
+namespace DomainServices.CustomerService.Api.Services.KonsDb;
 
 [ScopedService, SelfService]
 public class KonsDbListProvider

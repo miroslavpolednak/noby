@@ -2,5 +2,5 @@
 
 public interface IIdentifiedSubjectClient
 {
-    
+    Task<CreateIdentifiedSubjectResponse> CreateIdentifiedSubject(IdentifiedSubject request, bool hardCreate, string traceId, CancellationToken cancellationToken);
 }

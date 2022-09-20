@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using DomainServices.CustomerService.Api.Dto;
-using DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
-using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
+using DomainServices.CustomerService.Api.Services.CustomerManagement;
+using DomainServices.CustomerService.Api.Services.KonsDb;
 
 namespace DomainServices.CustomerService.Api.Handlers
 {

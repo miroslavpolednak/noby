@@ -4,8 +4,6 @@ namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 
 internal class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICustomerProfileClient
 {
-    private const string CallerSys = "{\"app\":\"DOMAIN_SERVICES\",\"appComp\":\"DOMAIN_SERVICES.CUSTOMER_SERVICE\"}";
-
     public RealCustomerProfileClient(HttpClient httpClient, ILogger<RealCustomerProfileClient> logger) : base(httpClient, logger)
     {
     }

@@ -124,6 +124,9 @@
   <data name="GetList" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>GetList.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="PartnerExists" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>PartnerExists.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="SearchCustomers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SearchCustomers.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
