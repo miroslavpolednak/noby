@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustomerProductTypes
 {
@@ -12,9 +11,17 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustome
         [DataMember(Order = 2)]
         public string Name { get; set; }
 
-        [JsonIgnore]
         [DataMember(Order = 3)]
-        [DefaultValue(MpHomeContractRelationshipType.NotSpecified)]
-        public MpHomeContractRelationshipType MpHomeContractRelationshipType { get; set; }
+        [JsonIgnore]
+        public string RdmCode { get; set; }
+
+        [DataMember(Order = 4)]
+        [JsonIgnore]
+        public string MpDigiApiCode { get; set; }
+
+        [DataMember(Order = 5)]
+        [JsonIgnore]
+        public string NameNoby { get; set; }
+
     }
 }
