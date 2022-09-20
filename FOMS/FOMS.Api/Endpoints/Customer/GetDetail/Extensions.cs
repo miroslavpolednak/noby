@@ -38,7 +38,8 @@ public static class Extensions
             IssuedBy = customer.IdentificationDocument?.IssuedBy,
             IssuedOn = customer.IdentificationDocument?.IssuedOn,
             RegisterPlace = customer.IdentificationDocument?.RegisterPlace,
-            ValidTo = customer.IdentificationDocument?.ValidTo
+            ValidTo = customer.IdentificationDocument?.ValidTo,
+            Number = customer.IdentificationDocument?.Number
         };
 
         model.Contacts = customer.Contacts?
