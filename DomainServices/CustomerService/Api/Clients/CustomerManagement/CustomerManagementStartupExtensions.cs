@@ -14,7 +14,7 @@ internal static class CustomerManagementStartupExtensions
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
                     client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
-                }).ConfigurePrimaryHttpMessageHandler<CertificationValidatorHttpHandler>();
+                }).ConfigurePrimaryHttpMessageHandler<CustomerManagementHttpHandler<V1.RealCustomerManagementClient>>();
                 break;
 
             case (Version.V1, _):

@@ -14,7 +14,7 @@ public static class IdentifiedSubjectStartupExtensions
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
                     client.DefaultRequestHeaders.Authorization = config.HttpBasicAuth;
-                }).ConfigurePrimaryHttpMessageHandler<CertificationValidatorHttpHandler>();
+                }).ConfigurePrimaryHttpMessageHandler<CustomerManagementHttpHandler<V1.RealIdentifiedSubjectClient>>();
                 break;
 
             case (Version.V1, _):

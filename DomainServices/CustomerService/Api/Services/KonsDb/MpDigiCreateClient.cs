@@ -51,7 +51,8 @@ public class MpDigiCreateClient
 
         var result = await _mpHomeClient.UpdatePartner(request.Identity.IdentityId, partnerRequest);
 
-        ServiceCallResult.ResolveAndThrowIfError<object>(result);
+        if (result is ErrorServiceCallResult error)
+            throw new CisServiceCallResultErrorException(error);
 
         return new Identity(request.Identity.IdentityId, IdentitySchemes.Mp);
     }

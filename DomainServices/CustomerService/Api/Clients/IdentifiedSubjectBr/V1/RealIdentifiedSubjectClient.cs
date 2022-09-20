@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
 
-internal class RealIdentifiedSubjectClient : BaseClient<ApiException<Error>>, IIdentifiedSubjectClient
+internal class RealIdentifiedSubjectClient : BaseClient<IdentifiedSubjectBrWrapper>, IIdentifiedSubjectClient
 {
     public RealIdentifiedSubjectClient(HttpClient httpClient, ILogger logger) : base(httpClient, logger)
     {
@@ -31,9 +31,5 @@ internal class RealIdentifiedSubjectClient : BaseClient<ApiException<Error>>, II
         }
     }
 
-    private IdentifiedSubjectBrWrapper CreateClient() => new(_httpClient) { BaseUrl = _httpClient.BaseAddress?.ToString() };
-
-    protected override int GetApiExceptionStatusCode(ApiException<Error> ex) => ex.StatusCode;
-
-    protected override object GetApiExceptionDetail(ApiException<Error> ex) => ex.Result.Detail;
+    protected override IdentifiedSubjectBrWrapper CreateClient() => new(_httpClient) { BaseUrl = _httpClient.BaseAddress?.ToString() };
 }
