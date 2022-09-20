@@ -1,6 +1,8 @@
-﻿using CIS.Infrastructure.StartupExtensions;
+﻿using CIS.ExternalServicesHelpers;
+using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CustomerService.Api.Clients;
+using ExternalServices.MpHome;
 using FluentValidation;
 
 namespace DomainServices.CustomerService.Api.Extensions;
@@ -26,6 +28,20 @@ internal static class StartupExtensions
                 .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddExternalServiceMpHome(this WebApplicationBuilder builder)
+    {
+        const string MpHomeName = "MpHome";
+
+        var config = builder.Configuration
+                            .GetRequiredSection(Constants.ExternalServicesConfigurationSectionName)
+                            .GetRequiredSection(MpHomeName)
+                            .Get<MpHomeConfiguration>();
+
+        builder.Services.AddExternalServiceMpHome(config);
 
         return builder;
     }

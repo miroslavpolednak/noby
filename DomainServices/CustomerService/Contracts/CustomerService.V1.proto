@@ -4,12 +4,14 @@ package DomainServices.CustomerService.V1;
 option csharp_namespace = "DomainServices.CustomerService.Contracts.V1";
 
 import "ProfileCheck.proto";
+import "CreateCustomer.proto";
 import "CustomerDetail.proto";
 import "CustomerList.proto";
 import "SearchCustomers.proto";
 
 service CustomerService {
    rpc ProfileCheck(ProfileCheckRequest) returns (ProfileCheckResponse);
+   rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse);
    rpc GetCustomerDetail(CustomerDetailRequest) returns (CustomerDetailResponse);
    rpc GetCustomerList(CustomerListRequest) returns (CustomerListResponse);
    rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);

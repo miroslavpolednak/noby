@@ -1,10 +1,10 @@
-﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using CIS.Foms.Enums;
+using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
+namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal class CustomerManagementDetailProvider
@@ -31,6 +31,23 @@ internal class CustomerManagementDetailProvider
 
         await InitializeCodebooks(cancellationToken);
 
+        return CreateDetailResponse(customer);
+    }
+
+    public async Task<IEnumerable<CustomerDetailResponse>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
+    {
+        var customers = await _customerManagement.GetList(customerIds, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
+
+        if (!customers.Any())
+            return Enumerable.Empty<CustomerDetailResponse>();
+
+        await InitializeCodebooks(cancellationToken);
+
+        return customers.Select(CreateDetailResponse);
+    }
+
+    private CustomerDetailResponse CreateDetailResponse(CustomerBaseInfo customer)
+    {
         var response = new CustomerDetailResponse
         {
             Identity = new Identity(customer.CustomerId, IdentitySchemes.Kb),
@@ -38,8 +55,8 @@ internal class CustomerManagementDetailProvider
             IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument)
         };
 
-        AddAddress(customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, AddressTypes.PERMANENT, response.Addresses.Add);
-        AddAddress(customer.ContactAddress?.Address, customer.ContactAddress?.ComponentAddress, AddressTypes.MAILING, response.Addresses.Add);
+        AddAddress(AddressTypes.PERMANENT, response.Addresses.Add, customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
+        AddAddress(AddressTypes.MAILING, response.Addresses.Add, customer.ContactAddress?.Address, customer.ContactAddress?.ComponentAddress, default);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -76,7 +93,11 @@ internal class CustomerManagementDetailProvider
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
-            IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false
+            IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false,
+            IsLegallyIncapable = np.LegalCapacityRestriction?.RestrictionType ?? string.Empty,
+            LegallyIncapableUntil = np.LegalCapacityRestriction?.RestrictionUntil,
+            TaxResidencyCountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
+            KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty
         };
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
@@ -102,10 +123,11 @@ internal class CustomerManagementDetailProvider
         };
     }
 
-    private void AddAddress(Address? address,
+    private void AddAddress(AddressTypes addressType,
+                            Action<GrpcAddress> onAddAddress,
+                            Address? address,
                             ComponentAddress? componentAddress,
-                            AddressTypes addressType,
-                            Action<GrpcAddress> onAddAddress)
+                            DateTime? primaryAddressFrom)
     {
         if (address is null)
             return;
@@ -117,11 +139,16 @@ internal class CustomerManagementDetailProvider
             LandRegistryNumber = componentAddress?.StreetNumber ?? string.Empty,
             EvidenceNumber = componentAddress?.EvidenceNumber ?? string.Empty,
             City = address.City ?? string.Empty,
-            IsPrimary = true,
+            IsPrimary = addressType == AddressTypes.PERMANENT,
             CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id,
             Postcode = address.PostCode ?? string.Empty,
             Street = (componentAddress?.Street ?? address.Street) ?? string.Empty,
-            DeliveryDetails = address.DeliveryDetails ?? string.Empty
+            DeliveryDetails = address.DeliveryDetails ?? string.Empty,
+            CityDistrict = componentAddress?.CityDistrict ?? string.Empty,
+            PragueDistrict = componentAddress?.PragueDistrict ?? string.Empty,
+            CountrySubdivision = componentAddress?.CountrySubdivision ?? string.Empty,
+            PrimaryAddressFrom = primaryAddressFrom,
+            AddressPointId = componentAddress?.AddressPointId ?? string.Empty
         });
     }
 

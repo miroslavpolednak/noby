@@ -1,10 +1,11 @@
-﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using CIS.Foms.Enums;
+using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
+using DomainServices.CustomerService.Api.Extensions;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.CustomerManagement;
+namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal class CustomerManagementSearchProvider
@@ -34,7 +35,8 @@ internal class CustomerManagementSearchProvider
                                  var item = new SearchCustomersItem
                                  {
                                      Identity = new Identity(c.CustomerId, IdentitySchemes.Kb),
-                                     NaturalPerson = CreateNaturalPerson(c)
+                                     NaturalPerson = CreateNaturalPerson(c),
+                                     IdentificationDocument = CreateIdentificationDocument(c.PrimaryIdentificationDocument)
                                  };
 
                                  FillAddressData(item, c.PrimaryAddress?.Address);
@@ -58,11 +60,11 @@ internal class CustomerManagementSearchProvider
         {
             NumberOfEntries = 20,
             CustomerId = searchRequest.Identity?.IdentityId,
-            FirstName = GetValueOrNull(searchRequest.NaturalPerson?.FirstName),
-            Name = GetValueOrNull(searchRequest.NaturalPerson?.LastName),
+            FirstName = searchRequest.NaturalPerson?.FirstName.ToCMString(),
+            Name = searchRequest.NaturalPerson?.LastName.ToCMString(),
             BirthEstablishedDate = searchRequest.NaturalPerson?.DateOfBirth,
-            Email = GetValueOrNull(searchRequest.Email),
-            PhoneNumber = GetValueOrNull(searchRequest.PhoneNumber)
+            Email = searchRequest.Email.ToCMString(),
+            PhoneNumber = searchRequest.PhoneNumber.ToCMString()
         };
 
         if (!string.IsNullOrEmpty(searchRequest.NaturalPerson?.BirthNumber))
@@ -79,8 +81,6 @@ internal class CustomerManagementSearchProvider
         }
 
         return cmRequest;
-
-        static string? GetValueOrNull(string? str) => string.IsNullOrWhiteSpace(str) ? null : str;
     }
 
     private NaturalPersonBasicInfo CreateNaturalPerson(CustomerSearchResultRow customer)
@@ -94,6 +94,23 @@ internal class CustomerManagementSearchProvider
             FirstName = np.FirstName ?? string.Empty,
             LastName = np.Surname ?? string.Empty,
             GenderId = _genders.First(t => t.KbCmCode == np.GenderCode.ToString()).Id
+        };
+    }
+
+    private Contracts.IdentificationDocument? CreateIdentificationDocument(Clients.CustomerManagement.V1.IdentificationDocument? document)
+    {
+        if (document is null)
+            return null;
+
+        return new Contracts.IdentificationDocument
+        {
+            RegisterPlace = document.RegisterPlace ?? string.Empty,
+            ValidTo = document.ValidTo,
+            IssuedOn = document.IssuedOn,
+            IssuedBy = document.IssuedBy ?? string.Empty,
+            Number = document.DocumentNumber ?? string.Empty,
+            IssuingCountryId = _countries.FirstOrDefault(t => t.ShortName == document.IssuingCountryCode)?.Id,
+            IdentificationDocumentTypeId = _docTypes.First(t => t.RdmCode == document.TypeCode).Id
         };
     }
 

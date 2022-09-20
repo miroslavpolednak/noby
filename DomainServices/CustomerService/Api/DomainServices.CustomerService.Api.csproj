@@ -25,18 +25,13 @@
     <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
-    <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
     <ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\CustomerSource\KonsDb\Dto\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Services\CustomerSource\KonsDb\Sql\SqlScripts.Designer.cs">
+    <Compile Update="Services\KonsDb\Sql\SqlScripts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SqlScripts.resx</DependentUpon>
@@ -44,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Services\CustomerSource\KonsDb\Sql\SqlScripts.resx">
+    <EmbeddedResource Update="Services\KonsDb\Sql\SqlScripts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
     </EmbeddedResource>

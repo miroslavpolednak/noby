@@ -38,23 +38,21 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-var search = await service.SearchCustomers(new SearchCustomersRequest
-{
-    Mandant = Mandants.Kb,
-    NaturalPerson = new NaturalPersonSearch
-    {
-        LastName = "Novák",
-        FirstName = "Adam"
-    }
-});
-
-//var test = await service.GetCustomerList(new CustomerListRequest
+//var search = await service.SearchCustomers(new SearchCustomersRequest
 //{
-//    Identities =
+//    Mandant = Mandants.Mp,
+//    NaturalPerson = new NaturalPersonSearch
 //    {
-//        new Identity(34, IdentitySchemes.Mp),
-//        new Identity(123, IdentitySchemes.Kb)
+//        LastName = "Novák",
+//        FirstName = "Adam"
 //    }
+//});
+
+//var test = await service.GetCustomerList(new Identity[]
+//{
+//    new(951011020, IdentitySchemes.Kb),
+//    new(123, IdentitySchemes.Kb),
+//    new(134, IdentitySchemes.Mp)
 //});
 
 //var test = await service.ProfileCheck(new ProfileCheckRequest
@@ -63,6 +61,6 @@ var search = await service.SearchCustomers(new SearchCustomersRequest
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-//var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 Console.ReadKey();

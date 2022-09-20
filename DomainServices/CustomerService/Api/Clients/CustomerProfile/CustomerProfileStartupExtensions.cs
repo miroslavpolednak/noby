@@ -7,22 +7,22 @@ internal static class CustomerProfileStartupExtensions
 {
     public static IServiceCollection AddCustomerProfileService(this IServiceCollection services, CustomerManagementConfiguration config)
     {
-        switch (config.Version, config.ImplementationType)
+        switch (config.CustomerProfileVersion, config.ImplementationType)
         {
-            case (CMVersion.V1, ServiceImplementationTypes.Real):
+            case (Version.V1, ServiceImplementationTypes.Real):
                 services.AddHttpClient<V1.ICustomerProfileClient, V1.RealCustomerProfileClient>((provider, client) =>
                 {
                     client.BaseAddress = GetClientBaseAddress(provider);
                     client.DefaultRequestHeaders.Authorization = config.HttpBasicAuthenticationHeader;
-                }).ConfigurePrimaryHttpMessageHandler<CertificationValidatorHttpHandler>();
+                }).ConfigurePrimaryHttpMessageHandler<CustomerManagementHttpHandler<V1.RealCustomerProfileClient>>();
                 break;
 
-            case (CMVersion.V1, _):
+            case (Version.V1, _):
                 services.AddScoped<V1.ICustomerProfileClient, V1.MockCustomerProfileClient>();
                 break;
 
             default:
-                throw new NotImplementedException($"CustomerProfile version {config.Version} client is not implemented");
+                throw new NotImplementedException($"CustomerProfile version {config.CustomerProfileVersion} client is not implemented");
         }
 
         return services;

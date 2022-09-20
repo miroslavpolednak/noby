@@ -1,10 +1,10 @@
-﻿using CIS.Core.Data;
+﻿using System.Data;
+using CIS.Core.Data;
 using CIS.Infrastructure.Data;
 using Dapper;
-using DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Dto;
-using System.Data;
+using DomainServices.CustomerService.Api.Services.KonsDb.Dto;
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb;
+namespace DomainServices.CustomerService.Api.Services.KonsDb;
 
 [ScopedService, SelfService]
 public class KonsDbSearchProvider
@@ -37,6 +37,7 @@ public class KonsDbSearchProvider
         return customers.Select(p => new SearchCustomersItem
         {
             NaturalPerson = p.ToNaturalPersonBasicInfo(),
+            IdentificationDocument = p.ToIdentificationDocument(),
             Street = p.Street ?? string.Empty,
             City = p.City ?? string.Empty,
             Postcode = p.PostCode ?? string.Empty

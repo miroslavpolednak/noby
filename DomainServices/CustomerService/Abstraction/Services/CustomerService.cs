@@ -1,59 +1,56 @@
-﻿using CIS.Core.Exceptions;
-using CIS.Core.Results;
+﻿using CIS.Core.Results;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
-using Microsoft.Extensions.Logging;
 
-namespace DomainServices.CustomerService.Abstraction
+namespace DomainServices.CustomerService.Abstraction;
+
+internal class CustomerService : ICustomerServiceAbstraction
 {
-    internal class CustomerService : ICustomerServiceAbstraction
+    private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
+
+    public CustomerService(Contracts.V1.CustomerService.CustomerServiceClient service)
     {
-        private readonly ILogger<CustomerService> _logger;
-        private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
+        _service = service;
+    }
 
-        public CustomerService(
-            ILogger<CustomerService> logger,
-            Contracts.V1.CustomerService.CustomerServiceClient service)
-        {
-            _service = service;
-            _logger = logger;
-        }
+    public async Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.ProfileCheckAsync(request, cancellationToken: cancellationToken);
 
-        public async Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default)
-        {
-            var result = await _service.ProfileCheckAsync(request, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult<ProfileCheckResponse>(result);
+    }
 
-            return new SuccessfulServiceCallResult<ProfileCheckResponse>(result);
-        }
+    public async Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
 
-        public async Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
-        {
-            var result = await _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
+    }
 
-            return new SuccessfulServiceCallResult<CustomerDetailResponse>(result);
-        }
+    public async Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken);
 
-        public async Task<IServiceCallResult> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)
-        {
-            var request = new CustomerListRequest();
-            request.Identities.AddRange(identities);
+        return new SuccessfulServiceCallResult<CustomerDetailResponse>(result);
+    }
 
-            var result = await _service.GetCustomerListAsync(request, cancellationToken: cancellationToken);
+    public async Task<IServiceCallResult> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)
+    {
+        var request = new CustomerListRequest();
+        request.Identities.AddRange(identities);
 
-            return new SuccessfulServiceCallResult<CustomerListResponse>(result);
-        }
+        var result = await _service.GetCustomerListAsync(request, cancellationToken: cancellationToken);
 
-        public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
-                return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
-            }
-            catch (CisNotFoundException)
-            {
-                return new EmptyServiceCallResult();
-            }
-        }
+        return new SuccessfulServiceCallResult<CustomerListResponse>(result);
+    }
+
+    public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
+
+        if (result.Customers.Any())
+            return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
+
+        return new EmptyServiceCallResult();
     }
 }

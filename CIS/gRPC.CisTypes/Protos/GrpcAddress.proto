@@ -3,6 +3,7 @@ package cis.types;
 option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
 
 import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
 
 message GrpcAddress {
   string Street = 1;
@@ -24,4 +25,14 @@ message GrpcAddress {
   bool IsPrimary = 9;
 
   string DeliveryDetails = 10;
+
+  string CityDistrict = 11;
+
+  string PragueDistrict = 12;
+
+  string CountrySubdivision = 13;
+
+  cis.types.NullableGrpcDate PrimaryAddressFrom = 14;
+
+  string AddressPointId = 15; 
 }

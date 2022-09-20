@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Sql {
+namespace DomainServices.CustomerService.Api.Services.KonsDb.Sql {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Sql 
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Sql.SqlScripts", typeof(SqlScripts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DomainServices.CustomerService.Api.Services.KonsDb.Sql.SqlScripts", typeof(SqlScripts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -68,14 +68,15 @@ namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Sql 
         ///	RodneCisloIco BirthNumber,
         ///	DatumNarozeni BirthDate,
         ///	MistoNarozeni PlaceOfBirth,
-        ///	Pohlavi Gender,
+        ///	Pohlavi GenderId,
         ///	PEP IsPoliticallyExposed,
+        ///	StatniPrislusnostId CitizenshipCountryId,
         ///	PrukazTotoznosti IdentificationDocumentNumber,
         ///	TypDokladu IdentificationDocumentTypeId,
         ///	PrukazVydalDatum IdentificationDocumentIssuedOn,
         ///	PrukazVydal IdentificationDocumentIssuedBy,
         ///	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
-        ///	PreukazPlatnostDo IdentificationDocumentValid [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GetDetail {
             get {
@@ -84,25 +85,36 @@ namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Sql 
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SELECT Id PartnerId,
-        ///	Jmeno FirstName,
-        ///	Prijmeni LastName,
-        ///	Pohlavi GenderId,
-        ///	RodneCisloIco BirthNumber,
-        ///	DatumNarozeni BirthDate,
-        ///	PrukazTotoznosti IdentificationDocumentNumber,
-        ///	TypDokladu IdentificationDocumentTypeId,
-        ///	PrukazVydalDatum IdentificationDocumentIssuedOn,
-        ///	PrukazVydal IdentificationDocumentIssuedBy,
-        ///	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
-        ///	PreukazPlatnostDo IdentificationDocumentValidTo
-        ///FROM dbo.PARTNER
-        ///WHERE Id IN @partnerIds
-        ///.
+        ///   Looks up a localized string similar to --Old (basic info list)
+        ///--SELECT Id PartnerId,
+        ///--	Jmeno FirstName,
+        ///--	Prijmeni LastName,
+        ///--	Pohlavi GenderId,
+        ///--	RodneCisloIco BirthNumber,
+        ///--	DatumNarozeni BirthDate,
+        ///--	PrukazTotoznosti IdentificationDocumentNumber,
+        ///--	TypDokladu IdentificationDocumentTypeId,
+        ///--	PrukazVydalDatum IdentificationDocumentIssuedOn,
+        ///--	PrukazVydal IdentificationDocumentIssuedBy,
+        ///--	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
+        ///--	PreukazPlatnostDo IdentificationDocumentValidTo
+        ///--FROM dbo.PARTNER
+        ///--WHE [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GetList {
             get {
                 return ResourceManager.GetString("GetList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT COUNT(1)
+        ///FROM dbo.PARTNER
+        ///WHERE Id = @partnerId.
+        /// </summary>
+        internal static string PartnerExists {
+            get {
+                return ResourceManager.GetString("PartnerExists", resourceCulture);
             }
         }
         
@@ -115,14 +127,15 @@ namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Sql 
         ///	DatumNarozeni BirthDate,
         ///	Ulice Street,
         ///	Misto City,
-        ///	Psc PostCode
+        ///	Psc PostCode,
+        ///	PrukazTotoznosti IdentificationDocumentNumber,
+        ///	TypDokladu IdentificationDocumentTypeId,
+        ///	PrukazVydalDatum IdentificationDocumentIssuedOn,
+        ///	PrukazVydal IdentificationDocumentIssuedBy,
+        ///	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
+        ///	PreukazPlatnostDo IdentificationDocumentValidTo
         ///FROM dbo.PARTNER
-        ///WHERE (@SearchByIds = 0 OR Id IN @partnerIds)
-        ///    AND (@firstName IS NULL OR Jmeno = @firstName)
-        ///	AND (@lastName IS NULL OR Prijmeni = @lastName)
-        ///    AND (@birthNumber IS NULL OR RodneCisloIco = @birthNumber)
-        ///    AND (@dateOfBirth IS NULL OR DatumNarozeni = @dateOfBirth)
-        ///    AND (@documentNumber IS NULL O [rest of string was truncated]&quot;;.
+        ///WHERE (@Se [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SearchCustomers {
             get {

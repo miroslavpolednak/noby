@@ -5,6 +5,7 @@ using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.InternalServices.ServiceDiscovery.Contracts;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement;
 using DomainServices.CustomerService.Api.Clients.CustomerProfile;
+using DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr;
 using DomainServices.CustomerService.Api.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -21,12 +22,13 @@ internal static class ClientsStartupExtensions
         builder.Services
                .AddCustomerManagementService(config)
                .AddCustomerProfileService(config)
-               .ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
+               .AddIdentifiedSubjectService(config)
+               .ResolveServiceDiscoveryUriIfEnabled(config);
 
         return builder;
     }
 
-    private static void ResolveServiceDiscoveryUriIfEnabled<TConfig>(this IServiceCollection services, TConfig config, string serviceName) 
+    private static void ResolveServiceDiscoveryUriIfEnabled<TConfig>(this IServiceCollection services, TConfig config) 
         where TConfig : class, IExternalServiceConfiguration
     {
         if (!config.UseServiceDiscovery)
@@ -36,7 +38,7 @@ internal static class ClientsStartupExtensions
 
         TConfig DiscoverAndSetServiceUrl(IServiceProvider serviceProvider)
         {
-            var name = new ServiceName(Constants.ExternalServicesServiceDiscoveryKeyPrefix + serviceName);
+            var name = new ServiceName(Constants.ExternalServicesServiceDiscoveryKeyPrefix + CustomerManagementServiceName);
 
             config.ServiceUrl = serviceProvider.GetRequiredService<IDiscoveryServiceAbstraction>()
                                                .GetServiceUrlSynchronously(name, ServiceTypes.Proprietary);

@@ -2,10 +2,8 @@
 
 namespace DomainServices.CustomerService.Api.Clients.CustomerProfile.V1;
 
-internal class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICustomerProfileClient
+internal class RealCustomerProfileClient : BaseClient<CustomerProfileWrapper>, ICustomerProfileClient
 {
-    private const string CallerSys = "{\"app\":\"DOMAIN_SERVICES\",\"appComp\":\"DOMAIN_SERVICES.CUSTOMER_SERVICE\"}";
-
     public RealCustomerProfileClient(HttpClient httpClient, ILogger<RealCustomerProfileClient> logger) : base(httpClient, logger)
     {
     }
@@ -33,9 +31,5 @@ internal class RealCustomerProfileClient : BaseClient<ApiException<Error>>, ICus
         }
     }
 
-    protected CustomerProfileWrapper CreateClient() => new(_httpClient.BaseAddress?.ToString(), _httpClient);
-
-    protected override int GetApiExceptionStatusCode(ApiException<Error> ex) => ex.StatusCode;
-
-    protected override object GetApiExceptionDetail(ApiException<Error> ex) => ex.Result.Detail;
+    protected override CustomerProfileWrapper CreateClient() => new(_httpClient) { BaseUrl = _httpClient.BaseAddress?.ToString() };
 }

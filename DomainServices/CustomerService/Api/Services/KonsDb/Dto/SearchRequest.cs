@@ -1,4 +1,4 @@
-﻿namespace DomainServices.CustomerService.Api.Services.CustomerSource.KonsDb.Dto;
+﻿namespace DomainServices.CustomerService.Api.Services.KonsDb.Dto;
 
 public record SearchRequest
 {
