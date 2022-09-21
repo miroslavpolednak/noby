@@ -22,8 +22,6 @@ internal class CreateCustomerHandler : IRequestHandler<CreateCustomerMediatrRequ
     {
         _logger.LogInformation("Create customer by request: {request}", request.Request);
 
-        await _createIdentifiedSubject.CreateSubject(request.Request, cancellationToken);
-
         var createdIdentity = request.Request.Identity.IdentityScheme switch
         {
             Identity.Types.IdentitySchemes.Kb => await _createIdentifiedSubject.CreateSubject(request.Request, cancellationToken),

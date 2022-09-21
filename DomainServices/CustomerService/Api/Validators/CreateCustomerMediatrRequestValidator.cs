@@ -16,14 +16,14 @@ internal class CreateCustomerMediatrRequestValidator : AbstractValidator<CreateC
         When(m => m.Request.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb,
              () => RuleFor(m => m.Request.Identity.IdentityId)
                    .Empty()
-                   .WithMessage("")
+                   .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
                    .WithErrorCode("11016"));
 
         When(m => m.Request.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp,
              () => RuleFor(m => m.Request.Identity.IdentityId)
                    .NotEmpty()
                    .GreaterThan(0)
-                   .WithMessage("")
+                   .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
                    .WithErrorCode("11016"));
     }
 }

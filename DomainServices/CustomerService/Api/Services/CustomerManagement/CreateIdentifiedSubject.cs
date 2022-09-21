@@ -125,6 +125,7 @@ internal class CreateIdentifiedSubject
             Street = address.Street.ToCMString(),
             HouseNumber = address.BuildingIdentificationNumber.ToCMString(),
             StreetNumber = address.LandRegistryNumber.ToCMString(),
+            EvidenceNumber = address.EvidenceNumber.ToCMString(),
             DeliveryDetails = address.DeliveryDetails.ToCMString(),
             CityDistrict = address.CityDistrict.ToCMString(),
             PragueDistrict = address.PragueDistrict.ToCMString(),
@@ -153,12 +154,18 @@ internal class CreateIdentifiedSubject
     {
         var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.MobilPrivate);
 
-        if (phone is null)
+        if (phone is null || string.IsNullOrWhiteSpace(phone.Value))
             return default;
+
+        var phoneNumber = phone.Value.Replace(" ", "");
+
+        var phoneIDC = phoneNumber[..Math.Max(0, phoneNumber.Length - 9)];
+        phoneNumber = phoneNumber.Substring(phoneIDC.Length, phoneNumber.Length - phoneIDC.Length);
 
         return new PrimaryPhone
         {
-            PhoneNumber = phone.Value
+            PhoneIDC = phoneIDC,
+            PhoneNumber = phoneNumber
         };
     }
 
