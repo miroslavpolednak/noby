@@ -17,7 +17,8 @@ internal class UpdateObligationHandler
             CreditCardLimit = request.CreditCardLimit,
             InstallmentAmount = request.InstallmentAmount,
             ObligationTypeId = request.ObligationTypeId,
-            LoanPrincipalAmount = request.LoanPrincipalAmount
+            LoanPrincipalAmount = request.LoanPrincipalAmount,
+            LoanPrincipalAmountConsolidated = request.LoanPrincipalAmountConsolidated,
         };
         if (request.Creditor is not null)
             model.Creditor = new DomainServices.SalesArrangementService.Contracts.ObligationCreditor

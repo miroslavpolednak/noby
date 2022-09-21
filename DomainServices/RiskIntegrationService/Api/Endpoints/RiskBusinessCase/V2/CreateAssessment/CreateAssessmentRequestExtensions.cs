@@ -11,7 +11,9 @@ internal static class CreateAssessmentRequestExtensions
             LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
             ItChannel = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateItChannel>(chanel, true),
-            ItChannelPrevious = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateItChannelPrevious>(request.ItChannelPrevious.ToString(), true),
+            ItChannelPrevious = request.ItChannelPrevious != Contracts.Shared.ItChannels.Unknown
+                ? FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateItChannelPrevious>(request.ItChannelPrevious.ToString(), true)
+                : null,
             AssessmentMode = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateAssessmentMode>(request.AssessmentMode.ToString(), true),
             GrantingProcedureCode = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateGrantingProcedureCode>(request.GrantingProcedureCode.ToString(), true),
             SelfApprovalRequired = request.SelfApprovalRequired,

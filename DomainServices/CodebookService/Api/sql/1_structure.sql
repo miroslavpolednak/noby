@@ -29,27 +29,35 @@ END
 
 
 -- table 'ProductTypeExtension'
--- DROP TABLE IF EXISTS [dbo].[ProductTypeExtension];
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ProductTypeExtension')
-BEGIN
-	CREATE TABLE [dbo].[ProductTypeExtension](
-		[ProductTypeId] [int] NOT NULL,
-		[MpHomeApiLoanType] [varchar](50) NULL,
-		[KonsDbLoanType] [tinyint] NOT NULL,
-	 CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED 
-	(
-		[ProductTypeId] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY];
+DROP TABLE IF EXISTS [dbo].[ProductTypeExtension];
+CREATE TABLE [dbo].[ProductTypeExtension](
+	[ProductTypeId] [int] NOT NULL,
+	[MpHomeApiLoanType] [varchar](50) NULL,
+	[KonsDbLoanType] [tinyint] NOT NULL,
+CONSTRAINT [PK_ProductTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[ProductTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY];
+GO
 
+	--INSERT INTO [dbo].[ProductTypeExtension]([ProductTypeId],[MpHomeApiLoanType],[KonsDbLoanType])
+	--VALUES
+	--(20001, 'KBMortgage', 3),
+	--(20002, 'KBBridgingMortgageLoan', 4),
+	--(20003, 'KBMortgageWithoutIncome', 5),
+	--(20004, 'KBMortgageLoanNonPurposePart', 6),
+	--(20010, 'KBAmericanMortgage', 7);
+
+	-- dočasné mapování (Do rozšíření KonsDB o ProductTypeId) [https://wiki.kb.cz/pages/viewpage.action?pageId=392883923]
 	INSERT INTO [dbo].[ProductTypeExtension]([ProductTypeId],[MpHomeApiLoanType],[KonsDbLoanType])
     VALUES
     (20001, 'KBMortgage', 3),
-	(20002, 'KBBridgingMortgageLoan', 4),
-	(20003, 'KBMortgageWithoutIncome', 5),
-	(20004, 'KBMortgageLoanNonPurposePart', 6),
-	(20010, 'KBAmericanMortgage', 7);
-END
+	(20002, 'KBMortgage', 4),
+	(20003, 'KBMortgage', 5),
+	(20004, 'KBMortgage', 6),
+	(20010, 'KBMortgage', 7);
+GO
 
 -- table 'RelationshipCustomerProductTypeExtension'
 DROP TABLE IF EXISTS [dbo].[RelationshipCustomerProductTypeExtension];
@@ -147,6 +155,27 @@ INSERT INTO [dbo].[ContactTypeExtension]([ContactTypeId],[MpDigiApiCode])
 	(2, 'BusinessMobile'),
 	(3, 'FixedHomeLine'),
 	(5, 'Email');
+GO
+
+-- table 'ObligationTypeExtension'
+DROP TABLE IF EXISTS [dbo].[ObligationTypeExtension];
+CREATE TABLE [dbo].[ObligationTypeExtension](
+    [ObligationTypeId] [int] NOT NULL,
+	[ObligationProperty] [varchar](50) NULL,
+    CONSTRAINT [PK_ObligationTypeExtension] PRIMARY KEY CLUSTERED
+    (
+    [ObligationTypeId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+INSERT INTO [dbo].[ObligationTypeExtension]([ObligationTypeId],[ObligationProperty])
+    VALUES
+    (1, 'amount'),
+	(2, 'amount'),
+	(3, 'limit'),
+	(4, 'limit'),
+	(5, 'amount');
 GO
 
 

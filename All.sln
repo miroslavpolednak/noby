@@ -197,7 +197,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Notifi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Api", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Api\CIS.InternalServices.NotificationService.Api.csproj", "{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalServices.AddressWhisperer", "ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj", "{1A72059E-47EB-4371-9F9E-250B4F902C89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.AddressWhisperer", "ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj", "{1A72059E-47EB-4371-9F9E-250B4F902C89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

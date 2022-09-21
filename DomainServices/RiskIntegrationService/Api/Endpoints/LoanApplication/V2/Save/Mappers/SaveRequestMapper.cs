@@ -11,6 +11,15 @@ internal sealed class SaveRequestMapper
 {
     public async Task<_C4M.LoanApplication> MapToC4m(_V2.LoanApplicationSaveRequest request, CancellationToken cancellation)
     {
+        // neprislo LTV, zkus ho spocitat
+        if (request.Product.Ltv.GetValueOrDefault() == 0 && request.Product.RequiredAmount.GetValueOrDefault() > 0)
+        {
+            decimal totalAppraised = request.Product.Collaterals?.Select(t => t.AppraisedValue?.Amount ?? 0).Sum() ?? 0;
+            if (totalAppraised > 0)
+                request.Product.Ltv = (request.Product.RequiredAmount!.Value / totalAppraised) * 100M;
+        }
+        request.Product.Ltv ??= 0;
+
         // produkt
         var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw new CisValidationException(0, $"Can't find RiskApplicationType item");
 

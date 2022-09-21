@@ -9,6 +9,7 @@ using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.RiskIntegrationService.Abstraction;
 using FOMS.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using DomainServices.RiskIntegrationService.Abstraction;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,8 @@ builder.Services
     .AddProductService()
     .AddUserService()
     .AddCaseService()
-    .AddSalesArrangementService();
+    .AddSalesArrangementService()
+    .AddRiskIntegrationService();
 
 // FOMS services
 builder
