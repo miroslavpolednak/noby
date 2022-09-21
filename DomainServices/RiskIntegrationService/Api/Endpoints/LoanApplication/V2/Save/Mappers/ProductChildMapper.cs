@@ -116,7 +116,7 @@ internal sealed class ProductChildMapper
         return t => new LoanApplicationPurpose
         {
             Amount = t.Amount,
-            Code = purposes.FirstOrDefault(x => x.Id == t.LoanPurposeId)?.C4mId ?? -1
+            Code = purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
         };
     }
     
