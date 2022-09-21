@@ -1,4 +1,7 @@
-﻿namespace DomainServices.CustomerService.Api.Clients;
+﻿using CIS.Core.Exceptions;
+using Grpc.Core;
+
+namespace DomainServices.CustomerService.Api.Clients;
 
 internal abstract class BaseClient<TClient>
 {
@@ -19,7 +22,7 @@ internal abstract class BaseClient<TClient>
         {
             return await func();
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not BaseCisException or RpcException)
         {
             _logger.LogError(ex, ex.Message);
             throw;

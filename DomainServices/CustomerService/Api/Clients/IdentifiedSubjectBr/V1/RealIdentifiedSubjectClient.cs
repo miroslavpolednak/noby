@@ -4,7 +4,7 @@ namespace DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
 
 internal class RealIdentifiedSubjectClient : BaseClient<IdentifiedSubjectBrWrapper>, IIdentifiedSubjectClient
 {
-    public RealIdentifiedSubjectClient(HttpClient httpClient, ILogger logger) : base(httpClient, logger)
+    public RealIdentifiedSubjectClient(HttpClient httpClient, ILogger<RealIdentifiedSubjectClient> logger) : base(httpClient, logger)
     {
     }
 
@@ -31,5 +31,5 @@ internal class RealIdentifiedSubjectClient : BaseClient<IdentifiedSubjectBrWrapp
         }
     }
 
-    protected override IdentifiedSubjectBrWrapper CreateClient() => new(_httpClient) { BaseUrl = _httpClient.BaseAddress?.ToString() };
+    protected override IdentifiedSubjectBrWrapper CreateClient() => new(_httpClient) { BaseUrl = $"{_httpClient.BaseAddress}/public" };
 }

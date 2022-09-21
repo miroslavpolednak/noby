@@ -14,24 +14,16 @@ internal static class LoanApplicationAssessmentStartupExtensions
 
         foreach (var configuration in configurations)
         {
-            switch (configuration.Version)
+            switch (configuration.Version, configuration.ImplementationType)
             {
-                case Versions.V0_2:
-                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                        builder.Services.AddScoped<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V0_2.MockLoanApplicationAssessmentClient>();
-                    else
-                        builder.Services
-                            .AddC4mHttpClient<LoanApplicationAssessment.V0_2.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient, LoanApplicationAssessmentConfiguration>(Versions.V0_2.ToString())
-                            .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V0_2.RealLoanApplicationAssessmentClient>(ServiceName);
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Mock):
+                    builder.Services.AddScoped<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.MockLoanApplicationAssessmentClient>();
                     break;
 
-                case Versions.V1:
-                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                        builder.Services.AddScoped<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.MockLoanApplicationAssessmentClient>();
-                    else
-                        builder.Services
-                            .AddC4mHttpClient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient, LoanApplicationAssessmentConfiguration>(Versions.V1.ToString())
-                            .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(ServiceName);
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
+                    builder.Services
+                        .AddC4mHttpClient<LoanApplicationAssessment.V1.ILoanApplicationAssessmentClient, LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient, LoanApplicationAssessmentConfiguration>(Versions.V1.ToString())
+                        .ConfigureC4mHttpMessageHandler<LoanApplicationAssessment.V1.RealLoanApplicationAssessmentClient>(ServiceName);
                     break;
 
                 default:
