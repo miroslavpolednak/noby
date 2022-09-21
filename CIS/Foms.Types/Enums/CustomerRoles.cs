@@ -12,15 +12,15 @@ public enum CustomerRoles : byte
     [EnumMember]
     Unknown = 0,
     
-    [Display(Name = "Dlužník")]
+    [Display(Name = "Dlužník", ShortName = "A")]
     [EnumMember]
     Debtor = 1,
     
-    [Display(Name = "Spoludlužník")]
+    [Display(Name = "Spoludlužník", ShortName = "S")]
     [EnumMember]
     Codebtor = 2,
     
-    [Display(Name = "Ručitel")]
+    [Display(Name = "Ručitel", ShortName = "R")]
     [EnumMember]
     Garantor = 128,
 }
