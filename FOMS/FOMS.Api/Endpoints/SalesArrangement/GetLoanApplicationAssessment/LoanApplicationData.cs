@@ -9,6 +9,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
     public class LoanApplicationData
     {
+
         #region Properties
 
         /// <summary>
@@ -32,6 +33,12 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
         public Dictionary<string, cCustomer.CustomerDetailResponse> CustomersByIdentityCode { get; init; }
 
+        public Dictionary<int, DomainServices.CodebookService.Contracts.GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
+
+        public Dictionary<int, DomainServices.CodebookService.Contracts.Endpoints.Countries.CountriesItem> CountriesById { get; init; }
+
+        public Dictionary<string, List<int>> ObligationTypeIdsByObligationProperty { get; init; }
+
         #endregion
 
         #region Construction
@@ -44,7 +51,10 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             List<cArrangement.Household> households,
             List<cArrangement.CustomerOnSA> customersOnSa,
             Dictionary<int, cArrangement.Income> incomesById,
-            Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode
+            Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode,
+            List<DomainServices.CodebookService.Contracts.GenericCodebookItem> academicDegreesBefore,
+            List<DomainServices.CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries,
+            List<DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes
             )
         {
             LoanApplicationDataVersion = Guid.NewGuid().ToString().Replace("-", "");
@@ -56,8 +66,12 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             CustomersOnSa = customersOnSa;
             IncomesById = incomesById;
             CustomersByIdentityCode = customersByIdentityCode;
+            AcademicDegreesBeforeById = academicDegreesBefore.ToDictionary(i => i.Id);
+            CountriesById = countries.ToDictionary(i => i.Id);
+            ObligationTypeIdsByObligationProperty = obligationTypes.GroupBy(i => i.ObligationProperty).ToDictionary(i => i.Key, l => l.Select(i => i.Id).ToList());
         }
 
         #endregion
+
     }
 }

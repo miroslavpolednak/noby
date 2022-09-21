@@ -69,7 +69,7 @@ internal static class Extensions
         {
             cLA.LoanApplicationCustomer MapCustomer(cArrangement.CustomerOnSA cOnSA)
             {
-                var obligationTypeLoanPrincipalIds = new List<int> { 1, 2, 5 }; // TODO: dle číselníku!
+                var obligationTypeAmountIds = data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
 
                 var MapAddress = (cCis.GrpcAddress a) => new cRS.AddressDetail
                 {
@@ -93,8 +93,8 @@ internal static class Extensions
                 var MapObligation = (cArrangement.Obligation o) => new cLA.LoanApplicationObligation
                 {
                     ObligationTypeId = o.ObligationTypeId!.Value,
-                    Amount = obligationTypeLoanPrincipalIds.Contains(o.ObligationTypeId!.Value) ? o.LoanPrincipalAmount : o.CreditCardLimit, // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.LoanPrincipalAmount; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.CreditCardLimit;
-                    AmountConsolidated = obligationTypeLoanPrincipalIds.Contains(o.ObligationTypeId!.Value) ? o.Correction.LoanPrincipalAmountCorrection : o.Correction.CreditCardLimitCorrection,  // // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.Correction.LoanPrincipalAmountCorrection; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.Correction.CreditCardLimitCorrection;
+                    Amount = obligationTypeAmountIds.Contains(o.ObligationTypeId!.Value) ? o.LoanPrincipalAmount : o.CreditCardLimit, // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.LoanPrincipalAmount; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.CreditCardLimit;
+                    AmountConsolidated = obligationTypeAmountIds.Contains(o.ObligationTypeId!.Value) ? o.Correction.LoanPrincipalAmountCorrection : o.Correction.CreditCardLimitCorrection,  // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.Correction.LoanPrincipalAmountCorrection; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.Correction.CreditCardLimitCorrection;
                     Installment = o.InstallmentAmount,
                     InstallmentConsolidated = o.Correction.InstallmentAmountCorrection,
                 };
@@ -125,13 +125,13 @@ internal static class Extensions
                             ConfirmationPerson = i.Employement?.IncomeConfirmation?.ConfirmationPerson,
                             ConfirmationContactPhone = i.Employement?.IncomeConfirmation?.ConfirmationContact,
                             ConfirmationDate = i.Employement?.IncomeConfirmation?.ConfirmationDate,
-                            JobTrialPeriod = (i.Employement?.Job?.JobTrialPeriod == true),
-                            NoticePeriod = (i.Employement?.Job?.JobNoticePeriod == true),
+                            JobTrialPeriod = (i.Employement?.Job?.IsInTrialPeriod == true),
+                            NoticePeriod = (i.Employement?.Job?.IsInProbationaryPeriod == true),
                             EmploymentTypeId = i.Employement?.Job?.EmploymentTypeId,
                             FirstWorkContractSince = i.Employement?.Job?.FirstWorkContractSince,
                             CurrentWorkContractSince = i.Employement?.Job?.CurrentWorkContractSince,
                             CurrentWorkContractTo = i.Employement?.Job?.CurrentWorkContractTo,
-                            ConfirmationByCompany = (i.Employement?.IncomeConfirmation?.ConfirmationByCompany == true),
+                            ConfirmationByCompany = (i.Employement?.IncomeConfirmation?.IsIssuedByExternalAccountant == true),
                             IncomeDeduction = i.Employement?.WageDeduction is not null ? new cLA.LoanApplicationEmploymentIncomeDeduction
                             {
                                 Execution = i.Employement.WageDeduction.DeductionDecision,
@@ -149,7 +149,7 @@ internal static class Extensions
                         }
 
                         var i = data.IncomesById[iil.IncomeId];
-                           
+
                         return new cLA.LoanApplicationEntrepreneurIncome
                         {
                             EntrepreneurIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
@@ -204,28 +204,35 @@ internal static class Extensions
                     {
                         IsIncomeConfirmed = cOnSA.LockedIncomeDateTime is not null,
                         LastConfirmedDate = cOnSA.LockedIncomeDateTime is not null ? (DateTime)cOnSA.LockedIncomeDateTime! : default(DateTime),
-                        EmploymentIncomes = cOnSA.Incomes.Where(i => i.IncomeTypeId == 1).Select(i => MapEmploymentIncome(i)).ToList(),     // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 1 //TODO find by codebook MainIncomeType !!! 
-                        EntrepreneurIncome = MapEntrepreneurIncome(cOnSA.Incomes.FirstOrDefault(i => i.IncomeTypeId == 2)),                 // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 2 //TODO find by codebook MainIncomeType !!! 
-                        RentIncome = MapRentIncome(cOnSA.Incomes.FirstOrDefault(i => i.IncomeTypeId == 3)),                                 // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 3 //TODO find by codebook MainIncomeType !!! 
-                        OtherIncomes = cOnSA.Incomes.Where(i => i.IncomeTypeId == 4).Select(i => MapOtherIncome(i)).ToList(),               // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 4 //TODO find by codebook MainIncomeType !!! 
+                        EmploymentIncomes = cOnSA.Incomes.Where(i => i.IncomeTypeId == 1).Select(i => MapEmploymentIncome(i)).ToList(),     // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 1
+                        EntrepreneurIncome = MapEntrepreneurIncome(cOnSA.Incomes.FirstOrDefault(i => i.IncomeTypeId == 2)),                 // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 2
+                        RentIncome = MapRentIncome(cOnSA.Incomes.FirstOrDefault(i => i.IncomeTypeId == 3)),                                 // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 3
+                        OtherIncomes = cOnSA.Incomes.Where(i => i.IncomeTypeId == 4).Select(i => MapOtherIncome(i)).ToList(),               // Pro zdroj_prijmu_hlavni = ze zaměstnání; WHERE podmínka: Income.IncomeTypeId = 4
                     };
                 }
 
-                
+
                 var identityKb = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
                 var c = data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode(identityKb)];
 
-                var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);   //TODO find by codebook ???
-                var contactEmail = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 5 && i.IsPrimary);   //TODO find by codebook ???
+                var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);
+                var contactEmail = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 5 && i.IsPrimary);
 
-                var addressPermanent = c.Addresses.FirstOrDefault(i => i.AddressTypeId == 1);  // Pouze trvalá adresa, WHERE podmínka:Customer.Addresses.AddressTypeId = PERMANENT  //TODO find by codebook !!! 
+                var addressPermanent = c.Addresses.FirstOrDefault(i => i.AddressTypeId == 1);  // Pouze trvalá adresa, WHERE podmínka:Customer.Addresses.AddressTypeId = PERMANENT
+                var kbRelationshipCodeUpper = c.NaturalPerson?.KbRelationshipCode?.ToUpperInvariant();
+
+                var degreeBeforeId = c.NaturalPerson?.DegreeBeforeId;
+                var academicTitlePrefix = degreeBeforeId.HasValue ? (data.AcademicDegreesBeforeById.ContainsKey(degreeBeforeId.Value) ? data.AcademicDegreesBeforeById[degreeBeforeId.Value].Name : null) : null;
+
+                var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
+                var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
                 return new cLA.LoanApplicationCustomer
                 {
                     InternalCustomerId = cOnSA.CustomerOnSAId,
                     PrimaryCustomerId = identityKb!.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    //IsGroupEmployee = c.NaturalPerson?.KbRelationshipCode //TRUE IF: Customer.NaturalPerson.KbRelationshipCode = A nebo Customer.NaturalPerson.KbRelationshipCode = E, V CM customerKbRelationship.code = "A" nebo "E" ??? KbRelationshipCode na žádné entitě neevidujeme //TODO: dle CNFL neimplementované
-                    //SpecialRelationsWithKB = // TRUE IF: Customer.NaturalPerson.KbRelationshipCode = R nebo Customer.NaturalPerson.KbRelationshipCode = D, V CM customerKbRelationship.code = "R" nebo "D" ???  //TODO: dle CNFL neimplementované
+                    IsGroupEmployee = kbRelationshipCodeUpper == "A" || kbRelationshipCodeUpper == "E", //TRUE IF: Customer.NaturalPerson.KbRelationshipCode = A nebo Customer.NaturalPerson.KbRelationshipCode = E, V CM customerKbRelationship.code = "A" nebo "E"
+                    SpecialRelationsWithKB = kbRelationshipCodeUpper == "R" || kbRelationshipCodeUpper == "D", // TRUE IF: Customer.NaturalPerson.KbRelationshipCode = R nebo Customer.NaturalPerson.KbRelationshipCode = D, V CM customerKbRelationship.code = "R" nebo "D"
                     BirthNumber = c.NaturalPerson?.BirthNumber,
                     CustomerRoleId = cOnSA.CustomerRoleId,
                     Firstname = c.NaturalPerson?.FirstName,
@@ -236,11 +243,11 @@ internal static class Extensions
                     GenderId = c.NaturalPerson?.GenderId,
                     MaritalStateId = c.NaturalPerson?.MaritalStatusStateId,
                     EducationLevelId = c.NaturalPerson?.EducationLevelId > 0 ? c.NaturalPerson?.EducationLevelId : null, // neposílat pokud 0
-                    // AcademicTitlePrefix = c.NaturalPerson?.DegreeBeforeId,   //TODO: posílat název z číselníku
+                    AcademicTitlePrefix = academicTitlePrefix,
                     MobilePhoneNumber = contactMobilePhone?.Value,
                     HasEmail = !String.IsNullOrEmpty(contactEmail?.Value),
                     IsPartner = (h.Data?.AreCustomersPartners == true),
-                    //Taxpayer = //c.NaturalPerson.TaxResidencyCountryId      //Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"  //??? TaxResidencyCountryId na žádné entitě nemáme //TODO: dle CNFL neimplementované
+                    Taxpayer = taxResidencyCountryCode?.ToUpperInvariant() == "CZ",      //Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"
                     Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),
                     IdentificationDocument = MapIdentificationDocument(c.IdentificationDocument),
                     Obligations = cOnSA.Obligations.Where(i => i.Creditor?.IsExternal == true).Select(i => MapObligation(i)).ToList(), //WHERE podmínka - pouze ty závazky, kde: Obligation.Creditor.IsExternal = true

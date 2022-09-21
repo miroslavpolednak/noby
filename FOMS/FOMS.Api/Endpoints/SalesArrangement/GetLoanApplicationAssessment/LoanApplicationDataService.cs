@@ -11,6 +11,7 @@ using cCase = DomainServices.CaseService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCustomer = DomainServices.CustomerService.Contracts;
 using cUser = DomainServices.UserService.Contracts;
+using DomainServices.CodebookService.Abstraction;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -28,6 +29,7 @@ internal class LoanApplicationDataService
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IUserServiceAbstraction _userService;
     private readonly ICustomerServiceAbstraction _customerService;
+    private readonly ICodebookServiceAbstraction _codebookService;
 
     public LoanApplicationDataService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
@@ -37,7 +39,8 @@ internal class LoanApplicationDataService
         IHouseholdServiceAbstraction householdService,
         ICaseServiceAbstraction caseService,
         IUserServiceAbstraction userService,
-        ICustomerServiceAbstraction customerService
+        ICustomerServiceAbstraction customerService,
+        ICodebookServiceAbstraction codebookService
         )
     {
         _userAccessor = userAccessor;
@@ -48,6 +51,7 @@ internal class LoanApplicationDataService
         _caseService = caseService;
         _userService = userService;
         _customerService = customerService;
+        _codebookService = codebookService;
     }
 
     #endregion
@@ -125,7 +129,10 @@ internal class LoanApplicationDataService
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
         //Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode = null;
         var user = ServiceCallResult.ResolveAndThrowIfError<cUser.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation));
-        return new LoanApplicationData(arrangement, offer, user, caseInstance, households, customersOnSA, incomesById, customersByIdentityCode);
+        var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
+        var countries = await _codebookService.Countries(cancellation);
+        var obligationTypes = await _codebookService.ObligationTypes(cancellation);
+        return new LoanApplicationData(arrangement, offer, user, caseInstance, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBefore, countries, obligationTypes);
     }
 
 }
