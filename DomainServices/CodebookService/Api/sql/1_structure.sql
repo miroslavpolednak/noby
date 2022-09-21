@@ -157,6 +157,27 @@ INSERT INTO [dbo].[ContactTypeExtension]([ContactTypeId],[MpDigiApiCode])
 	(5, 'Email');
 GO
 
+-- table 'ObligationTypeExtension'
+DROP TABLE IF EXISTS [dbo].[ObligationTypeExtension];
+CREATE TABLE [dbo].[ObligationTypeExtension](
+    [ObligationTypeId] [int] NOT NULL,
+	[ObligationProperty] [varchar](50) NULL,
+    CONSTRAINT [PK_ObligationTypeExtension] PRIMARY KEY CLUSTERED
+    (
+    [ObligationTypeId] ASC
+     )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+INSERT INTO [dbo].[ObligationTypeExtension]([ObligationTypeId],[ObligationProperty])
+    VALUES
+    (1, 'amount'),
+	(2, 'amount'),
+	(3, 'limit'),
+	(4, 'limit'),
+	(5, 'amount');
+GO
+
 
 /*
 TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
