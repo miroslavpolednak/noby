@@ -21,7 +21,7 @@ internal sealed class SaveRequestMapper
         request.Product.Ltv ??= 0;
 
         // produkt
-        var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw new CisValidationException(0, $"Can't find RiskApplicationType item");
+        var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw new CisValidationException(17009, $"Can't find RiskApplicationType item");
 
         bool verification = riskApplicationType.MandantId == (int)CIS.Foms.Enums.Mandants.Kb
             && request.Product.RequiredAmount <= 9000000

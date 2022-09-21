@@ -12,7 +12,7 @@ internal partial class ResourceIdentifier
             Instance = _kbPersonSchemas.Contains(humanUser.IdentityScheme) ? _kbInstanceName : _mpInstanceName,
             Domain = domain,
             Resource = resource,
-            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(0, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
+            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
             Variant = humanUser.IdentityScheme!
         };
 

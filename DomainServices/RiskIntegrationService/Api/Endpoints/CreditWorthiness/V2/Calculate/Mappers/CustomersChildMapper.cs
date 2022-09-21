@@ -23,7 +23,7 @@ internal sealed class CustomersChildMapper
             };
             t.Incomes?.ForEach(i =>
             {
-                string incomeCode = mainIncomeTypes.FirstOrDefault(t => t.Id == i.IncomeTypeId)?.Code ?? throw new CisValidationException(0, $"IncomeType={i.IncomeTypeId} not found in IncomeMainTypes codebook");
+                string incomeCode = mainIncomeTypes.FirstOrDefault(t => t.Id == i.IncomeTypeId)?.Code ?? throw new CisValidationException(17007, $"IncomeType={i.IncomeTypeId} not found in IncomeMainTypes codebook");
                 incomes.First(t => t.Category == FastEnum.Parse<_C4M.LoanApplicationIncomeCategory>(incomeCode)).Amount += i.Amount;
             });
 

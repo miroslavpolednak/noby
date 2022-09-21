@@ -54,7 +54,7 @@ internal sealed class CommitCaseHandler
         {
             var approverInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.Approver, cancellationToken);
             if (Helpers.IsDealerSchema(request.Approver!.IdentityScheme))
-                throw new CisValidationException(0, $"Approver can't be dealer.");
+                throw new CisValidationException(17010, $"Approver can't be dealer.");
             else
                 requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(approverInstance, request.Approver);
         }
