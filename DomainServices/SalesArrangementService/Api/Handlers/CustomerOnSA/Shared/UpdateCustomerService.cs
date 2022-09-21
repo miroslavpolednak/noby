@@ -20,6 +20,7 @@ internal sealed class UpdateCustomerService
         entity.DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth;
         entity.FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName;
         entity.Name = _cachedCustomerInstance.NaturalPerson?.LastName ?? "";
+        entity.MaritalStatusId = _cachedCustomerInstance.NaturalPerson?.MaritalStatusStateId;
 
         // get CaseId
         var caseId = await _dbContext.SalesArrangements

@@ -25,8 +25,7 @@ internal class GetIncomeHandler
             _SA.Income.DataOneofCase.Employement => incomeInstance.Employement.ToApiResponse(),
             _SA.Income.DataOneofCase.Other => incomeInstance.Other.ToApiResponse(),
             _SA.Income.DataOneofCase.Entrepreneur => incomeInstance.Entrepreneur.ToApiResponse(),
-            _ => null // tohle je asi spravne, protoze data o prijmu nemusi byt vyplnena a v tu chvili nebude naplnen object detailu
-            //_ => throw new NotImplementedException($"Income type '{incomeInstance}' is not implemented")
+            _ => null
         };
 
     private readonly ICustomerOnSAServiceAbstraction _customerService;

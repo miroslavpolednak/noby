@@ -56,6 +56,21 @@ namespace ExternalServices.MpHome.V1._1
             });
         }
 
+        public Task<IServiceCallResult> UpdatePartner(long partnerId, PartnerRequest request)
+        {
+            _logger.LogDebug("Run inputs: MpHome DeletePartnerLoanLink with partnerId {partnerId}, request {partnerRequest}", partnerId, request);
+
+            return WithClient(async c =>
+            {
+                return await callMethod(async () =>
+                {
+                    await c.FomsUpdatePartnerAsync(partnerId, default);
+
+                    return new SuccessfulServiceCallResult();
+                });
+            });
+        }
+
 
         private Client CreateClient()
             => new(_httpClient?.BaseAddress?.ToString(), _httpClient);

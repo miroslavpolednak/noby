@@ -1,4 +1,5 @@
-﻿using FluentValidation.AspNetCore;
+﻿using ExternalServices.AddressWhisperer;
+using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 
 namespace FOMS.Api.StartupExtensions;
@@ -28,6 +29,9 @@ internal static class FomsServices
                 fv.RegisterValidatorsFromAssemblyContaining<IApiAssembly>(includeInternalTypes: true);
                 fv.DisableDataAnnotationsValidation = true;
             });
+
+        // ext services
+        builder.AddExternalServiceAddressWhisperer();
 
         return builder;
     }

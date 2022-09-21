@@ -18,4 +18,6 @@ message CustomerOnSABase {
     cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 4;
 
     cis.types.NullableGrpcDateTime LockedIncomeDateTime = 6;
+
+    google.protobuf.Int32Value MaritalStatusId = 7;
 }

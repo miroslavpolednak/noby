@@ -12,5 +12,5 @@ message IncomeInList {
     cis.types.NullableGrpcDecimal Sum = 3;
     string CurrencyCode = 4;
     string IncomeSource = 5;
-    google.protobuf.BoolValue ProofOfIncomeToggle = 6;
+    google.protobuf.BoolValue HasProofOfIncome = 6;
 }

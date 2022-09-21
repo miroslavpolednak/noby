@@ -16,7 +16,7 @@ public static class Extensions
             DateOfBirth = customer.NaturalPerson?.DateOfBirth,
             DegreeAfterId = customer.NaturalPerson?.DegreeAfterId,
             DegreeBeforeId = customer.NaturalPerson?.DegreeBeforeId,
-            MaritalStatusStateId = customer.NaturalPerson?.MaritalStatusStateId,
+            MaritalStatusId = customer.NaturalPerson?.MaritalStatusStateId,
             BirthName = customer.NaturalPerson?.BirthName,
             BirthNumber = customer.NaturalPerson?.BirthNumber,
             PlaceOfBirth = customer.NaturalPerson?.PlaceOfBirth,
@@ -38,7 +38,8 @@ public static class Extensions
             IssuedBy = customer.IdentificationDocument?.IssuedBy,
             IssuedOn = customer.IdentificationDocument?.IssuedOn,
             RegisterPlace = customer.IdentificationDocument?.RegisterPlace,
-            ValidTo = customer.IdentificationDocument?.ValidTo
+            ValidTo = customer.IdentificationDocument?.ValidTo,
+            Number = customer.IdentificationDocument?.Number
         };
 
         model.Contacts = customer.Contacts?

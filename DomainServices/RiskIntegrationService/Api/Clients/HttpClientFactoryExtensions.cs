@@ -1,4 +1,5 @@
 ﻿using CIS.ExternalServicesHelpers.Configuration;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
@@ -48,5 +49,19 @@ internal static class HttpClientFactoryExtensions
 
             // auth
             client.DefaultRequestHeaders.Authorization = configuration.HttpBasicAuthenticationHeader;
+
+            // kb hlavicky
+            //var userInstance = services.GetService<CIS.Core.Security.ICurrentUserAccessor>();
+            var context = services.GetRequiredService<IHttpContextAccessor>();
+            var userAccessor = context.HttpContext!.RequestServices.GetRequiredService<CIS.Core.Security.ICurrentUserAccessor>();
+
+            client.DefaultRequestHeaders.Add("X-KB-Caller-System-Identity", "{\"app\":\"NOBY\",\"appComp\":\"NOBY\"}");
+            if (Activity.Current?.Id is not null)
+            {
+                client.DefaultRequestHeaders.Add("X-B3-TraceId", Activity.Current?.RootId);
+                client.DefaultRequestHeaders.Add("X-B3-SpanId", Activity.Current?.SpanId.ToString());
+            }
+            if (userAccessor?.IsAuthenticated ?? false)
+                client.DefaultRequestHeaders.Add("X-KB-Party-Identity-In-Service", "{\"partyIdIS\":[{\"partyId\":{\"id\":\"" + userAccessor.User?.Id.ToString(System.Globalization.CultureInfo.InvariantCulture) + "\",\"idScheme\":\"V33\"},\"usg\":\"AUTH\"}]}");
         });
 }

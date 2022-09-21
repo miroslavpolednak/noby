@@ -100,8 +100,8 @@ internal class FormDataService
             var mandatoryFields = new List<(string Field, bool Valid)>
             {
                 ("EmploymentTypeId", (income.Employement?.Job?.EmploymentTypeId).HasValue  ),
-                ("JobNoticePeriod", (income.Employement?.Job?.JobNoticePeriod).HasValue ),
-                ("JobTrialPeriod", (income.Employement?.Job?.JobTrialPeriod).HasValue )
+                ("IsInProbationaryPeriod", (income.Employement?.Job?.IsInProbationaryPeriod).HasValue ),
+                ("IsInTrialPeriod", (income.Employement?.Job?.IsInTrialPeriod).HasValue )
            };
 
             return mandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();

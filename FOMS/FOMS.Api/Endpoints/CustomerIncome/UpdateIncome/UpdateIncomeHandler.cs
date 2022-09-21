@@ -44,6 +44,11 @@ internal class UpdateIncomeHandler
                         model.Entrepreneur = o3.ToDomainServiceRequest();
                     break;
 
+                case CIS.Foms.Enums.CustomerIncomeTypes.Rent:
+                    // RENT nema zadna data
+                    model.Rent = new DomainServices.SalesArrangementService.Contracts.IncomeDataRent();
+                    break;
+
                 default:
                     throw new NotImplementedException($"IncomeType {incomeInstance.IncomeTypeId} cast to domain service is not implemented");
             }
