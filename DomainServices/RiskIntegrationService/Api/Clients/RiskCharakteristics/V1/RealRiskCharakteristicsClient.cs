@@ -12,7 +12,7 @@ internal sealed class RealRiskCharakteristicsClient
             .ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<_C4M.DTICalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, RiskCharakteristicsStartupExtensions.ServiceName, nameof(CalculateDti), nameof(_C4M.DTICalculation));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, RiskCharakteristicsStartupExtensions.ServiceName, nameof(CalculateDti), nameof(_C4M.DTICalculation));
     }
 
     public async Task<_C4M.DSTICalculation> CalculateDsti(_C4M.DSTICalculationArguments request, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ internal sealed class RealRiskCharakteristicsClient
             .ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<_C4M.DSTICalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, RiskCharakteristicsStartupExtensions.ServiceName, nameof(CalculateDsti), nameof(_C4M.DSTICalculation));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, RiskCharakteristicsStartupExtensions.ServiceName, nameof(CalculateDsti), nameof(_C4M.DSTICalculation));
     }
 
     private readonly HttpClient _httpClient;

@@ -30,7 +30,7 @@ internal sealed class CalculateHandler
     private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)
         => (await _codebookService.RiskApplicationTypes(cancellationToken))
             .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
-        ?? throw new CisValidationException(0, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
+        ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;

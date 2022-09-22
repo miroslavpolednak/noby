@@ -12,7 +12,7 @@ internal sealed class RealCreditWorthinessClient
                     .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(CreditWorthinessCalculation));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(CreditWorthinessCalculation));
 
         return result;
     }
