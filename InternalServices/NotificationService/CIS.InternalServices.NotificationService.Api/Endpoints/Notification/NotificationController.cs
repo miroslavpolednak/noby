@@ -1,4 +1,6 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Sms;
+﻿using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.Contracts.Sms;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +21,26 @@ public class NotificationController : ControllerBase
 
     [HttpPost("sms")]
     [Produces("application/json")]
-    public async Task<SmsPushResponse> PushSms([FromBody] SmsPushRequest request, CancellationToken token)
+    public async Task<SmsSendResponse> SendSms([FromBody] SmsSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
     [HttpPost("smsFromTemplate")]
     [Produces("application/json")]
-    public async Task<SmsFromTemplatePushResponse> PushSmsFromTemplate([FromBody] SmsFromTemplatePushRequest request, CancellationToken token)
+    public async Task<SmsFromTemplateSendResponse> SendSmsFromTemplate([FromBody] SmsFromTemplateSendRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+
+    [HttpPost("email")]
+    [Produces("application/json")]
+    public async Task<EmailSendResponse> SendEmail([FromBody] EmailSendRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+    
+    [HttpPost("emailFromTemplate")]
+    [Produces("application/json")]
+    public async Task<EmailFromTemplateSendResponse> SendEmailFromTemplate([FromBody] EmailFromTemplateSendRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+
+    [HttpGet]
+    [Produces("application/json")]
+    public async Task<ResultGetResponse> GetResult([FromBody] ResultGetRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 }

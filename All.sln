@@ -191,7 +191,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Sulm", "Ex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{46414B85-D1B6-411D-B232-C6CC8B35FE57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Abstraction", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Abstraction\CIS.InternalServices.NotificationService.Abstraction.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Client", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Client\CIS.InternalServices.NotificationService.Client.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Contracts", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj", "{67BB0077-7777-4F58-AE62-99072014325C}"
 EndProject

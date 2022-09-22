@@ -5,8 +5,8 @@ using ProtoBuf;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 
-[ProtoContract]
-public class SmsFromTemplatePushRequest : IRequest<SmsFromTemplatePushResponse>, IValidatableRequest
+[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+public class SmsSendRequest : IRequest<SmsSendResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
     public Phone Phone { get; set; } = default!;
@@ -18,5 +18,5 @@ public class SmsFromTemplatePushRequest : IRequest<SmsFromTemplatePushResponse>,
     public string Type { get; set; } = string.Empty;
     
     [ProtoMember(4)]
-    public List<StringKeyValuePair> Placeholders { get; set; } = default!;
+    public string Text { get; set; } = string.Empty;
 }

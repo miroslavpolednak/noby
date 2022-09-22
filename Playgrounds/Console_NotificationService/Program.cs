@@ -30,7 +30,7 @@ var phone = new Phone
     NationalPhoneNumber = "Phone"
 };
 
-var smsPushRequest = new SmsPushRequest
+var smsPushRequest = new SmsSendRequest
 {
     Phone = phone,
     Type = type,
@@ -38,21 +38,21 @@ var smsPushRequest = new SmsPushRequest
     Text = text,
 };
 
-var smsPushResponse = await client.PushSms(smsPushRequest, token);
+var smsPushResponse = await client.SendSms(smsPushRequest, token);
 Console.WriteLine($"Sms push response: {smsPushResponse.NotificationId}");
 
-var smsFromTemplatePushRequest = new SmsFromTemplatePushRequest
+var smsFromTemplatePushRequest = new SmsFromTemplateSendRequest
 {
     Phone = phone,
     Type = type,
     ProcessingPriority = priority,
     Placeholders = new List<StringKeyValuePair>()
     {
-        new () { Key = "a", Value = "b"}
+        new () { Key = "a", Value = "b" }
     },
 };
 
-var smsFromTemplatePushResponse = await client.PushSmsFromTemplate(smsFromTemplatePushRequest, token);
+var smsFromTemplatePushResponse = await client.SendSmsFromTemplate(smsFromTemplatePushRequest, token);
 Console.WriteLine($"Sms from template push response: {smsFromTemplatePushResponse.NotificationId}");
 
 Console.WriteLine("Press any key to exit...");

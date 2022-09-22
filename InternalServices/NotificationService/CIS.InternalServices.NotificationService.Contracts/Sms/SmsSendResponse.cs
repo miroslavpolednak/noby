@@ -3,7 +3,7 @@
 namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
-public class SmsFromTemplatePushResponse
+public class SmsSendResponse
 {
     [ProtoMember(1)]
     public string NotificationId { get; set; } = string.Empty;
