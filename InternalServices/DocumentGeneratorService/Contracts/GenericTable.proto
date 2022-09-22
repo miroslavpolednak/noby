@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DocumentGeneratorService;
+option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contracts";
+
+message GenericTable {
+	repeated GenericTableRow Rows = 1;
+}
+
+message GenericTableRow {
+	repeated string Values = 1;
+}
