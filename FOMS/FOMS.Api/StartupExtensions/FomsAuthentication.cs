@@ -20,7 +20,8 @@ public static class FomsAuthentication
             builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddDataProtection()
                 .SetApplicationName("NobyFeApi")
-                .PersistKeysToDbContext<DataProtectionKeysContext>();
+                .PersistKeysToDbContext<DataProtectionKeysContext>()
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(100));
         }
 
         // set up auth provider

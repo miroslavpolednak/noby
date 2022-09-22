@@ -52,8 +52,7 @@ public class ApiExceptionMiddleware
         catch (CisServiceCallResultErrorException ex)
         {
             logger.ValidationException(ex.Errors);
-            var result = Results.ValidationProblem(ex.Errors.ToDictionary(k => k.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), v => new[] { v.Message }));
-            await result.ExecuteAsync(context);
+            await Results.ValidationProblem(ex.Errors.ToDictionary(k => k.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), v => new[] { v.Message })).ExecuteAsync(context);
         }
         // object not found
         catch (CisNotFoundException ex)
@@ -69,22 +68,20 @@ public class ApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
-            IResult result;
+            logger.GeneralException(ex);
+
             // osetrena validace v pripade, ze se vraci vice validacnich hlasek
             if (ex.ContainErrorsList)
             {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
-                result = Results.ValidationProblem(errors);
+                await Results.ValidationProblem(errors).ExecuteAsync(context);
             }
             else if (!string.IsNullOrEmpty(ex.Message))
-                result = Results.BadRequest(new ProblemDetails() { Title = ex.Message });
+                await Results.BadRequest(new ProblemDetails() { Title = ex.Message }).ExecuteAsync(context);
             else
-                result = Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" });
-
-            logger.GeneralException(ex);
-            await result.ExecuteAsync(context);
+                await Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" }).ExecuteAsync(context);
         }
         // jakakoliv jina chyba
         catch (Exception ex)

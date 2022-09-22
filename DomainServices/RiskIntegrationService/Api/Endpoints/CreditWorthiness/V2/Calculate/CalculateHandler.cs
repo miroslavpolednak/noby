@@ -24,7 +24,7 @@ internal sealed class CalculateHandler
         var dstiRequestModel = await _dstiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
         var dstiResponse = await _riskCharacteristicsClient.CalculateDsti(dstiRequestModel, cancellation);
 
-        return response.ToServiceResponse(dtiResponse.Dti, dstiResponse.Dsti);
+        return response.ToServiceResponse(dtiResponse.Dti, dstiResponse.Dsti, request.Product.LoanPaymentAmount);
     }
 
     private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)

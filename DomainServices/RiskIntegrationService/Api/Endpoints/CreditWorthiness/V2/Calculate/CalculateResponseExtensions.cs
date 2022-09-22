@@ -5,7 +5,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 
 internal static class CalculateResponseExtensions
 {
-    public static _V2.CreditWorthinessCalculateResponse ToServiceResponse(this _C4M.CreditWorthinessCalculation response, decimal? dti, decimal? dsti)
+    public static _V2.CreditWorthinessCalculateResponse ToServiceResponse(this _C4M.CreditWorthinessCalculation response, decimal? dti, decimal? dsti, int loanPaymentAmount)
         => new()
         {
             InstallmentLimit = response.InstallmentLimit,
@@ -19,7 +19,7 @@ internal static class CalculateResponseExtensions
                 Code = response.ResultReason.Code,
                 Description = response.ResultReason.Description
             },
-            WorthinessResult = response.InstallmentLimit > response.RemainsLivingAnnuity 
+            WorthinessResult = response.InstallmentLimit > loanPaymentAmount
                 ? _V2.CreditWorthinessResults.Success 
                 : _V2.CreditWorthinessResults.Failed
         };
