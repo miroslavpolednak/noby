@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DocumentGeneratorService;
+option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+import "GrpcDecimal.proto";
+import "GenericTable.proto";
+import "Signature.proto";
+
+message GenerateDocumentRequest {
+	string DocumentId = 1;
+
+	int32 TemplateTypeId = 2;
+
+	string TemplateVersion = 3;
+
+	string OutputType = 4;
+
+	repeated GenerateDocumentPart Parts = 5;
+
+	repeated Signature CustomerSignatures = 6;
+}
+
+message GenerateDocumentPart {
+	google.protobuf.Int32Value TemplateTypeId = 1;
+
+	google.protobuf.Int32Value Order = 2;
+
+	GenerateDocumentPartData Data = 3;
+}
+
+message GenerateDocumentPartData {
+	string Key = 1;
+
+	oneof Value {
+		string Text = 2;
+		cis.types.GrpcDate Date = 3;
+		int32 Number = 4;
+		cis.types.GrpcDecimal DecimalNumber = 5;
+		bool LogicalValue = 6;
+		GenericTable Table = 7;
+	}
+}

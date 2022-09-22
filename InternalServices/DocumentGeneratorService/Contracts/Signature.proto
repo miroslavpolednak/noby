@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DocumentGeneratorService;
+option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contracts";
+
+message Signature {
+	oneof Data {
+		SignatureManual Manual = 1;
+		SignatureElectronic Electronic = 2;
+	} 
+}
+
+message SignatureManual {
+	string SignatureMarkId = 1;
+
+	string FirstName = 2;
+
+	string LastName = 3;
+
+	string AgentFirstName = 4;
+
+	string AgentLastName = 5;
+}
+
+message SignatureElectronic {
+	string SignatureMarkId = 1;
+
+	string FirstName = 2;
+
+	string LastName = 3;
+}
