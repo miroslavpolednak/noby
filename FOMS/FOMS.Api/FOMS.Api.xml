@@ -56,6 +56,7 @@
             Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCustomers(System.Int64,System.Threading.CancellationToken)" -->
         <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetById(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail Case-u.
@@ -256,6 +257,46 @@
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Icp">
             <summary>
             Poradce třetí strana.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleName">
+            <summary>
+            Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Agent">
+            <summary>
+            Zmocněnec pro komunikaci
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.KBID">
+            <summary>
+            KBID
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Mobile">
+            <summary>
+            Mobil
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">

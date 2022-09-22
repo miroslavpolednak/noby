@@ -89,7 +89,7 @@ internal class CreateIdentifiedSubject
 
     private PrimaryAddress? CreatePrimaryAddress(IEnumerable<GrpcAddress> addresses)
     {
-        var primaryAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.PERMANENT);
+        var primaryAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Permanent);
 
         if (primaryAddress is null)
             return default;
@@ -103,7 +103,7 @@ internal class CreateIdentifiedSubject
 
     private ContactAddress? CreateContactAddress(IEnumerable<GrpcAddress> addresses)
     {
-        var contactAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.MAILING);
+        var contactAddress = addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
 
         if (contactAddress is null)
             return default;
