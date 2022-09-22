@@ -36,7 +36,7 @@ internal static class C4mUserInfoDataExtensions
             Instance = Helpers.GetResourceIdentifierInstanceForDealer(humanUser.IdentityScheme),
             Domain = domain,
             Resource = resource,
-            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(0, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
+            Id = id ?? humanUser.IdentityId ?? throw new CisValidationException(17000, $"Can not find Id for ResourceIdentifier {domain}/{resource}"),
             Variant = humanUser.IdentityScheme!
         };
 }

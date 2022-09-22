@@ -11,4 +11,7 @@ public class CustomerRoleItem
     
     [DataMember(Order = 3)]
     public string Name { get; set; }
+
+    [DataMember(Order = 4)]
+    public string NameNoby { get; set; }
 }

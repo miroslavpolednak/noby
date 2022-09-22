@@ -36,6 +36,14 @@ message NaturalPerson {
    int32 EducationLevelId = 14;
 
    bool IsBrSubscribed = 15;
+
+   string IsLegallyIncapable = 16;
+
+   cis.types.NullableGrpcDate LegallyIncapableUntil = 17;
+
+   google.protobuf.Int32Value TaxResidencyCountryId = 19;
+
+   string KbRelationshipCode = 18;
 }
 
 message NaturalPersonBasicInfo {

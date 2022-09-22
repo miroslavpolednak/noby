@@ -4,7 +4,7 @@
 public sealed class CreditWorthinessCustomer
 {
     [ProtoMember(1)]
-    public string? InternalCustomerId { get; set; }
+    public string? PrimaryCustomerId { get; set; }
 
     [ProtoMember(2)]
     public bool HasPartner { get; set; }

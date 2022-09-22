@@ -20,5 +20,9 @@ namespace ExternalServices.MpHome.V1._1
             return await Task.FromResult(new SuccessfulServiceCallResult());
         }
 
+        public Task<IServiceCallResult> UpdatePartner(long partnerId, PartnerRequest request)
+        {
+            return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult());
+        }
     }
 }

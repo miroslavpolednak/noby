@@ -14,24 +14,16 @@ internal static class RiskBusinessCaseStartupExtensions
 
         foreach (var configuration in configurations)
         {
-            switch (configuration.Version)
+            switch (configuration.Version, configuration.ImplementationType)
             {
-                case Versions.V0_2:
-                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                        builder.Services.AddScoped<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.MockRiskBusinessCaseClient>();
-                    else
-                        builder.Services
-                            .AddC4mHttpClient<RiskBusinessCase.V0_2.IRiskBusinessCaseClient, RiskBusinessCase.V0_2.RealRiskBusinessCaseClient, RiskBusinessCaseConfiguration>(Versions.V0_2.ToString())
-                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V0_2.RealRiskBusinessCaseClient>(ServiceName);
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Mock):
+                    builder.Services.AddScoped<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
                     break;
 
-                case Versions.V1:
-                    if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                        builder.Services.AddScoped<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.MockRiskBusinessCaseClient>();
-                    else
-                        builder.Services
-                            .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient, RiskBusinessCaseConfiguration>(Versions.V1.ToString())
-                            .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName);
+                case (Versions.V1, CIS.Foms.Enums.ServiceImplementationTypes.Real):
+                    builder.Services
+                        .AddC4mHttpClient<RiskBusinessCase.V1.IRiskBusinessCaseClient, RiskBusinessCase.V1.RealRiskBusinessCaseClient, RiskBusinessCaseConfiguration>(Versions.V1.ToString())
+                        .ConfigureC4mHttpMessageHandler<RiskBusinessCase.V1.RealRiskBusinessCaseClient>(ServiceName);
                     break;
 
                 default:

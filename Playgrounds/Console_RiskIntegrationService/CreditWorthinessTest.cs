@@ -30,7 +30,7 @@ internal static class CreditWorthinessTest
                 {
                     new CreditWorthinessCustomer
                     {
-                        InternalCustomerId = "1111",
+                        PrimaryCustomerId = "1111",
                         MaritalStateId = 1,
                         Incomes = new List<CreditWorthinessIncome>
                         {

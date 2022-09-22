@@ -8,10 +8,10 @@ internal static class Helpers
     private static string[] _kbGroupPersonValues = new[] { "KBAD", "MPAD" };
 
     public static bool IsDealerSchema(string? schemaToCheck)
-        => string.IsNullOrEmpty(schemaToCheck) ? throw new CisArgumentException(0, "IsKbGroupPerson() input parameter is null", nameof(schemaToCheck)) : !_kbGroupPersonValues.Contains(schemaToCheck);
+        => string.IsNullOrEmpty(schemaToCheck) ? throw new CisArgumentException(17011, "IsKbGroupPerson() input parameter is null", nameof(schemaToCheck)) : !_kbGroupPersonValues.Contains(schemaToCheck);
 
     public static string GetResourceIdentifierInstanceForDealer(string? identityScheme)
-        => string.IsNullOrEmpty(identityScheme) ? throw new CisArgumentException(0, "GetResourceIdentifierInstanceForDealer() input parameter is null", nameof(identityScheme)) : _kbPersonSchemas.Contains(identityScheme) ? _kbInstanceName : _mpInstanceName;
+        => string.IsNullOrEmpty(identityScheme) ? throw new CisArgumentException(17012, "GetResourceIdentifierInstanceForDealer() input parameter is null", nameof(identityScheme)) : _kbPersonSchemas.Contains(identityScheme) ? _kbInstanceName : _mpInstanceName;
 
     public static string GetResourceInstanceFromMandant(int mandantId)
         => mandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS";
@@ -22,7 +22,7 @@ internal static class Helpers
         if (string.IsNullOrEmpty(enumValue)) return defaultValue;
 
         if (!Enum.TryParse(typeof(TResponse), enumValue, out object? outValue))
-            throw new CisValidationException(0, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
+            throw new CisValidationException(17013, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
         return (TResponse)outValue!;
     }
 
@@ -30,7 +30,7 @@ internal static class Helpers
         where TResponse : struct
     {
         if (!Enum.TryParse(typeof(TResponse), enumValue, out object? outValue))
-            throw new CisValidationException(0, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
+            throw new CisValidationException(17013, $"Can't cast {typeof(TResponse)} '{enumValue}' to C4M enum");
         return (TResponse)outValue!;
     }
 
@@ -40,6 +40,6 @@ internal static class Helpers
 
     public static CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem GetRiskApplicationType(List<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> riskApplicationTypes, int productTypeId)
         => riskApplicationTypes.FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
-        ?? throw new CisValidationException(0, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
+        ?? throw new CisValidationException(17014, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 }
 

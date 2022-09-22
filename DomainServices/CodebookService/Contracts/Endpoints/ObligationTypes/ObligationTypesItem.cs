@@ -1,5 +1,7 @@
 ﻿// using System.Text.Json.Serialization;
 
+using DomainServices.CodebookService.Contracts;
+
 namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes
 {
     [DataContract]
@@ -24,5 +26,8 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes
 
         [DataMember(Order = 6)]
         public int Order { get; set; }
+
+        [DataMember(Order = 7)]
+        public string ObligationProperty { get; set; }
     }
 }

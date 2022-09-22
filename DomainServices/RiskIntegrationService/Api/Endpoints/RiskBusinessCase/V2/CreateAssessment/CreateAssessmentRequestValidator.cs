@@ -22,8 +22,6 @@ internal sealed class CreateAssessmentValidator
 
         RuleFor(t => t.ItChannelPrevious)
             .IsInEnum()
-            .WithErrorCode("ItChannelPrevious")
-            .NotEqual(Contracts.Shared.ItChannels.Unknown)
             .WithErrorCode("ItChannelPrevious");
 
         RuleFor(t => t.AssessmentMode)

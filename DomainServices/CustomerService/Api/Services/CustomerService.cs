@@ -17,6 +17,11 @@ internal class CustomerService : Contracts.V1.CustomerService.CustomerServiceBas
     public override Task<ProfileCheckResponse> ProfileCheck(ProfileCheckRequest request, ServerCallContext context)
         => _mediator.Send(new ProfileCheckMediatrRequest(request), context.CancellationToken);
 
+    public override Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)
+    {
+        return _mediator.Send(new CreateCustomerMediatrRequest(request), context.CancellationToken);
+    }
+
     public override Task<CustomerDetailResponse> GetCustomerDetail(CustomerDetailRequest request, ServerCallContext context)
         => _mediator.Send(new GetCustomerDetailMediatrRequest(request.Identity), context.CancellationToken);
 

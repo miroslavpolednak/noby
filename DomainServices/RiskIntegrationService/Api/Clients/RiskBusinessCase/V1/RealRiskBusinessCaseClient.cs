@@ -12,7 +12,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.RiskBusinessCase>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
 
         return result;
     }
@@ -24,7 +24,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<Identified>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(Identified));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(Identified));
 
         return result;
     }
@@ -36,7 +36,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<RiskBusinessCaseCommitCommandInstance>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessmentAsynchronous), nameof(RiskBusinessCaseCommitCommandInstance));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(CreateCaseAssessmentAsynchronous), nameof(RiskBusinessCaseCommitCommandInstance));
 
         return result;
     }
@@ -48,7 +48,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<RiskBusinessCaseCommit>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));
 
         return result;
     }

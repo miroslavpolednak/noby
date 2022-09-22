@@ -14,6 +14,7 @@ internal sealed class CreateObligationHandler
             ObligationState = request.ObligationState,
             InstallmentAmount = request.InstallmentAmount,
             LoanPrincipalAmount = request.LoanPrincipalAmount,
+            LoanPrincipalAmountConsolidated = request.LoanPrincipalAmountConsolidated,
             CreditCardLimit = request.CreditCardLimit
         };
         if (request.Creditor is not null)

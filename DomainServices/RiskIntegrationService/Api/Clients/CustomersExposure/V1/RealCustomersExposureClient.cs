@@ -13,7 +13,7 @@ internal sealed class RealCustomersExposureClient
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationRelatedExposureResult>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-            ?? throw new CisExtServiceResponseDeserializationException(0, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(LoanApplicationRelatedExposureResult));
+            ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(LoanApplicationRelatedExposureResult));
 
         return result;
     }

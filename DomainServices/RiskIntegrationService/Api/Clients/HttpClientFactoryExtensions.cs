@@ -61,7 +61,7 @@ internal static class HttpClientFactoryExtensions
                 client.DefaultRequestHeaders.Add("X-B3-TraceId", Activity.Current?.RootId);
                 client.DefaultRequestHeaders.Add("X-B3-SpanId", Activity.Current?.SpanId.ToString());
             }
-            if (userAccessor?.IsAuthenticated ?? false)
-                client.DefaultRequestHeaders.Add("X-KB-Party-Identity-In-Service", "{\"partyIdIS\":[{\"partyId\":{\"id\":\"" + userAccessor.User?.Id.ToString(System.Globalization.CultureInfo.InvariantCulture) + "\",\"idScheme\":\"V33\"},\"usg\":\"AUTH\"}]}");
+            /*if (userAccessor?.IsAuthenticated ?? false)
+                client.DefaultRequestHeaders.Add("X-KB-Party-Identity-In-Service", "{\"partyIdIS\":[{\"partyId\":{\"id\":\"" + userAccessor.User?.Id.ToString(System.Globalization.CultureInfo.InvariantCulture) + "\",\"idScheme\":\"V33\"},\"usg\":\"AUTH\"}]}");*/
         });
 }

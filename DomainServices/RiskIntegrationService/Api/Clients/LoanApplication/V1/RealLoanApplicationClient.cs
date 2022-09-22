@@ -12,7 +12,7 @@ internal sealed class RealLoanApplicationClient
             .ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<_C4M.LoanApplicationResult>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, LoanApplicationStartupExtensions.ServiceName, nameof(Save), nameof(_C4M.LoanApplicationResult));
+                ?? throw new CisExtServiceResponseDeserializationException(17001, LoanApplicationStartupExtensions.ServiceName, nameof(Save), nameof(_C4M.LoanApplicationResult));
     }
 
     private readonly HttpClient _httpClient;

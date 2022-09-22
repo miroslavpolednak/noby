@@ -7,7 +7,7 @@ public class LoanApplicationEntrepreneurIncome
     public string? EntrepreneurIdentificationNumber { get; set; }
 
     [ProtoMember(2)]
-    public int? ClassficationOfEconomicActivityId { get; set; }
+    public int? ClassificationOfEconomicActivityId { get; set; }
 
     [ProtoMember(3)]
     public int? JobTypeId { get; set; }

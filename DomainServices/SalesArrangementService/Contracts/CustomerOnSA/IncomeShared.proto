@@ -64,5 +64,4 @@ message IncomeDataEntrepreneur {
 }
 
 message IncomeDataRent {
-    google.protobuf.Int32Value x = 1;
 }

@@ -13,8 +13,8 @@ internal static class Extensions
     public static _SA.IncomeDataEntrepreneur ToDomainServiceRequest(this Dto.IncomeDataEntrepreneur request)
         => new _SA.IncomeDataEntrepreneur
         {
-            BirthNumber = request.BirthNumber,
-            Cin = request.Cin,
+            BirthNumber = request.BirthNumber ?? "",
+            Cin = request.Cin ?? "",
             CountryOfResidenceId = request.CountryOfResidenceId
         };
 

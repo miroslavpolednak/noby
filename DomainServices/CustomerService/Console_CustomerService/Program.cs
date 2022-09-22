@@ -38,23 +38,21 @@ var serviceProvider = new ServiceCollection()
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 
-var search = await service.SearchCustomers(new SearchCustomersRequest
-{
-    Mandant = Mandants.Kb,
-    NaturalPerson = new NaturalPersonSearch
-    {
-        LastName = "Novák",
-        FirstName = "Adam"
-    }
-});
-
-//var test = await service.GetCustomerList(new CustomerListRequest
+//var search = await service.SearchCustomers(new SearchCustomersRequest
 //{
-//    Identities =
+//    Mandant = Mandants.Mp,
+//    NaturalPerson = new NaturalPersonSearch
 //    {
-//        new Identity(34, IdentitySchemes.Mp),
-//        new Identity(123, IdentitySchemes.Kb)
+//        LastName = "Novák",
+//        FirstName = "Adam"
 //    }
+//});
+
+//var test = await service.GetCustomerList(new Identity[]
+//{
+//    new(951011020, IdentitySchemes.Kb),
+//    new(123, IdentitySchemes.Kb),
+//    new(134, IdentitySchemes.Mp)
 //});
 
 //var test = await service.ProfileCheck(new ProfileCheckRequest
@@ -64,5 +62,49 @@ var search = await service.SearchCustomers(new SearchCustomersRequest
 //});
 
 //var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+
+var create = await service.CreateCustomer(new CreateCustomerRequest
+{
+    Identity = new Identity(70054098, IdentitySchemes.Mp),
+    NaturalPerson = new NaturalPerson
+    {
+        FirstName = "Qvratek",
+        LastName = "Qliteks",
+        BirthCountryId = 16,
+        BirthNumber = "8105144322",
+        BirthName = "Prouza",
+        DateOfBirth = new NullableGrpcDate(1981, 5, 14),
+        PlaceOfBirth = "Ostrava",
+        GenderId = 1,
+        CitizenshipCountriesId = { 16 }
+    },
+    Addresses =
+    {
+        new GrpcAddress
+        {
+            AddressTypeId = 1,
+            City = "Praha",
+            Postcode = "19017",
+            CountryId = 1,
+            Street = "Masarykova",
+            BuildingIdentificationNumber = "458",
+            LandRegistryNumber = "9A",
+            CityDistrict = "Vinoř",
+            PragueDistrict = "Praha 9",
+            DeliveryDetails = "Marketing Department",
+            AddressPointId = "465465465",
+            PrimaryAddressFrom = DateTime.Now.AddYears(-5)
+        }
+    },
+    IdentificationDocument = new IdentificationDocument
+    {
+        IdentificationDocumentTypeId = 1,
+        Number = "893123457",
+        IssuedBy = "Praha",
+        IssuingCountryId = 16,
+        IssuedOn = DateTime.Now.AddYears(-5),
+        ValidTo = DateTime.Now.AddYears(3)
+    }
+});
 
 Console.ReadKey();
