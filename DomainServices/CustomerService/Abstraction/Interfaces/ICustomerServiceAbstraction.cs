@@ -17,6 +17,15 @@ public interface ICustomerServiceAbstraction
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
     Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Vytvoreni klienta v CM nebo MP (podle schematu)
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{TModel}"/> of <see cref="CreateCustomerResponse"/> - OK;</returns>
+    /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+    /// <exception cref="CisAlreadyExistsException">KonsDB - 11017 Partner already exists in KonsDB.</exception>
+    /// <exception cref="Grpc.Core.RpcException">Customer already exists in KB CM or state registry is unavailable, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
+    /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
+    /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
     Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
