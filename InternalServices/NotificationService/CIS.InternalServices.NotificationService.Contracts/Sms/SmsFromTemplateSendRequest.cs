@@ -9,14 +9,14 @@ namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 public class SmsFromTemplateSendRequest : IRequest<SmsFromTemplateSendResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
-    public Phone Phone { get; set; } = default!;
+    public Phone Phone { get; set; } = new();
     
     [ProtoMember(2)]
     public int ProcessingPriority { get; set; } = 1;
 
     [ProtoMember(3)]
-    public string Type { get; set; } = string.Empty;
+    public SmsNotificationType Type { get; set; }
     
     [ProtoMember(4)]
-    public List<StringKeyValuePair> Placeholders { get; set; } = default!;
+    public List<StringKeyValuePair> Placeholders { get; set; } = new();
 }

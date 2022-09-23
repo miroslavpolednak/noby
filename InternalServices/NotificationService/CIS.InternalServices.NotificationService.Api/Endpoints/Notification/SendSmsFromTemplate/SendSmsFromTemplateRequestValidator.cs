@@ -18,9 +18,9 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SmsFromTemp
                     .NotEmpty()
                     .WithErrorCode($"{nameof(SmsFromTemplateSendRequest.Phone)}.{nameof(Phone.CountryCode)}");
 
-                phone.RuleFor(p => p.NationalPhoneNumber)
+                phone.RuleFor(p => p.NationalNumber)
                     .NotEmpty()
-                    .WithErrorCode($"{nameof(SmsFromTemplateSendRequest.Phone)}.{nameof(Phone.NationalPhoneNumber)}");
+                    .WithErrorCode($"{nameof(SmsFromTemplateSendRequest.Phone)}.{nameof(Phone.NationalNumber)}");
             });
 
         RuleFor(request => request.ProcessingPriority)

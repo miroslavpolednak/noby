@@ -7,10 +7,11 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
 {
     public async Task<SmsFromTemplateSendResponse> Handle(SmsFromTemplateSendRequest request, CancellationToken cancellationToken)
     {
+        // todo:
         await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
         return new SmsFromTemplateSendResponse
         {
-            NotificationId = "sms from template send notification id"
+            NotificationId = "sms from template notification id"
         };
     }
 }

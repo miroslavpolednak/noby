@@ -1,6 +1,12 @@
-﻿namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendEmailFromTemplate;
+﻿using CIS.InternalServices.NotificationService.Contracts.Email;
+using FluentValidation;
 
-public class SendEmailFromTemplateRequestValidator
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendEmailFromTemplate;
+
+public class SendEmailFromTemplateRequestValidator : AbstractValidator<EmailFromTemplateSendRequest>
 {
-    
+    public SendEmailFromTemplateRequestValidator()
+    {
+        // todo:
+    }    
 }

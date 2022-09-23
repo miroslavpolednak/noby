@@ -15,7 +15,7 @@ public class SmsSendRequest : IRequest<SmsSendResponse>, IValidatableRequest
     public int ProcessingPriority { get; set; } = 1;
 
     [ProtoMember(3)]
-    public string Type { get; set; } = string.Empty;
+    public SmsNotificationType Type { get; set; }
     
     [ProtoMember(4)]
     public string Text { get; set; } = string.Empty;

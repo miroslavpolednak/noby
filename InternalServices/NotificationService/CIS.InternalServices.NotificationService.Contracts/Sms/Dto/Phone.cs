@@ -9,5 +9,5 @@ public sealed class Phone
     public string CountryCode { get; set; } = string.Empty;
     
     [ProtoMember(2)]
-    public string NationalPhoneNumber { get; set; } = string.Empty;
+    public string NationalNumber { get; set; } = string.Empty;
 }

@@ -7,7 +7,11 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
 {
     public async Task<EmailSendResponse> Handle(EmailSendRequest request, CancellationToken cancellationToken)
     {
+        // todo:
         await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-        return new EmailSendResponse();
+        return new EmailSendResponse
+        {
+            NotificationId = "email notification id"
+        };
     }
 }

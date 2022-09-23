@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Email;
+﻿using System.ComponentModel.DataAnnotations;
+using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using MediatR;
@@ -39,8 +40,8 @@ public class NotificationController : ControllerBase
     public async Task<EmailFromTemplateSendResponse> SendEmailFromTemplate([FromBody] EmailFromTemplateSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
-    [HttpGet]
+    [HttpGet("result/{id}")]
     [Produces("application/json")]
-    public async Task<ResultGetResponse> GetResult([FromBody] ResultGetRequest request, CancellationToken token)
-        => await _mediator.Send(request, token);
+    public async Task<ResultGetResponse> GetResult([Required] string id, CancellationToken token)
+        => await _mediator.Send(new ResultGetRequest { NotificationId = id }, token);
 }

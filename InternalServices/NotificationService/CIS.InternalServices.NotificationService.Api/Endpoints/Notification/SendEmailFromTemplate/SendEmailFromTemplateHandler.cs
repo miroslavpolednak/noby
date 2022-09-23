@@ -7,7 +7,11 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
 {
     public async Task<EmailFromTemplateSendResponse> Handle(EmailFromTemplateSendRequest request, CancellationToken cancellationToken)
     {
+        // todo:
         await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-        return new EmailFromTemplateSendResponse();
+        return new EmailFromTemplateSendResponse
+        {
+            NotificationId = "email from template notification id"
+        };
     }
 }

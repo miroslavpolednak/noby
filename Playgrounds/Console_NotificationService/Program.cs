@@ -21,13 +21,13 @@ var client = channel.CreateGrpcService<INotificationService>();
 
 var token = CancellationToken.None;
 var text = "Text";
-var type = "Type";
+var type = SmsNotificationType.Unknown;
 var priority = 5;
 
 var phone = new Phone
 {
     CountryCode = "Code",
-    NationalPhoneNumber = "Phone"
+    NationalNumber = "Phone"
 };
 
 var smsPushRequest = new SmsSendRequest
