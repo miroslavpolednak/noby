@@ -13,7 +13,10 @@ internal sealed class CreateHandler
         bool createOk = false;
         try
         {
-            var createResult = ServiceCallResult.ResolveAndThrowIfError<_Cust.CreateCustomerResponse>(await _customerService.CreateCustomer(request.ToDomainService(), cancellationToken));
+            var createResult = ServiceCallResult.ResolveAndThrowIfError<_Cust.CreateCustomerResponse>(await _customerService.CreateCustomer(request.ToDomainService(new CIS.Infrastructure.gRPC.CisTypes.Identity
+            {
+                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
+            }), cancellationToken));
             kbId = createResult.CreatedCustomerIdentity.IdentityId;
             createOk = true;
         }
@@ -30,16 +33,15 @@ internal sealed class CreateHandler
             throw new CisConflictException(ex.Message);
         }
         // Registry nefungují
-        // Nebyl klient nalezen
-        catch (BaseCisException ex) when ((ex.ExceptionCode == 11025 || ex.ExceptionCode == 11026) && request.HardCreate)
-        {
-            // tady potrebuju zjistit kbid
-            throw new NotImplementedException();
-        }
-        catch (BaseCisException ex) when ((ex.ExceptionCode == 11025 || ex.ExceptionCode == 11026) && !request.HardCreate)
+        catch (BaseCisException ex) when (ex.ExceptionCode == 11025)
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
-            throw new CisValidationException(ex.Message);
+            return new CreateResponse { ResponseCode = "KBCM_NOT_FOUND_IN_BR" };
+        }
+        catch (BaseCisException ex) when (ex.ExceptionCode == 11026)
+        {
+            _logger.LogInformation("CreateCustomer: registry failed", ex);
+            return new CreateResponse { ResponseCode = "KBCM_UNAVAILABLE_BR" };
         }
         catch
         {
@@ -62,7 +64,7 @@ internal sealed class CreateHandler
 
         // vytvorit response z API
         var model = customerKb.ToResponseDto();
-        if (createOk || request.HardCreate)
+        if (createOk)
         {
             model.InputDataDifferent = true;
             model.ResponseCode = "KBCM_CREATED";
@@ -75,7 +77,11 @@ internal sealed class CreateHandler
         // pokud je vse OK, zalozit customera v konsDb
         try
         {
-            await _customerService.CreateCustomer(request.ToDomainService(), cancellationToken);
+            await _customerService.CreateCustomer(request.ToDomainService(new CIS.Infrastructure.gRPC.CisTypes.Identity
+            {
+                IdentityId = updateResponse.PartnerId!.Value,
+                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp
+            }), cancellationToken);
         }
         catch (Exception ex)
         {

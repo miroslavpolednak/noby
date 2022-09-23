@@ -33,12 +33,12 @@ public class CreateRequest
     /// <summary>
     /// Pohlaví
     /// </summary>
-    public int GenderCode { get; set; }
+    public int GenderId { get; set; }
 
     /// <summary>
     /// Státní příslušnost/občanství
     /// </summary>
-    public int CitizenshipCodes { get; set; }
+    public int CitizenshipCountryId { get; set; }
 
     /// <summary>
     /// E-mail
@@ -53,7 +53,7 @@ public class CreateRequest
     /// <summary>
     /// Rodné číslo CZ
     /// </summary>
-    public string? CzechBirthNumber { get; set; }
+    public string? BirthNumber { get; set; }
 
     /// <summary>
     /// Trvalá adresa v ČR

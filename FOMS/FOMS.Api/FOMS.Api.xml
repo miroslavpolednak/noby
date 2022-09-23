@@ -657,6 +657,82 @@
             Určuje stav závazku (prohlášený vs neprohlášený. V MPV bude vždy prohlášený.<br />Z číselníku <a href="https://wiki.kb.cz/display/HT/ObligationState">ObligationState</a>
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.CustomerOnSAId">
+            <summary>
+            Id customera na sales arrangementu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.BirthDate">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.BirthPlace">
+            <summary>
+            Místo narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.GenderId">
+            <summary>
+            Pohlaví
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.CitizenshipCountryId">
+            <summary>
+            Státní příslušnost/občanství
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.Email">
+            <summary>
+            E-mail
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.Mobile">
+            <summary>
+            Mobil
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.BirthNumber">
+            <summary>
+            Rodné číslo CZ
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.PrimaryAddress">
+            <summary>
+            Trvalá adresa v ČR
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuingCountryId">
+            <summary>
+            Stát vydání dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IdentificationDocumentTypeId">
+            <summary>
+            Typ dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.Number">
+            <summary>
+            Číslo dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuedBy">
+            <summary>
+            Doklad vydal
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Customer.CustomerController.Create(FOMS.Api.Endpoints.Customer.Create.CreateRequest,System.Threading.CancellationToken)" -->
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledavani klientu

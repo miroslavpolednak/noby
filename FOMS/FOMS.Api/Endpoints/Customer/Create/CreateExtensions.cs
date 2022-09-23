@@ -1,13 +1,12 @@
 ﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using Azure.Core;
 using FOMS.Api.Endpoints.Customer.GetDetail;
 
 namespace FOMS.Api.Endpoints.Customer.Create;
 
 internal static class CreateExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, CIS.Infrastructure.gRPC.CisTypes.Identity identity)
     {
         var model = new _Cust.CreateCustomerRequest
         {
@@ -15,22 +14,20 @@ internal static class CreateExtensions
             {
                 FirstName = request.FirstName ?? "",
                 LastName = request.LastName ?? "",
-                BirthNumber = request.CzechBirthNumber ?? "",
+                BirthNumber = request.BirthNumber ?? "",
                 DateOfBirth = request.BirthDate,
                 PlaceOfBirth = request.BirthPlace ?? "",
-                GenderId = request.GenderCode
+                GenderId = request.GenderId
             },
             IdentificationDocument = request.IdentificationDocument is null ? null : new()
             {
-                IdentificationDocumentTypeId = request.IdentificationDocument.typeCode,
-                IssuedBy = request.IdentificationDocument.issuedBy ?? "",
-                Number = request.IdentificationDocument.documentNumber ?? "",
-                IssuingCountryId = request.IdentificationDocument.issuingCountryCode
+                IdentificationDocumentTypeId = request.IdentificationDocument.IdentificationDocumentTypeId,
+                IssuedBy = request.IdentificationDocument.IssuedBy ?? "",
+                Number = request.IdentificationDocument.Number ?? "",
+                IssuingCountryId = request.IdentificationDocument.IssuingCountryId
             },
-            Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity
-            {
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
-            }
+            Identity = identity,
+            HardCreate = request.HardCreate
         };
 
         // adresa
@@ -40,8 +37,8 @@ internal static class CreateExtensions
             model.Addresses.Add(request.PrimaryAddress);
         }
         // narodnost
-        if (request.CitizenshipCodes > 0)
-            model.NaturalPerson.CitizenshipCountriesId.Add(request.CitizenshipCodes);
+        if (request.CitizenshipCountryId > 0)
+            model.NaturalPerson.CitizenshipCountriesId.Add(request.CitizenshipCountryId);
 
         return model;
     }
@@ -100,6 +97,10 @@ internal static class CreateExtensions
         };
         if (customer.NaturalPerson?.CitizenshipCountriesId is not null)
             model.NaturalPerson!.CitizenshipCountriesId.AddRange(customer.NaturalPerson!.CitizenshipCountriesId);
+        if (customer.Contacts is not null)
+            model.Contacts.AddRange(customer.Contacts);
+        if (customer.Addresses is not null)
+            model.Addresses.AddRange(customer.Addresses);
 
         return model;
     }
