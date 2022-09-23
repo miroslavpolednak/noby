@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+      <ProjectReference Include="..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Client\CIS.InternalServices.NotificationService.Client.csproj" />
       <ProjectReference Include="..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
     </ItemGroup>
 

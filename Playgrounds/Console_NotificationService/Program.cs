@@ -1,23 +1,35 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using CIS.InternalServices.NotificationService.Contracts;
+using CIS.Core.Configuration;
+using CIS.Core.Results;
+using CIS.Core.Security;
+using CIS.DomainServicesSecurity.ContextUser;
+using CIS.InternalServices.NotificationService.Client;
+using CIS.InternalServices.NotificationService.Client.Interfaces;
+using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
-using Grpc.Net.Client;
-using ProtoBuf.Grpc.Client;
+using Console_NotificationService;
+using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("run!");
 
-using var channel = GrpcChannel.ForAddress(
-    "https://localhost:5003",
-    new GrpcChannelOptions
+var serviceProvider = new ServiceCollection()
+    .AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration
     {
-        HttpHandler = new HttpClientHandler
-        {
-            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-        }
-    });
-var client = channel.CreateGrpcService<INotificationService>();
+        EnvironmentName = "uat",
+        DefaultApplicationKey = "console",
+        ServiceDiscoveryUrl = "https://localhost:5005",
+        InternalServicesLogin = "a",
+        InternalServicePassword = "a"
+    })
+    .AddLogging()
+    .AddNotificationClient()
+    .AddScoped<ICurrentUserAccessor, CisCurrentContextUserAccessor>()
+    .AddHttpContextAccessor()
+    .BuildServiceProvider();
+
+var client = serviceProvider.GetRequiredService<INotificationClient>();
 
 var token = CancellationToken.None;
 var text = "Text";
@@ -30,7 +42,7 @@ var phone = new Phone
     NationalNumber = "Phone"
 };
 
-var smsPushRequest = new SmsSendRequest
+var smsSendRequest = new SmsSendRequest
 {
     Phone = phone,
     Type = type,
@@ -38,10 +50,10 @@ var smsPushRequest = new SmsSendRequest
     Text = text,
 };
 
-var smsPushResponse = await client.SendSms(smsPushRequest, token);
-Console.WriteLine($"Sms push response: {smsPushResponse.NotificationId}");
+var smsSendResponse =  ServiceCallResult.ResolveAndThrowIfError<SmsSendResponse>(await client.SendSms(smsSendRequest, token));
+Console.WriteLine($"Sms send response: {smsSendResponse.NotificationId}");
 
-var smsFromTemplatePushRequest = new SmsFromTemplateSendRequest
+var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
 {
     Phone = phone,
     Type = type,
@@ -52,8 +64,10 @@ var smsFromTemplatePushRequest = new SmsFromTemplateSendRequest
     },
 };
 
-var smsFromTemplatePushResponse = await client.SendSmsFromTemplate(smsFromTemplatePushRequest, token);
-Console.WriteLine($"Sms from template push response: {smsFromTemplatePushResponse.NotificationId}");
+var smsFromTemplateSendResponse = ServiceCallResult.ResolveAndThrowIfError<SmsFromTemplateSendResponse>(await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token));
+Console.WriteLine($"Sms from template send response: {smsFromTemplateSendResponse.NotificationId}");
+
+var result = await client.GetResult(new ResultGetRequest{ NotificationId = "id"}, CancellationToken.None);
 
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey();
