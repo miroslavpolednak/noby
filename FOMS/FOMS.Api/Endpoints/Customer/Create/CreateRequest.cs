@@ -3,6 +3,8 @@
 public class CreateRequest
     : IRequest<CreateResponse>
 {
+    public bool HardCreate { get; set; }
+
     /// <summary>
     /// Id customera na sales arrangementu
     /// </summary>
