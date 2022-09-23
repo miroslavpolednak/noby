@@ -49,8 +49,8 @@ internal class GetCreditWorthinessHandler
 
         return new GetCreditWorthinessResponse
         {
-            InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit ?? 0),
-            MaxAmount = Convert.ToInt32(ripResult.MaxAmount ?? 0),
+            InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit),
+            MaxAmount = Convert.ToInt32(ripResult.MaxAmount),
             RemainsLivingAnnuity = Convert.ToInt32((decimal?)ripResult.RemainsLivingAnnuity ?? 0),
             RemainsLivingInst = Convert.ToInt32((decimal?)ripResult.RemainsLivingInst ?? 0),
             WorthinessResult = (CreditWorthinessResults)(int)ripResult.WorthinessResult,
