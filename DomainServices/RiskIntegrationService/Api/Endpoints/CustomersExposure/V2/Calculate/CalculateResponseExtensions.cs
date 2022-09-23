@@ -23,7 +23,7 @@ internal static class CalculateResponseExtensions
                 CbcbReportId = t.CbcbReportId,
                 CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == t.RoleCode)?.Id,
                 InternalCustomerId = t.LoanApplicationCounterpartyId,
-                PrimaryCustomerId = t.CustomerId,
+                PrimaryCustomerId = t.CustomerId.ToPrimaryCustomerId(),
                 ExistingKBGroupNaturalPersonExposures = t.ExistingKBGroupNaturalPersonExposureItem?.Select(x => x.ToServiceResponse(customerRoles, obligationLaExposures)).ToList(),
                 ExistingKBGroupJuridicalPersonExposures = t.ExistingKBGroupJuridicalPersonExposureItem?.Select(x => x.ToServiceResponse(customerRoles, obligationLaExposures)).ToList(),
                 RequestedKBGroupNaturalPersonExposures = t.RequestedKBGroupNaturalPersonExposureItem?.Select(x => x.ToServiceResponse(customerRoles, obligationLaExposures)).ToList(),

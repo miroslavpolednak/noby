@@ -66,7 +66,7 @@ internal class GetLoanApplicationAssessmentHandler
             loanApplicationAssessmentId = createAssesmentResponse.LoanApplicationAssessmentId;
 
             // update sales arrangement (loanApplicationAssessmentId, riskSegment)
-            ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(request.SalesArrangementId, loanApplicationAssessmentId, riskSegment, saInstance.CommandId, cancellationToken));
+            ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(request.SalesArrangementId, loanApplicationAssessmentId, riskSegment, saInstance.CommandId, createAssesmentResponse?.RiskBusinessCaseExpirationDate, cancellationToken));
         }
 
         // load assesment by ID

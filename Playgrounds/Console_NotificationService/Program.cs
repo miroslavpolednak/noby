@@ -67,7 +67,10 @@ var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
 var smsFromTemplateSendResponse = ServiceCallResult.ResolveAndThrowIfError<SmsFromTemplateSendResponse>(await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token));
 Console.WriteLine($"Sms from template send response: {smsFromTemplateSendResponse.NotificationId}");
 
-var result = await client.GetResult(new ResultGetRequest{ NotificationId = "id"}, CancellationToken.None);
+var resultRequest = new ResultGetRequest { NotificationId = "id" };
+
+var resultResponse = ServiceCallResult.ResolveAndThrowIfError<ResultGetResponse>(await client.GetResult(resultRequest, CancellationToken.None));
+Console.WriteLine($"Result response: {resultResponse.NotificationId}");
 
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey();
