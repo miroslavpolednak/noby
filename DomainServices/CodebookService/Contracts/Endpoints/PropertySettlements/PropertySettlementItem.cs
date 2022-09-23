@@ -7,15 +7,18 @@
         public int Id { get; set; }
 
         [DataMember(Order = 2)]
-        public string Code { get; set; }
-
-        [DataMember(Order = 3)]
         public string Name { get; set; }
 
-        [DataMember(Order = 4)]
+        [DataMember(Order = 3)]
         public string NameEnglish { get; set; }
 
-        [DataMember(Order = 5)]
+        [DataMember(Order = 4)]
         public bool IsValid { get; set; }
+
+        [DataMember(Order = 5)]
+        public List<int> MaritalStateIds { get; set; }
+
+        [DataMember(Order = 6)]
+        public int? Order { get; set; }
     }
 }
