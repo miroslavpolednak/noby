@@ -116,7 +116,7 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(UpdateLoanAssessmentParameters), salesArrangementId);
         var result = await _service.UpdateLoanAssessmentParametersAsync(
@@ -125,7 +125,8 @@ internal class SalesArrangementService : ISalesArrangementServiceAbstraction
                 SalesArrangementId = salesArrangementId,
                 LoanApplicationAssessmentId = loanApplicationAssessmentId ?? "",
                 RiskSegment = riskSegment ?? "",
-                CommandId = commandId ?? ""
+                CommandId = commandId ?? "",
+                RiskBusinessCaseExpirationDate = riskBusinessCaseExpirationDate,
             }, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult();
     }
