@@ -6,10 +6,10 @@ namespace DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 public class CreditWorthinessCalculateResponse
 {
     [ProtoMember(1)]
-    public long? InstallmentLimit { get; set; }
+    public long InstallmentLimit { get; set; }
 
     [ProtoMember(2)]
-    public long? MaxAmount { get; set; }
+    public long MaxAmount { get; set; }
 
     [ProtoMember(3)]
     public long? RemainsLivingAnnuity { get; set; }
