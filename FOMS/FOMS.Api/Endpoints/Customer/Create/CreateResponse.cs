@@ -4,6 +4,10 @@ namespace FOMS.Api.Endpoints.Customer.Create;
 
 public sealed class CreateResponse
 {
+    public string ResponseCode { get; set; } = string.Empty;
+
+    public bool InputDataDifferent { get; set; }
+
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
 
     public NaturalPersonModel? NaturalPerson { get; set; }
