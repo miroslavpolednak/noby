@@ -1,9 +1,11 @@
 ﻿namespace FOMS.Api.Endpoints.Customer.GetDetail;
 
-public class GetDetailResponse
+public sealed class GetDetailResponse
 {
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+    
     public Dto.NaturalPersonModel? NaturalPerson { get; set; }
+    
     public Dto.JuridicalPersonModel? JuridicalPerson { get; set; }
     
     public bool Updatable { get; set; }
