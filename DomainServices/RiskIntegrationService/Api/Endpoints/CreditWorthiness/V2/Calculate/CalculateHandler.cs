@@ -24,7 +24,6 @@ internal sealed class CalculateHandler
         var dstiRequestModel = await _dstiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
         var dstiResponse = await _riskCharacteristicsClient.CalculateDsti(dstiRequestModel, cancellation);
 
-        _logger.LogInformation($"{response.InstallmentLimit} > {request.Product.LoanPaymentAmount} : {(response.InstallmentLimit > request.Product.LoanPaymentAmount)}");
         return response.ToServiceResponse(dtiResponse.Dti, dstiResponse.Dsti, request.Product.LoanPaymentAmount);
     }
 
