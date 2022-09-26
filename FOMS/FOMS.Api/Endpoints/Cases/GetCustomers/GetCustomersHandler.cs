@@ -35,7 +35,10 @@ internal class GetCustomersHandler
         }
         else
         {
-            customerIdentities = new List<(Identity Identity, int Role)>();
+            var customers = ServiceCallResult.ResolveAndThrowIfError<DomainServices.ProductService.Contracts.GetCustomersOnProductResponse>(await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken));
+            customerIdentities = customers.Customers
+                .Select(t => (Identity: t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), Role: t.RelationshipCustomerProductTypeId))
+                .ToList();
         }
 
         // detail customeru z customerService
