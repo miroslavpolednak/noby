@@ -67,4 +67,12 @@ public interface IProductServiceAbstraction
     /// ErrorServiceCallResult - chyba pri request kontrole;
     /// </returns>
     Task<IServiceCallResult> DeleteContractRelationship(DeleteContractRelationshipRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Seznam klientu k produktu z KonsDB
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[GetCustomersOnProductResponse] - OK;
+    /// </returns>
+    Task<IServiceCallResult> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default(CancellationToken));
 }
