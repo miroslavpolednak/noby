@@ -16,4 +16,10 @@
     <ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="CIS.InternalServices.NotificationService.Contracts">
+      <HintPath>..\CIS.InternalServices.NotificationService.Api\bin\Debug\net6.0\CIS.InternalServices.NotificationService.Contracts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
