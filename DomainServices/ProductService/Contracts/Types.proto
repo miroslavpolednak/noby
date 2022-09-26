@@ -59,7 +59,11 @@ message GetProductInstanceListResponse {
 }
 
 message GetCustomersOnProductResponse {
-	repeated cis.types.Identity CustomersOnProduct = 1;
+	repeated GetCustomersOnProductResponseItem Customers = 1;
+}
+
+message GetCustomersOnProductResponseItem {
+	repeated cis.types.Identity CustomerIdentifiers = 1;
 	int32 RelationshipCustomerProductTypeId = 2;
 	google.protobuf.BoolValue Agent = 3;
 }
