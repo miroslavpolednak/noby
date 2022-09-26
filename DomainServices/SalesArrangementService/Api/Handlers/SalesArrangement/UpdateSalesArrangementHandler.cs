@@ -1,7 +1,7 @@
 ﻿using _Usr = DomainServices.UserService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
 using CIS.Core.Security;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Abstraction;
 using CIS.Foms.Enums;

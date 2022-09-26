@@ -16,7 +16,7 @@ internal sealed class GetGetCaseParametersHandler
     private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly DomainServices.UserService.Clients.IUserServiceAbstraction _userService;
 
     public GetGetCaseParametersHandler(
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
@@ -24,7 +24,7 @@ internal sealed class GetGetCaseParametersHandler
         DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
-        DomainServices.UserService.Abstraction.IUserServiceAbstraction userService
+        DomainServices.UserService.Clients.IUserServiceAbstraction userService
         )
     {
         _codebookService = codebookService;

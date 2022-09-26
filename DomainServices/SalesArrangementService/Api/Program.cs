@@ -4,7 +4,7 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;

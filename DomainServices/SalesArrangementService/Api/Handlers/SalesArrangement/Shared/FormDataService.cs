@@ -11,7 +11,7 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;

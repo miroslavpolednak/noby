@@ -86,12 +86,12 @@ internal class CreateRiskBusinessCaseHandler
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction _loanApplicationService;
-    private readonly DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction _riskBusinessCaseService;
+    private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceAbstraction _loanApplicationService;
+    private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction _riskBusinessCaseService;
 
     public CreateRiskBusinessCaseHandler(
-        DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction loanApplicationService,
-        DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction riskBusinessCaseService,
+        DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceAbstraction loanApplicationService,
+        DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction riskBusinessCaseService,
         IHouseholdServiceAbstraction householdService,
         IOfferServiceAbstraction offerService,
         ICaseServiceAbstraction caseService,
