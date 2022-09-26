@@ -27,11 +27,21 @@ steps:
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'Noby - SonarQube'
+    scannerMode: 'MSBuild'
+    projectKey: 'CaseService'
+    projectName: 'CaseService'
+    projectVersion: '$(MajorVersion).$(MinorVersion)'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
     arguments: '--output $(Build.BinariesDirectory)'
+
+- task: SonarQubeAnalyze@5
 
 - task: ArchiveFiles@2
   inputs:
