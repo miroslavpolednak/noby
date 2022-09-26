@@ -6,8 +6,8 @@ namespace CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 public class ResultError
 {
     [ProtoMember(1)]
-    public string Code { get; set; }
+    public string Code { get; set; } = string.Empty;
     
     [ProtoMember(2)]
-    public string Message { get; set; }
+    public string Message { get; set; } = string.Empty;
 }
