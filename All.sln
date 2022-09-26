@@ -147,7 +147,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.Api", "DomainServices\UserService\Api\DomainServices.UserService.Api.csproj", "{FBF62539-BA98-484A-9456-B6C975BC057B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.Abstraction", "DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj", "{24A8B4BC-9D4F-4EC3-A0B5-A3CE726A3E4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.UserService.Clients", "DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj", "{24A8B4BC-9D4F-4EC3-A0B5-A3CE726A3E4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Telemetry", "CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj", "{A1DDA8E6-3D61-4079-94C7-7B8CE6B7B0BB}"
 EndProject

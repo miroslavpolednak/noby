@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 
-namespace DomainServices.UserService.Abstraction;
+namespace DomainServices.UserService.Clients;
 
 public static class UserServiceExtensions
 {

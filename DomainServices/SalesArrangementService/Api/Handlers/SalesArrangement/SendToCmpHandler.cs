@@ -13,14 +13,14 @@ internal class SendToCmpHandler
     private readonly FormDataService _formDataService;
     private readonly ILogger<SendToCmpHandler> _logger;
     private readonly Repositories.NobyRepository _repository;
-    private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly UserService.Clients.IUserServiceAbstraction _userService;
    
 
     public SendToCmpHandler(
         FormDataService formDataService,
         ILogger<SendToCmpHandler> logger,
         Repositories.NobyRepository repository,
-        UserService.Abstraction.IUserServiceAbstraction userService)
+        UserService.Clients.IUserServiceAbstraction userService)
     {
         _formDataService = formDataService;
         _logger = logger;

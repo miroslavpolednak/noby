@@ -14,7 +14,7 @@ internal class UpdateActiveTasksHandler
     private readonly ILogger<UpdateActiveTasksHandler> _logger;
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly UserService.Clients.IUserServiceAbstraction _userService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
@@ -22,7 +22,7 @@ internal class UpdateActiveTasksHandler
         ILogger<UpdateActiveTasksHandler> logger,
         Repositories.CaseServiceRepository repository,
         ICodebookServiceAbstraction codebookService,
-        UserService.Abstraction.IUserServiceAbstraction userService,
+        UserService.Clients.IUserServiceAbstraction userService,
         EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor
         )

@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Results;
 
-namespace DomainServices.UserService.Abstraction;
+namespace DomainServices.UserService.Clients;
 
 public interface IUserServiceAbstraction
 {

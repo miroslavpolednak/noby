@@ -64,7 +64,7 @@ internal class GetCreditWorthinessHandler
     private readonly CreditWorthinessHouseholdService _creditWorthinessHouseholdService;
     private readonly DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction _creditWorthinessService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly DomainServices.UserService.Clients.IUserServiceAbstraction _userService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
@@ -73,7 +73,7 @@ internal class GetCreditWorthinessHandler
         CreditWorthinessHouseholdService creditWorthinessHouseholdService,
         DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction creditWorthinessService,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
+        DomainServices.UserService.Clients.IUserServiceAbstraction userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)

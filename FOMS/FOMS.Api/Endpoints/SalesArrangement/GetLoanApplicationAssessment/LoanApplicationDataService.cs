@@ -4,7 +4,7 @@ using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 
 using cArrangement = DomainServices.SalesArrangementService.Contracts;
 using cCase = DomainServices.CaseService.Contracts;

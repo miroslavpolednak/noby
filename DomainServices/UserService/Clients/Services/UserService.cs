@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Results;
 using Microsoft.Extensions.Logging;
 
-namespace DomainServices.UserService.Abstraction.Services;
+namespace DomainServices.UserService.Clients.Services;
 
 internal class UserService : IUserServiceAbstraction
 {
