@@ -25,8 +25,8 @@ internal class CustomerManagementErrorMap
 
             case CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
                 {
-                    var message = $"KB CM: Customer already exists. CustomerId = {response.IdentifiedSubjects.First().CustomerId}";
-                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, message, 11023);
+                    // nemame jak vratit ID (nevracime Result object), takze do zpravy...
+                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, response.IdentifiedSubjects.First().CustomerId.ToString(), 11023);
                 }
 
             case CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
