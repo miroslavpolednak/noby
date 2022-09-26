@@ -2,8 +2,10 @@
 package DomainServices.ProductService;
 option csharp_namespace = "DomainServices.ProductService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "GrpcDecimal.proto";
 import "GrpcDate.proto";
+import "Identity.proto";
 
 message ProductInstanceIdRequest {
    int64 ProductInstanceId = 1;
@@ -51,6 +53,13 @@ message GetHousingSavingsInstanceBasicDetailResponse {
 message GetProductInstanceListRequest {
 	int64 CaseId = 1;
 }
+
 message GetProductInstanceListResponse {
 	repeated ProductInstanceListItem Instances = 1;
+}
+
+message GetCustomersOnProductResponse {
+	repeated cis.types.Identity CustomersOnProduct = 1;
+	int32 RelationshipCustomerProductTypeId = 2;
+	google.protobuf.BoolValue Agent = 3;
 }
