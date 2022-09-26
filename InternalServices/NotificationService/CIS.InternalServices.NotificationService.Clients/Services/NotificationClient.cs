@@ -1,13 +1,13 @@
 ﻿using CIS.Core.Results;
 using CIS.Infrastructure.Logging;
-using CIS.InternalServices.NotificationService.Client.Interfaces;
+using CIS.InternalServices.NotificationService.Clients.Interfaces;
 using CIS.InternalServices.NotificationService.Contracts;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using Microsoft.Extensions.Logging;
 
-namespace CIS.InternalServices.NotificationService.Client.Services;
+namespace CIS.InternalServices.NotificationService.Clients.Services;
 
 public class NotificationClient : INotificationClient
 {

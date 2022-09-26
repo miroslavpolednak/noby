@@ -3,7 +3,7 @@ using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 
-namespace CIS.InternalServices.NotificationService.Client.Interfaces;
+namespace CIS.InternalServices.NotificationService.Clients.Interfaces;
 
 public interface INotificationClient
 {

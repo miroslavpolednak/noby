@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.NotificationService.Client.Interfaces;
-using CIS.InternalServices.NotificationService.Client.Services;
+using CIS.InternalServices.NotificationService.Clients.Interfaces;
+using CIS.InternalServices.NotificationService.Clients.Services;
 using CIS.InternalServices.NotificationService.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
 
-namespace CIS.InternalServices.NotificationService.Client;
+namespace CIS.InternalServices.NotificationService.Clients;
 
 public static class ServiceCollectionExtensions
 {
