@@ -96,8 +96,7 @@ internal sealed class ProductChildMapper
             .ToList();
 
     private static Func<_V2.LoanApplicationProductCollateral, LoanApplicationCollateral> tranformCollateral(List<DomainServices.CodebookService.Contracts.Endpoints.CollateralTypes.CollateralTypeItem> collaterals)
-    {
-        return t => new LoanApplicationCollateral
+        => t => new LoanApplicationCollateral
         {
             AppraisedValue = t.AppraisedValue.ToAmount(),
             Id = string.IsNullOrEmpty(t.Id) ? null : new ResourceIdentifier
@@ -109,16 +108,13 @@ internal sealed class ProductChildMapper
             },
             CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
         };
-    }
 
-    private static Func<_V2.LoanApplicationProductPurpose, LoanApplicationPurpose> tranformPurpose(List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes)
-    {
-        return t => new LoanApplicationPurpose
+    private static Func<_V2.LoanApplicationProductPurpose, LoanApplicationPurpose> tranformPurpose(List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes, _V2.LoanApplicationProduct product)
+        => t => new LoanApplicationPurpose
         {
             Amount = t.Amount,
-            Code = purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
+            Code = (product.ProductTypeId == 20001 && product.LoanKindId == 2001) ? 35 : purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
         };
-    }
     
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly CancellationToken _cancellationToken;

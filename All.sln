@@ -207,7 +207,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Docume
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentGeneratorService.Clients", "InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj", "{37C614B5-BD2D-4509-ABA3-F5CA74B3C58B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_NotificationService", "Playgrounds\Console_NotificationService\Console_NotificationService.csproj", "{5C1AD29A-818C-4EE9-9428-60D15CEB7519}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_NotificationService", "Playgrounds\Console_NotificationService\Console_NotificationService.csproj", "{5C1AD29A-818C-4EE9-9428-60D15CEB7519}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
