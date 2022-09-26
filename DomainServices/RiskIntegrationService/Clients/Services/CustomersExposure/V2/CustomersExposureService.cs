@@ -4,7 +4,7 @@ using DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 namespace DomainServices.RiskIntegrationService.Clients.Services.CustomersExposure.V2;
 
 internal class CustomersExposureService
-    : Clients.CustomersExposure.V2.ICustomersExposureServiceAbstraction
+    : Clients.CustomersExposure.V2.ICustomersExposureServiceClient
 {
     public async Task<IServiceCallResult> Calculate(CustomersExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {

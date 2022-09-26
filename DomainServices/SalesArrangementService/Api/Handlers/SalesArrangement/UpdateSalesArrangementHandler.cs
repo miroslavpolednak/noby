@@ -64,7 +64,7 @@ internal class UpdateSalesArrangementDataHandler
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly IUserServiceAbstraction _userService;
+    private readonly IUserServiceClient _userService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
 
@@ -73,7 +73,7 @@ internal class UpdateSalesArrangementDataHandler
         ICaseServiceAbstraction caseService,
         ICurrentUserAccessor userAccessor,
         ICodebookServiceAbstraction codebookService,
-        IUserServiceAbstraction userService,
+        IUserServiceClient userService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient)
     {

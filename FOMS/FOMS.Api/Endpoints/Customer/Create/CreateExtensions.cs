@@ -33,7 +33,7 @@ internal static class CreateExtensions
         // adresa
         if (request.PrimaryAddress is not null)
         {
-            request.PrimaryAddress!.AddressTypeId = (int)CIS.Foms.Enums.AddressTypes.PERMANENT;
+            request.PrimaryAddress!.AddressTypeId = (int)CIS.Foms.Enums.AddressTypes.Permanent;
             model.Addresses.Add(request.PrimaryAddress);
         }
         // narodnost

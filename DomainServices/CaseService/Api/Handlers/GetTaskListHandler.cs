@@ -14,7 +14,7 @@ internal class GetTaskListHandler
     private readonly ILogger<GetTaskListHandler> _logger;
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly UserService.Clients.IUserServiceAbstraction _userService;
+    private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IMediator _mediator;
@@ -23,7 +23,7 @@ internal class GetTaskListHandler
         ILogger<GetTaskListHandler> logger,
         Repositories.CaseServiceRepository repository,
         ICodebookServiceAbstraction codebookService,
-        UserService.Clients.IUserServiceAbstraction userService,
+        UserService.Clients.IUserServiceClient userService,
         EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         IMediator mediator

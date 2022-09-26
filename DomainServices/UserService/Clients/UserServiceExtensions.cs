@@ -20,7 +20,7 @@ public static class UserServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddTransient<IUserServiceAbstraction, Services.UserService>();
+        services.AddTransient<IUserServiceClient, Services.UserService>();
 
         services.AddGrpcClientFromCisEnvironment<Contracts.v1.UserService.UserServiceClient>();
         

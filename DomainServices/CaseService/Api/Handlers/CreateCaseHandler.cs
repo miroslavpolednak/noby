@@ -79,12 +79,12 @@ internal class CreateCaseHandler
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly Eas.IEasClient _easClient;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly UserService.Clients.IUserServiceAbstraction _userService;
+    private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CreateCaseHandler(
         IMediator mediator,
         CIS.Core.IDateTime dateTime,
-        UserService.Clients.IUserServiceAbstraction userService,
+        UserService.Clients.IUserServiceClient userService,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         Eas.IEasClient easClient,
         Repositories.CaseServiceRepository repository,

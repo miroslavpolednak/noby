@@ -27,12 +27,12 @@ internal class LinkOwnerToCaseHandler
             _ => throw new NotImplementedException()
         };
 
-    private readonly UserService.Clients.IUserServiceAbstraction _userService;
+    private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly Repositories.CaseServiceRepository _repository;
     private readonly ILogger<LinkOwnerToCaseHandler> _logger;
 
     public LinkOwnerToCaseHandler(
-        UserService.Clients.IUserServiceAbstraction userService,
+        UserService.Clients.IUserServiceClient userService,
         Repositories.CaseServiceRepository repository,
         ILogger<LinkOwnerToCaseHandler> logger)
     {

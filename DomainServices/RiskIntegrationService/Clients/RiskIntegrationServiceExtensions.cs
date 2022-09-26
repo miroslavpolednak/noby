@@ -28,13 +28,13 @@ public static class RiskIntegrationServiceExtensions
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
 
-        services.register<_Contracts.CreditWorthiness.V2.ICreditWorthinessService, _Clients.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction, Services.CreditWorthiness.V2.CreditWorthinessService>();
+        services.register<_Contracts.CreditWorthiness.V2.ICreditWorthinessService, _Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient, Services.CreditWorthiness.V2.CreditWorthinessService>();
 
-        services.register<_Contracts.CustomersExposure.V2.ICustomersExposureService, _Clients.CustomersExposure.V2.ICustomersExposureServiceAbstraction, Services.CustomersExposure.V2.CustomersExposureService>();
+        services.register<_Contracts.CustomersExposure.V2.ICustomersExposureService, _Clients.CustomersExposure.V2.ICustomersExposureServiceClient, Services.CustomersExposure.V2.CustomersExposureService>();
 
-        services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Clients.LoanApplication.V2.ILoanApplicationServiceAbstraction, Services.LoanApplication.V2.LoanApplicationService>();
+        services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Clients.LoanApplication.V2.ILoanApplicationServiceClient, Services.LoanApplication.V2.LoanApplicationService>();
 
-        services.register<_Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, _Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction, Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
+        services.register<_Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, _Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient, Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
 
         return services;
     }

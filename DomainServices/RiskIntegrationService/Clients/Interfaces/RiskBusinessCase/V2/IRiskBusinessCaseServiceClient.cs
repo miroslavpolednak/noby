@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
 
-public interface IRiskBusinessCaseServiceAbstraction
+public interface IRiskBusinessCaseServiceClient
 {
     /// <summary>
     /// Založení úvěrového případu

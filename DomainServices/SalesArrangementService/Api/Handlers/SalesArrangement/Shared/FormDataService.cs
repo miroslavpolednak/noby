@@ -33,7 +33,7 @@ internal class FormDataService
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICustomerServiceAbstraction _customerService;
-    private readonly IUserServiceAbstraction _userService;
+    private readonly IUserServiceClient _userService;
 
     private readonly Repositories.NobyRepository _repository;
     private readonly ILogger<FormDataService> _logger;
@@ -46,7 +46,7 @@ internal class FormDataService
         ICaseServiceAbstraction caseService,
         IOfferServiceAbstraction offerService,
         ICustomerServiceAbstraction customerService,
-        IUserServiceAbstraction userService,
+        IUserServiceClient userService,
         Repositories.NobyRepository repository,
         ILogger<FormDataService> logger,
         Eas.IEasClient easClient,

@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2;
 
-public interface ICreditWorthinessServiceAbstraction
+public interface ICreditWorthinessServiceClient
 {
     /// <summary>
     /// Výpočet rozšířené bonity

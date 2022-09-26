@@ -2,7 +2,7 @@
 
 namespace DomainServices.UserService.Clients;
 
-public interface IUserServiceAbstraction
+public interface IUserServiceClient
 {
     /// <summary>
     /// Vraci detail uzivatele

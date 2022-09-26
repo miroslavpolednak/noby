@@ -19,13 +19,13 @@ internal class GetCurrentUserHandler
     }
 
     private readonly ILogger<GetCurrentUserHandler> _logger;
-    private readonly DomainServices.UserService.Clients.IUserServiceAbstraction _userService;
+    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public GetCurrentUserHandler(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ILogger<GetCurrentUserHandler> logger, 
-        DomainServices.UserService.Clients.IUserServiceAbstraction userService)
+        DomainServices.UserService.Clients.IUserServiceClient userService)
     {
         _userAccessor = userAccessor;
         _logger = logger;

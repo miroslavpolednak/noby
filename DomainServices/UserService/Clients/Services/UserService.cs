@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DomainServices.UserService.Clients.Services;
 
-internal class UserService : IUserServiceAbstraction
+internal class UserService : IUserServiceClient
 {
     public async Task<IServiceCallResult> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken))
     {

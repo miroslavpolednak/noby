@@ -5,7 +5,7 @@ using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 namespace DomainServices.RiskIntegrationService.Clients.Services.RiskBusinessCase.V2;
 
 internal class RiskBusinessCaseService
-    : Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction
+    : Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient
 {
     public async Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default)
     {
