@@ -10,7 +10,12 @@ using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
 
-var builder = WebApplication.CreateBuilder(args);
+var winSvc = args.Any(t => t.Equals("winsvc"));
+var webAppOptions = winSvc
+    ?  new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
+    :  new WebApplicationOptions { Args = args };
+
+var builder = WebApplication.CreateBuilder(webAppOptions);
 
 // Mvc
 builder.Services.AddControllers();
@@ -54,7 +59,10 @@ builder.AddCustomSwagger();
 // kestrel configuration
 builder.UseKestrelWithCustomConfiguration();
 
-// if (runAsWinSvc) builder.Host.UseWindowsService();
+if (winSvc)
+{
+    builder.Host.UseWindowsService();
+}
 
 var app = builder.Build();
 
