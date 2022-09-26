@@ -21,7 +21,7 @@ internal sealed class ProductChildMapper
             AplType = product.AplType ?? _riskApplicationType?.C4mAplTypeId,
             GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
             IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
-            LoanApplicationPurpose = product.Purposes?.Select(tranformPurpose(purposes))?.ToList(),
+            LoanApplicationPurpose = product.Purposes?.Select(tranformPurpose(purposes, product))?.ToList(),
             LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),
             AmountInvestment = product.InvestmentAmount.ToAmount(),
