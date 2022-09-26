@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Abstraction.RiskBusinessCase.V2;
+﻿namespace DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
 
 public interface IRiskBusinessCaseServiceAbstraction
 {

@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2;
+﻿namespace DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2;
 
 public interface ICreditWorthinessServiceAbstraction
 {

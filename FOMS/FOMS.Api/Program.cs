@@ -6,10 +6,10 @@ using DomainServices.ProductService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.UserService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.RiskIntegrationService.Abstraction;
+using DomainServices.RiskIntegrationService.Clients;
 using FOMS.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using DomainServices.RiskIntegrationService.Abstraction;
+using DomainServices.RiskIntegrationService.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 

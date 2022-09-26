@@ -1,10 +1,10 @@
 ﻿using CIS.Infrastructure.Logging;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
-namespace DomainServices.RiskIntegrationService.Abstraction.Services.CreditWorthiness.V2;
+namespace DomainServices.RiskIntegrationService.Clients.Services.CreditWorthiness.V2;
 
 internal class CreditWorthinessService
-    : Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction
+    : Clients.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction
 {
     public async Task<IServiceCallResult> Calculate(CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {

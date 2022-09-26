@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Abstraction.CustomersExposure.V2;
+﻿namespace DomainServices.RiskIntegrationService.Clients.CustomersExposure.V2;
 
 public interface ICustomersExposureServiceAbstraction
 {

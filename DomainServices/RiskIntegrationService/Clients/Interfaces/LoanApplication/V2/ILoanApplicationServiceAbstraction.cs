@@ -1,4 +1,4 @@
-﻿namespace DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2;
+﻿namespace DomainServices.RiskIntegrationService.Clients.LoanApplication.V2;
 
 public interface ILoanApplicationServiceAbstraction
 {

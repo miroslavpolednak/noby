@@ -2,10 +2,10 @@
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
-namespace DomainServices.RiskIntegrationService.Abstraction.Services.RiskBusinessCase.V2;
+namespace DomainServices.RiskIntegrationService.Clients.Services.RiskBusinessCase.V2;
 
 internal class RiskBusinessCaseService
-    : Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction
+    : Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction
 {
     public async Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default)
     {

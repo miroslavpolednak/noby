@@ -2,10 +2,10 @@
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
-using _Abstraction = DomainServices.RiskIntegrationService.Abstraction;
+using _Clients = DomainServices.RiskIntegrationService.Clients;
 using _Contracts = DomainServices.RiskIntegrationService.Contracts;
 
-namespace DomainServices.RiskIntegrationService.Abstraction;
+namespace DomainServices.RiskIntegrationService.Clients;
 
 public static class RiskIntegrationServiceExtensions
 {
@@ -28,13 +28,13 @@ public static class RiskIntegrationServiceExtensions
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
 
-        services.register<_Contracts.CreditWorthiness.V2.ICreditWorthinessService, _Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction, Services.CreditWorthiness.V2.CreditWorthinessService>();
+        services.register<_Contracts.CreditWorthiness.V2.ICreditWorthinessService, _Clients.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction, Services.CreditWorthiness.V2.CreditWorthinessService>();
 
-        services.register<_Contracts.CustomersExposure.V2.ICustomersExposureService, _Abstraction.CustomersExposure.V2.ICustomersExposureServiceAbstraction, Services.CustomersExposure.V2.CustomersExposureService>();
+        services.register<_Contracts.CustomersExposure.V2.ICustomersExposureService, _Clients.CustomersExposure.V2.ICustomersExposureServiceAbstraction, Services.CustomersExposure.V2.CustomersExposureService>();
 
-        services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction, Services.LoanApplication.V2.LoanApplicationService>();
+        services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Clients.LoanApplication.V2.ILoanApplicationServiceAbstraction, Services.LoanApplication.V2.LoanApplicationService>();
 
-        services.register<_Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, _Abstraction.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction, Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
+        services.register<_Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, _Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceAbstraction, Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
 
         return services;
     }

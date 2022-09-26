@@ -1,10 +1,10 @@
 ﻿using CIS.Infrastructure.Logging;
 using DomainServices.RiskIntegrationService.Contracts.CustomersExposure.V2;
 
-namespace DomainServices.RiskIntegrationService.Abstraction.Services.CustomersExposure.V2;
+namespace DomainServices.RiskIntegrationService.Clients.Services.CustomersExposure.V2;
 
 internal class CustomersExposureService
-    : Abstraction.CustomersExposure.V2.ICustomersExposureServiceAbstraction
+    : Clients.CustomersExposure.V2.ICustomersExposureServiceAbstraction
 {
     public async Task<IServiceCallResult> Calculate(CustomersExposureCalculateRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
