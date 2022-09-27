@@ -42,11 +42,14 @@ internal class SimulateMortgageHandler
         var basicParameters = setUpDefaults(request.Request.BasicParameters, request.Request.SimulationInputs.GuaranteeDateFrom);
         var inputs = await setUpDefaults(request.Request.SimulationInputs, cancellation);
 
+        // load codebook DrawingDuration for remaping Id -> DrawingDuration
+        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
+
         // load codebook DrawingType for remaping Id -> StarbildId
         var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
 
         // get simulation outputs
-        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingTypeById);
+        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingDurationsById, drawingTypeById);
         var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
         var results = easSimulationRes.ToSimulationResults();
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
@@ -109,10 +112,10 @@ internal class SimulateMortgageHandler
 
         // Typ čerpání
         // DrawingType(SB enum)
-        // Default: "0" jednorázové
-        if (!input.DrawingType.HasValue)
+        // Default: "2" jednorázové
+        if (!input.DrawingTypeId.HasValue)
         {
-            input.DrawingType = 0;
+            input.DrawingTypeId = (int)CIS.Foms.Enums.DrawingTypes.Disposable;
         }
 
         //Je žádáno zaměstnanecké zvýhodnění?
