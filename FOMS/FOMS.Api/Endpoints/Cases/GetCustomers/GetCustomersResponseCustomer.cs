@@ -10,7 +10,7 @@ public sealed class GetCustomersResponseCustomer
     /// <summary>
     /// Zmocněnec pro komunikaci
     /// </summary>
-    public bool Agent { get; set; }
+    public bool? Agent { get; set; }
 
     /// <summary>
     /// Jméno
