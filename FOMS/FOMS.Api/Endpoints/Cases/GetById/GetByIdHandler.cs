@@ -20,12 +20,12 @@ internal class GetByIdHandler
     }
 
     private readonly CasesModelConverter _converter;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public GetByIdHandler(
         CasesModelConverter converter,
-        DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
+        DomainServices.UserService.Clients.IUserServiceClient userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
     {
         _userService = userService;

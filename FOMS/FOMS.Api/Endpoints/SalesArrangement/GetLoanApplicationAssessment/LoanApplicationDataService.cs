@@ -4,7 +4,7 @@ using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 
 using cArrangement = DomainServices.SalesArrangementService.Contracts;
 using cCase = DomainServices.CaseService.Contracts;
@@ -27,7 +27,7 @@ internal class LoanApplicationDataService
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICaseServiceAbstraction _caseService;
-    private readonly IUserServiceAbstraction _userService;
+    private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly ICodebookServiceAbstraction _codebookService;
 
@@ -38,7 +38,7 @@ internal class LoanApplicationDataService
         ICustomerOnSAServiceAbstraction customerOnSAService,
         IHouseholdServiceAbstraction householdService,
         ICaseServiceAbstraction caseService,
-        IUserServiceAbstraction userService,
+        IUserServiceClient userService,
         ICustomerServiceAbstraction customerService,
         ICodebookServiceAbstraction codebookService
         )

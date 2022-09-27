@@ -56,6 +56,7 @@
             Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCustomers(System.Int64,System.Threading.CancellationToken)" -->
         <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetById(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail Case-u.
@@ -258,6 +259,46 @@
             Poradce třetí strana.
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleName">
+            <summary>
+            Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Agent">
+            <summary>
+            Zmocněnec pro komunikaci
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.KBID">
+            <summary>
+            KBID
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Mobile">
+            <summary>
+            Mobil
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
@@ -373,6 +414,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
@@ -1443,12 +1485,12 @@
             uver.indCenotvorbaOdchylka
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingType">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingTypeId">
             <summary>
             uver.typCerpani
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDuration">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDurationId">
             <summary>
             uver.lhutaDocerpani
             </summary>

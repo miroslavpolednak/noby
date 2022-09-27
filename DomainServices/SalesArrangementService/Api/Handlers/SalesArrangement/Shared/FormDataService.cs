@@ -11,7 +11,7 @@ using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
@@ -33,7 +33,7 @@ internal class FormDataService
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICustomerServiceAbstraction _customerService;
-    private readonly IUserServiceAbstraction _userService;
+    private readonly IUserServiceClient _userService;
 
     private readonly Repositories.NobyRepository _repository;
     private readonly ILogger<FormDataService> _logger;
@@ -46,7 +46,7 @@ internal class FormDataService
         ICaseServiceAbstraction caseService,
         IOfferServiceAbstraction offerService,
         ICustomerServiceAbstraction customerService,
-        IUserServiceAbstraction userService,
+        IUserServiceClient userService,
         Repositories.NobyRepository repository,
         ILogger<FormDataService> logger,
         Eas.IEasClient easClient,
@@ -367,9 +367,10 @@ internal class FormDataService
         var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
         var salesArrangementStatesById = (await _codebookService.SalesArrangementStates(cancellation)).ToDictionary(i => i.Id);
         var employmentTypes = await _codebookService.EmploymentTypes(cancellation);
+        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
         var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
-
-        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById, salesArrangementStatesById, employmentTypes, drawingTypeById);
+        
+        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById, salesArrangementStatesById, employmentTypes, drawingDurationsById, drawingTypeById);
 
         return (formData);
     }

@@ -12,13 +12,13 @@ public enum AddressTypes : byte
 
     [Display(Name = "Trvalá adresa")]
     [EnumMember]
-    PERMANENT = 1,
+    Permanent = 1,
 
     [Display(Name = "Korespondenční")]
     [EnumMember]
-    MAILING = 2,
+    Mailing = 2,
 
     [Display(Name = "Adresa v zahraničí pro daňové nerezidenty")]
     [EnumMember]
-    ABROAD = 3
+    Abroad = 3
 }

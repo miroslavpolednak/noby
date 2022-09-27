@@ -82,4 +82,13 @@ internal class ProductService : IProductServiceAbstraction
         return new SuccessfulServiceCallResult();
     }
 
+    public async Task<IServiceCallResult> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default)
+    {
+        _logger.RequestHandlerStarted(nameof(GetCustomersOnProduct));
+
+        var result = await _service.GetCustomersOnProductAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
+
+        return new SuccessfulServiceCallResult();
+    }
+
 }

@@ -13,8 +13,8 @@ internal static class Extensions
             {
                 GuaranteeDateFrom = guaranteeDateFrom,
                 InterestRateDiscount = request.InterestRateDiscount,
-                DrawingType = request.DrawingType,
-                DrawingDuration = request.DrawingDuration,
+                DrawingTypeId = request.DrawingTypeId,
+                DrawingDurationId = request.DrawingDurationId,
                 ProductTypeId = request.ProductTypeId,
                 LoanKindId = request.LoanKindId,
                 LoanAmount = request.LoanAmount,

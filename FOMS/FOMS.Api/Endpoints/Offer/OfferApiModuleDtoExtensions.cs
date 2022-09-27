@@ -29,8 +29,8 @@ internal static class OfferApiModuleDtoExtensions
                 NewDeveloperName = input.Developer.NewDeveloperName,
                 ProjectId = input.Developer.ProjectId
             },
-            DrawingDuration = input.DrawingDuration,
-            DrawingType = input.DrawingType,
+            DrawingDurationId = input.DrawingDurationId,
+            DrawingTypeId = input.DrawingTypeId,
             InterestRateDiscount = input.InterestRateDiscount,
             MarketingActions = input.MarketingActions is null ? null : new Dto.MarketingActionInputItem
             {

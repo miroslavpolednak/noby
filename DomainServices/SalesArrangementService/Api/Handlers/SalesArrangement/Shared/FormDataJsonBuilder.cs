@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Linq;
 
 using CIS.Infrastructure.gRPC.CisTypes;
 
@@ -474,9 +473,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     zamestnan_jako = i.Employement?.Job?.JobDescription,
                     prijem_vyse = iil.Sum.ToJsonString(),
                     prijem_mena = iil.CurrencyCode,
-                    zrazky_ze_mzdy_rozhodnuti = i.Employement?.WageDeduction?.DeductionDecision.ToJsonString(),
-                    zrazky_ze_mzdy_splatky = i.Employement?.WageDeduction?.DeductionPayments.ToJsonString(),
-                    zrazky_ze_mzdy_ostatni = i.Employement?.WageDeduction?.DeductionOther.ToJsonString(),
+                    srazky_ze_mzdy_rozhodnuti = i.Employement?.WageDeduction?.DeductionDecision.ToJsonString(),
+                    srazky_ze_mzdy_splatky = i.Employement?.WageDeduction?.DeductionPayments.ToJsonString(),
+                    srazky_ze_mzdy_ostatni = i.Employement?.WageDeduction?.DeductionOther.ToJsonString(),
                     prijem_potvrzeni_vystavila_ext_firma = i.Employement?.IncomeConfirmation?.IsIssuedByExternalAccountant.ToJsonString(),
                     //prijem_potvrzeni_misto_vystaveni =  i.Employement?.IncomeConfirmation?.ConfirmationPlace,
                     prijem_potvrzeni_datum = i.Employement?.IncomeConfirmation?.ConfirmationDate.ToJsonString(),
@@ -652,7 +651,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     var insuranceSumRiskLife = Data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
                     var insuranceSumRealEstate = Data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RealEstateInsurance.Sum;
 
-                    var typCerpani = Data.Offer.SimulationInputs.DrawingType.HasValue ? Data.DrawingTypeById.GetValueOrDefault(Data.Offer.SimulationInputs.DrawingType.Value)?.StarbuildId : null;
+                    var typCerpani = Data.Offer.SimulationInputs.DrawingTypeId.HasValue ? Data.DrawingTypeById.GetValueOrDefault(Data.Offer.SimulationInputs.DrawingTypeId.Value)?.StarbuildId : null;
+                    var lhutaUkonceniCerpani = Data.Offer.SimulationInputs.DrawingDurationId.HasValue ? Data.DrawingDurationById.GetValueOrDefault(Data.Offer.SimulationInputs.DrawingDurationId.Value)?.DrawingDuration : null;
 
                     data = new
                     {
@@ -701,6 +701,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),                                         // Offerinstance.SimulationInputs.FeeSettings.StatementTypeId -> Offerinstance.BasicParameters.StatementTypeId
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),                                   // Offerinstance
                         typ_cerpani = typCerpani.ToJsonString(),
+                        lhuta_ukonceni_cerpani = lhutaUkonceniCerpani.ToJsonString(),
                         datum_garance_us = Data.Arrangement.OfferGuaranteeDateFrom.ToJsonString(),
                         garance_us_platnost_do = Data.Offer.BasicParameters.GuaranteeDateTo.ToJsonString(),                                          // Data.Offer.BasicParameters.GuaranteeDateTo
                         fin_kryti_vlastni_zdroje = Data.Offer.BasicParameters.FinancialResourcesOwn.ToJsonString(),                                  // OfferInstance

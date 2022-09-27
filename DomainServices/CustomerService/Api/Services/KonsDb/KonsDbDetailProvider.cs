@@ -36,8 +36,8 @@ public class KonsDbDetailProvider
             IdentificationDocument = partner.ToIdentificationDocument(),
         };
 
-        AddAddress(AddressTypes.PERMANENT, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City);
-        AddAddress(AddressTypes.MAILING, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity);
 
         AddContacts(partner, response.Contacts.AddRange);
 
@@ -62,8 +62,8 @@ public class KonsDbDetailProvider
                 IdentificationDocument = p.ToIdentificationDocument()
             };
 
-            AddAddress(AddressTypes.PERMANENT, detail.Addresses.Add, p.Street, p.HouseNumber, p.StreetNumber, p.PostCode, p.City);
-            AddAddress(AddressTypes.MAILING, detail.Addresses.Add, p.MailingStreet, p.MailingHouseNumber, p.MailingStreetNumber, p.MailingPostCode, p.MailingCity);
+            AddAddress(AddressTypes.Permanent, detail.Addresses.Add, p.Street, p.HouseNumber, p.StreetNumber, p.PostCode, p.City);
+            AddAddress(AddressTypes.Mailing, detail.Addresses.Add, p.MailingStreet, p.MailingHouseNumber, p.MailingStreetNumber, p.MailingPostCode, p.MailingCity);
 
             AddContacts(p, detail.Contacts.AddRange);
 

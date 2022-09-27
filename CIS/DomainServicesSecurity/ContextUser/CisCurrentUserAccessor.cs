@@ -45,7 +45,7 @@ public sealed class CisCurrentContextUserAccessor
 
         _userDetailsFetched = true;
 
-        var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Abstraction.IUserServiceAbstraction>();
+        var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
         var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await userService.GetUser(_user!.Id, cancellationToken));
         _userDetails = new FomsCurrentUserDetails
         {

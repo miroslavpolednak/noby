@@ -1,35 +1,45 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.HousingConditions;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.HousingConditions;
 
-namespace DomainServices.CodebookService.Endpoints.HousingConditions;
-
-public class HousingConditionsHandler
-    : IRequestHandler<HousingConditionsRequest, List<HousingConditionItem>>
+namespace DomainServices.CodebookService.Endpoints.HousingConditions
 {
-    public Task<List<HousingConditionItem>> Handle(HousingConditionsRequest request, CancellationToken cancellationToken)
+    public class HousingConditionsHandler
+        : IRequestHandler<HousingConditionsRequest, List<HousingConditionItem>>
     {
-        // TODO: Redirect to real data source!     
-        return Task.FromResult(new List<HousingConditionItem>
+
+        #region Construction
+
+        private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
+        private readonly ILogger<HousingConditionsHandler> _logger;
+
+        public HousingConditionsHandler(
+            CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider,
+            ILogger<HousingConditionsHandler> logger)
         {
-            new HousingConditionItem() { Id = 1, Name = "6 - vlastník domu", Code = "OW", IsValid = true },
-            new HousingConditionItem() { Id = 2, Name = "5 - vlastník bytu", Code = "OW", IsValid = true },
-            new HousingConditionItem() { Id = 3, Name = "3 - družstevník", Code = "GR", IsValid = true },
-            new HousingConditionItem() { Id = 4, Name = "2 - nájemník", Code = "RE", IsValid = true },
-            new HousingConditionItem() { Id = 5, Name = "4 - ostatní", Code = "OT", IsValid = true },
-            new HousingConditionItem() { Id = 6, Name = "7 - vlastník domu/bytu", Code = "OW", IsValid = true },
-            new HousingConditionItem() { Id = 8, Name = "8 - bydlení u rodičů", Code = "PA", IsValid = true },
-        });
-    }
+            _logger = logger;
+            _connectionProvider = connectionProvider;
+        }
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
-    private readonly ILogger<HousingConditionsHandler> _logger;
+        #endregion
 
-    public HousingConditionsHandler(
-        CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
-        ILogger<HousingConditionsHandler> logger)
-    {
-        _logger = logger;
-        _connectionProvider = connectionProvider;
+        // dotaz na codebook do SB
+        const string _sql = @"SELECT KOD 'Id', TEXT 'Name', CODE 'Code', CODE 'RdmCode', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+                                FROM [SBR].[CIS_FORMA_BYVANIA] ORDER BY KOD ASC";
+
+        public async Task<List<HousingConditionItem>> Handle(HousingConditionsRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await FastMemoryCache.GetOrCreate(nameof(HousingConditionsHandler), async () =>
+                {
+                    // load codebook items
+                    return await _connectionProvider.ExecuteDapperRawSqlToList<HousingConditionItem>(_sql, cancellationToken);
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.GeneralException(ex);
+                throw;
+            }
+        }
     }
 }

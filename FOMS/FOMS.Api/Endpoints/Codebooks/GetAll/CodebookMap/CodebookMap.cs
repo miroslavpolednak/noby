@@ -47,6 +47,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.DeveloperProjects);
         AddCodebook(s => s.DrawingDurations);
         AddCodebook(s => s.DrawingTypes, c => c.Cast<Codebook.DrawingTypes.DrawingTypeItem>().Where(t => t.Id > 0));
+        AddCodebook(s => s.EaCodesMain, c => c.Cast<Codebook.EaCodesMain.EaCodeMainItem>().Where(t => t.IsValid));
         AddCodebook(s => s.EducationLevels);
         AddCodebook(s => s.EmploymentTypes);
         AddCodebook(s => s.Fees);

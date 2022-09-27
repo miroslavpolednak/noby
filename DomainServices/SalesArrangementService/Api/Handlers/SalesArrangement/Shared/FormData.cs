@@ -7,6 +7,7 @@ using DomainServices.UserService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.Genders;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates;
+using DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations;
 using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
@@ -29,6 +30,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         public Dictionary<int, GenderItem> GendersById { get; init; }
         public Dictionary<int, SalesArrangementStateItem> SalesArrangementStatesById { get; init; }
         public List<GenericCodebookItemWithCode> EmploymentTypes { get; init; }
+        public Dictionary<int, DrawingDurationItem> DrawingDurationById { get; init; }
         public Dictionary<int, DrawingTypeItem> DrawingTypeById { get; init; }
 
         #endregion
@@ -49,6 +51,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             Dictionary<int, GenderItem> gendersById,
             Dictionary<int, SalesArrangementStateItem> salesArrangementStatesById,
             List<GenericCodebookItemWithCode> employmentTypes,
+            Dictionary<int, DrawingDurationItem> drawingDurationById,
             Dictionary<int, DrawingTypeItem> drawingTypeById)
         {
             Arrangement = arrangement;
@@ -64,6 +67,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             GendersById = gendersById;
             SalesArrangementStatesById = salesArrangementStatesById;
             EmploymentTypes = employmentTypes;
+            DrawingDurationById = drawingDurationById;
             DrawingTypeById = drawingTypeById;
         }
 

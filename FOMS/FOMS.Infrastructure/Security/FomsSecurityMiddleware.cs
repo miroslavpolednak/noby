@@ -11,7 +11,7 @@ public class AppSecurityMiddleware
     public AppSecurityMiddleware(RequestDelegate next) =>
         _next = next;
 
-    public async Task Invoke(HttpContext context, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService)
+    public async Task Invoke(HttpContext context, DomainServices.UserService.Clients.IUserServiceClient userService)
     {
         //TODO v net5 nefunguje context.GetEndpoint(). Jak tohle vyresit lepe?
         if (!_anonymousUrl.Contains(context.Request.Path.ToString()))
