@@ -12,8 +12,8 @@ public sealed class GetCreditWorthinessResponse
 
     public decimal? LoanAmount { get; set; }
     public decimal? LoanPaymentAmount { get; set; }
-    public int DTI { get; set; }
-    public int DSTI { get; set; }
+    public decimal? Dti { get; set; }
+    public decimal? Dsti { get; set; }
 }
 
 public enum CreditWorthinessResults
