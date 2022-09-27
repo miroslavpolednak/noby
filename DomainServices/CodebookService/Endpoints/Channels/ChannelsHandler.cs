@@ -1,6 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.Channels;
-using DomainServices.CodebookService.Endpoints.Channels;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.Channels;
 
 namespace DomainServices.CodebookService.Endpoints.Channels
 {
