@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Text.Json;
 using CIS.DomainServicesSecurity;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
@@ -6,6 +7,9 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
+using CIS.InternalServices.NotificationService.Api.HostedServices;
+using Confluent.Kafka;
+using Confluent.Kafka.DependencyInjection;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
@@ -52,6 +56,18 @@ builder.Services
         config.ResponseCompressionLevel = CompressionLevel.Optimal;
         config.Interceptors.Add<GenericServerExceptionInterceptor>();
     });
+
+// kafka
+builder.Services
+    .AddMemoryCache()
+    .AddSingleton(typeof(IAsyncDeserializer<>), typeof(JsonSerializer))
+    .AddKafkaClient(new Dictionary<string, string>
+    {
+        { "bootstrap.servers", "localhost:9092" },
+        { "enable.idempotence", "true" },
+        { "group.id", "notification-api" }
+    })
+    .AddBackgroundServices();
 
 // swagger
 builder.AddCustomSwagger();

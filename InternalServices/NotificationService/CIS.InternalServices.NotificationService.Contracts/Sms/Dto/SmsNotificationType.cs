@@ -11,4 +11,9 @@ public enum SmsNotificationType
     Unknown = 0,
     
     // todo:
+    [ProtoEnum]
+    StarBuild = 1,
+    
+    [ProtoEnum]
+    Noby = 2,
 }
