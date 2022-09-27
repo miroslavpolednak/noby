@@ -75,12 +75,12 @@ public class MortgageInputs
     /// <summary>
     /// uver.typCerpani
     /// </summary>
-    public int? DrawingType { get; set; }
+    public int? DrawingTypeId { get; set; }
 
     /// <summary>
     /// uver.lhutaDocerpani
     /// </summary>
-    public int? DrawingDuration { get; set; }
+    public int? DrawingDurationId { get; set; }
 
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
 

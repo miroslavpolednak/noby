@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations;
+using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
 using _OS = DomainServices.OfferService.Contracts;
 using EasWrapper = ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper;
 
@@ -31,7 +32,7 @@ internal static class EasSimulationExtensions
 
 
     // loan
-    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs, Dictionary<int, DrawingTypeItem> drawingTypeById)
+    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs, Dictionary<int, DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypeItem> drawingTypeById)
     {
         var uver = new EasWrapper.SimSettingsUver
         {
@@ -44,11 +45,16 @@ internal static class EasSimulationExtensions
             indCenotvorbaOdchylka = -1 * ((decimal)inputs.InterestRateDiscount!),
             periodaFixace = inputs.FixedRatePeriod!.Value,
             predpokladanaHodnotaZajisteni = inputs.CollateralAmount,
-            lhutaDocerpani = inputs.DrawingDuration,
             denSplatky = inputs.PaymentDay!.Value,
         };
 
-        var typCerpani = inputs.DrawingType.HasValue ? drawingTypeById.GetValueOrDefault(inputs.DrawingType.Value)?.StarbuildId : null;
+        var lhutaDocerpani = inputs.DrawingDurationId.HasValue ? drawingDurationsById.GetValueOrDefault(inputs.DrawingDurationId.Value)?.DrawingDuration : null;
+        if (lhutaDocerpani.HasValue)
+        {
+            uver.lhutaDocerpani = lhutaDocerpani;
+        }
+
+        var typCerpani = inputs.DrawingTypeId.HasValue ? drawingTypeById.GetValueOrDefault(inputs.DrawingTypeId.Value)?.StarbuildId : null;
         if (typCerpani.HasValue)
         {
             uver.typCerpani = typCerpani.Value;
@@ -184,13 +190,13 @@ internal static class EasSimulationExtensions
             operation.valuta = expectedDateOfDrawing.Value;
         }
 
-        return new EasWrapper.MimoradnaOperace[] {operation};
+        return new EasWrapper.MimoradnaOperace[] { operation };
     }
 
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
     /// </summary>
-    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters, Dictionary<int, DrawingTypeItem> drawingTypeById)
+    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters, Dictionary<int, DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypeItem> drawingTypeById)
     {
         //return SampleRequest;
 
@@ -198,7 +204,7 @@ internal static class EasSimulationExtensions
         return new EasWrapper.SimulationHTRequest
         {
             settings = ReqDefaultSettings,
-            uver = inputs.ToReqLoan(drawingTypeById),
+            uver = inputs.ToReqLoan(drawingDurationsById, drawingTypeById),
             urokovaSazba = inputs.ToReqInterestRate(),
             ucelyUveru = inputs.ToReqLoanPurposes(),
             nastaveniPoplatku = inputs.ToReqFeeSettings(basicParameters),
@@ -305,7 +311,8 @@ internal static class EasSimulationExtensions
     // payment schedule (simple)
     private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.SplS[] res)
     {
-        var items = res.Select(i => new _OS.PaymentScheduleSimple {
+        var items = res.Select(i => new _OS.PaymentScheduleSimple
+        {
             PaymentIndex = i.n,
             PaymentNumber = i.cisloSplatky,
             Date = i.datumSplatky,  // ´string´ field - SimulationService is responsible for correct formating
@@ -314,7 +321,7 @@ internal static class EasSimulationExtensions
         });
 
         results.PaymentScheduleSimple.AddRange(items);
-        
+
         return results;
     }
 

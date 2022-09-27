@@ -1,6 +1,4 @@
 ﻿using DomainServices.CodebookService.Contracts.Endpoints.ContactTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustomerProductTypes;
-using DomainServices.CodebookService.Endpoints.RelationshipCustomerProductTypes;
 
 namespace DomainServices.CodebookService.Endpoints.ContactTypes;
 

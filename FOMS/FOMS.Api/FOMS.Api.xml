@@ -1485,12 +1485,12 @@
             uver.indCenotvorbaOdchylka
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingType">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingTypeId">
             <summary>
             uver.typCerpani
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDuration">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDurationId">
             <summary>
             uver.lhutaDocerpani
             </summary>

@@ -35,6 +35,9 @@ internal class GetMortgageOfferFPScheduleHandler
            .Where(t => t.OfferId == request.OfferId)
            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
+        // load codebook DrawingDuration for remaping Id -> DrawingDuration
+        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
+
         // load codebook DrawingType for remaping Id -> StarbildId
         var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
 
@@ -42,7 +45,7 @@ internal class GetMortgageOfferFPScheduleHandler
         var inputs = _OS.MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin);
 
         // get simulation outputs
-        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingTypeById).ToEasSimulationFullPaymentScheduleRequest();
+        var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingDurationsById, drawingTypeById).ToEasSimulationFullPaymentScheduleRequest();
         var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
 
         var fullPaymentSchedule = easSimulationRes.ToFullPaymentSchedule();
