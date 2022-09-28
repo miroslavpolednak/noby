@@ -44,15 +44,14 @@ internal sealed class IdentifyByIdentityHandler
             var updateResponse = ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
             {
                 Identity = request.CustomerIdentity!,
-                DateOfBirthNaturalPerson = customerInstance.NaturalPerson.DateOfBirth,
+                DateOfBirthNaturalPerson = customerInstance.NaturalPerson?.DateOfBirth,
                 FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
                 Name = customerInstance.NaturalPerson.LastName,
             }, cancellationToken));
 
             if (customerInstance.Identity.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)
             {
-                var mpid = customerInstance.Identity.IdentityId;
-                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, mpid);
+                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, customerInstance.Identity.IdentityId);
                 await _mediator.Publish(notification, cancellationToken);
             }
         }

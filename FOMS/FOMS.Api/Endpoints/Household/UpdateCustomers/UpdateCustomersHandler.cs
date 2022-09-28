@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.SalesArrangementService.Abstraction;
+using Google.Protobuf.Collections;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateCustomers;
@@ -11,21 +12,31 @@ internal class UpdateCustomersHandler
     {
         // detail domacnosti
         var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        // detail SA
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(householdInstance.SalesArrangementId, cancellationToken));
 
-        var response = new UpdateCustomersResponse
-        {
-            CustomerOnSAId1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken),
-            CustomerOnSAId2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken)
-        };
+        var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
+        var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
 
         // linkovani na household
-        if (householdInstance.CustomerOnSAId1 != response.CustomerOnSAId1 || householdInstance.CustomerOnSAId2 != response.CustomerOnSAId2)
-            await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, response.CustomerOnSAId1, response.CustomerOnSAId2, cancellationToken);
+        if (householdInstance.CustomerOnSAId1 != c1.CustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.CustomerOnSAId)
+            await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.CustomerOnSAId, c2.CustomerOnSAId, cancellationToken);
 
-        return response;
+        // hlavni domacnost - hlavni klient ma modre ID
+        if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId) && c1.CustomerOnSAId.HasValue && c1.MpId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
+        {
+            var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, c1.CustomerOnSAId!.Value, c1.MpId!.Value);
+            await _mediator.Publish(notification, cancellationToken);
+        }
+
+        return new UpdateCustomersResponse
+        {
+            CustomerOnSAId1 = c1.CustomerOnSAId,
+            CustomerOnSAId2 = c2.CustomerOnSAId
+        };
     }
 
-    async Task<int?> crudCustomer(
+    async Task<(int? CustomerOnSAId, long? MpId)> crudCustomer(
         CustomerDto? customer, 
         int? householdCustomerId,
         _SA.Household householdInstance,
@@ -39,9 +50,6 @@ internal class UpdateCustomersHandler
         }
         else if (customer is not null)
         {
-            int? newMpId = null;
-            int? customerId = customer.CustomerOnSAId;
-
             // smazat existujiciho, je nahrazen novym
             if (customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue)
                 await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
@@ -53,11 +61,14 @@ internal class UpdateCustomersHandler
                 {
                     var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
 
-                    newMpId = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
-                    {
-                        CustomerOnSAId = customer.CustomerOnSAId!.Value,
-                        Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
-                    }, cancellationToken)).PartnerId;
+                    var identities = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                        {
+                            CustomerOnSAId = customer.CustomerOnSAId!.Value,
+                            Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
+                        }, cancellationToken))
+                        .CustomerIdentifiers;
+
+                    return (customer.CustomerOnSAId.Value, getMpId(identities));
                 }
                 catch (CisArgumentException ex) when (ex.ExceptionCode == 16033)
                 {
@@ -74,31 +85,33 @@ internal class UpdateCustomersHandler
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken));
 
-                newMpId = createResult.PartnerId;
-                customerId = createResult.CustomerOnSAId;
+                return (createResult.CustomerOnSAId, getMpId(createResult.CustomerIdentifiers));
             }
-
-            // hlavni domacnost - hlavni klient ma modre ID
-            if (newMpId.HasValue && customerRole == CustomerRoles.Debtor && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
-            {
-                var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, customerId!.Value, newMpId);
-                await _mediator.Publish(notification, cancellationToken);
-            }
-
-            return customerId;
         }
-        return default(int?);
+
+        return (default(int?), default(long?));
+    }
+
+    private static long? getMpId(RepeatedField<CIS.Infrastructure.gRPC.CisTypes.Identity>? identities)
+    {
+        if (identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false)
+            return identities.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
+        else
+            return default(long?);
     }
 
     private readonly IHouseholdServiceAbstraction _householdService;
     private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IMediator _mediator;
 
     public UpdateCustomersHandler(
+        ISalesArrangementServiceAbstraction salesArrangementService,
         IMediator mediator,
         IHouseholdServiceAbstraction householdService,
         ICustomerOnSAServiceAbstraction customerOnSAService)
     {
+        _salesArrangementService = salesArrangementService;
         _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;

@@ -48,13 +48,13 @@ internal class UpdateCustomerHandler
             await _updateService.GetCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellation);
 
             // zavolat EAS
-            int? newMpIdentityId = await _updateService.TryCreateMpIdentity(entity);
+            await _updateService.TryCreateMpIdentity(entity);
 
             // pokud probehlo zadani klienta v eas ok, tak pridej schema
-            if (newMpIdentityId.HasValue)
+            /*if (newMpIdentityId.HasValue)
             {
                 model.PartnerId = newMpIdentityId.Value;
-            }
+            }*/
         }
         // nove byl customer identifikovan KB identitou
         else if (!alreadyKbUpdatedCustomer && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb))
