@@ -28,7 +28,9 @@ internal class GetCustomersHandler
                 await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken)
             );
             var saId = saInstances.SalesArrangements.First(t => _allowedSalesArrangementTypes.Contains(t.SalesArrangementTypeId)).SalesArrangementId;
-
+            // z parameters nacist Agent
+            var saDetail = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(saId, cancellationToken));
+            
             // vsichni customeri z CustomerOnSA
             var customers = ServiceCallResult.ResolveAndThrowIfError<List<_SA.CustomerOnSA>>(
                 await _customerOnSAService.GetCustomerList(saId, cancellationToken)
@@ -40,7 +42,7 @@ internal class GetCustomersHandler
                 .Select(t => (
                     t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
                     t.CustomerRoleId,
-                    default(bool?)
+                    (bool?)saDetail.Mortgage.Agent.HasValue
                 ))
                 .ToList();
         }
