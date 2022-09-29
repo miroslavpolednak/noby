@@ -10,7 +10,7 @@ internal static class GetCustomersExtensions
 {
     public static GetCustomersResponseCustomer ToApiResponse(
         this _Cust.CustomerDetailResponse customer, 
-        List<(Identity Identity, int Role, bool? Agent)> customerIdentities, 
+        List<(Identity Identity, int Role, bool Agent)> customerIdentities, 
         List<_CB.CountriesItem> countries)
     {
         var customerDetail = customerIdentities.First(x => x.Identity.IdentityId == customer.Identity.IdentityId);
