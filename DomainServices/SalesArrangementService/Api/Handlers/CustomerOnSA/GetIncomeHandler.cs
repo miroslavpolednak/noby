@@ -37,6 +37,9 @@ internal class GetIncomeHandler
                 case CIS.Foms.Enums.CustomerIncomeTypes.Enterprise:
                     model.Entrepreneur = IncomeDataEntrepreneur.Parser.ParseFrom(entity.DataBin);
                     break;
+                case CIS.Foms.Enums.CustomerIncomeTypes.Rent:
+                    model.Rent = IncomeDataRent.Parser.ParseFrom(entity.DataBin);
+                    break;
                 default:
                     throw new NotImplementedException("This customer income type deserializer is not implemented");
             }
