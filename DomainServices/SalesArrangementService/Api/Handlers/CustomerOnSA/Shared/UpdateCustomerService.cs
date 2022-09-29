@@ -38,7 +38,7 @@ internal sealed class UpdateCustomerService
         }, cancellation);
     }
 
-    public async Task<int?> TryCreateMpIdentity(Repositories.Entities.CustomerOnSA entity)
+    public async Task TryCreateMpIdentity(Repositories.Entities.CustomerOnSA entity)
     {
         int? id = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(getEasClientModel()));
 
@@ -52,8 +52,6 @@ internal sealed class UpdateCustomerService
                 IdentityScheme = CIS.Foms.Enums.IdentitySchemes.Mp
             });
         }
-
-        return id;
     }
     
     private ExternalServices.Eas.Dto.ClientDataModel getEasClientModel()

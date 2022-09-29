@@ -20,7 +20,7 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
-    [HttpGet("{caseId:long}")]
+    [HttpGet("{caseId:long}/customers")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Case Detail" })]
     [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]

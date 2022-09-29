@@ -48,9 +48,10 @@ internal class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
-        if (createCustomerResult.PartnerId.HasValue)
+        if (createCustomerResult.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false)
         {
-            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
+            var mpId = createCustomerResult.CustomerIdentifiers.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
+            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, mpId);
             try
             {
                 await _mediator.Publish(notification, cancellationToken);

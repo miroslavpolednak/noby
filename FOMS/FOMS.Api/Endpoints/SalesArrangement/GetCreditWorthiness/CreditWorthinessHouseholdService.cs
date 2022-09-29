@@ -82,8 +82,8 @@ internal sealed class CreditWorthinessHouseholdService
                     return new _Rip.CreditWorthinessObligation
                     {
                         ObligationTypeId = t.ObligationTypeId.GetValueOrDefault(),
-                        Amount = t.InstallmentAmount,
-                        AmountConsolidated = t.Correction?.InstallmentAmountCorrection,
+                        Installment = t.InstallmentAmount,
+                        InstallmentConsolidated = t.Correction?.InstallmentAmountCorrection,
                         IsObligationCreditorExternal = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
                     };
             }).ToList();

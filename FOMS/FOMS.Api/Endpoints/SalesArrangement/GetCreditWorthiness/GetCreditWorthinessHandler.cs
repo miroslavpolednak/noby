@@ -56,6 +56,8 @@ internal class GetCreditWorthinessHandler
             WorthinessResult = (CreditWorthinessResults)(int)ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
+            Dti = ripResult.Dti,
+            Dsti = ripResult.Dsti,
             LoanAmount = offerInstance.SimulationInputs.LoanAmount,
             LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount
         };

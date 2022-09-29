@@ -13,7 +13,7 @@ internal class GetCustomersHandler
         // data o CASE-u
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
 
-        List<(Identity Identity, int Role)> customerIdentities;
+        List<(Identity Identity, int Role, bool? Agent)> customerIdentities;
 
         if (caseInstance.State == 1)
         {
@@ -24,25 +24,49 @@ internal class GetCustomersHandler
                     .ToList();
 
             // get salesArrangementId
-            var saInstances = ServiceCallResult.ResolveAndThrowIfError<_SA.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
+            var saInstances = ServiceCallResult.ResolveAndThrowIfError<_SA.GetSalesArrangementListResponse>(
+                await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken)
+            );
             var saId = saInstances.SalesArrangements.First(t => _allowedSalesArrangementTypes.Contains(t.SalesArrangementTypeId)).SalesArrangementId;
+            // z parameters nacist Agent
+            var saDetail = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(saId, cancellationToken));
+            
+            // vsichni customeri z CustomerOnSA
+            var customers = ServiceCallResult.ResolveAndThrowIfError<List<_SA.CustomerOnSA>>(
+                await _customerOnSAService.GetCustomerList(saId, cancellationToken)
+            );
 
-            // get filtered customers
-            var customers = ServiceCallResult.ResolveAndThrowIfError<List<_SA.CustomerOnSA>>(await _customerOnSAService.GetCustomerList(saId, cancellationToken))
-                .Where(t => _allowedCustomerRoles.Contains(t.CustomerRoleId) && t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
-
-            customerIdentities = customers.Select(t => (t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), t.CustomerRoleId)).ToList();
+            // vybrat a transformovat jen vlastnik, spoludluznik
+            customerIdentities = customers
+                .Where(t => _allowedCustomerRoles.Contains(t.CustomerRoleId) && t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+                .Select(t => (
+                    t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
+                    t.CustomerRoleId,
+                    (bool?)saDetail.Mortgage.Agent.HasValue
+                ))
+                .ToList();
         }
         else
         {
+            // vsichni customeri v KonsDB
             var customers = ServiceCallResult.ResolveAndThrowIfError<DomainServices.ProductService.Contracts.GetCustomersOnProductResponse>(await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken));
-            customerIdentities = customers.Customers
-                .Select(t => (Identity: t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), Role: t.RelationshipCustomerProductTypeId))
+
+            // vybrat a transformovat jen vlastnik, spoludluznik
+            customerIdentities = customers
+                .Customers
+                .Where(t => _allowedCustomerRoles.Contains(t.RelationshipCustomerProductTypeId))
+                .Select(t => (
+                    Identity: t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
+                    Role: t.RelationshipCustomerProductTypeId,
+                    Agent: t.Agent
+                 ))
                 .ToList();
         }
 
         // detail customeru z customerService
-        var customerDetails = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerListResponse>(await _customerService.GetCustomerList(customerIdentities.Select(t => t.Identity), cancellationToken));
+        var customerDetails = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerListResponse>(
+            await _customerService.GetCustomerList(customerIdentities.Select(t => t.Identity), cancellationToken)
+        );
         // seznam zemi
         var countries = (await _codebookService.Countries(cancellationToken));
 
