@@ -60,7 +60,6 @@ builder.Services
 // kafka
 builder.Services
     .AddMemoryCache()
-    .AddSingleton(typeof(IAsyncDeserializer<>), typeof(JsonSerializer))
     .AddKafkaClient(new Dictionary<string, string>
     {
         { "bootstrap.servers", "localhost:9092" },

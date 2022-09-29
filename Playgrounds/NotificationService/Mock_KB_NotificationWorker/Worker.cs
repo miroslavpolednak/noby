@@ -1,3 +1,4 @@
+using System.Text.Json;
 using CIS.InternalServices.NotificationService.Msc;
 using CIS.InternalServices.NotificationService.Msc.Messages;
 using Confluent.Kafka;
@@ -6,13 +7,14 @@ namespace Mock_KB_NotificationWorker;
 
 public class Worker : BackgroundService
 {
-    private readonly IConsumer<Null, MscSms> _mscSmsConsumer;
-    private readonly IProducer<Null, MscResult> _mscResultProducer;
+    // todo: replace string with Msc contract
+    private readonly IConsumer<Null, string> _mscSmsConsumer;
+    private readonly IProducer<Null, string> _mscResultProducer;
     private readonly ILogger<Worker> _logger;
     
     public Worker(
-        IConsumer<Null, MscSms> mscSmsConsumer,
-        IProducer<Null, MscResult> mscResultProducer,
+        IConsumer<Null, string> mscSmsConsumer,
+        IProducer<Null, string> mscResultProducer,
         ILogger<Worker> logger)
     {
         _mscSmsConsumer = mscSmsConsumer;
@@ -23,24 +25,30 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _mscSmsConsumer.Subscribe(Topics.MscSenderIn);
-        
-        while (!stoppingToken.IsCancellationRequested)
+
+        await Task.Run(async () =>
         {
-            var result = _mscSmsConsumer.Consume(stoppingToken);
-            _logger.LogInformation("Received result: {result}", result.Message.Value);
-            
-            await _mscResultProducer.ProduceAsync(
-                Topics.MscResultIn, 
-                new Message<Null, MscResult>
-                {
-                    Value = new MscResult
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                var result = _mscSmsConsumer.Consume(stoppingToken);
+                _logger.LogInformation("Received result: {result}", result.Message.Value);
+
+                var mscSms = JsonSerializer.Deserialize<MscSms>(result.Message.Value)!;
+                
+                await Task.Delay(TimeSpan.FromSeconds(8), stoppingToken); // simulation purpose
+                await _mscResultProducer.ProduceAsync(
+                    Topics.MscResultIn,
+                    new Message<Null, string>
                     {
-                        NotificationId = result.Message.Value.NotificationId
-                    }
-                },
-                stoppingToken);
-        }
+                        Value = JsonSerializer.Serialize(new MscResult
+                        {
+                            NotificationId = mscSms.NotificationId
+                        })
+                    },
+                    stoppingToken);
+            }
+        }, stoppingToken);
         
-        _mscSmsConsumer.Unsubscribe();
+        _mscSmsConsumer.Close();
     }
 }

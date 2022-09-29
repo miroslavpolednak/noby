@@ -9,19 +9,19 @@ namespace CIS.InternalServices.NotificationService.Contracts.Email;
 public class EmailSendRequest : IRequest<EmailSendResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
-    public string From { get; set; } = string.Empty;
+    public EmailAddress From { get; set; } = new();
 
     [ProtoMember(2)]
-    public List<string> To { get; set; } = new();
+    public List<EmailAddress> To { get; set; } = new();
     
     [ProtoMember(3)]
-    public List<string> Bcc { get; set; } = new();
+    public List<EmailAddress> Bcc { get; set; } = new();
     
     [ProtoMember(4)]
-    public List<string> Cc { get; set; } = new();
+    public List<EmailAddress> Cc { get; set; } = new();
     
     [ProtoMember(5)]
-    public string? ReplyTo { get; set; }
+    public EmailAddress? ReplyTo { get; set; }
     
     [ProtoMember(6)]
     public string Subject { get; set; } = string.Empty;

@@ -1,18 +1,22 @@
-﻿using CIS.InternalServices.NotificationService.Msc;
+﻿using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.Msc;
 using CIS.InternalServices.NotificationService.Msc.Messages;
 using Confluent.Kafka;
 using Microsoft.Extensions.Caching.Memory;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CIS.InternalServices.NotificationService.Api.HostedServices;
 
 public class MscResultConsumer : BackgroundService
 {
-    private readonly IConsumer<Null, MscResult> _mscResultConsumer;
+    // todo: replace string with Msc contract
+    private readonly IConsumer<Null, string> _mscResultConsumer;
     private readonly IMemoryCache _memoryCache;
     private readonly ILogger<MscResultConsumer> _logger;
     
     public MscResultConsumer(
-        IConsumer<Null, MscResult> mscResultConsumer,
+        IConsumer<Null, string> mscResultConsumer,
         IMemoryCache memoryCache,
         ILogger<MscResultConsumer> logger)
     {
@@ -23,7 +27,6 @@ public class MscResultConsumer : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await Task.Delay(TimeSpan.Zero, stoppingToken);
         _logger.LogInformation("Subscribing topic: {topic}", Topics.MscResultIn);
         _mscResultConsumer.Subscribe(Topics.MscResultIn);
 
@@ -31,16 +34,17 @@ public class MscResultConsumer : BackgroundService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var result = _mscResultConsumer.Consume(TimeSpan.FromSeconds(5));
+                var result = _mscResultConsumer.Consume(stoppingToken);
                 _logger.LogInformation("Received result: {result}", result);
-                if (result != null)
-                {
-                    _memoryCache.Set(result.Message.Value, result.Message.Value);
-                }
-            }
-        }, stoppingToken);
+                var mscResult = JsonSerializer.Deserialize<MscResult>(result.Message.Value)!;
 
-        // _mscResultConsumer.Unsubscribe();
-        _mscResultConsumer.Close();
+                if (!_memoryCache.TryGetValue(mscResult.NotificationId, out ResultGetResponse resultResponse)) continue;
+                
+                resultResponse.State = NotificationState.Delivered;
+                _memoryCache.Set(mscResult.NotificationId, resultResponse);
+            }
+            
+            _mscResultConsumer.Close();
+        }, stoppingToken);
     }
 }

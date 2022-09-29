@@ -18,21 +18,14 @@ public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetRespo
     {
         // todo:
         await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
-        
-        return _memoryCache.TryGetValue(request.NotificationId, out string result)
-            ? new ResultGetResponse
+        return _memoryCache.TryGetValue(request.NotificationId, out ResultGetResponse resultGetResponse)
+            ? resultGetResponse
+            : new ResultGetResponse
             {
-                NotificationId = result,
-                Channel = NotificationChannel.Email,
-                State = NotificationState.Sent,
-                Errors = new List<ResultError>()    
-            }
-        : new ResultGetResponse
-        {
-            NotificationId = string.Empty,
-            Channel = NotificationChannel.Unknown,
-            State = NotificationState.Unknown,
-            Errors = new List<ResultError>()
-        };
+                NotificationId = string.Empty,
+                Channel = NotificationChannel.Unknown,
+                State = NotificationState.Unknown,
+                Errors = new List<ResultError>()
+            };
     }
 }
