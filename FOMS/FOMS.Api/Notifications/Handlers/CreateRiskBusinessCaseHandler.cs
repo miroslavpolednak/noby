@@ -16,12 +16,19 @@ internal class CreateRiskBusinessCaseHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        if (!notification.NewMpCustomerId.HasValue) return;
+        long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
+        if (!mpId.HasValue) return; // nema modre ID, nezajima me
+
+        //SA
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
+        if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId)) // RBCID je jiz zalozene, ukonci flow
+        {
+            _logger.LogInformation($"SalesArrangement #{notification.SalesArrangementId} already contains RiskBusinessCaseId");
+            return;
+        }
 
         // case
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(notification.CaseId, cancellationToken));
-        //SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
         // offer
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, "SA does not have Offer bound to it");
@@ -38,7 +45,7 @@ internal class CreateRiskBusinessCaseHandler
             caseInstance.Data.ProductTypeId, 
             offerInstance.SimulationInputs.LoanKindId,
             notification.CustomerOnSAId,
-            notification.NewMpCustomerId.Value,
+            mpId.Value,
             cancellationToken);
 
         bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, saInstance.RiskBusinessCaseExpirationDate, cancellationToken));
@@ -88,8 +95,10 @@ internal class CreateRiskBusinessCaseHandler
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
     private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
+    private readonly ILogger<CreateRiskBusinessCaseHandler> _logger;
 
     public CreateRiskBusinessCaseHandler(
+        ILogger<CreateRiskBusinessCaseHandler> logger,
         DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
         IHouseholdServiceAbstraction householdService,
@@ -97,6 +106,7 @@ internal class CreateRiskBusinessCaseHandler
         ICaseServiceAbstraction caseService,
         ISalesArrangementServiceAbstraction salesArrangementService)
     {
+        _logger = logger;
         _loanApplicationService = loanApplicationService;
         _riskBusinessCaseService = riskBusinessCaseService;
         _householdService = householdService;

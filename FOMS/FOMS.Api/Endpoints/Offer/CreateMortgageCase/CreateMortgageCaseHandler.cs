@@ -48,20 +48,17 @@ internal class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
-        if (createCustomerResult.CustomerIdentifiers?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false)
+        var mpId = createCustomerResult.CustomerIdentifiers.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
+        var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
+        //try
+        //{
+            await _mediator.Publish(notification, cancellationToken);
+        /*}
+        catch (Exception err)
         {
-            var mpId = createCustomerResult.CustomerIdentifiers.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
-            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, mpId);
-            try
-            {
-                await _mediator.Publish(notification, cancellationToken);
-            }
-            catch (Exception err)
-            {
-                //TODO osetrit rollback?
-                _logger.LogError(err, "TODO rollback create case?");
-            }
-        }
+            //TODO osetrit rollback?
+            _logger.LogError(err, "TODO rollback create case?");
+        }*/
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 

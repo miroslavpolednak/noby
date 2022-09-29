@@ -35,25 +35,13 @@ internal sealed class IdentifyByIdentityHandler
         };
         modelToUpdate.Customer.CustomerIdentifiers.Add(request.CustomerIdentity!);
 
-        var successfulUpdate = ServiceCallResult.IsSuccessResult(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));
-
+        var updateResult = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));
+        
         // hlavni klient
-        if (successfulUpdate && customerOnSaInstance.CustomerRoleId == 1)
+        if (customerOnSaInstance.CustomerRoleId == 1)
         {
-            // update CASE-u
-            var updateResponse = ServiceCallResult.Resolve(await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
-            {
-                Identity = request.CustomerIdentity!,
-                DateOfBirthNaturalPerson = customerInstance.NaturalPerson?.DateOfBirth,
-                FirstNameNaturalPerson = customerInstance.NaturalPerson.FirstName,
-                Name = customerInstance.NaturalPerson.LastName,
-            }, cancellationToken));
-
-            if (customerInstance.Identity.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)
-            {
-                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, customerInstance.Identity.IdentityId);
-                await _mediator.Publish(notification, cancellationToken);
-            }
+            var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, modelToUpdate.CustomerOnSAId, updateResult.CustomerIdentifiers);
+            await _mediator.Publish(notification, cancellationToken);
         }
     }
 
