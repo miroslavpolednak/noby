@@ -13,7 +13,7 @@ internal class GetCustomersHandler
         // data o CASE-u
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
 
-        List<(Identity Identity, int Role, bool? Agent)> customerIdentities;
+        List<(Identity Identity, int Role, bool Agent)> customerIdentities;
 
         if (caseInstance.State == 1)
         {
@@ -42,7 +42,7 @@ internal class GetCustomersHandler
                 .Select(t => (
                     t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
                     t.CustomerRoleId,
-                    (bool?)saDetail.Mortgage.Agent.HasValue
+                    saDetail.Mortgage.Agent.GetValueOrDefault() == t.CustomerOnSAId
                 ))
                 .ToList();
         }
@@ -58,7 +58,7 @@ internal class GetCustomersHandler
                 .Select(t => (
                     Identity: t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
                     Role: t.RelationshipCustomerProductTypeId,
-                    Agent: t.Agent
+                    Agent: t.Agent ?? false
                  ))
                 .ToList();
         }

@@ -5,7 +5,7 @@
     </assembly>
     <members>
         <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.AddressSearch(FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest,System.Threading.CancellationToken)" -->
-        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(System.String,System.String,System.Threading.CancellationToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest,System.Threading.CancellationToken)" -->
         <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
             <summary>
             SessionId generované přímo na frontendu (unikátní GUID)
@@ -49,6 +49,21 @@
         <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.AddressId">
             <summary>
             Id adresy
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.Title">
+            <summary>
+            Parametr title našeptávače adres
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.CountryId">
+            <summary>
+            Id státu z číselníku Country
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailResponse.CountryId">
+            <summary>
+            Stát - AddressWhispererBEService|country
             </summary>
         </member>
         <member name="M:FOMS.Api.Endpoints.Admin.AdminController.GetDiscoveryServices(System.Threading.CancellationToken)">

@@ -11,27 +11,34 @@ internal class CreateProductHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        if (!notification.NewMpCustomerId.HasValue) return;
+        long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
+        if (!mpId.HasValue) return; // nema modre ID, nezajima me
 
-        // detail SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
-        
-        long productId = await createMortgage(notification.CaseId, saInstance.OfferId!.Value,  notification.NewMpCustomerId.Value, cancellationToken);
-
-        _logger.EntityCreated(nameof(_Product.Product), productId);
-    }
-
-    private async Task<long> createMortgage(long caseId, int offerId, long partnerId, CancellationToken cancellationToken)
-    {
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(offerId, cancellationToken));
-
-        var request = new _Product.CreateMortgageRequest
+        try
         {
-            CaseId = caseId,
-            Mortgage = offerInstance.ToDomainServiceRequest(partnerId)
-        };
-        var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
-        return result.ProductId;
+            await _productService.GetMortgage(notification.CaseId, cancellationToken);
+
+            // detail SA
+            var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
+            if (!saInstance.OfferId.HasValue)
+                throw new CisValidationException($"SalesArrangement #{notification.SalesArrangementId} is not bound to Offer");
+
+            // detail offer
+            var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
+
+            var request = new _Product.CreateMortgageRequest
+            {
+                CaseId = notification.CaseId,
+                Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
+            };
+            var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
+
+            _logger.EntityCreated(nameof(_Product.Product), result.ProductId);
+        }
+        catch
+        {
+            _logger.LogInformation($"Product already exist for CaseId #{notification.CaseId}");
+        }
     }
 
     private readonly IOfferServiceAbstraction _offerService;

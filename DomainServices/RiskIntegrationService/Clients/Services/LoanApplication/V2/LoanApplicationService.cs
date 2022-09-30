@@ -10,7 +10,7 @@ internal class LoanApplicationService
     {
         _logger.RequestHandlerStarted(nameof(Save));
         var result = await _service.Save(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<LoanApplicationSaveResponse>(result);
+        return new SuccessfulServiceCallResult<string>(result.RiskSegment.ToString());
     }
 
     private readonly ILogger<LoanApplicationService> _logger;
