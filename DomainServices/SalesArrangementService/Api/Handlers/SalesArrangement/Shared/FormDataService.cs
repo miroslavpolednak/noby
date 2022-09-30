@@ -363,14 +363,17 @@ internal class FormDataService
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
 
         // Load codebooks
-        var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).ToDictionary(i => i.Id);
-        var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
-        var salesArrangementStatesById = (await _codebookService.SalesArrangementStates(cancellation)).ToDictionary(i => i.Id);
+        var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
+        var genders = await _codebookService.Genders(cancellation);
+        var salesArrangementStates = await _codebookService.SalesArrangementStates(cancellation);
         var employmentTypes = await _codebookService.EmploymentTypes(cancellation);
-        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
-        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
-        
-        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById, salesArrangementStatesById, employmentTypes, drawingDurationsById, drawingTypeById);
+        var drawingDurations = await _codebookService.DrawingDurations(cancellation);
+        var drawingType = await _codebookService.DrawingTypes(cancellation);
+
+        var countries = await _codebookService.Countries(cancellation);
+        var obligationTypes = await _codebookService.ObligationTypes(cancellation);
+
+        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBefore, genders, salesArrangementStates, employmentTypes, drawingDurations, drawingType, countries, obligationTypes);
 
         return (formData);
     }
