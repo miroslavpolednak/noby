@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.HouseholdService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.CreateHousehold;
 
@@ -14,7 +14,7 @@ internal class CreateHouseholdHandler
             throw new CisNotFoundException(Core.ErrorCodes.HouseholdTypeNotFound, nameof(CIS.Foms.Enums.HouseholdTypes), request.HouseholdTypeId);
 
         // vytvorit domacnost
-        var requestModel = new DomainServices.SalesArrangementService.Contracts.CreateHouseholdRequest
+        var requestModel = new _HO.CreateHouseholdRequest
         {
             SalesArrangementId = request.SalesArrangementId,
             HouseholdTypeId = request.HouseholdTypeId
@@ -22,15 +22,15 @@ internal class CreateHouseholdHandler
         int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(requestModel, cancellationToken));
 
         // vytvorit customera
-        var customerResponse = ServiceCallResult.ResolveAndThrowIfError<CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new CreateCustomerRequest
+        var customerResponse = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
         {
             SalesArrangementId = request.SalesArrangementId,
             CustomerRoleId = request.HouseholdTypeId,
-            Customer = new CustomerOnSABase()
+            Customer = new _HO.CustomerOnSABase()
         }, cancellationToken));
 
         // vlozit customera na household
-        await _householdService.UpdateHousehold(new UpdateHouseholdRequest
+        await _householdService.UpdateHousehold(new _HO.UpdateHouseholdRequest
         {
             HouseholdId = householdId,
             CustomerOnSAId1 = customerResponse.CustomerOnSAId
@@ -45,13 +45,13 @@ internal class CreateHouseholdHandler
     }
 
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ILogger<CreateHouseholdHandler> _logger;
 
     public CreateHouseholdHandler(
-        ICustomerOnSAServiceAbstraction customerOnSAService,
-        IHouseholdServiceAbstraction householdService,
+        ICustomerOnSAServiceClient customerOnSAService,
+        IHouseholdServiceClient householdService,
         ICodebookServiceAbstraction codebookService,
         ILogger<CreateHouseholdHandler> logger)
     {

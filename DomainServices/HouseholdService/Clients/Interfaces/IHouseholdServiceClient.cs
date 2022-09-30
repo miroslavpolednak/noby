@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Abstraction;
+namespace DomainServices.HouseholdService.Clients;
 
 public interface IHouseholdServiceClient
 {

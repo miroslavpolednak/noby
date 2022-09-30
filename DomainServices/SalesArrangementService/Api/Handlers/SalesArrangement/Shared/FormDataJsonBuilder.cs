@@ -5,7 +5,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
-
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
 {
@@ -234,7 +234,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             int[] idsObligationTypeLoan = new int[] { 1, 2, 5 };  // Hypotéční nebo spotřebitelský úvěr
             int[] idsObligationTypeCredit = new int[] { 3, 4 };   // Kreditní karta nebo povolený debet
 
-            object? MapHousehold(Contracts.Household i)
+            object? MapHousehold(_HO.Household i)
             {
                 if (i == null)
                 {
@@ -381,7 +381,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerObligation(Obligation i, int rowNumber)
+            object? MapCustomerObligation(_HO.Obligation i, int rowNumber)
             {
                 if (i == null)
                 {
@@ -417,7 +417,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerIncome(IncomeInList iil, int rowNumber)
+            object? MapCustomerIncome(_HO.IncomeInList iil, int rowNumber)
             {
                 if (iil == null)
                 {
@@ -484,7 +484,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomer(Contracts.CustomerOnSA i)
+            object? MapCustomer(_HO.CustomerOnSA i)
             {
                 if (i == null)
                 {
@@ -587,7 +587,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerOnSA(Contracts.CustomerOnSA i)
+            object? MapCustomerOnSA(_HO.CustomerOnSA i)
             {
                 if (i == null)
                 {

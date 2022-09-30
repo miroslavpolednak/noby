@@ -2,7 +2,7 @@
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.HouseholdService.Abstraction;
+namespace DomainServices.HouseholdService.Clients;
 
 public static class HouseholdServiceExtensions
 {

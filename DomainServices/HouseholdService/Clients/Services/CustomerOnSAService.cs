@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Abstraction.Services;
+namespace DomainServices.HouseholdService.Clients.Services;
 
 internal class CustomerOnSAService : ICustomerOnSAServiceClient
 {

@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateCustomers;
 
