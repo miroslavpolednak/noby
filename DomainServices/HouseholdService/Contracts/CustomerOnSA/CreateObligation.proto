@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "ObligationShared.proto";
+import "NullableGrpcDecimal.proto";
+
+message CreateObligationResponse {
+    int32 ObligationId = 1;
+}
+
+message CreateObligationRequest {
+    int32 CustomerOnSAId = 2;
+    
+    google.protobuf.Int32Value ObligationTypeId = 3;
+    
+    cis.types.NullableGrpcDecimal InstallmentAmount = 4;
+
+    cis.types.NullableGrpcDecimal LoanPrincipalAmount = 5;
+
+    cis.types.NullableGrpcDecimal CreditCardLimit = 6;
+
+    cis.types.NullableGrpcDecimal LoanPrincipalAmountConsolidated = 7;
+
+    google.protobuf.Int32Value ObligationState = 8;
+
+    DomainServices.SalesArrangementService.ObligationCreditor Creditor = 9;
+    
+    DomainServices.SalesArrangementService.ObligationCorrection Correction = 10;
+}
