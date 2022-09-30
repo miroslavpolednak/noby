@@ -1,7 +1,0 @@
-﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
-
-message ObligationIdRequest {
-    int32 ObligationId = 1;
-}

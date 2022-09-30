@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService.v1;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
+package DomainServices.HouseholdService.v1;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
 import "CustomerOnSA.proto";
@@ -21,41 +21,41 @@ import "GetObligationList.proto";
 
 service CustomerOnSAService {
     // zalozeni noveho customera
-	rpc CreateCustomer (DomainServices.SalesArrangementService.CreateCustomerRequest) returns (DomainServices.SalesArrangementService.CreateCustomerResponse);
+	rpc CreateCustomer (DomainServices.HouseholdService.CreateCustomerRequest) returns (DomainServices.HouseholdService.CreateCustomerResponse);
 	
 	// smazat
-	rpc DeleteCustomer (DomainServices.SalesArrangementService.CustomerOnSAIdRequest) returns (google.protobuf.Empty);
+	rpc DeleteCustomer (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (google.protobuf.Empty);
 	
 	// get single
-	rpc GetCustomer (DomainServices.SalesArrangementService.CustomerOnSAIdRequest) returns (DomainServices.SalesArrangementService.CustomerOnSA);
+	rpc GetCustomer (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (DomainServices.HouseholdService.CustomerOnSA);
 	
 	// get list
-	rpc GetCustomerList (DomainServices.SalesArrangementService.GetCustomerListRequest) returns (DomainServices.SalesArrangementService.GetCustomerListResponse);
+	rpc GetCustomerList (DomainServices.HouseholdService.GetCustomerListRequest) returns (DomainServices.HouseholdService.GetCustomerListResponse);
 	
 	// update
-	rpc UpdateCustomer (DomainServices.SalesArrangementService.UpdateCustomerRequest) returns (DomainServices.SalesArrangementService.UpdateCustomerResponse);
+	rpc UpdateCustomer (DomainServices.HouseholdService.UpdateCustomerRequest) returns (DomainServices.HouseholdService.UpdateCustomerResponse);
 
 	// income part -------------------------------------------------------
-    rpc CreateIncome (DomainServices.SalesArrangementService.CreateIncomeRequest) returns (DomainServices.SalesArrangementService.CreateIncomeResponse);
+    rpc CreateIncome (DomainServices.HouseholdService.CreateIncomeRequest) returns (DomainServices.HouseholdService.CreateIncomeResponse);
 
-    rpc UpdateIncome (DomainServices.SalesArrangementService.UpdateIncomeRequest) returns (google.protobuf.Empty);
+    rpc UpdateIncome (DomainServices.HouseholdService.UpdateIncomeRequest) returns (google.protobuf.Empty);
 
-    rpc UpdateIncomeBaseData (DomainServices.SalesArrangementService.UpdateIncomeBaseDataRequest) returns (google.protobuf.Empty);
+    rpc UpdateIncomeBaseData (DomainServices.HouseholdService.UpdateIncomeBaseDataRequest) returns (google.protobuf.Empty);
 
-    rpc DeleteIncome (DomainServices.SalesArrangementService.IncomeIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteIncome (DomainServices.HouseholdService.IncomeIdRequest) returns (google.protobuf.Empty);
 
-    rpc GetIncomeList (DomainServices.SalesArrangementService.GetIncomeListRequest) returns (DomainServices.SalesArrangementService.GetIncomeListResponse);
+    rpc GetIncomeList (DomainServices.HouseholdService.GetIncomeListRequest) returns (DomainServices.HouseholdService.GetIncomeListResponse);
 
-    rpc GetIncome (DomainServices.SalesArrangementService.IncomeIdRequest) returns (DomainServices.SalesArrangementService.Income);
+    rpc GetIncome (DomainServices.HouseholdService.IncomeIdRequest) returns (DomainServices.HouseholdService.Income);
 
 	// obligations part
-	rpc CreateObligation (DomainServices.SalesArrangementService.CreateObligationRequest) returns (DomainServices.SalesArrangementService.CreateObligationResponse);
+	rpc CreateObligation (DomainServices.HouseholdService.CreateObligationRequest) returns (DomainServices.HouseholdService.CreateObligationResponse);
 
-    rpc UpdateObligation (DomainServices.SalesArrangementService.Obligation) returns (google.protobuf.Empty);
+    rpc UpdateObligation (DomainServices.HouseholdService.Obligation) returns (google.protobuf.Empty);
 
-    rpc DeleteObligation (DomainServices.SalesArrangementService.ObligationIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteObligation (DomainServices.HouseholdService.ObligationIdRequest) returns (google.protobuf.Empty);
 
-    rpc GetObligationList (DomainServices.SalesArrangementService.CustomerOnSAIdRequest) returns (DomainServices.SalesArrangementService.GetObligationListResponse);
+    rpc GetObligationList (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (DomainServices.HouseholdService.GetObligationListResponse);
 
-    rpc GetObligation (DomainServices.SalesArrangementService.ObligationIdRequest) returns (DomainServices.SalesArrangementService.Obligation);
+    rpc GetObligation (DomainServices.HouseholdService.ObligationIdRequest) returns (DomainServices.HouseholdService.Obligation);
 }

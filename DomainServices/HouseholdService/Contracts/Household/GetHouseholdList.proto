@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "Household.proto";
 
@@ -9,5 +9,5 @@ message GetHouseholdListRequest {
 }
 
 message GetHouseholdListResponse {
-    repeated DomainServices.SalesArrangementService.Household Households = 1;
+    repeated DomainServices.HouseholdService.Household Households = 1;
 }

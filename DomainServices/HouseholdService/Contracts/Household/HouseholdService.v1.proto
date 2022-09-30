@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService.v1;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
+package DomainServices.HouseholdService.v1;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
 import "CreateHousehold.proto";
@@ -11,15 +11,15 @@ import "UpdateHousehold.proto";
 import "LinkCustomerOnSAToHousehold.proto";
 
 service HouseholdService {
-    rpc CreateHousehold (DomainServices.SalesArrangementService.CreateHouseholdRequest) returns (DomainServices.SalesArrangementService.CreateHouseholdResponse);
+    rpc CreateHousehold (DomainServices.HouseholdService.CreateHouseholdRequest) returns (DomainServices.HouseholdService.CreateHouseholdResponse);
     
-    rpc DeleteHousehold (DomainServices.SalesArrangementService.HouseholdIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteHousehold (DomainServices.HouseholdService.HouseholdIdRequest) returns (google.protobuf.Empty);
     
-    rpc GetHousehold (DomainServices.SalesArrangementService.HouseholdIdRequest) returns (DomainServices.SalesArrangementService.Household);
+    rpc GetHousehold (DomainServices.HouseholdService.HouseholdIdRequest) returns (DomainServices.HouseholdService.Household);
     
-    rpc GetHouseholdList (DomainServices.SalesArrangementService.GetHouseholdListRequest) returns (DomainServices.SalesArrangementService.GetHouseholdListResponse);
+    rpc GetHouseholdList (DomainServices.HouseholdService.GetHouseholdListRequest) returns (DomainServices.HouseholdService.GetHouseholdListResponse);
     
-    rpc UpdateHousehold (DomainServices.SalesArrangementService.UpdateHouseholdRequest) returns (google.protobuf.Empty);
+    rpc UpdateHousehold (DomainServices.HouseholdService.UpdateHouseholdRequest) returns (google.protobuf.Empty);
 
-    rpc LinkCustomerOnSAToHousehold (DomainServices.SalesArrangementService.LinkCustomerOnSAToHouseholdRequest) returns (google.protobuf.Empty);
+    rpc LinkCustomerOnSAToHousehold (DomainServices.HouseholdService.LinkCustomerOnSAToHouseholdRequest) returns (google.protobuf.Empty);
 }

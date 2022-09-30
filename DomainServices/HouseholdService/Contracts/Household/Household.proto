@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "HouseholdExpenses.proto";
@@ -19,7 +19,7 @@ message Household {
     
     google.protobuf.Int32Value CustomerOnSAId2 = 6;
         
-    DomainServices.SalesArrangementService.HouseholdData Data = 7;
+    DomainServices.HouseholdService.HouseholdData Data = 7;
     
-    DomainServices.SalesArrangementService.Expenses Expenses = 8;
+    DomainServices.HouseholdService.Expenses Expenses = 8;
 }

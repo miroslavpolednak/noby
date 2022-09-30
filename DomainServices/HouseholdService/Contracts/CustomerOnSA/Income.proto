@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "IncomeShared.proto";
@@ -12,12 +12,12 @@ message Income {
     
     int32 IncomeTypeId = 3;
     
-    DomainServices.SalesArrangementService.IncomeBaseData BaseData = 4;
+    DomainServices.HouseholdService.IncomeBaseData BaseData = 4;
     
     oneof Data {
-        DomainServices.SalesArrangementService.IncomeDataEmployement Employement = 20;
-        DomainServices.SalesArrangementService.IncomeDataOther Other = 21;
-        DomainServices.SalesArrangementService.IncomeDataEntrepreneur Entrepreneur = 22;
-        DomainServices.SalesArrangementService.IncomeDataRent Rent = 23;
+        DomainServices.HouseholdService.IncomeDataEmployement Employement = 20;
+        DomainServices.HouseholdService.IncomeDataOther Other = 21;
+        DomainServices.HouseholdService.IncomeDataEntrepreneur Entrepreneur = 22;
+        DomainServices.HouseholdService.IncomeDataRent Rent = 23;
     }
 }

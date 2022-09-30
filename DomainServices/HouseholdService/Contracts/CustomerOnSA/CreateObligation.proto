@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "ObligationShared.proto";
@@ -25,7 +25,7 @@ message CreateObligationRequest {
 
     google.protobuf.Int32Value ObligationState = 8;
 
-    DomainServices.SalesArrangementService.ObligationCreditor Creditor = 9;
+    DomainServices.HouseholdService.ObligationCreditor Creditor = 9;
     
-    DomainServices.SalesArrangementService.ObligationCorrection Correction = 10;
+    DomainServices.HouseholdService.ObligationCorrection Correction = 10;
 }

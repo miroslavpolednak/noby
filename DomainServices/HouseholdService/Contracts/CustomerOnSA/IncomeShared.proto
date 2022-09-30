@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "GrpcAddress.proto";
@@ -46,11 +46,11 @@ message IncomeConfirmationData {
 message IncomeDataEmployement {
     google.protobuf.Int32Value ForeignIncomeTypeId = 2;
     bool HasProofOfIncome = 3;
-    DomainServices.SalesArrangementService.EmployerData Employer = 4;
-    DomainServices.SalesArrangementService.JobData Job = 5;
+    DomainServices.HouseholdService.EmployerData Employer = 4;
+    DomainServices.HouseholdService.JobData Job = 5;
     bool HasWageDeduction = 6;
-    DomainServices.SalesArrangementService.WageDeductionData WageDeduction = 7;
-    DomainServices.SalesArrangementService.IncomeConfirmationData IncomeConfirmation = 8;
+    DomainServices.HouseholdService.WageDeductionData WageDeduction = 7;
+    DomainServices.HouseholdService.IncomeConfirmationData IncomeConfirmation = 8;
 }
 
 message IncomeDataOther {

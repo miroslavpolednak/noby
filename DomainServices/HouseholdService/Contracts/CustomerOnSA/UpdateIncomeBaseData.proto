@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
-package DomainServices.SalesArrangementService;
-option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "IncomeShared.proto";
@@ -8,5 +8,5 @@ import "IncomeShared.proto";
 message UpdateIncomeBaseDataRequest {
     int32 IncomeId = 1;
 
-    DomainServices.SalesArrangementService.IncomeBaseData BaseData = 3;
+    DomainServices.HouseholdService.IncomeBaseData BaseData = 3;
 }
