@@ -30,12 +30,12 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                     t.When(x => x.ObligationTypeId == 3 || x.ObligationTypeId == 4, () =>
                     {
                         t.RuleFor(x => x.Installment)
-                            .Empty()
+                            .NotEmpty()
                             .WithMessage("Installment must be empty for ObligationTypeId in (3,4)")
                             .WithErrorCode("Households.Customers.");
 
                         t.RuleFor(x => x.InstallmentConsolidated)
-                            .Empty()
+                            .NotEmpty()
                             .WithMessage("InstallmentConsolidated must be empty for ObligationTypeId in (3,4)")
                             .WithErrorCode("Households.Customers.");
                     });
