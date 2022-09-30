@@ -3,9 +3,8 @@ using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using CIS.InternalServices.NotificationService.Msc;
-using CIS.InternalServices.NotificationService.Msc.Messages;
-using CIS.InternalServices.NotificationService.Msc.Messages.Dto;
 using Confluent.Kafka;
+using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -13,13 +12,12 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Se
 
 public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
-    // todo: replace string with Msc contract
-    private readonly IProducer<Null, string> _mscSmsProducer;
+    private readonly IProducer<Null, SendSMS> _mscSmsProducer;
     private readonly IMemoryCache _memoryCache;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
-        IProducer<Null, string> mscSmsProducer,
+        IProducer<Null, SendSMS> mscSmsProducer,
         IMemoryCache memoryCache,
         ILogger<SendSmsHandler> logger)
     {
@@ -30,36 +28,37 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
     
     public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
     {
-        // todo:
-        _logger.LogInformation("Received request: {request}", request);
         var notificationId = Guid.NewGuid().ToString();
 
+        var sendSms = new SendSMS
+        {
+            id = notificationId,
+            phone = new cz.kb.osbs.mcs.sender.sendapi.v1.Phone
+            {
+                countryCode = request.Phone.CountryCode,
+                nationalPhoneNumber = request.Phone.NationalNumber
+            },
+            type = request.Type.ToString(),
+            text = request.Text,
+            processingPriority = request.ProcessingPriority
+        };
+        
         _memoryCache.Set(notificationId, new ResultGetResponse
         {
+            NotificationId = notificationId,
             Channel = NotificationChannel.Sms,
             State = NotificationState.Sent
         });
         
-        var result = await _mscSmsProducer.ProduceAsync(
+        _logger.LogInformation("Sending sms: {sendSms}", JsonSerializer.Serialize(sendSms));
+        
+        await _mscSmsProducer.ProduceAsync(
             Topics.MscSenderIn,
-            new Message<Null, string>
+            new Message<Null, SendSMS>
             {
-                Value = JsonSerializer.Serialize(new MscSms
-                {
-                    NotificationId = notificationId,
-                    ProcessPriority = request.ProcessingPriority,
-                    Phone = new Phone
-                    {
-                        CountryCode = request.Phone.CountryCode,
-                        NationalPhoneNumber = request.Phone.NationalNumber
-                    },
-                    Text = request.Text,
-                    Type = SmsNotificationType.Unknown
-                })
+                Value = sendSms
             },
             cancellationToken);
-        
-        _logger.LogInformation("Received result: {result}", result);
         
         return new SmsSendResponse
         {

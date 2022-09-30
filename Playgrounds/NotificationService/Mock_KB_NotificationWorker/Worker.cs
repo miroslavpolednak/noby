@@ -1,20 +1,21 @@
 using System.Text.Json;
 using CIS.InternalServices.NotificationService.Msc;
-using CIS.InternalServices.NotificationService.Msc.Messages;
 using Confluent.Kafka;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;
+using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 
 namespace Mock_KB_NotificationWorker;
 
 public class Worker : BackgroundService
 {
-    // todo: replace string with Msc contract
-    private readonly IConsumer<Null, string> _mscSmsConsumer;
-    private readonly IProducer<Null, string> _mscResultProducer;
+    private readonly IConsumer<Null, SendSMS> _mscSmsConsumer;
+    private readonly IProducer<Null, NotificationReport> _mscResultProducer;
     private readonly ILogger<Worker> _logger;
     
     public Worker(
-        IConsumer<Null, string> mscSmsConsumer,
-        IProducer<Null, string> mscResultProducer,
+        IConsumer<Null, SendSMS> mscSmsConsumer,
+        IProducer<Null, NotificationReport> mscResultProducer,
         ILogger<Worker> logger)
     {
         _mscSmsConsumer = mscSmsConsumer;
@@ -31,20 +32,29 @@ public class Worker : BackgroundService
             while (!stoppingToken.IsCancellationRequested)
             {
                 var result = _mscSmsConsumer.Consume(stoppingToken);
-                _logger.LogInformation("Received result: {result}", result.Message.Value);
+                var sendSms = result.Message.Value;
+                _logger.LogInformation("Received sendSms: {sendSms}", JsonSerializer.Serialize(sendSms));
 
-                var mscSms = JsonSerializer.Deserialize<MscSms>(result.Message.Value)!;
+                // simulation purpose 16 seconds
+                await Task.Delay(TimeSpan.FromSeconds(16), stoppingToken);
                 
-                await Task.Delay(TimeSpan.FromSeconds(8), stoppingToken); // simulation purpose
                 await _mscResultProducer.ProduceAsync(
                     Topics.MscResultIn,
-                    new Message<Null, string>
+                    new Message<Null, NotificationReport>
                     {
-                        Value = JsonSerializer.Serialize(new MscResult
+                        Value = new NotificationReport
                         {
-                            NotificationId = mscSms.NotificationId
-                        })
-                    },
+                            id = sendSms.id,
+                            channel = new Channel
+                            {
+                                id = "sms",
+                            },
+                            state = "ok",
+                            exactlyOn = DateTime.Now,
+                            finalState = true,
+                            notificationErrors = new List<NotificationError>()
+                        }
+                    }, 
                     stoppingToken);
             }
         }, stoppingToken);

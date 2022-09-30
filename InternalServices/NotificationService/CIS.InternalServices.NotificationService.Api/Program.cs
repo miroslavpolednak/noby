@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using System.Text.Json;
 using CIS.DomainServicesSecurity;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
@@ -8,7 +7,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.HostedServices;
-using Confluent.Kafka;
+using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
 using Confluent.Kafka.DependencyInjection;
 using FluentValidation;
 using MediatR;
@@ -60,6 +59,7 @@ builder.Services
 // kafka
 builder.Services
     .AddMemoryCache()
+    .AddAvroSerializers()
     .AddKafkaClient(new Dictionary<string, string>
     {
         { "bootstrap.servers", "localhost:9092" },

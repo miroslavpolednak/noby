@@ -1,8 +1,8 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Msc;
-using CIS.InternalServices.NotificationService.Msc.Messages;
 using Confluent.Kafka;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;
 using Microsoft.Extensions.Caching.Memory;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -10,13 +10,12 @@ namespace CIS.InternalServices.NotificationService.Api.HostedServices;
 
 public class MscResultConsumer : BackgroundService
 {
-    // todo: replace string with Msc contract
-    private readonly IConsumer<Null, string> _mscResultConsumer;
+    private readonly IConsumer<Null, NotificationReport> _mscResultConsumer;
     private readonly IMemoryCache _memoryCache;
     private readonly ILogger<MscResultConsumer> _logger;
     
     public MscResultConsumer(
-        IConsumer<Null, string> mscResultConsumer,
+        IConsumer<Null, NotificationReport> mscResultConsumer,
         IMemoryCache memoryCache,
         ILogger<MscResultConsumer> logger)
     {
@@ -35,13 +34,13 @@ public class MscResultConsumer : BackgroundService
             while (!stoppingToken.IsCancellationRequested)
             {
                 var result = _mscResultConsumer.Consume(stoppingToken);
-                _logger.LogInformation("Received result: {result}", result);
-                var mscResult = JsonSerializer.Deserialize<MscResult>(result.Message.Value)!;
+                var notificationReport = result.Message.Value;
+                _logger.LogInformation("Received report: {report}", JsonSerializer.Serialize(notificationReport));
 
-                if (!_memoryCache.TryGetValue(mscResult.NotificationId, out ResultGetResponse resultResponse)) continue;
+                if (!_memoryCache.TryGetValue(notificationReport.id, out ResultGetResponse resultResponse)) continue;
                 
                 resultResponse.State = NotificationState.Delivered;
-                _memoryCache.Set(mscResult.NotificationId, resultResponse);
+                _memoryCache.Set(notificationReport.id, resultResponse);
             }
             
             _mscResultConsumer.Close();

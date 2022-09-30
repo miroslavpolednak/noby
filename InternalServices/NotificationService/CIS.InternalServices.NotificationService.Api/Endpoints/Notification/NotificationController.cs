@@ -29,7 +29,7 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpPost("sms")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(SmsSendResponse), StatusCodes.Status200OK)]
     public async Task<SmsSendResponse> SendSms([FromBody] SmsSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
@@ -42,7 +42,7 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpPost("smsFromTemplate")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(SmsFromTemplateSendResponse), StatusCodes.Status200OK)]
     public async Task<SmsFromTemplateSendResponse> SendSmsFromTemplate([FromBody] SmsFromTemplateSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
@@ -55,7 +55,7 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpPost("email")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(EmailSendResponse), StatusCodes.Status200OK)]
     public async Task<EmailSendResponse> SendEmail([FromBody] EmailSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
@@ -68,7 +68,7 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpPost("emailFromTemplate")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(EmailFromTemplateSendResponse), StatusCodes.Status200OK)]
     public async Task<EmailFromTemplateSendResponse> SendEmailFromTemplate([FromBody] EmailFromTemplateSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
@@ -81,7 +81,7 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpGet("result/{id}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Risk Business Case" })]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(ResultGetResponse), StatusCodes.Status200OK)]
     public async Task<ResultGetResponse> GetResult([Required] string id, CancellationToken token)
         => await _mediator.Send(new ResultGetRequest { NotificationId = id }, token);

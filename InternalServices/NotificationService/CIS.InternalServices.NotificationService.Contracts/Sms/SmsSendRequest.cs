@@ -12,7 +12,7 @@ public class SmsSendRequest : IRequest<SmsSendResponse>, IValidatableRequest
     public Phone Phone { get; set; } = default!;
     
     [ProtoMember(2)]
-    public int ProcessingPriority { get; set; } = 1;
+    public int? ProcessingPriority { get; set; }
 
     [ProtoMember(3)]
     public SmsNotificationType Type { get; set; }
