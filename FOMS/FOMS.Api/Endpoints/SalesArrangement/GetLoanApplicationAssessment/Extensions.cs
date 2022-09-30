@@ -2,6 +2,7 @@
 using cRB = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
 
+using cHousehold = DomainServices.HouseholdService.Contracts;
 using cArrangement = DomainServices.SalesArrangementService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCis = CIS.Infrastructure.gRPC.CisTypes;
@@ -65,9 +66,9 @@ internal static class Extensions
     {
         // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
 
-        cLA.LoanApplicationHousehold MapHousehold(cArrangement.Household h)
+        cLA.LoanApplicationHousehold MapHousehold(cHousehold.Household h)
         {
-            cLA.LoanApplicationCustomer MapCustomer(cArrangement.CustomerOnSA cOnSA)
+            cLA.LoanApplicationCustomer MapCustomer(cHousehold.CustomerOnSA cOnSA)
             {
                 var obligationTypeAmountIds = data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
 
@@ -90,7 +91,7 @@ internal static class Extensions
                     ValidTo = id.ValidTo,
                 };
 
-                var MapObligation = (cArrangement.Obligation o) => new cLA.LoanApplicationObligation
+                var MapObligation = (cHousehold.Obligation o) => new cLA.LoanApplicationObligation
                 {
                     ObligationTypeId = o.ObligationTypeId!.Value,
                     Amount = obligationTypeAmountIds.Contains(o.ObligationTypeId!.Value) ? o.LoanPrincipalAmount : o.CreditCardLimit, // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.LoanPrincipalAmount; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.CreditCardLimit;
@@ -102,7 +103,7 @@ internal static class Extensions
                 cLA.LoanApplicationIncome MapIncome()
                 {
 
-                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(cArrangement.IncomeInList iil)
+                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(cHousehold.IncomeInList iil)
                     {
                         var i = data.IncomesById[iil.IncomeId];
 
@@ -141,7 +142,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(cArrangement.IncomeInList? iil)
+                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(cHousehold.IncomeInList? iil)
                     {
                         if (iil == null)
                         {
@@ -165,7 +166,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationRentIncome? MapRentIncome(cArrangement.IncomeInList? iil)
+                    cLA.LoanApplicationRentIncome? MapRentIncome(cHousehold.IncomeInList? iil)
                     {
                         if (iil == null)
                         {
@@ -184,7 +185,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationOtherIncome MapOtherIncome(cArrangement.IncomeInList iil)
+                    cLA.LoanApplicationOtherIncome MapOtherIncome(cHousehold.IncomeInList iil)
                     {
                         var i = data.IncomesById[iil.IncomeId];
                         var id = i.Other?.IncomeOtherTypeId;

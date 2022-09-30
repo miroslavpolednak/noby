@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
-using contracts = DomainServices.SalesArrangementService.Contracts;
+using DomainServices.HouseholdService.Clients;
+using contracts = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.GetHouseholds;
 
@@ -27,11 +27,11 @@ internal class GetHouseholdsHandler
     }
 
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly ILogger<GetHouseholdsHandler> _logger;
     
     public GetHouseholdsHandler(
-        IHouseholdServiceAbstraction householdService,
+        IHouseholdServiceClient householdService,
         ICodebookServiceAbstraction codebookService,
         ILogger<GetHouseholdsHandler> logger)
     {

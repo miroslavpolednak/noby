@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Identity.proto";
+import "NullableGrpcDate.proto";
+import "NullableGrpcDateTime.proto";
+import "Obligation.proto";
+
+message CustomerOnSABase {
+    repeated cis.types.Identity CustomerIdentifiers = 1;
+    
+    string FirstNameNaturalPerson = 2;
+    
+    string Name = 3;
+    
+    cis.types.NullableGrpcDate DateOfBirthNaturalPerson = 4;
+
+    cis.types.NullableGrpcDateTime LockedIncomeDateTime = 6;
+
+    google.protobuf.Int32Value MaritalStatusId = 7;
+}

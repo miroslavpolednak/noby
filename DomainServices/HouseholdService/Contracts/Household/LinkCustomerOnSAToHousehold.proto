@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message LinkCustomerOnSAToHouseholdRequest {
+    int32 HouseholdId = 1;
+    google.protobuf.Int32Value CustomerOnSAId1 = 2;
+    google.protobuf.Int32Value CustomerOnSAId2 = 3;
+}

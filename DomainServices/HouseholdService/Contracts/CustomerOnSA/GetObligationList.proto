@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Obligation.proto";
+
+message GetObligationListResponse {
+    repeated Obligation Obligations = 1;
+}

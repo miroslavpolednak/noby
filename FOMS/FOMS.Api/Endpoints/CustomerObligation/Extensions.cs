@@ -2,7 +2,7 @@
 
 internal static class Extensions
 {
-    public static Dto.ObligationFullDto ToApiResponse(this DomainServices.SalesArrangementService.Contracts.Obligation obligationInstance)
+    public static Dto.ObligationFullDto ToApiResponse(this DomainServices.HouseholdService.Contracts.Obligation obligationInstance)
     {
         var model = new Dto.ObligationFullDto
         {

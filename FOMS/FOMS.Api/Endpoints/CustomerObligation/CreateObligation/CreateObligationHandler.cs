@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.CustomerObligation.CreateObligation;
 
@@ -7,7 +8,7 @@ internal sealed class CreateObligationHandler
 {
     public async Task<int> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
-        var model = new DomainServices.SalesArrangementService.Contracts.CreateObligationRequest
+        var model = new _HO.CreateObligationRequest
         {
             CustomerOnSAId = request.CustomerOnSAId!.Value,
             ObligationTypeId = request.ObligationTypeId!.Value,
@@ -18,14 +19,14 @@ internal sealed class CreateObligationHandler
             CreditCardLimit = request.CreditCardLimit
         };
         if (request.Creditor is not null)
-            model.Creditor = new DomainServices.SalesArrangementService.Contracts.ObligationCreditor
+            model.Creditor = new _HO.ObligationCreditor
             {
                 CreditorId = request.Creditor.CreditorId ?? "",
                 IsExternal = request.Creditor.IsExternal,
                 Name = request.Creditor.Name ?? ""
             };
         if (request.Correction is not null)
-            model.Correction = new DomainServices.SalesArrangementService.Contracts.ObligationCorrection
+            model.Correction = new _HO.ObligationCorrection
             {
                 CorrectionTypeId = request.Correction.CorrectionTypeId,
                 CreditCardLimitCorrection = request.Correction.CreditCardLimitCorrection,
@@ -37,9 +38,9 @@ internal sealed class CreateObligationHandler
         return obligationId;
     }
 
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ICustomerOnSAServiceClient _customerService;
 
-    public CreateObligationHandler(ICustomerOnSAServiceAbstraction customerService)
+    public CreateObligationHandler(ICustomerOnSAServiceClient customerService)
     {
         _customerService = customerService;
     }
