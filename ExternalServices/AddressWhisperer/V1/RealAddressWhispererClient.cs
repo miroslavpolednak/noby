@@ -57,6 +57,7 @@ internal class RealAddressWhispererClient
                     .Descendants(_ns1 + "getAddressDetailsRes")
                     .Descendants(_ns2 + "addressPointPostalRepresentationList")
                     .Descendants(_ns2 + "addressPointPostalRepresentation")
+                    .Where(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation")
                     .FirstOrDefault();
 
                 if (baseNode is not null)
@@ -146,6 +147,7 @@ internal class RealAddressWhispererClient
     XNamespace _soapenv = "http://schemas.xmlsoap.org/soap/envelope/";
     XNamespace _ns1 = "http://kb.cz/AddressWhispererBEService/v1";
     XNamespace _ns2 = "http://kb.cz/AddressWhispererBEService/v1/DTO";
+    XNamespace _ns3 = "http://www.w3.org/2001/XMLSchema-instance";
     private const string _soapEnvelopeStart = @"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:v1=""http://kb.cz/AddressWhispererBEService/v1"" xmlns:v11=""http://kb.cz/DataModel/Technical/HeaderTypes/v1"" xmlns:dto=""http://kb.cz/AddressWhispererBEService/v1/DTO"">";
     private const string _soapEnvelopeEnd = @"</soapenv:Envelope>";
 
