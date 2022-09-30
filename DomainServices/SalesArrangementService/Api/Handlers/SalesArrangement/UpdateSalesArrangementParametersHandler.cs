@@ -19,8 +19,7 @@ internal class UpdateSalesArrangementParametersHandler
             if (request.Request.Mortgage.Agent.HasValue)
             {
                 var customersOnSA = ServiceCallResult.ResolveAndThrowIfError<_HO.GetCustomerListResponse>(await _customerOnSAService.GetCustomerList(request.Request.SalesArrangementId, cancellation));
-                customersOnSA.Customers.Any(t => t.CustomerOnSAId)
-                if (!_dbContext.Customers.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId && t.CustomerOnSAId == request.Request.Mortgage.Agent))
+                if (!customersOnSA.Customers.Any(t => t.CustomerOnSAId == request.Request.Mortgage.Agent))
                     throw new CisNotFoundException(16078, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
             }
         }
@@ -57,10 +56,10 @@ internal class UpdateSalesArrangementParametersHandler
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     
     public UpdateSalesArrangementParametersHandler(
-        HouseholdService.Clients.IHouseholdServiceClient householdService,
+        HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
-        _householdService = householdService;
+        _customerOnSAService = customerOnSAService;
         _dbContext = dbContext;
     }
 }
