@@ -13,20 +13,20 @@ internal class HouseholdService : Contracts.v1.HouseholdService.HouseholdService
         => _mediator = mediator;
     
     public override async Task<CreateHouseholdResponse> CreateHousehold(CreateHouseholdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.CreateHouseholdMediatrRequest(request), context.CancellationToken);
+        => await _mediator.Send(new Endpoints.Household.CreateHousehold.CreateHouseholdMediatrRequest(request), context.CancellationToken);
     
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteHousehold(HouseholdIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.DeleteHouseholdMediatrRequest(request.HouseholdId), context.CancellationToken);
+        => await _mediator.Send(new Endpoints.Household.DeleteHousehold.DeleteHouseholdMediatrRequest(request.HouseholdId), context.CancellationToken);
     
     public override async Task<Household> GetHousehold(HouseholdIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetHouseholdMediatrRequest(request.HouseholdId), context.CancellationToken);
+        => await _mediator.Send(new Endpoints.Household.GetHousehold.GetHouseholdMediatrRequest(request.HouseholdId), context.CancellationToken);
     
     public override async Task<GetHouseholdListResponse> GetHouseholdList(GetHouseholdListRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(request.SalesArrangementId), context.CancellationToken);
+        => await _mediator.Send(new Endpoints.Household.GetHouseholdList.GetHouseholdListMediatrRequest(request.SalesArrangementId), context.CancellationToken);
     
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateHousehold(UpdateHouseholdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.UpdateHouseholdMediatrRequest(request), context.CancellationToken);
+        => await _mediator.Send(new Endpoints.Household.UpdateHousehold.UpdateHouseholdMediatrRequest(request), context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkCustomerOnSAToHousehold(LinkCustomerOnSAToHouseholdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.LinkCustomerOnSAToHouseholdMediatrRequest(request), context.CancellationToken);
+        => await _mediator.Send(new Endpoints.Household.LinkCustomerOnSAToHousehold.LinkCustomerOnSAToHouseholdMediatrRequest(request), context.CancellationToken);
 }
