@@ -17,7 +17,8 @@ internal class CreateRiskBusinessCaseHandler
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
         long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
-        if (!mpId.HasValue) return; // nema modre ID, nezajima me
+        long? kbId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
+        if (!mpId.HasValue || !kbId.HasValue) return; // nema modre ID, nezajima me
 
         //SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
@@ -39,55 +40,49 @@ internal class CreateRiskBusinessCaseHandler
             throw new CisValidationException("CreateRiskBusinessCase: household does not exist");
 
         // ziskat segment
-        string riskSegment = await getRiskSegment(
-            notification.SalesArrangementId, 
-            households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId, 
-            caseInstance.Data.ProductTypeId, 
-            offerInstance.SimulationInputs.LoanKindId,
-            notification.CustomerOnSAId,
-            mpId.Value,
-            cancellationToken);
+        string riskSegment = await getRiskSegment();
 
         bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, saInstance.RiskBusinessCaseExpirationDate, cancellationToken));
 
         // get rbcId
-        //var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
+        var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
 
         // ulozit na SA
-        //bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken));
-        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, null, null, cancellationToken));
-    }
+        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken));
 
-    async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, long mpId, CancellationToken cancellationToken)
-    {
-        var loanApplicationRequest = new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationSaveRequest
+        #region local fce
+        async Task<string> getRiskSegment()
         {
-            SalesArrangementId = salesArrangementId,
-            LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-            Households = new()
+            var loanApplicationRequest = new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationSaveRequest
+            {
+                SalesArrangementId = notification.SalesArrangementId,
+                LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
+                Households = new()
             {
                 new()
                 {
-                    HouseholdId = householdId,
+                    HouseholdId = households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId,
                     Customers = new()
                     {
                         new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationCustomer
                         {
-                            InternalCustomerId = customerOnSAId,
-                            PrimaryCustomerId = mpId.ToString(),
+                            InternalCustomerId = notification.CustomerOnSAId,
+                            PrimaryCustomerId = kbId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
                             CustomerRoleId = (int)CustomerRoles.Debtor
                         }
                     }
                 },
             },
-            Product = new()
-            {
-                ProductTypeId = productTypeId,
-                LoanKindId = loanKindId
-            }
-        };
-        
-        return ServiceCallResult.ResolveAndThrowIfError<string>(await _loanApplicationService.Save(loanApplicationRequest, cancellationToken));
+                Product = new()
+                {
+                    ProductTypeId = caseInstance.Data.ProductTypeId,
+                    LoanKindId = offerInstance.SimulationInputs.LoanKindId
+                }
+            };
+
+            return ServiceCallResult.ResolveAndThrowIfError<string>(await _loanApplicationService.Save(loanApplicationRequest, cancellationToken));
+        }
+        #endregion local fce
     }
 
     private readonly IHouseholdServiceAbstraction _householdService;
