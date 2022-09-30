@@ -8,6 +8,7 @@ using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
+using DomainServices.SalesArrangementService.Abstraction;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -51,6 +52,7 @@ builder.Services
     .AddCaseService()
     .AddCodebookService()
     .AddOfferService()
+    .AddSalesArrangementService()
     .AddCustomerService()
     .AddUserService();
 
@@ -83,7 +85,6 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGrpcService<DomainServices.HouseholdService.Api.Services.HouseholdService>();
     endpoints.MapGrpcService<DomainServices.HouseholdService.Api.Services.CustomerOnSAService>();
-    endpoints.MapGrpcService<DomainServices.HouseholdService.Api.Services.HouseholdService>();
 
     endpoints.MapGrpcReflectionService();
 });
