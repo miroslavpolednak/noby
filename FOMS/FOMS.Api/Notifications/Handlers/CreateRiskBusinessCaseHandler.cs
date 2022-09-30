@@ -51,10 +51,11 @@ internal class CreateRiskBusinessCaseHandler
         bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, saInstance.RiskBusinessCaseExpirationDate, cancellationToken));
 
         // get rbcId
-        var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
-        
+        //var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
+
         // ulozit na SA
-        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken));
+        //bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken));
+        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, null, null, cancellationToken));
     }
 
     async Task<string> getRiskSegment(int salesArrangementId, int householdId, int productTypeId, int loanKindId, int customerOnSAId, long mpId, CancellationToken cancellationToken)
