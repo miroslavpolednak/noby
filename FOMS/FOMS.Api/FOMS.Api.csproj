@@ -11,17 +11,13 @@
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <PropertyGroup>
     <DocumentationFile>FOMS.Api.xml</DocumentationFile>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<PublishDocumentationFile>true</PublishDocumentationFile>
     <NoWarn>1701;1702;CS1573</NoWarn>
   </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <NoWarn>1701;1702;CS1573</NoWarn>
-  </PropertyGroup>
-
+	
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
@@ -59,7 +55,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
