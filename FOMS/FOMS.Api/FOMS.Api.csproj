@@ -21,6 +21,16 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <None Remove="FOMS.Api.xml" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Include="FOMS.Api.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
