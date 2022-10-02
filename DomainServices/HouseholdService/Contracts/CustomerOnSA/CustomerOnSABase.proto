@@ -6,7 +6,6 @@ import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
 import "NullableGrpcDateTime.proto";
-import "Obligation.proto";
 
 message CustomerOnSABase {
     repeated cis.types.Identity CustomerIdentifiers = 1;

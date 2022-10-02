@@ -2,7 +2,6 @@
 package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
-import "google/protobuf/wrappers.proto";
 import "Obligation.proto";
 
 message GetObligationListResponse {

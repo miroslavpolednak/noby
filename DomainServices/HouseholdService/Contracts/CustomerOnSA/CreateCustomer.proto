@@ -4,7 +4,6 @@ option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "Identity.proto";
-import "NullableGrpcDate.proto";
 import "CustomerOnSABase.proto";
 
 message CreateCustomerRequest {
