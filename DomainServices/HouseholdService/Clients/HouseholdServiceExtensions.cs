@@ -21,8 +21,8 @@ public static class HouseholdServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register storage services
-        services.AddTransient<IHouseholdServiceClient, Services.HouseholdService>();
-        services.AddTransient<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
+        services.AddScoped<IHouseholdServiceClient, Services.HouseholdService>();
+        services.AddScoped<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
 
         services.AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>();
         services.AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>();

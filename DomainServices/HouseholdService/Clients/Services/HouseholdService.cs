@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using CIS.Infrastructure.gRPC;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
@@ -23,15 +24,16 @@ internal class HouseholdService : IHouseholdServiceClient
     }
 
     public async Task<IServiceCallResult> GetHousehold(int householdId, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStartedWithId(nameof(GetHousehold), householdId);
-        var result = await _service.GetHouseholdAsync(
-            new()
-            {
-                HouseholdId = householdId
-            }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<Household>(result);
-    }
+        => new SuccessfulServiceCallResult<Household>(await _householdCache.GetOrFetch(householdId, async () =>
+        {
+            _logger.RequestHandlerStartedWithId(nameof(GetHousehold), householdId);
+            var result = await _service.GetHouseholdAsync(
+                new()
+                {
+                    HouseholdId = householdId
+                }, cancellationToken: cancellationToken);
+            return result;
+        }));
 
     public async Task<IServiceCallResult> GetHouseholdList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -65,11 +67,13 @@ internal class HouseholdService : IHouseholdServiceClient
 
     private readonly ILogger<HouseholdService> _logger;
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
+    private readonly ServiceClientResultCache<Household> _householdCache;
 
     public HouseholdService(
         ILogger<HouseholdService> logger,
         Contracts.v1.HouseholdService.HouseholdServiceClient service)
     {
+        _householdCache = new ServiceClientResultCache<Household>();
         _service = service;
         _logger = logger;
     }
