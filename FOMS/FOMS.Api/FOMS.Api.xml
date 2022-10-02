@@ -146,7 +146,15 @@
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)" -->
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Parametry Case-u.
+            </summary>
+            <remarks>
+            <i>DS:</i> CaseService/GetTaskList<br/>
+            </remarks>
+            <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Prefix">
             <summary>
             Předčíslí účtu

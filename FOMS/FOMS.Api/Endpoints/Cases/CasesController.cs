@@ -98,7 +98,7 @@ public class CasesController : ControllerBase
     /// Parametry Case-u.
     /// </summary>
     /// <remarks>
-    ///// <i>DS:</i> CaseService/GetTaskList<br/>
+    /// <i>DS:</i> CaseService/GetTaskList<br/>
     /// </remarks>
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]

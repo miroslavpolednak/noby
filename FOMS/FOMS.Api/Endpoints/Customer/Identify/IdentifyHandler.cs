@@ -9,7 +9,7 @@ namespace FOMS.Api.Endpoints.Customer.Identify;
 internal sealed class IdentifyHandler
     : IRequestHandler<IdentifyRequest, CustomerInList>
 {
-    public async Task<CustomerInList?> Handle(IdentifyRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerInList> Handle(IdentifyRequest request, CancellationToken cancellationToken)
     {
         var dsRequest = new contracts.SearchCustomersRequest
         {
@@ -47,7 +47,7 @@ internal sealed class IdentifyHandler
             if (result.Customers.Count > 1)
             {
                 _logger.LogInformation("More than 1 client found");
-                throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identity?.IdentityId.ToString()))}");
+                throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}");
             }
 
             var customer = result.Customers.First();
