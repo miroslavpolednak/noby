@@ -146,7 +146,7 @@ internal class SendToCmpHandler
 
         await _repository.CreateForm(entity, cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.FormInstanceInterface), long.Parse(formId, CultureInfo.InvariantCulture));
+        _logger.EntityCreated(nameof(Repositories.Entities.FormInstanceInterface), long.Parse(dynamicFormValues.FormId, CultureInfo.InvariantCulture));
     }
 
     #endregion
