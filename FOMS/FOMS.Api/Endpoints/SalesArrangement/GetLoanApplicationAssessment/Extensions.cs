@@ -62,6 +62,18 @@ internal static class Extensions
         };
     }
 
+
+
+    private static string? RemoveSpaces(this string value)
+    {
+        if (String.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return new string(value.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+    }
+
     public static cLA.LoanApplicationSaveRequest ToLoanApplicationSaveRequest(this LoanApplicationData data)
     {
         // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
@@ -80,7 +92,7 @@ internal static class Extensions
                     EvidenceNumber = a.EvidenceNumber,
                     City = a.City,
                     CountryId = a.CountryId,
-                    Postcode = a.Postcode,
+                    Postcode = a.Postcode.RemoveSpaces(),
                 };
 
                 var MapIdentificationDocument = (cCustomer.IdentificationDocument id) => new cRS.V1.IdentificationDocumentDetail
