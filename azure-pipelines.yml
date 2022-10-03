@@ -19,11 +19,11 @@ steps:
 #    version: '6.0.x'
 #    includePreviewVersions: true
 
-#- task: InlinePowershell@1
-#  inputs:
-#    Script: |
-#      Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
-#      [System.Net.WebProxy]::GetDefaultProxy()
+- task: InlinePowershell@1
+  inputs:
+    Script: |
+      [System.Net.WebProxy]::GetDefaultProxy()
+      Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
 #      netsh winhttp show proxy
 #      Get-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
 
