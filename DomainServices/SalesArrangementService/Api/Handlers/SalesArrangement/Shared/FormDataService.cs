@@ -230,9 +230,7 @@ internal class FormDataService
 
     private async Task<List<_HO.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<_HO.GetCustomerListResponse>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation))
-            .Customers
-            .ToList();
+        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<List<_HO.CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
         var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
         var customers = new List<_HO.CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
