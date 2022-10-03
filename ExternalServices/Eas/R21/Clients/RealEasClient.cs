@@ -1,5 +1,6 @@
 ﻿using ExternalServices.Eas.R21.EasWrapper;
 using CIS.Infrastructure.Logging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ExternalServices.Eas.R21;
 
@@ -100,16 +101,14 @@ internal sealed class RealEasClient
             {
                 var message = $"Detected differences between input and output data during call EAS NewKlient [{String.Join(",",differentProps)}]";
                 _logger.LogInformation(message);
-                return new ErrorServiceCallResult(99999, message); // TODO: error code
+                _auditLogger.Log(message);
             }
-            else
+
+            return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
             {
-                return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
-                {
-                    Id = r.klient_id,
-                    BirthNumber = r.rodne_cislo_ico
-                });
-            }
+                Id = r.klient_id,
+                BirthNumber = r.rodne_cislo_ico
+            });
         });
     }
 
@@ -201,8 +200,8 @@ internal sealed class RealEasClient
         });
     }
 
-    public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger)
-        : base(Versions.R21, configuration, logger)
+    public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger, CIS.Infrastructure.Telemetry.IAuditLogger auditLogger)
+        : base(Versions.R21, configuration, logger, auditLogger)
     {
     }
 

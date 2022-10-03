@@ -112,6 +112,49 @@ internal static class CreateExtensions
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
-            Addresses = customer.Addresses?.ToResponseDto()
+            Addresses = customer.Addresses?.ToResponseDto(),
+            InputDataDifferent = true
         };
+
+    public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
+    {
+        response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";
+        return response;
+    }
+    
+    public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
+    {
+        bool result = false;
+        if (
+            !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.MobilPrivate)?.Value)
+            || !stringCompare(originalRequest.Email, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value)
+            || originalRequest.BirthDate != originalRequest.BirthDate
+            || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)
+            || !stringCompare(originalRequest.BirthPlace, response.NaturalPerson?.PlaceOfBirth)
+            || originalRequest.CitizenshipCountryId != (response.NaturalPerson?.CitizenshipCountriesId?.FirstOrDefault() ?? 0)
+            || originalRequest.GenderId != ((int?)response.NaturalPerson?.Gender ?? 0)
+            || !stringCompare(originalRequest.FirstName, response.NaturalPerson?.FirstName)
+            || !stringCompare(originalRequest.LastName, response.NaturalPerson?.LastName)
+            || compareAddress(originalRequest.PrimaryAddress, response.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent))
+        )
+            response.InputDataDifferent = result;
+
+        return response;
+    }
+
+    private static bool compareAddress(CIS.Foms.Types.Address? address1, GetDetail.Dto.AddressModel? address2)
+    {
+        if (!stringCompare(address1?.Street, address2?.Street))
+            return true;
+        if (!stringCompare(address1?.City, address2?.City))
+            return true;
+        if (stringCompare(address1?.BuildingIdentificationNumber, address2?.BuildingIdentificationNumber))
+            return true;
+        if (stringCompare(address1?.LandRegistryNumber, address2?.LandRegistryNumber))
+            return true;
+        return false;
+    }
+
+    private static bool stringCompare(string? s1, string? s2)
+        => (s1 ?? "").Equals((s2 ?? ""), StringComparison.OrdinalIgnoreCase);
 }
