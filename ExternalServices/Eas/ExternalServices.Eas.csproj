@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
   </ItemGroup>
 

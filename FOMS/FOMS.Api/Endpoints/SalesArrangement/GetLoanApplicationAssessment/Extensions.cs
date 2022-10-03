@@ -62,6 +62,18 @@ internal static class Extensions
         };
     }
 
+
+
+    private static string? RemoveSpaces(this string value)
+    {
+        if (String.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return new string(value.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+    }
+
     public static cLA.LoanApplicationSaveRequest ToLoanApplicationSaveRequest(this LoanApplicationData data)
     {
         // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
@@ -80,7 +92,7 @@ internal static class Extensions
                     EvidenceNumber = a.EvidenceNumber,
                     City = a.City,
                     CountryId = a.CountryId,
-                    Postcode = a.Postcode,
+                    Postcode = a.Postcode.RemoveSpaces(),
                 };
 
                 var MapIdentificationDocument = (cCustomer.IdentificationDocument id) => new cRS.V1.IdentificationDocumentDetail
@@ -307,20 +319,20 @@ internal static class Extensions
                 FixedRatePeriod = data.Offer.SimulationInputs.FixedRatePeriod,
                 LoanInterestRate = data.Offer.SimulationResults.LoanInterestRate,
                 InstallmentCount = data.Offer.SimulationResults.AnnuityPaymentsCount,
-                DrawingPeriodStart = data.Arrangement.Mortgage.ExpectedDateOfDrawing,
+                DrawingPeriodStart = data.Arrangement.Mortgage?.ExpectedDateOfDrawing,
                 DrawingPeriodEnd = data.Offer.SimulationResults.DrawingDateTo,
                 RepaymentPeriodStart = data.Offer.SimulationResults.AnnuityPaymentsDateFrom,
                 RepaymentPeriodEnd = data.Offer.SimulationResults.LoanDueDate,
-                HomeCurrencyIncome = data.Arrangement.Mortgage.IncomeCurrencyCode,
-                HomeCurrencyResidence = data.Arrangement.Mortgage.ResidencyCurrencyCode,
-                DeveloperId = data.Offer.SimulationInputs.Developer.DeveloperId,
-                DeveloperProjectId = data.Offer.SimulationInputs.Developer.ProjectId,
+                HomeCurrencyIncome = data.Arrangement.Mortgage?.IncomeCurrencyCode,
+                HomeCurrencyResidence = data.Arrangement.Mortgage?.ResidencyCurrencyCode,
+                DeveloperId = data.Offer.SimulationInputs.Developer?.DeveloperId,
+                DeveloperProjectId = data.Offer.SimulationInputs.Developer?.ProjectId,
                 RequiredAmount = data.Offer.SimulationResults.LoanAmount,
                 InvestmentAmount = investmentAmount,
                 OwnResourcesAmount = financialResourcesOwn,
                 ForeignResourcesAmount = financialResourcesOther,
-                MarketingActions = data.Offer.AdditionalSimulationResults.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
-                Purposes = data.Offer.SimulationInputs.LoanPurposes.Select(i => MapLoanPurpose(i)).ToList(),
+                MarketingActions = data.Offer.AdditionalSimulationResults?.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
+                Purposes = data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToList(),
                 Collaterals = new List<cLA.LoanApplicationProductCollateral> { productCollateral },
             };
         }

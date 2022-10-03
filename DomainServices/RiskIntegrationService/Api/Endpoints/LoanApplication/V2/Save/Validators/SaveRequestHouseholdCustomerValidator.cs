@@ -26,19 +26,6 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                     t.RuleFor(x => x.ObligationTypeId)
                         .GreaterThan(0)
                         .WithErrorCode("Households.Customers.");
-
-                    t.When(x => x.ObligationTypeId == 3 || x.ObligationTypeId == 4, () =>
-                    {
-                        t.RuleFor(x => x.Installment)
-                            .NotEmpty()
-                            .WithMessage("Installment must be empty for ObligationTypeId in (3,4)")
-                            .WithErrorCode("Households.Customers.");
-
-                        t.RuleFor(x => x.InstallmentConsolidated)
-                            .NotEmpty()
-                            .WithMessage("InstallmentConsolidated must be empty for ObligationTypeId in (3,4)")
-                            .WithErrorCode("Households.Customers.");
-                    });
                 });
         });
 

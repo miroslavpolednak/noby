@@ -63,16 +63,10 @@ internal sealed class CreateHandler
         var updateResponse = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken));
 
         // vytvorit response z API
-        var model = customerKb.ToResponseDto();
-        if (createOk)
-        {
-            model.InputDataDifferent = true;
-            model.ResponseCode = "KBCM_CREATED";
-        }
-        else
-        {
-            model.ResponseCode = "KBCM_IDENTIFIED";
-        }
+        var model = customerKb
+            .ToResponseDto()
+            .SetResponseCode(createOk)
+            .InputDataComparison(request);
 
         // pokud je vse OK, zalozit customera v konsDb
         try

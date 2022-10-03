@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry.Configuration;
-using Serilog;
+﻿using Serilog;
 
 namespace CIS.Infrastructure.Telemetry;
 
