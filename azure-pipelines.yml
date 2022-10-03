@@ -20,7 +20,10 @@ steps:
 #    includePreviewVersions: true
 - task: InlinePowershell@1
   inputs:
-    Script: 'Invoke-WebRequest "https://sonar.kb.cz/api/server/version"'
+    Script: |
+      netsh winhttp show proxy
+      Get-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
+      Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
