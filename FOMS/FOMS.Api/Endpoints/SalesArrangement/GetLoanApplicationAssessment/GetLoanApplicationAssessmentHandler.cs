@@ -57,8 +57,7 @@ internal class GetLoanApplicationAssessmentHandler
 
             // loan application save
             var loanApplicationSaveRequest = loanApplicationData.ToLoanApplicationSaveRequest();
-            var loanApplicationSaveResponse = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationSaveResponse>(await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken));
-            var riskSegment = loanApplicationSaveResponse.RiskSegment.ToString();
+            var riskSegment = ServiceCallResult.ResolveAndThrowIfError<string>(await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken));
 
             // create assesment
             var createAssesmentRequest = loanApplicationData.ToRiskBusinessCaseCreateAssesmentRequest();
