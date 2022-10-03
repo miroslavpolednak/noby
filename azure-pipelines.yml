@@ -21,8 +21,8 @@ steps:
 - task: InlinePowershell@1
   inputs:
     Script: |
-      Invoke-WebRequest "https://nexus3.kb.cz"
-      Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
+      Invoke-WebRequest "https://nexus3.kb.cz -NoProxy"
+      Invoke-WebRequest "https://sonar.kb.cz/api/server/version -NoProxy"
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
