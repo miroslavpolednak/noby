@@ -8,8 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddAvroSerializers(this IServiceCollection services)
     {
-        var avroSchemaTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
+        var avroSchemaTypes = typeof(Topics).Assembly.GetTypes()
             .Where(type => typeof(ISpecificRecord).IsAssignableFrom(type))
             .ToList();
         
