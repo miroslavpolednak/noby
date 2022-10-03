@@ -28,6 +28,8 @@ steps:
       netsh winhttp show proxy
       Get-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections"
       Get-ItemProperty -Path "Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections"
+      $BinaryArray = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections').DefaultConnectionSettings            
+      -join ($BinaryArray | % { [char][int]"$_"})
 
 
 - task: DotNetCoreCLI@2
