@@ -22,10 +22,11 @@ steps:
 - task: InlinePowershell@1
   inputs:
     Script: |
-      [System.Net.WebProxy]::GetDefaultProxy()
+      Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
+#      [System.Net.WebProxy]::GetDefaultProxy()
 #      netsh winhttp show proxy
 #      Get-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
-#      Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
+
 
 - task: DotNetCoreCLI@2
   inputs:
