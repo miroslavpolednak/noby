@@ -34,6 +34,7 @@ steps:
     projectKey: 'CaseService'
     projectName: 'CaseService'
     projectVersion: '$(MajorVersion).$(MinorVersion)'
+    extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2
   inputs:
