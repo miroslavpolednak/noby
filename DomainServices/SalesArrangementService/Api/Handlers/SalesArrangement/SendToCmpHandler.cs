@@ -44,6 +44,7 @@ internal class SendToCmpHandler
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
     {
+        
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation, true);
         var builder = new FormDataJsonBuilder(formData);
 

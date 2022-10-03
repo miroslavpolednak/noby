@@ -17,6 +17,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
 
@@ -228,11 +229,10 @@ internal class FormDataService
         return productType;
     }
 
-    private async Task<List<_HO.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
+    private async Task<List<CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<_HO.GetCustomerListResponse>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation))
-            .Customers
-            .ToList();
+        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
+
         var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
         var customers = new List<_HO.CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
