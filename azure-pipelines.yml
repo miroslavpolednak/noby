@@ -22,6 +22,7 @@ steps:
 - task: InlinePowershell@1
   inputs:
     Script: |
+      [System.Net.Http.HttpClient]::DefaultProxy = New-Object System.Net.WebProxy($null)
       [System.Net.WebProxy]::GetDefaultProxy()
       Invoke-WebRequest "https://sonar.kb.cz/api/server/version"
 #      netsh winhttp show proxy
