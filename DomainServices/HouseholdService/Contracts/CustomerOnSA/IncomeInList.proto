@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "NullableGrpcDecimal.proto";
+import "google/protobuf/wrappers.proto";
+
+message IncomeInList {
+    int32 IncomeId = 1;
+    int32 IncomeTypeId = 2;
+    cis.types.NullableGrpcDecimal Sum = 3;
+    string CurrencyCode = 4;
+    string IncomeSource = 5;
+    google.protobuf.BoolValue HasProofOfIncome = 6;
+}

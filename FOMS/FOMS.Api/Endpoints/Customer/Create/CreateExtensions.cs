@@ -1,4 +1,4 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using FOMS.Api.Endpoints.Customer.GetDetail;
 
@@ -43,12 +43,12 @@ internal static class CreateExtensions
         return model;
     }
 
-    public static _SA.UpdateCustomerRequest ToUpdateRequest(this _SA.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
+    public static _HO.UpdateCustomerRequest ToUpdateRequest(this _HO.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
     {
-        var model = new _SA.UpdateCustomerRequest
+        var model = new _HO.UpdateCustomerRequest
         {
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
-            Customer = new _SA.CustomerOnSABase
+            Customer = new _HO.CustomerOnSABase
             {
                 DateOfBirthNaturalPerson = customerKb.NaturalPerson.DateOfBirth,
                 MaritalStatusId = customerKb.NaturalPerson?.MaritalStatusStateId,

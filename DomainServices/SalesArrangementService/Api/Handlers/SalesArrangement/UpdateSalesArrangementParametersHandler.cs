@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement;
 
@@ -17,7 +18,8 @@ internal class UpdateSalesArrangementParametersHandler
         {
             if (request.Request.Mortgage.Agent.HasValue)
             {
-                if (!_dbContext.Customers.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId && t.CustomerOnSAId == request.Request.Mortgage.Agent))
+                var customersOnSA = ServiceCallResult.ResolveAndThrowIfError<_HO.GetCustomerListResponse>(await _customerOnSAService.GetCustomerList(request.Request.SalesArrangementId, cancellation));
+                if (!customersOnSA.Customers.Any(t => t.CustomerOnSAId == request.Request.Mortgage.Agent))
                     throw new CisNotFoundException(16078, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
             }
         }
@@ -50,11 +52,14 @@ internal class UpdateSalesArrangementParametersHandler
             _ => null
         };
 
+    private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     
     public UpdateSalesArrangementParametersHandler(
+        HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         Repositories.SalesArrangementServiceDbContext dbContext)
     {
+        _customerOnSAService = customerOnSAService;
         _dbContext = dbContext;
     }
 }

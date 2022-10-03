@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.HouseholdService.Clients;
 using Google.Protobuf.Collections;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateCustomers;
 
@@ -11,10 +11,8 @@ internal class UpdateCustomersHandler
     public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
     {
         // detail domacnosti
-        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
-        // detail SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(householdInstance.SalesArrangementId, cancellationToken));
-
+        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
 
@@ -23,9 +21,9 @@ internal class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.CustomerOnSAId, c2.CustomerOnSAId, cancellationToken);
 
         // hlavni domacnost - hlavni klient ma modre ID
-        if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId) && c1.CustomerOnSAId.HasValue && c1.MpId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
+        if (c1.CustomerOnSAId.HasValue && householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main)
         {
-            var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, c1.CustomerOnSAId!.Value, c1.MpId!.Value);
+            var notification = new Notifications.MainCustomerUpdatedNotification(householdInstance.CaseId, householdInstance.SalesArrangementId, c1.CustomerOnSAId!.Value, c1.Identities);
             await _mediator.Publish(notification, cancellationToken);
         }
 
@@ -36,10 +34,10 @@ internal class UpdateCustomersHandler
         };
     }
 
-    async Task<(int? CustomerOnSAId, long? MpId)> crudCustomer(
+    async Task<(int? CustomerOnSAId, IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities)> crudCustomer(
         CustomerDto? customer, 
         int? householdCustomerId,
-        _SA.Household householdInstance,
+        _HO.Household householdInstance,
         CustomerRoles customerRole,
         CancellationToken cancellationToken)
     {
@@ -59,16 +57,16 @@ internal class UpdateCustomersHandler
             {
                 try
                 {
-                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
+                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
 
-                    var identities = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                    var identities = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _HO.UpdateCustomerRequest
                         {
                             CustomerOnSAId = customer.CustomerOnSAId!.Value,
                             Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
                         }, cancellationToken))
                         .CustomerIdentifiers;
 
-                    return (customer.CustomerOnSAId.Value, getMpId(identities));
+                    return (customer.CustomerOnSAId.Value, identities);
                 }
                 catch (CisArgumentException ex) when (ex.ExceptionCode == 16033)
                 {
@@ -78,18 +76,18 @@ internal class UpdateCustomersHandler
             }
             else // vytvoreni noveho
             {
-                var createResult = ServiceCallResult.ResolveAndThrowIfError<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _SA.CreateCustomerRequest
+                var createResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
                     CustomerRoleId = (int)customerRole,
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken));
 
-                return (createResult.CustomerOnSAId, getMpId(createResult.CustomerIdentifiers));
+                return (createResult.CustomerOnSAId, createResult.CustomerIdentifiers);
             }
         }
 
-        return (default(int?), default(long?));
+        return (default(int?), default(List<CIS.Infrastructure.gRPC.CisTypes.Identity>?));
     }
 
     private static long? getMpId(RepeatedField<CIS.Infrastructure.gRPC.CisTypes.Identity>? identities)
@@ -100,18 +98,15 @@ internal class UpdateCustomersHandler
             return default(long?);
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IMediator _mediator;
 
     public UpdateCustomersHandler(
-        ISalesArrangementServiceAbstraction salesArrangementService,
         IMediator mediator,
-        IHouseholdServiceAbstraction householdService,
-        ICustomerOnSAServiceAbstraction customerOnSAService)
+        IHouseholdServiceClient householdService,
+        ICustomerOnSAServiceClient customerOnSAService)
     {
-        _salesArrangementService = salesArrangementService;
         _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;

@@ -5,8 +5,9 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
-using System.Text.Json.Nodes;
+//using DomainServices.HouseholdService.Contracts;
 
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
 {
@@ -36,14 +37,14 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => Data.Households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
 
             // seřadit podle HouseholdTypeId a číslovat vzestupně 1, 2, 3; bude se upravovat v závislosti na FormType, pro F360 bude '1'(pouze hlavní domácnost), pro F3602 dosavadní logika (ručitelská a spoludlužnická domácnost):
-            var householdsSorted = Data.Households?.OrderBy(i => i.HouseholdTypeId).ToList() ?? new List<Contracts.Household>();
+            var householdsSorted = Data.Households?.OrderBy(i => i.HouseholdTypeId).ToList() ?? new List<_HO.Household>();
             var householdNumbersById = householdsSorted.ToDictionary(i => i.HouseholdId, i => householdsSorted.IndexOf(i) + 1);
 
             var firstEmploymentType = Data.EmploymentTypes.OrderBy(i => i.Id).FirstOrDefault();
 
             var obligationTypeAmountIds = Data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
 
-            object? MapHousehold(Contracts.Household i, int cisloDomacnosti)
+            object? MapHousehold(_HO.Household i, int cisloDomacnosti)
             {
                 if (i == null)
                 {
@@ -190,7 +191,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerObligation(Obligation i, int rowNumber)
+            object? MapCustomerObligation(_HO.Obligation i, int rowNumber)
             {
                 if (i == null)
                 {
@@ -245,7 +246,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerIncome(IncomeInList? iil, int rowNumber)
+            object? MapCustomerIncome(_HO.IncomeInList? iil, int rowNumber)
             {
                 if (iil == null)
                 {
@@ -307,7 +308,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomer(Contracts.CustomerOnSA i)
+            object? MapCustomer(_HO.CustomerOnSA i)
             {
                 // CNFL: https://wiki.kb.cz/display/HT/Customer+D1.3
 
@@ -332,7 +333,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
                 var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();
 
-                var incomes = i.Incomes?.ToList() ?? new List<IncomeInList>();
+                var incomes = i.Incomes?.ToList() ?? new List<_HO.IncomeInList>();
                 var incomesEmployment = incomes.Where(i => i.IncomeTypeId == 1).ToList();   // Příjmy ze zaměstnání
                 var incomeEntrepreneur = incomes.FirstOrDefault(i => i.IncomeTypeId == 2);  // Prijem z danoveho priznani
                 var incomeRent = incomes.FirstOrDefault(i => i.IncomeTypeId == 3);          // Prijem z pronajmu
@@ -437,7 +438,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerOnSA(Contracts.CustomerOnSA i)
+            object? MapCustomerOnSA(_HO.CustomerOnSA i)
             {
                 if (i == null)
                 {

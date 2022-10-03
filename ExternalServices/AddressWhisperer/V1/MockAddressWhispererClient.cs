@@ -5,7 +5,7 @@ namespace ExternalServices.AddressWhisperer.V1;
 internal sealed class MockAddressWhispererClient
     : IAddressWhispererClient
 {
-    public Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, CancellationToken cancellationToken)
+    public Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, string title, string? country, CancellationToken cancellationToken)
     {
         return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult<AddressDetail>(new AddressDetail
         {
@@ -14,7 +14,7 @@ internal sealed class MockAddressWhispererClient
         }));
     }
 
-    public Task<IServiceCallResult> GetSuggestions(string sessionId, string text, int pageSize, string? country, CancellationToken cancellationToken)
+    public Task<IServiceCallResult> GetSuggestions(string sessionId, string text, int pageSize, string country, CancellationToken cancellationToken)
     {
         return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult<List<FoundSuggestion>>(new List<FoundSuggestion>
         {

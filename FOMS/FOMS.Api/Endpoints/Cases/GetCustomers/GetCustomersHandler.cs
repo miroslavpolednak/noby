@@ -1,5 +1,6 @@
 ﻿using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 
@@ -13,7 +14,7 @@ internal class GetCustomersHandler
         // data o CASE-u
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
 
-        List<(Identity Identity, int Role, bool? Agent)> customerIdentities;
+        List<(Identity Identity, int Role, bool Agent)> customerIdentities;
 
         if (caseInstance.State == 1)
         {
@@ -32,7 +33,7 @@ internal class GetCustomersHandler
             var saDetail = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(saId, cancellationToken));
             
             // vsichni customeri z CustomerOnSA
-            var customers = ServiceCallResult.ResolveAndThrowIfError<List<_SA.CustomerOnSA>>(
+            var customers = ServiceCallResult.ResolveAndThrowIfError<List<_HO.CustomerOnSA>>(
                 await _customerOnSAService.GetCustomerList(saId, cancellationToken)
             );
 
@@ -42,7 +43,7 @@ internal class GetCustomersHandler
                 .Select(t => (
                     t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
                     t.CustomerRoleId,
-                    (bool?)saDetail.Mortgage.Agent.HasValue
+                    saDetail.Mortgage.Agent.GetValueOrDefault() == t.CustomerOnSAId
                 ))
                 .ToList();
         }
@@ -58,7 +59,7 @@ internal class GetCustomersHandler
                 .Select(t => (
                     Identity: t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
                     Role: t.RelationshipCustomerProductTypeId,
-                    Agent: t.Agent
+                    Agent: t.Agent ?? false
                  ))
                 .ToList();
         }
@@ -80,13 +81,13 @@ internal class GetCustomersHandler
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public GetCustomersHandler(
         DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
-        DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSAService,
+        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService, 
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)

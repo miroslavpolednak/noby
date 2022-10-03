@@ -17,7 +17,7 @@ public class CasesController : ControllerBase
     /// Dlužník na prvním místě, dále spoludlužníci řazeni dle příjmení a jména.<br /><br />
     /// <i>DS:</i> SalesArrangementService/getSalesArrangementList<br /><i>DS:</i> SalesArrangementService/GetCustomerList (onSA)<br />
     /// <i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/customers")]
@@ -98,7 +98,7 @@ public class CasesController : ControllerBase
     /// Parametry Case-u.
     /// </summary>
     /// <remarks>
-    ///// <i>DS:</i> CaseService/GetTaskList<br/>
+    /// <i>DS:</i> CaseService/GetTaskList<br/>
     /// </remarks>
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]

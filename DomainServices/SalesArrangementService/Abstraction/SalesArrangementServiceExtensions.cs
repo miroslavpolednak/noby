@@ -22,13 +22,9 @@ public static class SalesArrangementServiceExtensions
     {
         // register storage services
         services.AddTransient<ISalesArrangementServiceAbstraction, Services.SalesArrangementService>();
-        services.AddTransient<ICustomerOnSAServiceAbstraction, Services.CustomerOnSAService>();
-        services.AddTransient<IHouseholdServiceAbstraction, Services.HouseholdService>();
-
+        
         services.AddGrpcClientFromCisEnvironment<Contracts.v1.SalesArrangementService.SalesArrangementServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>();
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>();
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>();
-
+        
         return services;
     }
 }

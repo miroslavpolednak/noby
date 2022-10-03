@@ -18,9 +18,13 @@ public interface IAddressWhispererClient
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="sessionId"></param>
-    /// <param name="addressId"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, CancellationToken cancellationToken = default(CancellationToken));
+    /// <param name="sessionId">SessionId generované přímo na frontendu (unikátní GUID)</param>
+    /// <param name="addressId">Id adresy</param>
+    /// <param name="country">Id státu z číselníku Country</param>
+    /// <param name="title">Parametr title našeptávače adres</param>
+    /// <returns>
+    /// V pripade nalezeneho zaznamu <see cref="SuccessfulServiceCallResult{TModel}">SuccessfulServiceCallResult&lt;AddressDetail&gt;</see>
+    /// V pripade zadneho nalezeneho vysledku <see cref="EmptyServiceCallResult"></see>
+    /// </returns>
+    Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, string title, string country, CancellationToken cancellationToken = default(CancellationToken));
 }

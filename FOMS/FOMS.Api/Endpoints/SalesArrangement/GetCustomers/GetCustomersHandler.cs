@@ -1,5 +1,5 @@
 ﻿using DomainServices.CustomerService.Contracts;
-using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetCustomers;
 
@@ -90,13 +90,13 @@ internal class GetCustomersHandler
     }
 
     private readonly ILogger<GetCustomersHandler> _logger;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSaService;
+    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public GetCustomersHandler(
         ILogger<GetCustomersHandler> logger,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
-        DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
+        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
     {
         _customerService = customerService;
         _customerOnSaService = customerOnSaService;

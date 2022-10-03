@@ -86,6 +86,8 @@ internal sealed class RealEasClient
                 return new ErrorServiceCallResult(9104, "EAS GetKlientData_NewKlientResult is empty");
 
             var r = result.GetKlientData_NewKlientResult[0];
+            _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
+
             if (r.return_val != 0)
             {
                 var message = $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}";
@@ -102,7 +104,6 @@ internal sealed class RealEasClient
             }
             else
             {
-                _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
                 return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
                 {
                     Id = r.klient_id,
