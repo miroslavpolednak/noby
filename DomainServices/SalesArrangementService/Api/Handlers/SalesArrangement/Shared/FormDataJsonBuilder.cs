@@ -52,12 +52,19 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
             var actualDate = DateTime.Now.Date;
 
-            var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => Data.Households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
-
             // seřadit podle HouseholdTypeId a číslovat vzestupně 1, 2, 3; bude se upravovat v závislosti na FormType, pro F360 bude '1'(pouze hlavní domácnost), pro F3602 dosavadní logika (ručitelská a spoludlužnická domácnost):
             var households = GetHouseholdsByFormType(formType);
             var householdsSorted = households.OrderBy(i => i.HouseholdTypeId).ToList() ?? new List<Household>();
             var householdNumbersById = householdsSorted.ToDictionary(i => i.HouseholdId, i => householdsSorted.IndexOf(i) + 1);
+
+            var customerOnSAIds1 = households.Where(i => i.CustomerOnSAId1.HasValue).Select(i => i.CustomerOnSAId1);
+            var customerOnSAIds2 = households.Where(i => i.CustomerOnSAId2.HasValue).Select(i => i.CustomerOnSAId2);
+            var customerOnSAIds = customerOnSAIds1.Concat(customerOnSAIds2);
+
+            var customersOnSa = Data.CustomersOnSa.Where(i => customerOnSAIds.Contains(i.CustomerOnSAId)).ToList();
+
+            //var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
+            var householdsByCustomerOnSAId = customersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
 
             var firstEmploymentType = Data.EmploymentTypes.OrderBy(i => i.Id).FirstOrDefault();
 
@@ -157,13 +164,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
                 return new
                 {
-                    // ??? poznamka:
-                    // -----------------------------------------------
                     typ_adresy = i.AddressTypeId.ToJsonString(),    // D1.3 zrušení defaultu, plníme reálnými daty; Hodnota odpovídají v číselníku sloupci SbJsonValue
-                    ulice = i.Street ?? i.City,                               // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
-                    cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1; Přidána logika, že může být vyplněné 132 [cislo_popisne](a 133 [cislo_orientacni]) nebo 274 [cislo_evidencni]  - jinak je chyba
+                    ulice = i.Street ?? i.City,                     // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
+                    cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1
                     cislo_orientacni = i.LandRegistryNumber,        // D1.3 změna datového typu z Int na String
-                    // -----------------------------------------------
 
                     cislo_evidencni = i.EvidenceNumber,
                     ulice_dodatek = i.DeliveryDetails,
@@ -506,8 +510,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             DateTime firstSignedDate = (Data.Arrangement.FirstSignedDate is not null) ? (DateTime)Data.Arrangement.FirstSignedDate! : actualDate;
             var seznamIdFormulare = new object[] { new { id_formulare = 0.ToJsonString() } }; // v D1.3 zatím ponechat, bude se řešit později (info od HH)
 
-            var user_cpm = "99806569";
-            var user_icp = "114306569";
+            var user_cpm = "99806569";  // [MOCK] 90400037  //Data.User!.CPM // ???
+            var user_icp = "114306569"; // [MOCK] 110000037 //Data.User!.ICP // ???
 
             object data = new { };
 
@@ -529,13 +533,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
                         case_id = Data.Arrangement.CaseId.ToJsonString(),
                         stav_zadosti = Data.SalesArrangementStatesById[Data.Arrangement.State].StarbuildId.ToJsonString(),
-                        business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 // SalesArrangement
+                        business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 
                         risk_segment = Data.Arrangement.RiskSegment,
                         laa_id = Data.Arrangement.LoanApplicationAssessmentId,
                         datum_uzavreni_obchodu = Data.Arrangement.RiskBusinessCaseExpirationDate?.ToJsonString(),
-                        kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),                                                              // SalesArrangement - vyplněno na základě usera
-                        datum_vygenerovani_dokumentu = actualDate.ToJsonString(), // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum // ??? HH - odkud brát, nebo stále aktuální datum?
-                        datum_prvniho_podpisu = firstSignedDate.ToJsonString(),                                                                      // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+                        kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),
+                        datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+                        datum_prvniho_podpisu = firstSignedDate.ToJsonString(),
                         uv_produkt = Data.ProductType.Id.ToJsonString(),
                         uv_druh = Data.Offer.SimulationInputs.LoanKindId.ToJsonString(),                                                             // OfferInstance
                         indikativni_LTV = Data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
@@ -555,15 +559,15 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         developer_id = Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString(),
                         developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
                         developer_popis = developerDescription,
-                        forma_splaceni = 1.ToJsonString(),                                                                                          // [MOCK] OfferInstance (default 1)  
+                        forma_splaceni = 1.ToJsonString(),                                                                                          // [MOCK] OfferInstance (default 1) // ???  
                         seznam_mark_akci = Data.Offer.AdditionalSimulationResults.MarketingActions?.OrderBy(i => i.MarketingActionId).Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_poplatku = Data.Offer.AdditionalSimulationResults.Fees?.OrderBy(i => i.FeeId).Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
                         seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.OrderBy(i => i.LoanPurposeId).Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.OrderBy(i => i.RealEstateTypeId).Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(),
-                        seznam_ucastniku = Data.CustomersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
-                        zprostredkovano_3_stranou = false.ToJsonString(),                                                                           // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
-                        sjednal_CPM = user_cpm,                                                                                                     // [MOCK] 90400037  //Data.User!.CPM
-                        sjednal_ICP = user_icp,                                                                                                     // [MOCK] 110000037 //Data.User!.ICP
+                        seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
+                        zprostredkovano_3_stranou = false.ToJsonString(),                                                                           // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE) // ???
+                        sjednal_CPM = user_cpm,
+                        sjednal_ICP = user_icp,
                         mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,
                         mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,
                         zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),
@@ -605,7 +609,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         case_id = Data.Arrangement.CaseId.ToJsonString(),
                         business_case_ID = Data.Arrangement.RiskBusinessCaseId,
                         datum_vytvoreni_zadosti = actualDate.ToJsonString(),
-                        seznam_ucastniku = Data.CustomersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
+                        seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
                         sjednal_CPM = user_cpm,
                         sjednal_ICP = user_icp,
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),
