@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,16 +11,12 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>DomainServices.RiskIntegrationService.Contracts.xml</DocumentationFile>
+		<DocumentationFile>CIS.InternalServices.DocumentArchiveService.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
 	  <PackageReference Include="protobuf-net.Core" Version="3.1.17" />
 	  <PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
 	</ItemGroup>
 </Project>

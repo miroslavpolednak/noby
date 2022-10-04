@@ -219,11 +219,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdSer
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentArchiveService", "DocumentArchiveService", "{FD432970-0CA5-4632-9121-6A24C1B5A967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\CIS.InternalServices.DocumentArchiveService.Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\CIS.InternalServices.DocumentArchiveService.Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\CIS.InternalServices.DocumentArchiveService.Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
