@@ -5,8 +5,17 @@ namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
 internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceBase
 {
+    private readonly PdfDocumentManager _documentManager;
+
+    public DocumentGeneratorService(PdfDocumentManager documentManager)
+    {
+        _documentManager = documentManager;
+    }
+
     public override Task<Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
     {
-        return base.GenerateDocument(request, context);
+        var document = _documentManager.GenerateDocument(request);
+
+        return Task.FromResult(document);
     }
 }

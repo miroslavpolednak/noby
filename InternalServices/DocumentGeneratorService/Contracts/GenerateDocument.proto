@@ -28,7 +28,7 @@ message GenerateDocumentPart {
 
 	google.protobuf.Int32Value Order = 2;
 
-	GenerateDocumentPartData Data = 3;
+	repeated GenerateDocumentPartData Data = 3;
 }
 
 message GenerateDocumentPartData {
