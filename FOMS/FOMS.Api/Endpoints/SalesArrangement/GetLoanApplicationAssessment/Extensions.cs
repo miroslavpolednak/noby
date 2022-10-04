@@ -279,13 +279,17 @@ internal static class Extensions
                 Other = h.Expenses.OtherExpenseAmount,
             };
 
+            var propertySettlementId = h.Data?.PropertySettlementId;
+            var childrenUpToTenYearsCount = h.Data?.ChildrenUpToTenYearsCount;
+            var childrenOverTenYearsCount = h.Data?.ChildrenOverTenYearsCount;
+
             return new cLA.LoanApplicationHousehold
             {
                 HouseholdId = h.HouseholdTypeId,
                 HouseholdTypeId = h.HouseholdTypeId,
-                PropertySettlementId = h.Data.PropertySettlementId.HasValue ? h.Data.PropertySettlementId.Value : 0,
-                ChildrenUpToTenYearsCount = h.Data.ChildrenUpToTenYearsCount,
-                ChildrenOverTenYearsCount = h.Data.ChildrenOverTenYearsCount,
+                PropertySettlementId = propertySettlementId.HasValue ? propertySettlementId.Value : 0,
+                ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
+                ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
                 Customers = data.CustomersOnSa.Select(i => MapCustomer(i)).ToList(),
             };
