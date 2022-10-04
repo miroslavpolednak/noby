@@ -7,6 +7,7 @@ using cArrangement = DomainServices.SalesArrangementService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCis = CIS.Infrastructure.gRPC.CisTypes;
 using cCustomer = DomainServices.CustomerService.Contracts;
+using CIS.Foms.Enums;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -240,6 +241,8 @@ internal static class Extensions
                 var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
+                var cGenderId = c.NaturalPerson?.GenderId;
+
                 return new cLA.LoanApplicationCustomer
                 {
                     InternalCustomerId = cOnSA.CustomerOnSAId,
@@ -253,7 +256,7 @@ internal static class Extensions
                     BirthName = c.NaturalPerson?.BirthName,
                     BirthDate = c.NaturalPerson?.DateOfBirth,
                     BirthPlace = c.NaturalPerson?.PlaceOfBirth,
-                    GenderId = c.NaturalPerson?.GenderId,
+                    GenderId = cGenderId == (int)Genders.Unknown ? null : cGenderId,
                     MaritalStateId = c.NaturalPerson?.MaritalStatusStateId,
                     EducationLevelId = c.NaturalPerson?.EducationLevelId > 0 ? c.NaturalPerson?.EducationLevelId : null, // neposílat pokud 0
                     AcademicTitlePrefix = academicTitlePrefix,
