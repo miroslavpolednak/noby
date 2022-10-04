@@ -210,7 +210,7 @@ internal class FormDataService
 
         if (salesArrangementType == null)
         {
-            throw new CisNotFoundException(17005, nameof(SalesArrangementTypeItem), salesArrangementTypeId);
+            throw new CisNotFoundException(18005, nameof(SalesArrangementTypeItem), salesArrangementTypeId);
         }
 
         if (!salesArrangementType.ProductTypeId.HasValue)
@@ -327,7 +327,7 @@ internal class FormDataService
 
         // load case
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-            ?? throw new CisNotFoundException(17002, $"Case ID #{arrangement.CaseId} does not exist.");
+            ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
 
         // update ContractNumber if not specified
         // arrangement.ContractNumber = String.Empty;
@@ -361,7 +361,7 @@ internal class FormDataService
 
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))
-                     ?? throw new CisNotFoundException(17001, $"Offer ID #{arrangement.OfferId} does not exist.");
+                     ?? throw new CisNotFoundException(18001, $"Offer ID #{arrangement.OfferId} does not exist.");
 
         // User load (by arrangement.Created.UserId)
         var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))

@@ -14,7 +14,7 @@ internal class LinkModelationToSalesArrangementHandler
     {
         // overit existenci SA
         var salesArrangementInstance = await _dbContext.SalesArrangements.FindAsync(new object[] { request.SalesArrangementId }, cancellation) 
-            ?? throw new CisNotFoundException(17000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
+            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
         
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
@@ -22,7 +22,7 @@ internal class LinkModelationToSalesArrangementHandler
 
         // validace na existenci offer
         var offerInstance = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(request.OfferId, cancellation))
-            ?? throw new CisNotFoundException(17001, $"Offer ID #{request.OfferId} does not exist.");
+            ?? throw new CisNotFoundException(18001, $"Offer ID #{request.OfferId} does not exist.");
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
@@ -32,7 +32,7 @@ internal class LinkModelationToSalesArrangementHandler
         if (salesArrangementInstance.OfferId.HasValue)
         {
             var offerInstanceOld = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation))
-                ?? throw new CisNotFoundException(17001, $"Offer ID #{salesArrangementInstance.OfferId} does not exist.");
+                ?? throw new CisNotFoundException(18001, $"Offer ID #{salesArrangementInstance.OfferId} does not exist.");
             if ((DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
                 throw new CisValidationException(16058, $"Old offer GuaranteeDateFrom > than new GuaranteeDateFrom");
         }

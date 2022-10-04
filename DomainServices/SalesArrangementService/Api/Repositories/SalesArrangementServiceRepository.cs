@@ -17,7 +17,7 @@ internal class SalesArrangementServiceRepository
             .Where(t => t.SalesArrangementId == salesArrangementId)
             .AsNoTracking()
             .Select(SalesArrangementServiceRepositoryExpressions.SalesArrangementDetail())
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(17000, $"Sales arrangement ID {salesArrangementId} does not exist.");
+            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {salesArrangementId} does not exist.");
     
     public async Task<Contracts.SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellation)
         => await _dbContext.SalesArrangements
@@ -54,7 +54,7 @@ internal class SalesArrangementServiceRepository
     }
 
     public async Task<Entities.SalesArrangement> GetSalesArrangementEntity(int salesArrangementId, CancellationToken cancellation)
-        => await _dbContext.SalesArrangements.FindAsync(new object[] { salesArrangementId }, cancellation) ?? throw new CisNotFoundException(17000, $"Sales arrangement ID {salesArrangementId} does not exist.");
+        => await _dbContext.SalesArrangements.FindAsync(new object[] { salesArrangementId }, cancellation) ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {salesArrangementId} does not exist.");
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellation)
         => await _dbContext.SaveChangesAsync(cancellation);
