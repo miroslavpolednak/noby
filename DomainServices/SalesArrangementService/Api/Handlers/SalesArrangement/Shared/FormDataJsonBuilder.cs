@@ -1,13 +1,13 @@
 ﻿using System.Text.Json;
 
+using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
-//using DomainServices.HouseholdService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 
-using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
 {
@@ -27,6 +27,24 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
         public static readonly string MockDokumentId = "9876543210"; // TODO: dočasný mock - odstranit až si to Assecco odladí
 
+        private List<Household> GetHouseholdsByFormType(EFormType formType)
+        {
+            var households = new List<Household>();
+
+            switch (formType)
+            {
+                case EFormType.F3601:
+                    households = Data.Households.Where(i => ((HouseholdTypes)i.HouseholdTypeId) == HouseholdTypes.Main).ToList();
+                    break;
+
+                case EFormType.F3602:
+                    households = Data.Households.Where(i => ((HouseholdTypes)i.HouseholdTypeId) == HouseholdTypes.Codebtor || ((HouseholdTypes)i.HouseholdTypeId) == HouseholdTypes.Garantor).ToList();
+                    break;
+            }
+
+            return households;
+        }
+
         public string BuildJson(EFormType formType, string formId, bool ignoreNullValues = true)
         {
             // CNFL: https://wiki.kb.cz/display/HT/DROP1.3
@@ -34,17 +52,25 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
             var actualDate = DateTime.Now.Date;
 
-            var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => Data.Households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
-
             // seřadit podle HouseholdTypeId a číslovat vzestupně 1, 2, 3; bude se upravovat v závislosti na FormType, pro F360 bude '1'(pouze hlavní domácnost), pro F3602 dosavadní logika (ručitelská a spoludlužnická domácnost):
-            var householdsSorted = Data.Households?.OrderBy(i => i.HouseholdTypeId).ToList() ?? new List<_HO.Household>();
+            var households = GetHouseholdsByFormType(formType);
+            var householdsSorted = households.OrderBy(i => i.HouseholdTypeId).ToList() ?? new List<Household>();
             var householdNumbersById = householdsSorted.ToDictionary(i => i.HouseholdId, i => householdsSorted.IndexOf(i) + 1);
+
+            var customerOnSAIds1 = households.Where(i => i.CustomerOnSAId1.HasValue).Select(i => i.CustomerOnSAId1);
+            var customerOnSAIds2 = households.Where(i => i.CustomerOnSAId2.HasValue).Select(i => i.CustomerOnSAId2);
+            var customerOnSAIds = customerOnSAIds1.Concat(customerOnSAIds2);
+
+            var customersOnSa = Data.CustomersOnSa.Where(i => customerOnSAIds.Contains(i.CustomerOnSAId)).ToList();
+
+            //var householdsByCustomerOnSAId = Data.CustomersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
+            var householdsByCustomerOnSAId = customersOnSa.ToDictionary(i => i.CustomerOnSAId, i => households.Where(h => h.CustomerOnSAId1 == i.CustomerOnSAId || h.CustomerOnSAId2 == i.CustomerOnSAId).ToArray());
 
             var firstEmploymentType = Data.EmploymentTypes.OrderBy(i => i.Id).FirstOrDefault();
 
             var obligationTypeAmountIds = Data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
 
-            object? MapHousehold(_HO.Household i, int cisloDomacnosti)
+            object? MapHousehold(Household i, int cisloDomacnosti)
             {
                 if (i == null)
                 {
@@ -138,20 +164,17 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
                 return new
                 {
-                    // ??? poznamka:
-                    // -----------------------------------------------
                     typ_adresy = i.AddressTypeId.ToJsonString(),    // D1.3 zrušení defaultu, plníme reálnými daty; Hodnota odpovídají v číselníku sloupci SbJsonValue
-                    ulice = i.Street,                               // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
-                    cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1; Přidána logika, že může být vyplněné 132 [cislo_popisne](a 133 [cislo_orientacni]) nebo 274 [cislo_evidencni]  - jinak je chyba
+                    ulice = i.Street ?? i.City,                     // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
+                    cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1
                     cislo_orientacni = i.LandRegistryNumber,        // D1.3 změna datového typu z Int na String
-                    // -----------------------------------------------
 
                     cislo_evidencni = i.EvidenceNumber,
                     ulice_dodatek = i.DeliveryDetails,
                     psc = i.Postcode.ToPostCodeJsonString(),
                     misto = i.City,
                     stat = i.CountryId.ToJsonString(),
-                    cast_obce =   i.CityDistrict,
+                    cast_obce = i.CityDistrict,
                     obvod_praha = i.PragueDistrict,
                     uzemni_celek = i.CountrySubdivision,
                     adresni_bod_id = i.AddressPointId,
@@ -191,7 +214,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerObligation(_HO.Obligation i, int rowNumber)
+            object? MapCustomerObligation(Obligation i, int rowNumber)
             {
                 if (i == null)
                 {
@@ -221,11 +244,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 var castecnaKonsolidace = false;
                 if (i.Correction.CorrectionTypeId == 3)
                 {
-                    castecnaKonsolidace = (obligationTypeAmountIds!.Contains(i.ObligationTypeId!.Value)) 
-                        ? vyseKonsolidJistiny < vyseNesplaceneJistiny 
+                    castecnaKonsolidace = (obligationTypeAmountIds!.Contains(i.ObligationTypeId!.Value))
+                        ? vyseKonsolidJistiny < vyseNesplaceneJistiny
                         : vyseKonsolidJistiny < vyseLimitu;
                 }
-                 
+
                 decimal? vyseKorekceZavazkuJistina = obligationTypeAmountIds!.Contains(i.ObligationTypeId!.Value) ? i.Correction?.LoanPrincipalAmountCorrection : i.Correction?.CreditCardLimitCorrection;
 
                 return new
@@ -246,13 +269,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerIncome(_HO.IncomeInList? iil, int rowNumber)
+            object? MapCustomerIncomeEmployment(IncomeInList? iil, int rowNumber)
             {
                 if (iil == null)
                 {
                     return null;
                 }
-                
+
                 //string? GetAddressNumber(GrpcAddress? address)
                 //{
                 //    if (address == null)
@@ -271,7 +294,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 var i = Data.IncomesById[iil.IncomeId];
 
                 var employmentTypeId = i.Employement?.Job?.EmploymentTypeId ?? firstEmploymentType?.Id;
-                var countryId = i.Employement?.Employer?.CountryId;
 
                 return new
                 {
@@ -285,11 +307,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     prvni_pracovni_sml_od = i.Employement?.Job?.FirstWorkContractSince.ToJsonString(),
                     pracovni_smlouva_aktualni_od = i.Employement?.Job?.CurrentWorkContractSince.ToJsonString(),
                     pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
-                    
+
                     zamestnavatel_nazov = i.Employement?.Employer?.Name,
-                    zamestnavatel_rc_ico = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),   // pouze jedna z hodnot, neměly by být zadány obě
+
+                    // pouze jedna z hodnot, neměly by být zadány obě:
+                    zamestnavatel_rc_ico = new List<string?> { i!.Employement?.Employer?.Cin, i!.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                     zamestnavatel_sidlo_stat = i.Employement?.Employer?.CountryId?.ToJsonString(),
-                    
+
                     zamestnan_jako = i.Employement?.Job?.JobDescription,
                     prijem_vyse = iil.Sum.ToJsonString(),
                     prijem_mena = iil.CurrencyCode,
@@ -308,7 +332,67 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomer(_HO.CustomerOnSA i)
+            object? MapCustomerIncomeEntrepreneur(IncomeInList? iil, int rowNumber)
+            {
+                if (iil == null)
+                {
+                    return null;
+                }
+
+                var i = Data.IncomesById[iil.IncomeId];
+
+                return new
+                {
+                    poradi_prijmu = rowNumber.ToJsonString(),
+
+                    // Vyplní se nenulová hodnota z Income.Data.Cin nebo Income.Data.BirthNumber:
+                    rc_ico = new List<string?> { i.Entrepreneur?.Cin, i.Entrepreneur?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+
+                    sidlo_stat = i.Entrepreneur?.CountryOfResidenceId.ToJsonString(),
+                    prijem_vyse = iil.Sum.ToJsonString(),
+                    prijem_mena = iil.CurrencyCode,
+
+                    typ_dokumentu = 2.ToJsonString(),
+                    // datum_zahajeni_podnikatelske_cinnosti =          // Neplníme
+                };
+            }
+
+            object? MapCustomerIncomeRent(IncomeInList? iil, int rowNumber)
+            {
+                if (iil == null)
+                {
+                    return null;
+                }
+
+                return new
+                {
+                    poradi_prijmu = rowNumber.ToJsonString(),
+                    prijem_vyse = iil.Sum.ToJsonString(),
+                    prijem_mena = iil.CurrencyCode,
+                    // typ_dokumentu =                          // Neplníme
+                };
+            }
+
+            object? MapCustomerIncomeOther(IncomeInList? iil, int rowNumber)
+            {
+                if (iil == null)
+                {
+                    return null;
+                }
+
+                var i = Data.IncomesById[iil.IncomeId];
+
+                return new
+                {
+                    poradi_prijmu = rowNumber.ToJsonString(),
+                    zdroj_prijmu_ostatni = i.Other?.IncomeOtherTypeId.ToJsonString(),
+                    prijem_vyse = iil.Sum.ToJsonString(),
+                    prijem_mena = iil.CurrencyCode,
+                    // typ_dokumentu =                          // Neplníme
+                };
+            }
+
+            object? MapCustomer(CustomerOnSA i)
             {
                 // CNFL: https://wiki.kb.cz/display/HT/Customer+D1.3
 
@@ -333,68 +417,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
                 var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();
 
-                var incomes = i.Incomes?.ToList() ?? new List<_HO.IncomeInList>();
+                var incomes = i.Incomes?.ToList() ?? new List<IncomeInList>();
                 var incomesEmployment = incomes.Where(i => i.IncomeTypeId == 1).ToList();   // Příjmy ze zaměstnání
                 var incomeEntrepreneur = incomes.FirstOrDefault(i => i.IncomeTypeId == 2);  // Prijem z danoveho priznani
                 var incomeRent = incomes.FirstOrDefault(i => i.IncomeTypeId == 3);          // Prijem z pronajmu
                 var incomesOther = incomes.Where(i => i.IncomeTypeId == 4).ToList();        // Prijmy ostatní
-
-                #region Fake
-
-                // ----------------------------------------------------------------------------------------------------------------------------------
-                // Fake for Drop1-2
-                // ----------------------------------------------------------------------------------------------------------------------------------
-                object? MapCustomerF3602()
-                {
-                    return new
-                    {
-                        rodne_cislo = "5458083246",
-                        // segment =    // pro D1.3 neplníme, bude se řešit později
-                        kb_id = 703274075.ToJsonString(),
-                        mp_id = 200121760.ToJsonString(),                                   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
-                        // datum_svadby =    // D1.3 nepracujeme se zástavci, zatím nesbíráme a neplníme
-                        titul_pred = cDegreeBeforeId.HasValue ? Data.AcademicDegreesBeforeById[cDegreeBeforeId.Value].Name : null,    // (použít Name, nikoliv jen Id) 
-                        prijmeni_nazev = "Pavlíková",
-                        prijmeni_rodne = c.NaturalPerson?.BirthName,
-                        jmeno = "Ivana",
-                        datum_narozeni = (new DateTime(1954, 8, 8)).ToJsonString(),
-                        misto_narozeni_obec = c.NaturalPerson?.PlaceOfBirth,
-                        misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
-                        pohlavi = "Z",
-                        statni_prislusnost = 16.ToJsonString(),
-                        pravni_omezeni_typ = c.NaturalPerson?.IsLegallyIncapable,
-                        pravni_omezeni_do = c.NaturalPerson?.LegallyIncapableUntil.ToJsonString(),
-                        rezident = (taxResidencyCountryCode?.ToUpperInvariant() == "CZ").ToJsonString(),
-                        PEP = c.NaturalPerson?.IsPoliticallyExposed.ToJsonString(),
-                        seznam_adres = c.Addresses?.OrderBy(i => i.AddressTypeId).Select(i => MapAddress(i)).ToArray() ?? Array.Empty<object>(),
-                        seznam_dokladu = cIdentificationDocuments,
-                        seznam_kontaktu = c.Contacts?.OrderBy(i => i.ContactTypeId).Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
-                        rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
-                        je_fatca = 0.ToJsonString(),    // pro D1.3 default 0, bude se řešit později
-                        druh_druzka = (household?.Data?.AreCustomersPartners == true).ToJsonString(),
-                        vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
-
-                        // ??? upravit mapování příjmu dle jeho typu
-                        // -----------------------------------------
-                        seznam_prijmu_zam = incomesEmployment?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                        prijem_dp = incomeEntrepreneur is null ? null : MapCustomerIncome(incomeEntrepreneur, incomes!.IndexOf(incomeEntrepreneur) + 1),
-                        prijem_naj = incomeRent is null ? null : MapCustomerIncome(incomeRent, incomes!.IndexOf(incomeRent) + 1),
-                        seznam_prijmu_ost = incomesOther?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                        // -----------------------------------------
-
-                        seznam_zavazku = i.Obligations?.OrderBy(i => i.ObligationId).Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
-                        uzamcene_prijmy = ((DateTime?)i.LockedIncomeDateTime).HasValue.ToJsonString(),
-                        datum_posledniho_uzam_prijmu = i.LockedIncomeDateTime.ToJsonString(),
-                    };
-                }
-
-                if (formType == EFormType.F3602)
-                {
-                    return MapCustomerF3602();
-                }
-                // ----------------------------------------------------------------------------------------------------------------------------------
-
-                #endregion
 
                 return new
                 {
@@ -424,13 +451,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     druh_druzka = (household?.Data?.AreCustomersPartners == true).ToJsonString(),
                     vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
 
-                    // ??? upravit mapování příjmu dle jeho typu
-                    // -----------------------------------------
-                    seznam_prijmu_zam = incomesEmployment?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                    prijem_dp = incomeEntrepreneur is null ? null : MapCustomerIncome(incomeEntrepreneur, incomes!.IndexOf(incomeEntrepreneur) + 1),
-                    prijem_naj = incomeRent is null ? null : MapCustomerIncome(incomeRent, incomes!.IndexOf(incomeRent) + 1),
-                    seznam_prijmu_ost = incomesOther?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                    // -----------------------------------------
+                    seznam_prijmu_zam = incomesEmployment?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncomeEmployment(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
+                    prijem_dp = incomeEntrepreneur is null ? null : MapCustomerIncomeEntrepreneur(incomeEntrepreneur, incomes!.IndexOf(incomeEntrepreneur) + 1),
+                    prijem_naj = incomeRent is null ? null : MapCustomerIncomeRent(incomeRent, incomes!.IndexOf(incomeRent) + 1),
+                    seznam_prijmu_ost = incomesOther?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncomeOther(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
 
                     seznam_zavazku = i.Obligations?.OrderBy(i => i.ObligationId).Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                     uzamcene_prijmy = ((DateTime?)i.LockedIncomeDateTime).HasValue.ToJsonString(),
@@ -438,7 +462,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerOnSA(_HO.CustomerOnSA i)
+            object? MapCustomerOnSA(CustomerOnSA i)
             {
                 if (i == null)
                 {
@@ -486,8 +510,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             DateTime firstSignedDate = (Data.Arrangement.FirstSignedDate is not null) ? (DateTime)Data.Arrangement.FirstSignedDate! : actualDate;
             var seznamIdFormulare = new object[] { new { id_formulare = 0.ToJsonString() } }; // v D1.3 zatím ponechat, bude se řešit později (info od HH)
 
-            var user_cpm = "99806569";
-            var user_icp = "114306569";
+            var user_cpm = "99806569";  // [MOCK] 90400037  //Data.User!.CPM // ???
+            var user_icp = "114306569"; // [MOCK] 110000037 //Data.User!.ICP // ???
 
             object data = new { };
 
@@ -509,13 +533,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
                         case_id = Data.Arrangement.CaseId.ToJsonString(),
                         stav_zadosti = Data.SalesArrangementStatesById[Data.Arrangement.State].StarbuildId.ToJsonString(),
-                        business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 // SalesArrangement
+                        business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 
                         risk_segment = Data.Arrangement.RiskSegment,
                         laa_id = Data.Arrangement.LoanApplicationAssessmentId,
                         datum_uzavreni_obchodu = Data.Arrangement.RiskBusinessCaseExpirationDate?.ToJsonString(),
-                        kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),                                                              // SalesArrangement - vyplněno na základě usera
-                        datum_vygenerovani_dokumentu = actualDate.ToJsonString(), // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum // ??? HH - odkud brát, nebo stále aktuální datum?
-                        datum_prvniho_podpisu = firstSignedDate.ToJsonString(),                                                                      // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+                        kanal_ziskani = Data.Arrangement.ChannelId.ToJsonString(),
+                        datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+                        datum_prvniho_podpisu = firstSignedDate.ToJsonString(),
                         uv_produkt = Data.ProductType.Id.ToJsonString(),
                         uv_druh = Data.Offer.SimulationInputs.LoanKindId.ToJsonString(),                                                             // OfferInstance
                         indikativni_LTV = Data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
@@ -535,18 +559,18 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         developer_id = Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString(),
                         developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
                         developer_popis = developerDescription,
-                        forma_splaceni = 1.ToJsonString(),                                                                                          // [MOCK] OfferInstance (default 1)  
+                        forma_splaceni = 1.ToJsonString(),                                                                                          // [MOCK] OfferInstance (default 1) // ???  
                         seznam_mark_akci = Data.Offer.AdditionalSimulationResults.MarketingActions?.OrderBy(i => i.MarketingActionId).Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_poplatku = Data.Offer.AdditionalSimulationResults.Fees?.OrderBy(i => i.FeeId).Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
                         seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.OrderBy(i => i.LoanPurposeId).Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.OrderBy(i => i.RealEstateTypeId).Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(),
-                        seznam_ucastniku = Data.CustomersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
-                        zprostredkovano_3_stranou = false.ToJsonString(),                                                                           // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE)
-                        sjednal_CPM = user_cpm,                                                                                                     // [MOCK] 90400037  //Data.User!.CPM
-                        sjednal_ICP = user_icp,                                                                                                     // [MOCK] 110000037 //Data.User!.ICP
-                        mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,                                                                 
-                        mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,                                                            
-                        zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),                                  
+                        seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
+                        zprostredkovano_3_stranou = false.ToJsonString(),                                                                           // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE) // ???
+                        sjednal_CPM = user_cpm,
+                        sjednal_ICP = user_icp,
+                        mena_prijmu = Data.Arrangement.Mortgage?.IncomeCurrencyCode,
+                        mena_bydliste = Data.Arrangement.Mortgage?.ResidencyCurrencyCode,
+                        zpusob_zasilani_vypisu = Data.Offer.BasicParameters.StatementTypeId.ToJsonString(),
                         predp_hodnota_nem_zajisteni = Data.Offer.SimulationInputs.CollateralAmount.ToJsonString(),
                         typ_cerpani = typCerpani.ToJsonString(),
                         lhuta_ukonceni_cerpani = lhutaUkonceniCerpani.ToJsonString(),
@@ -558,7 +582,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),                                // Codebook SignatureTypes
                         zpusob_podpisu_zadosti = Data.Arrangement.Mortgage?.SalesArrangementSignatureTypeId.ToJsonString(),                          // Codebook SignatureTypes                        
                         souhlas_el_forma_komunikace = Data.Arrangement.Mortgage?.AgentConsentWithElCom.ToJsonString(),
-                        seznam_domacnosti = Data.Households?.OrderBy(i=>i.HouseholdTypeId).Select((i,index) => MapHousehold(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                        seznam_domacnosti = households?.OrderBy(i => i.HouseholdTypeId).Select((i, index) => MapHousehold(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                         zmocnenec_mp_id = FindZmocnenecMpId().ToJsonString(),
 
                         RZP_suma = insuranceSumRiskLife.ToJsonString(),
@@ -566,7 +590,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
                         zadaZvyhodneni = (Data.Offer.SimulationInputs.IsEmployeeBonusRequested == true).ToJsonString(),
                         datum_zahajeni_anuitniho_splaceni = Data.Offer.SimulationResults.AnnuityPaymentsDateFrom.ToJsonString(),
-                        splatnost_uveru_datum =  Data.Offer.SimulationResults.LoanDueDate.ToJsonString(),
+                        splatnost_uveru_datum = Data.Offer.SimulationResults.LoanDueDate.ToJsonString(),
                         pocet_anuitnich_splatek = Data.Offer.SimulationResults.AnnuityPaymentsCount.ToJsonString(),
 
                         business_id_formulare = formId,
@@ -585,12 +609,12 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         case_id = Data.Arrangement.CaseId.ToJsonString(),
                         business_case_ID = Data.Arrangement.RiskBusinessCaseId,
                         datum_vytvoreni_zadosti = actualDate.ToJsonString(),
-                        seznam_ucastniku = Data.CustomersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
+                        seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
                         sjednal_CPM = user_cpm,
                         sjednal_ICP = user_icp,
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),
                         zmenovy_navrh = 0.ToJsonString(),                                                                                               // Default: 0, pouze v F3602
-                        seznam_domacnosti = Data.Households?.OrderBy(i => i.HouseholdTypeId).Select((i, index) => MapHousehold(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                        seznam_domacnosti = households?.OrderBy(i => i.HouseholdTypeId).Select((i, index) => MapHousehold(i, index + 1)).ToArray() ?? Array.Empty<object>(),
 
                         business_id_formulare = formId,
                         seznam_id_formulare = seznamIdFormulare,
@@ -603,7 +627,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
             }
 
-            var options = new JsonSerializerOptions { 
+            var options = new JsonSerializerOptions
+            {
                 DefaultIgnoreCondition = ignoreNullValues ? System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull : System.Text.Json.Serialization.JsonIgnoreCondition.Never,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-character-encoding
             };
@@ -615,203 +640,203 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
         #region JSON example
 
-    /*
-    {
-    "cislo_smlouvy": "HF00000000055", //SalesArrangement
-    "case_id": "2928155", //Case
-    "business_case_ID": "0", //SalesArrangement - na základě volání RBC
-    "kanal_ziskani": "4", //SalesArrangement - vyplněno na základě usera
-    "datum_vytvoreni_zadosti": "25.01.2022", //SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
-    "datum_prvniho_podpisu": "25.01.2022", //SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
-    "uv_produkt": "20001", //SalesArrangement
-    "uv_druh": "2000", //OfferInstance
-    "indikativni_LTV": "1", //OfferInstance
-    "indikativni_LTC": "1", //OfferInstance
-    "seznam_mark_akci": [ //OfferInstance
-    {
-        "kodMAakce": "1",
-        "typMaAkce": "DOMICILACE",
-        "zaskrtnuto": "1",
-        "uplatnena": "1",
-        "odchylkaSazby": "-0,05"
-    }
-    ],
-    "individualni_sleva_us": "0", //OfferInstance - default 0
-    "garance_us": "0", //OfferInstance - default 0 
-    "sazba_vyhlasovana": "1", //OfferInstance
-    "sazba_skladacka": "1", //OfferInstance
-    "sazba_poskytnuta": "1", //OfferInstance = sazba_skladacka
-    "vyhlasovanaTyp": "1", //OfferInstance
-    "vyse_uveru": "100000", //OfferInstance
-    "anuitni_splatka": "1000", //OfferInstance
-    "splatnost_uv_mesice": "120", //OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
-    "fixace_uv_mesice": "36", //OfferInstance - na FE je to v rocích a je to číselník ?
-    "predp_termin_cerpani": "01.02.2022", //SalesArrangement
-    "den_splaceni": "15", //OfferInstance default=15
-    "forma_splaceni": "1", //OfferInstance default = inkaso
-    "seznam_poplatku": [ //OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci
-    {
-        "kod_poplatku": "2001",
-        "suma_poplatku_sazebnik": "1000",
-        "suma_poplatku_skladacka": "1000",
-        "suma_poplatku_vysledna": "1000"
-    }
-    ],
-    "seznam_ucelu": [ //OfferInstance - 1..5
-    {
-        "uv_ucel": "4", //offerInstance
-        "uv_ucel_suma": "100000" //offerInstance
-    }
-    ],
-    "seznam_objektu": [ //SalesArrangement - 0..3
-    {
-        "cislo_objektu_uveru": "12345",
-        "typ_nemovitosti": "2",
-        "objekt_uv_je_zajisteni": "0",
-        "ucel_porizeni": "1"
-    }
-    ],
-    "seznam_ucastniku": [
-    {
-        "role": "1", //CustomerOnSA
-        "zmocnenec": "0", //CustomerOnSA
-        "cislo_domacnosti": "1", //CustomerOnSA
-        "klient": {
-            "rodne_cislo": "7253021435", //Customer
-            "kb_id": "0", //Customer
-            "mp_id": "0", //CustomerOnSA
-            "spolecnost_KB": "", //Customer - pokud načteme z CM
-            "titul_pred": "Mgr.", //Customer
-            "prijmeni_nazev": "KLIENTKA AAAAAAAAAT", //Customer
-            "prijmeni_rodne": "", //Customer
-            "jmeno": "Irena", //Customer
-            "datum_narozeni": "02.03.1972", //Customer
-            "misto_narozeni_obec": "Litomyšl", //Customer
-            "misto_narozeni_stat": "16", //Customer
-            "pohlavi": "Z", //Customer
-            "statni_prislusnost": "16", //Customer
-            "zamestnanec": "0", //Customer
-            "rezident": "1", //Customer
-            "PEP": "0", //Customer
-            "seznam_adres": [ //Customer
-                {
-                    "typ_adresy": "1",
-                    "ulice": "Milady Horákové",
-                    "cislo_popisne": "12360",
-                    "cislo_orientacni": "",     //pokud načteme z CM
-                    "ulice_dodatek": "",    //pokud načteme z CM
-                    "psc": "11000",
-                    "misto": "PRAHA",
-                    "stat": "16"
-                }
-            ],
-            "seznam_dokladu": [ //Customer
-                {
-                    "cislo_dokladu": "ABC123",
-                    "typ_dokladu": "1",
-                    "vydal": "MěÚ Litomyšl",
-                    "vydal_datum": "01.01.2020",
-                    "vydal_stat": "16",
-                    "platnost_do": "31.07.2028"
-                }
-            ],
-            "seznam_kontaktu": [ //Customer
-                {
-                    "typ_kontaktu": "1",    //mobil
-                    "hodnota_kontaktu": "111111111"
-                },
-                {
-                    "typ_kontaktu": "5",    //email
-                    "hodnota_kontaktu": "klientkaaaaaaaaaat@seznam.cz"
-                }
-            ],
-            "rodinny_stav": "2", //Customer
-            "druh_druzka": "0", //CustomerOnSA
-            "vzdelani": "3", //Customer
-            "prijmy": [ //Incomes
-                {
-                    "prvni_pracovni_sml_od": "28.01.2020",
-                    "posledni_zamestnani_od": "28.01.2020",
-                    "poradi_prijmu": "1",
-                    "zdroj_prijmu_hlavni": "1",
-                    "typ_pracovniho_pomeru": "3",
-                    "klient_ve_vypovedni_lhute": "0",
-                    "klient_ve_zkusebni_lhute": "0",
-                    "prijem_ze_zahranici": "0",
-                    "domicilace_prijmu_ze_zamestnani": "0",
-                    "pracovni_smlouva_aktualni_od": "",
-                    "pracovni_smlouva_aktualni_do": "",
-                    "zamestnavatel_nazov": "",
-                    "zamestnavatel_rc_ico": "",
-                    "zamestnavatel_sidlo_ulice": "",
-                    "zamestnavatel_sidlo_cislo_popisne_orientacni": "",
-                    "zamestnavatel_sidlo_mesto": "",
-                    "zamestnavatel_sidlo_psc": "",
-                    "zamestnavatel_sidlo_stat": "",
-                    "zamestnavatel_telefonni_cislo": "",
-                    "zamestnavatel_okec": "",
-                    "zamestnavatel_pracovni_sektor": "",
-                    "zamestnavatel_senzitivni_sektor": "0",
-                    "povolani": "1",
-                    "zamestnan_jako": "",
-                    "prijem_vyse": "50000",
-                    "prijem_mena": "CZK",
-                    "zrazky_ze_mzdy_rozhodnuti": "",
-                    "zrazky_ze_mzdy_splatky": "",
-                    "zrazky_ze_mzdy_ostatni": "",
-                    "prijem_potvrzeni_vystavila_ext_firma": "0",
-                    "prijem_potvrzeni_misto_vystaveni": "",
-                    "prijem_potvrzeni_datum": "",
-                    "prijem_potvrzení_osoba": "",
-                    "prijem_potvrzeni_kontakt": ""
-                }
-            ],
-            "zavazky": [ //Expenses
-                {
-                    "cislo_zavazku": "1",
-                    "druh_zavazku": "1",
-                    "vyse_splatky": "10000",
-                    "vyse_nesplacene_jistiny": "600000",
-                    "vyse_limitu": "",
-                    "mimo_entitu_mandanta": "0"
-                }
-            ],
-            "prijem_sbiran": "0", //CustomerOnSA
-            "uzamcene_prijmy": "0", //CustomerOnSA
-            "datum_posledniho_uzam_prijmu": "" //CustomerOnSA
+        /*
+        {
+        "cislo_smlouvy": "HF00000000055", //SalesArrangement
+        "case_id": "2928155", //Case
+        "business_case_ID": "0", //SalesArrangement - na základě volání RBC
+        "kanal_ziskani": "4", //SalesArrangement - vyplněno na základě usera
+        "datum_vytvoreni_zadosti": "25.01.2022", //SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+        "datum_prvniho_podpisu": "25.01.2022", //SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+        "uv_produkt": "20001", //SalesArrangement
+        "uv_druh": "2000", //OfferInstance
+        "indikativni_LTV": "1", //OfferInstance
+        "indikativni_LTC": "1", //OfferInstance
+        "seznam_mark_akci": [ //OfferInstance
+        {
+            "kodMAakce": "1",
+            "typMaAkce": "DOMICILACE",
+            "zaskrtnuto": "1",
+            "uplatnena": "1",
+            "odchylkaSazby": "-0,05"
         }
-    }
-    ],
-    "zprostredkovano_3_stranou": "0", //SalesArrangement - dle typu Usera
-    "sjednal_CPM": "999666", //User
-    "sjednal_ICP": "222111", //User
-    "mena_prijmu": "CZK", //SalesArrangement
-    "mena_bydliste": "CZK", //SalesArrangement
-    "zpusob_zasilani_vypisu": "1", //Offerinstance
-    "predp_hodnota_nem_zajisteni": "100000", //Offerinstance
-    "fin_kryti_vlastni_zdroje": "2000000", //Offerinstnace
-    "fin_kryti_cizi_zdroje": "0", //Offerinstance
-    "fin_kryti_celkem": "2000000", //Offerinstance
-    "zpusob_podpisu_smluv_dok": "3", //SalesArrangement
-    "seznam_domacnosti": ["cislo_domacnosti": "1"          {
-        "pocet_deti_0_10let": "1", //Household
-        "pocet_deti_nad_10let": "0", //Household
-        "cislo_domacnosti": "1", //Household
-        "sporeni": "1000", //Household
-        "pojisteni": "500", //Household
-        "naklady_na_bydleni": "10000", //Household
-        "ostatni_vydaje": "6000", //Household
-        "vyporadani_majetku": "0" //Household
-    }
-    ]
-    }
-    */
-    #endregion
+        ],
+        "individualni_sleva_us": "0", //OfferInstance - default 0
+        "garance_us": "0", //OfferInstance - default 0 
+        "sazba_vyhlasovana": "1", //OfferInstance
+        "sazba_skladacka": "1", //OfferInstance
+        "sazba_poskytnuta": "1", //OfferInstance = sazba_skladacka
+        "vyhlasovanaTyp": "1", //OfferInstance
+        "vyse_uveru": "100000", //OfferInstance
+        "anuitni_splatka": "1000", //OfferInstance
+        "splatnost_uv_mesice": "120", //OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
+        "fixace_uv_mesice": "36", //OfferInstance - na FE je to v rocích a je to číselník ?
+        "predp_termin_cerpani": "01.02.2022", //SalesArrangement
+        "den_splaceni": "15", //OfferInstance default=15
+        "forma_splaceni": "1", //OfferInstance default = inkaso
+        "seznam_poplatku": [ //OfferInstance - celý objekt vůbec nebude - TBD - diskuse k simulaci
+        {
+            "kod_poplatku": "2001",
+            "suma_poplatku_sazebnik": "1000",
+            "suma_poplatku_skladacka": "1000",
+            "suma_poplatku_vysledna": "1000"
+        }
+        ],
+        "seznam_ucelu": [ //OfferInstance - 1..5
+        {
+            "uv_ucel": "4", //offerInstance
+            "uv_ucel_suma": "100000" //offerInstance
+        }
+        ],
+        "seznam_objektu": [ //SalesArrangement - 0..3
+        {
+            "cislo_objektu_uveru": "12345",
+            "typ_nemovitosti": "2",
+            "objekt_uv_je_zajisteni": "0",
+            "ucel_porizeni": "1"
+        }
+        ],
+        "seznam_ucastniku": [
+        {
+            "role": "1", //CustomerOnSA
+            "zmocnenec": "0", //CustomerOnSA
+            "cislo_domacnosti": "1", //CustomerOnSA
+            "klient": {
+                "rodne_cislo": "7253021435", //Customer
+                "kb_id": "0", //Customer
+                "mp_id": "0", //CustomerOnSA
+                "spolecnost_KB": "", //Customer - pokud načteme z CM
+                "titul_pred": "Mgr.", //Customer
+                "prijmeni_nazev": "KLIENTKA AAAAAAAAAT", //Customer
+                "prijmeni_rodne": "", //Customer
+                "jmeno": "Irena", //Customer
+                "datum_narozeni": "02.03.1972", //Customer
+                "misto_narozeni_obec": "Litomyšl", //Customer
+                "misto_narozeni_stat": "16", //Customer
+                "pohlavi": "Z", //Customer
+                "statni_prislusnost": "16", //Customer
+                "zamestnanec": "0", //Customer
+                "rezident": "1", //Customer
+                "PEP": "0", //Customer
+                "seznam_adres": [ //Customer
+                    {
+                        "typ_adresy": "1",
+                        "ulice": "Milady Horákové",
+                        "cislo_popisne": "12360",
+                        "cislo_orientacni": "",     //pokud načteme z CM
+                        "ulice_dodatek": "",    //pokud načteme z CM
+                        "psc": "11000",
+                        "misto": "PRAHA",
+                        "stat": "16"
+                    }
+                ],
+                "seznam_dokladu": [ //Customer
+                    {
+                        "cislo_dokladu": "ABC123",
+                        "typ_dokladu": "1",
+                        "vydal": "MěÚ Litomyšl",
+                        "vydal_datum": "01.01.2020",
+                        "vydal_stat": "16",
+                        "platnost_do": "31.07.2028"
+                    }
+                ],
+                "seznam_kontaktu": [ //Customer
+                    {
+                        "typ_kontaktu": "1",    //mobil
+                        "hodnota_kontaktu": "111111111"
+                    },
+                    {
+                        "typ_kontaktu": "5",    //email
+                        "hodnota_kontaktu": "klientkaaaaaaaaaat@seznam.cz"
+                    }
+                ],
+                "rodinny_stav": "2", //Customer
+                "druh_druzka": "0", //CustomerOnSA
+                "vzdelani": "3", //Customer
+                "prijmy": [ //Incomes
+                    {
+                        "prvni_pracovni_sml_od": "28.01.2020",
+                        "posledni_zamestnani_od": "28.01.2020",
+                        "poradi_prijmu": "1",
+                        "zdroj_prijmu_hlavni": "1",
+                        "typ_pracovniho_pomeru": "3",
+                        "klient_ve_vypovedni_lhute": "0",
+                        "klient_ve_zkusebni_lhute": "0",
+                        "prijem_ze_zahranici": "0",
+                        "domicilace_prijmu_ze_zamestnani": "0",
+                        "pracovni_smlouva_aktualni_od": "",
+                        "pracovni_smlouva_aktualni_do": "",
+                        "zamestnavatel_nazov": "",
+                        "zamestnavatel_rc_ico": "",
+                        "zamestnavatel_sidlo_ulice": "",
+                        "zamestnavatel_sidlo_cislo_popisne_orientacni": "",
+                        "zamestnavatel_sidlo_mesto": "",
+                        "zamestnavatel_sidlo_psc": "",
+                        "zamestnavatel_sidlo_stat": "",
+                        "zamestnavatel_telefonni_cislo": "",
+                        "zamestnavatel_okec": "",
+                        "zamestnavatel_pracovni_sektor": "",
+                        "zamestnavatel_senzitivni_sektor": "0",
+                        "povolani": "1",
+                        "zamestnan_jako": "",
+                        "prijem_vyse": "50000",
+                        "prijem_mena": "CZK",
+                        "zrazky_ze_mzdy_rozhodnuti": "",
+                        "zrazky_ze_mzdy_splatky": "",
+                        "zrazky_ze_mzdy_ostatni": "",
+                        "prijem_potvrzeni_vystavila_ext_firma": "0",
+                        "prijem_potvrzeni_misto_vystaveni": "",
+                        "prijem_potvrzeni_datum": "",
+                        "prijem_potvrzení_osoba": "",
+                        "prijem_potvrzeni_kontakt": ""
+                    }
+                ],
+                "zavazky": [ //Expenses
+                    {
+                        "cislo_zavazku": "1",
+                        "druh_zavazku": "1",
+                        "vyse_splatky": "10000",
+                        "vyse_nesplacene_jistiny": "600000",
+                        "vyse_limitu": "",
+                        "mimo_entitu_mandanta": "0"
+                    }
+                ],
+                "prijem_sbiran": "0", //CustomerOnSA
+                "uzamcene_prijmy": "0", //CustomerOnSA
+                "datum_posledniho_uzam_prijmu": "" //CustomerOnSA
+            }
+        }
+        ],
+        "zprostredkovano_3_stranou": "0", //SalesArrangement - dle typu Usera
+        "sjednal_CPM": "999666", //User
+        "sjednal_ICP": "222111", //User
+        "mena_prijmu": "CZK", //SalesArrangement
+        "mena_bydliste": "CZK", //SalesArrangement
+        "zpusob_zasilani_vypisu": "1", //Offerinstance
+        "predp_hodnota_nem_zajisteni": "100000", //Offerinstance
+        "fin_kryti_vlastni_zdroje": "2000000", //Offerinstnace
+        "fin_kryti_cizi_zdroje": "0", //Offerinstance
+        "fin_kryti_celkem": "2000000", //Offerinstance
+        "zpusob_podpisu_smluv_dok": "3", //SalesArrangement
+        "seznam_domacnosti": ["cislo_domacnosti": "1"          {
+            "pocet_deti_0_10let": "1", //Household
+            "pocet_deti_nad_10let": "0", //Household
+            "cislo_domacnosti": "1", //Household
+            "sporeni": "1000", //Household
+            "pojisteni": "500", //Household
+            "naklady_na_bydleni": "10000", //Household
+            "ostatni_vydaje": "6000", //Household
+            "vyporadani_majetku": "0" //Household
+        }
+        ]
+        }
+        */
+        #endregion
 
 
-    #region SampleFormData
+        #region SampleFormData
 
-    public static Eas.EasWrapper.CheckFormData BuildSampleFormData3601()
+        public static Eas.EasWrapper.CheckFormData BuildSampleFormData3601()
         {
             var sampleData = "{\"cislo_dokumentu\":\"9876543210\",\"cislo_smlouvy\":\"1234567890\",\"datum_spisania\":\"01.11.2021\",\"CPM\":\"123456\",\"ICP\":\"654321\",\"formular_kod_ex\":\"2\",\"seznam_ucastniku\":[{\"klient\":{\"rodne_cislo_ico\":\"1234569024\",\"titul_pred\":\"Ing.\",\"prijmeni_nazev\":\"Testovic\",\"jmeno\":\"Test\",\"titul_za\":\"\"},\"seznam_adres\":[{\"typ_adresy\":\"trvala\",\"ulice\":\"Testovacia\",\"cislo_popisne\":\"32\",\"cislo_orientacni\":\"21\",\"ulice_dodatek\":\"\",\"psc\":\"60012\",\"misto\":\"Brno\",\"stat\":\"\"}]},\"role\":\"vlastnik\"}]}";
             sampleData = "{}";
