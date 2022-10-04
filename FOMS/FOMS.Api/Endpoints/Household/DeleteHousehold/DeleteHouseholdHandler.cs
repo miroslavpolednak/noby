@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
 
 namespace FOMS.Api.Endpoints.Household.DeleteHousehold;
 
@@ -12,11 +12,11 @@ internal class DeleteHouseholdHandler
         return request.HouseholdId;
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly ILogger<DeleteHouseholdHandler> _logger;
 
     public DeleteHouseholdHandler(
-        IHouseholdServiceAbstraction householdService,
+        IHouseholdServiceClient householdService,
         ILogger<DeleteHouseholdHandler> logger)
     {
         _logger = logger;

@@ -4,14 +4,16 @@ using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 
-using cArrangement = DomainServices.SalesArrangementService.Contracts;
+using cSA = DomainServices.SalesArrangementService.Contracts;
+using cHousehold = DomainServices.HouseholdService.Contracts;
 using cCase = DomainServices.CaseService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCustomer = DomainServices.CustomerService.Contracts;
 using cUser = DomainServices.UserService.Contracts;
 using DomainServices.CodebookService.Abstraction;
+using DomainServices.HouseholdService.Clients;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -24,10 +26,10 @@ internal class LoanApplicationDataService
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
-    private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceAbstraction _caseService;
-    private readonly IUserServiceAbstraction _userService;
+    private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly ICodebookServiceAbstraction _codebookService;
 
@@ -35,10 +37,10 @@ internal class LoanApplicationDataService
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         IOfferServiceAbstraction offerService,
         ISalesArrangementServiceAbstraction salesArrangementService,
-        ICustomerOnSAServiceAbstraction customerOnSAService,
-        IHouseholdServiceAbstraction householdService,
+        ICustomerOnSAServiceClient customerOnSAService,
+        IHouseholdServiceClient householdService,
         ICaseServiceAbstraction caseService,
-        IUserServiceAbstraction userService,
+        IUserServiceClient userService,
         ICustomerServiceAbstraction customerService,
         ICodebookServiceAbstraction codebookService
         )
@@ -63,47 +65,47 @@ internal class LoanApplicationDataService
         return $"{identity.IdentityScheme}|{identity.IdentityId}";
     }
 
-    private async Task<List<cArrangement.Household>> GetHouseholds(int salesArrangementId, CancellationToken cancellation)
+    private async Task<List<cHousehold.Household>> GetHouseholds(int salesArrangementId, CancellationToken cancellation)
     {
-        var householdList = ServiceCallResult.ResolveAndThrowIfError<List<cArrangement.Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellation));
+        var householdList = ServiceCallResult.ResolveAndThrowIfError<List<cHousehold.Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellation));
         var householdIds = householdList.Select(i => i.HouseholdId).ToArray();
 
-        var households = new List<cArrangement.Household>();
+        var households = new List<cHousehold.Household>();
         for (int i = 0; i < householdIds.Length; i++)
         {
-            var household = ServiceCallResult.ResolveAndThrowIfError<cArrangement.Household>(await _householdService.GetHousehold(householdIds[i], cancellation));
+            var household = ServiceCallResult.ResolveAndThrowIfError<cHousehold.Household>(await _householdService.GetHousehold(householdIds[i], cancellation));
             households.Add(household);
         }
         return households;
     }
 
-    private async Task<List<cArrangement.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
+    private async Task<List<cHousehold.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customerOnSAList = ServiceCallResult.ResolveAndThrowIfError<List<cArrangement.CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
+        var customerOnSAList = ServiceCallResult.ResolveAndThrowIfError<List<cHousehold.CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
         var customerOnSAIds = customerOnSAList.Select(i => i.CustomerOnSAId).ToArray();
 
-        var customers = new List<cArrangement.CustomerOnSA>();
+        var customers = new List<cHousehold.CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<cArrangement.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
+            var customer = ServiceCallResult.ResolveAndThrowIfError<cHousehold.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
             customers.Add(customer);
         }
         return customers;
     }
 
-    private async Task<Dictionary<int, cArrangement.Income>> GetIncomesById(List<cArrangement.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<int, cHousehold.Income>> GetIncomesById(List<cHousehold.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i => i.IncomeId)).ToArray();
-        var incomes = new List<cArrangement.Income>();
+        var incomes = new List<cHousehold.Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
-            var income = ServiceCallResult.ResolveAndThrowIfError<cArrangement.Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
+            var income = ServiceCallResult.ResolveAndThrowIfError<cHousehold.Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
             incomes.Add(income);
         }
         return incomes.ToDictionary(i => i.IncomeId);
     }
 
-    private async Task<Dictionary<string, cCustomer.CustomerDetailResponse>> GetCustomersByIdentityCode(List<cArrangement.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, cCustomer.CustomerDetailResponse>> GetCustomersByIdentityCode(List<cHousehold.CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         // vrací pouze pro KB identity
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => IdentityToCode(i)).Select(i => i.First()).ToList();
@@ -120,7 +122,7 @@ internal class LoanApplicationDataService
 
     public async Task<LoanApplicationData> LoadData(int salesArrangementId, CancellationToken cancellation)
     {
-        var arrangement = ServiceCallResult.ResolveAndThrowIfError<cArrangement.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation));
+        var arrangement = ServiceCallResult.ResolveAndThrowIfError<cSA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation));
         var offer = ServiceCallResult.ResolveAndThrowIfError<cOffer.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation));
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
         var households = await GetHouseholds(arrangement.SalesArrangementId, cancellation);

@@ -30,4 +30,6 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteContractRelationship(DeleteContractRelationshipRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.DeleteContractRelationshipMediatrRequest(request));
 
+    public override async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(ProductIdReqRes request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetCustomersOnProductMediatrRequest(request.ProductId));
 }

@@ -22,5 +22,6 @@ service ProductService {
    rpc UpdateMorgage (DomainServices.ProductService.UpdateMortgageRequest) returns (google.protobuf.Empty);
    rpc CreateContractRelationship (DomainServices.ProductService.CreateContractRelationshipRequest) returns (google.protobuf.Empty);
    rpc DeleteContractRelationship (DomainServices.ProductService.DeleteContractRelationshipRequest) returns (google.protobuf.Empty);
+   rpc GetCustomersOnProduct (DomainServices.ProductService.ProductIdReqRes) returns (DomainServices.ProductService.GetCustomersOnProductResponse);
 
 }

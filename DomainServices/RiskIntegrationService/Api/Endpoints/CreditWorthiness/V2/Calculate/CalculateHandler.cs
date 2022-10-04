@@ -38,7 +38,7 @@ internal sealed class CalculateHandler
     private readonly Mappers.CalculateRequestMapper _requestMapper;
     private readonly Mappers.DtiRequestMapper _dtiRequestMapper;
     private readonly Mappers.DstiRequestMapper _dstiRequestMapper;
-
+    
     public CalculateHandler(
         Mappers.CalculateRequestMapper requestMapper,
         Mappers.DtiRequestMapper dtiRequestMapper,

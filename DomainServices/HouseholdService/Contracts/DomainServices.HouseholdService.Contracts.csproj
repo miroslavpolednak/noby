@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net6.0</TargetFramework>
+	  <Company></Company>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <LangVersion>preview</LangVersion>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Google.Protobuf" Version="3.21.6" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.48.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.48.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="CustomerOnSA/CustomerOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CustomerOnSA.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CreateCustomer.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CustomerOnSAIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/GetCustomerList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/UpdateCustomer.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CreateIncome.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/IncomeShared.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/IncomeIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/GetIncomeList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/UpdateIncomeBaseData.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/UpdateIncome.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/Income.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/IncomeInList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CustomerOnSABase.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/CreateObligation.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/GetObligationList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/ObligationShared.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/Obligation.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/ObligationIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+
+		<Protobuf Include="Household/HouseholdService.v1.proto" GrpcServices="Both" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/HouseholdExpenses.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/CreateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/HouseholdIdRequest.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/HouseholdData.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/Household.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/GetHouseholdList.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/UpdateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household/LinkCustomerOnSAToHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+	</ItemGroup>
+</Project>

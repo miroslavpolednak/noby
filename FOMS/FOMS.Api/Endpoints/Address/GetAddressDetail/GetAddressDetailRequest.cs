@@ -17,4 +17,16 @@ public sealed class GetAddressDetailRequest
     /// </summary>
     [Required]
     public string AddressId { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Parametr title našeptávače adres
+    /// </summary>
+    [Required]
+    public string Title { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Id státu z číselníku Country
+    /// </summary>
+    [Required]
+    public int CountryId { get; set; }
 }

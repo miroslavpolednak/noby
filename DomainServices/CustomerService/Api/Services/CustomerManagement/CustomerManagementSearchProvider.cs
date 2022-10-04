@@ -110,7 +110,7 @@ internal class CustomerManagementSearchProvider
             IssuedBy = document.IssuedBy ?? string.Empty,
             Number = document.DocumentNumber ?? string.Empty,
             IssuingCountryId = _countries.FirstOrDefault(t => t.ShortName == document.IssuingCountryCode)?.Id,
-            IdentificationDocumentTypeId = _docTypes.First(t => t.RdmCode == document.TypeCode).Id
+            IdentificationDocumentTypeId = _docTypes.FirstOrDefault(t => t.RdmCode == document.TypeCode)?.Id ?? 0
         };
     }
 

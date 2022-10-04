@@ -1,6 +1,6 @@
 ﻿using CIS.Core;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
@@ -10,7 +10,7 @@ internal sealed class CreditWorthinessHouseholdService
     public async Task<List<_Rip.CreditWorthinessHousehold>> CreateHouseholds(int salesArrangementId, CancellationToken cancellationToken)
     {
         // seznam domacnosti na SA
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<_SA.Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellationToken));
+        var households = ServiceCallResult.ResolveAndThrowIfError<List<_HO.Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellationToken));
         if (!households.Any())
             throw new CisValidationException("There is no household bound for this SA");
 
@@ -47,7 +47,7 @@ internal sealed class CreditWorthinessHouseholdService
     private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, bool? areCustomersPartners, CancellationToken cancellationToken)
     {
         // customer on SA instance
-        var customer = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
+        var customer = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
 
         var c = new _Rip.CreditWorthinessCustomer
         {
@@ -82,8 +82,8 @@ internal sealed class CreditWorthinessHouseholdService
                     return new _Rip.CreditWorthinessObligation
                     {
                         ObligationTypeId = t.ObligationTypeId.GetValueOrDefault(),
-                        Amount = t.InstallmentAmount,
-                        AmountConsolidated = t.Correction?.InstallmentAmountCorrection,
+                        Installment = t.InstallmentAmount,
+                        InstallmentConsolidated = t.Correction?.InstallmentAmountCorrection,
                         IsObligationCreditorExternal = t.Creditor?.IsExternal.GetValueOrDefault() ?? false
                     };
             }).ToList();
@@ -91,14 +91,14 @@ internal sealed class CreditWorthinessHouseholdService
         return c;
     }
 
-    private readonly DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction _householdService;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSaService;
+    private readonly DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService;
+    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public CreditWorthinessHouseholdService(
-        DomainServices.SalesArrangementService.Abstraction.IHouseholdServiceAbstraction householdService,
+        DomainServices.HouseholdService.Clients.IHouseholdServiceClient householdService,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
-        DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSaService)
+        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
     {
         _householdService = householdService;
         _customerService = customerService;

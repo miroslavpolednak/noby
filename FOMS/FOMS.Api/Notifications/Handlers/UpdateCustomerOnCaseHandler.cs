@@ -1,7 +1,8 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Abstraction;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Notifications.Handlers;
 
@@ -11,7 +12,7 @@ internal class UpdateCustomerOnCaseHandler
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
         // detail customera
-        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken));
+        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken));
 
         // update case detailu
         await _caseService.UpdateCaseCustomer(notification.CaseId, new _Case.CustomerData
@@ -24,11 +25,11 @@ internal class UpdateCustomerOnCaseHandler
     }
 
     private readonly ICaseServiceAbstraction _caseService;
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ICustomerOnSAServiceClient _customerService;
     private readonly ILogger<UpdateCustomerOnCaseHandler> _logger;
 
     public UpdateCustomerOnCaseHandler(
-        ICustomerOnSAServiceAbstraction customerService,
+        ICustomerOnSAServiceClient customerService,
         ICaseServiceAbstraction caseService,
         ILogger<UpdateCustomerOnCaseHandler> logger)
     {

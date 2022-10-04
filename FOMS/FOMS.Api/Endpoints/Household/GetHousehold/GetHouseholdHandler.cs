@@ -1,5 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using contracts = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Clients;
+using contracts = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.GetHousehold;
 
@@ -27,12 +27,12 @@ internal class GetHouseholdHandler
         return customer?.ToApiResponse();
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
 
     public GetHouseholdHandler(
-        IHouseholdServiceAbstraction householdService,
-        ICustomerOnSAServiceAbstraction customerOnSAService)
+        IHouseholdServiceClient householdService,
+        ICustomerOnSAServiceClient customerOnSAService)
     {
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;

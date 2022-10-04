@@ -14,4 +14,12 @@ internal sealed class ProductServiceDbContext
     public DbSet<Entities.Loan> Loans { get; set; }
     public DbSet<Entities.Relationship> Relationships { get; set; }
 	public DbSet<Entities.Partner> Partners { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Entities.Relationship>()
+            .HasOne(t => t.Partner)
+            .WithMany()
+            .HasForeignKey(t => t.PartnerId);
+    }
 }

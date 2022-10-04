@@ -49,31 +49,33 @@ internal class GetCreditWorthinessHandler
 
         return new GetCreditWorthinessResponse
         {
-            InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit ?? 0),
-            MaxAmount = Convert.ToInt32(ripResult.MaxAmount ?? 0),
+            InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit),
+            MaxAmount = Convert.ToInt32(ripResult.MaxAmount),
             RemainsLivingAnnuity = Convert.ToInt32((decimal?)ripResult.RemainsLivingAnnuity ?? 0),
             RemainsLivingInst = Convert.ToInt32((decimal?)ripResult.RemainsLivingInst ?? 0),
             WorthinessResult = (CreditWorthinessResults)(int)ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
+            Dti = ripResult.Dti,
+            Dsti = ripResult.Dsti,
             LoanAmount = offerInstance.SimulationInputs.LoanAmount,
             LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount
         };
     }
 
     private readonly CreditWorthinessHouseholdService _creditWorthinessHouseholdService;
-    private readonly DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction _creditWorthinessService;
+    private readonly DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient _creditWorthinessService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
     private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
 
     public GetCreditWorthinessHandler(
         CreditWorthinessHouseholdService creditWorthinessHouseholdService,
-        DomainServices.RiskIntegrationService.Abstraction.CreditWorthiness.V2.ICreditWorthinessServiceAbstraction creditWorthinessService,
+        DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient creditWorthinessService,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.UserService.Abstraction.IUserServiceAbstraction userService,
+        DomainServices.UserService.Clients.IUserServiceClient userService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)

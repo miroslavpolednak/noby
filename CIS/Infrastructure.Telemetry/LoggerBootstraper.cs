@@ -38,7 +38,7 @@ internal class LoggerBootstraper
             loggerConfiguration
                 .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
         }
-        else if (_logType == LogBehaviourTypes.WebApi)
+        if (_logType == LogBehaviourTypes.WebApi)
         {
             // cokoliv jineho nez /api zahazovat
             loggerConfiguration
@@ -57,8 +57,7 @@ internal class LoggerBootstraper
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
-            .Enrich.WithProperty("Version", $"{_assemblyName!.Version}")
-            .Enrich.WithProperty("ThreadId", $"{Environment.CurrentManagedThreadId}");
+            .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
 
         // enrich from CIS env
         if (_cisConfiguration is not null)
@@ -86,7 +85,7 @@ internal class LoggerBootstraper
         if (configuration.Seq is not null)
         {
             loggerConfiguration
-                .WriteTo
+                .AuditTo
                 .Seq(configuration.Seq.ServerUrl);
         }
 

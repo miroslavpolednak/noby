@@ -4,8 +4,24 @@
         <name>FOMS.Api</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.AddressSearch(FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest,System.Threading.CancellationToken)" -->
-        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(System.String,System.String,System.Threading.CancellationToken)" -->
+        <member name="M:FOMS.Api.Endpoints.Address.AddressController.AddressSearch(FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Našeptávání adresy z AddressWhispererBEService
+            </summary>
+            <remarks>
+            Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.<br/><br/>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=046F9631-86E1-4f17-9527-C518700030CE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Address.AddressController.GetAddressDetail(FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest,System.Threading.CancellationToken)">
+            <summary>
+            Získání detailu adresy přes AddressWhispererBEService
+            </summary>
+            <remarks>
+            Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.<br/><br/>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
             <summary>
             SessionId generované přímo na frontendu (unikátní GUID)
@@ -51,10 +67,38 @@
             Id adresy
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.Title">
+            <summary>
+            Parametr title našeptávače adres
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.CountryId">
+            <summary>
+            Id státu z číselníku Country
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailResponse.CountryId">
+            <summary>
+            Stát - AddressWhispererBEService|country
+            </summary>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Admin.AdminController.GetDiscoveryServices(System.Threading.CancellationToken)">
             <summary>
             Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
             </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetCustomers(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Detail dlužníků a spoludlužníků pro daný case
+            </summary>
+            <remarks>
+            Vrací se seznam detailů customerů - filtruje se  na dlužníky a spoludlužníky.<br />
+            Dlužník na prvním místě, dále spoludlužníci řazeni dle příjmení a jména.<br /><br />
+            <i>DS:</i> SalesArrangementService/getSalesArrangementList<br /><i>DS:</i> SalesArrangementService/GetCustomerList (onSA)<br />
+            <i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="caseId">ID Case-u</param>
         </member>
         <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetById(System.Int64,System.Threading.CancellationToken)">
             <summary>
@@ -102,7 +146,15 @@
             </remarks>
             <returns>Seznam wf tasks z SB.</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)" -->
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetCaseParameters(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Parametry Case-u.
+            </summary>
+            <remarks>
+            <i>DS:</i> CaseService/GetTaskList<br/>
+            </remarks>
+            <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Prefix">
             <summary>
             Předčíslí účtu
@@ -258,6 +310,46 @@
             Poradce třetí strana.
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.RoleName">
+            <summary>
+            Jméno role - NameNoby z číselníku CustomerRole|RelationshipCustomerProductType
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Agent">
+            <summary>
+            Zmocněnec pro komunikaci
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.KBID">
+            <summary>
+            KBID
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.Mobile">
+            <summary>
+            Mobil
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.Search.SearchRequest.FilterId">
             <summary>
             [optional] ID pozadovaneho stavu filtru.
@@ -373,6 +465,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=450580207">DrawingDurations</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=444604999">DrawingTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
@@ -656,6 +749,93 @@
             <summary>
             Určuje stav závazku (prohlášený vs neprohlášený. V MPV bude vždy prohlášený.<br />Z číselníku <a href="https://wiki.kb.cz/display/HT/ObligationState">ObligationState</a>
             </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.CustomerOnSAId">
+            <summary>
+            Id customera na sales arrangementu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.BirthDate">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.BirthPlace">
+            <summary>
+            Místo narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.GenderId">
+            <summary>
+            Pohlaví
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.CitizenshipCountryId">
+            <summary>
+            Státní příslušnost/občanství
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.Email">
+            <summary>
+            E-mail
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.Mobile">
+            <summary>
+            Mobil
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.BirthNumber">
+            <summary>
+            Rodné číslo CZ
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.PrimaryAddress">
+            <summary>
+            Trvalá adresa v ČR
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuingCountryId">
+            <summary>
+            Stát vydání dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IdentificationDocumentTypeId">
+            <summary>
+            Typ dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.Number">
+            <summary>
+            Číslo dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuedBy">
+            <summary>
+            Doklad vydal
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Create(FOMS.Api.Endpoints.Customer.Create.CreateRequest,System.Threading.CancellationToken)">
+            <summary>
+            Založení nového klienta
+            </summary>
+            <remarks>
+            Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br />
+            DS:<br />CustomerService/Create(customer)<br />SalesArrangementService/GetCustomer<br />
+            SalesArrnagementService/UpdateCustomer(onSA)<br />CustomerService/GetDetail<br /><br />
+            Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Search(FOMS.Api.Endpoints.Customer.Search.SearchRequest,System.Threading.CancellationToken)">
             <summary>
@@ -1367,12 +1547,12 @@
             uver.indCenotvorbaOdchylka
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingType">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingTypeId">
             <summary>
             uver.typCerpani
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDuration">
+        <member name="P:FOMS.Api.Endpoints.Offer.Dto.MortgageInputs.DrawingDurationId">
             <summary>
             uver.lhutaDocerpani
             </summary>

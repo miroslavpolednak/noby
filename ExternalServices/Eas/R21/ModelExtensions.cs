@@ -54,12 +54,12 @@ internal static class ModelExtensions
             values.Add("rodne_cislo_ico");
         }
 
-        if (input.priezvisko != default(string) && input.priezvisko != output.priezvisko)
+        if (input.priezvisko != default(string) && input.priezvisko.Equals(output.priezvisko, StringComparison.InvariantCultureIgnoreCase))
         {
             values.Add("priezvisko");
         }
 
-        if (input.meno != default(string) && input.meno != output.meno)
+        if (input.meno != default(string) && input.meno.Equals(output.meno, StringComparison.InvariantCultureIgnoreCase))
         {
             values.Add("meno");
         }

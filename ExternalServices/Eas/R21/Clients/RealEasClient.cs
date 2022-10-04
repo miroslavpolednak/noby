@@ -1,5 +1,6 @@
 ﻿using ExternalServices.Eas.R21.EasWrapper;
 using CIS.Infrastructure.Logging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ExternalServices.Eas.R21;
 
@@ -86,6 +87,8 @@ internal sealed class RealEasClient
                 return new ErrorServiceCallResult(9104, "EAS GetKlientData_NewKlientResult is empty");
 
             var r = result.GetKlientData_NewKlientResult[0];
+            _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
+
             if (r.return_val != 0)
             {
                 var message = $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}";
@@ -98,17 +101,14 @@ internal sealed class RealEasClient
             {
                 var message = $"Detected differences between input and output data during call EAS NewKlient [{String.Join(",",differentProps)}]";
                 _logger.LogInformation(message);
-                return new ErrorServiceCallResult(99999, message); // TODO: error code
+                _auditLogger.Log(message);
             }
-            else
+
+            return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
             {
-                _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
-                return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
-                {
-                    Id = r.klient_id,
-                    BirthNumber = r.rodne_cislo_ico
-                });
-            }
+                Id = r.klient_id,
+                BirthNumber = r.rodne_cislo_ico
+            });
         });
     }
 
@@ -200,8 +200,8 @@ internal sealed class RealEasClient
         });
     }
 
-    public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger)
-        : base(Versions.R21, configuration, logger)
+    public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger, CIS.Infrastructure.Telemetry.IAuditLogger auditLogger)
+        : base(Versions.R21, configuration, logger, auditLogger)
     {
     }
 

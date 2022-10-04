@@ -1,10 +1,12 @@
 ﻿using DomainServices.CodebookService.Abstraction;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using _Case = DomainServices.CaseService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -36,10 +38,10 @@ internal class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
         // create customer on SA
-        var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
+        var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
         
         // create household
-        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _SA.CreateHouseholdRequest
+        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
             HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
@@ -48,19 +50,16 @@ internal class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
-        if (createCustomerResult.PartnerId.HasValue)
+        var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
+        //try
+        //{
+            await _mediator.Publish(notification, cancellationToken);
+        /*}
+        catch (Exception err)
         {
-            var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.PartnerId.Value);
-            try
-            {
-                await _mediator.Publish(notification, cancellationToken);
-            }
-            catch (Exception err)
-            {
-                //TODO osetrit rollback?
-                _logger.LogError(err, "TODO rollback create case?");
-            }
-        }
+            //TODO osetrit rollback?
+            _logger.LogError(err, "TODO rollback create case?");
+        }*/
 
         //TODO co udelat, kdyz se neco z toho nepovede?
 
@@ -74,10 +73,10 @@ internal class CreateMortgageCaseHandler
         };
     }
 
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
@@ -87,9 +86,9 @@ internal class CreateMortgageCaseHandler
     public CreateMortgageCaseHandler(
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        ICustomerOnSAServiceAbstraction customerOnSAService,
+        ICustomerOnSAServiceClient customerOnSAService,
         ISalesArrangementServiceAbstraction salesArrangementService,
-        IHouseholdServiceAbstraction householdService,
+        IHouseholdServiceClient householdService,
         ICaseServiceAbstraction caseService,
         ICodebookServiceAbstraction codebookService, 
         IOfferServiceAbstraction offerService, 

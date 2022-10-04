@@ -55,8 +55,8 @@ internal class CustomerManagementDetailProvider
             IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument)
         };
 
-        AddAddress(AddressTypes.PERMANENT, response.Addresses.Add, customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
-        AddAddress(AddressTypes.MAILING, response.Addresses.Add, customer.ContactAddress?.Address, customer.ContactAddress?.ComponentAddress, default);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.Address, customer.PrimaryAddress?.ComponentAddress, customer.PrimaryAddress?.PrimaryAddressFrom);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.Address, customer.ContactAddress?.ComponentAddress, default);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -139,7 +139,7 @@ internal class CustomerManagementDetailProvider
             LandRegistryNumber = componentAddress?.StreetNumber ?? string.Empty,
             EvidenceNumber = componentAddress?.EvidenceNumber ?? string.Empty,
             City = address.City ?? string.Empty,
-            IsPrimary = addressType == AddressTypes.PERMANENT,
+            IsPrimary = addressType == AddressTypes.Permanent,
             CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id,
             Postcode = address.PostCode ?? string.Empty,
             Street = (componentAddress?.Street ?? address.Street) ?? string.Empty,

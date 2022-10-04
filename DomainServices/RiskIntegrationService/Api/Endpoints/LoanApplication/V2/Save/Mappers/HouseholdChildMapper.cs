@@ -77,11 +77,13 @@ internal sealed class HouseholdChildMapper
         if (obligations is not null)
         {
             var types = await _codebookService.ObligationTypes(_cancellationToken);
-            obligations.GroupBy(t =>
-            {
-                var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw new CisValidationException(17008, $"ObligationTypeId={t.ObligationTypeId} does not exist");
-                return FastEnum.Parse<LoanInstallmentsSummaryProductClusterCode>(typeCode);
-            })
+            obligations
+                .Where(t => t.ObligationTypeId == 1 || t.ObligationTypeId == 2 || t.ObligationTypeId == 5)
+                .GroupBy(t =>
+                {
+                    var typeCode = types.FirstOrDefault(x => x.Id == t.ObligationTypeId)?.Code ?? throw new CisValidationException(17008, $"ObligationTypeId={t.ObligationTypeId} does not exist");
+                    return FastEnum.Parse<LoanInstallmentsSummaryProductClusterCode>(typeCode);
+                })
                 .ToList()
                 .ForEach(g =>
                 {

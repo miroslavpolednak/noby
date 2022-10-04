@@ -1,25 +1,25 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.CustomerIncome;
 
 internal static class Extensions
 {
-    public static _SA.IncomeDataOther ToDomainServiceRequest(this Dto.IncomeDataOther request)
-        => new _SA.IncomeDataOther
+    public static _HO.IncomeDataOther ToDomainServiceRequest(this Dto.IncomeDataOther request)
+        => new()
         {
             IncomeOtherTypeId = request.IncomeOtherTypeId
         };
 
-    public static _SA.IncomeDataEntrepreneur ToDomainServiceRequest(this Dto.IncomeDataEntrepreneur request)
-        => new _SA.IncomeDataEntrepreneur
+    public static _HO.IncomeDataEntrepreneur ToDomainServiceRequest(this Dto.IncomeDataEntrepreneur request)
+        => new()
         {
             BirthNumber = request.BirthNumber ?? "",
             Cin = request.Cin ?? "",
             CountryOfResidenceId = request.CountryOfResidenceId
         };
 
-    public static _SA.IncomeDataEmployement ToDomainServiceRequest(this Dto.IncomeDataEmployement request)
-        => new _SA.IncomeDataEmployement
+    public static _HO.IncomeDataEmployement ToDomainServiceRequest(this Dto.IncomeDataEmployement request)
+        => new()
         {
             ForeignIncomeTypeId = request.ForeignIncomeTypeId,
             Employer = request.Employer?.ToDomainServiceRequest(),
@@ -30,8 +30,8 @@ internal static class Extensions
             WageDeduction = request.WageDeduction?.ToDomainServiceRequest()
         };
 
-    public static _SA.EmployerData ToDomainServiceRequest(this Dto.EmployerDataDto contract)
-        => new _SA.EmployerData
+    public static _HO.EmployerData ToDomainServiceRequest(this Dto.EmployerDataDto contract)
+        => new()
         {
             CountryId = contract.CountryId,
             BirthNumber = contract.BirthNumber ?? "",
@@ -39,8 +39,8 @@ internal static class Extensions
             Name = contract.Name ?? ""
         };
 
-    public static _SA.IncomeConfirmationData ToDomainServiceRequest(this Dto.IncomeConfirmationDataDto contract)
-        => new _SA.IncomeConfirmationData
+    public static _HO.IncomeConfirmationData ToDomainServiceRequest(this Dto.IncomeConfirmationDataDto contract)
+        => new()
         {
             IsIssuedByExternalAccountant = contract.IsIssuedByExternalAccountant,
             ConfirmationContact = contract.ConfirmationContact ?? "",
@@ -48,8 +48,8 @@ internal static class Extensions
             ConfirmationPerson = contract.ConfirmationPerson ?? ""
         };
 
-    public static _SA.JobData ToDomainServiceRequest(this Dto.JobDataDto contract)
-        => new _SA.JobData
+    public static _HO.JobData ToDomainServiceRequest(this Dto.JobDataDto contract)
+        => new()
         {
             CurrentWorkContractSince = contract.CurrentWorkContractSince,
             FirstWorkContractSince = contract.FirstWorkContractSince,
@@ -61,8 +61,8 @@ internal static class Extensions
             GrossAnnualIncome = contract.GrossAnnualIncome
         };
 
-    public static _SA.WageDeductionData ToDomainServiceRequest(this Dto.WageDeductionDataDto contract)
-        => new _SA.WageDeductionData
+    public static _HO.WageDeductionData ToDomainServiceRequest(this Dto.WageDeductionDataDto contract)
+        => new()
         {
             DeductionDecision = contract.DeductionDecision,
             DeductionOther = contract.DeductionOther,

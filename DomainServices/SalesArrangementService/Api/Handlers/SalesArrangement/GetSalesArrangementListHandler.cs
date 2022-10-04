@@ -14,7 +14,7 @@ internal class GetSalesArrangementsListHandler
 
         // pokud je pozadavek na konkretni stavy
         if (!request.Request.States.All(t => availableStates.Any(x => x.Id == t)))
-            throw new CisNotFoundException(16006, $"SalesArrangementState does not exist.");
+            throw new CisNotFoundException(17006, $"SalesArrangementState does not exist.");
 
         // kontrola existence noveho stavu
         var requiredStates = getRequiredStates(request.Request.States, availableStates);

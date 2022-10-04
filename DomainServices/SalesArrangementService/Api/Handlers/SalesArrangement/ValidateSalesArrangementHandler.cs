@@ -34,7 +34,7 @@ internal class ValidateSalesArrangementHandler
         var builder = new FormDataJsonBuilder(formData);
 
         var actualDate = DateTime.Now.Date;
-        var jsonData = builder.BuildJson(EFormType.F3601);
+        var jsonData = builder.BuildJson(EFormType.F3601, String.Empty); // ??? HH jaké FormId použít pro CheckForm 
 
         var checkFormData = new Eas.EasWrapper.CheckFormData()
         {

@@ -11,21 +11,17 @@
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <PropertyGroup>
     <DocumentationFile>FOMS.Api.xml</DocumentationFile>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<PublishDocumentationFile>true</PublishDocumentationFile>
     <NoWarn>1701;1702;CS1573</NoWarn>
   </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <NoWarn>1701;1702;CS1573</NoWarn>
-  </PropertyGroup>
-
+	
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
@@ -46,19 +42,19 @@
     <ProjectReference Include="..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
-    <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Abstraction\DomainServices.RiskIntegrationService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
-    <ProjectReference Include="..\..\DomainServices\UserService\Abstraction\DomainServices.UserService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
     <ProjectReference Include="..\FOMS.Services\FOMS.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

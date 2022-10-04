@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.CustomerIncome.CreateIncome;
 
@@ -7,11 +8,11 @@ internal sealed class CreateIncomeHandler
 {
     public async Task<int> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)
     {
-        var model = new DomainServices.SalesArrangementService.Contracts.CreateIncomeRequest
+        var model = new _HO.CreateIncomeRequest
         {
             CustomerOnSAId = request.CustomerOnSAId!.Value,
             IncomeTypeId = (int)request.IncomeTypeId,
-            BaseData = new DomainServices.SalesArrangementService.Contracts.IncomeBaseData
+            BaseData = new _HO.IncomeBaseData
             {
                 CurrencyCode = request.CurrencyCode,
                 Sum = request.Sum
@@ -45,7 +46,7 @@ internal sealed class CreateIncomeHandler
 
                 case CIS.Foms.Enums.CustomerIncomeTypes.Rent:
                     // RENT nema zadna data
-                    model.Rent = new DomainServices.SalesArrangementService.Contracts.IncomeDataRent();
+                    model.Rent = new _HO.IncomeDataRent();
                     break;
 
                 default:
@@ -63,9 +64,9 @@ internal sealed class CreateIncomeHandler
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ICustomerOnSAServiceClient _customerService;
 
-    public CreateIncomeHandler(ICustomerOnSAServiceAbstraction customerService)
+    public CreateIncomeHandler(ICustomerOnSAServiceClient customerService)
     {
         _customerService = customerService;
     }

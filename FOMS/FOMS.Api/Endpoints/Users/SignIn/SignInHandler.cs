@@ -27,9 +27,9 @@ internal sealed class SignInHandler
 
     private readonly IHttpContextAccessor _httpContext;
     private readonly ILogger<SignInHandler> _logger;
-    private readonly DomainServices.UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
 
-    public SignInHandler(ILogger<SignInHandler> logger, DomainServices.UserService.Abstraction.IUserServiceAbstraction userService, IHttpContextAccessor httpContext)
+    public SignInHandler(ILogger<SignInHandler> logger, DomainServices.UserService.Clients.IUserServiceClient userService, IHttpContextAccessor httpContext)
     {
         _httpContext = httpContext;
         _logger = logger;

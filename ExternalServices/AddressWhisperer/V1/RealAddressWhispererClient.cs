@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.Logging;
 using System.Diagnostics;
-using System.Drawing.Printing;
 using System.Text;
 using System.Xml.Linq;
 
@@ -9,17 +8,17 @@ namespace ExternalServices.AddressWhisperer.V1;
 internal class RealAddressWhispererClient
     : IAddressWhispererClient
 {
-    public async Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, CancellationToken cancellationToken)
+    public async Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, string title, string country, CancellationToken cancellationToken)
     {
         string soap = _soapEnvelopeStart + getHeader() + $@"<soapenv:Body>
       <v1:getAddressDetailsReq>
          <dto:sessionId>{sessionId}</dto:sessionId>
          <dto:simplePostalAddressPointRepresentation>
-            <dto:country>CZ</dto:country>
+            <dto:country>{country}</dto:country>
          </dto:simplePostalAddressPointRepresentation>
          <dto:suggestedAddress>
             <dto:id>{addressId}</dto:id>
-            <dto:title>Co to je za blbost, 10000</dto:title>
+            <dto:title>{title}</dto:title>
          </dto:suggestedAddress>
       </v1:getAddressDetailsReq>
    </soapenv:Body>" + _soapEnvelopeEnd;
@@ -35,7 +34,7 @@ internal class RealAddressWhispererClient
                 { "Payload", await request.Content!.ReadAsStringAsync(cancellationToken) }
             }))
             {
-                _logger.HttpRequestPayload("getSuggestions", _configuration.ServiceUrl);
+                _logger.HttpRequestPayload("getAddressDetails", _configuration.ServiceUrl);
             }
 
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
@@ -47,13 +46,34 @@ internal class RealAddressWhispererClient
                     { "Payload", rawResponse }
                 }))
                 {
-                    _logger.HttpResponsePayload("getSuggestions", _configuration.ServiceUrl, (int)response.StatusCode);
+                    _logger.HttpResponsePayload("getAddressDetails", _configuration.ServiceUrl, (int)response.StatusCode);
                 }
 
                 response.EnsureSuccessStatusCode();
                 var xml = XElement.Parse(rawResponse);
 
-                return new EmptyServiceCallResult();
+                var baseNode = xml
+                    .Descendants(_soapenv + "Body")
+                    .Descendants(_ns1 + "getAddressDetailsRes")
+                    .Descendants(_ns2 + "addressPointPostalRepresentationList")
+                    .Descendants(_ns2 + "addressPointPostalRepresentation")
+                    .Where(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation")
+                    .FirstOrDefault();
+
+                if (baseNode is not null)
+                {
+                    return new SuccessfulServiceCallResult<Shared.AddressDetail>(new Shared.AddressDetail
+                    {
+                        City = baseNode.Element(_ns2 + "city")?.Value,
+                        CityDistrict = baseNode.Element(_ns2 + "cityDistrict")?.Value,
+                        Country = baseNode.Element(_ns2 + "country")?.Value,
+                        LandRegistryNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
+                        Postcode = baseNode.Element(_ns2 + "postcode")?.Value,
+                        Street = baseNode.Element(_ns2 + "street")?.Value
+                    });
+                }
+                else
+                    return new EmptyServiceCallResult();
             }
         }
     }
@@ -127,6 +147,7 @@ internal class RealAddressWhispererClient
     XNamespace _soapenv = "http://schemas.xmlsoap.org/soap/envelope/";
     XNamespace _ns1 = "http://kb.cz/AddressWhispererBEService/v1";
     XNamespace _ns2 = "http://kb.cz/AddressWhispererBEService/v1/DTO";
+    XNamespace _ns3 = "http://www.w3.org/2001/XMLSchema-instance";
     private const string _soapEnvelopeStart = @"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:v1=""http://kb.cz/AddressWhispererBEService/v1"" xmlns:v11=""http://kb.cz/DataModel/Technical/HeaderTypes/v1"" xmlns:dto=""http://kb.cz/AddressWhispererBEService/v1/DTO"">";
     private const string _soapEnvelopeEnd = @"</soapenv:Envelope>";
 

@@ -1,0 +1,36 @@
+﻿namespace DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
+
+public interface IRiskBusinessCaseServiceClient
+{
+    /// <summary>
+    /// Založení úvěrového případu
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+    Task<IServiceCallResult> CreateCase(long salesArrangementId, string? resourceProcessId, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Žádost o vyhodnocení úvěrové žádosti
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Contracts.Shared.V1.LoanApplicationAssessmentResponse" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+    Task<IServiceCallResult> CreateAssessment(Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateAssessmentRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Získání výsledků vyhodnocení
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Contracts.Shared.V1.LoanApplicationAssessmentResponse" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+    Task<IServiceCallResult> GetAssessment(Contracts.RiskBusinessCase.V2.RiskBusinessCaseGetAssessmentRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Založení úvěrového případu
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseResponse" /></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
+    Task<IServiceCallResult> CommitCase(Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest request, CancellationToken cancellationToken = default(CancellationToken));
+}

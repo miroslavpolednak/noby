@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using DomainServices.RiskIntegrationService.Abstraction;
+using DomainServices.RiskIntegrationService.Clients;
 using CIS.DomainServicesSecurity.ContextUser;
 using CIS.Core.Results;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
@@ -31,7 +31,7 @@ var result1 = ServiceCallResult.ResolveAndThrowIfError<CreditWorthinessCalculate
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result1));*/
 
 Console.WriteLine("RUN 2");
-var service2 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Abstraction.LoanApplication.V2.ILoanApplicationServiceAbstraction>() ?? throw new Exception();
+var service2 = serviceProvider.GetService<DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient>() ?? throw new Exception();
 var result2 = ServiceCallResult.ResolveAndThrowIfError<LoanApplicationSaveResponse>(await service2.Save(LoanApplicationTest._test1));
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result2));
 

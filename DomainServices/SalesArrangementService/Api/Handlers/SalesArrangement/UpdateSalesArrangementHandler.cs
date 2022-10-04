@@ -1,7 +1,7 @@
 ﻿using _Usr = DomainServices.UserService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
 using CIS.Core.Security;
-using DomainServices.UserService.Abstraction;
+using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Abstraction;
 using CIS.Foms.Enums;
@@ -17,7 +17,7 @@ internal class UpdateSalesArrangementDataHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation) 
-            ?? throw new CisNotFoundException(16000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
+            ?? throw new CisNotFoundException(17000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
 
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.Request.RiskBusinessCaseId) && !request.Request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);
@@ -64,7 +64,7 @@ internal class UpdateSalesArrangementDataHandler
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly IUserServiceAbstraction _userService;
+    private readonly IUserServiceClient _userService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
 
@@ -73,7 +73,7 @@ internal class UpdateSalesArrangementDataHandler
         ICaseServiceAbstraction caseService,
         ICurrentUserAccessor userAccessor,
         ICodebookServiceAbstraction codebookService,
-        IUserServiceAbstraction userService,
+        IUserServiceClient userService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient)
     {

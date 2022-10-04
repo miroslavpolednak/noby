@@ -13,14 +13,14 @@ internal class SendToCmpHandler
     private readonly FormDataService _formDataService;
     private readonly ILogger<SendToCmpHandler> _logger;
     private readonly Repositories.NobyRepository _repository;
-    private readonly UserService.Abstraction.IUserServiceAbstraction _userService;
+    private readonly UserService.Clients.IUserServiceClient _userService;
    
 
     public SendToCmpHandler(
         FormDataService formDataService,
         ILogger<SendToCmpHandler> logger,
         Repositories.NobyRepository repository,
-        UserService.Abstraction.IUserServiceAbstraction userService)
+        UserService.Clients.IUserServiceClient userService)
     {
         _formDataService = formDataService;
         _logger = logger;
@@ -30,14 +30,21 @@ internal class SendToCmpHandler
 
     private class DefaultFormValues
     {
-        public string? TYP_FORMULARE { get; init; }
-        public string? HESLO_KOD { get; init; }
+        public string TYP_FORMULARE { get; init; } = String.Empty;
+        public string HESLO_KOD { get; init; } = String.Empty;
+    }
+
+    private class DynamicFormValues
+    {
+        public string DocmentId { get; init; } = String.Empty;
+        public string FormId { get; init; } = String.Empty;
     }
 
     #endregion
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
     {
+        
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation, true);
         var builder = new FormDataJsonBuilder(formData);
 
@@ -54,11 +61,14 @@ internal class SendToCmpHandler
         {
             var formType = formsToSave[i];
 
+            // get DocmentId, FormId
+            var dynamicFormValues = await GetDynamicFormValues(cancellation);
+
             // build data
-            var jsonData = builder.BuildJson(formType);
+            var jsonData = builder.BuildJson(formType, dynamicFormValues.FormId);
 
             // save to DB
-            await SaveForm(user, GetDefaultFormValues(formType), formData.Arrangement.ContractNumber, jsonData, cancellation);
+            await SaveForm(user, GetDefaultFormValues(formType), dynamicFormValues, formData.Arrangement.ContractNumber, jsonData, cancellation);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
@@ -102,7 +112,7 @@ internal class SendToCmpHandler
         return formValues;
     }
 
-    private async Task SaveForm(UserService.Contracts.User user, DefaultFormValues defaultFormValues, string contractNumber, string jsonData, CancellationToken cancellation)
+    private async Task<DynamicFormValues> GetDynamicFormValues(CancellationToken cancellation)
     {
         var count = await _repository.GetFormsCount(cancellation);
 
@@ -111,15 +121,21 @@ internal class SendToCmpHandler
         var docmentId = GenerateDocmentId(id);
         var formId = GenerateFormId(id);
 
+        return new DynamicFormValues { DocmentId = docmentId, FormId = formId };
+    }
+
+
+    private async Task SaveForm(UserService.Contracts.User user, DefaultFormValues defaultFormValues, DynamicFormValues dynamicFormValues, string contractNumber, string jsonData, CancellationToken cancellation)
+    {
         // save to DB
         var entity = new Repositories.Entities.FormInstanceInterface()
         {
-            DOKUMENT_ID = docmentId,
+            DOKUMENT_ID = dynamicFormValues.DocmentId,
             TYP_FORMULARE = defaultFormValues.TYP_FORMULARE,
             CISLO_SMLOUVY = contractNumber,
             STATUS = 100,
             DRUH_FROMULARE = 'N',
-            FORMID = formId,
+            FORMID = dynamicFormValues.FormId,
             CPM = user.CPM ?? String.Empty,
             ICP = user.ICP ?? String.Empty,
             CREATED_AT = DateTime.Now,          // what time zone?
@@ -131,7 +147,7 @@ internal class SendToCmpHandler
 
         await _repository.CreateForm(entity, cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.FormInstanceInterface), long.Parse(formId, CultureInfo.InvariantCulture));
+        _logger.EntityCreated(nameof(Repositories.Entities.FormInstanceInterface), long.Parse(dynamicFormValues.FormId, CultureInfo.InvariantCulture));
     }
 
     #endregion

@@ -7,14 +7,14 @@ internal class UpdateSalesArrangementStateHandler
     {
         // kontrola existence noveho stavu
         _ = (await _codebookService.SalesArrangementStates(cancellation)).FirstOrDefault(t => t.Id == request.State)
-            ?? throw new CisNotFoundException(16006, $"SalesArrangementState #{request.State} does not exist.");
+            ?? throw new CisNotFoundException(17006, $"SalesArrangementState #{request.State} does not exist.");
 
         // kontrola existence SA
         var saEntity = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
 
         // kontrola aktualniho stavu vuci novemu stavu
         if (saEntity.State == request.State)
-            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already in state {request.State}", 16007);
+            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already in state {request.State}", 17007);
 
         // update stavu SA
         await _repository.UpdateSalesArrangementState(request.SalesArrangementId, request.State, cancellation);

@@ -1,18 +1,18 @@
 ﻿using _Case = DomainServices.CaseService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.CreateMortgageCase;
 
 internal static class Extensions
 {
-    public static _SA.CreateCustomerRequest ToDomainServiceRequest(this CreateMortgageCaseRequest request, int salesArrangementId)
+    public static _HO.CreateCustomerRequest ToDomainServiceRequest(this CreateMortgageCaseRequest request, int salesArrangementId)
     {
-        var model = new _SA.CreateCustomerRequest
+        var model = new _HO.CreateCustomerRequest
         {
             SalesArrangementId = salesArrangementId,
             CustomerRoleId = (int)CIS.Foms.Enums.CustomerRoles.Debtor,
-            Customer = new _SA.CustomerOnSABase
+            Customer = new _HO.CustomerOnSABase
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName,

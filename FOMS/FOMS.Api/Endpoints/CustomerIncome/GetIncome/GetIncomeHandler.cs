@@ -1,5 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.CustomerIncome.GetIncome;
 
@@ -8,7 +8,7 @@ internal class GetIncomeHandler
 {
     public async Task<GetIncomeResponse> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
-        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
+        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 
         return new GetIncomeResponse
         {
@@ -19,20 +19,20 @@ internal class GetIncomeHandler
         };
     }
 
-    static object? getData(_SA.Income incomeInstance)
+    static object? getData(_HO.Income incomeInstance)
         => incomeInstance.DataCase switch
         {
-            _SA.Income.DataOneofCase.Employement => incomeInstance.Employement.ToApiResponse(),
-            _SA.Income.DataOneofCase.Other => incomeInstance.Other.ToApiResponse(),
-            _SA.Income.DataOneofCase.Entrepreneur => incomeInstance.Entrepreneur.ToApiResponse(),
+            _HO.Income.DataOneofCase.Employement => incomeInstance.Employement.ToApiResponse(),
+            _HO.Income.DataOneofCase.Other => incomeInstance.Other.ToApiResponse(),
+            _HO.Income.DataOneofCase.Entrepreneur => incomeInstance.Entrepreneur.ToApiResponse(),
             _ => null
         };
 
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ICustomerOnSAServiceClient _customerService;
     private readonly ILogger<GetIncomeHandler> _logger;
 
     public GetIncomeHandler(
-        ICustomerOnSAServiceAbstraction customerService,
+        ICustomerOnSAServiceClient customerService,
         ILogger<GetIncomeHandler> logger)
     {
         _logger = logger;
