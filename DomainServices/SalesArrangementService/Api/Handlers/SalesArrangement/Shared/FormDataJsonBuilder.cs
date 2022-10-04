@@ -141,7 +141,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     // ??? poznamka:
                     // -----------------------------------------------
                     typ_adresy = i.AddressTypeId.ToJsonString(),    // D1.3 zrušení defaultu, plníme reálnými daty; Hodnota odpovídají v číselníku sloupci SbJsonValue
-                    ulice = i.Street,                               // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
+                    ulice = i.Street ?? i.City,                               // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
                     cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1; Přidána logika, že může být vyplněné 132 [cislo_popisne](a 133 [cislo_orientacni]) nebo 274 [cislo_evidencni]  - jinak je chyba
                     cislo_orientacni = i.LandRegistryNumber,        // D1.3 změna datového typu z Int na String
                     // -----------------------------------------------
@@ -246,7 +246,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 };
             }
 
-            object? MapCustomerIncome(_HO.IncomeInList? iil, int rowNumber)
+            object? MapCustomerIncomeEmployment(_HO.IncomeInList? iil, int rowNumber)
             {
                 if (iil == null)
                 {
@@ -271,7 +271,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 var i = Data.IncomesById[iil.IncomeId];
 
                 var employmentTypeId = i.Employement?.Job?.EmploymentTypeId ?? firstEmploymentType?.Id;
-                var countryId = i.Employement?.Employer?.CountryId;
 
                 return new
                 {
@@ -287,7 +286,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     pracovni_smlouva_aktualni_do = i.Employement?.Job?.CurrentWorkContractTo.ToJsonString(),
                     
                     zamestnavatel_nazov = i.Employement?.Employer?.Name,
-                    zamestnavatel_rc_ico = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),   // pouze jedna z hodnot, neměly by být zadány obě
+
+                    // pouze jedna z hodnot, neměly by být zadány obě:
+                    zamestnavatel_rc_ico = new List<string?> { i!.Employement?.Employer?.Cin, i!.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                     zamestnavatel_sidlo_stat = i.Employement?.Employer?.CountryId?.ToJsonString(),
                     
                     zamestnan_jako = i.Employement?.Job?.JobDescription,
@@ -305,6 +306,66 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     prijem_potvrzeni_kontakt = i.Employement?.IncomeConfirmation?.ConfirmationContact,
 
                     typ_dokumentu = 1.ToJsonString(),                                                               // Pro příjem ze zaměstnání default "1"
+                };
+            }
+
+            object? MapCustomerIncomeEntrepreneur(_HO.IncomeInList? iil, int rowNumber)
+            {
+                if (iil == null)
+                {
+                    return null;
+                }
+
+                var i = Data.IncomesById[iil.IncomeId];
+
+                return new
+                {
+                    poradi_prijmu = rowNumber.ToJsonString(),
+
+                    // Vyplní se nenulová hodnota z Income.Data.Cin nebo Income.Data.BirthNumber:
+                    rc_ico = new List<string?> { i.Entrepreneur?.Cin, i.Entrepreneur?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+
+                    sidlo_stat =  i.Entrepreneur?.CountryOfResidenceId.ToJsonString(),
+                    prijem_vyse = iil.Sum.ToJsonString(),
+                    prijem_mena = iil.CurrencyCode,
+
+                    typ_dokumentu = 2.ToJsonString(),
+                    // datum_zahajeni_podnikatelske_cinnosti =          // Neplníme
+                };
+            }
+
+            object? MapCustomerIncomeRent(_HO.IncomeInList? iil, int rowNumber)
+            {
+                if (iil == null)
+                {
+                    return null;
+                }
+
+                return new
+                {
+                    poradi_prijmu = rowNumber.ToJsonString(),
+                    prijem_vyse = iil.Sum.ToJsonString(),
+                    prijem_mena = iil.CurrencyCode,
+                    // typ_dokumentu =                          // Neplníme
+                };
+            }
+
+            object? MapCustomerIncomeOther(_HO.IncomeInList? iil, int rowNumber)
+            {
+                if (iil == null)
+                {
+                    return null;
+                }
+
+                var i = Data.IncomesById[iil.IncomeId];
+
+                return new
+                {
+                    poradi_prijmu = rowNumber.ToJsonString(),
+                    zdroj_prijmu_ostatni = i.Other?.IncomeOtherTypeId.ToJsonString(),
+                    prijem_vyse = iil.Sum.ToJsonString(),
+                    prijem_mena = iil.CurrencyCode,
+                    // typ_dokumentu =                          // Neplníme
                 };
             }
 
@@ -339,63 +400,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 var incomeRent = incomes.FirstOrDefault(i => i.IncomeTypeId == 3);          // Prijem z pronajmu
                 var incomesOther = incomes.Where(i => i.IncomeTypeId == 4).ToList();        // Prijmy ostatní
 
-                #region Fake
-
-                // ----------------------------------------------------------------------------------------------------------------------------------
-                // Fake for Drop1-2
-                // ----------------------------------------------------------------------------------------------------------------------------------
-                object? MapCustomerF3602()
-                {
-                    return new
-                    {
-                        rodne_cislo = "5458083246",
-                        // segment =    // pro D1.3 neplníme, bude se řešit později
-                        kb_id = 703274075.ToJsonString(),
-                        mp_id = 200121760.ToJsonString(),                                   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
-                        // datum_svadby =    // D1.3 nepracujeme se zástavci, zatím nesbíráme a neplníme
-                        titul_pred = cDegreeBeforeId.HasValue ? Data.AcademicDegreesBeforeById[cDegreeBeforeId.Value].Name : null,    // (použít Name, nikoliv jen Id) 
-                        prijmeni_nazev = "Pavlíková",
-                        prijmeni_rodne = c.NaturalPerson?.BirthName,
-                        jmeno = "Ivana",
-                        datum_narozeni = (new DateTime(1954, 8, 8)).ToJsonString(),
-                        misto_narozeni_obec = c.NaturalPerson?.PlaceOfBirth,
-                        misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
-                        pohlavi = "Z",
-                        statni_prislusnost = 16.ToJsonString(),
-                        pravni_omezeni_typ = c.NaturalPerson?.IsLegallyIncapable,
-                        pravni_omezeni_do = c.NaturalPerson?.LegallyIncapableUntil.ToJsonString(),
-                        rezident = (taxResidencyCountryCode?.ToUpperInvariant() == "CZ").ToJsonString(),
-                        PEP = c.NaturalPerson?.IsPoliticallyExposed.ToJsonString(),
-                        seznam_adres = c.Addresses?.OrderBy(i => i.AddressTypeId).Select(i => MapAddress(i)).ToArray() ?? Array.Empty<object>(),
-                        seznam_dokladu = cIdentificationDocuments,
-                        seznam_kontaktu = c.Contacts?.OrderBy(i => i.ContactTypeId).Select(i => MapContact(i)).ToArray() ?? Array.Empty<object>(),
-                        rodinny_stav = c.NaturalPerson?.MaritalStatusStateId.ToJsonString(),
-                        je_fatca = 0.ToJsonString(),    // pro D1.3 default 0, bude se řešit později
-                        druh_druzka = (household?.Data?.AreCustomersPartners == true).ToJsonString(),
-                        vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
-
-                        // ??? upravit mapování příjmu dle jeho typu
-                        // -----------------------------------------
-                        seznam_prijmu_zam = incomesEmployment?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                        prijem_dp = incomeEntrepreneur is null ? null : MapCustomerIncome(incomeEntrepreneur, incomes!.IndexOf(incomeEntrepreneur) + 1),
-                        prijem_naj = incomeRent is null ? null : MapCustomerIncome(incomeRent, incomes!.IndexOf(incomeRent) + 1),
-                        seznam_prijmu_ost = incomesOther?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                        // -----------------------------------------
-
-                        seznam_zavazku = i.Obligations?.OrderBy(i => i.ObligationId).Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
-                        uzamcene_prijmy = ((DateTime?)i.LockedIncomeDateTime).HasValue.ToJsonString(),
-                        datum_posledniho_uzam_prijmu = i.LockedIncomeDateTime.ToJsonString(),
-                    };
-                }
-
-                if (formType == EFormType.F3602)
-                {
-                    return MapCustomerF3602();
-                }
-                // ----------------------------------------------------------------------------------------------------------------------------------
-
-                #endregion
-
                 return new
                 {
                     rodne_cislo = c.NaturalPerson?.BirthNumber,
@@ -424,13 +428,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                     druh_druzka = (household?.Data?.AreCustomersPartners == true).ToJsonString(),
                     vzdelani = c.NaturalPerson?.EducationLevelId.ToJsonString(),
 
-                    // ??? upravit mapování příjmu dle jeho typu
-                    // -----------------------------------------
-                    seznam_prijmu_zam = incomesEmployment?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                    prijem_dp = incomeEntrepreneur is null ? null : MapCustomerIncome(incomeEntrepreneur, incomes!.IndexOf(incomeEntrepreneur) + 1),
-                    prijem_naj = incomeRent is null ? null : MapCustomerIncome(incomeRent, incomes!.IndexOf(incomeRent) + 1),
-                    seznam_prijmu_ost = incomesOther?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncome(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
-                    // -----------------------------------------
+                    seznam_prijmu_zam = incomesEmployment?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncomeEmployment(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
+                    prijem_dp = incomeEntrepreneur is null ? null : MapCustomerIncomeEntrepreneur(incomeEntrepreneur, incomes!.IndexOf(incomeEntrepreneur) + 1),
+                    prijem_naj = incomeRent is null ? null : MapCustomerIncomeRent(incomeRent, incomes!.IndexOf(incomeRent) + 1),
+                    seznam_prijmu_ost = incomesOther?.OrderBy(i => i.IncomeId).Select((i, index) => MapCustomerIncomeOther(i, incomes!.IndexOf(i) + 1)).ToArray() ?? Array.Empty<object>(),
 
                     seznam_zavazku = i.Obligations?.OrderBy(i => i.ObligationId).Select((i, index) => MapCustomerObligation(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                     uzamcene_prijmy = ((DateTime?)i.LockedIncomeDateTime).HasValue.ToJsonString(),
