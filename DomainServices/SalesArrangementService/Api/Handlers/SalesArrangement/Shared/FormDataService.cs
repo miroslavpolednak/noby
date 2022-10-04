@@ -16,7 +16,6 @@ using DomainServices.UserService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
-using _HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
@@ -99,10 +98,10 @@ internal class FormDataService
         }
     }
 
-    private static void CheckIncomes(Dictionary<int, _HO.Income> incomesById)
+    private static void CheckIncomes(Dictionary<int, Income> incomesById)
     {
         // check mandatory fields of Incomes
-        string[] FindInvalidFields(_HO.Income income)
+        string[] FindInvalidFields(Income income)
         {
             var mandatoryFields = new List<(string Field, bool Valid)>
             {
@@ -122,7 +121,7 @@ internal class FormDataService
         }
     }
 
-    private static void CheckCustomersOnSA(List<_HO.CustomerOnSA> customersOnSa)
+    private static void CheckCustomersOnSA(List<CustomerOnSA> customersOnSa)
     {
         // check if each customer contains Mp identity and also Kb identity
         var customerIds = customersOnSa.Select(x => x.CustomerOnSAId);
@@ -143,7 +142,7 @@ internal class FormDataService
         }
     }
 
-    private static void CheckHouseholds(List<_HO.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<_HO.CustomerOnSA> customersOnSa)
+    private static void CheckHouseholds(List<Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
     {
         // check if each household type is represented at most once
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
@@ -198,7 +197,7 @@ internal class FormDataService
         }
     }
 
-    private static Identity GetMainMpIdentity(List<_HO.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<_HO.CustomerOnSA> customersOnSa)
+    private static Identity GetMainMpIdentity(List<Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
     {
         var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         var mainCustomerOnSa1 = customersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
@@ -234,28 +233,28 @@ internal class FormDataService
         var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
 
         var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
-        var customers = new List<_HO.CustomerOnSA>();
+        var customers = new List<CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
+            var customer = ServiceCallResult.ResolveAndThrowIfError<CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
             customers.Add(customer);
         }
         return customers;
     }
 
-    private async Task<Dictionary<int, _HO.Income>> GetIncomesById(List<_HO.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<int, Income>> GetIncomesById(List<CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i => i.IncomeId)).ToArray();
-        var incomes = new List<_HO.Income>();
+        var incomes = new List<Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
-            var income = ServiceCallResult.ResolveAndThrowIfError<_HO.Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
+            var income = ServiceCallResult.ResolveAndThrowIfError<Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
             incomes.Add(income);
         }
         return incomes.ToDictionary(i => i.IncomeId);
     }
 
-    private async Task<Dictionary<string, CustomerDetailResponse>> GetCustomersByIdentityCode(List<_HO.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, CustomerDetailResponse>> GetCustomersByIdentityCode(List<CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         // vrací pouze pro KB identity
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
@@ -317,9 +316,7 @@ internal class FormDataService
         CheckCustomersOnSA(customersOnSA);   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
 
         // load households and validate them
-        var households = ServiceCallResult.ResolveAndThrowIfError<_HO.GetHouseholdListResponse>(await _householdService.GetHouseholdList(salesArrangementId, cancellation))
-            .Households
-            .ToList();
+        var households = ServiceCallResult.ResolveAndThrowIfError<List<Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellation));
         var householdTypesById = (await _codebookService.HouseholdTypes(cancellation)).ToDictionary(i => i.Id);
         CheckHouseholds(households, householdTypesById, customersOnSA);
 
