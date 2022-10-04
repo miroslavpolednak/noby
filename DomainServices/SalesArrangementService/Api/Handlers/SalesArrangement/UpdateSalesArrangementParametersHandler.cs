@@ -11,7 +11,7 @@ internal class UpdateSalesArrangementParametersHandler
     {
         // existuje SA?
         if (!await _dbContext.SalesArrangements.AnyAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation))
-            throw new CisNotFoundException(16000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
+            throw new CisNotFoundException(17000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
 
         // kontrolovat pokud je zmocnenec, tak zda existuje?
         if (request.Request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage)
