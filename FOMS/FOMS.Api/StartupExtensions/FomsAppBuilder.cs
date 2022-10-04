@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace FOMS.Api.StartupExtensions;
@@ -58,6 +59,7 @@ internal static class FomsAppBuilder
             appBuilder.UseAuthentication();
             appBuilder.UseMiddleware<Infrastructure.Security.AppSecurityMiddleware>();
             appBuilder.UseCisLogging();
+            appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware>();
 
             // namapovani API modulu
             appBuilder

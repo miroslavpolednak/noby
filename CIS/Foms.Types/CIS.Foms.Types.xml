@@ -4,6 +4,46 @@
         <name>CIS.Foms.Types</name>
     </assembly>
     <members>
+        <member name="P:CIS.Foms.Types.Address.Street">
+            <summary>
+            Ulice
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.BuildingIdentificationNumber">
+            <summary>
+            Číslo orientační
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.LandRegistryNumber">
+            <summary>
+            Číslo popisné
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.Postcode">
+            <summary>
+            PSČ
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.City">
+            <summary>
+            Město/Obec
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.CountryId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.CityDistrict">
+            <summary>
+            Část obce
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.PragueDistrict">
+            <summary>
+            Praha obvod
+            </summary>
+        </member>
         <member name="P:CIS.Foms.Types.CustomerIdentity.Id">
             <summary>
             ID klienta v danem schematu

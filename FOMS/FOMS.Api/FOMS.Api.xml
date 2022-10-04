@@ -750,6 +750,11 @@
             Určuje stav závazku (prohlášený vs neprohlášený. V MPV bude vždy prohlášený.<br />Z číselníku <a href="https://wiki.kb.cz/display/HT/ObligationState">ObligationState</a>
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.HardCreate">
+            <summary>
+            Příznak tvrdého vytvoření customera. Default:false
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.CustomerOnSAId">
             <summary>
             Id customera na sales arrangementu
@@ -803,6 +808,11 @@
         <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateRequest.PrimaryAddress">
             <summary>
             Trvalá adresa v ČR
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateResponse.InputDataDifferent">
+            <summary>
+            Vstupní data se liší od dat z KB CM
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuingCountryId">

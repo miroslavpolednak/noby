@@ -3,6 +3,9 @@
 public class CreateRequest
     : IRequest<CreateResponse>
 {
+    /// <summary>
+    /// Příznak tvrdého vytvoření customera. Default:false
+    /// </summary>
     public bool HardCreate { get; set; }
 
     /// <summary>

@@ -24,13 +24,9 @@ internal class UpdateHouseholdHandler
     }
 
     private readonly IHouseholdServiceClient _householdService;
-    private readonly ILogger<UpdateHouseholdHandler> _logger;
 
-    public UpdateHouseholdHandler(
-        IHouseholdServiceClient householdService,
-        ILogger<UpdateHouseholdHandler> logger)
+    public UpdateHouseholdHandler(IHouseholdServiceClient householdService)
     {
-        _logger = logger;
         _householdService = householdService;
     }
 }

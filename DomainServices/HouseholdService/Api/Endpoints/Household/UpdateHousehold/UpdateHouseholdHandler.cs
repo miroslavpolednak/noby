@@ -7,7 +7,6 @@ internal class UpdateHouseholdHandler
     {
         var household = await _dbContext.Households
             .Where(t => t.HouseholdId == request.Request.HouseholdId)
-            .AsNoTracking()
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {request.Request.HouseholdId} does not exist.");
 
         //TODO nejake kontroly?
