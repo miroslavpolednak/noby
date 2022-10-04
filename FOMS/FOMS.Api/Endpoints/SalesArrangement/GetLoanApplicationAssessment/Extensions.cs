@@ -166,7 +166,7 @@ internal static class Extensions
 
                         return new cLA.LoanApplicationEntrepreneurIncome
                         {
-                            EntrepreneurIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+                            EntrepreneurIdentificationNumber = new List<string?> { i.Entrepreneur?.Cin, i.Entrepreneur?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                             Address = new cRS.AddressDetail
                             {
                                 CountryId = i.Entrepreneur?.CountryOfResidenceId,
