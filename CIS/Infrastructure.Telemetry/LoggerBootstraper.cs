@@ -33,12 +33,12 @@ internal class LoggerBootstraper
     public void SetupFilters(LoggerConfiguration loggerConfiguration)
     {
         // global filter to exclude GRPC reflection
-        if (_logType == LogBehaviourTypes.Grpc || _logType == LogBehaviourTypes.Any)
+        if (_logType == LogBehaviourTypes.Grpc)
         {
             loggerConfiguration
                 .Filter.ByExcluding(Matching.WithProperty("RequestPath", "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"));
         }
-        if (_logType == LogBehaviourTypes.WebApi || _logType == LogBehaviourTypes.Any)
+        if (_logType == LogBehaviourTypes.WebApi)
         {
             // cokoliv jineho nez /api zahazovat
             loggerConfiguration
@@ -85,7 +85,7 @@ internal class LoggerBootstraper
         if (configuration.Seq is not null)
         {
             loggerConfiguration
-                .WriteTo
+                .AuditTo
                 .Seq(configuration.Seq.ServerUrl);
         }
 
