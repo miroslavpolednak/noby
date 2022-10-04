@@ -32,8 +32,8 @@ internal class CreateCustomerHandler
         if (containsKbIdentity)
         {
             var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _sulmClient.StopUse(identity.IdentityId, "MPAP");
-            await _sulmClient.StartUse(identity.IdentityId, "MPAP");
+            await _sulmClient.StopUse(identity.IdentityId, "MPAP", cancellation);
+            await _sulmClient.StartUse(identity.IdentityId, "MPAP", cancellation);
         }
 
         // uz ma KB identitu, ale jeste nema MP identitu

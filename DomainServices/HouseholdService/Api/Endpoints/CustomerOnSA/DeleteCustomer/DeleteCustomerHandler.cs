@@ -25,7 +25,7 @@ internal class DeleteCustomerHandler
         if (entity.Identities?.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb) ?? false)
         {
             var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _sulmClient.StopUse(identity.IdentityId, "MPAP");
+            await _sulmClient.StopUse(identity.IdentityId, "MPAP", cancellation);
         }
 
         // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId

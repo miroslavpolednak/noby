@@ -353,8 +353,8 @@ internal class FormDataService
             var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
             if (kbIdentity is not null)
             {
-                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP");
-                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP");
+                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
             }
         }
 
