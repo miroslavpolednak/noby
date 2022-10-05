@@ -1,4 +1,5 @@
 ﻿using cArrangement = DomainServices.SalesArrangementService.Contracts;
+using cHousehold = DomainServices.HouseholdService.Contracts;
 using cCase = DomainServices.CaseService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCustomer = DomainServices.CustomerService.Contracts;
@@ -25,11 +26,11 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
 
         public cUser.User User { get; init; }
 
-        public List<cArrangement.Household> Households { get; init; }
+        public List<cHousehold.Household> Households { get; init; }
 
-        public List<cArrangement.CustomerOnSA> CustomersOnSa { get; init; }
+        public List<cHousehold.CustomerOnSA> CustomersOnSa { get; init; }
 
-        public Dictionary<int, cArrangement.Income> IncomesById { get; init; }
+        public Dictionary<int, cHousehold.Income> IncomesById { get; init; }
 
         public Dictionary<string, cCustomer.CustomerDetailResponse> CustomersByIdentityCode { get; init; }
 
@@ -48,16 +49,16 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             cOffer.GetMortgageOfferDetailResponse offer,
             cUser.User user,
             cCase.Case caseData,
-            List<cArrangement.Household> households,
-            List<cArrangement.CustomerOnSA> customersOnSa,
-            Dictionary<int, cArrangement.Income> incomesById,
+            List<cHousehold.Household> households,
+            List<cHousehold.CustomerOnSA> customersOnSa,
+            Dictionary<int, cHousehold.Income> incomesById,
             Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode,
             List<DomainServices.CodebookService.Contracts.GenericCodebookItem> academicDegreesBefore,
             List<DomainServices.CodebookService.Contracts.Endpoints.Countries.CountriesItem> countries,
             List<DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes
             )
         {
-            LoanApplicationDataVersion = Guid.NewGuid().ToString().Replace("-", "");
+            LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture);
             Arrangement = arrangement;
             Offer = offer;
             CaseData = caseData;

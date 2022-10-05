@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
 
 namespace FOMS.Api.Endpoints.CustomerObligation.DeleteObligation;
 
@@ -10,9 +10,9 @@ internal class DeleteObligationHandler
         ServiceCallResult.Resolve(await _customerService.DeleteObligation(request.ObligationId, cancellationToken));
     }
 
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ICustomerOnSAServiceClient _customerService;
     
-    public DeleteObligationHandler(ICustomerOnSAServiceAbstraction customerService)
+    public DeleteObligationHandler(ICustomerOnSAServiceClient customerService)
     {
         _customerService = customerService;
     }

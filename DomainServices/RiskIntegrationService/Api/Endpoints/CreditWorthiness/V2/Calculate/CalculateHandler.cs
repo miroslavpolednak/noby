@@ -38,10 +38,8 @@ internal sealed class CalculateHandler
     private readonly Mappers.CalculateRequestMapper _requestMapper;
     private readonly Mappers.DtiRequestMapper _dtiRequestMapper;
     private readonly Mappers.DstiRequestMapper _dstiRequestMapper;
-    private readonly ILogger<CalculateHandler> _logger;
-
+    
     public CalculateHandler(
-        ILogger<CalculateHandler> logger,
         Mappers.CalculateRequestMapper requestMapper,
         Mappers.DtiRequestMapper dtiRequestMapper,
         Mappers.DstiRequestMapper dstiRequestMapper,
@@ -49,7 +47,6 @@ internal sealed class CalculateHandler
         Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient riskCharacteristicsClient,
         Clients.CreditWorthiness.V1.ICreditWorthinessClient client)
     {
-        _logger = logger;
         _codebookService = codebookService;
         _riskCharacteristicsClient = riskCharacteristicsClient;
         _dtiRequestMapper = dtiRequestMapper;

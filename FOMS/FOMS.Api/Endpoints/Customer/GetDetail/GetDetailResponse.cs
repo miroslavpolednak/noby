@@ -14,7 +14,7 @@ public sealed class GetDetailResponse
     
     public DateTime? LegallyIncapableToDate { get; set; }
     
-    public List<Dto.AddressModel>? Addresses { get; set; }
+    public List<CIS.Foms.Types.Address>? Addresses { get; set; }
     
     public List<Dto.ContactModel>? Contacts { get; set; }
     

@@ -5,14 +5,16 @@ internal abstract class BaseClient<TClient>
 {
     public Versions Version { get; private init; }
 
+    protected readonly CIS.Infrastructure.Telemetry.IAuditLogger _auditLogger;
     protected readonly ILogger<TClient> _logger;
     protected readonly EasConfiguration _configuration;
 
-    public BaseClient(Versions version, EasConfiguration configuration, ILogger<TClient> logger)
+    public BaseClient(Versions version, EasConfiguration configuration, ILogger<TClient> logger, CIS.Infrastructure.Telemetry.IAuditLogger auditLogger)
     {
         Version = version;
         _logger = logger;
         _configuration = configuration;
+        _auditLogger = auditLogger;
     }
 
     protected BasicHttpBinding createHttpBinding()

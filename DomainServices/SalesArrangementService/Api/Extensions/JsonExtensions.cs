@@ -70,6 +70,11 @@ internal static class JsonExtensions
         return ((DateTime?)value).ToJsonString();
     }
 
+    public static string? ToJsonString(this CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime value)
+    {
+        return ((DateTime?)value).ToJsonString();
+    }
+
     public static string? ToJsonString(this bool? value)
     {
         return (value.HasValue) ? value.Value.ToJsonString() : null;

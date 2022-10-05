@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Contracts;
-using DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
@@ -9,6 +9,8 @@ using DomainServices.CodebookService.Contracts.Endpoints.Genders;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementStates;
 using DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations;
 using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
+using DomainServices.CodebookService.Contracts.Endpoints.Countries;
+using DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
 {
@@ -22,9 +24,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         public GetMortgageOfferDetailResponse Offer { get; init; }
         public Case CaseData { get; init; }
         public User? User { get; init; }
-        public List<Contracts.Household> Households { get; init; }
-        public List<Contracts.CustomerOnSA> CustomersOnSa { get; init; }
-        public Dictionary<int, Income> IncomesById { get; init; }
+        public List<_HO.Household> Households { get; init; }
+        public List<_HO.CustomerOnSA> CustomersOnSa { get; init; }
+        public Dictionary<int, _HO.Income> IncomesById { get; init; }
         public Dictionary<string, CustomerDetailResponse> CustomersByIdentityCode { get; init; }
         public Dictionary<int, GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
         public Dictionary<int, GenderItem> GendersById { get; init; }
@@ -32,6 +34,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         public List<GenericCodebookItemWithCode> EmploymentTypes { get; init; }
         public Dictionary<int, DrawingDurationItem> DrawingDurationById { get; init; }
         public Dictionary<int, DrawingTypeItem> DrawingTypeById { get; init; }
+
+        public Dictionary<int, CountriesItem> CountriesById { get; init; }
+
+        public Dictionary<string, List<int>> ObligationTypeIdsByObligationProperty { get; init; }
 
         #endregion
 
@@ -43,16 +49,18 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             GetMortgageOfferDetailResponse offer,
             Case caseData,
             User? user,
-            List<Contracts.Household> households,
-            List<Contracts.CustomerOnSA> customersOnSa,
-            Dictionary<int, Income> incomesById,
+            List<_HO.Household> households,
+            List<_HO.CustomerOnSA> customersOnSa,
+            Dictionary<int, _HO.Income> incomesById,
             Dictionary<string, CustomerDetailResponse> customersByIdentityCode,
-            Dictionary<int, GenericCodebookItem> academicDegreesBeforeById,
-            Dictionary<int, GenderItem> gendersById,
-            Dictionary<int, SalesArrangementStateItem> salesArrangementStatesById,
+            List<GenericCodebookItem> academicDegreesBefore,
+            List<GenderItem> genders,
+            List<SalesArrangementStateItem> salesArrangementStates,
             List<GenericCodebookItemWithCode> employmentTypes,
-            Dictionary<int, DrawingDurationItem> drawingDurationById,
-            Dictionary<int, DrawingTypeItem> drawingTypeById)
+            List<DrawingDurationItem> drawingDurations,
+            List<DrawingTypeItem> drawingTypes,
+            List<CountriesItem> countries,
+            List<ObligationTypesItem> obligationTypes)
         {
             Arrangement = arrangement;
             ProductType = productType;
@@ -63,12 +71,14 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
             CustomersOnSa = customersOnSa;
             IncomesById = incomesById;
             CustomersByIdentityCode = customersByIdentityCode;
-            AcademicDegreesBeforeById = academicDegreesBeforeById;
-            GendersById = gendersById;
-            SalesArrangementStatesById = salesArrangementStatesById;
+            AcademicDegreesBeforeById = academicDegreesBefore.ToDictionary(i => i.Id);
+            GendersById = genders.ToDictionary(i => i.Id);
+            SalesArrangementStatesById = salesArrangementStates.ToDictionary(i => i.Id);
             EmploymentTypes = employmentTypes;
-            DrawingDurationById = drawingDurationById;
-            DrawingTypeById = drawingTypeById;
+            DrawingDurationById = drawingDurations.ToDictionary(i => i.Id);
+            DrawingTypeById = drawingTypes.ToDictionary(i => i.Id);
+            CountriesById = countries.ToDictionary(i => i.Id);
+            ObligationTypeIdsByObligationProperty = obligationTypes.GroupBy(i => i.ObligationProperty).ToDictionary(i => i.Key, l => l.Select(i => i.Id).ToList());
         }
 
         #endregion

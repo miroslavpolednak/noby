@@ -14,13 +14,15 @@ public class CustomerController : ControllerBase
     /// DS:<br />CustomerService/Create(customer)<br />SalesArrangementService/GetCustomer<br />
     /// SalesArrnagementService/UpdateCustomer(onSA)<br />CustomerService/GetDetail<br /><br />
     /// Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Domacnost" })]
     [ProducesResponseType(typeof(Create.CreateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<Create.CreateResponse> Create([FromBody] Create.CreateRequest resquest, CancellationToken cancellationToken)
         => await _mediator.Send(resquest, cancellationToken);
 

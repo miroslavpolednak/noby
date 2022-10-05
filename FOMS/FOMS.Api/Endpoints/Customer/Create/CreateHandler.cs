@@ -1,4 +1,4 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Api.Endpoints.Customer.Create;
@@ -57,22 +57,16 @@ internal sealed class CreateHandler
         }, cancellationToken));
 
         // nas customer
-        var customerOnSA = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken));
+        var customerOnSA = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken));
 
         // update customerOnSA. Dostanu nove PartnerId
-        var updateResponse = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken));
+        var updateResponse = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken));
 
         // vytvorit response z API
-        var model = customerKb.ToResponseDto();
-        if (createOk)
-        {
-            model.InputDataDifferent = true;
-            model.ResponseCode = "KBCM_CREATED";
-        }
-        else
-        {
-            model.ResponseCode = "KBCM_IDENTIFIED";
-        }
+        var model = customerKb
+            .ToResponseDto()
+            .SetResponseCode(createOk)
+            .InputDataComparison(request);
 
         // pokud je vse OK, zalozit customera v konsDb
         try
@@ -92,11 +86,11 @@ internal sealed class CreateHandler
     }
 
     private readonly ILogger<CreateHandler> _logger;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public CreateHandler(
-        DomainServices.SalesArrangementService.Abstraction.ICustomerOnSAServiceAbstraction customerOnSAService,
+        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         ILogger<CreateHandler> logger)
     {

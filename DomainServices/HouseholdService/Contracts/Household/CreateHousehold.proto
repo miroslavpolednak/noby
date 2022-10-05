@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "HouseholdExpenses.proto";
+import "HouseholdData.proto";
+
+message CreateHouseholdRequest {
+    int32 SalesArrangementId = 1;
+    
+    int32 HouseholdTypeId = 2;
+    
+    google.protobuf.Int32Value CustomerOnSAId1 = 3;
+    
+    google.protobuf.Int32Value CustomerOnSAId2 = 4;
+        
+    DomainServices.HouseholdService.HouseholdData Data = 5;
+    
+    DomainServices.HouseholdService.Expenses Expenses = 6;
+}
+
+message CreateHouseholdResponse {
+    int32 HouseholdId = 1;
+}

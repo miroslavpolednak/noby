@@ -80,7 +80,7 @@ internal sealed class HouseholdCustomerChildMapper
     private static long? getZipCode(string? zip)
     {
         long code;
-        return long.TryParse(zip, out code) ? code : null;
+        return long.TryParse(zip?.Replace(" ", ""), out code) ? code : null;
     }
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;

@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncome;
 
@@ -7,12 +8,12 @@ internal class UpdateIncomeHandler
 {
     protected override async Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
-        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
+        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
 
-        var model = new DomainServices.SalesArrangementService.Contracts.UpdateIncomeRequest
+        var model = new _HO.UpdateIncomeRequest
         {
             IncomeId = request.IncomeId,
-            BaseData = new DomainServices.SalesArrangementService.Contracts.IncomeBaseData
+            BaseData = new _HO.IncomeBaseData
             {
                 CurrencyCode = request.CurrencyCode,
                 Sum = request.Sum
@@ -46,7 +47,7 @@ internal class UpdateIncomeHandler
 
                 case CIS.Foms.Enums.CustomerIncomeTypes.Rent:
                     // RENT nema zadna data
-                    model.Rent = new DomainServices.SalesArrangementService.Contracts.IncomeDataRent();
+                    model.Rent = new _HO.IncomeDataRent();
                     break;
 
                 default:
@@ -63,11 +64,11 @@ internal class UpdateIncomeHandler
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
+    private readonly ICustomerOnSAServiceClient _customerService;
     private readonly ILogger<UpdateIncomeHandler> _logger;
 
     public UpdateIncomeHandler(
-        ICustomerOnSAServiceAbstraction customerService,
+        ICustomerOnSAServiceClient customerService,
         ILogger<UpdateIncomeHandler> logger)
     {
         _logger = logger;

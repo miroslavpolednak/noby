@@ -17,7 +17,7 @@ internal class UpdateSalesArrangementDataHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation) 
-            ?? throw new CisNotFoundException(16000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
+            ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
 
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.Request.RiskBusinessCaseId) && !request.Request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);

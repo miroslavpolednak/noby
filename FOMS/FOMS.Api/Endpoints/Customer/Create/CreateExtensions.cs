@@ -1,4 +1,4 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using FOMS.Api.Endpoints.Customer.GetDetail;
 
@@ -43,12 +43,12 @@ internal static class CreateExtensions
         return model;
     }
 
-    public static _SA.UpdateCustomerRequest ToUpdateRequest(this _SA.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
+    public static _HO.UpdateCustomerRequest ToUpdateRequest(this _HO.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
     {
-        var model = new _SA.UpdateCustomerRequest
+        var model = new _HO.UpdateCustomerRequest
         {
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
-            Customer = new _SA.CustomerOnSABase
+            Customer = new _HO.CustomerOnSABase
             {
                 DateOfBirthNaturalPerson = customerKb.NaturalPerson.DateOfBirth,
                 MaritalStatusId = customerKb.NaturalPerson?.MaritalStatusStateId,
@@ -112,6 +112,35 @@ internal static class CreateExtensions
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
-            Addresses = customer.Addresses?.ToResponseDto()
+            Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
+            InputDataDifferent = true
         };
+
+    public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
+    {
+        response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";
+        return response;
+    }
+    
+    public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
+    {
+        if (
+            !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.MobilPrivate)?.Value)
+            || !stringCompare(originalRequest.Email, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value)
+            || originalRequest.BirthDate != originalRequest.BirthDate
+            || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)
+            || !stringCompare(originalRequest.BirthPlace, response.NaturalPerson?.PlaceOfBirth)
+            || originalRequest.CitizenshipCountryId != (response.NaturalPerson?.CitizenshipCountriesId?.FirstOrDefault() ?? 0)
+            || originalRequest.GenderId != ((int?)response.NaturalPerson?.Gender ?? 0)
+            || !stringCompare(originalRequest.FirstName, response.NaturalPerson?.FirstName)
+            || !stringCompare(originalRequest.LastName, response.NaturalPerson?.LastName)
+            || !(originalRequest.PrimaryAddress?.Equals(response.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent)) ?? true)
+        )
+            response.InputDataDifferent = true;
+
+        return response;
+    }
+
+    private static bool stringCompare(string? s1, string? s2)
+        => (s1 ?? "").Equals(s2, StringComparison.OrdinalIgnoreCase);
 }

@@ -1,5 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateHousehold;
 
@@ -8,10 +8,10 @@ internal class UpdateHouseholdHandler
 {
     protected override async Task Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
-        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
 
         // update domacnosti
-        var householdRequest = new _SA.UpdateHouseholdRequest
+        var householdRequest = new _HO.UpdateHouseholdRequest
         {
             CustomerOnSAId1 = householdInstance.CustomerOnSAId1,
             CustomerOnSAId2 = householdInstance.CustomerOnSAId2,
@@ -23,14 +23,10 @@ internal class UpdateHouseholdHandler
         await _householdService.UpdateHousehold(householdRequest, cancellationToken);
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ILogger<UpdateHouseholdHandler> _logger;
+    private readonly IHouseholdServiceClient _householdService;
 
-    public UpdateHouseholdHandler(
-        IHouseholdServiceAbstraction householdService,
-        ILogger<UpdateHouseholdHandler> logger)
+    public UpdateHouseholdHandler(IHouseholdServiceClient householdService)
     {
-        _logger = logger;
         _householdService = householdService;
     }
 }

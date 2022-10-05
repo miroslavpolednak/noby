@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.HouseholdService.Clients;
 
 namespace FOMS.Api.Endpoints.CustomerIncome.DeleteIncome;
 
@@ -10,14 +10,10 @@ internal class DeleteIncomeHandler
         ServiceCallResult.Resolve(await _customerService.DeleteIncome(request.IncomeId, cancellationToken));
     }
 
-    private readonly ICustomerOnSAServiceAbstraction _customerService;
-    private readonly ILogger<DeleteIncomeHandler> _logger;
-
-    public DeleteIncomeHandler(
-        ICustomerOnSAServiceAbstraction customerService,
-        ILogger<DeleteIncomeHandler> logger)
+    private readonly ICustomerOnSAServiceClient _customerService;
+    
+    public DeleteIncomeHandler(ICustomerOnSAServiceClient customerService)
     {
-        _logger = logger;
         _customerService = customerService;
     }
 }

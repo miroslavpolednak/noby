@@ -16,7 +16,7 @@ using DomainServices.UserService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
-
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
 
@@ -34,6 +34,8 @@ internal class FormDataService
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly IUserServiceClient _userService;
+    private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
 
     private readonly Repositories.NobyRepository _repository;
     private readonly ILogger<FormDataService> _logger;
@@ -41,6 +43,8 @@ internal class FormDataService
     private readonly IMediator _mediator;
 
     public FormDataService(
+        HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
+        HouseholdService.Clients.IHouseholdServiceClient householdService,
         SulmService.ISulmClient sulmClient,
         ICodebookServiceAbstraction codebookService,
         ICaseServiceAbstraction caseService,
@@ -52,6 +56,8 @@ internal class FormDataService
         Eas.IEasClient easClient,
         IMediator mediator)
     {
+        _householdService = householdService;
+        _customerOnSAService = customerOnSAService;
         _sulmClient = sulmClient;
         _codebookService = codebookService;
         _caseService = caseService;
@@ -115,7 +121,7 @@ internal class FormDataService
         }
     }
 
-    private static void CheckCustomersOnSA(List<Contracts.CustomerOnSA> customersOnSa)
+    private static void CheckCustomersOnSA(List<CustomerOnSA> customersOnSa)
     {
         // check if each customer contains Mp identity and also Kb identity
         var customerIds = customersOnSa.Select(x => x.CustomerOnSAId);
@@ -136,7 +142,7 @@ internal class FormDataService
         }
     }
 
-    private static void CheckHouseholds(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<Contracts.CustomerOnSA> customersOnSa)
+    private static void CheckHouseholds(List<Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
     {
         // check if each household type is represented at most once
         var duplicitHouseholdTypeIds = households.GroupBy(i => i.HouseholdTypeId).Where(g => g.Count() > 1).Select(i => i.Key);
@@ -191,7 +197,7 @@ internal class FormDataService
         }
     }
 
-    private static Identity GetMainMpIdentity(List<Contracts.Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<Contracts.CustomerOnSA> customersOnSa)
+    private static Identity GetMainMpIdentity(List<Household> households, Dictionary<int, HouseholdTypeItem> householdTypesById, List<CustomerOnSA> customersOnSa)
     {
         var mainHousehold = households.Single(i => householdTypesById[i.HouseholdTypeId].EnumValue == CIS.Foms.Enums.HouseholdTypes.Main);
         var mainCustomerOnSa1 = customersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
@@ -204,7 +210,7 @@ internal class FormDataService
 
         if (salesArrangementType == null)
         {
-            throw new CisNotFoundException(16005, nameof(SalesArrangementTypeItem), salesArrangementTypeId);
+            throw new CisNotFoundException(18005, nameof(SalesArrangementTypeItem), salesArrangementTypeId);
         }
 
         if (!salesArrangementType.ProductTypeId.HasValue)
@@ -222,32 +228,33 @@ internal class FormDataService
         return productType;
     }
 
-    private async Task<List<Contracts.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
+    private async Task<List<CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customersOnSa = (await _mediator.Send(new Dto.GetCustomerListMediatrRequest(salesArrangementId), cancellation)).Customers.ToList();
+        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
+
         var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
-        var customers = new List<Contracts.CustomerOnSA>();
+        var customers = new List<CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
         {
-            var customer = await _mediator.Send(new Dto.GetCustomerMediatrRequest(customerOnSAIds[i]), cancellation);
+            var customer = ServiceCallResult.ResolveAndThrowIfError<CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
             customers.Add(customer);
         }
         return customers;
     }
 
-    private async Task<Dictionary<int, Income>> GetIncomesById(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<int, Income>> GetIncomesById(List<CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         var incomeIds = customersOnSa.SelectMany(i => i.Incomes.Select(i => i.IncomeId)).ToArray();
         var incomes = new List<Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
-            var income = await _mediator.Send(new Dto.GetIncomeMediatrRequest(incomeIds[i]), cancellation);
+            var income = ServiceCallResult.ResolveAndThrowIfError<Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
             incomes.Add(income);
         }
         return incomes.ToDictionary(i => i.IncomeId);
     }
 
-    private async Task<Dictionary<string, CustomerDetailResponse>> GetCustomersByIdentityCode(List<Contracts.CustomerOnSA> customersOnSa, CancellationToken cancellation)
+    private async Task<Dictionary<string, CustomerDetailResponse>> GetCustomersByIdentityCode(List<CustomerOnSA> customersOnSa, CancellationToken cancellation)
     {
         // vrací pouze pro KB identity
         var customerIdentities = customersOnSa.SelectMany(i => i.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).GroupBy(i => i.ToCode()).Select(i => i.First()).ToList();
@@ -309,7 +316,7 @@ internal class FormDataService
         CheckCustomersOnSA(customersOnSA);   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
 
         // load households and validate them
-        var households = (await _mediator.Send(new Dto.GetHouseholdListMediatrRequest(arrangement.SalesArrangementId), cancellation)).Households.ToList();
+        var households = ServiceCallResult.ResolveAndThrowIfError<List<Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellation));
         var householdTypesById = (await _codebookService.HouseholdTypes(cancellation)).ToDictionary(i => i.Id);
         CheckHouseholds(households, householdTypesById, customersOnSA);
 
@@ -319,7 +326,7 @@ internal class FormDataService
 
         // load case
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-            ?? throw new CisNotFoundException(16002, $"Case ID #{arrangement.CaseId} does not exist.");
+            ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
 
         // update ContractNumber if not specified
         // arrangement.ContractNumber = String.Empty;
@@ -343,8 +350,8 @@ internal class FormDataService
             var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
             if (kbIdentity is not null)
             {
-                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP");
-                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP");
+                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
             }
         }
 
@@ -353,7 +360,7 @@ internal class FormDataService
 
         // Offer load
         var _offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))
-                     ?? throw new CisNotFoundException(16001, $"Offer ID #{arrangement.OfferId} does not exist.");
+                     ?? throw new CisNotFoundException(18001, $"Offer ID #{arrangement.OfferId} does not exist.");
 
         // User load (by arrangement.Created.UserId)
         var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))
@@ -363,14 +370,17 @@ internal class FormDataService
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
 
         // Load codebooks
-        var academicDegreesBeforeById = (await _codebookService.AcademicDegreesBefore(cancellation)).ToDictionary(i => i.Id);
-        var gendersById = (await _codebookService.Genders(cancellation)).ToDictionary(i => i.Id);
-        var salesArrangementStatesById = (await _codebookService.SalesArrangementStates(cancellation)).ToDictionary(i => i.Id);
+        var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
+        var genders = await _codebookService.Genders(cancellation);
+        var salesArrangementStates = await _codebookService.SalesArrangementStates(cancellation);
         var employmentTypes = await _codebookService.EmploymentTypes(cancellation);
-        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
-        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
-        
-        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBeforeById, gendersById, salesArrangementStatesById, employmentTypes, drawingDurationsById, drawingTypeById);
+        var drawingDurations = await _codebookService.DrawingDurations(cancellation);
+        var drawingType = await _codebookService.DrawingTypes(cancellation);
+
+        var countries = await _codebookService.Countries(cancellation);
+        var obligationTypes = await _codebookService.ObligationTypes(cancellation);
+
+        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBefore, genders, salesArrangementStates, employmentTypes, drawingDurations, drawingType, countries, obligationTypes);
 
         return (formData);
     }

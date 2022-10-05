@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.HouseholdService.Clients;
 using Google.Protobuf.Collections;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateCustomers;
 
@@ -11,7 +11,7 @@ internal class UpdateCustomersHandler
     public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
     {
         // detail domacnosti
-        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
         
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
@@ -37,7 +37,7 @@ internal class UpdateCustomersHandler
     async Task<(int? CustomerOnSAId, IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities)> crudCustomer(
         CustomerDto? customer, 
         int? householdCustomerId,
-        _SA.Household householdInstance,
+        _HO.Household householdInstance,
         CustomerRoles customerRole,
         CancellationToken cancellationToken)
     {
@@ -57,9 +57,9 @@ internal class UpdateCustomersHandler
             {
                 try
                 {
-                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
+                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
 
-                    var identities = ServiceCallResult.ResolveAndThrowIfError<_SA.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _SA.UpdateCustomerRequest
+                    var identities = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _HO.UpdateCustomerRequest
                         {
                             CustomerOnSAId = customer.CustomerOnSAId!.Value,
                             Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
@@ -76,7 +76,7 @@ internal class UpdateCustomersHandler
             }
             else // vytvoreni noveho
             {
-                var createResult = ServiceCallResult.ResolveAndThrowIfError<_SA.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _SA.CreateCustomerRequest
+                var createResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
                     CustomerRoleId = (int)customerRole,
@@ -98,14 +98,14 @@ internal class UpdateCustomersHandler
             return default(long?);
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
-    private readonly ICustomerOnSAServiceAbstraction _customerOnSAService;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IMediator _mediator;
 
     public UpdateCustomersHandler(
         IMediator mediator,
-        IHouseholdServiceAbstraction householdService,
-        ICustomerOnSAServiceAbstraction customerOnSAService)
+        IHouseholdServiceClient householdService,
+        ICustomerOnSAServiceClient customerOnSAService)
     {
         _mediator = mediator;
         _customerOnSAService = customerOnSAService;

@@ -14,24 +14,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Remove="Clients\CreditWorthiness\V1\swagger.json" />
-	  <Content Remove="Clients\CustomersExposure\V1\swagger.json" />
-	  <Content Remove="Clients\LoanApplicationAssessment\V1\swagger.json" />
-	  <Content Remove="Clients\LoanApplication\V1\swagger.json" />
-	  <Content Remove="Clients\RiskBusinessCase\V1\swagger.json" />
-	  <Content Remove="Clients\RiskCharakteristics\V1\swagger.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Clients\CreditWorthiness\V1\swagger.json" />
-	  <None Include="Clients\CustomersExposure\V1\swagger.json" />
-	  <None Include="Clients\LoanApplicationAssessment\V1\swagger.json" />
-	  <None Include="Clients\LoanApplication\V1\swagger.json" />
-	  <None Include="Clients\RiskBusinessCase\V1\swagger.json" />
-	  <None Include="Clients\RiskCharakteristics\V1\swagger.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="FastEnum" Version="1.8.0" />
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
@@ -50,6 +32,7 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />

@@ -2,10 +2,12 @@
 using cRB = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
 
+using cHousehold = DomainServices.HouseholdService.Contracts;
 using cArrangement = DomainServices.SalesArrangementService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCis = CIS.Infrastructure.gRPC.CisTypes;
 using cCustomer = DomainServices.CustomerService.Contracts;
+using CIS.Foms.Enums;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -61,13 +63,25 @@ internal static class Extensions
         };
     }
 
+
+
+    private static string? RemoveSpaces(this string value)
+    {
+        if (String.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return new string(value.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+    }
+
     public static cLA.LoanApplicationSaveRequest ToLoanApplicationSaveRequest(this LoanApplicationData data)
     {
         // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
 
-        cLA.LoanApplicationHousehold MapHousehold(cArrangement.Household h)
+        cLA.LoanApplicationHousehold MapHousehold(cHousehold.Household h)
         {
-            cLA.LoanApplicationCustomer MapCustomer(cArrangement.CustomerOnSA cOnSA)
+            cLA.LoanApplicationCustomer MapCustomer(cHousehold.CustomerOnSA cOnSA)
             {
                 var obligationTypeAmountIds = data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
 
@@ -79,7 +93,7 @@ internal static class Extensions
                     EvidenceNumber = a.EvidenceNumber,
                     City = a.City,
                     CountryId = a.CountryId,
-                    Postcode = a.Postcode,
+                    Postcode = a.Postcode.RemoveSpaces(),
                 };
 
                 var MapIdentificationDocument = (cCustomer.IdentificationDocument id) => new cRS.V1.IdentificationDocumentDetail
@@ -90,7 +104,7 @@ internal static class Extensions
                     ValidTo = id.ValidTo,
                 };
 
-                var MapObligation = (cArrangement.Obligation o) => new cLA.LoanApplicationObligation
+                var MapObligation = (cHousehold.Obligation o) => new cLA.LoanApplicationObligation
                 {
                     ObligationTypeId = o.ObligationTypeId!.Value,
                     Amount = obligationTypeAmountIds.Contains(o.ObligationTypeId!.Value) ? o.LoanPrincipalAmount : o.CreditCardLimit, // Pro Obligation.ObligationTypeId s hodnotami "1", "2" a "5" poslat hodnotu z: Obligation.LoanPrincipalAmount; Pro Obligation.ObligationTypeId s hodnotami "3" a "4" poslat hodnotu z: Obligation.CreditCardLimit;
@@ -102,7 +116,7 @@ internal static class Extensions
                 cLA.LoanApplicationIncome MapIncome()
                 {
 
-                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(cArrangement.IncomeInList iil)
+                    cLA.LoanApplicationEmploymentIncome MapEmploymentIncome(cHousehold.IncomeInList iil)
                     {
                         var i = data.IncomesById[iil.IncomeId];
 
@@ -141,7 +155,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(cArrangement.IncomeInList? iil)
+                    cLA.LoanApplicationEntrepreneurIncome? MapEntrepreneurIncome(cHousehold.IncomeInList? iil)
                     {
                         if (iil == null)
                         {
@@ -152,7 +166,7 @@ internal static class Extensions
 
                         return new cLA.LoanApplicationEntrepreneurIncome
                         {
-                            EntrepreneurIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+                            EntrepreneurIdentificationNumber = new List<string?> { i.Entrepreneur?.Cin, i.Entrepreneur?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                             Address = new cRS.AddressDetail
                             {
                                 CountryId = i.Entrepreneur?.CountryOfResidenceId,
@@ -165,7 +179,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationRentIncome? MapRentIncome(cArrangement.IncomeInList? iil)
+                    cLA.LoanApplicationRentIncome? MapRentIncome(cHousehold.IncomeInList? iil)
                     {
                         if (iil == null)
                         {
@@ -184,7 +198,7 @@ internal static class Extensions
                         };
                     };
 
-                    cLA.LoanApplicationOtherIncome MapOtherIncome(cArrangement.IncomeInList iil)
+                    cLA.LoanApplicationOtherIncome MapOtherIncome(cHousehold.IncomeInList iil)
                     {
                         var i = data.IncomesById[iil.IncomeId];
                         var id = i.Other?.IncomeOtherTypeId;
@@ -227,6 +241,8 @@ internal static class Extensions
                 var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
+                var cGenderId = c.NaturalPerson?.GenderId;
+
                 return new cLA.LoanApplicationCustomer
                 {
                     InternalCustomerId = cOnSA.CustomerOnSAId,
@@ -240,7 +256,7 @@ internal static class Extensions
                     BirthName = c.NaturalPerson?.BirthName,
                     BirthDate = c.NaturalPerson?.DateOfBirth,
                     BirthPlace = c.NaturalPerson?.PlaceOfBirth,
-                    GenderId = c.NaturalPerson?.GenderId,
+                    GenderId = cGenderId == (int)Genders.Unknown ? null : cGenderId,
                     MaritalStateId = c.NaturalPerson?.MaritalStatusStateId,
                     EducationLevelId = c.NaturalPerson?.EducationLevelId > 0 ? c.NaturalPerson?.EducationLevelId : null, // neposílat pokud 0
                     AcademicTitlePrefix = academicTitlePrefix,
@@ -263,13 +279,17 @@ internal static class Extensions
                 Other = h.Expenses.OtherExpenseAmount,
             };
 
+            var propertySettlementId = h.Data?.PropertySettlementId;
+            var childrenUpToTenYearsCount = h.Data?.ChildrenUpToTenYearsCount;
+            var childrenOverTenYearsCount = h.Data?.ChildrenOverTenYearsCount;
+
             return new cLA.LoanApplicationHousehold
             {
                 HouseholdId = h.HouseholdTypeId,
                 HouseholdTypeId = h.HouseholdTypeId,
-                PropertySettlementId = h.Data.PropertySettlementId.HasValue ? h.Data.PropertySettlementId.Value : 0,
-                ChildrenUpToTenYearsCount = h.Data.ChildrenUpToTenYearsCount,
-                ChildrenOverTenYearsCount = h.Data.ChildrenOverTenYearsCount,
+                PropertySettlementId = propertySettlementId.HasValue ? propertySettlementId.Value : 0,
+                ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
+                ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
                 Customers = data.CustomersOnSa.Select(i => MapCustomer(i)).ToList(),
             };
@@ -306,20 +326,20 @@ internal static class Extensions
                 FixedRatePeriod = data.Offer.SimulationInputs.FixedRatePeriod,
                 LoanInterestRate = data.Offer.SimulationResults.LoanInterestRate,
                 InstallmentCount = data.Offer.SimulationResults.AnnuityPaymentsCount,
-                DrawingPeriodStart = data.Arrangement.Mortgage.ExpectedDateOfDrawing,
+                DrawingPeriodStart = data.Arrangement.Mortgage?.ExpectedDateOfDrawing,
                 DrawingPeriodEnd = data.Offer.SimulationResults.DrawingDateTo,
                 RepaymentPeriodStart = data.Offer.SimulationResults.AnnuityPaymentsDateFrom,
                 RepaymentPeriodEnd = data.Offer.SimulationResults.LoanDueDate,
-                HomeCurrencyIncome = data.Arrangement.Mortgage.IncomeCurrencyCode,
-                HomeCurrencyResidence = data.Arrangement.Mortgage.ResidencyCurrencyCode,
-                DeveloperId = data.Offer.SimulationInputs.Developer.DeveloperId,
-                DeveloperProjectId = data.Offer.SimulationInputs.Developer.ProjectId,
+                HomeCurrencyIncome = data.Arrangement.Mortgage?.IncomeCurrencyCode,
+                HomeCurrencyResidence = data.Arrangement.Mortgage?.ResidencyCurrencyCode,
+                DeveloperId = data.Offer.SimulationInputs.Developer?.DeveloperId,
+                DeveloperProjectId = data.Offer.SimulationInputs.Developer?.ProjectId,
                 RequiredAmount = data.Offer.SimulationResults.LoanAmount,
                 InvestmentAmount = investmentAmount,
                 OwnResourcesAmount = financialResourcesOwn,
                 ForeignResourcesAmount = financialResourcesOther,
-                MarketingActions = data.Offer.AdditionalSimulationResults.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
-                Purposes = data.Offer.SimulationInputs.LoanPurposes.Select(i => MapLoanPurpose(i)).ToList(),
+                MarketingActions = data.Offer.AdditionalSimulationResults?.MarketingActions?.Where(i => i.MarketingActionId.HasValue).Select(i => i.MarketingActionId!.Value).ToList(),
+                Purposes = data.Offer.SimulationInputs.LoanPurposes?.Select(i => MapLoanPurpose(i)).ToList(),
                 Collaterals = new List<cLA.LoanApplicationProductCollateral> { productCollateral },
             };
         }

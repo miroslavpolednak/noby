@@ -81,14 +81,14 @@ internal sealed class CommitCaseHandler
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
 
     public CommitCaseHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.IRiskBusinessCaseClient client,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider)
+        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;

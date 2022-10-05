@@ -23,10 +23,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="DomainServices.RiskIntegrationService.Contracts.xml">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
 </Project>

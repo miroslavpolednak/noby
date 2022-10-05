@@ -1,16 +1,16 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.CustomerIncome.GetIncome;
 
 internal static class Extensions
 {
-    public static Dto.IncomeDataOther ToApiResponse(this _SA.IncomeDataOther contract)
+    public static Dto.IncomeDataOther ToApiResponse(this _HO.IncomeDataOther contract)
         => new Dto.IncomeDataOther
         {
             IncomeOtherTypeId = contract.IncomeOtherTypeId
         };
 
-    public static Dto.IncomeDataEntrepreneur ToApiResponse(this _SA.IncomeDataEntrepreneur contract)
+    public static Dto.IncomeDataEntrepreneur ToApiResponse(this _HO.IncomeDataEntrepreneur contract)
         => new Dto.IncomeDataEntrepreneur
         {
             BirthNumber = contract.BirthNumber,
@@ -18,7 +18,7 @@ internal static class Extensions
             CountryOfResidenceId = contract.CountryOfResidenceId
         };
 
-    public static Dto.IncomeDataEmployement ToApiResponse(this _SA.IncomeDataEmployement contract)
+    public static Dto.IncomeDataEmployement ToApiResponse(this _HO.IncomeDataEmployement contract)
         => new Dto.IncomeDataEmployement
         {
             ForeignIncomeTypeId = contract.ForeignIncomeTypeId,
@@ -30,7 +30,7 @@ internal static class Extensions
             WageDeduction = contract.WageDeduction?.ToApiResponse()
         };
 
-    public static Dto.EmployerDataDto ToApiResponse(this _SA.EmployerData contract)
+    public static Dto.EmployerDataDto ToApiResponse(this _HO.EmployerData contract)
         => new Dto.EmployerDataDto
         {
             BirthNumber = contract.BirthNumber,
@@ -39,7 +39,7 @@ internal static class Extensions
             CountryId = contract.CountryId
         };
 
-    public static Dto.IncomeConfirmationDataDto ToApiResponse(this _SA.IncomeConfirmationData contract)
+    public static Dto.IncomeConfirmationDataDto ToApiResponse(this _HO.IncomeConfirmationData contract)
         => new Dto.IncomeConfirmationDataDto
         {
             IsIssuedByExternalAccountant = contract.IsIssuedByExternalAccountant,
@@ -48,7 +48,7 @@ internal static class Extensions
             ConfirmationPerson = contract.ConfirmationPerson
         };
 
-    public static Dto.JobDataDto ToApiResponse(this _SA.JobData contract)
+    public static Dto.JobDataDto ToApiResponse(this _HO.JobData contract)
         => new Dto.JobDataDto
         {
             CurrentWorkContractSince = contract.CurrentWorkContractSince,
@@ -61,7 +61,7 @@ internal static class Extensions
             GrossAnnualIncome = contract.GrossAnnualIncome
         };
 
-    public static Dto.WageDeductionDataDto ToApiResponse(this _SA.WageDeductionData contract)
+    public static Dto.WageDeductionDataDto ToApiResponse(this _HO.WageDeductionData contract)
         => new Dto.WageDeductionDataDto
         {
             DeductionDecision = contract.DeductionDecision,

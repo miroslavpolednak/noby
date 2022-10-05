@@ -9,7 +9,7 @@ using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.RiskIntegrationService.Clients;
 using FOMS.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using DomainServices.RiskIntegrationService.Clients;
+using DomainServices.HouseholdService.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +31,7 @@ builder
 
 // add domain services
 builder.Services
+    .AddHouseholdService()
     .AddOfferService()
     .AddRiskIntegrationService()
     .AddCodebookService()

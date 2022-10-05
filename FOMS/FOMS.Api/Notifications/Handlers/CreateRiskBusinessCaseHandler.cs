@@ -3,8 +3,10 @@ using DomainServices.OfferService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+using _HO = DomainServices.HouseholdService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
 using CIS.Foms.Enums;
+using DomainServices.HouseholdService.Clients;
 
 namespace FOMS.Api.Notifications.Handlers;
 
@@ -35,7 +37,7 @@ internal class CreateRiskBusinessCaseHandler
             throw new CisNotFoundException(0, "SA does not have Offer bound to it");
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
         // household
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<_SA.Household>>(await _householdService.GetHouseholdList(notification.SalesArrangementId, cancellationToken));
+        var households = ServiceCallResult.ResolveAndThrowIfError<List<_HO.Household>>(await _householdService.GetHouseholdList(notification.SalesArrangementId, cancellationToken));
         if (!households.Any())
             throw new CisValidationException("CreateRiskBusinessCase: household does not exist");
 
@@ -85,7 +87,7 @@ internal class CreateRiskBusinessCaseHandler
         #endregion local fce
     }
 
-    private readonly IHouseholdServiceAbstraction _householdService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
@@ -97,7 +99,7 @@ internal class CreateRiskBusinessCaseHandler
         ILogger<CreateRiskBusinessCaseHandler> logger,
         DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        IHouseholdServiceAbstraction householdService,
+        IHouseholdServiceClient householdService,
         IOfferServiceAbstraction offerService,
         ICaseServiceAbstraction caseService,
         ISalesArrangementServiceAbstraction salesArrangementService)

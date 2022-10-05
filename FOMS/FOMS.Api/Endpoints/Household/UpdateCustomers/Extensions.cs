@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.Household.UpdateCustomers;
 
@@ -9,8 +9,8 @@ internal static class Extensions
         var model = new CustomerOnSABase
         {
             DateOfBirthNaturalPerson = customer.DateOfBirth,
-            FirstNameNaturalPerson = customer.FirstName,
-            Name = customer.LastName
+            FirstNameNaturalPerson = customer.FirstName ?? "",
+            Name = customer.LastName ?? ""
         };
 
         if (customer.LockedIncome)
