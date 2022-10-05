@@ -101,7 +101,7 @@ internal sealed class SaveRequestMapper
         return productsFromLoanKind.FirstOrDefault();
     }
 
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
@@ -109,7 +109,7 @@ internal sealed class SaveRequestMapper
     public SaveRequestMapper(
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider,
+        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
     {
         _configuration = configuration;

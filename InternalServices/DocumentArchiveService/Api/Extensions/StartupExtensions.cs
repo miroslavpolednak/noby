@@ -1,13 +1,12 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using DomainServices.RiskIntegrationService.Api.Clients;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace DomainServices.RiskIntegrationService.Api;
+namespace CIS.InternalServices.DocumentArchiveService.Api;
 
 internal static class StartupExtensions
 {
-    public static WebApplicationBuilder AddRipService(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder)
     {
         // disable default model state validations
         builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
@@ -33,17 +32,9 @@ internal static class StartupExtensions
         // MVC
         builder.Services.AddControllers();
 
-        // register c4m clients
-        builder.AddRiskBusinessCaseClient();
-        builder.AddCreditWorthinessClient();
-        builder.AddCustomersExposureClient();
-        builder.AddLoanApplicationClient();
-        builder.AddLoanApplicationAssessmentClient();
-        builder.AddRiskCharakteristicsClient();
-
         // databases
         builder.Services
-            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
+            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("default"));
 
         return builder;
     }

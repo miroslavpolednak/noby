@@ -211,11 +211,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_NotificationService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HouseholdService", "HouseholdService", "{9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.HouseholdService.Contracts", "DomainServices\HouseholdService\Contracts\DomainServices.HouseholdService.Contracts.csproj", "{32D80892-7DB3-4BCC-AA23-55254FB478BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdService.Contracts", "DomainServices\HouseholdService\Contracts\DomainServices.HouseholdService.Contracts.csproj", "{32D80892-7DB3-4BCC-AA23-55254FB478BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.HouseholdService.Api", "DomainServices\HouseholdService\Api\DomainServices.HouseholdService.Api.csproj", "{6A12E6D1-613A-46EB-AD42-625D7DC5AB21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdService.Api", "DomainServices\HouseholdService\Api\DomainServices.HouseholdService.Api.csproj", "{6A12E6D1-613A-46EB-AD42-625D7DC5AB21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.HouseholdService.Clients", "DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj", "{2AB718B0-5F91-4909-82B3-DC576747EBA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdService.Clients", "DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj", "{2AB718B0-5F91-4909-82B3-DC576747EBA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentArchiveService", "DocumentArchiveService", "{FD432970-0CA5-4632-9121-6A24C1B5A967}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -857,6 +865,30 @@ Global
 		{2AB718B0-5F91-4909-82B3-DC576747EBA8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AB718B0-5F91-4909-82B3-DC576747EBA8}.Release|x64.ActiveCfg = Release|Any CPU
 		{2AB718B0-5F91-4909-82B3-DC576747EBA8}.Release|x64.Build.0 = Release|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Debug|x64.Build.0 = Debug|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Release|x64.ActiveCfg = Release|Any CPU
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}.Release|x64.Build.0 = Release|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Debug|x64.Build.0 = Debug|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Release|x64.ActiveCfg = Release|Any CPU
+		{235157F3-EC56-44F3-9ACC-4956E6262E24}.Release|x64.Build.0 = Release|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Debug|x64.Build.0 = Debug|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|x64.ActiveCfg = Release|Any CPU
+		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -956,6 +988,10 @@ Global
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{6A12E6D1-613A-46EB-AD42-625D7DC5AB21} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{2AB718B0-5F91-4909-82B3-DC576747EBA8} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
+		{FD432970-0CA5-4632-9121-6A24C1B5A967} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
+		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
+		{235157F3-EC56-44F3-9ACC-4956E6262E24} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
+		{D4C76CA4-518A-40EE-BAC0-584389478B19} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

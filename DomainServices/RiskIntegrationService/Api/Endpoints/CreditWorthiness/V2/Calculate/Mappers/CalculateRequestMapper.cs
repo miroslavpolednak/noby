@@ -45,7 +45,7 @@ internal sealed class CalculateRequestMapper
     }
 
     private readonly HouseholdsChildMapper _householdMapper;
-    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _xxvConnectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
@@ -53,7 +53,7 @@ internal sealed class CalculateRequestMapper
         HouseholdsChildMapper householdMapper,
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> xxvConnectionProvider)
+        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider)
     {
         _householdMapper = householdMapper;
         _serviceUserAccessor = serviceUserAccessor;
