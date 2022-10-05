@@ -1,6 +1,5 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.DocumentArchiveService.Api;
 using CIS.DomainServicesSecurity;
@@ -35,10 +34,12 @@ builder
 
 // health checks
 builder.AddCisHealthChecks();
-builder.Services.AddAttributedServices(typeof(Program));
 
 // authentication
 builder.AddCisServiceAuthentication();
+
+// add this service
+builder.AddDocumentArchiveService();
 
 // swagger
 builder.AddDocumentArchiveSwagger();

@@ -12,5 +12,5 @@ public class DocumentArchiveServiceGrpc
     }
 
     public async ValueTask<Contracts.GenerateDocumentIdResponse> GenerateDocumentId(Contracts.GenerateDocumentIdRequest request, CancellationToken cancellationToken = default)
-        => await _mediator.Send(request, cancellationToken);
+        => await _mediator.Send(new GenerateDocumentId.GenerateDocumentIdMediatrRequest(request), cancellationToken);
 }

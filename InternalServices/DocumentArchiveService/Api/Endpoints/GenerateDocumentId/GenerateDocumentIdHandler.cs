@@ -1,11 +1,13 @@
-﻿namespace CIS.InternalServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
+﻿using CIS.Infrastructure.Data;
+
+namespace CIS.InternalServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
 internal sealed class GenerateDocumentIdHandler
     : IRequestHandler<GenerateDocumentIdMediatrRequest, Contracts.GenerateDocumentIdResponse>
 {
     public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdMediatrRequest request, CancellationToken cancellation)
     {
-        decimal seq = 1;
+        long seq = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
 
         return new Contracts.GenerateDocumentIdResponse
         {
@@ -21,20 +23,20 @@ internal sealed class GenerateDocumentIdHandler
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
         if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
-            throw new CisConfigurationException(17002, "ServiceUser2LoginBinding configuration is not set");
+            throw new CisConfigurationException(500, "ServiceUser2LoginBinding configuration is not set");
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))
             return _configuration.ServiceUser2LoginBinding[serviceUser ?? "_default"];
         else
-            throw new CisConfigurationException(17003, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
+            throw new CisConfigurationException(501, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
     }
 
     private readonly AppConfiguration _configuration;
-    private readonly Data.IXxvDapperConnectionProvider _connectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _connectionProvider;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public GenerateDocumentIdHandler(
-        Data.IXxvDapperConnectionProvider connectionProvider,
+        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> connectionProvider,
         Core.Security.IServiceUserAccessor serviceUserAccessor,
         AppConfiguration configuration)
     {

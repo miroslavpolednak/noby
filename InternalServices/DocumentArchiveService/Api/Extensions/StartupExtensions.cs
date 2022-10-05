@@ -6,7 +6,7 @@ namespace CIS.InternalServices.DocumentArchiveService.Api;
 
 internal static class StartupExtensions
 {
-    public static WebApplicationBuilder AddRipService(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder)
     {
         // disable default model state validations
         builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
@@ -34,7 +34,7 @@ internal static class StartupExtensions
 
         // databases
         builder.Services
-            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
+            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("default"));
 
         return builder;
     }

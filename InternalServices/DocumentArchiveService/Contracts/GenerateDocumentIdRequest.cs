@@ -29,23 +29,23 @@ public enum EnvironmentNames
     Unknown = 0,
 
     [ProtoEnum]
-    DEV = 1,
+    Dev = 1,
 
     [ProtoEnum]
-    FAT = 2,
+    Fat = 2,
 
     [ProtoEnum]
-    SIT = 3,
+    Sit = 3,
 
     [ProtoEnum]
-    UAT = 4,
+    Uat = 4,
 
     [ProtoEnum]
-    PREPROD = 5,
+    Preprod = 5,
 
     [ProtoEnum]
-    EDU = 6,
+    Edu = 6,
 
     [ProtoEnum]
-    PROD = 7
+    Prod = 7
 }

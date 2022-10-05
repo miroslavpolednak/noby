@@ -13,7 +13,8 @@ internal sealed class GenerateDocumentIdMediatrRequestValidator
         When(t => t.Request is not null, () =>
         {
             RuleFor(t => t.Request.EnvironmentIndex)
-                .GreaterThan(9);
+                .LessThanOrEqualTo(9)
+                .WithMessage("Environment Index must be less than 10").WithErrorCode("502");
         });
     }
 }
