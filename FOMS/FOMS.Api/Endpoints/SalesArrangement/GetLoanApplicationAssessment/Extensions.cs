@@ -7,6 +7,7 @@ using cArrangement = DomainServices.SalesArrangementService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCis = CIS.Infrastructure.gRPC.CisTypes;
 using cCustomer = DomainServices.CustomerService.Contracts;
+using CIS.Foms.Enums;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -165,7 +166,7 @@ internal static class Extensions
 
                         return new cLA.LoanApplicationEntrepreneurIncome
                         {
-                            EntrepreneurIdentificationNumber = new List<string?> { i.Employement?.Employer?.Cin, i.Employement?.Employer?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
+                            EntrepreneurIdentificationNumber = new List<string?> { i.Entrepreneur?.Cin, i.Entrepreneur?.BirthNumber }.FirstOrDefault(i => !String.IsNullOrEmpty(i)),
                             Address = new cRS.AddressDetail
                             {
                                 CountryId = i.Entrepreneur?.CountryOfResidenceId,
@@ -240,6 +241,8 @@ internal static class Extensions
                 var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
+                var cGenderId = c.NaturalPerson?.GenderId;
+
                 return new cLA.LoanApplicationCustomer
                 {
                     InternalCustomerId = cOnSA.CustomerOnSAId,
@@ -253,7 +256,7 @@ internal static class Extensions
                     BirthName = c.NaturalPerson?.BirthName,
                     BirthDate = c.NaturalPerson?.DateOfBirth,
                     BirthPlace = c.NaturalPerson?.PlaceOfBirth,
-                    GenderId = c.NaturalPerson?.GenderId,
+                    GenderId = cGenderId == (int)Genders.Unknown ? null : cGenderId,
                     MaritalStateId = c.NaturalPerson?.MaritalStatusStateId,
                     EducationLevelId = c.NaturalPerson?.EducationLevelId > 0 ? c.NaturalPerson?.EducationLevelId : null, // neposílat pokud 0
                     AcademicTitlePrefix = academicTitlePrefix,
@@ -276,13 +279,17 @@ internal static class Extensions
                 Other = h.Expenses.OtherExpenseAmount,
             };
 
+            var propertySettlementId = h.Data?.PropertySettlementId;
+            var childrenUpToTenYearsCount = h.Data?.ChildrenUpToTenYearsCount;
+            var childrenOverTenYearsCount = h.Data?.ChildrenOverTenYearsCount;
+
             return new cLA.LoanApplicationHousehold
             {
                 HouseholdId = h.HouseholdTypeId,
                 HouseholdTypeId = h.HouseholdTypeId,
-                PropertySettlementId = h.Data.PropertySettlementId.HasValue ? h.Data.PropertySettlementId.Value : 0,
-                ChildrenUpToTenYearsCount = h.Data.ChildrenUpToTenYearsCount,
-                ChildrenOverTenYearsCount = h.Data.ChildrenOverTenYearsCount,
+                PropertySettlementId = propertySettlementId.HasValue ? propertySettlementId.Value : 0,
+                ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
+                ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
                 Customers = data.CustomersOnSa.Select(i => MapCustomer(i)).ToList(),
             };

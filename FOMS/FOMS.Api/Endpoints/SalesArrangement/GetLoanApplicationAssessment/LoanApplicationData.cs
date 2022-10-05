@@ -58,7 +58,7 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment
             List<DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem> obligationTypes
             )
         {
-            LoanApplicationDataVersion = Guid.NewGuid().ToString().Replace("-", "");
+            LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture);
             Arrangement = arrangement;
             Offer = offer;
             CaseData = caseData;
