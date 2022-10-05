@@ -46,7 +46,7 @@ internal static class CustomerOnSAServiceExpressions
             ObligationId = entity.CustomerOnSAObligationId,
             Creditor = new Contracts.ObligationCreditor
             {
-                CreditorId = entity.CreditorId,
+                CreditorId = entity.CreditorId ?? "",
                 IsExternal = entity.CreditorIsExternal,
                 Name = entity.CreditorName ?? ""
             },
