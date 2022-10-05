@@ -8,9 +8,15 @@ namespace CIS.InternalServices.DocumentArchiveService.Contracts;
 public class GenerateDocumentIdRequest
     : IRequest<GenerateDocumentIdResponse>
 {
+    /// <summary>
+    /// kód volajícího prostředí systému
+    /// </summary>
     [ProtoMember(1)]
     public EnvironmentNames EnvironmentName { get; set; }
 
+    /// <summary>
+    /// index prostředí (default 0) - jednociferné číslo
+    /// </summary>
     [ProtoMember(2)]
     public int? EnvironmentIndex { get; set; }
 }

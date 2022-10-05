@@ -7,7 +7,7 @@ internal static class XxvDapperConnectionProviderExtensions
     const string c4mUserInfoSql = @"SELECT TOP 1 * FROM dbo.fceGetPersonHF_RIP(@id, @scheme)";
 
     public static async Task<Dto.C4mUserInfoData> GetC4mUserInfo(
-        this CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> provider,
+        this CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> provider,
         Contracts.Shared.Identity? identity,
         CancellationToken cancellationToken)
     {

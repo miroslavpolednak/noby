@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.InternalServices.DocumentArchiveService.Api</name>
+    </assembly>
+    <members>
+        <member name="P:CIS.InternalServices.DocumentArchiveService.Api.AppConfiguration.ServiceUser2LoginBinding">
+            <summary>
+            Nastaveni mapovani technickych uzivatelu sluzby vs. Login v generovanem ID
+            [service_user, C4M ItChannel]
+            </summary>
+        </member>
+        <member name="M:CIS.InternalServices.DocumentArchiveService.Api.AppConfigurationExtensions.GetLoginFromServiceUser(CIS.InternalServices.DocumentArchiveService.Api.AppConfiguration,System.String)">
+            <summary>
+            Vrati ItChannel pro C4M, ktery je platny pro aktualniho service usera
+            </summary>
+        </member>
+        <member name="M:CIS.InternalServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceController.GenerateDocumentId(CIS.InternalServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest,System.Threading.CancellationToken)">
+            <summary>
+            Výpočet rozšířené bonity
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE">https://wiki.kb.cz/confluence/display/HT/CREDIT+WORTHINESS+SERVICE</a>
+            </remarks>
+        </member>
+    </members>
+</doc>
