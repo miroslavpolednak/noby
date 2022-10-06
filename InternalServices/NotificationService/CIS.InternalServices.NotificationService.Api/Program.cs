@@ -4,10 +4,14 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.HostedServices;
+using CIS.InternalServices.NotificationService.Api.Repositories;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+using Confluent.Kafka;
 using Confluent.Kafka.DependencyInjection;
 using FluentValidation;
 using MediatR;
@@ -19,6 +23,9 @@ var webAppOptions = winSvc
     :  new WebApplicationOptions { Args = args };
 
 var builder = WebApplication.CreateBuilder(webAppOptions);
+
+// Configuration
+builder.Configure();
 
 // Mvc
 builder.Services.AddControllers();
@@ -57,16 +64,27 @@ builder.Services
     });
 
 // kafka
+var kafkaConfiguration = builder.GetKafkaConfiguration();
+
 builder.Services
     .AddMemoryCache()
     .AddAvroSerializers()
     .AddKafkaClient(new Dictionary<string, string>
     {
-        { "bootstrap.servers", "localhost:9092" },
+        { "bootstrap.servers", kafkaConfiguration.ConnectionStrings.Logging },
+        { "enable.idempotence", "true" },
+        { "group.id", "notification-api" }
+    })
+    .AddKafkaClient<MscResultConsumer>(new Dictionary<string, string>
+    {
+        { "bootstrap.servers", kafkaConfiguration.ConnectionStrings.Logging },
         { "enable.idempotence", "true" },
         { "group.id", "notification-api" }
     })
     .AddBackgroundServices();
+
+// database
+builder.AddEntityFramework<NotificationDbContext>("nobyDb");
 
 // swagger
 builder.AddCustomSwagger();

@@ -28,7 +28,7 @@ public class MscResultConsumer : BackgroundService
     {
         _logger.LogInformation("Subscribing topic: {topic}", Topics.MscResultIn);
         _mscResultConsumer.Subscribe(Topics.MscResultIn);
-
+        
         await Task.Run(() =>
         {
             while (!stoppingToken.IsCancellationRequested)
