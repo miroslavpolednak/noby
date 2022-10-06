@@ -4,6 +4,7 @@
 public class LoanApplicationIncome
 {
     [ProtoMember(1)]
+    [Required]
     public bool IsIncomeConfirmed { get; set; }
 
     [ProtoMember(2)]
