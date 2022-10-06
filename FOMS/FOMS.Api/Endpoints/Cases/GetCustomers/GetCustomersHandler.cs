@@ -49,7 +49,7 @@ internal class GetCustomersHandler
                     t.CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
-                    saDetail.Mortgage.Agent.GetValueOrDefault() == t.CustomerOnSAId
+                    saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId
                 ))
                 .ToList();
         }
