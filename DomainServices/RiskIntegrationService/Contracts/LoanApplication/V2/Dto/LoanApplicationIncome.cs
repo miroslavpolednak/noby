@@ -7,7 +7,7 @@ public class LoanApplicationIncome
     public bool IsIncomeConfirmed { get; set; }
 
     [ProtoMember(2)]
-    public DateTime LastConfirmedDate { get; set; }
+    public DateTime? LastConfirmedDate { get; set; }
 
     [ProtoMember(3)]
     public List<LoanApplicationEmploymentIncome>? EmploymentIncomes { get; set; }
