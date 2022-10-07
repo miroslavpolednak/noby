@@ -26,7 +26,7 @@ public class NotificationRepository
             State = NotificationState.Unsent,
             Created = _dateTime.Now,
             Updated = _dateTime.Now,
-            ErrorList = new HashSet<string>()
+            ErrorSet = new HashSet<string>()
         };
 
         await _dbContext.AddAsync(result, token);
@@ -36,8 +36,9 @@ public class NotificationRepository
 
     public async Task<Result> GetResult(Guid notificationId, CancellationToken token = default)
     {
-        return await _dbContext.Result.FindAsync(new object?[]{ notificationId }, token) ??
-            throw new CisNotFoundException(1, $"Result #{notificationId} not found");
+        // todo: Cis Exception code 300-399
+        return await _dbContext.Results.FindAsync(new object?[]{ notificationId }, token) ??
+            throw new CisNotFoundException(300, $"Results #{notificationId} not found");
     }
     
     public async Task<Result> UpdateResult(
@@ -47,15 +48,14 @@ public class NotificationRepository
         CancellationToken token = default)
     {
         var result = await GetResult(notificationId, token);
-        var errorList = new HashSet<string>();
-        errorList.UnionWith(result.ErrorList);
-        errorList.UnionWith(newErrors);
+        var errorSet = new HashSet<string>();
+        errorSet.UnionWith(result.ErrorSet);
+        errorSet.UnionWith(newErrors);
         
         result.State = state;
-        result.ErrorList = errorList;
+        result.ErrorSet = errorSet;
         result.Updated = _dateTime.Now;
-
-        _dbContext.Update(result);
+        
         await _dbContext.SaveChangesAsync(token);
         return result;
     }

@@ -6,7 +6,7 @@ namespace CIS.InternalServices.NotificationService.Api.Repositories;
 
 public class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
-    public DbSet<Result> Result { get; set; } = null!;
+    public DbSet<Result> Results { get; set; } = null!;
 
     public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
     {

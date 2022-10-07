@@ -11,8 +11,8 @@ using CIS.InternalServices.NotificationService.Api.HostedServices;
 using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
-using Confluent.Kafka;
 using Confluent.Kafka.DependencyInjection;
+using DomainServices.CodebookService.Abstraction;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
@@ -62,6 +62,9 @@ builder.Services
         config.ResponseCompressionLevel = CompressionLevel.Optimal;
         config.Interceptors.Add<GenericServerExceptionInterceptor>();
     });
+
+// Codebook service
+builder.Services.AddCodebookService();
 
 // kafka
 var kafkaConfiguration = builder.GetKafkaConfiguration();
