@@ -4,13 +4,28 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
+using CIS.InternalServices.NotificationService.Api.HostedServices;
+using CIS.InternalServices.NotificationService.Api.Repositories;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+using Confluent.Kafka.DependencyInjection;
+using DomainServices.CodebookService.Abstraction;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
 
-var builder = WebApplication.CreateBuilder(args);
+var winSvc = args.Any(t => t.Equals("winsvc"));
+var webAppOptions = winSvc
+    ?  new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
+    :  new WebApplicationOptions { Args = args };
+
+var builder = WebApplication.CreateBuilder(webAppOptions);
+
+// Configuration
+builder.Configure();
 
 // Mvc
 builder.Services.AddControllers();
@@ -48,13 +63,42 @@ builder.Services
         config.Interceptors.Add<GenericServerExceptionInterceptor>();
     });
 
+// Codebook service
+builder.Services.AddCodebookService();
+
+// kafka
+var kafkaConfiguration = builder.GetKafkaConfiguration();
+
+builder.Services
+    .AddMemoryCache()
+    .AddAvroSerializers()
+    .AddKafkaClient(new Dictionary<string, string>
+    {
+        { "bootstrap.servers", kafkaConfiguration.ConnectionStrings.Logging },
+        { "enable.idempotence", "true" },
+        { "group.id", "notification-api" }
+    })
+    .AddKafkaClient<MscResultConsumer>(new Dictionary<string, string>
+    {
+        { "bootstrap.servers", kafkaConfiguration.ConnectionStrings.Logging },
+        { "enable.idempotence", "true" },
+        { "group.id", "notification-api" }
+    })
+    .AddBackgroundServices();
+
+// database
+builder.AddEntityFramework<NotificationDbContext>("nobyDb");
+
 // swagger
 builder.AddCustomSwagger();
 
 // kestrel configuration
 builder.UseKestrelWithCustomConfiguration();
 
-// if (runAsWinSvc) builder.Host.UseWindowsService();
+if (winSvc)
+{
+    builder.Host.UseWindowsService();
+}
 
 var app = builder.Build();
 

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Grpc.Net.Client" Version="2.48.0" />
+      <PackageReference Include="protobuf-net.Grpc" Version="1.0.177" />
+    </ItemGroup>
+
+</Project>
