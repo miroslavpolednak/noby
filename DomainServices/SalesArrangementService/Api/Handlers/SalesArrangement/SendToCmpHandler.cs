@@ -43,10 +43,11 @@ internal class SendToCmpHandler
     #endregion
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
-    {
-        
+    {        
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation, true);
         var builder = new FormDataJsonBuilder(formData);
+
+        _logger.LogDebug($"Parsed ProductTypeKind: {builder.ProductTypeKind} from data [ProductTypeId: {formData.ProductType?.Id}, LoanKindId: {formData.Offer?.SimulationInputs?.LoanKindId}]");
 
         // load user
         var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(formData.Arrangement.Created.UserId!.Value, cancellation));
