@@ -88,7 +88,7 @@ internal class ProductService : IProductServiceAbstraction
 
         var result = await _service.GetCustomersOnProductAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
 
-        return new SuccessfulServiceCallResult();
+        return new SuccessfulServiceCallResult<GetCustomersOnProductResponse>(result);
     }
 
 }
