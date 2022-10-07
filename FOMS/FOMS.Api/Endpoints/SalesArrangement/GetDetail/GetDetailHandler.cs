@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Abstraction;
+﻿using DomainServices.CaseService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using _CA = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
@@ -74,21 +73,7 @@ internal class GetDetailHandler
     static object? getParameters(_SA.SalesArrangement saInstance)
         => saInstance.ParametersCase switch
         {
-            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangement.Dto.ParametersMortgage
-            {
-                ContractSignatureTypeId = saInstance.Mortgage.ContractSignatureTypeId,
-                ExpectedDateOfDrawing = saInstance.Mortgage.ExpectedDateOfDrawing,
-                IncomeCurrencyCode = saInstance.Mortgage.IncomeCurrencyCode,
-                ResidencyCurrencyCode = saInstance.Mortgage.ResidencyCurrencyCode,
-                Agent = saInstance.Mortgage.Agent,
-                AgentConsentWithElCom = saInstance.Mortgage.AgentConsentWithElCom,
-                LoanRealEstates = saInstance.Mortgage.LoanRealEstates is null ? null : saInstance.Mortgage.LoanRealEstates.Select(x => new SalesArrangement.Dto.LoanRealEstateDto
-                {
-                    IsCollateral = x.IsCollateral,
-                    RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
-                    RealEstateTypeId = x.RealEstateTypeId
-                }).ToList()
-            },
+            _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.Drawing => new SalesArrangement.Dto.ParametersDrawing
             {
             },
