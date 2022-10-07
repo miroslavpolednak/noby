@@ -4,6 +4,17 @@ namespace DomainServices.SalesArrangementService.Abstraction.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceAbstraction
 {
+    public async Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStartedWithId(nameof(DeleteSalesArrangement), salesArrangementId);
+        var result = await _service.DeleteSalesArrangementAsync(
+            new()
+            {
+                SalesArrangementId = salesArrangementId
+            }, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult();
+    }
+
     public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(CreateSalesArrangement), caseId);

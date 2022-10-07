@@ -94,5 +94,11 @@ public interface ISalesArrangementServiceAbstraction
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Smazani zadosti
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 }
 
