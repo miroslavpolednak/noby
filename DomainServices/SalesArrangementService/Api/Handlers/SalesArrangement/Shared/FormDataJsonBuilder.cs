@@ -18,7 +18,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
         public FormData Data { get; init; }
 
-        private EProductTypeKind ProductTypeKind { get; init; }
+        public EProductTypeKind ProductTypeKind { get; init; }
 
         public FormDataJsonBuilder(FormData data)
         {
@@ -71,9 +71,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         /// <summary>
         /// Určuje, zda se má být atribut [key] obsažen ve výsledném JSONu 
         /// </summary>
-        private bool FillKey(EJsonKey key)
+        public static bool FillKey(EProductTypeKind productTypeKind, EJsonKey key)
         {
-            if (this.ProductTypeKind == EProductTypeKind.Unknown)
+            if (productTypeKind == EProductTypeKind.Unknown)
             {
                 return true;
             }
@@ -83,7 +83,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                 return true;
             }
 
-            return this.ProductTypeKind.HasFlag(SpecificJsonKeys[key]);
+            return SpecificJsonKeys[key].HasFlag(productTypeKind);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
         /// </summary>
         private object? WhenFillKey(EJsonKey key, object? value)
         {
-            return FillKey(key) ? value : null;
+            return FillKey(ProductTypeKind, key) ? value : null;
         }
 
         #endregion
