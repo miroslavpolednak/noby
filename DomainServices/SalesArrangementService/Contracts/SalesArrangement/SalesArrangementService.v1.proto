@@ -13,8 +13,8 @@ import "GetSalesArrangementByOfferId.proto";
 import "UpdateSalesArrangement.proto";
 import "Types.proto";
 import "ValidateSalesArrangement.proto";
-import "UpdateSalesArrangementParameters.proto";
 import "UpdateLoanAssessmentParameters.proto";
+import "UpdateSalesArrangementParameters.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
