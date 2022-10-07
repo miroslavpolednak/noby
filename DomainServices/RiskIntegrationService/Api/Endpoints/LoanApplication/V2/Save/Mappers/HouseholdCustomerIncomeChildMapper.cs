@@ -14,7 +14,7 @@ internal sealed class HouseholdCustomerIncomeChildMapper
         var model = new _C4M.LoanApplicationIncome
         {
             IncomeConfirmed = income.IsIncomeConfirmed,
-            LastConfirmedDate = income.LastConfirmedDate,
+            LastConfirmedDate = income.LastConfirmedDate ?? System.DateTime.MinValue,
             EmploymentIncome = await mapIncomesEmployment(income.EmploymentIncomes, verification),
             EntrepreneurIncome = await mapIncomesEntrepreneur(income.EntrepreneurIncome),
             RentIncome = await mapIncomesRent(income.RentIncome),

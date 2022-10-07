@@ -3,6 +3,9 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
+using CIS.Core;
 
 namespace FOMS.Api.Endpoints.Cases.GetCustomers;
 
@@ -13,8 +16,10 @@ internal class GetCustomersHandler
     {
         // data o CASE-u
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
+        // seznam zemi
+        var countries = (await _codebookService.Countries(cancellationToken));
 
-        List<(Identity Identity, int Role, bool Agent)> customerIdentities;
+        List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, bool Agent)> customerIdentities;
 
         if (caseInstance.State == 1)
         {
@@ -39,11 +44,12 @@ internal class GetCustomersHandler
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers
-                .Where(t => _allowedCustomerRoles.Contains(t.CustomerRoleId) && t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+                .Where(t => _allowedCustomerRoles.Contains(t.CustomerRoleId))
                 .Select(t => (
-                    t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
+                    t.CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
+                    (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
-                    saDetail.Mortgage.Agent.GetValueOrDefault() == t.CustomerOnSAId
+                    saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId
                 ))
                 .ToList();
         }
@@ -57,7 +63,8 @@ internal class GetCustomersHandler
                 .Customers
                 .Where(t => _allowedCustomerRoles.Contains(t.RelationshipCustomerProductTypeId))
                 .Select(t => (
-                    Identity: t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb), 
+                    Identity: t.CustomerIdentifiers.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
+                    CustomerOnSA: default(_HO.CustomerOnSA),
                     Role: t.RelationshipCustomerProductTypeId,
                     Agent: t.Agent ?? false
                  ))
@@ -65,13 +72,49 @@ internal class GetCustomersHandler
         }
 
         // detail customeru z customerService
-        var customerDetails = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerListResponse>(
-            await _customerService.GetCustomerList(customerIdentities.Select(t => t.Identity), cancellationToken)
-        );
-        // seznam zemi
-        var countries = (await _codebookService.Countries(cancellationToken));
+        var identifiedCustomers = customerIdentities.Where(t => t.Identity is not null).ToList();
+        var customerDetails = new List<_Cust.CustomerDetailResponse>();
+        if (identifiedCustomers.Any())
+        {
+            customerDetails = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerListResponse>(
+                await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.Identity!), cancellationToken)
+            ).Customers.ToList();
+        }
 
-        return customerDetails.Customers.Select(t => t.ToApiResponse(customerIdentities, countries)).ToList();
+        return customerIdentities.Select(t =>
+        {
+            var customer = t.Identity is null ? new _Cust.CustomerDetailResponse
+            {
+                NaturalPerson = new _Cust.NaturalPerson
+                {
+                    FirstName = t.CustomerOnSA!.FirstNameNaturalPerson,
+                    LastName = t.CustomerOnSA.Name,
+                    DateOfBirth = t.CustomerOnSA.DateOfBirthNaturalPerson
+                }
+            } : customerDetails.First(t => t.Identity.IdentityId == t.Identity.IdentityId);
+            var permanentAddress = customer.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
+            var mailingAddress = customer.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
+            var country = countries.FirstOrDefault(t => t.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
+
+            return new GetCustomersResponseCustomer
+            {
+                Agent = t.Agent,
+                Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
+                Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.MobilPrivate)?.Value,
+                KBID = customer.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                RoleName = ((CIS.Foms.Enums.CustomerRoles)t.Role).GetAttribute<DisplayAttribute>()!.Name,
+                DateOfBirth = customer.NaturalPerson?.DateOfBirth,
+                LastName = customer.NaturalPerson?.LastName,
+                FirstName = customer.NaturalPerson?.FirstName,
+                PermanentAddress = permanentAddress,
+                ContactAddress = mailingAddress,
+                CitizenshipCountry = country is null ? null : new()
+                {
+                    Id = country.Id,
+                    Name = country?.Name
+                }
+            };
+        }).ToList();
     }
 
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };

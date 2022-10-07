@@ -18,9 +18,80 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
 
         public FormData Data { get; init; }
 
+        public EProductTypeKind ProductTypeKind { get; init; }
+
         public FormDataJsonBuilder(FormData data)
         {
             Data = data;
+            ProductTypeKind = ParseProductTypeKind(data);
+        }
+
+        #endregion
+
+
+        #region ProductType Specific
+
+        /// <summary>
+        /// Určuje produktový typ na základě dat (ProductType, LoanKind)
+        /// </summary>
+        private static EProductTypeKind ParseProductTypeKind(FormData data)
+        {
+            var typeKindCode = $"{data.ProductType.Id}_{data.Offer.SimulationInputs.LoanKindId}";
+
+            var productTypeKind = EProductTypeKind.Unknown;
+
+            switch (typeKindCode)
+            {
+                case "20001_2000": productTypeKind = EProductTypeKind.KBMortgage; break;                    // Hypoteční úvěr(standard) - Produkt: 20001 / Druh: 2000
+                case "20010_2000": productTypeKind = EProductTypeKind.KBAmericanMortgage; break;            // Americká hypotéka - Produkt: 20010 / Druh: 2000
+                case "20001_2001": productTypeKind = EProductTypeKind.KBMortgageWithoutRealEstate; break;   // HÚ bez nemovitosti - Produkt: 20001 / Druh: 2001
+                default: productTypeKind = EProductTypeKind.Unknown; break;                                 // Pokud není uvedeno, plnění atributů celého objektu není produktově závislé
+            }
+
+            return productTypeKind;
+        }
+
+        /// <summary>
+        /// Mapa atributů, které jsou závislé na produktovém typu
+        /// </summary>
+        private static readonly Dictionary<EJsonKey, EProductTypeKind> SpecificJsonKeys = new Dictionary<EJsonKey, EProductTypeKind>
+        {
+            {EJsonKey.UvDruh, EProductTypeKind.KBMortgage | EProductTypeKind.KBMortgageWithoutRealEstate },
+            {EJsonKey.PojisteniNemSuma, EProductTypeKind.KBMortgage | EProductTypeKind.KBAmericanMortgage },
+            {EJsonKey.DeveloperId, EProductTypeKind.KBMortgage },
+            {EJsonKey.DeveloperProjektId, EProductTypeKind.KBMortgage },
+            {EJsonKey.DeveloperPopis, EProductTypeKind.KBMortgage },
+            {EJsonKey.SeznamUcelu, EProductTypeKind.KBMortgage | EProductTypeKind.KBAmericanMortgage },
+            {EJsonKey.SeznamObjektu, EProductTypeKind.KBMortgage },
+            {EJsonKey.FinKrytiVlastniZdroje, EProductTypeKind.KBMortgage | EProductTypeKind.KBMortgageWithoutRealEstate },
+            {EJsonKey.FinKrytiCiziZdroje, EProductTypeKind.KBMortgage | EProductTypeKind.KBMortgageWithoutRealEstate },
+            {EJsonKey.FinKrytiCelkem, EProductTypeKind.KBMortgage | EProductTypeKind.KBMortgageWithoutRealEstate },
+        };
+
+        /// <summary>
+        /// Určuje, zda se má být atribut [key] obsažen ve výsledném JSONu 
+        /// </summary>
+        public static bool FillKey(EProductTypeKind productTypeKind, EJsonKey key)
+        {
+            if (productTypeKind == EProductTypeKind.Unknown)
+            {
+                return true;
+            }
+
+            if (!SpecificJsonKeys.ContainsKey(key))
+            {
+                return true;
+            }
+
+            return SpecificJsonKeys[key].HasFlag(productTypeKind);
+        }
+
+        /// <summary>
+        /// Pokud má být atribut [key] obsažen ve výsledném JSONu, vrátí hodnotu [value]. V opačném případě vrátí [null]. 
+        /// </summary>
+        private object? WhenFillKey(EJsonKey key, object? value)
+        {
+            return FillKey(ProductTypeKind, key) ? value : null;
         }
 
         #endregion
@@ -533,7 +604,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         cislo_smlouvy = Data.Arrangement.ContractNumber,
                         case_id = Data.Arrangement.CaseId.ToJsonString(),
                         stav_zadosti = Data.SalesArrangementStatesById[Data.Arrangement.State].StarbuildId.ToJsonString(),
-                        business_case_ID = Data.Arrangement.RiskBusinessCaseId,                                                                 
+                        business_case_ID = Data.Arrangement.RiskBusinessCaseId,
                         risk_segment = Data.Arrangement.RiskSegment,
                         laa_id = Data.Arrangement.LoanApplicationAssessmentId,
                         datum_uzavreni_obchodu = Data.Arrangement.RiskBusinessCaseExpirationDate?.ToJsonString(),
@@ -541,7 +612,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                         datum_prvniho_podpisu = firstSignedDate.ToJsonString(),
                         uv_produkt = Data.ProductType.Id.ToJsonString(),
-                        uv_druh = Data.Offer.SimulationInputs.LoanKindId.ToJsonString(),                                                             // OfferInstance
+                        uv_druh = WhenFillKey(EJsonKey.UvDruh, Data.Offer.SimulationInputs.LoanKindId.ToJsonString()),
                         indikativni_LTV = Data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
                         termin_cerpani_do = ((DateTime)Data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
                         sazba_vyhlasovana = Data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
@@ -556,14 +627,14 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         individualni_cenotvorba_odchylka = Data.Offer.SimulationInputs.InterestRateDiscount.ToJsonString(),
                         predp_termin_cerpani = Data.Arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
                         den_splaceni = Data.Offer.SimulationInputs.PaymentDay.ToJsonString(),                                                        // OfferInstance
-                        developer_id = Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString(),
-                        developer_projekt_id = Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString(),
-                        developer_popis = developerDescription,
+                        developer_id = WhenFillKey(EJsonKey.DeveloperId, Data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString()),
+                        developer_projekt_id = WhenFillKey(EJsonKey.DeveloperProjektId, Data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString()),
+                        developer_popis = WhenFillKey(EJsonKey.DeveloperPopis, developerDescription),
                         forma_splaceni = 1.ToJsonString(),                                                                                          // [MOCK] OfferInstance (default 1) // ???  
                         seznam_mark_akci = Data.Offer.AdditionalSimulationResults.MarketingActions?.OrderBy(i => i.MarketingActionId).Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
                         seznam_poplatku = Data.Offer.AdditionalSimulationResults.Fees?.OrderBy(i => i.FeeId).Select(i => MapFee(i)).ToArray() ?? Array.Empty<object>(),              // Data.Offer.SimulationResults.Fees
-                        seznam_ucelu = Data.Offer.SimulationInputs.LoanPurposes?.OrderBy(i => i.LoanPurposeId).Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>(),
-                        seznam_objektu = Data.Arrangement.Mortgage?.LoanRealEstates.OrderBy(i => i.RealEstateTypeId).Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>(),
+                        seznam_ucelu = WhenFillKey(EJsonKey.SeznamUcelu, Data.Offer.SimulationInputs.LoanPurposes?.OrderBy(i => i.LoanPurposeId).Select(i => MapLoanPurpose(i)).ToArray() ?? Array.Empty<object>()),
+                        seznam_objektu = WhenFillKey(EJsonKey.SeznamObjektu, Data.Arrangement.Mortgage?.LoanRealEstates.OrderBy(i => i.RealEstateTypeId).Select((i, index) => MapLoanRealEstate(i, index + 1)).ToArray() ?? Array.Empty<object>()),
                         seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i)).ToArray() ?? Array.Empty<object>(),
                         zprostredkovano_3_stranou = false.ToJsonString(),                                                                           // [MOCK] SalesArrangement - dle typu Usera (na offer zatím nemáme, dohodnuta mockovaná hodnota FALSE) // ???
                         sjednal_CPM = user_cpm,
@@ -576,9 +647,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         lhuta_ukonceni_cerpani = lhutaUkonceniCerpani.ToJsonString(),
                         datum_garance_us = Data.Arrangement.OfferGuaranteeDateFrom.ToJsonString(),
                         garance_us_platnost_do = Data.Offer.BasicParameters.GuaranteeDateTo.ToJsonString(),
-                        fin_kryti_vlastni_zdroje = Data.Offer.BasicParameters.FinancialResourcesOwn.ToJsonString(),                                  // OfferInstance
-                        fin_kryti_cizi_zdroje = Data.Offer.BasicParameters.FinancialResourcesOther.ToJsonString(),                                   // OfferInstance
-                        fin_kryti_celkem = financialResourcesTotal.ToJsonString(),                                                                   // OfferInstance
+                        fin_kryti_vlastni_zdroje = WhenFillKey(EJsonKey.FinKrytiVlastniZdroje, Data.Offer.BasicParameters.FinancialResourcesOwn.ToJsonString()),                                  // OfferInstance
+                        fin_kryti_cizi_zdroje = WhenFillKey(EJsonKey.FinKrytiCiziZdroje, Data.Offer.BasicParameters.FinancialResourcesOther.ToJsonString()),                                   // OfferInstance
+                        fin_kryti_celkem = WhenFillKey(EJsonKey.FinKrytiCelkem, financialResourcesTotal.ToJsonString()),                                                                   // OfferInstance
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),                                // Codebook SignatureTypes
                         zpusob_podpisu_zadosti = Data.Arrangement.Mortgage?.SalesArrangementSignatureTypeId.ToJsonString(),                          // Codebook SignatureTypes                        
                         souhlas_el_forma_komunikace = Data.Arrangement.Mortgage?.AgentConsentWithElCom.ToJsonString(),
@@ -586,7 +657,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         zmocnenec_mp_id = FindZmocnenecMpId().ToJsonString(),
 
                         RZP_suma = insuranceSumRiskLife.ToJsonString(),
-                        pojisteni_nem_suma = insuranceSumRealEstate.ToJsonString(),
+                        pojisteni_nem_suma = WhenFillKey(EJsonKey.PojisteniNemSuma, insuranceSumRealEstate.ToJsonString()),
 
                         zadaZvyhodneni = (Data.Offer.SimulationInputs.IsEmployeeBonusRequested == true).ToJsonString(),
                         datum_zahajeni_anuitniho_splaceni = Data.Offer.SimulationResults.AnnuityPaymentsDateFrom.ToJsonString(),
