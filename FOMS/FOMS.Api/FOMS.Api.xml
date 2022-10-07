@@ -1577,6 +1577,36 @@
             Den splátky úvěru
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.DocumentNumber">
+            <summary>
+            Číslo dokladu
+            </summary>
+        </member>
+        <member name="M:FOMS.Api.Endpoints.Product.ProductController.GetCustomersOnProduct(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí seznam dlužníků a spoludlužníků na daném produktu
+            </summary>
+            <remarks>
+            <i>DS:</i> ProductService/GetCustomersOnProduct<br />
+            <i>DS:</i> CustomerService/GetList - použito KB ID
+            </remarks>
+            <returns>Seznam klientů na produktu</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ContractNumber">
             <summary>
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
