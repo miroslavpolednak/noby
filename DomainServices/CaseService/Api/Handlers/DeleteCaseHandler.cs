@@ -6,7 +6,7 @@ internal class DeleteCaseHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.DeleteCaseMediatrRequest request, CancellationToken cancellation)
     {
         var count = ServiceCallResult
-            .ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, null, cancellation))
+            .ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellation))
             .SalesArrangements.Count;
 
         if (count > 0)

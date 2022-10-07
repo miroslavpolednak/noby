@@ -25,5 +25,10 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "Zrušeno")]
     [CisStarbuildId(2)]
-    Cancelled = 3
+    Cancelled = 3,
+
+    [EnumMember]
+    [Display(Name = "Podepsáno")]
+    [CisStarbuildId(1)]
+    IsSigned = 4
 }

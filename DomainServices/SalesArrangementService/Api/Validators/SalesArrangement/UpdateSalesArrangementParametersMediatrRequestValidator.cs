@@ -9,7 +9,7 @@ internal class UpdateSalesArrangementParametersMediatrRequestValidator
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("16010");
+            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("18010");
 
         RuleFor(t => t.Request.Mortgage)
             .SetValidator(new SalesArrangementParametersMortgageValidator(codebookService))

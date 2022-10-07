@@ -11,6 +11,8 @@
 
         [DataMember(Order = 3)]
         public int? ProductTypeId { get; set; }
-        
+
+        [DataMember(Order = 4)]
+        public int SalesArrangementCategory { get; set; }
     }
 }
