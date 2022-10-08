@@ -41,9 +41,11 @@ message NaturalPerson {
 
    cis.types.NullableGrpcDate LegallyIncapableUntil = 17;
 
+   string KbRelationshipCode = 18;
+
    google.protobuf.Int32Value TaxResidencyCountryId = 19;
 
-   string KbRelationshipCode = 18;
+   string Segment = 20;
 }
 
 message NaturalPersonBasicInfo {
