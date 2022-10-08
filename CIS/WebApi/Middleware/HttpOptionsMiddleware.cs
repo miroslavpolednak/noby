@@ -5,16 +5,16 @@
 /// </summary>
 public class HttpOptionsMiddleware
 {
-    private readonly RequestDelegate next;
+    private readonly RequestDelegate _next;
 
     public HttpOptionsMiddleware(RequestDelegate next)
     {
-        this.next = next;
+        _next = next;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
-        await next(context);
+        await _next(context);
 
         if (context.Request.Method == "OPTIONS" && context.Response.StatusCode == StatusCodes.Status405MethodNotAllowed)
         {

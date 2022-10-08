@@ -9,25 +9,31 @@ public class SendEmailRequestValidator : AbstractValidator<EmailSendRequest>
     public SendEmailRequestValidator()
     {
         RuleFor(request => request.From)
-            .NotEmpty()
+            .NotNull()
+            .SetValidator(new EmailAddressValidator())
             .WithErrorCode(nameof(EmailSendRequest.From));
         
         RuleFor(request => request.To)
             .NotEmpty()
+            .ForEach(to =>
+                to.SetValidator(new EmailAddressValidator()))
             .WithErrorCode(nameof(EmailSendRequest.To));
-        
+
         RuleForEach(request => request.Bcc)
-            .MaximumLength(255)
+            .SetValidator(new EmailAddressValidator())
             .WithErrorCode(nameof(EmailSendRequest.Bcc));
-        
+
         RuleForEach(request => request.Cc)
-            .MaximumLength(255)
-            .WithErrorCode(nameof(EmailSendRequest.Cc));
-        
-        RuleFor(request => request.ReplyTo)
-            .MaximumLength(255)
-            .WithErrorCode(nameof(EmailSendRequest.ReplyTo));
-        
+            .SetValidator(new EmailAddressValidator())
+            .WithErrorCode(nameof(EmailSendRequest.Bcc));
+
+        When(request => request.ReplyTo is not null, () =>
+        {
+            RuleFor(request => request.ReplyTo!)
+                .SetValidator(new EmailAddressValidator())
+                .WithErrorCode(nameof(EmailSendRequest.Bcc));
+        });
+
         RuleFor(request => request.Subject)
             .NotEmpty()
             .MaximumLength(400)

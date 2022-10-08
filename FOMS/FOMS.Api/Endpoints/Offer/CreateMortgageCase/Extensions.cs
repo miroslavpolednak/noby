@@ -34,6 +34,8 @@ internal static class Extensions
             CaseOwnerUserId = userId,
             Customer = new _Case.CustomerData
             {
+                EmailForOffer = request.EmailForOffer ?? "",
+                PhoneNumberForOffer = request.PhoneNumberForOffer ?? "",
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName,
                 Name = request.LastName,

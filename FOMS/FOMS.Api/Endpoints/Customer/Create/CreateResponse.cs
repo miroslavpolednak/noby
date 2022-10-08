@@ -6,6 +6,9 @@ public sealed class CreateResponse
 {
     public string ResponseCode { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Vstupní data se liší od dat z KB CM
+    /// </summary>
     public bool InputDataDifferent { get; set; }
 
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
@@ -20,7 +23,7 @@ public sealed class CreateResponse
 
     public DateTime? LegallyIncapableToDate { get; set; }
 
-    public List<AddressModel>? Addresses { get; set; }
+    public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
     public List<ContactModel>? Contacts { get; set; }
 

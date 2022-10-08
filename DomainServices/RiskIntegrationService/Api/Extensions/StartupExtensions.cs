@@ -10,7 +10,7 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddRipService(this WebApplicationBuilder builder)
     {
         // disable default model state validations
-        builder.Services.AddSingleton<IObjectModelValidator, NullObjectModelValidator>();
+        builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
 
         builder.Services
             .AddMediatR(typeof(Program).Assembly)
@@ -43,19 +43,8 @@ internal static class StartupExtensions
 
         // databases
         builder.Services
-            .AddDapper<IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
+            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv"));
 
         return builder;
-    }
-
-    internal class NullObjectModelValidator : IObjectModelValidator
-    {
-#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
-        public void Validate(ActionContext actionContext,
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
-            ValidationStateDictionary validationState, string prefix, object model)
-        {
-
-        }
     }
 }

@@ -29,4 +29,8 @@ public sealed class CreateMortgageCaseRequest
     /// Datum narozeni klienta, pokud neni identifikovan.
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
+
+    public string? PhoneNumberForOffer { get; set; }
+
+    public string? EmailForOffer { get; set; }
 }

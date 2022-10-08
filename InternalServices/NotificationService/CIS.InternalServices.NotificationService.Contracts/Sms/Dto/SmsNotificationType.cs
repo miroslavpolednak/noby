@@ -10,5 +10,6 @@ public enum SmsNotificationType
     [ProtoEnum]
     Unknown = 0,
     
-    // todo:
+    [ProtoEnum]
+    RetentionAnnouncement = 1,
 }

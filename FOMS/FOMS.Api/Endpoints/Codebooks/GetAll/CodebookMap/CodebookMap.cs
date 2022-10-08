@@ -124,19 +124,22 @@ public class CodebookMap : ICodebookMap
             var loanKinds = await codebookService.LoanKinds(cancellationToken);
             var productTypes = await codebookService.ProductTypes(cancellationToken);
 
-            return productTypes.Select(t => new Dto.ProductTypeItem
-            {
-                Id = t.Id,
-                LoanAmountMax = t.LoanAmountMax,
-                LoanAmountMin = t.LoanAmountMin,
-                LoanDurationMax = t.LoanDurationMax,
-                LoanDurationMin = t.LoanDurationMin,
-                LtvMax = t.LtvMax,
-                LtvMin = t.LtvMin,
-                MandantId = t.MandantId,
-                Name = t.Name,
-                LoanKinds = t.LoanKindIds is null ? null : loanKinds.Where(x => t.LoanKindIds.Contains(x.Id)).ToList()
-            }).ToList();
+            return productTypes
+                .Where(t => t.IsValid)
+                .Select(t => new Dto.ProductTypeItem
+                {
+                    Id = t.Id,
+                    LoanAmountMax = t.LoanAmountMax,
+                    LoanAmountMin = t.LoanAmountMin,
+                    LoanDurationMax = t.LoanDurationMax,
+                    LoanDurationMin = t.LoanDurationMin,
+                    LtvMax = t.LtvMax,
+                    LtvMin = t.LtvMin,
+                    MandantId = t.MandantId,
+                    Name = t.Name,
+                    LoanKinds = t.LoanKindIds is null ? null : loanKinds.Where(x => t.LoanKindIds.Contains(x.Id)).ToList()
+                })
+                .ToList();
         }
     }
 

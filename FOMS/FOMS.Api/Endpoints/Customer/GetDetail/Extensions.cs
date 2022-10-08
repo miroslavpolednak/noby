@@ -1,7 +1,6 @@
 ﻿using DomainServices.CustomerService.Contracts;
 using FOMS.Api.Endpoints.Customer.GetDetail.Dto;
 using Google.Protobuf.Collections;
-using System.Runtime.CompilerServices;
 
 namespace FOMS.Api.Endpoints.Customer.GetDetail;
 
@@ -45,18 +44,6 @@ internal static class Extensions
             IsPrimary = t.IsPrimary
         }).ToList();
 
-    public static List<AddressModel>? ToResponseDto(this RepeatedField<CIS.Infrastructure.gRPC.CisTypes.GrpcAddress>? addresses)
-        => addresses is null ? null : addresses.Select(t => new AddressModel()
-        {
-            Street = t.Street,
-            Postcode = t.Postcode,
-            City = t.City,
-            IsPrimary = t.IsPrimary,
-            AddressTypeId = t.AddressTypeId,
-            LandRegistryNumber = t.LandRegistryNumber,
-            BuildingIdentificationNumber = t.BuildingIdentificationNumber
-        }).ToList();
-
     public static GetDetailResponse ToResponseDto(this CustomerDetailResponse customer)
         => new GetDetailResponse
         {
@@ -64,6 +51,6 @@ internal static class Extensions
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
-            Addresses = customer.Addresses?.ToResponseDto()
+            Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList()
         };
 }

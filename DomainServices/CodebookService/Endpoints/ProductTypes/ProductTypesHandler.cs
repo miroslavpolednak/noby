@@ -56,10 +56,10 @@ ORDER BY PORADIE_ZOBRAZENIA ASC";
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProviderXxd;
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
     private readonly ILogger<ProductTypesHandler> _logger;
-    private readonly MediatR.IMediator _mediator;
+    private readonly IMediator _mediator;
     
     public ProductTypesHandler(
-        MediatR.IMediator mediator,
+        IMediator mediator,
         CIS.Core.Data.IConnectionProvider connectionProviderCodebooks,
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProviderXxd,
         ILogger<ProductTypesHandler> logger)

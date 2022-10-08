@@ -97,7 +97,8 @@ internal class CustomerManagementDetailProvider
             IsLegallyIncapable = np.LegalCapacityRestriction?.RestrictionType ?? string.Empty,
             LegallyIncapableUntil = np.LegalCapacityRestriction?.RestrictionUntil,
             TaxResidencyCountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
-            KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty
+            KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty,
+            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty
         };
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())

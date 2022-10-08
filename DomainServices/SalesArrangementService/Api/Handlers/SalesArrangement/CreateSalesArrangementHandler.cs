@@ -9,12 +9,12 @@ internal class CreateSalesArrangementHandler
     {
         // validace product instance type
         _ = (await _codebookService.SalesArrangementTypes(cancellation)).FirstOrDefault(t => t.Id == request.Request.SalesArrangementTypeId)
-            ?? throw new CisNotFoundException(17005, $"SalesArrangementTypeId {request.Request.SalesArrangementTypeId} does not exist.");
+            ?? throw new CisNotFoundException(18005, $"SalesArrangementTypeId {request.Request.SalesArrangementTypeId} does not exist.");
 
         // validace na existenci case
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
         _ = ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
-            ?? throw new CisNotFoundException(17002, $"Case ID #{request.Request.CaseId} does not exist.");
+            ?? throw new CisNotFoundException(18002, $"Case ID #{request.Request.CaseId} does not exist.");
 
         // vytvorit entitu
         var saEntity = new Repositories.Entities.SalesArrangement()
