@@ -9,6 +9,6 @@ internal sealed class GetSalesArrangementByOfferIdMediatrRequestValidator
     {
         RuleFor(t => t.OfferId)
             .GreaterThan(0)
-            .WithMessage("OfferId must be > 0").WithErrorCode("16011");
+            .WithMessage("OfferId must be > 0").WithErrorCode("18011");
     }
 }

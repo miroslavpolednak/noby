@@ -17,10 +17,10 @@ public class ProductController : ControllerBase
     /// <i>DS:</i> CustomerService/GetList - použito KB ID
     /// </remarks>
     /// <returns>Seznam klientů na produktu</returns>
-    [HttpGet("{productId:long}/customers")]
+    [HttpGet("{caseId:long}/customers")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
-    public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long productId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(productId), cancellationToken);
+    public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(caseId), cancellationToken);
 }

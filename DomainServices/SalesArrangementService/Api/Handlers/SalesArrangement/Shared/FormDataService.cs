@@ -304,7 +304,7 @@ internal class FormDataService
     public async Task<FormData> LoadAndPrepare(int salesArrangementId, CancellationToken cancellation, bool addFirstSignatureDate = false)
     {
         // load SalesArrangement
-        var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }), cancellation);
+        var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new SalesArrangementIdRequest { SalesArrangementId = salesArrangementId }), cancellation);
 
         // check mandatory fields of SalesArrangement
         CheckSA(arrangement);

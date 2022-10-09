@@ -7,7 +7,7 @@ internal sealed class GetSalesArrangementMediatrRequest
 {
     public int SalesArrangementId { get; init; }
 
-    public GetSalesArrangementMediatrRequest(GetSalesArrangementRequest request)
+    public GetSalesArrangementMediatrRequest(SalesArrangementIdRequest request)
     {
         SalesArrangementId = request.SalesArrangementId;
     }

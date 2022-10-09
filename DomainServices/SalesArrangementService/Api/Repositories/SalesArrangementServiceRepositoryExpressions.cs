@@ -24,6 +24,7 @@ internal static class SalesArrangementServiceRepositoryExpressions
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
             RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
             FirstSignedDate = t.FirstSignedDate,
+            SalesArrangementSignatureTypeId = t.SalesArrangementSignatureTypeId
         };
     }
 }

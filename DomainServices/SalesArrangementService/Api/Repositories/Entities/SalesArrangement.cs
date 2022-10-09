@@ -37,9 +37,9 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     public DateTime? OfferGuaranteeDateTo { get; set; }
 
-
     public DateTime? RiskBusinessCaseExpirationDate { get; set; }
 
+    public int? SalesArrangementSignatureTypeId { get; set; }
 
     public DateTime? FirstSignedDate { get; set; }
 }

@@ -19,13 +19,22 @@ internal class UpdateSalesArrangementDataHandler
         var entity = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation) 
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
 
+        // kontrola na kategorii
+        if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == entity.SalesArrangementTypeId).SalesArrangementCategory != 2)
+            throw new CisValidationException(18013, $"SalesArrangement type not supported");
+
+        // kontrola na stav
+        if (entity.State != (int)SalesArrangementStates.InProgress && entity.State != (int)SalesArrangementStates.IsSigned)
+            throw new CisValidationException($"SalesArrangement cannot be updated/deleted in this state {entity.State}");
+
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.Request.RiskBusinessCaseId) && !request.Request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);
 
         entity.ContractNumber = request.Request.ContractNumber;
         entity.RiskBusinessCaseId = request.Request.RiskBusinessCaseId;
         entity.FirstSignedDate = request.Request.FirstSignedDate;
-        
+        entity.SalesArrangementSignatureTypeId = request.Request.SalesArrangementSignatureTypeId;
+
         await _dbContext.SaveChangesAsync(cancellation);
 
         // notifikovat SB

@@ -87,6 +87,16 @@
             Seznam URL sluzeb zaregistrovanych v ServiceDiscovery
             </summary>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,FOMS.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoření servisního SalesArrangement-u
+            </summary>
+            <remarks>
+            Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+            Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.
+            </remarks>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Cases.CasesController.GetCustomers(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail dlužníků a spoludlužníků pro daný case
@@ -154,6 +164,16 @@
             <i>DS:</i> CaseService/GetTaskList<br/>
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
+            <summary>
+            Typ žádosti - číselník SalesArrangementType
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementResponse.SalesArrangementId">
+            <summary>
+            ID Sales Arrangement
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Prefix">
             <summary>
@@ -1709,6 +1729,7 @@
             <remarks>
             OneOf(
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
+            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersDrawing
             )
             </remarks>
         </member>
@@ -1877,6 +1898,16 @@
             Tatáž verze data (timestamp), která se používá pro LoanApplicationSave a CreateAssesment:
             </summary>
         </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetLoanApplicationAssessment(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Smazaní SalesArrangement-u
+            </summary>
+            <remarks>
+            Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
+            <i>DS:</i>SalesArrangementService/DeleteSalesArrangement
+            </remarks>
+            <param name="salesArrangementId">ID</param>
+        </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetLoanApplicationAssessment(System.Int32,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Vrací vyhodnocení dané úvěrové žádosti
@@ -1972,6 +2003,131 @@
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstatePurchaseTypeId">
             <example>1</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.Applicant">
+            <summary>
+            Žadatel o čerpání
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.Agent">
+            <summary>
+            Zmocněná osoba
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.RepaymentAccount">
+            <summary>
+            Účet pro splácení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.PayoutList">
+            <summary>
+            Seznam výplat
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.DrawingDate">
+            <summary>
+            Datum čerpání
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.IsImmediateDrawing">
+            <summary>
+            Čerpání bezodkladně
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.IdentificationDocument">
+            <summary>
+            Osobní doklad
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.Order">
+            <summary>
+            Pořadové číslo výplaty v kolekci
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.DrawingAmount">
+            <summary>
+            Výše čerpané částky
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.PrefixAccount">
+            <summary>
+            Předčíslí účtu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.AccountNumber">
+            <summary>
+            Číslo účtu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.BankCode">
+            <summary>
+            Kód banky
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.VariableSymbol">
+            <summary>
+            Variabilní symbol
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.SpecificSymbol">
+            <summary>
+            Specifický symbol
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.ConstantSymbol">
+            <summary>
+            Konstantní symbol
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.PayoutTypeId">
+            <summary>
+            Typ výplaty - konsolidace nebo výplata
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingDocument.IdentificationDocumentTypeId">
+            <summary>
+            Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingDocument.Number">
+            <summary>
+            Číslo osobního dokladu
+            </summary>
+        </member>
+        <member name="T:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount">
+            <summary>
+            Účet pro splácení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount.Prefix">
+            <summary>
+            Předčíslí účtu pro splácení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount.Number">
+            <summary>
+            Číslo účtu pro splácení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount.BankCode">
+            <summary>
+            Kód banky účtu pro splácení
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.IncomeCurrencyCode">
             <example>CZK</example>

@@ -10,6 +10,22 @@ public class CasesController : ControllerBase
     public CasesController(IMediator mediator) =>  _mediator = mediator;
 
     /// <summary>
+    /// Vytvoření servisního SalesArrangement-u
+    /// </summary>
+    /// <remarks>
+    /// Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+    /// Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.
+    /// </remarks>
+    [HttpPost("{caseId:long}/sales-arrangement")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: Case Detail", "UC: SalesArrangement" })]
+    [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
+    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
+
+    /// <summary>
     /// Detail dlužníků a spoludlužníků pro daný case
     /// </summary>
     /// <remarks>

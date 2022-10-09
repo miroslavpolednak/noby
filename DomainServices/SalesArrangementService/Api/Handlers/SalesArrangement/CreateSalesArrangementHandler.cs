@@ -17,8 +17,9 @@ internal class CreateSalesArrangementHandler
             ?? throw new CisNotFoundException(18002, $"Case ID #{request.Request.CaseId} does not exist.");
 
         // vytvorit entitu
-        var saEntity = new Repositories.Entities.SalesArrangement()
+        var saEntity = new Repositories.Entities.SalesArrangement
         {
+            SalesArrangementSignatureTypeId = request.Request.SalesArrangementSignatureTypeId,
             CaseId = request.Request.CaseId,
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             StateUpdateTime = _dateTime.Now,
@@ -44,12 +45,19 @@ internal class CreateSalesArrangementHandler
 
         // params
         if (request.Request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
-            await _mediator.Send(new Dto.UpdateSalesArrangementParametersMediatrRequest(new()
+        {
+            var data = new UpdateSalesArrangementParametersRequest()
             {
-                SalesArrangementId = salesArrangementId,
-                Mortgage = request.Request.Mortgage
-            }), cancellation);
+                SalesArrangementId = salesArrangementId
+            };
+            if (request.Request.DataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage)
+                data.Mortgage = request.Request.Mortgage;
+            if (request.Request.DataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing)
+                data.Drawing = request.Request.Drawing;
 
+            await _mediator.Send(new Dto.UpdateSalesArrangementParametersMediatrRequest(data), cancellation);
+        }
+        
         _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);
 
         return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };

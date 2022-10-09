@@ -6,7 +6,6 @@ import "SalesArrangement.proto";
 
 message GetSalesArrangementListRequest {
 	int64 CaseId = 1;
-	repeated int32 States = 2;
 }
 
 message GetSalesArrangementListResponse {
