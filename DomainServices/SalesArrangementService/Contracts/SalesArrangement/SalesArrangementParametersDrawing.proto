@@ -17,7 +17,7 @@ message SalesArrangementParametersDrawing {
 	bool IsImmediateDrawing = 6;
 
 	message SalesArrangementParametersDrawingAgent {
-		string Name = 1;
+		string FirstName = 1;
 		string LastName = 2;
 		cis.types.GrpcDate DateOfBirth = 3;
 		SalesArrangementParametersDrawingIdentificationDocument IdentificationDocument = 4;
@@ -45,7 +45,7 @@ message SalesArrangementParametersDrawing {
 		google.protobuf.StringValue VariableSymbol = 7;
 		google.protobuf.StringValue SpecificSymbolUcetKeSplaceni = 8;
 		google.protobuf.StringValue ConstantSymbol = 9;
-		int32 PayoutType = 10;
+		int32 PayoutTypeId = 10;
 	}
 }
 

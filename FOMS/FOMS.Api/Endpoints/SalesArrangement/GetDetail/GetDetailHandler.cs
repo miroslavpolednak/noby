@@ -74,9 +74,7 @@ internal class GetDetailHandler
         => saInstance.ParametersCase switch
         {
             _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.Drawing => new SalesArrangement.Dto.ParametersDrawing
-            {
-            },
+            _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.None => null
         };
 

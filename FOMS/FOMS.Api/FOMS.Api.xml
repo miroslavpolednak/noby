@@ -2004,6 +2004,16 @@
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstatePurchaseTypeId">
             <example>1</example>
         </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.Applicant">
+            <summary>
+            Žadatel o čerpání
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.Agent">
+            <summary>
+            Zmocněná osoba
+            </summary>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.RepaymentAccount">
             <summary>
             Účet pro splácení
@@ -2022,6 +2032,26 @@
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.IsImmediateDrawing">
             <summary>
             Čerpání bezodkladně
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent.IdentificationDocument">
+            <summary>
+            Osobní doklad
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.Order">
@@ -2064,7 +2094,7 @@
             Konstantní symbol
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.PayoutType">
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.PayoutTypeId">
             <summary>
             Typ výplaty - konsolidace nebo výplata
             </summary>

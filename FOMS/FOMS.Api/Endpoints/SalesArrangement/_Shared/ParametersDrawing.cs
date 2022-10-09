@@ -2,7 +2,15 @@
 
 public sealed class ParametersDrawing
 {
+    /// <summary>
+    /// Žadatel o čerpání
+    /// </summary>
     public CIS.Foms.Types.CustomerIdentity? Applicant { get; set; }
+
+    /// <summary>
+    /// Zmocněná osoba
+    /// </summary>
+    public ParametersDrawingAgent? Agent { get; set; }
 
     /// <summary>
     /// Účet pro splácení
@@ -23,6 +31,29 @@ public sealed class ParametersDrawing
     /// Čerpání bezodkladně
     /// </summary>
     public bool IsImmediateDrawing { get; set; }
+}
+
+public sealed class ParametersDrawingAgent
+{
+    /// <summary>
+    /// Jméno
+    /// </summary>
+    public string? FirstName { get; set; }
+
+    /// <summary>
+    /// Příjmení
+    /// </summary>
+    public string? LastName { get; set; }
+
+    /// <summary>
+    /// Datum narození
+    /// </summary>
+    public DateTime? DateOfBirth { get; set; }
+
+    /// <summary>
+    /// Osobní doklad
+    /// </summary>
+    public ParametersDrawingDocument? IdentificationDocument { get; set; }
 }
 
 public sealed class ParametersDrawingPayout
@@ -70,18 +101,7 @@ public sealed class ParametersDrawingPayout
     /// <summary>
     /// Typ výplaty - konsolidace nebo výplata
     /// </summary>
-    public string? PayoutType { get; set; }
-}
-
-public sealed class ParametersDrawingAgent
-{
-    public string? Name { get; set; }
-
-    public string? LastName { get; set; }
-
-    public DateTime? DateOfBirth { get; set; }
-
-    public ParametersDrawingDocument? IdentificationDocument { get; set; }
+    public int? PayoutTypeId { get; set; }
 }
 
 public sealed class ParametersDrawingDocument
@@ -94,7 +114,7 @@ public sealed class ParametersDrawingDocument
     /// <summary>
     /// Číslo osobního dokladu
     /// </summary>
-    public string Number { get; set; }
+    public string Number { get; set; } = String.Empty;
 }
 
 /// <summary>
@@ -102,7 +122,7 @@ public sealed class ParametersDrawingDocument
 /// </summary>
 public sealed class ParametersDrawingRepaymentAccount
 {
-    public string? IsAccountNumberMissing { get; set; }
+    public bool IsAccountNumberMissing { get; set; }
 
     /// <summary>
     /// Předčíslí účtu pro splácení
