@@ -24,7 +24,7 @@ internal class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.Request.SalesArrangementTypeId,
             StateUpdateTime = _dateTime.Now,
             ContractNumber = request.Request.ContractNumber,
-            ChannelId = 4 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss...
+            ChannelId = 4 //TODO jak ziskat ChannelId? Z instance uzivatele? Az bude pripravena xxvvss asi...
         };
 
         // get default SA state
@@ -54,6 +54,8 @@ internal class CreateSalesArrangementHandler
                 data.Mortgage = request.Request.Mortgage;
             if (request.Request.DataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing)
                 data.Drawing = request.Request.Drawing;
+
+
 
             await _mediator.Send(new Dto.UpdateSalesArrangementParametersMediatrRequest(data), cancellation);
         }

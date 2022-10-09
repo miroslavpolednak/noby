@@ -835,26 +835,6 @@
             Vstupní data se liší od dat z KB CM
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuingCountryId">
-            <summary>
-            Stát vydání dokladu
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IdentificationDocumentTypeId">
-            <summary>
-            Typ dokladu
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.Number">
-            <summary>
-            Číslo dokladu
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Create.Dto.IdentificationDocument.IssuedBy">
-            <summary>
-            Doklad vydal
-            </summary>
-        </member>
         <member name="M:FOMS.Api.Endpoints.Customer.CustomerController.Create(FOMS.Api.Endpoints.Customer.Create.CreateRequest,System.Threading.CancellationToken)">
             <summary>
             Založení nového klienta
@@ -1612,11 +1592,6 @@
             Datum narození
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.DocumentNumber">
-            <summary>
-            Číslo dokladu
-            </summary>
-        </member>
         <member name="M:FOMS.Api.Endpoints.Product.ProductController.GetCustomersOnProduct(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Vrátí seznam dlužníků a spoludlužníků na daném produktu
@@ -2099,16 +2074,6 @@
             Typ výplaty - konsolidace nebo výplata
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingDocument.IdentificationDocumentTypeId">
-            <summary>
-            Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingDocument.Number">
-            <summary>
-            Číslo osobního dokladu
-            </summary>
-        </member>
         <member name="T:FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount">
             <summary>
             Účet pro splácení
@@ -2200,6 +2165,26 @@
         <member name="T:FOMS.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
             <summary>
             Zalozi RiskBusinessCase pro dany Sales Arrangement
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.IdentificationDocumentBase.IdentificationDocumentTypeId">
+            <summary>
+            Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.IdentificationDocumentBase.Number">
+            <summary>
+            Číslo osobního dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.IdentificationDocumentWithIssuedBy.IssuingCountryId">
+            <summary>
+            Stát vydání dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.IdentificationDocumentWithIssuedBy.IssuedBy">
+            <summary>
+            Doklad vydal
             </summary>
         </member>
     </members>

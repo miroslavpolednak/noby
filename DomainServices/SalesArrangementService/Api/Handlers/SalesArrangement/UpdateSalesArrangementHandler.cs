@@ -25,7 +25,7 @@ internal class UpdateSalesArrangementDataHandler
 
         // kontrola na stav
         if (entity.State != (int)SalesArrangementStates.InProgress && entity.State != (int)SalesArrangementStates.IsSigned)
-            throw new CisValidationException($"SalesArrangement cannot be updated/deleted in this state {entity.State}");
+            throw new CisValidationException(18082, $"SalesArrangement cannot be updated/deleted in this state {entity.State}");
 
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.Request.RiskBusinessCaseId) && !request.Request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);

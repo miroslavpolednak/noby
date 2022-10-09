@@ -19,10 +19,5 @@ public sealed class GetCustomersOnProductCustomer
     /// </summary>
     public DateTime? DateOfBirth { get; set; }
 
-    /// <summary>
-    /// Číslo dokladu
-    /// </summary>
-    public string? DocumentNumber { get; set; }
-
-    public DomainServices.CodebookService.Contracts.GenericCodebookItem? DocumentType { get; set; }
+    public SharedDto.IdentificationDocumentBase? IdentificationDocument { get; set; }
 }

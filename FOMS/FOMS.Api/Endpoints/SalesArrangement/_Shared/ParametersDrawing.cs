@@ -53,7 +53,7 @@ public sealed class ParametersDrawingAgent
     /// <summary>
     /// Osobní doklad
     /// </summary>
-    public ParametersDrawingDocument? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentBase? IdentificationDocument { get; set; }
 }
 
 public sealed class ParametersDrawingPayout
@@ -102,19 +102,6 @@ public sealed class ParametersDrawingPayout
     /// Typ výplaty - konsolidace nebo výplata
     /// </summary>
     public int? PayoutTypeId { get; set; }
-}
-
-public sealed class ParametersDrawingDocument
-{
-    /// <summary>
-    /// Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
-    /// </summary>
-    public int IdentificationDocumentTypeId { get; set; }
-
-    /// <summary>
-    /// Číslo osobního dokladu
-    /// </summary>
-    public string Number { get; set; } = String.Empty;
 }
 
 /// <summary>

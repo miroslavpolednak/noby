@@ -18,5 +18,5 @@ public sealed class GetDetailResponse
     
     public List<Dto.ContactModel>? Contacts { get; set; }
     
-    public Dto.IdentificationDocumentModel? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }
