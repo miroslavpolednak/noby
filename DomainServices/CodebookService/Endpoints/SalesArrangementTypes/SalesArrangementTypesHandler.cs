@@ -20,7 +20,7 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
             }
         }
 
-        private const string _sqlQuery = "SELECT Id, Name, ProductTypeId FROM [dbo].[SalesArrangementType]";
+        private const string _sqlQuery = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory FROM [dbo].[SalesArrangementType]";
 
         private readonly CIS.Core.Data.IConnectionProvider _connectionProvider;
         private readonly ILogger<SalesArrangementTypesHandler> _logger;

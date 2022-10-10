@@ -1,4 +1,5 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using FOMS.Api.SharedDto;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.SendToCmp;
 
@@ -7,16 +8,16 @@ public sealed class SendToCmpResponse
     /// <summary>
     /// Chyby bránící odeslání žádosti.
     /// </summary>
-    public List<ValidationMessageItem> Errors { get; init; }
+    public List<EasValidationMessageItem> Errors { get; init; }
 
     /// <summary>
     /// Varování.
     /// </summary>
-    public List<ValidationMessageItem> Warnings { get; init; }
+    public List<EasValidationMessageItem> Warnings { get; init; }
 
     public SendToCmpResponse(_SA.ValidateSalesArrangementResponse source)
     {
-        Errors = source.Errors.Select(i=> new ValidationMessageItem(i)).ToList();
-        Warnings = source.Warnings.Select(i => new ValidationMessageItem(i)).ToList();
+        Errors = source.Errors.Select(i=> new EasValidationMessageItem(i)).ToList();
+        Warnings = source.Warnings.Select(i => new EasValidationMessageItem(i)).ToList();
     }
 }

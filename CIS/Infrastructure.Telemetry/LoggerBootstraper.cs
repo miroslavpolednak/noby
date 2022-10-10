@@ -85,7 +85,7 @@ internal class LoggerBootstraper
         if (configuration.Seq is not null)
         {
             loggerConfiguration
-                .AuditTo
+                .WriteTo
                 .Seq(configuration.Seq.ServerUrl);
         }
 

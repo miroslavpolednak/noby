@@ -5,6 +5,8 @@ namespace CIS.Foms.Types;
 public class Address
 {
     [JsonIgnore]
+    public bool IsPrimary { get; set; }
+
     public int? AddressTypeId { get; set; }
 
     /// <summary>
@@ -21,6 +23,11 @@ public class Address
     /// Číslo popisné
     /// </summary>
     public string? LandRegistryNumber { get; set; }
+
+    /// <summary>
+    /// Číslo evidenční
+    /// </summary>
+    public string? EvidenceNumber { get; set; }
 
     /// <summary>
     /// PSČ
@@ -41,6 +48,8 @@ public class Address
     /// Část obce
     /// </summary>
     public string? CityDistrict { get; set; }
+
+    public string? DeliveryDetails { get; set; }
 
     /// <summary>
     /// Praha obvod
