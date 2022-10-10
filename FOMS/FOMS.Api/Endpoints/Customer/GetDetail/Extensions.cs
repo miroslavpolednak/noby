@@ -24,8 +24,8 @@ internal static class Extensions
             IsBrSubscribed = person.IsBrSubscribed
         };
 
-    public static IdentificationDocumentModel ToResponseDto(this IdentificationDocument document)
-        => new IdentificationDocumentModel()
+    public static SharedDto.IdentificationDocumentFull ToResponseDto(this IdentificationDocument document)
+        => new()
         {
             IssuingCountryId = document.IssuingCountryId,
             IdentificationDocumentTypeId = document.IdentificationDocumentTypeId,

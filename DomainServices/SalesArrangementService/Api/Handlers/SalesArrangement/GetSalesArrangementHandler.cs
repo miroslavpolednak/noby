@@ -12,16 +12,28 @@ internal class GetSalesArrangementHandler
         var model = await _repository.GetSalesArrangement(request.SalesArrangementId, cancellation);
 
         // parametry
-        byte[]? parameters = await _dbContext.SalesArrangementsParameters
+        var parameters = await _dbContext.SalesArrangementsParameters
             .AsNoTracking()
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .Select(t => t.ParametersBin)
+            .Select(t => new { ParameterType = t.SalesArrangementParametersType, Bin = t.ParametersBin })
             .FirstOrDefaultAsync(cancellation);
 
         //TODO udelat rozdeleni podle typu produkt. Bude tady vubec rozdil mezi produkty?
-        if (parameters is not null && parameters.Length > 0)
-            model.Mortgage = _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(parameters);
-
+        if (parameters?.Bin is not null && parameters.Bin.Length > 0)
+        {
+            switch (parameters.ParameterType)
+            {
+                case Repositories.Entities.SalesArrangementParametersTypes.Mortgage:
+                    model.Mortgage = _SA.SalesArrangementParametersMortgage.Parser.ParseFrom(parameters.Bin);
+                    break;
+                case Repositories.Entities.SalesArrangementParametersTypes.Drawing:
+                    model.Drawing = _SA.SalesArrangementParametersDrawing.Parser.ParseFrom(parameters.Bin);
+                    break;
+                default:
+                    throw new NotImplementedException($"SalesArrangementParametersType {parameters.ParameterType} is not implemented");
+            }
+        }
+        
         return model;
     }
 

@@ -80,7 +80,7 @@ internal sealed class GetGetCaseParametersHandler
 
         // load SalesArrangement
         var saTypeIds = (await _codebookService.SalesArrangementTypes(cancellation)).Where(i => i.ProductTypeId.HasValue).Select(i => i.Id).ToList();
-        var salesArrangementList = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, null, cancellation));
+        var salesArrangementList = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(caseInstance.CaseId, cancellation));
         var salesArrangementId = salesArrangementList.SalesArrangements.First(i => saTypeIds.Contains(i.SalesArrangementTypeId)).SalesArrangementId;
         var salesArrangementInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation));
 

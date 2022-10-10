@@ -9,7 +9,7 @@ internal class UpdateSalesArrangementParametersMediatrRequestValidator
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("16010");
+            .WithMessage("SalesArrangementId Id must be > 0").WithErrorCode("18010");
 
         RuleFor(t => t.Request.Mortgage)
             .SetValidator(new SalesArrangementParametersMortgageValidator(codebookService))
@@ -18,6 +18,8 @@ internal class UpdateSalesArrangementParametersMediatrRequestValidator
         RuleForEach(t => t.Request.Mortgage.LoanRealEstates)
             .SetValidator(new MortgageLoanRealEstateValidator(codebookService))
             .When(t => t.Request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage); ;
+
+        
     }
 }
 
@@ -52,13 +54,6 @@ internal class SalesArrangementParametersMortgageValidator
                 return id.HasValue ? (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id) : true;
             })
             .WithMessage("ContractSignatureTypeId not found").WithErrorCode("99999"); // TODO: Error code (16061)
-
-        RuleFor(t => t.SalesArrangementSignatureTypeId)
-            .MustAsync(async (id, cancellation) =>
-            {
-                return id.HasValue ? (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id) : true;
-            })
-            .WithMessage("SalesArrangementSignatureTypeId not found").WithErrorCode("99999"); // TODO: Error code
 
         RuleForEach(t => t.LoanRealEstates)
             .SetValidator(new MortgageLoanRealEstateValidator(codebookService));

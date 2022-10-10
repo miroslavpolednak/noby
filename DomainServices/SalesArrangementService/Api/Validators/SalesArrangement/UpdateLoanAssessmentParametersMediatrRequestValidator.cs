@@ -9,6 +9,6 @@ internal class UpdateLoanAssessmentParametersMediatrRequestValidator
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
-            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("16010");
+            .WithMessage("SalesArrangementId must be > 0").WithErrorCode("18010");
     }
 }

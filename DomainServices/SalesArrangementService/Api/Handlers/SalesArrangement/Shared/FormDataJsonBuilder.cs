@@ -651,7 +651,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.S
                         fin_kryti_cizi_zdroje = WhenFillKey(EJsonKey.FinKrytiCiziZdroje, Data.Offer.BasicParameters.FinancialResourcesOther.ToJsonString()),                                   // OfferInstance
                         fin_kryti_celkem = WhenFillKey(EJsonKey.FinKrytiCelkem, financialResourcesTotal.ToJsonString()),                                                                   // OfferInstance
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),                                // Codebook SignatureTypes
-                        zpusob_podpisu_zadosti = Data.Arrangement.Mortgage?.SalesArrangementSignatureTypeId.ToJsonString(),                          // Codebook SignatureTypes                        
+                        zpusob_podpisu_zadosti = Data.Arrangement.SalesArrangementSignatureTypeId.ToJsonString(),                          // Codebook SignatureTypes                        
                         souhlas_el_forma_komunikace = Data.Arrangement.Mortgage?.AgentConsentWithElCom.ToJsonString(),
                         seznam_domacnosti = households?.OrderBy(i => i.HouseholdTypeId).Select((i, index) => MapHousehold(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                         zmocnenec_mp_id = FindZmocnenecMpId().ToJsonString(),

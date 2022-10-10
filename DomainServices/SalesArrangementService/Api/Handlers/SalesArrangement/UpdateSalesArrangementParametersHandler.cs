@@ -30,11 +30,12 @@ internal class UpdateSalesArrangementParametersHandler
         {
             entity = new Repositories.Entities.SalesArrangementParameters
             {
-                SalesArrangementId = request.Request.SalesArrangementId
+                SalesArrangementId = request.Request.SalesArrangementId,
+                SalesArrangementParametersType = getParameterType(request.Request.DataCase)
             };
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
-
+        
         // naplnit parametry serializovanym objektem
         var dataObject = getDataObject(request.Request);
         entity.Parameters = dataObject is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
@@ -44,6 +45,14 @@ internal class UpdateSalesArrangementParametersHandler
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
+
+    static Repositories.Entities.SalesArrangementParametersTypes getParameterType(Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase datacase)
+        => datacase switch
+        {
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => Repositories.Entities.SalesArrangementParametersTypes.Mortgage,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => Repositories.Entities.SalesArrangementParametersTypes.Drawing,
+            _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
+        };
 
     static IMessage? getDataObject(Contracts.UpdateSalesArrangementParametersRequest request)
         => request.DataCase switch

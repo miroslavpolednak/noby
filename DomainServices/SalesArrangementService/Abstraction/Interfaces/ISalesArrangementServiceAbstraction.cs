@@ -46,7 +46,7 @@ public interface ISalesArrangementServiceAbstraction
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="GetSalesArrangementListResponse" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task<IServiceCallResult> GetSalesArrangementList(long caseId, IEnumerable<int>? states = null, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> GetSalesArrangementList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update stavu SA
@@ -94,5 +94,11 @@ public interface ISalesArrangementServiceAbstraction
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
+    /// Smazani zadosti
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
+    Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
 }
 

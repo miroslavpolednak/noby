@@ -7,8 +7,8 @@ internal class GetSalesArrangementListMediatrRequestValidator
 {
     public GetSalesArrangementListMediatrRequestValidator()
     {
-        RuleFor(t => t.Request.CaseId)
+        RuleFor(t => t.CaseId)
             .GreaterThan(0)
-            .WithMessage("CaseId must be > 0").WithErrorCode("16008");
+            .WithMessage("CaseId must be > 0").WithErrorCode("18008");
     }
 }

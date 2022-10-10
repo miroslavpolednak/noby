@@ -49,7 +49,8 @@ public sealed class GetDetailResponse
     /// <remarks>
     /// OneOf(
     /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
+    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersDrawing
     /// )
     /// </remarks>
-    public SalesArrangement.Dto.ParametersMortgage? Parameters { get; set; }
+    public object? Parameters { get; set; }
 }

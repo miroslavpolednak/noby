@@ -1,9 +1,7 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Abstraction;
+﻿using DomainServices.CaseService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using _CA = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using _Case = DomainServices.CaseService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail;
@@ -72,46 +70,28 @@ internal class GetDetailHandler
         };
     }
 
-    static SalesArrangement.Dto.ParametersMortgage? getParameters(_SA.SalesArrangement saInstance)
+    static object? getParameters(_SA.SalesArrangement saInstance)
         => saInstance.ParametersCase switch
         {
-            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangement.Dto.ParametersMortgage
-            {
-                ContractSignatureTypeId = saInstance.Mortgage.ContractSignatureTypeId,
-                SalesArrangementSignatureTypeId = saInstance.Mortgage.SalesArrangementSignatureTypeId,
-                ExpectedDateOfDrawing = saInstance.Mortgage.ExpectedDateOfDrawing,
-                IncomeCurrencyCode = saInstance.Mortgage.IncomeCurrencyCode,
-                ResidencyCurrencyCode = saInstance.Mortgage.ResidencyCurrencyCode,
-                Agent = saInstance.Mortgage.Agent,
-                AgentConsentWithElCom = saInstance.Mortgage.AgentConsentWithElCom,
-                LoanRealEstates = saInstance.Mortgage.LoanRealEstates is null ? null : saInstance.Mortgage.LoanRealEstates.Select(x => new SalesArrangement.Dto.LoanRealEstateDto
-                {
-                    IsCollateral = x.IsCollateral,
-                    RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
-                    RealEstateTypeId = x.RealEstateTypeId
-                }).ToList()
-            },
-            _SA.SalesArrangement.ParametersOneofCase.None => null,
-            _ => throw new NotImplementedException("Api/SalesArrangement/GetDetailHandler/getParameters")
+            _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.None => null
         };
 
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
-    private readonly Services.SalesArrangementDataFactory _dataFactory;
     
     public GetDetailHandler(
         ICaseServiceAbstraction caseService,
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        Services.SalesArrangementDataFactory dataFactory,
         ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _codebookService = codebookService;
         _offerService = offerService;
         _caseService = caseService;
-        _dataFactory = dataFactory;
         _salesArrangementService = salesArrangementService;
     }
 }

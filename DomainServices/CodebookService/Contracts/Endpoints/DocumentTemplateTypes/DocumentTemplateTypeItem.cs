@@ -14,4 +14,7 @@ public class DocumentTemplateTypeItem
     
     [DataMember(Order = 3)]
     public string Name { get; set; }
+
+    [DataMember(Order = 4)]
+    public string ShortName { get; set; }
 }

@@ -7,6 +7,21 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>
+    /// Smazaní SalesArrangement-u
+    /// </summary>
+    /// <remarks>
+    /// Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
+    /// <i>DS:</i>SalesArrangementService/DeleteSalesArrangement
+    /// </remarks>
+    /// <param name="salesArrangementId">ID</param>
+    [HttpDelete("{salesArrangementId:int}")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task GetLoanApplicationAssessment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId), cancellationToken);
+
+    /// <summary>
     /// Vrací vyhodnocení dané úvěrové žádosti
     /// </summary>
     /// <remarks>

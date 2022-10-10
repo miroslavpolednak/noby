@@ -13,7 +13,8 @@ internal class DocumentTemplateTypesHandler
             {
                 Id = (int)t,
                 EnumValue = t,
-                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
+                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                ShortName = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? ""
             })
             .ToList();
 

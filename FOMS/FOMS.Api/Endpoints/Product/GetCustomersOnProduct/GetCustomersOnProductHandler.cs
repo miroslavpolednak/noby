@@ -31,10 +31,10 @@ internal sealed class GetCustomersOnProductHandler
                 FirstName = c?.NaturalPerson?.FirstName,
                 LastName = c?.NaturalPerson?.LastName,
                 DateOfBirth = c?.NaturalPerson?.DateOfBirth,
-                DocumentNumber = c?.IdentificationDocument?.Number,
-                DocumentType = new DomainServices.CodebookService.Contracts.GenericCodebookItem
+                IdentificationDocument = c?.IdentificationDocument is null ? null : new()
                 {
-                    Id = c?.IdentificationDocument?.IdentificationDocumentTypeId ?? 0
+                    IdentificationDocumentTypeId = c.IdentificationDocument.IdentificationDocumentTypeId,
+                    Number = c.IdentificationDocument.Number
                 }
             };
         })
