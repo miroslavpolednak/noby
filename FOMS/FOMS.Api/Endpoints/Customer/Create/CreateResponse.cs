@@ -9,7 +9,7 @@ public sealed class CreateResponse
     /// <summary>
     /// Vstupní data se liší od dat z KB CM
     /// </summary>
-    public bool InputDataDifferent { get; set; }
+    public bool IsInputDataDifferent { get; set; }
 
     public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
 

@@ -113,7 +113,7 @@ internal static class CreateExtensions
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
-            InputDataDifferent = true
+            IsInputDataDifferent = true
         };
 
     public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
@@ -136,7 +136,7 @@ internal static class CreateExtensions
             || !stringCompare(originalRequest.LastName, response.NaturalPerson?.LastName)
             || !(originalRequest.PrimaryAddress?.Equals(response.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent)) ?? true)
         )
-            response.InputDataDifferent = true;
+            response.IsInputDataDifferent = true;
 
         return response;
     }

@@ -7,6 +7,7 @@ public sealed partial class GrpcAddress
         if (address is null) return null;
         return new Foms.Types.Address
         {
+            IsPrimary = address.IsPrimary,
             Street = address.Street,
             City = address.City,
             BuildingIdentificationNumber = address.BuildingIdentificationNumber,
@@ -18,7 +19,9 @@ public sealed partial class GrpcAddress
             PragueDistrict = address.PragueDistrict,
             CountrySubdivision = address.CountrySubdivision,
             PrimaryAddressFrom = address.PrimaryAddressFrom,
-            AddressPointId = address.AddressPointId
+            AddressPointId = address.AddressPointId,
+            DeliveryDetails = address.DeliveryDetails,
+            EvidenceNumber = address.EvidenceNumber
         };
     }
 
@@ -27,6 +30,9 @@ public sealed partial class GrpcAddress
         if (address is null) return null;
         return new GrpcAddress
         {
+            IsPrimary = address.IsPrimary,
+            DeliveryDetails = address.DeliveryDetails ?? "",
+            EvidenceNumber = address.EvidenceNumber ?? "",
             BuildingIdentificationNumber = address.BuildingIdentificationNumber ?? "",
             Street = address.Street ?? "",
             City = address.City ?? "",
