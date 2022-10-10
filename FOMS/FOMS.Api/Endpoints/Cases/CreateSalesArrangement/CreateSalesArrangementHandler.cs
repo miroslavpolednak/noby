@@ -1,6 +1,4 @@
-﻿using _Pr = DomainServices.ProductService.Contracts;
-
-namespace FOMS.Api.Endpoints.Cases.CreateSalesArrangement;
+﻿namespace FOMS.Api.Endpoints.Cases.CreateSalesArrangement;
 
 internal sealed class CreateSalesArrangementHandler
     : IRequestHandler<CreateSalesArrangementRequest, CreateSalesArrangementResponse>
@@ -31,18 +29,15 @@ internal sealed class CreateSalesArrangementHandler
 
     private readonly Services.CreateSalesArrangementParametersFactory _createService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
 
     public CreateSalesArrangementHandler(
         Services.CreateSalesArrangementParametersFactory createService,
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService, 
-        DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService, 
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _createService = createService;
         _codebookService = codebookService;
-        _productService = productService;
         _salesArrangementService = salesArrangementService;
     }
 }
