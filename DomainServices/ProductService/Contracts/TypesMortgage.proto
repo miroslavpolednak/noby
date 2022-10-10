@@ -85,6 +85,7 @@ message MortgageData {
 	google.protobuf.Int32Value FixedRatePeriodRefix = 27;
 	string Cpm = 28;
 	string Icp = 29;
+	cis.types.NullableGrpcDate FirstAnnuityPaymentDate = 30;
 }
 
 message Relationship {

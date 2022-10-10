@@ -1,4 +1,9 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using Azure.Core;
+using DomainServices.SalesArrangementService.Api.Dto;
+using DomainServices.SalesArrangementService.Api.Repositories.Entities;
+using DomainServices.SalesArrangementService.Contracts;
+using Grpc.Net.Client.Balancer;
+using MediatR;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -46,24 +51,39 @@ internal class CreateSalesArrangementHandler
         // params
         if (request.Request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
         {
+            // validace
+            validateDataCase(request.Request.DataCase, request.Request.SalesArrangementSignatureTypeId!.Value);
+
             var data = new UpdateSalesArrangementParametersRequest()
             {
                 SalesArrangementId = salesArrangementId
             };
-            if (request.Request.DataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage)
-                data.Mortgage = request.Request.Mortgage;
-            if (request.Request.DataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing)
-                data.Drawing = request.Request.Drawing;
+            switch (request.Request.DataCase)
+            {
+                case CreateSalesArrangementRequest.DataOneofCase.Mortgage:
+                    data.Mortgage = request.Request.Mortgage;
+                    break;
+                case CreateSalesArrangementRequest.DataOneofCase.Drawing:
+                    data.Drawing = request.Request.Drawing;
+                    break;
+            }
+            var updateMediatrRequest = new Dto.UpdateSalesArrangementParametersMediatrRequest(data);
 
-
-
-            await _mediator.Send(new Dto.UpdateSalesArrangementParametersMediatrRequest(data), cancellation);
+            await _mediator.Send(updateMediatrRequest, cancellation);
         }
         
         _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);
 
         return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };
     }
+
+    static bool validateDataCase(CreateSalesArrangementRequest.DataOneofCase dataCase, int salesArrangementTypeId)
+        => salesArrangementTypeId switch
+        {
+            >= 1 and <= 5 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage => true,
+            6 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing => true,
+            _ => throw new CisValidationException(0, $"CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={salesArrangementTypeId}")
+        };
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;

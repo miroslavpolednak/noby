@@ -41,6 +41,7 @@
 		<ProjectReference Include="..\..\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
 		<ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
 		<ProjectReference Include="..\..\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
+		<ProjectReference Include="..\..\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
 		<ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.SalesArrangementService.Contracts.csproj" />
 	</ItemGroup>

@@ -175,6 +175,14 @@
             ID Sales Arrangement
             </summary>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Cases.CreateSalesArrangement.Services.DrawingValidator.Validate(System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <remarks>
+            https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
+            </remarks>
+        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Prefix">
             <summary>
             Předčíslí účtu
@@ -507,6 +515,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426150084">ObligationTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046178">PaymentDays</a>
+             - <a href="https://wiki.kb.cz/display/HT/PayoutType">PayoutTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421389753">PostCodes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392883923">ProductTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413648025">PropertySettlements</a>
@@ -830,7 +839,7 @@
             Trvalá adresa v ČR
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateResponse.InputDataDifferent">
+        <member name="P:FOMS.Api.Endpoints.Customer.Create.CreateResponse.IsInputDataDifferent">
             <summary>
             Vstupní data se liší od dat z KB CM
             </summary>

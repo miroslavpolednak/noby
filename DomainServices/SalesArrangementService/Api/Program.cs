@@ -9,6 +9,7 @@ using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.ProductService.Abstraction;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -50,6 +51,7 @@ builder.AddCisServiceAuthentication();
 builder.Services
     .AddCisServiceDiscovery()
     .AddCaseService()
+    .AddProductService()
     .AddCodebookService()
     .AddOfferService()
     .AddCustomerService()

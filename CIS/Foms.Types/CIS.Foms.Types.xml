@@ -19,6 +19,11 @@
             Číslo popisné
             </summary>
         </member>
+        <member name="P:CIS.Foms.Types.Address.EvidenceNumber">
+            <summary>
+            Číslo evidenční
+            </summary>
+        </member>
         <member name="P:CIS.Foms.Types.Address.Postcode">
             <summary>
             PSČ
