@@ -1,9 +1,4 @@
-﻿using Azure.Core;
-using DomainServices.SalesArrangementService.Api.Dto;
-using DomainServices.SalesArrangementService.Api.Repositories.Entities;
-using DomainServices.SalesArrangementService.Contracts;
-using Grpc.Net.Client.Balancer;
-using MediatR;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
