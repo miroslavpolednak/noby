@@ -8,23 +8,19 @@ internal class DrawingBuilder
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DrawingBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, long caseId, IHttpContextAccessor httpContextAccessor)
-        : base(logger, caseId)
+    public DrawingBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, _SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+        : base(logger, request)
     {
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<_SA.UpdateSalesArrangementParametersRequest> CreateParameters(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<_SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
-        var data = new _SA.UpdateSalesArrangementParametersRequest()
+        _request.Drawing = new _SA.SalesArrangementParametersDrawing
         {
-            SalesArrangementId = salesArrangementId,
-            Drawing = new _SA.SalesArrangementParametersDrawing
+            RepaymentAccount = new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
             {
-                RepaymentAccount = new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
-                {
-                    IsAccountNumberMissing = true
-                }
+                IsAccountNumberMissing = true
             }
         };
 
@@ -32,13 +28,14 @@ internal class DrawingBuilder
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Abstraction.IProductServiceAbstraction>();
         try
         {
-            var mortgageInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_caseId, cancellationToken));
+            var mortgageInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));
+
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
             {
-                data.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
-                data.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
-                data.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.PaymentAccount.Number;
-                data.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+                _request.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
+                _request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
+                _request.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.PaymentAccount.Number;
+                _request.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
             }
             else
                 _logger.LogInformation("DrawingBuilder: Account is empty");
@@ -48,6 +45,6 @@ internal class DrawingBuilder
             _logger.LogInformation("DrawingBuilder: Account not found in ProductService");
         }
 
-        return data;
+        return _request;
     }
 }

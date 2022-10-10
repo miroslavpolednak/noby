@@ -2,12 +2,12 @@
 
 internal abstract class BaseBuilder
 {
-    protected readonly long _caseId;
+    protected readonly DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest _request;
     protected readonly ILogger<CreateSalesArrangementParametersFactory> _logger;
 
-    public BaseBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, long caseId)
+    public BaseBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest request)
     {
         _logger = logger;
-        _caseId = caseId;
+        _request = request;
     }
 }

@@ -13,13 +13,10 @@ internal sealed class CreateSalesArrangementHandler
         var builder = await _createService
             .CreateBuilder(request.CaseId, request.SalesArrangementTypeId)
             .Validate(cancellationToken);
+        var createRequest = await builder.UpdateParameters(cancellationToken);
 
         // vytvorit SA
-        var newSaId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(request.CaseId, request.SalesArrangementTypeId, null, cancellationToken));
-
-        // update SA params
-        var updateRequest = await builder.CreateParameters(newSaId, cancellationToken);
-        ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken));
+        var newSaId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(createRequest, cancellationToken));
 
         return new CreateSalesArrangementResponse
         {

@@ -2,5 +2,5 @@
 
 internal interface ICreateSalesArrangementParametersBuilder
 {
-    Task<DomainServices.SalesArrangementService.Contracts.UpdateSalesArrangementParametersRequest> CreateParameters(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken));
 }

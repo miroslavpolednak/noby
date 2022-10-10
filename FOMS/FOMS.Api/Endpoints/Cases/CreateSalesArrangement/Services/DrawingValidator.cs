@@ -7,8 +7,8 @@ internal class DrawingValidator
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DrawingValidator(ILogger<CreateSalesArrangementParametersFactory> logger, long caseId, IHttpContextAccessor httpContextAccessor)
-        : base(logger, caseId)
+    public DrawingValidator(ILogger<CreateSalesArrangementParametersFactory> logger, DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+        : base(logger, request)
     {
         _httpContextAccessor = httpContextAccessor;
     }
@@ -20,7 +20,7 @@ internal class DrawingValidator
     {
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Abstraction.IProductServiceAbstraction>();
         // instance hypo
-        var productInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_caseId, cancellationToken));
+        var productInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));
 
         if (productInstance.Mortgage.AvailableForDrawing <= 0M)
             throw new CisValidationException("Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit");
@@ -29,6 +29,6 @@ internal class DrawingValidator
         if (string.IsNullOrEmpty(productInstance.Mortgage.PaymentAccount?.Number))
             throw new CisValidationException("Neexistuje úvěrový účet. Formulář nelze vytvořit");
 
-        return new DrawingBuilder(_logger, _caseId, _httpContextAccessor);
+        return new DrawingBuilder(_logger, _request, _httpContextAccessor);
     }
 }

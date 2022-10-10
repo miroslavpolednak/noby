@@ -15,6 +15,16 @@ public interface ISalesArrangementServiceAbstraction
     Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerInstanceId = null, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
+    /// Vytvoreni Sales Arrangement
+    /// </summary>
+    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="int" /> (SalesArrangementId)</returns>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16001; OfferInstance ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16002; Case ID does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16005; SalesArrangementType #{} does not exist.</exception>
+    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
+    Task<IServiceCallResult> CreateSalesArrangement(CreateSalesArrangementRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
+    /// <summary>
     /// Vraci detail Sales Arrangement bez JSON dat
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="SalesArrangement" /></returns>
