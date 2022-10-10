@@ -1885,6 +1885,15 @@
             Tatáž verze data (timestamp), která se používá pro LoanApplicationSave a CreateAssesment:
             </summary>
         </member>
+        <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.Validate(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Validace dat SalesArrangementu - checkform.
+            </summary>
+            <remarks>
+            Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />
+            <i>DS:</i> SalesArrangementService/validateSalesArrangement
+            </remarks>
+        </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.GetLoanApplicationAssessment(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Smazaní SalesArrangement-u
@@ -1981,6 +1990,16 @@
             DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
             )
             </remarks>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Validate.ValidateResponse.Errors">
+            <summary>
+            Chyby bránící odeslání žádosti.
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.SalesArrangement.Validate.ValidateResponse.Warnings">
+            <summary>
+            Varování.
+            </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
             <example>1</example>

@@ -7,6 +7,20 @@ namespace FOMS.Api.Endpoints.SalesArrangement;
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>
+    /// Validace dat SalesArrangementu - checkform.
+    /// </summary>
+    /// <remarks>
+    /// Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />
+    /// <i>DS:</i> SalesArrangementService/validateSalesArrangement
+    /// </remarks>
+    [HttpGet("{salesArrangementId:int}/validate")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [ProducesResponseType(typeof(Validate.ValidateResponse), StatusCodes.Status200OK)]
+    public async Task<Validate.ValidateResponse> Validate([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new Validate.ValidateRequest(salesArrangementId), cancellationToken);
+
+    /// <summary>
     /// Smazaní SalesArrangement-u
     /// </summary>
     /// <remarks>
