@@ -1,0 +1,49 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  name: MPSS Common
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+# - task: UseDotNet@2
+#  inputs:
+#    packageType: 'sdk'
+#    version: '6.0.x'
+#    includePreviewVersions: true
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: 'DomainServices/HouseholdService/Api/DomainServices.HouseholdService.Api.csproj'
+    feedsToUse: 'config'
+    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
+    noCache: true
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'DomainServices\HouseholdService\Api\DomainServices.HouseholdService.Api.csproj'
+    arguments: '--output $(Build.BinariesDirectory)'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/HouseholdService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/HouseholdService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'FilePath'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\'
