@@ -1,5 +1,4 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Sms;
-using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators;
@@ -11,17 +10,8 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SmsFromTemp
         RuleFor(request => request.Phone)
             .Cascade(CascadeMode.Stop)
             .NotNull()
-            .WithErrorCode(nameof(SmsFromTemplateSendRequest.Phone))
-            .ChildRules(phone =>
-            {
-                phone.RuleFor(p => p.CountryCode)
-                    .NotEmpty()
-                    .WithErrorCode($"{nameof(SmsFromTemplateSendRequest.Phone)}.{nameof(Phone.CountryCode)}");
-
-                phone.RuleFor(p => p.NationalNumber)
-                    .NotEmpty()
-                    .WithErrorCode($"{nameof(SmsFromTemplateSendRequest.Phone)}.{nameof(Phone.NationalNumber)}");
-            });
+            .SetValidator(new PhoneValidator())
+            .WithErrorCode(nameof(SmsFromTemplateSendRequest.Phone));
 
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)

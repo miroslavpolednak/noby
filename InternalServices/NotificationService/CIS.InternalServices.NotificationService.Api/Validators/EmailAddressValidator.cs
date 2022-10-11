@@ -12,6 +12,7 @@ public class EmailAddressValidator : AbstractValidator<EmailAddress>
             .WithErrorCode(nameof(EmailAddress.Value));
 
         RuleFor(emailAddress => emailAddress.Party)
+            .Cascade(CascadeMode.Stop)
             .Must(party =>
                 (party.LegalPerson is not null && party.NaturalPerson is null) ||
                 (party.LegalPerson is null && party.NaturalPerson is not null))
