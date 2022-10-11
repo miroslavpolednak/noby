@@ -11,10 +11,10 @@ public enum NotificationState
     Unknown = 0,
     
     [ProtoEnum]
-    Sent = 1,
+    Unsent = 1,
    
     [ProtoEnum]
-    Unsent = 2,
+    Sent = 2,
     
     [ProtoEnum]
     Delivered = 3,

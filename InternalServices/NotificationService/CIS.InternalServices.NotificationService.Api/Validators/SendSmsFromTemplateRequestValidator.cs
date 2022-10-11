@@ -2,7 +2,7 @@
 using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendSmsFromTemplate;
+namespace CIS.InternalServices.NotificationService.Api.Validators;
 
 public class SendSmsFromTemplateRequestValidator : AbstractValidator<SmsFromTemplateSendRequest>
 {

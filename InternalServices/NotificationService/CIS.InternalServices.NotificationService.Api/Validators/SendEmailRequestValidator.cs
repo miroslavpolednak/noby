@@ -2,7 +2,7 @@
 using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendEmail;
+namespace CIS.InternalServices.NotificationService.Api.Validators;
 
 public class SendEmailRequestValidator : AbstractValidator<EmailSendRequest>
 {

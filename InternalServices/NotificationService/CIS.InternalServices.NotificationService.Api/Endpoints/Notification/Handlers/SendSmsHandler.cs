@@ -1,22 +1,22 @@
 ﻿using System.Text.Json;
+using CIS.InternalServices.NotificationService.Api.Mappers;
 using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using CIS.InternalServices.NotificationService.Msc;
 using Confluent.Kafka;
-using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 using MediatR;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendSms;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Handlers;
 
 public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
-    private readonly IProducer<Null, SendSMS> _mscSmsProducer;
+    private readonly IProducer<Null, SendApi.v1.sms.SendSMS> _mscSmsProducer;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
-        IProducer<Null, SendSMS> mscSmsProducer,
+        IProducer<Null, SendApi.v1.sms.SendSMS> mscSmsProducer,
         NotificationRepository repository,
         ILogger<SendSmsHandler> logger)
     {
@@ -30,14 +30,10 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
         var notificationResult = await _repository.CreateResult(NotificationChannel.Sms, cancellationToken);
         var notificationId = notificationResult.Id.ToString();
 
-        var sendSms = new SendSMS
+        var sendSms = new SendApi.v1.sms.SendSMS
         {
             id = notificationId,
-            phone = new cz.kb.osbs.mcs.sender.sendapi.v1.Phone
-            {
-                countryCode = request.Phone.CountryCode,
-                nationalPhoneNumber = request.Phone.NationalNumber
-            },
+            phone = request.Phone.Map(),
             type = request.Type.ToString(),
             text = request.Text,
             processingPriority = request.ProcessingPriority
@@ -47,7 +43,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
         
         await _mscSmsProducer.ProduceAsync(
             Topics.MscSenderIn,
-            new Message<Null, SendSMS>
+            new Message<Null, SendApi.v1.sms.SendSMS>
             {
                 Value = sendSms
             },

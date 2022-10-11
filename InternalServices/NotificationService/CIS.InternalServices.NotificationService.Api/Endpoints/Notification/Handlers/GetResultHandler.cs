@@ -4,7 +4,7 @@ using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.GetResult;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Handlers;
 
 public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetResponse>
 {
@@ -24,6 +24,8 @@ public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetRespo
         
         var notificationResult = await _repository.GetResult(notificationId, cancellationToken);
 
+        // todo: Error mapping
+        
         return new ResultGetResponse
         {
             NotificationId = notificationResult.Id.ToString(),

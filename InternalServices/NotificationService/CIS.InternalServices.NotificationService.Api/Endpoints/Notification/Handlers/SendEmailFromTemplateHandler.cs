@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Email;
 using MediatR;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendEmailFromTemplate;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Handlers;
 
 public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSendRequest, EmailFromTemplateSendResponse>
 {
