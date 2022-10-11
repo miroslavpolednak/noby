@@ -16,18 +16,14 @@ public class CasesController : ControllerBase
     /// Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
     /// Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
-    /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6)<br/>
-    /// Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage(na vstupu je ProductId, kam je nutné vložit CaseId)<br/>
-    /// Pokud jeden z parametrů účtu(Mortgage object.RepaymentAccount prefix number a bankCode) je null a nebo se volání nepovede provést, pak: <br/>
-    /// Dojde k nastavení SalesArrangement object.Parametrs(Drawing).RepaymentAccount.IsAccountNumberMissing na true<br/>
-    /// Pokud všechny parametry jsou vyplněné<br/>
-    /// Dojde k jejich replikaci do RepaymentAccount objektu a nastavení příznaku IsAccountNumberMissing na false
+    /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
     /// </remarks>
     [HttpPost("{caseId:long}/sales-arrangement")]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Case Detail", "UC: SalesArrangement" })]
     [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(caseId), cancellationToken);
 
