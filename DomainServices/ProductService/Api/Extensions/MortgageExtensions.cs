@@ -50,8 +50,8 @@ internal static class MortgageExtensions
             LoanKindId = eLoan.DruhUveru,
             PaymentAccount = string.IsNullOrEmpty(eLoan.CisloUctu) ? null : new PaymentAccount
             {
-                Prefix = eLoan.PredcisliUctu,
-                Number = eLoan.CisloUctu,
+                Prefix = eLoan.PredcisliUctu ?? "",
+                Number = eLoan.CisloUctu ?? "",
                 BankCode = "0100"//ma byt hardcoded
             },
             CurrentOverdueAmount = null,            // ???
