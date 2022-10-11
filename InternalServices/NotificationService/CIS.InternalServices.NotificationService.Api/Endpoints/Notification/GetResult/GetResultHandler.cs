@@ -1,31 +1,39 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Result;
+﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Repositories;
+using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.GetResult;
 
 public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetResponse>
 {
-    private readonly IMemoryCache _memoryCache;
+    private readonly NotificationRepository _repository;
 
-    public GetResultHandler(IMemoryCache memoryCache)
+    public GetResultHandler(NotificationRepository repository)
     {
-        _memoryCache = memoryCache;
+        _repository = repository;
     }
     
     public async Task<ResultGetResponse> Handle(ResultGetRequest request, CancellationToken cancellationToken)
     {
-        // todo:
-        await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
-        return _memoryCache.TryGetValue(request.NotificationId, out ResultGetResponse resultGetResponse)
-            ? resultGetResponse
-            : new ResultGetResponse
+        if (!Guid.TryParse(request.NotificationId, out var notificationId))
+        {
+            throw new CisValidationException(300, $"Could not parse notificationId: {notificationId}");
+        }
+        
+        var notificationResult = await _repository.GetResult(notificationId, cancellationToken);
+
+        return new ResultGetResponse
+        {
+            NotificationId = notificationResult.Id.ToString(),
+            Channel = notificationResult.Channel,
+            State = notificationResult.State,
+            Errors = notificationResult.ErrorSet.Select(e => new ResultError
             {
-                NotificationId = string.Empty,
-                Channel = NotificationChannel.Unknown,
-                State = NotificationState.Unknown,
-                Errors = new List<ResultError>()
-            };
+                Code = e,
+                Message = "todo"
+            }).ToList()
+        };
     }
 }

@@ -48,12 +48,17 @@ public class NotificationRepository
         CancellationToken token = default)
     {
         var result = await GetResult(notificationId, token);
+
+        if (result.State <= state)
+        {
+            result.State = state;
+        }
+        
         var errorSet = new HashSet<string>();
         errorSet.UnionWith(result.ErrorSet);
         errorSet.UnionWith(newErrors);
-        
-        result.State = state;
         result.ErrorSet = errorSet;
+        
         result.Updated = _dateTime.Now;
         
         await _dbContext.SaveChangesAsync(token);

@@ -9,7 +9,6 @@ using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.HostedServices;
 using CIS.InternalServices.NotificationService.Api.Repositories;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
 using Confluent.Kafka.DependencyInjection;
 using DomainServices.CodebookService.Abstraction;
@@ -70,7 +69,6 @@ builder.Services.AddCodebookService();
 var kafkaConfiguration = builder.GetKafkaConfiguration();
 
 builder.Services
-    .AddMemoryCache()
     .AddAvroSerializers()
     .AddKafkaClient(new Dictionary<string, string>
     {

@@ -1,34 +1,34 @@
 ﻿using System.Text.Json;
-using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using CIS.InternalServices.NotificationService.Msc;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendSms;
 
 public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
     private readonly IProducer<Null, SendSMS> _mscSmsProducer;
-    private readonly IMemoryCache _memoryCache;
+    private readonly NotificationRepository _repository;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
         IProducer<Null, SendSMS> mscSmsProducer,
-        IMemoryCache memoryCache,
+        NotificationRepository repository,
         ILogger<SendSmsHandler> logger)
     {
         _mscSmsProducer = mscSmsProducer;
-        _memoryCache = memoryCache;
+        _repository = repository;
         _logger = logger;
     }
     
     public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationId = Guid.NewGuid().ToString();
+        var notificationResult = await _repository.CreateResult(NotificationChannel.Sms, cancellationToken);
+        var notificationId = notificationResult.Id.ToString();
 
         var sendSms = new SendSMS
         {
@@ -43,13 +43,6 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
             processingPriority = request.ProcessingPriority
         };
         
-        _memoryCache.Set(notificationId, new ResultGetResponse
-        {
-            NotificationId = notificationId,
-            Channel = NotificationChannel.Sms,
-            State = NotificationState.Sent
-        });
-        
         _logger.LogInformation("Sending sms: {sendSms}", JsonSerializer.Serialize(sendSms));
         
         await _mscSmsProducer.ProduceAsync(
@@ -58,6 +51,12 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
             {
                 Value = sendSms
             },
+            cancellationToken);
+
+        await _repository.UpdateResult(
+            notificationResult.Id,
+            NotificationState.Sent,
+            new HashSet<string>(),
             cancellationToken);
         
         return new SmsSendResponse
