@@ -51,6 +51,9 @@ internal class Loan
 
 	public DateTime? DatumZbytkoveSplCelkem { get; set; }
 
+	public string? CisloUctu { get; set; }
+
+	public string? PredcisliUctu { get; set; }
 }
 
 /*
