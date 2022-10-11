@@ -47,7 +47,7 @@ internal class CreateSalesArrangementHandler
         if (request.Request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
         {
             // validace
-            validateDataCase(request.Request.DataCase, request.Request.SalesArrangementSignatureTypeId!.Value);
+            validateDataCase(request.Request.DataCase, request.Request.SalesArrangementTypeId!.Value);
 
             var data = new UpdateSalesArrangementParametersRequest()
             {
