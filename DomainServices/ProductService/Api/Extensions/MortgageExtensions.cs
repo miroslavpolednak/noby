@@ -48,7 +48,12 @@ internal static class MortgageExtensions
             AvailableForDrawing = eLoan.ZbyvaCerpat,
             // Principal = eLoan.Jistina,           // ???
             LoanKindId = eLoan.DruhUveru,
-            PaymentAccount = null,                  // ???
+            PaymentAccount = string.IsNullOrEmpty(eLoan.CisloUctu) ? null : new PaymentAccount
+            {
+                Prefix = eLoan.PredcisliUctu ?? "",
+                Number = eLoan.CisloUctu ?? "",
+                BankCode = "0100"//ma byt hardcoded
+            },
             CurrentOverdueAmount = null,            // ???
             AllOverdueFees = null,                  // ???
             OverdueDaysNumber = null,               // ???
