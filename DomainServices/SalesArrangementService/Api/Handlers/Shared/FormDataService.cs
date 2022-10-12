@@ -18,7 +18,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
+namespace DomainServices.SalesArrangementService.Api.Handlers.Shared;
 
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class FormDataService

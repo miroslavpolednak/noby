@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-using DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
+using DomainServices.SalesArrangementService.Api.Handlers.Shared;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 

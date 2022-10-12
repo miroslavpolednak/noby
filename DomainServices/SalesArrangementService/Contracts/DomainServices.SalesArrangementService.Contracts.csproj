@@ -31,20 +31,20 @@
 
 	<ItemGroup>
 
-		<Protobuf Include="SalesArrangement/SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/CreateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/LinkModelationToSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/SalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/GetSalesArrangementList.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/UpdateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/UpdateSalesArrangementParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/UpdateLoanAssessmentParameters.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/Types.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/ValidateSalesArrangement.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/SalesArrangementParametersDrawing.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-		<Protobuf Include="SalesArrangement/SalesArrangementParametersMortgage.proto" GrpcServices="None" ProtoRoot="SalesArrangement/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CreateSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="LinkModelationToSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="GetSalesArrangementList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="UpdateSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="UpdateSalesArrangementState.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="GetSalesArrangementByOfferId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="UpdateSalesArrangementParameters.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="UpdateLoanAssessmentParameters.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="ValidateSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangementParametersDrawing.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="SalesArrangementParametersMortgage.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 </Project>

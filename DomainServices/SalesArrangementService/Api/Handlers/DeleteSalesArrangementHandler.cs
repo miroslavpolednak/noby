@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement;
+namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal sealed class DeleteSalesArrangementHandler
     : IRequestHandler<Dto.DeleteSalesArrangementMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>

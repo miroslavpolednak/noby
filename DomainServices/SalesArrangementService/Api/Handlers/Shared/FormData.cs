@@ -12,7 +12,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
 using DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
+namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 {
 
     public class FormData

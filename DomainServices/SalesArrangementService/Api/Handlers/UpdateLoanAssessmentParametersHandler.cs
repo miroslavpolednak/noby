@@ -1,4 +1,4 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement;
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class UpdateLoanAssessmentParametersHandler
     : IRequestHandler<Dto.UpdateLoanAssessmentParametersMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>

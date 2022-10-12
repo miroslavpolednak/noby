@@ -9,7 +9,7 @@ using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared
+namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 {
     public class FormDataJsonBuilder
     {
