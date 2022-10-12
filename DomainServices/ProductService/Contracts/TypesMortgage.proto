@@ -9,50 +9,64 @@ import "NullableGrpcDate.proto";
 
 
 message CaseIdRequest {
-   int64 CaseId = 1;
+    int64 CaseId = 1;
 }
 
 message ProductIdReqRes {
-   int64 ProductId = 1;
+    int64 ProductId = 1;
 }
 
 message GetProductListResponse {
-  repeated Product Products = 1;
+    repeated Product Products = 1;
+}
+
+message GetProductObligationListRequest {
+    int64 ProductId = 1;
+}
+
+message GetProductObligationListResponse {
+    repeated ProductObligation ProductObligations = 1;
 }
 
 message GetMortgageResponse {
-  MortgageData Mortgage = 1;
+    MortgageData Mortgage = 1;
 }
 
 message CreateMortgageRequest {
-  int64 CaseId = 1;
-  MortgageData Mortgage = 2;
+    int64 CaseId = 1;
+    MortgageData Mortgage = 2;
 }
 
 message UpdateMortgageRequest {
-  int64 ProductId = 1;
-  MortgageData Mortgage = 2;		 
+    int64 ProductId = 1;
+    MortgageData Mortgage = 2;		 
 }
 
 message CreateContractRelationshipRequest {
-  int64 ProductId = 1;
-  Relationship Relationship = 2;
+    int64 ProductId = 1;
+    Relationship Relationship = 2;
 }
 
 message DeleteContractRelationshipRequest {
-  int64 ProductId = 1;
-  int64 PartnerId = 2;
+    int64 ProductId = 1;
+    int64 PartnerId = 2;
 }
 
 message LoanPurpose {
-	int32 LoanPurposeId = 1;
-	cis.types.GrpcDecimal Sum = 2;
+    int32 LoanPurposeId = 1;
+    cis.types.GrpcDecimal Sum = 2;
 }
 
 message PaymentAccount {
-	string Number = 1;
-	string Prefix = 2;
-	string BankCode = 3;
+    string Number = 1;
+    string Prefix = 2;
+    string BankCode = 3;
+}
+
+message Symbols {
+    string Vs = 1;
+    string Ks = 2;
+    string Ss = 3;
 }
 
 message MortgageData {
@@ -89,11 +103,20 @@ message MortgageData {
 }
 
 message Relationship {
-	int64 PartnerId = 1;
-	int32 ContractRelationshipTypeId = 2;
+    int64 PartnerId = 1;
+    int32 ContractRelationshipTypeId = 2;
 }
 
 message Product {
-	int64 ProductId = 1;
-	int32 ProductTypeId = 2;
+    int64 ProductId = 1;
+    int32 ProductTypeId = 2;
+}
+
+message ProductObligation {
+    int32 ProductObligationId = 1;
+    int32 ObligationTypeId = 2;
+    cis.types.GrpcDecimal Amount = 3;
+    string CreditorName = 4;
+    PaymentAccount PaymentAccount = 5;
+    Symbols Symbols = 6; 
 }
