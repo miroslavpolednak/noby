@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using FOMS.Api.Endpoints.Product.GetProductObligationList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FOMS.Api.Endpoints.Product;
 
@@ -23,4 +24,16 @@ public class ProductController : ControllerBase
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
     public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// todo:
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="cancellationToken"></param>
+    [HttpGet("{productId:long}/obligations")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [ProducesResponseType(typeof(List<>), StatusCodes.Status200OK)]
+    public async Task GetProductObligations([FromRoute] long productId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetProductObligationListRequest(productId), cancellationToken);
 }
