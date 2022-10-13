@@ -2,6 +2,7 @@
 using _V2 = DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using DomainServices.RiskIntegrationService.Contracts.Shared;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -58,7 +59,7 @@ internal sealed class ProductChildMapper
         return relations
             .Select(t => new _C4M.LoanApplicationProductRelation
             {
-                ProductId = new _C4M.ResourceIdentifier(),
+                ProductId = getProductId(t),
                 ProductType = t.ProductType,
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
@@ -79,6 +80,30 @@ internal sealed class ProductChildMapper
                 }).ToList()
             })
             .ToList();
+
+        _C4M.ResourceIdentifier getProductId(_V2.LoanApplicationProductRelation relation)
+        {
+            if (string.IsNullOrEmpty(relation.BankAccount?.Number))
+            {
+                return new _C4M.ResourceIdentifier
+                {
+                    Id = relation.CbcbContractId,
+                    Instance = "CBCB",
+                    Domain = "EIS",
+                    Resource = "CBCBContract"
+                };
+            }
+            else
+            {
+                return new _C4M.ResourceIdentifier
+                {
+                    Id = String.IsNullOrEmpty(relation.BankAccount.NumberPrefix) ? relation.BankAccount.Number : $"{relation.BankAccount.NumberPrefix}-{relation.BankAccount.Number}",
+                    Instance = relation.BankAccount.BankCode == "7990" ? "MPSS" : "KBCZ",
+                    Domain = "PCP",
+                    Resource = "LoanSoldProduct"
+                };
+            }
+        }
     }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -99,7 +124,7 @@ internal sealed class ProductChildMapper
         => t => new LoanApplicationCollateral
         {
             AppraisedValue = t.AppraisedValue.ToAmount(),
-            Id = string.IsNullOrEmpty(t.Id) ? null : new ResourceIdentifier
+            Id = string.IsNullOrEmpty(t.Id) ? null : new _C4M.ResourceIdentifier
             {
                 Id = t.Id,
                 Domain = "CAM",

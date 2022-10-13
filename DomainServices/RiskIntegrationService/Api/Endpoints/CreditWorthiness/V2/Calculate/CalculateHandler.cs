@@ -17,14 +17,24 @@ internal sealed class CalculateHandler
         var response = await _client.Calculate(requestModel, cancellation);
 
         // get DTI
-        var dtiRequestModel = await _dtiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
-        var dtiResponse = await _riskCharacteristicsClient.CalculateDti(dtiRequestModel, cancellation);
+        decimal? dti = null;
+        decimal? dsti = null;
+        try
+        {
+            var dtiRequestModel = await _dtiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
+            dti = (await _riskCharacteristicsClient.CalculateDti(dtiRequestModel, cancellation)).Dti;
+        }
+        catch { }
 
         // get DSTI
-        var dstiRequestModel = await _dstiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
-        var dstiResponse = await _riskCharacteristicsClient.CalculateDsti(dstiRequestModel, cancellation);
+        try
+        {
+            var dstiRequestModel = await _dstiRequestMapper.MapToC4m(request, riskApplicationType, cancellation);
+            dsti = (await _riskCharacteristicsClient.CalculateDsti(dstiRequestModel, cancellation)).Dsti;
+        }
+        catch { }
 
-        return response.ToServiceResponse(dtiResponse.Dti, dstiResponse.Dsti, request.Product.LoanPaymentAmount);
+        return response.ToServiceResponse(dti, dsti, request.Product.LoanPaymentAmount);
     }
 
     private async Task<CodebookService.Contracts.Endpoints.RiskApplicationTypes.RiskApplicationTypeItem> getRiskApplicationType(int productTypeId, CancellationToken cancellationToken)

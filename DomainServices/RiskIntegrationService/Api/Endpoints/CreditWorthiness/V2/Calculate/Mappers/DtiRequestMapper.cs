@@ -74,7 +74,7 @@ internal sealed class DtiRequestMapper
     private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int mandantId)
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
-            CustomerId = new()
+            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : new()
             {
                 Id = customer.PrimaryCustomerId,
                 Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
