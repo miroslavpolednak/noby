@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
+using DomainServices.SalesArrangementService.Api.Handlers.Shared;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
