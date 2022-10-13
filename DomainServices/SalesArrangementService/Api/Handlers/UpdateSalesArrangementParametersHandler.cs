@@ -2,7 +2,7 @@
 using Google.Protobuf;
 using _HO = DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement;
+namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class UpdateSalesArrangementParametersHandler
     : IRequestHandler<Dto.UpdateSalesArrangementParametersMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
@@ -23,7 +23,7 @@ internal class UpdateSalesArrangementParametersHandler
                     throw new CisNotFoundException(16078, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
             }
         }
-        
+
         // instance parametru, pokud existuje
         var entity = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == request.Request.SalesArrangementId, cancellation);
         if (entity is null)
@@ -35,12 +35,12 @@ internal class UpdateSalesArrangementParametersHandler
             };
             _dbContext.SalesArrangementsParameters.Add(entity);
         }
-        
+
         // naplnit parametry serializovanym objektem
         var dataObject = getDataObject(request.Request);
         entity.Parameters = dataObject is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
         entity.ParametersBin = dataObject is null ? null : dataObject.ToByteArray();
-        
+
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
@@ -63,7 +63,7 @@ internal class UpdateSalesArrangementParametersHandler
 
     private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    
+
     public UpdateSalesArrangementParametersHandler(
         HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         Repositories.SalesArrangementServiceDbContext dbContext)
