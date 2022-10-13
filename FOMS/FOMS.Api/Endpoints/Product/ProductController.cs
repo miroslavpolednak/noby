@@ -1,4 +1,6 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using FOMS.Api.Endpoints.Product.GetProductObligationList.Dto;
+using Swashbuckle.AspNetCore.Annotations;
+using GetProductObligationListRequest = FOMS.Api.Endpoints.Product.GetProductObligationList.GetProductObligationListRequest;
 
 namespace FOMS.Api.Endpoints.Product;
 
@@ -23,4 +25,18 @@ public class ProductController : ControllerBase
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
     public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// Vrátí seznam závazků na daném produktu
+    /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> ProductService/GetProductObligationList<br />
+    /// </remarks>
+    /// <returns>Seznam závazků na produktu</returns>
+    [HttpGet("{caseId:long}/obligations")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
+    public async Task<List<ProductObligation>> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetProductObligationListRequest(caseId), cancellationToken);
 }

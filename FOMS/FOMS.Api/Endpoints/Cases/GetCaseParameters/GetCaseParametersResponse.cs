@@ -1,4 +1,5 @@
-﻿using dto = FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto;
+﻿using FOMS.Api.SharedDto;
+using dto = FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace FOMS.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -72,7 +73,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
 	/// Číslo účtu pro splátky.
 	/// </summary>
-    public dto.BankAccount? PaymentAccount { get; set; }
+    public BankAccount? PaymentAccount { get; set; }
 
     /// <summary>
 	/// Aktuální částka po splatnosti
