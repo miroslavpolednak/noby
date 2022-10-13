@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Contracts;
+using DomainServices.ProductService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.UserService.Contracts;
@@ -23,20 +24,20 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
         public ProductTypeItem ProductType { get; init; }
         public GetMortgageOfferDetailResponse Offer { get; init; }
         public Case CaseData { get; init; }
+        public GetMortgageResponse ProductMortgage { get; init; }
         public User? User { get; init; }
         public List<_HO.Household> Households { get; init; }
         public List<_HO.CustomerOnSA> CustomersOnSa { get; init; }
         public Dictionary<int, _HO.Income> IncomesById { get; init; }
         public Dictionary<string, CustomerDetailResponse> CustomersByIdentityCode { get; init; }
+        public CustomerDetailResponse? DrawingApplicantCustomer { get; init; }
         public Dictionary<int, GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
         public Dictionary<int, GenderItem> GendersById { get; init; }
         public Dictionary<int, SalesArrangementStateItem> SalesArrangementStatesById { get; init; }
         public List<GenericCodebookItemWithCode> EmploymentTypes { get; init; }
         public Dictionary<int, DrawingDurationItem> DrawingDurationById { get; init; }
         public Dictionary<int, DrawingTypeItem> DrawingTypeById { get; init; }
-
         public Dictionary<int, CountriesItem> CountriesById { get; init; }
-
         public Dictionary<string, List<int>> ObligationTypeIdsByObligationProperty { get; init; }
 
         #endregion
@@ -48,11 +49,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
             ProductTypeItem productType,
             GetMortgageOfferDetailResponse offer,
             Case caseData,
+            GetMortgageResponse productMortgage,
             User? user,
             List<_HO.Household> households,
             List<_HO.CustomerOnSA> customersOnSa,
             Dictionary<int, _HO.Income> incomesById,
             Dictionary<string, CustomerDetailResponse> customersByIdentityCode,
+            CustomerDetailResponse? drawingApplicantCustomer,
             List<GenericCodebookItem> academicDegreesBefore,
             List<GenderItem> genders,
             List<SalesArrangementStateItem> salesArrangementStates,
@@ -66,11 +69,13 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
             ProductType = productType;
             Offer = offer;
             CaseData = caseData;
+            ProductMortgage = productMortgage;
             User = user;
             Households = households;
             CustomersOnSa = customersOnSa;
             IncomesById = incomesById;
             CustomersByIdentityCode = customersByIdentityCode;
+            DrawingApplicantCustomer = drawingApplicantCustomer;
             AcademicDegreesBeforeById = academicDegreesBefore.ToDictionary(i => i.Id);
             GendersById = genders.ToDictionary(i => i.Id);
             SalesArrangementStatesById = salesArrangementStates.ToDictionary(i => i.Id);

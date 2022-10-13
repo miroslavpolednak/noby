@@ -7,6 +7,7 @@ using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
+using DomainServices.ProductService.Contracts;
 
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
@@ -96,11 +97,12 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
         #endregion
 
+
         public static readonly string MockDokumentId = "9876543210"; // TODO: dočasný mock - odstranit až si to Assecco odladí
 
         private List<Household> GetHouseholdsByFormType(EFormType formType)
         {
-            var households = new List<Household>();
+            List<Household> households;
 
             switch (formType)
             {
@@ -110,6 +112,12 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
                 case EFormType.F3602:
                     households = Data.Households.Where(i => ((HouseholdTypes)i.HouseholdTypeId) == HouseholdTypes.Codebtor || ((HouseholdTypes)i.HouseholdTypeId) == HouseholdTypes.Garantor).ToList();
+                    break;
+
+                // case EFormType.F3700:
+
+                default:
+                    households = new List<Household>();
                     break;
             }
 
@@ -161,7 +169,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
                 };
             }
 
-            object? MapLoanPurpose(LoanPurpose i)
+            object? MapLoanPurpose(OfferService.Contracts.LoanPurpose i)
             {
                 if (i == null)
                 {
@@ -555,6 +563,40 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
                 };
             }
 
+            object? MapDrawingRepaymentAccount(SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount? i)
+            {
+                if (i == null)
+                {
+                    return null;
+                }
+
+                return new {
+                    inkaso_predcisli_uctu = i.Prefix,
+                    inkaso_cislo_uctu = i.Number,
+                    inkaso_kod_banky = i.BankCode,
+                };
+            }
+
+            object? MapDrawingPayoutList(SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingPayoutList i)
+            {
+                if (i == null)
+                {
+                    return null;
+                }
+
+                return new
+                {
+                    poradove_cislo = i.Order.ToJsonString(),
+                    predcislo_uctu = i.PrefixAccount,
+                    cislo_uctu = i.AccountNumber,
+                    kod_banky = i.BankCode,
+                    castka = i.DrawingAmount.ToJsonString(),
+                    vs = i.VariableSymbol,
+                    ks = i.ConstantSymbol,
+                    ss = i.SpecificSymbolUcetKeSplaceni,
+                };
+            }
+
             long? FindZmocnenecMpId()
             {
                 //zmocnenec_mp_id, Pozn.: Přemapování musí proběhnout z CustomerOnSaId na PartnerId, což je ID, kde Identitní schéma je MPID.
@@ -583,6 +625,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
             var user_cpm = "99806569";  // [MOCK] 90400037  //Data.User!.CPM // ???
             var user_icp = "114306569"; // [MOCK] 110000037 //Data.User!.ICP // ???
+
+            var defaultFormValues = DefaultFormValues.GetInstance(formType);
 
             object data = new { };
 
@@ -666,7 +710,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
                         business_id_formulare = formId,
                         seznam_id_formulare = seznamIdFormulare,
-                        ea_kod = "608248",
+                        ea_kod = defaultFormValues.HesloKod, // "608248"
 
                         //tests
                         cislo_dokumentu = MockDokumentId,                                                                                               // Pro D1.3 zůstává MOCK, bude se řešit v D1.4
@@ -689,7 +733,54 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
                         business_id_formulare = formId,
                         seznam_id_formulare = seznamIdFormulare,
-                        ea_kod = "608243",
+                        ea_kod = defaultFormValues.HesloKod, // "608243"
+
+                        //tests
+                        cislo_dokumentu = MockDokumentId,                                                                                               // Pro D1.3 zůstává MOCK, bude se řešit v D1.4
+                    };
+                    break;
+
+                case EFormType.F3700:
+                    var drawing = Data.Arrangement.Drawing;
+                    var paymentAccount = Data.ProductMortgage?.Mortgage?.PaymentAccount;
+                    var cDegreeBeforeId = Data.DrawingApplicantCustomer?.NaturalPerson?.DegreeBeforeId;
+                    data = new
+                    {
+                        cislo_smlouvy = Data.CaseData.Data?.ContractNumber,
+                        case_id = Data.Arrangement.CaseId.ToJsonString(),
+                        datum_cerpani = drawing?.DrawingDate.ToJsonString(),
+                        cerpani_bezodkladne = drawing?.IsImmediateDrawing.ToJsonString(),
+                        sjednal_CPM = user_cpm,
+                        sjednal_ICP = user_icp,
+                        datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+                        podpis_zadatele = 1.ToJsonString(), // Default 1
+                        zmocnena_osoba = (drawing?.Agent != null).ToJsonString(),
+                        zpusob_podpisu_zadosti = Data.Arrangement.SalesArrangementSignatureTypeId.ToJsonString(),
+                        uv_ucet_predcisli = paymentAccount?.Prefix,
+                        uv_ucet_cislo = paymentAccount?.Number,
+                        uv_ucet_kod_banky = paymentAccount?.BankCode,
+                        zadatel_o_cerpani = drawing?.Applicant?.IdentityId.ToJsonString(),
+                        
+                        // Budem je mít vypálené přímo na žádost o čerpání pod Applicant(tam bude modré ID) a pak přes KonsDB přímým přístupem zjistíme z PartnerId KBID, které je v tabulce dbo.partner a parametru KBPartyId
+                        // Případně se dá s modrým ID zavolat getDetail customer service který v detailu customera vrátí KBID... obě cesty si dovedu představit(smile) ta druhá je asi trochu čístší
+                        // drawing.Applicant.IdentityId
+                        kb_id = Data.DrawingApplicantCustomer?.Identity?.IdentityId.ToJsonString(),     // KonsDb
+                        mp_id = drawing?.Applicant?.IdentityId.ToJsonString(),                         // Mortgage.PartnerId
+
+                        rodne_cislo_ico = Data.DrawingApplicantCustomer?.NaturalPerson?.BirthNumber,
+                        titul_pred = cDegreeBeforeId.HasValue ? Data.AcademicDegreesBeforeById[cDegreeBeforeId.Value].Name : null,
+                        prijmeni_nazev = Data.DrawingApplicantCustomer?.NaturalPerson?.LastName,
+                        jmeno = Data.DrawingApplicantCustomer?.NaturalPerson?.FirstName,
+                        datum_narozeni = Data.DrawingApplicantCustomer?.NaturalPerson?.DateOfBirth.ToJsonString(),
+                        ucet_splaceni = MapDrawingRepaymentAccount(drawing?.RepaymentAccount),
+                        zpusob_splaceni = 1.ToJsonString(), // Default 1
+                        // ucet_vlastnik_prijmeni =
+                        // ucet_vlastnik_jmeno =
+                        seznam_vyplat = drawing?.PayoutList?.OrderBy(i => i.Order).Select(i => MapDrawingPayoutList(i)).ToArray() ?? Array.Empty<object>(),
+                        
+                        //datum_vytvoreni_zadosti = actualDate.ToJsonString(),  ???
+                        
+                        seznam_id_formulare = seznamIdFormulare,
 
                         //tests
                         cislo_dokumentu = MockDokumentId,                                                                                               // Pro D1.3 zůstává MOCK, bude se řešit v D1.4
