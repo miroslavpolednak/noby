@@ -32,7 +32,8 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task GetLoanApplicationAssessment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -105,14 +106,13 @@ public class SalesArrangementController : ControllerBase
     /// Detail Sales Arrangement-u.
     /// </summary>
     /// <remarks>
-    /// <i>/Endpoints/SalesArrangement/GetDetail</i>\r\n<br />
-    /// Obsahuje kompilaci udaju z SA a navazena Offer. Pro kazdy typ produktu se vraci jina struktura Data objektu.
+    /// <i>DS:SalesArrangementService/GetDetail</i><br />
+    /// Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns><see cref="GetDetail.GetDetailResponse"/> detail SA vcetne dalsich parametru uveru</returns>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new [] { "UC: Case Detail", "UC: SalesArrangement" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);

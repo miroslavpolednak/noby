@@ -75,7 +75,8 @@ internal class GetDetailHandler
         {
             _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.None => null
+            _SA.SalesArrangement.ParametersOneofCase.None => null,
+            _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };
 
     private readonly ICaseServiceAbstraction _caseService;
