@@ -1,24 +1,28 @@
 ﻿using Grpc.Core;
 using CIS.Infrastructure.gRPC.CisTypes;
-
-using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.CaseService.Contracts;
-using DomainServices.OfferService.Contracts;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.UserService.Contracts;
+using CIS.Foms.Enums;
 
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
+using DomainServices.ProductService.Abstraction;
 using DomainServices.UserService.Clients;
+using DomainServices.HouseholdService.Clients;
 
+using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.CaseService.Contracts;
+using DomainServices.OfferService.Contracts;
+using DomainServices.CustomerService.Contracts;
+using DomainServices.ProductService.Contracts;
+using DomainServices.UserService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
-using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.SalesArrangement.Shared;
+
+namespace DomainServices.SalesArrangementService.Api.Handlers.Shared;
 
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal class FormDataService
@@ -33,23 +37,24 @@ internal class FormDataService
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICustomerServiceAbstraction _customerService;
+    private readonly IProductServiceAbstraction _productService;
     private readonly IUserServiceClient _userService;
-    private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
-
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly IHouseholdServiceClient _householdService;
     private readonly Repositories.NobyRepository _repository;
     private readonly ILogger<FormDataService> _logger;
     private readonly Eas.IEasClient _easClient;
     private readonly IMediator _mediator;
 
     public FormDataService(
-        HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        HouseholdService.Clients.IHouseholdServiceClient householdService,
+        ICustomerOnSAServiceClient customerOnSAService,
+        IHouseholdServiceClient householdService,
         SulmService.ISulmClient sulmClient,
         ICodebookServiceAbstraction codebookService,
         ICaseServiceAbstraction caseService,
         IOfferServiceAbstraction offerService,
         ICustomerServiceAbstraction customerService,
+        IProductServiceAbstraction productService,
         IUserServiceClient userService,
         Repositories.NobyRepository repository,
         ILogger<FormDataService> logger,
@@ -63,6 +68,7 @@ internal class FormDataService
         _caseService = caseService;
         _offerService = offerService;
         _customerService = customerService;
+        _productService = productService;
         _userService = userService;
         _repository = repository;
         _logger = logger;
@@ -103,14 +109,20 @@ internal class FormDataService
         // check mandatory fields of Incomes
         string[] FindInvalidFields(Income income)
         {
-            var mandatoryFields = new List<(string Field, bool Valid)>
+            // Kontrolují se pouze příjmy ze zaměstnání
+            if (income.IncomeTypeId != 1)
+            {
+                return Array.Empty<string>();
+            }
+
+            var employmentMandatoryFields = new List<(string Field, bool Valid)>
             {
                 ("EmploymentTypeId", (income.Employement?.Job?.EmploymentTypeId).HasValue  ),
                 ("IsInProbationaryPeriod", (income.Employement?.Job?.IsInProbationaryPeriod).HasValue ),
                 ("IsInTrialPeriod", (income.Employement?.Job?.IsInTrialPeriod).HasValue )
-           };
+            };
 
-            return mandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
+            return employmentMandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
         }
 
         var invalidIncomes = incomesById.Select(i => new { Id = i.Key, InvalidFields = FindInvalidFields(i.Value) }).Where(i => i.InvalidFields.Length > 0).ToArray();
@@ -278,16 +290,16 @@ internal class FormDataService
     private static Eas.CommonResponse ResolveAddFirstSignatureDate(IServiceCallResult result) =>
       result switch
       {
-          SuccessfulServiceCallResult<Eas.CommonResponse> r when r.Model.CommonValue != 0 
+          SuccessfulServiceCallResult<Eas.CommonResponse> r when r.Model.CommonValue != 0
           => throw new CisValidationException(16076, $"Invalid result of AddFirstSignatureDate [{r.Model.CommonValue}: {r.Model.CommonText}]."),
-          SuccessfulServiceCallResult <Eas.CommonResponse> r => r.Model,
+          SuccessfulServiceCallResult<Eas.CommonResponse> r => r.Model,
           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
           _ => throw new NotImplementedException()
       };
 
     private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
-    {
-        await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber, RiskBusinessCaseId = entity.RiskBusinessCaseId, FirstSignedDate = entity.FirstSignedDate }), cancellation);
+    {        
+        await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber, RiskBusinessCaseId = entity.RiskBusinessCaseId, FirstSignedDate = entity.FirstSignedDate, SalesArrangementSignatureTypeId = entity.SalesArrangementSignatureTypeId }), cancellation);
         entity.ContractNumber = contractNumber;
     }
 
@@ -303,13 +315,16 @@ internal class FormDataService
 
     public async Task<FormData> LoadAndPrepare(int salesArrangementId, CancellationToken cancellation, bool addFirstSignatureDate = false)
     {
+        // TODO: refactoring (zde se v případě servisní žádosti dotahují data, která jsou pro DV irelevantní - rozdělit na data pro podle kategorie [produktová/servisní žádost])
+
         // load SalesArrangement
         var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new SalesArrangementIdRequest { SalesArrangementId = salesArrangementId }), cancellation);
 
+        var salesArrangementTypesById = (await _codebookService.SalesArrangementTypes(cancellation)).ToDictionary(i=> i.Id);
+        var arrangementCategory = (SalesArrangementCategories)salesArrangementTypesById[arrangement.SalesArrangementTypeId].SalesArrangementCategory;
+
         // check mandatory fields of SalesArrangement
         CheckSA(arrangement);
-
-        // TODO: Některé validace se týkají pouze DROPu 1 !!!
 
         // load customers on SA and validate them
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
@@ -328,30 +343,33 @@ internal class FormDataService
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
             ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
 
-        // update ContractNumber if not specified
-        // arrangement.ContractNumber = String.Empty;
-        if (String.IsNullOrEmpty(arrangement.ContractNumber))
+        if (arrangementCategory == SalesArrangementCategories.ProductRequest)
         {
-            var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSA);
-            var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
-            await UpdateSalesArrangement(arrangement, contractNumber, cancellation);
-            await UpdateCase(_case, contractNumber, cancellation);
-        }
-
-        if (addFirstSignatureDate)
-        {
-            // Add first signature date (pro KB produkty caseId = UverID)
-            ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
-        }
-
-        // HFICH-2426
-        foreach (var customer in customersOnSA)
-        {
-            var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
-            if (kbIdentity is not null)
+            // update ContractNumber if not specified
+            // arrangement.ContractNumber = String.Empty;
+            if (String.IsNullOrEmpty(arrangement.ContractNumber))
             {
-                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
-                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSA);
+                var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
+                await UpdateSalesArrangement(arrangement, contractNumber, cancellation);
+                await UpdateCase(_case, contractNumber, cancellation);
+            }
+
+            if (addFirstSignatureDate)
+            {
+                // Add first signature date (pro KB produkty caseId = UverID)
+                ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
+            }
+
+            // HFICH-2426
+            foreach (var customer in customersOnSA)
+            {
+                var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+                if (kbIdentity is not null)
+                {
+                    await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                    await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                }
             }
         }
 
@@ -369,6 +387,19 @@ internal class FormDataService
         // load customers
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
 
+        GetMortgageResponse? _productMortgage = null;
+        CustomerDetailResponse? drawingApplicantCustomer = null;
+
+        if (arrangementCategory == SalesArrangementCategories.ServiceRequest)
+        {
+            // load product mortgage
+            _productMortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(await _productService.GetMortgage(arrangement.CaseId, cancellation)) ?? throw new CisNotFoundException(18002, $"Product ID #{arrangement.CaseId} does not exist.");
+
+            // load drawing applicant customer
+            var applicant = arrangement.Drawing?.Applicant;
+            drawingApplicantCustomer = (applicant is null) ? null : ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(new Identity(applicant.IdentityId, (IdentitySchemes)applicant.IdentityScheme), cancellation));
+        }
+
         // Load codebooks
         var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
         var genders = await _codebookService.Genders(cancellation);
@@ -380,7 +411,28 @@ internal class FormDataService
         var countries = await _codebookService.Countries(cancellation);
         var obligationTypes = await _codebookService.ObligationTypes(cancellation);
 
-        var formData = new FormData(arrangement, productType, _offer, _case, _user, households, customersOnSA, incomesById, customersByIdentityCode, academicDegreesBefore, genders, salesArrangementStates, employmentTypes, drawingDurations, drawingType, countries, obligationTypes);
+        var formData = new FormData(
+            arrangement,
+            arrangementCategory,
+            productType,
+            _offer,
+            _case,
+            _productMortgage,
+            _user,
+            households,
+            customersOnSA,
+            incomesById,
+            customersByIdentityCode,
+            drawingApplicantCustomer,
+            academicDegreesBefore,
+            genders,
+            salesArrangementStates,
+            employmentTypes,
+            drawingDurations,
+            drawingType,
+            countries,
+            obligationTypes
+            );
 
         return (formData);
     }
