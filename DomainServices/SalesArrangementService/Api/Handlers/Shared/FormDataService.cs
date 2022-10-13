@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using CIS.Infrastructure.gRPC.CisTypes;
+using CIS.Foms.Enums;
 
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
@@ -108,14 +109,20 @@ internal class FormDataService
         // check mandatory fields of Incomes
         string[] FindInvalidFields(Income income)
         {
-            var mandatoryFields = new List<(string Field, bool Valid)>
+            // Kontrolují se pouze příjmy ze zaměstnání
+            if (income.IncomeTypeId != 1)
+            {
+                return Array.Empty<string>();
+            }
+
+            var employmentMandatoryFields = new List<(string Field, bool Valid)>
             {
                 ("EmploymentTypeId", (income.Employement?.Job?.EmploymentTypeId).HasValue  ),
                 ("IsInProbationaryPeriod", (income.Employement?.Job?.IsInProbationaryPeriod).HasValue ),
                 ("IsInTrialPeriod", (income.Employement?.Job?.IsInTrialPeriod).HasValue )
-           };
+            };
 
-            return mandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
+            return employmentMandatoryFields.Where(i => !i.Valid).Select(i => i.Field).ToArray();
         }
 
         var invalidIncomes = incomesById.Select(i => new { Id = i.Key, InvalidFields = FindInvalidFields(i.Value) }).Where(i => i.InvalidFields.Length > 0).ToArray();
@@ -308,13 +315,16 @@ internal class FormDataService
 
     public async Task<FormData> LoadAndPrepare(int salesArrangementId, CancellationToken cancellation, bool addFirstSignatureDate = false)
     {
+        // TODO: refactoring (zde se v případě servisní žádosti dotahují data, která jsou pro DV irelevantní - rozdělit na data pro podle kategorie [produktová/servisní žádost])
+
         // load SalesArrangement
         var arrangement = await _mediator.Send(new Dto.GetSalesArrangementMediatrRequest(new SalesArrangementIdRequest { SalesArrangementId = salesArrangementId }), cancellation);
 
+        var salesArrangementTypesById = (await _codebookService.SalesArrangementTypes(cancellation)).ToDictionary(i=> i.Id);
+        var arrangementCategory = (SalesArrangementCategories)salesArrangementTypesById[arrangement.SalesArrangementTypeId].SalesArrangementCategory;
+
         // check mandatory fields of SalesArrangement
         CheckSA(arrangement);
-
-        // TODO: Některé validace se týkají pouze DROPu 1 !!!
 
         // load customers on SA and validate them
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
@@ -333,30 +343,33 @@ internal class FormDataService
         var _case = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
             ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
 
-        // update ContractNumber if not specified
-        // arrangement.ContractNumber = String.Empty;
-        if (String.IsNullOrEmpty(arrangement.ContractNumber))
+        if (arrangementCategory == SalesArrangementCategories.ProductRequest)
         {
-            var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSA);
-            var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
-            await UpdateSalesArrangement(arrangement, contractNumber, cancellation);
-            await UpdateCase(_case, contractNumber, cancellation);
-        }
-
-        if (addFirstSignatureDate)
-        {
-            // Add first signature date (pro KB produkty caseId = UverID)
-            ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
-        }
-
-        // HFICH-2426
-        foreach (var customer in customersOnSA)
-        {
-            var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
-            if (kbIdentity is not null)
+            // update ContractNumber if not specified
+            // arrangement.ContractNumber = String.Empty;
+            if (String.IsNullOrEmpty(arrangement.ContractNumber))
             {
-                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
-                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                var identityMP = GetMainMpIdentity(households, householdTypesById, customersOnSA);
+                var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)arrangement.CaseId));
+                await UpdateSalesArrangement(arrangement, contractNumber, cancellation);
+                await UpdateCase(_case, contractNumber, cancellation);
+            }
+
+            if (addFirstSignatureDate)
+            {
+                // Add first signature date (pro KB produkty caseId = UverID)
+                ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)arrangement.CaseId, (int)arrangement.CaseId, DateTime.Now.Date));
+            }
+
+            // HFICH-2426
+            foreach (var customer in customersOnSA)
+            {
+                var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+                if (kbIdentity is not null)
+                {
+                    await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                    await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                }
             }
         }
 
@@ -371,15 +384,21 @@ internal class FormDataService
         var _user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))
             ?? throw new CisNotFoundException(16077, $"User ID #{arrangement.Created.UserId} does not exist.");
 
-        // Product mortgage
-        var _productMortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(await _productService.GetMortgage(arrangement.CaseId, cancellation)) ?? throw new CisNotFoundException(18002, $"Product ID #{arrangement.CaseId} does not exist.");
-        
         // load customers
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
 
-        // load drawing applicant customer
-        var applicant = arrangement.Drawing?.Applicant;
-        var drawingApplicantCustomer = (applicant is null) ? null : ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(new Identity(applicant.IdentityId, (CIS.Foms.Enums.IdentitySchemes)applicant.IdentityScheme), cancellation));
+        GetMortgageResponse? _productMortgage = null;
+        CustomerDetailResponse? drawingApplicantCustomer = null;
+
+        if (arrangementCategory == SalesArrangementCategories.ServiceRequest)
+        {
+            // load product mortgage
+            _productMortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(await _productService.GetMortgage(arrangement.CaseId, cancellation)) ?? throw new CisNotFoundException(18002, $"Product ID #{arrangement.CaseId} does not exist.");
+
+            // load drawing applicant customer
+            var applicant = arrangement.Drawing?.Applicant;
+            drawingApplicantCustomer = (applicant is null) ? null : ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(new Identity(applicant.IdentityId, (IdentitySchemes)applicant.IdentityScheme), cancellation));
+        }
 
         // Load codebooks
         var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
@@ -394,6 +413,7 @@ internal class FormDataService
 
         var formData = new FormData(
             arrangement,
+            arrangementCategory,
             productType,
             _offer,
             _case,

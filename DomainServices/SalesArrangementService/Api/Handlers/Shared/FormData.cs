@@ -1,4 +1,6 @@
-﻿using DomainServices.CodebookService.Contracts;
+﻿using CIS.Foms.Enums;
+
+using DomainServices.CodebookService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Contracts;
 using DomainServices.ProductService.Contracts;
@@ -21,10 +23,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
         #region Properties
 
         public Contracts.SalesArrangement Arrangement { get; init; }
+        public SalesArrangementCategories ArrangementCategory { get; init; }
         public ProductTypeItem ProductType { get; init; }
         public GetMortgageOfferDetailResponse Offer { get; init; }
         public Case CaseData { get; init; }
-        public GetMortgageResponse ProductMortgage { get; init; }
+        public GetMortgageResponse? ProductMortgage { get; init; }
         public User? User { get; init; }
         public List<_HO.Household> Households { get; init; }
         public List<_HO.CustomerOnSA> CustomersOnSa { get; init; }
@@ -46,10 +49,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
         public FormData(
             Contracts.SalesArrangement arrangement,
+            SalesArrangementCategories arrangementCategory,
             ProductTypeItem productType,
             GetMortgageOfferDetailResponse offer,
             Case caseData,
-            GetMortgageResponse productMortgage,
+            GetMortgageResponse? productMortgage,
             User? user,
             List<_HO.Household> households,
             List<_HO.CustomerOnSA> customersOnSa,
@@ -66,6 +70,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
             List<ObligationTypesItem> obligationTypes)
         {
             Arrangement = arrangement;
+            ArrangementCategory = arrangementCategory;
             ProductType = productType;
             Offer = offer;
             CaseData = caseData;

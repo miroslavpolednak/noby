@@ -34,7 +34,7 @@
                     break;
 
                 default:
-                    throw new CisArgumentException(16063, $"Form type #{formType} is not supported.", nameof(formType));
+                    throw new CisArgumentException(99999, $"Form type #{formType} is not supported.", nameof(formType));
             }
 
             return formValues;

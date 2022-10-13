@@ -1,6 +1,9 @@
 ﻿using System.Globalization;
 
+using CIS.Foms.Enums;
+
 using DomainServices.SalesArrangementService.Api.Handlers.Shared;
+
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -36,6 +39,27 @@ internal class SendToCmpHandler
 
     #endregion
 
+
+    private EFormType[] GetFormTypes(SalesArrangementCategories arrangementCategory)
+    {
+        EFormType[] formTypes;
+
+        switch (arrangementCategory)
+        {
+            case SalesArrangementCategories.ProductRequest:
+                formTypes = new EFormType[] { EFormType.F3601, EFormType.F3602};
+                break;
+
+            case SalesArrangementCategories.ServiceRequest:
+                formTypes = new EFormType[] { EFormType.F3700 };
+                break;
+
+            default:
+                throw new CisArgumentException(99999, $"Sales arrangement category #{arrangementCategory} is not supported.", nameof(arrangementCategory));
+        }
+        return formTypes;
+    }
+
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
     {        
         var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation, true);
@@ -46,14 +70,10 @@ internal class SendToCmpHandler
         // load user
         var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(formData.Arrangement.Created.UserId!.Value, cancellation));
 
-        var formsToSave = new EFormType[] { 
-            EFormType.F3601, 
-            EFormType.F3602,
-            EFormType.F3700,
-        };
+        var formsToSave = GetFormTypes(formData.ArrangementCategory);
 
         // TODO: run in transaction ?
-        for(var i = 0; i < formsToSave.Length; i++)
+        for (var i = 0; i < formsToSave.Length; i++)
         {
             var formType = formsToSave[i];
 
