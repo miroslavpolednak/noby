@@ -41,6 +41,7 @@ public sealed class GetDetailResponse
     /// <summary>
     /// Data o zadosti - bude se jednat o ruzne objekty podle typu zadosti.
     /// </summary>
+    [Obsolete]
     public object? Data { get; set; }
 
     /// <summary>

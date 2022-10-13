@@ -11,7 +11,7 @@ using CIS.Core;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
-internal class UpdateSalesArrangementDataHandler
+internal class UpdateSalesArrangementHandler
     : IRequestHandler<Dto.UpdateSalesArrangementMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementMediatrRequest request, CancellationToken cancellation)
@@ -20,8 +20,8 @@ internal class UpdateSalesArrangementDataHandler
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.Request.SalesArrangementId} does not exist.");
 
         // kontrola na kategorii
-        if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == entity.SalesArrangementTypeId).SalesArrangementCategory != 2)
-            throw new CisValidationException(18013, $"SalesArrangement type not supported");
+        /*if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == entity.SalesArrangementTypeId).SalesArrangementCategory != 2)
+            throw new CisValidationException(18013, $"SalesArrangement type not supported");*/
 
         // kontrola na stav
         if (entity.State != (int)SalesArrangementStates.InProgress && entity.State != (int)SalesArrangementStates.IsSigned)
@@ -78,7 +78,7 @@ internal class UpdateSalesArrangementDataHandler
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
 
 
-    public UpdateSalesArrangementDataHandler(
+    public UpdateSalesArrangementHandler(
         ICaseServiceAbstraction caseService,
         ICurrentUserAccessor userAccessor,
         ICodebookServiceAbstraction codebookService,

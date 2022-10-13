@@ -30,18 +30,12 @@ internal sealed class DeleteSalesArrangementHandler
 
     private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-    private readonly Repositories.SalesArrangementServiceRepository _repository;
-    private readonly ILogger<UpdateSalesArrangementDataHandler> _logger;
 
     public DeleteSalesArrangementHandler(
         CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        Repositories.SalesArrangementServiceRepository repository,
-        ILogger<UpdateSalesArrangementDataHandler> logger)
+        Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _codebookService = codebookService;
         _dbContext = dbContext;
-        _repository = repository;
-        _logger = logger;
     }
 }

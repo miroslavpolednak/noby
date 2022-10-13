@@ -112,7 +112,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Case Detail", "US: SalesArrangement" })]
+    [SwaggerOperation(Tags = new [] { "UC: Case Detail", "UC: SalesArrangement" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);

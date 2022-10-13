@@ -11,13 +11,9 @@ internal class UpdateLoanAssessmentParametersHandler
     }
 
     private readonly Repositories.SalesArrangementServiceRepository _repository;
-    private readonly ILogger<UpdateSalesArrangementDataHandler> _logger;
 
-    public UpdateLoanAssessmentParametersHandler(
-        Repositories.SalesArrangementServiceRepository repository,
-        ILogger<UpdateSalesArrangementDataHandler> logger)
+    public UpdateLoanAssessmentParametersHandler(Repositories.SalesArrangementServiceRepository repository)
     {
         _repository = repository;
-        _logger = logger;
     }
 }
