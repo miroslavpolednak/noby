@@ -1957,8 +1957,11 @@
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.UpdateParameters(System.Int32,FOMS.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest)">
             <summary>
-            Update ostatnich parametru produktu / uveru.
+            Update dat SalesArrangement-u
             </summary>
+            <remarks>
+            <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+            </remarks>
         </member>
         <member name="M:FOMS.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32)">
             <summary>
@@ -1981,8 +1984,8 @@
             </summary>
             <remarks>
             OneOf(
-            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
-            DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersDrawing
+            FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage
+            FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing
             )
             </remarks>
         </member>
