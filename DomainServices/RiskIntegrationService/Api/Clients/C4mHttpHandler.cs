@@ -29,6 +29,10 @@ internal class C4mHttpHandler : DelegatingHandler
             }
 #pragma warning restore CS8604 // Possible null reference argument.
         }
+        else
+        {
+            _logger.HttpRequestStarted(request);
+        }
 
         HttpResponseMessage response;
         try
