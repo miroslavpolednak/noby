@@ -118,8 +118,11 @@ public class SalesArrangementController : ControllerBase
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
-    /// Update ostatnich parametru produktu / uveru.
+    /// Update dat SalesArrangement-u
     /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+    /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry" })]

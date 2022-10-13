@@ -13,10 +13,11 @@ public class UpdateParametersRequest
     /// </summary>
     /// <remarks>
     /// OneOf(
-    /// DomainServices.SalesArrangementService.Contracts.SalesArrangementParametersMortgage
+    /// FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage
+    /// FOMS.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing
     /// )
     /// </remarks>
-    public Dto.ParametersMortgage? Parameters { get; set; }
+    public object? Parameters { get; set; }
 
     internal UpdateParametersRequest InfuseId(int salesArrangementId)
     {
