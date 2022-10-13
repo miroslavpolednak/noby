@@ -1,4 +1,4 @@
-﻿using DomainServices.ProductService.Contracts;
+﻿using FOMS.Api.Endpoints.Product.GetProductObligationList.Dto;
 using Swashbuckle.AspNetCore.Annotations;
 using GetProductObligationListRequest = FOMS.Api.Endpoints.Product.GetProductObligationList.GetProductObligationListRequest;
 
@@ -37,6 +37,6 @@ public class ProductController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
-    public async Task GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<List<ProductObligation>> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetProductObligationListRequest(caseId), cancellationToken);
 }

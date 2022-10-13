@@ -63,10 +63,10 @@ message PaymentAccount {
     string BankCode = 3;
 }
 
-message Symbols {
-    string Vs = 1;
-    string Ks = 2;
-    string Ss = 3;
+message PaymentSymbols {
+    string VariableSymbol = 1;
+    string ConstantSymbol = 2;
+    string SpecificSymbol = 3;
 }
 
 message MortgageData {
@@ -118,5 +118,5 @@ message ProductObligation {
     cis.types.GrpcDecimal Amount = 3;
     string CreditorName = 4;
     PaymentAccount PaymentAccount = 5;
-    Symbols Symbols = 6; 
+    PaymentSymbols PaymentSymbols = 6; 
 }

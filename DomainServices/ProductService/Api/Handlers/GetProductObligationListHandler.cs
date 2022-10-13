@@ -21,7 +21,7 @@ internal class GetProductObligationListHandler
                 ProductObligationId = i,
                 ObligationTypeId = i,
                 Amount = new GrpcDecimal(67000, 0),
-                Symbols = new Symbols { Vs = "750504444" },
+                PaymentSymbols = new PaymentSymbols { VariableSymbol = "750504444" },
                 CreditorName = "Komerční banka",
                 PaymentAccount = new PaymentAccount
                 {

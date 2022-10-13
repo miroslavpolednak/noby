@@ -1,4 +1,5 @@
-﻿using dto = FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto;
+﻿using FOMS.Api.SharedDto;
+using dto = FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace FOMS.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -54,14 +55,14 @@ internal static class Extensions
 
     #endregion
 
-    public static dto.BankAccount? ToPaymentAccount(this DomainServices.ProductService.Contracts.PaymentAccount paymentAccount)
+    public static BankAccount? ToPaymentAccount(this DomainServices.ProductService.Contracts.PaymentAccount paymentAccount)
     {
         if (paymentAccount == null)
         {
             return null;
         }
 
-        return new dto.BankAccount
+        return new BankAccount
         {
             Prefix = paymentAccount.Prefix,
             Number = paymentAccount.Number,
