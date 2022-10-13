@@ -41,6 +41,7 @@ internal static class FomsSwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
+            x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.MortgageDetailSwaggerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });
