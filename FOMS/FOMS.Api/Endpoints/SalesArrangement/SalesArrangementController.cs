@@ -125,7 +125,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry" })]
+    [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry", "UC: SalesArrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
         => await _mediator.Send(request.InfuseId(salesArrangementId));
