@@ -1614,6 +1614,15 @@
             </remarks>
             <returns>Seznam klientů na produktu</returns>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Product.ProductController.GetProductObligations(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí seznam závazků na daném produktu
+            </summary>
+            <remarks>
+            <i>DS:</i> ProductService/GetProductObligationList<br />
+            </remarks>
+            <returns>Seznam závazků na produktu</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ContractNumber">
             <summary>
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
