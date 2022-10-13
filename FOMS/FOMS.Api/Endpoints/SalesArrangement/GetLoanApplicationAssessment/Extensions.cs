@@ -34,7 +34,7 @@ internal static class Extensions
                 DTI = response.Detail?.Limit?.Dti,
                 DSTI = response.Detail?.Limit?.Dsti,
                 LTCP = response.CollateralRiskCharacteristics?.Ltp,
-                LTFV = response.CollateralRiskCharacteristics?.Ltfv,
+                LTFV = response.CollateralRiskCharacteristics?.Lftv,
                 LTV = response.CollateralRiskCharacteristics?.Ltv
             },
             Households = response?.HouseholdsDetails?.Select(h => new Dto.Household
