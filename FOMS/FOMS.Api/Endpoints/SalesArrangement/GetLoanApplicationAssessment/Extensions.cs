@@ -14,8 +14,10 @@ namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 internal static class Extensions
 {
 
-    public static GetLoanApplicationAssessmentResponse ToApiResponse(this DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse response)
+    public static GetLoanApplicationAssessmentResponse ToApiResponse(this DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferDetailResponse? offer)
     {
+        //https://wiki.kb.cz/pages/viewpage.action?pageId=464683017
+
         return new GetLoanApplicationAssessmentResponse
         {
             Application = new()
@@ -35,19 +37,25 @@ internal static class Extensions
                 DSTI = response.Detail?.Limit?.Dsti,
                 LTCP = response.CollateralRiskCharacteristics?.Ltp,
                 LTFV = response.CollateralRiskCharacteristics?.Ltfv,
-                LTV = response.CollateralRiskCharacteristics?.Ltv
+                LTV = response.CollateralRiskCharacteristics?.Ltv,
+                LoanAmount = offer?.SimulationResults?.LoanAmount!,
+                LoanPaymentAmount = offer?.SimulationResults?.LoanPaymentAmount,
             },
             Households = response?.HouseholdsDetails?.Select(h => new Dto.Household
-            {
+            {   
                 HouseholdId = h.HouseholdId,
                 MonthlyIncome = h.Detail?.RiskCharacteristics?.MonthlyIncome?.Amount,
                 MonthlyCostsWithoutInstallments = h.Detail?.RiskCharacteristics?.MonthlyCostsWithoutInstallments?.Amount,
                 MonthlyInstallmentsInMPSS = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInMPSS?.Amount,
                 MonthlyInstallmentsInOFI = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInOFI?.Amount,
                 MonthlyInstallmentsInCBCB = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInCBCB?.Amount,
+                MonthlyInstallmentsInKBAmount = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInKB?.Amount,
+                MonthlyEntrepreneurInstallmentsInKBAmount = h.Detail?.RiskCharacteristics?.MonthlyEntrepreneurInstallmentsInKB?.Amount,
                 CIR = h.Detail?.Limit?.Cir,
                 DTI = h.Detail?.Limit?.Dti,
-                DSTI = h.Detail?.Limit?.Dsti
+                DSTI = h.Detail?.Limit?.Dsti,
+                LoanApplicationLimit = h.Detail?.Limit?.Limit?.Amount,
+                LoanApplicationInstallmentLimit = h.Detail?.Limit?.InstallmentLimit?.Amount,
             }).ToList(),
             RiskBusinesscaseExpirationDate = response!.RiskBusinessCaseExpirationDate,
             AssessmentResult = response!.AssessmentResult,
@@ -58,12 +66,10 @@ internal static class Extensions
                 Level = r.Level,
                 Result = r.Result,
                 Target = r.Target,
-                Weight = r.Weight
+                Weight = r.Weight,
             }).ToList()
         };
     }
-
-
 
     private static string? RemoveSpaces(this string value)
     {
@@ -78,6 +84,7 @@ internal static class Extensions
     public static cLA.LoanApplicationSaveRequest ToLoanApplicationSaveRequest(this LoanApplicationData data)
     {
         // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplication
+        // https://wiki.kb.cz/display/HT/RIP%28v2%29+-+POST+LoanApplicationAssessment
 
         cLA.LoanApplicationHousehold MapHousehold(cHousehold.Household h)
         {
