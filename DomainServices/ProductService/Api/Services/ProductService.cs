@@ -13,7 +13,10 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
         => _mediator = mediator;
 
     public override async Task<GetProductListResponse> GetProductList(CaseIdRequest request, ServerCallContext context)
-      => await _mediator.Send(new Dto.GetProductListMediatrRequest(request));
+        => await _mediator.Send(new Dto.GetProductListMediatrRequest(request));
+
+    public override async Task<GetProductObligationListResponse> GetProductObligationList(GetProductObligationListRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.GetProductObligationListMediatrRequest(request));
 
     public override async Task<GetMortgageResponse> GetMortgage(ProductIdReqRes request, ServerCallContext context)
         => await _mediator.Send(new Dto.GetMortgageMediatrRequest(request));
@@ -21,7 +24,7 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
     public override async Task<ProductIdReqRes> CreateMortgage(CreateMortgageRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateMortgageMediatrRequest(request));
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateMorgage(UpdateMortgageRequest request, ServerCallContext context)
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateMortgage(UpdateMortgageRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.UpdateMortgageMediatrRequest(request));
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> CreateContractRelationship(CreateContractRelationshipRequest request, ServerCallContext context)

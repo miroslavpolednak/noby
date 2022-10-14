@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto;
+﻿namespace FOMS.Api.SharedDto;
 
 public sealed class BankAccount
 {

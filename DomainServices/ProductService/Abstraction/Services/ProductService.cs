@@ -35,6 +35,16 @@ internal class ProductService : IProductServiceAbstraction
         return new SuccessfulServiceCallResult<GetProductListResponse>(result);
     }
 
+    public async Task<IServiceCallResult> GetProductObligationList(GetProductObligationListRequest request, CancellationToken cancellationToken = default)
+    {
+        _logger.RequestHandlerStartedWithId(nameof(GetProductObligationList), request.ProductId);
+
+        var result = await _service.GetProductObligationListAsync(request, cancellationToken: cancellationToken);
+
+        return new SuccessfulServiceCallResult<GetProductObligationListResponse>(result);
+    }
+
+
     public async Task<IServiceCallResult> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
         _logger.RequestHandlerStartedWithId(nameof(GetMortgage), productId);
@@ -54,12 +64,12 @@ internal class ProductService : IProductServiceAbstraction
 
         return new SuccessfulServiceCallResult<ProductIdReqRes>(result);
     }
-
-    public async Task<IServiceCallResult> UpdateMorgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
+    
+    public async Task<IServiceCallResult> UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStarted(nameof(UpdateMorgage));
+        _logger.RequestHandlerStarted(nameof(UpdateMortgage));
 
-        var result = await _service.UpdateMorgageAsync(request, cancellationToken: cancellationToken);
+        var result = await _service.UpdateMortgageAsync(request, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult();
     }

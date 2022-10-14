@@ -181,21 +181,6 @@
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Prefix">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.Number">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.BankAccount.BankCode">
-            <summary>
-            Kód banky
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
             <summary>
             Výše účelu v Kč
@@ -1609,6 +1594,15 @@
             </remarks>
             <returns>Seznam klientů na produktu</returns>
         </member>
+        <member name="M:FOMS.Api.Endpoints.Product.ProductController.GetProductObligations(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Vrátí seznam závazků na daném produktu
+            </summary>
+            <remarks>
+            <i>DS:</i> ProductService/GetProductObligationList<br />
+            </remarks>
+            <returns>Seznam závazků na produktu</returns>
+        </member>
         <member name="P:FOMS.Api.Endpoints.SalesArrangement.GetDetail.Dto.MortgageDetailDto.ContractNumber">
             <summary>
             ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
@@ -2194,6 +2188,21 @@
         <member name="T:FOMS.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
             <summary>
             Zalozi RiskBusinessCase pro dany Sales Arrangement
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.BankAccount.Prefix">
+            <summary>
+            Předčíslí účtu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.BankAccount.Number">
+            <summary>
+            Číslo účtu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.SharedDto.BankAccount.BankCode">
+            <summary>
+            Kód banky
             </summary>
         </member>
         <member name="P:FOMS.Api.SharedDto.IdentificationDocumentBase.IdentificationDocumentTypeId">
