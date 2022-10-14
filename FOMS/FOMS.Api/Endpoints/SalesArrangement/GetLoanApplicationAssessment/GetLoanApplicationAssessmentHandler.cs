@@ -1,7 +1,7 @@
 using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.OfferService.Abstraction;
 using DomainServices.RiskIntegrationService.Clients.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
-using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
@@ -14,19 +14,21 @@ internal class GetLoanApplicationAssessmentHandler
 
     private readonly LoanApplicationDataService _loanApplicationDataService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly IOfferServiceAbstraction _offerService;
     private readonly ILoanApplicationServiceClient _loanApplicationService;
     private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
 
     public GetLoanApplicationAssessmentHandler(
         LoanApplicationDataService loanApplicationDataService,
         ISalesArrangementServiceAbstraction salesArrangementService,
+        IOfferServiceAbstraction offerService,
         ILoanApplicationServiceClient loanApplicationService,
         IRiskBusinessCaseServiceClient riskBusinessCaseService
-
         )
     {
         _loanApplicationDataService = loanApplicationDataService;
         _salesArrangementService = salesArrangementService;
+        _offerService = offerService;
         _loanApplicationService = loanApplicationService;
         _riskBusinessCaseService = riskBusinessCaseService;
     }
@@ -76,7 +78,9 @@ internal class GetLoanApplicationAssessmentHandler
         };
         var getAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.GetAssessment(getAssesmentRequest, cancellationToken));
 
+        var offer = saInstance.OfferId.HasValue ? ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken)) : null;
+
         // convert to ApiResponse
-        return getAssesmentResponse.ToApiResponse();
+        return getAssesmentResponse.ToApiResponse(offer);
     }
 }
