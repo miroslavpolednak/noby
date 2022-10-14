@@ -635,7 +635,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
                 case EFormType.F3601:
 
                     var developer = Data.Offer.SimulationInputs.Developer;
-                    var developerDescription = (developer == null) ? null : String.Join(",", (new List<string> { developer.NewDeveloperName ?? String.Empty, developer.NewDeveloperCin ?? String.Empty, developer.NewDeveloperProjectName ?? String.Empty }));
+                    var developerDescription = (developer == null) ? null : String.Join(",", new List<string> { developer.NewDeveloperName, developer.NewDeveloperCin, developer.NewDeveloperProjectName }.Where(i => !String.IsNullOrWhiteSpace(i))).ToNullIfWhiteSpace();
 
                     var insuranceSumRiskLife = Data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
                     var insuranceSumRealEstate = Data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)Data.Offer.SimulationInputs.RealEstateInsurance.Sum;
@@ -695,7 +695,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
                         fin_kryti_cizi_zdroje = WhenFillKey(EJsonKey.FinKrytiCiziZdroje, Data.Offer.BasicParameters.FinancialResourcesOther.ToJsonString()),                                   // OfferInstance
                         fin_kryti_celkem = WhenFillKey(EJsonKey.FinKrytiCelkem, financialResourcesTotal.ToJsonString()),                                                                   // OfferInstance
                         zpusob_podpisu_smluv_dok = Data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),                                // Codebook SignatureTypes
-                        zpusob_podpisu_zadosti = Data.Arrangement.SalesArrangementSignatureTypeId.ToJsonString(),                          // Codebook SignatureTypes                        
+                        zpusob_podpisu_zadosti = 1.ToJsonString(), // pro DROP 1-3 má být default 1, nijak Data.Arrangement.SalesArrangementSignatureTypeId.ToJsonString(), // Codebook SignatureTypes
                         souhlas_el_forma_komunikace = Data.Arrangement.Mortgage?.AgentConsentWithElCom.ToJsonString(),
                         seznam_domacnosti = households?.OrderBy(i => i.HouseholdTypeId).Select((i, index) => MapHousehold(i, index + 1)).ToArray() ?? Array.Empty<object>(),
                         zmocnenec_mp_id = FindZmocnenecMpId().ToJsonString(),
@@ -755,7 +755,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
                         datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                         podpis_zadatele = 1.ToJsonString(), // Default 1
                         zmocnena_osoba = (drawing?.Agent != null).ToJsonString(),
-                        zpusob_podpisu_zadosti = Data.Arrangement.SalesArrangementSignatureTypeId.ToJsonString(),
+                        zpusob_podpisu_zadosti = 1.ToJsonString(), // pro DROP 1-3 má být default 1, nijak Data.Arrangement.SalesArrangementSignatureTypeId.ToJsonString(), // Codebook SignatureTypes
                         uv_ucet_predcisli = paymentAccount?.Prefix,
                         uv_ucet_cislo = paymentAccount?.Number,
                         uv_ucet_kod_banky = paymentAccount?.BankCode,
