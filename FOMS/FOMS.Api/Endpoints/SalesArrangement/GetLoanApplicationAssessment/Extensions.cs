@@ -36,7 +36,7 @@ internal static class Extensions
                 DTI = response.Detail?.Limit?.Dti,
                 DSTI = response.Detail?.Limit?.Dsti,
                 LTCP = response.CollateralRiskCharacteristics?.Ltp,
-                LTFV = response.CollateralRiskCharacteristics?.Ltfv,
+                LFTV = response.CollateralRiskCharacteristics?.Lftv,
                 LTV = response.CollateralRiskCharacteristics?.Ltv,
                 LoanAmount = offer?.SimulationResults?.LoanAmount!,
                 LoanPaymentAmount = offer?.SimulationResults?.LoanPaymentAmount,

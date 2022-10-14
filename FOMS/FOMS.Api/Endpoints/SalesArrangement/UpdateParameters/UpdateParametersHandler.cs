@@ -8,40 +8,50 @@ internal class UpdateParametersHandler
 {
     protected override async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
     {
-        var model = new _SA.UpdateSalesArrangementParametersRequest
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+
+        var updateRequest = new _SA.UpdateSalesArrangementParametersRequest
         {
-            SalesArrangementId = request.SalesArrangementId,
-            Mortgage = new _SA.SalesArrangementParametersMortgage
-            {
-                ContractSignatureTypeId = request.Parameters?.ContractSignatureTypeId,
-                ExpectedDateOfDrawing = request.Parameters?.ExpectedDateOfDrawing,
-                IncomeCurrencyCode = request.Parameters?.IncomeCurrencyCode,
-                ResidencyCurrencyCode = request.Parameters?.ResidencyCurrencyCode,
-                Agent = request.Parameters?.Agent,
-                AgentConsentWithElCom = request.Parameters?.AgentConsentWithElCom,
-            }
+            SalesArrangementId = request.SalesArrangementId
         };
 
-        if (request.Parameters?.LoanRealEstates is not null)
-            model.Mortgage.LoanRealEstates.AddRange(request.Parameters!.LoanRealEstates.Select(x => new _SA.SalesArrangementParametersMortgage.Types.LoanRealEstate
-            {
-                IsCollateral = x.IsCollateral,
-                RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
-                RealEstateTypeId = x.RealEstateTypeId,
-            }));
+        if (request.Parameters is not null)
+        {
+            string dataString = ((System.Text.Json.JsonElement)request.Parameters).GetRawText();
 
-        //TODO ma smysl tady resit ruzne objekty, kdyz ani nevim jak to bude za mesic vypadat?
-        await _salesArrangementService.UpdateSalesArrangementParameters(model, cancellationToken);
+            switch (saInstance.SalesArrangementTypeId)
+            {
+                case >= 1 and <= 5:
+                    var o1 = System.Text.Json.JsonSerializer.Deserialize<Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
+                    if (o1 is not null)
+                        updateRequest.Mortgage = o1.ToDomainService();
+                    break;
+
+                case 6:
+                    var o2 = System.Text.Json.JsonSerializer.Deserialize<Dto.ParametersDrawing>(dataString, _jsonSerializerOptions);
+                    if (o2 is not null)
+                        updateRequest.Drawing = o2.ToDomainService();
+                    break;
+
+                default:
+                    throw new NotImplementedException($"SalesArrangementTypeId {saInstance.SalesArrangementTypeId} parameters model cast to domain service is not implemented");
+            }
+        }
+
+        await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
     }
 
+    static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+    {
+        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
+        PropertyNameCaseInsensitive = true
+    };
+
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly ILogger<UpdateParametersHandler> _logger;
 
     public UpdateParametersHandler(
-        ISalesArrangementServiceAbstraction salesArrangementService,
-        ILogger<UpdateParametersHandler> logger)
+        ISalesArrangementServiceAbstraction salesArrangementService)
     {
-        _logger = logger;
         _salesArrangementService = salesArrangementService;
     }
 }

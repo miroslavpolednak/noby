@@ -8,7 +8,7 @@ public sealed class LoanApplicationAssessmentCollateralRiskCharacteristics
     public decimal? Ltv { get; set; }
 
     [ProtoMember(2)]
-    public decimal? Ltfv { get; set; }
+    public decimal? Lftv { get; set; }
 
     [ProtoMember(3)]
     public decimal? Ltp { get; set; }

@@ -118,11 +118,14 @@ public class SalesArrangementController : ControllerBase
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
-    /// Update ostatnich parametru produktu / uveru.
+    /// Update dat SalesArrangement-u
     /// </summary>
+    /// <remarks>
+    /// <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+    /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry" })]
+    [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry", "UC: SalesArrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
         => await _mediator.Send(request.InfuseId(salesArrangementId));
