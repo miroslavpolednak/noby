@@ -290,6 +290,8 @@ internal static class Extensions
             var childrenUpToTenYearsCount = h.Data?.ChildrenUpToTenYearsCount;
             var childrenOverTenYearsCount = h.Data?.ChildrenOverTenYearsCount;
 
+            var householdCustomersOnSA = data.CustomersOnSa.Where(c => c.CustomerOnSAId == h.CustomerOnSAId1 || c.CustomerOnSAId == h.CustomerOnSAId2).ToArray();
+
             return new cLA.LoanApplicationHousehold
             {
                 HouseholdId = h.HouseholdTypeId,
@@ -298,7 +300,7 @@ internal static class Extensions
                 ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
                 ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
-                Customers = data.CustomersOnSa.Select(i => MapCustomer(i)).ToList(),
+                Customers = householdCustomersOnSA.Select(i => MapCustomer(i)).ToList(),
             };
         }
 
