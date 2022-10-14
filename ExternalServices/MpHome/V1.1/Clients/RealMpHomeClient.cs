@@ -65,7 +65,7 @@ namespace ExternalServices.MpHome.V1._1
             {
                 return await callMethod(async () =>
                 {
-                    await c.FomsUpdatePartnerAsync(partnerId, default);
+                    await c.FomsUpdatePartnerAsync(partnerId, request);
 
                     return new SuccessfulServiceCallResult();
                 });
