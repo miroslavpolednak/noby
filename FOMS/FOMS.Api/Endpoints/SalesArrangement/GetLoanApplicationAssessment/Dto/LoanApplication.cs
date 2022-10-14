@@ -66,6 +66,6 @@ public class LoanApplication
     public decimal? DSTI { get; set; }
     public decimal? CIR { get; set; }
     public decimal? LTV { get; set; }
-    public decimal? LTFV { get; set; }
+    public decimal? LFTV { get; set; }
     public decimal? LTCP { get; set; }
 }

@@ -5,6 +5,7 @@ namespace CIS.Infrastructure.Logging;
 public static class RequestLoggerExtensions
 {
     private static readonly Action<ILogger, string, Exception> _requestHandlerStarted;
+    private static readonly Action<ILogger, string, string, Exception> _httpRequestStarted;
     private static readonly Action<ILogger, string, object?, Exception> _requestHandlerStartedWithRequest;
     private static readonly Action<ILogger, string, long, Exception> _requestHandlerStartedWithId;
     private static readonly Action<ILogger, string, Exception> _requestHandlerFinished;
@@ -22,6 +23,11 @@ public static class RequestLoggerExtensions
             LogLevel.Information,
             new EventId(EventIdCodes.HttpResponsePayload, nameof(HttpResponsePayload)),
             "Reponse Payload for {HttpMethod} {Url} with status code {StatusCode}");
+
+        _httpRequestStarted = LoggerMessage.Define<string, string>(
+            LogLevel.Debug,
+            new EventId(EventIdCodes.HttpRequestStarted, nameof(HttpRequestStarted)),
+            "Request {HttpMethod} {Url} started");
 
         _requestHandlerStarted = LoggerMessage.Define<string>(
             LogLevel.Debug,
@@ -49,6 +55,9 @@ public static class RequestLoggerExtensions
 
     public static void HttpRequestPayload(this ILogger logger, HttpRequestMessage request)
         => _httpRequestPayload(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);
+
+    public static void HttpRequestStarted(this ILogger logger, HttpRequestMessage request)
+        => _httpRequestStarted(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);
 
     public static void HttpResponsePayload(this ILogger logger, string httpMethod, string url, int statusCode)
         => _httpResponsePayload(logger, httpMethod, url, statusCode, null!);

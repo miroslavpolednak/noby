@@ -17,6 +17,7 @@ internal static class CreateAssessmentRequestExtensions
             AssessmentMode = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateAssessmentMode>(request.AssessmentMode.ToString(), true),
             GrantingProcedureCode = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateGrantingProcedureCode>(request.GrantingProcedureCode.ToString(), true),
             SelfApprovalRequired = request.SelfApprovalRequired,
+            SystemApprovalRequired = request.SystemApprovalRequired,
             LoanApplicationException = request.LoanApplicationExceptions?.Select(t => new _C4M.LoanApplicationException
             {
                 Arm = t.Arm,
