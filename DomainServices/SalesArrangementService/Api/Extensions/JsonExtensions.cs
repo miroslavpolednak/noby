@@ -108,4 +108,9 @@ internal static class JsonExtensions
 
         return valueWithoutSpaces;
     }
+
+    public static string? ToNullIfWhiteSpace(this string value)
+    {
+        return String.IsNullOrWhiteSpace(value) ? null : value;
+    }
 }
