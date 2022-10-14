@@ -20,7 +20,11 @@ internal class CreateRiskBusinessCaseHandler
     {
         long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
         long? kbId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
-        if (!mpId.HasValue || !kbId.HasValue) return; // nema modre ID, nezajima me
+        if (!mpId.HasValue || !kbId.HasValue)
+        {
+            _logger.LogInformation($"CreateProductHandler for CaseId #{notification.CaseId} not proceeding / missing MP ID");
+            return; // nema modre ID, nezajima me
+        }
 
         //SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));

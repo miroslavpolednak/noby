@@ -42,6 +42,7 @@ internal static class FomsSwagger
             
             x.SchemaFilter<Endpoints.CustomerIncome.IncomeDataSwaggerSchema>();
             x.SchemaFilter<Endpoints.SalesArrangement.GetDetail.MortgageDetailSwaggerSchema>();
+            x.SchemaFilter<Endpoints.SalesArrangement.UpdateParameters.SalesArrangementParametersSwagerSchema>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
         });

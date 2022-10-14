@@ -21,6 +21,14 @@ public interface IProductServiceAbstraction
     Task<IServiceCallResult> GetProductList(long caseId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
+    /// todo:
+    /// </summary>
+    /// <returns>
+    /// SuccessfulServiceCallResult[GetProductObligationListResponse] - OK
+    /// </returns>
+    Task<IServiceCallResult> GetProductObligationList(GetProductObligationListRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Detail produktu KB Hypotéky
     /// </summary>
     /// <returns>
@@ -46,7 +54,7 @@ public interface IProductServiceAbstraction
     /// SimulationServiceErrorResult - chyba z EAS;
     /// ErrorServiceCallResult - chyba pri request kontrole;
     /// </returns>
-    Task<IServiceCallResult> UpdateMorgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vytvoření vazby customer/product

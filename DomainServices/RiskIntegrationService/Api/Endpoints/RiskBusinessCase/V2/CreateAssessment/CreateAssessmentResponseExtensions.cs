@@ -111,7 +111,7 @@ internal static class CreateAssessmentExtensions
         => new()
         {
             Ltv = model.Ltv,
-            Ltfv = model.Ltfv,
+            Lftv = model.Ltfv,
             Ltp = model.Ltp,
             SumAppraisedValue = model.SumAppraisedValue,
             TotalUsedValue = model.TotalCollUsedValue

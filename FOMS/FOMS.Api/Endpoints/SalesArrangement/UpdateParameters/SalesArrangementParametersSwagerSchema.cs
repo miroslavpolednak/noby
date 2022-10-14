@@ -2,13 +2,13 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace FOMS.Api.Endpoints.SalesArrangement.GetDetail;
+namespace FOMS.Api.Endpoints.SalesArrangement.UpdateParameters;
 
-internal class MortgageDetailSwaggerSchema : ISchemaFilter
+internal class SalesArrangementParametersSwagerSchema : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
-        if (context.Type != typeof(GetDetailResponse))
+        if (context.Type != typeof(UpdateParametersRequest))
             return;
 
         var possibleTypes = new[]
@@ -21,7 +21,7 @@ internal class MortgageDetailSwaggerSchema : ISchemaFilter
         {
             var typeSchema = context.SchemaGenerator.GenerateSchema(type, context.SchemaRepository);
 
-            schema.Properties[nameof(GetDetailResponse.Parameters).ToLowerInvariant()].OneOf.Add(typeSchema);
+            schema.Properties[nameof(UpdateParametersRequest.Parameters).ToLowerInvariant()].OneOf.Add(typeSchema);
         }
     }
 }
