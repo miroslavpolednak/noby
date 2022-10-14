@@ -1,8 +1,10 @@
 ﻿using DomainServices.ProductService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using _Product = DomainServices.ProductService.Contracts;
+using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Abstraction;
+using CIS.Infrastructure.gRPC.CisTypes;
+using _Product = DomainServices.ProductService.Contracts;
 
 namespace FOMS.Api.Notifications.Handlers;
 
@@ -11,7 +13,8 @@ internal class CreateProductHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
+        var mpIdentity = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        long? mpId = mpIdentity?.IdentityId;
         if (!mpId.HasValue)
         {
             _logger.LogInformation($"CreateProductHandler for CaseId #{notification.CaseId} not proceeding / missing MP ID");
@@ -35,6 +38,28 @@ internal class CreateProductHandler
         // detail offer
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
 
+        // pokud neexistuje customer v konsDb, tak ho vytvor
+        try
+        {
+            var customerDetail = ServiceCallResult.ResolveAndThrowIfError<_Cu.CustomerDetailResponse>(await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken));
+
+            // zalozit noveho klienta
+            var createCustomerRequest = new _Cu.CreateCustomerRequest
+            {
+                Identity = mpIdentity,
+                HardCreate = true,
+                NaturalPerson = customerDetail.NaturalPerson
+            };
+            if (customerDetail.Addresses is not null)
+                createCustomerRequest.Addresses.AddRange(customerDetail.Addresses);
+
+            await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            var x = ex.Message;
+        }
+
         var request = new _Product.CreateMortgageRequest
         {
             CaseId = notification.CaseId,
@@ -45,17 +70,20 @@ internal class CreateProductHandler
         _logger.EntityCreated(nameof(_Product.Product), result.ProductId);
     }
 
+    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IProductServiceAbstraction _productService;
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
+        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         IOfferServiceAbstraction offerService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         IProductServiceAbstraction productService,
         ILogger<CreateProductHandler> logger)
     {
+        _customerService = customerService;
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _productService = productService;

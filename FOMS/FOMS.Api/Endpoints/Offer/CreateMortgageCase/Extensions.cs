@@ -37,8 +37,8 @@ internal static class Extensions
                 EmailForOffer = request.EmailForOffer ?? "",
                 PhoneNumberForOffer = request.PhoneNumberForOffer ?? "",
                 DateOfBirthNaturalPerson = request.DateOfBirth,
-                FirstNameNaturalPerson = request.FirstName,
-                Name = request.LastName,
+                FirstNameNaturalPerson = request.FirstName ?? "",
+                Name = request.LastName ?? "",
                 Identity = request.Identity is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Identity)
             },
             Data = new _Case.CaseData

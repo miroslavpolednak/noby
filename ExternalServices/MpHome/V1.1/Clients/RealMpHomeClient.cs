@@ -1,4 +1,5 @@
-﻿using ExternalServices.MpHome.V1._1.MpHomeWrapper;
+﻿using CIS.Infrastructure.Logging;
+using ExternalServices.MpHome.V1._1.MpHomeWrapper;
 
 namespace ExternalServices.MpHome.V1._1
 {
@@ -58,7 +59,7 @@ namespace ExternalServices.MpHome.V1._1
 
         public Task<IServiceCallResult> UpdatePartner(long partnerId, PartnerRequest request)
         {
-            _logger.LogDebug("Run inputs: MpHome DeletePartnerLoanLink with partnerId {partnerId}, request {partnerRequest}", partnerId, request);
+            _logger.LogSerializedObject($"Run inputs: MpHome UpdatePartner #{partnerId}", request);
 
             return WithClient(async c =>
             {
