@@ -5,6 +5,7 @@ using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Abstraction;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
+using Google.Protobuf;
 
 namespace FOMS.Api.Notifications.Handlers;
 
@@ -50,14 +51,27 @@ internal class CreateProductHandler
                 HardCreate = true,
                 NaturalPerson = customerDetail.NaturalPerson
             };
-            if (customerDetail.Addresses is not null)
-                createCustomerRequest.Addresses.AddRange(customerDetail.Addresses);
+            if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
+                createCustomerRequest.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
+                {
+                    Street = x.Street,
+                    City = x.City,
+                    AddressTypeId = x.AddressTypeId,
+                    BuildingIdentificationNumber = x.BuildingIdentificationNumber,
+                    LandRegistryNumber = string.IsNullOrEmpty(x.LandRegistryNumber) ? "1" : x.LandRegistryNumber,
+                    Postcode = x.Postcode.Replace(" ", "")
+                }));
 
             await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
         }
+        catch (CisAlreadyExistsException)
+        {
+            // tise spolknout -> klient existuje a my jsme spokojeni
+        }
         catch (Exception ex)
         {
-            var x = ex.Message;
+            _logger.LogInformation("MpHome create client failed", ex);
+            return;
         }
 
         var request = new _Product.CreateMortgageRequest
