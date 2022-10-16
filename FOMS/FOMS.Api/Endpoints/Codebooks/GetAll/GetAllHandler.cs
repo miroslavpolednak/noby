@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Abstraction;
-using FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
+using FOMS.Api.Endpoints.Codebooks.CodebookMap;
 
 namespace FOMS.Api.Endpoints.Codebooks.GetAll;
 

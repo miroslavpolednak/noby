@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
+using FOMS.Api.Endpoints.Codebooks.CodebookMap;
 using FOMS.Api.Endpoints.Codebooks.GetAll;
-using FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;

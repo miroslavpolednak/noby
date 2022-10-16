@@ -1,4 +1,4 @@
-﻿namespace FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
+﻿namespace FOMS.Api.Endpoints.Codebooks.CodebookMap;
 
 public interface ICodebookMap : IEnumerable<ICodebookEndpoint>
 {

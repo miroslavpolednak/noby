@@ -209,11 +209,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Docume
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{6AF68A4E-BDE9-4A1A-BA14-4AF3BB038CC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_NotificationService", "Playgrounds\NotificationService\Console_NotificationService\Console_NotificationService.csproj", "{95762529-6391-4332-8829-1195002DFE32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_NotificationService", "Playgrounds\NotificationService\Console_NotificationService\Console_NotificationService.csproj", "{95762529-6391-4332-8829-1195002DFE32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock_KB_NotificationWorker", "Playgrounds\NotificationService\Mock_KB_NotificationWorker\Mock_KB_NotificationWorker.csproj", "{A8931807-0751-4BED-A3A1-987BF6C932B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock_KB_NotificationWorker", "Playgrounds\NotificationService\Mock_KB_NotificationWorker\Mock_KB_NotificationWorker.csproj", "{A8931807-0751-4BED-A3A1-987BF6C932B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.NotificationService.Msc", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Msc\CIS.InternalServices.NotificationService.Msc.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Msc", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Msc\CIS.InternalServices.NotificationService.Msc.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HouseholdService", "HouseholdService", "{9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}"
 EndProject
@@ -225,11 +225,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdSer
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentArchiveService", "DocumentArchiveService", "{FD432970-0CA5-4632-9121-6A24C1B5A967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -863,14 +863,6 @@ Global
 		{FA542662-EE7D-44DD-9E17-647751C627DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA542662-EE7D-44DD-9E17-647751C627DB}.Release|x64.ActiveCfg = Release|Any CPU
 		{FA542662-EE7D-44DD-9E17-647751C627DB}.Release|x64.Build.0 = Release|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Debug|x64.Build.0 = Debug|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Release|x64.ActiveCfg = Release|Any CPU
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519}.Release|x64.Build.0 = Release|Any CPU
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1017,7 +1009,6 @@ Global
 		{95762529-6391-4332-8829-1195002DFE32} = {6AF68A4E-BDE9-4A1A-BA14-4AF3BB038CC2}
 		{A8931807-0751-4BED-A3A1-987BF6C932B1} = {6AF68A4E-BDE9-4A1A-BA14-4AF3BB038CC2}
 		{FA542662-EE7D-44DD-9E17-647751C627DB} = {46414B85-D1B6-411D-B232-C6CC8B35FE57}
-		{5C1AD29A-818C-4EE9-9428-60D15CEB7519} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
 		{9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{6A12E6D1-613A-46EB-AD42-625D7DC5AB21} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}

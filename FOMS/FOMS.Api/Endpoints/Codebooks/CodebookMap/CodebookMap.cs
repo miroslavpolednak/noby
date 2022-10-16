@@ -6,7 +6,7 @@ using DomainServices.CodebookService.Contracts;
 using FOMS.Api.Endpoints.Codebooks.GetAll.Dto;
 using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
+namespace FOMS.Api.Endpoints.Codebooks.CodebookMap;
 
 public class CodebookMap : ICodebookMap
 {
@@ -127,7 +127,7 @@ public class CodebookMap : ICodebookMap
 
             return productTypes
                 .Where(t => t.IsValid)
-                .Select(t => new Dto.ProductTypeItem
+                .Select(t => new GetAll.Dto.ProductTypeItem
                 {
                     Id = t.Id,
                     LoanAmountMax = t.LoanAmountMax,

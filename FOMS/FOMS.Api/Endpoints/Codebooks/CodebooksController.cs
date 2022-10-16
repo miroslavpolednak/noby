@@ -81,7 +81,19 @@ public class CodebooksController : ControllerBase
     [ProducesResponseType(typeof(List<GetAll.GetAllResponseItem>), StatusCodes.Status200OK)]
     public async Task<List<GetAll.GetAllResponseItem>> GetAll([FromQuery(Name = "q")] string codebookTypes, CancellationToken cancellationToken)
         => await _mediator.Send(new GetAll.GetAllRequest(codebookTypes), cancellationToken);
-    
+
+    [HttpGet("supported")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<CodebookMap.SupportedCodebook>), StatusCodes.Status200OK)]
+    public List<CodebookMap.SupportedCodebook> GetSupported([FromServices] CodebookMap.ICodebookMap codebookMap)
+    {
+        return codebookMap.Select(m => new CodebookMap.SupportedCodebook
+        {
+            Name = m.Code,
+            Type = m.ReturnType.Name
+        }).ToList();
+    }
+
     /// <summary>
     /// Ciselnik fixace uveru.
     /// </summary>

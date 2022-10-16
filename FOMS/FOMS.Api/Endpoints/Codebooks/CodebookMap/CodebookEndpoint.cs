@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Abstraction;
 
-namespace FOMS.Api.Endpoints.Codebooks.GetAll.CodebookMap;
+namespace FOMS.Api.Endpoints.Codebooks.CodebookMap;
 
 public class CodebookEndpoint<TReturn> : ICodebookEndpoint where TReturn : class
 {
