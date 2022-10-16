@@ -58,7 +58,7 @@ internal class CreateProductHandler
                     City = x.City,
                     AddressTypeId = x.AddressTypeId,
                     BuildingIdentificationNumber = x.BuildingIdentificationNumber,
-                    LandRegistryNumber = string.IsNullOrEmpty(x.LandRegistryNumber) ? "1" : x.LandRegistryNumber,
+                    LandRegistryNumber = x.EvidenceNumber,
                     Postcode = x.Postcode.Replace(" ", "")
                 }));
 
