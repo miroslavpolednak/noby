@@ -533,13 +533,13 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
         public decimal? Ltv { get; set; }
 
         /// <summary>
-        /// Ltfv
+        /// Lftv
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("ltfv")]
+        [System.Text.Json.Serialization.JsonPropertyName("lftv")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public decimal? Ltfv { get; set; }
+        public decimal? Lftv { get; set; }
 
         /// <summary>
         /// Ltp
@@ -1752,7 +1752,7 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.
     /// <summary>
     /// RiskBusinessCase
     /// </summary>
-    // [JsonInheritanceConverter(typeof(RiskBusinessCase), "@type")]
+    [JsonInheritanceConverter(typeof(RiskBusinessCase), "@type")]
     [JsonInheritanceAttribute("RiskBusinessCaseExpanded", typeof(RiskBusinessCaseExpanded))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal partial class RiskBusinessCase

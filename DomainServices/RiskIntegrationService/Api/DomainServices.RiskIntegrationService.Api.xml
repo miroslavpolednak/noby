@@ -916,9 +916,9 @@
             Ltv
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V1.Contracts.CollateralRiskCharacteristics.Ltfv">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V1.Contracts.CollateralRiskCharacteristics.Lftv">
             <summary>
-            Ltfv
+            Lftv
             </summary>
         </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAssessment.V1.Contracts.CollateralRiskCharacteristics.Ltp">
@@ -2768,9 +2768,9 @@
             Ltv
             </summary>
         </member>
-        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.Ltfv">
+        <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.Lftv">
             <summary>
-            Ltfv
+            Lftv
             </summary>
         </member>
         <member name="P:DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts.CollateralRiskCharacteristics.Ltp">

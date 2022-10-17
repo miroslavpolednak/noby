@@ -169,13 +169,13 @@ namespace DomainServices.RiskIntegrationService.Api.Clients.LoanApplicationAsses
         public decimal? Ltv { get; set; }
 
         /// <summary>
-        /// Ltfv
+        /// Lftv
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("ltfv")]
+        [System.Text.Json.Serialization.JsonPropertyName("lftv")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
-        public decimal? Ltfv { get; set; }
+        public decimal? Lftv { get; set; }
 
         /// <summary>
         /// Ltp

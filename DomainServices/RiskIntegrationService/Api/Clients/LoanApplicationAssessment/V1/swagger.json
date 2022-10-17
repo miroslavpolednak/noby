@@ -185,10 +185,10 @@
           "format": "decimal",
           "description": "Ltv"
         },
-        "ltfv": {
+        "lftv": {
           "type": "number",
           "format": "decimal",
-          "description": "Ltfv"
+          "description": "Lftv"
         },
         "ltp": {
           "type": "number",
