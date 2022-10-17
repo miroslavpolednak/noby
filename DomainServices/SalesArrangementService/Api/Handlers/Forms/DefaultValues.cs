@@ -1,11 +1,11 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
 {
-    public class DefaultFormValues
+    public class DefaultValues
     {
         #region Static
 
-        private static Dictionary<EFormType, DefaultFormValues> _formValues = new Dictionary<EFormType, DefaultFormValues>();
-        public static DefaultFormValues GetInstance(EFormType formType)
+        private static Dictionary<EFormType, DefaultValues> _formValues = new Dictionary<EFormType, DefaultValues>();
+        public static DefaultValues GetInstance(EFormType formType)
         {
             if (!_formValues.ContainsKey(formType))
             {
@@ -15,22 +15,22 @@
             return _formValues[formType];
         }
 
-        private static DefaultFormValues CreateDefaultFormValues(EFormType formType)
+        private static DefaultValues CreateDefaultFormValues(EFormType formType)
         {
-            DefaultFormValues? formValues;
+            DefaultValues? formValues;
 
             switch (formType)
             {
                 case EFormType.F3601:
-                    formValues = new DefaultFormValues { TypFormulare = "3601A", HesloKod = "608248" };
+                    formValues = new DefaultValues { TypFormulare = "3601A", HesloKod = "608248" };
                     break;
 
                 case EFormType.F3602:
-                    formValues = new DefaultFormValues { TypFormulare = "3602A", HesloKod = "608243" };
+                    formValues = new DefaultValues { TypFormulare = "3602A", HesloKod = "608243" };
                     break;
 
                 case EFormType.F3700:
-                    formValues = new DefaultFormValues { TypFormulare = "3700A", HesloKod = "613226" };
+                    formValues = new DefaultValues { TypFormulare = "3700A", HesloKod = "613226" };
                     break;
 
                 default:
@@ -42,7 +42,7 @@
 
         #endregion
 
-        private DefaultFormValues() { }
+        private DefaultValues() { }
 
         public string TypFormulare { get; init; } = String.Empty;
         public string HesloKod { get; init; } = String.Empty;

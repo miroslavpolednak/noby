@@ -16,9 +16,9 @@ internal class NobyRepository
 
     #endregion
 
-    public async Task CreateForm(Entities.FormInstanceInterface entity, CancellationToken cancellation)
+    public async Task CreateForms(List<Entities.FormInstanceInterface> entities, CancellationToken cancellation)
     {
-        _dbContext.FormInstanceInterfaces.Add(entity);
+        _dbContext.FormInstanceInterfaces.AddRange(entities);
         await _dbContext.SaveChangesAsync(cancellation);
     }
 

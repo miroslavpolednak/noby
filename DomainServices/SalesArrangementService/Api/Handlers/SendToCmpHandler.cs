@@ -2,8 +2,8 @@
 
 using CIS.Foms.Enums;
 
-using DomainServices.SalesArrangementService.Api.Handlers.Shared;
-
+using DomainServices.SalesArrangementService.Api.Handlers.Forms;
+using DomainServices.SalesArrangementService.Api.Repositories.Entities;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -13,84 +13,98 @@ internal class SendToCmpHandler
 
     #region Construction
 
-    private readonly FormDataService _formDataService;
+    private readonly FormsService _formsService;
     private readonly ILogger<SendToCmpHandler> _logger;
     private readonly Repositories.NobyRepository _repository;
     private readonly UserService.Clients.IUserServiceClient _userService;
    
-
     public SendToCmpHandler(
-        FormDataService formDataService,
+        FormsService formsService,
         ILogger<SendToCmpHandler> logger,
         Repositories.NobyRepository repository,
         UserService.Clients.IUserServiceClient userService)
     {
-        _formDataService = formDataService;
+        _formsService = formsService;
         _logger = logger;
         _repository = repository;
         _userService = userService;
     }
 
-    private class DynamicFormValues
-    {
-        public string DocmentId { get; init; } = String.Empty;
-        public string FormId { get; init; } = String.Empty;
-    }
-
     #endregion
 
-
-    private EFormType[] GetFormTypes(SalesArrangementCategories arrangementCategory)
-    {
-        EFormType[] formTypes;
-
-        switch (arrangementCategory)
-        {
-            case SalesArrangementCategories.ProductRequest:
-                formTypes = new EFormType[] { EFormType.F3601, EFormType.F3602};
-                break;
-
-            case SalesArrangementCategories.ServiceRequest:
-                formTypes = new EFormType[] { EFormType.F3700 };
-                break;
-
-            default:
-                throw new CisArgumentException(99999, $"Sales arrangement category #{arrangementCategory} is not supported.", nameof(arrangementCategory));
-        }
-        return formTypes;
-    }
-
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.SendToCmpMediatrRequest request, CancellationToken cancellation)
-    {        
-        var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation, true);
-        var builder = new FormDataJsonBuilder(formData);
+    {
+        // load arrangement
+        var arrangement = await _formsService.LoadArrangement(request.SalesArrangementId, cancellation);
 
-        _logger.LogDebug($"Parsed ProductTypeKind: {builder.ProductTypeKind} from data [ProductTypeId: {formData.ProductType?.Id}, LoanKindId: {formData.Offer?.SimulationInputs?.LoanKindId}]");
+        // build forms
+        var forms = await GetForms(arrangement, cancellation);
 
-        // load user
-        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(formData.Arrangement.Created.UserId!.Value, cancellation));
-
-        var formsToSave = GetFormTypes(formData.ArrangementCategory);
-
-        // TODO: run in transaction ?
-        for (var i = 0; i < formsToSave.Length; i++)
-        {
-            var formType = formsToSave[i];
-
-            // get DocmentId, FormId
-            var dynamicFormValues = await GetDynamicFormValues(cancellation);
-
-            // build data
-            var jsonData = builder.BuildJson(formType, dynamicFormValues.FormId);
-
-            // save to DB
-            await SaveForm(user, DefaultFormValues.GetInstance(formType), dynamicFormValues, formData.Arrangement.ContractNumber, jsonData, cancellation);
-        }
+        // save to DB
+        await SaveForms(arrangement, forms, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    #region Form data
+    private async Task<List<Form>> GetForms(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
+    {
+        var arrangementCategory = await _formsService.LoadArrangementCategory(arrangement, cancellation);
+
+        List<Form>? forms;
+
+        switch (arrangementCategory)
+        {
+            case SalesArrangementCategories.ProductRequest:
+                forms = await ProcessProductRequest(arrangement, cancellation);
+                break;
+
+            case SalesArrangementCategories.ServiceRequest:
+                forms = await ProcessServiceRequest(arrangement, cancellation);
+                break;
+
+            default:
+                forms = new List<Form>();
+                break;
+        }
+
+        return forms;
+    }
+
+    private async Task<List<Form>> ProcessProductRequest(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
+    {
+        var formData = await _formsService.LoadProductFormData(arrangement, cancellation);
+
+        FormsService.CheckFormData(formData);
+
+        await _formsService.SetContractNumber(formData, cancellation);
+        await _formsService.AddFirstSignatureDate(formData);
+        await _formsService.CallSulm(formData, cancellation);
+
+        var dynamicValuesRange = await GetDynamicValuesRange(cancellation, 3);
+
+        var builder = new JsonBuilder();
+
+        _logger.LogDebug($"Parsed ProductTypeKind: {builder.ProductTypeKind} from data [ProductTypeId: {formData.ProductType?.Id}, LoanKindId: {formData.Offer?.SimulationInputs?.LoanKindId}]");
+
+        return builder.BuildForms(formData, dynamicValuesRange);
+    }
+
+    private async Task<List<Form>> ProcessServiceRequest(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
+    {
+        var formData = await _formsService.LoadServiceFormData(arrangement, cancellation);
+
+        FormsService.CheckFormData(formData);
+
+        var dynamicValuesRange = await GetDynamicValuesRange(cancellation, 1);
+
+        var builder = new JsonBuilder();
+
+        return builder.BuildForms(formData, dynamicValuesRange);
+    }
+
+
+    #region Dynamic Form Values
+
     private static string GenerateDocmentId(int id, int length = 30)
     {
         var prefix = "KBHNB";
@@ -107,44 +121,52 @@ internal class SendToCmpHandler
         return prefix + sId + suffix;
     }
 
-    private async Task<DynamicFormValues> GetDynamicFormValues(CancellationToken cancellation)
+    private async Task<List<DynamicValues>> GetDynamicValuesRange(CancellationToken cancellation, int count = 3)
     {
-        var count = await _repository.GetFormsCount(cancellation);
+        var formsCount = await _repository.GetFormsCount(cancellation);
 
-        var id = count + 1;
-
-        var docmentId = GenerateDocmentId(id);
-        var formId = GenerateFormId(id);
-
-        return new DynamicFormValues { DocmentId = docmentId, FormId = formId };
-    }
-
-
-    private async Task SaveForm(UserService.Contracts.User user, DefaultFormValues defaultFormValues, DynamicFormValues dynamicFormValues, string contractNumber, string jsonData, CancellationToken cancellation)
-    {
-        // save to DB
-        var entity = new Repositories.Entities.FormInstanceInterface()
+        return Enumerable.Range(formsCount + 1, count).Select(id => new DynamicValues
         {
-            DOKUMENT_ID = dynamicFormValues.DocmentId,
-            TYP_FORMULARE = defaultFormValues.TypFormulare,
-            CISLO_SMLOUVY = contractNumber,
-            STATUS = 100,
-            DRUH_FROMULARE = 'N',
-            FORMID = dynamicFormValues.FormId,
-            CPM = user.CPM ?? String.Empty,
-            ICP = user.ICP ?? String.Empty,
-            CREATED_AT = DateTime.Now,          // what time zone?
-            HESLO_KOD = defaultFormValues.HesloKod,
-            STORNOVANO = 0,
-            TYP_DAT = 1,
-            JSON_DATA_CLOB = jsonData
-        };
-
-        await _repository.CreateForm(entity, cancellation);
-
-        _logger.EntityCreated(nameof(Repositories.Entities.FormInstanceInterface), long.Parse(dynamicFormValues.FormId, CultureInfo.InvariantCulture));
+            DocmentId = GenerateDocmentId(id),
+            FormId = GenerateFormId(id)
+        }).ToList();
     }
 
     #endregion
-  
+
+
+    private async Task SaveForms(Contracts.SalesArrangement arrangement, List<Form> forms, CancellationToken cancellation)
+    {
+        // load user
+        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(arrangement.Created.UserId!.Value, cancellation));
+
+        // map to entities
+        var entities = forms.Select(f => 
+        {
+            var defaultValues = DefaultValues.GetInstance(f.FormType);
+
+            return new FormInstanceInterface()
+            {
+                DOKUMENT_ID = f.DynamicValues!.DocmentId,
+                TYP_FORMULARE = defaultValues.TypFormulare,
+                CISLO_SMLOUVY = arrangement.ContractNumber,
+                STATUS = 100,
+                DRUH_FROMULARE = 'N',
+                FORMID = f.DynamicValues.FormId,
+                CPM = user.CPM ?? String.Empty,
+                ICP = user.ICP ?? String.Empty,
+                CREATED_AT = DateTime.Now,          // what time zone?
+                HESLO_KOD = defaultValues.HesloKod,
+                STORNOVANO = 0,
+                TYP_DAT = 1,
+                JSON_DATA_CLOB = f.JSON
+            };
+        }).ToList();
+
+        await _repository.CreateForms(entities, cancellation);
+
+        var dokumentIds = entities.Select(e => e.DOKUMENT_ID);
+
+        _logger.LogInformation($"Entities {nameof(FormInstanceInterface)} created [ContractNumber: {arrangement.ContractNumber}, DokumentIds: {string.Join(", ", dokumentIds)} ]");
+    }
 }

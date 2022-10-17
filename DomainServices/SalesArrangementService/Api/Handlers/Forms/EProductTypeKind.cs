@@ -1,4 +1,4 @@
-﻿namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
 {
     [System.Flags]
     public enum EProductTypeKind
