@@ -1,8 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Sms;
-using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendSms;
+namespace CIS.InternalServices.NotificationService.Api.Validators;
 
 public class SendSmsRequestValidator : AbstractValidator<SmsSendRequest>
 {
@@ -11,17 +10,8 @@ public class SendSmsRequestValidator : AbstractValidator<SmsSendRequest>
         RuleFor(request => request.Phone)
             .Cascade(CascadeMode.Stop)
             .NotNull()
-            .WithErrorCode(nameof(SmsSendRequest.Phone))
-            .ChildRules(phone =>
-            {
-                phone.RuleFor(p => p.CountryCode)
-                    .NotEmpty()
-                    .WithErrorCode($"{nameof(SmsSendRequest.Phone)}.{nameof(Phone.CountryCode)}");
-
-                phone.RuleFor(p => p.NationalNumber)
-                    .NotEmpty()
-                    .WithErrorCode($"{nameof(SmsSendRequest.Phone)}.{nameof(Phone.NationalNumber)}");
-            });
+            .SetValidator(new PhoneValidator())
+            .WithErrorCode(nameof(SmsSendRequest.Phone));
 
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
@@ -33,6 +23,7 @@ public class SendSmsRequestValidator : AbstractValidator<SmsSendRequest>
         
         RuleFor(request => request.Text)
             .NotEmpty()
+            .MaximumLength(480)
             .WithErrorCode(nameof(SmsSendRequest.Text));
     }    
 }

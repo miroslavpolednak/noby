@@ -1,63 +1,58 @@
 ﻿using System.Text.Json;
-using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.Api.Mappers;
+using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using CIS.InternalServices.NotificationService.Msc;
 using Confluent.Kafka;
-using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.SendSms;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Handlers;
 
 public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
-    private readonly IProducer<Null, SendSMS> _mscSmsProducer;
-    private readonly IMemoryCache _memoryCache;
+    private readonly IProducer<Null, SendApi.v1.sms.SendSMS> _mscSmsProducer;
+    private readonly NotificationRepository _repository;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
-        IProducer<Null, SendSMS> mscSmsProducer,
-        IMemoryCache memoryCache,
+        IProducer<Null, SendApi.v1.sms.SendSMS> mscSmsProducer,
+        NotificationRepository repository,
         ILogger<SendSmsHandler> logger)
     {
         _mscSmsProducer = mscSmsProducer;
-        _memoryCache = memoryCache;
+        _repository = repository;
         _logger = logger;
     }
     
     public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationId = Guid.NewGuid().ToString();
+        var notificationResult = await _repository.CreateResult(NotificationChannel.Sms, cancellationToken);
+        var notificationId = notificationResult.Id.ToString();
 
-        var sendSms = new SendSMS
+        var sendSms = new SendApi.v1.sms.SendSMS
         {
             id = notificationId,
-            phone = new cz.kb.osbs.mcs.sender.sendapi.v1.Phone
-            {
-                countryCode = request.Phone.CountryCode,
-                nationalPhoneNumber = request.Phone.NationalNumber
-            },
+            phone = request.Phone.Map(),
             type = request.Type.ToString(),
             text = request.Text,
             processingPriority = request.ProcessingPriority
         };
         
-        _memoryCache.Set(notificationId, new ResultGetResponse
-        {
-            NotificationId = notificationId,
-            Channel = NotificationChannel.Sms,
-            State = NotificationState.Sent
-        });
-        
         _logger.LogInformation("Sending sms: {sendSms}", JsonSerializer.Serialize(sendSms));
         
         await _mscSmsProducer.ProduceAsync(
             Topics.MscSenderIn,
-            new Message<Null, SendSMS>
+            new Message<Null, SendApi.v1.sms.SendSMS>
             {
                 Value = sendSms
             },
+            cancellationToken);
+
+        await _repository.UpdateResult(
+            notificationResult.Id,
+            NotificationState.Sent,
+            new HashSet<string>(),
             cancellationToken);
         
         return new SmsSendResponse

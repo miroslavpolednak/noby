@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Result;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.GetResult;
+namespace CIS.InternalServices.NotificationService.Api.Validators;
 
 public class GetResultRequestValidator : AbstractValidator<ResultGetRequest>
 {
