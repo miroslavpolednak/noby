@@ -51,6 +51,17 @@ internal class CreateProductHandler
                 HardCreate = true,
                 NaturalPerson = customerDetail.NaturalPerson
             };
+            if (customerDetail.IdentificationDocument is not null)
+                createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument
+                {
+                    IssuedBy = customerDetail.IdentificationDocument.IssuedBy,
+                    IssuedOn = customerDetail.IdentificationDocument.IssuedOn,
+                    IssuingCountryId = customerDetail.IdentificationDocument.IssuingCountryId,
+                    Number = customerDetail.IdentificationDocument.Number,
+                    RegisterPlace = customerDetail.IdentificationDocument.RegisterPlace,
+                    IdentificationDocumentTypeId = customerDetail.IdentificationDocument.IdentificationDocumentTypeId,
+                    ValidTo = customerDetail.IdentificationDocument.ValidTo
+                };
             if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
                 createCustomerRequest.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
                 {
