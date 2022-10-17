@@ -89,4 +89,8 @@ public class MortgageInputs
     public Developer? Developer { get; set; }
 
     public List<FeeInputItem>? Fees { get; set; }
+
+    public InsuranceItem? RiskLifeInsurance { get; set; }
+
+    public InsuranceItem? RealEstateInsurance { get; set; }
 }

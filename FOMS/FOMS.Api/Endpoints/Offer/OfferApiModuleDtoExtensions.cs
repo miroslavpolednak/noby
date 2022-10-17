@@ -44,7 +44,17 @@ internal static class OfferApiModuleDtoExtensions
             {
                 DiscountPercentage = f.DiscountPercentage,
                 FeeId = f.FeeId
-            }).ToList()
+            }).ToList(),
+            RiskLifeInsurance = input.RiskLifeInsurance is null ? null : new Dto.InsuranceItem
+            {
+                Sum = input.RiskLifeInsurance.Sum,
+                Frequency = input.RiskLifeInsurance.Frequency
+            },
+            RealEstateInsurance = input.RealEstateInsurance is null ? null : new Dto.InsuranceItem
+            {
+                Sum = input.RealEstateInsurance.Sum,
+                Frequency = input.RealEstateInsurance.Frequency
+            }
         };
     
     public static Dto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs, AdditionalMortgageSimulationResults additionalResults)

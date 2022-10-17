@@ -31,6 +31,16 @@ internal static class Extensions
                     NewDeveloperName = request.Developer.NewDeveloperName ?? "",
                     NewDeveloperProjectName = request.Developer.NewDeveloperProjectName ?? "",
                     ProjectId = request.Developer.ProjectId
+                },
+                RealEstateInsurance = request.RealEstateInsurance is null ? null : new RealEstateInsurance
+                {
+                    Sum = request.RealEstateInsurance.Sum,
+                    Frequency = request.RealEstateInsurance.Frequency
+                },
+                RiskLifeInsurance = request.RiskLifeInsurance is null ? null : new RiskLifeInsurance
+                {
+                    Sum = request.RiskLifeInsurance.Sum,
+                    Frequency = request.RiskLifeInsurance.Frequency
                 }
             },
             BasicParameters = new()
