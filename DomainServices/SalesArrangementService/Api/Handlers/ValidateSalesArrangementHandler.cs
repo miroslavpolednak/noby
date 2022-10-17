@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.SalesArrangementService.Api.Handlers.Shared;
+using DomainServices.SalesArrangementService.Api.Handlers.Forms;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -10,16 +10,16 @@ internal class ValidateSalesArrangementHandler
 
     #region Construction
 
-    private readonly FormDataService _formDataService;
+    private readonly FormsService _formsService;
     private readonly ILogger<ValidateSalesArrangementHandler> _logger;
     private readonly Eas.IEasClient _easClient;
 
     public ValidateSalesArrangementHandler(
-        FormDataService formDataService,
+        FormsService formsService,
         ILogger<ValidateSalesArrangementHandler> logger,
         Eas.IEasClient easClient)
     {
-        _formDataService = formDataService;
+        _formsService = formsService;
         _logger = logger;
         _easClient = easClient;
     }
@@ -30,20 +30,36 @@ internal class ValidateSalesArrangementHandler
 
     public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
     {
-        var formData = await _formDataService.LoadAndPrepare(request.SalesArrangementId, cancellation);
-        var builder = new FormDataJsonBuilder(formData);
+        // load arrangement
+        var arrangement = await _formsService.LoadArrangement(request.SalesArrangementId, cancellation);
+
+        // load data
+        var formData = await _formsService.LoadProductFormData(arrangement, cancellation);
+
+        // check data
+        FormsService.CheckFormData(formData);
+
+        // set contract number
+        await _formsService.SetContractNumber(formData, cancellation);
+
+        // build forms
+        var builder = new JsonBuilder();
+        var forms = builder.BuildForms(formData); // ??? HH jaké FormId použít pro CheckForm 
+
+        // TODO: ???
+        // select form to check (pro D1-2 se provolává jen F3601) 
+        var formToCheck = forms.First(f => f.FormType == EFormType.F3601);
 
         var actualDate = DateTime.Now.Date;
-        var jsonData = builder.BuildJson(EFormType.F3601, String.Empty); // ??? HH jaké FormId použít pro CheckForm 
 
         var checkFormData = new Eas.EasWrapper.CheckFormData()
         {
             formular_id = 3601001,
             cislo_smlouvy = formData.Arrangement.ContractNumber,
             // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
-            dokument_id = FormDataJsonBuilder.MockDokumentId,   // TODO: dočasný mock - odstranit až si to Assecco odladí
+            dokument_id = JsonBuilder.MockDokumentId,   // TODO: dočasný mock - odstranit až si to Assecco odladí
             datum_prijeti = actualDate,                         // ??? datum prijeti dej v D1.2 aktuální datum
-            data = jsonData,
+            data = formToCheck.JSON,
         };
 
         //var checkFormDataSample = FormDataJsonBuilder.BuildSampleFormData3601();

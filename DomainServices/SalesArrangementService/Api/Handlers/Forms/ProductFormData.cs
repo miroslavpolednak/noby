@@ -1,9 +1,8 @@
 ﻿using CIS.Foms.Enums;
 
 using DomainServices.CodebookService.Contracts;
-using _HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Contracts;
-using DomainServices.ProductService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.UserService.Contracts;
@@ -14,26 +13,63 @@ using DomainServices.CodebookService.Contracts.Endpoints.DrawingDurations;
 using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
 using DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes;
+using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 
-namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
+
+namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
 {
 
-    public class FormData
+    public class ProductFormData
     {
         #region Properties
 
+        private Dictionary<int, HouseholdTypeItem> householdTypesById;
+        private Dictionary<string, CustomerDetailResponse> customersByIdentityCode;
+        private Dictionary<int, Income> incomesById;
+
         public Contracts.SalesArrangement Arrangement { get; init; }
+
         public SalesArrangementCategories ArrangementCategory { get; init; }
+
         public ProductTypeItem ProductType { get; init; }
+
         public GetMortgageOfferDetailResponse Offer { get; init; }
+
         public Case CaseData { get; init; }
-        public GetMortgageResponse? ProductMortgage { get; init; }
+
         public User? User { get; init; }
-        public List<_HO.Household> Households { get; init; }
-        public List<_HO.CustomerOnSA> CustomersOnSa { get; init; }
-        public Dictionary<int, _HO.Income> IncomesById { get; init; }
-        public Dictionary<string, CustomerDetailResponse> CustomersByIdentityCode { get; init; }
-        public CustomerDetailResponse? DrawingApplicantCustomer { get; init; }
+
+        public List<Household> Households { get; init; }
+
+        public List<CustomerOnSA> CustomersOnSa { get; init; }
+
+        public List<Income> Incomes { get; init; }
+        public Dictionary<int, Income> IncomesById
+        {
+            get
+            {
+                incomesById = incomesById ?? Incomes.ToDictionary(i => i.IncomeId);
+                return incomesById;
+            }
+        }
+
+        public List<CustomerDetailResponse> Customers { get; init; }
+        public Dictionary<string, CustomerDetailResponse> CustomersByIdentityCode { 
+            get
+            {
+                customersByIdentityCode = customersByIdentityCode ?? Customers.ToDictionary(i => i.Identity.ToCode());
+                return customersByIdentityCode;
+            }        
+        }
+
+        public List<HouseholdTypeItem> HouseholdTypes { get; init; }
+        public Dictionary<int, HouseholdTypeItem> HouseholdTypesById { 
+            get {
+                householdTypesById = householdTypesById ?? HouseholdTypes.ToDictionary(i => i.Id);
+                return householdTypesById;
+            } 
+        }
+
         public Dictionary<int, GenericCodebookItem> AcademicDegreesBeforeById { get; init; }
         public Dictionary<int, GenderItem> GendersById { get; init; }
         public Dictionary<int, SalesArrangementStateItem> SalesArrangementStatesById { get; init; }
@@ -47,19 +83,17 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
 
         #region Construction
 
-        public FormData(
+        public ProductFormData(
             Contracts.SalesArrangement arrangement,
-            SalesArrangementCategories arrangementCategory,
             ProductTypeItem productType,
             GetMortgageOfferDetailResponse offer,
             Case caseData,
-            GetMortgageResponse? productMortgage,
             User? user,
-            List<_HO.Household> households,
-            List<_HO.CustomerOnSA> customersOnSa,
-            Dictionary<int, _HO.Income> incomesById,
-            Dictionary<string, CustomerDetailResponse> customersByIdentityCode,
-            CustomerDetailResponse? drawingApplicantCustomer,
+            List<Household> households,
+            List<CustomerOnSA> customersOnSa,
+            List<CustomerDetailResponse> customers,
+            List<Income> incomes,
+            List<HouseholdTypeItem> householdTypes,
             List<GenericCodebookItem> academicDegreesBefore,
             List<GenderItem> genders,
             List<SalesArrangementStateItem> salesArrangementStates,
@@ -70,17 +104,15 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Shared
             List<ObligationTypesItem> obligationTypes)
         {
             Arrangement = arrangement;
-            ArrangementCategory = arrangementCategory;
             ProductType = productType;
             Offer = offer;
             CaseData = caseData;
-            ProductMortgage = productMortgage;
             User = user;
             Households = households;
             CustomersOnSa = customersOnSa;
-            IncomesById = incomesById;
-            CustomersByIdentityCode = customersByIdentityCode;
-            DrawingApplicantCustomer = drawingApplicantCustomer;
+            Customers = customers;
+            Incomes = incomes;
+            HouseholdTypes = householdTypes;
             AcademicDegreesBeforeById = academicDegreesBefore.ToDictionary(i => i.Id);
             GendersById = genders.ToDictionary(i => i.Id);
             SalesArrangementStatesById = salesArrangementStates.ToDictionary(i => i.Id);
