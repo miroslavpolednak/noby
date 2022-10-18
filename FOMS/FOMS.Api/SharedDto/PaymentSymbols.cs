@@ -2,7 +2,7 @@
 
 public class PaymentSymbols
 {
-    public string VariableSymbol { get; set; } = null!;
-    public string ConstantSymbol { get; set; } = null!;
-    public string SpecificSymbol { get; set; } = null!;
+    public string? VariableSymbol { get; set; }
+    public string? ConstantSymbol { get; set; }
+    public string? SpecificSymbol { get; set; }
 }
