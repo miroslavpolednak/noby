@@ -32,15 +32,15 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
                 CreditorName = p.CreditorName,
                 PaymentAccount = new BankAccount
                 {
-                    Number = p.PaymentAccount.Number,
-                    Prefix = p.PaymentAccount.Prefix,
-                    BankCode = p.PaymentAccount.BankCode
+                    Number = p.PaymentAccount?.Number,
+                    Prefix = p.PaymentAccount?.Prefix,
+                    BankCode = p.PaymentAccount?.BankCode
                 },
                 PaymentSymbols = new PaymentSymbols
                 {
-                    ConstantSymbol = p.PaymentSymbols.ConstantSymbol,
-                    SpecificSymbol = p.PaymentSymbols.SpecificSymbol,
-                    VariableSymbol = p.PaymentSymbols.VariableSymbol
+                    ConstantSymbol = p.PaymentSymbols?.ConstantSymbol,
+                    SpecificSymbol = p.PaymentSymbols?.SpecificSymbol,
+                    VariableSymbol = p.PaymentSymbols?.VariableSymbol
                 },
                 
             })

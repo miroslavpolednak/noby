@@ -5,7 +5,7 @@ namespace FOMS.Api.Endpoints.Product.GetProductObligationList.Dto;
 
 public class ProductObligation
 {
-    public int ProductObligationId { get; set; }
+    public int? ProductObligationId { get; set; }
     public int ObligationTypeId { get; set; }
     public decimal Amount { get; set; }
     public string CreditorName { get; set; } = null!;
