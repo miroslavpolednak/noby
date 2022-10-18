@@ -15,6 +15,7 @@ public class SignatureTypeItem
     [DataMember(Order = 3)]
     public string Name { get; set; }
 
+    [JsonIgnore]
     [DataMember(Order = 4)]
     public bool IsDefault { get; set; }
 }
