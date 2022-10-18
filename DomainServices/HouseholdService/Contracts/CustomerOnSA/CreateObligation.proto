@@ -21,7 +21,7 @@ message CreateObligationRequest {
 
     cis.types.NullableGrpcDecimal CreditCardLimit = 6;
 
-    cis.types.NullableGrpcDecimal LoanPrincipalAmountConsolidated = 7;
+    cis.types.NullableGrpcDecimal AmountConsolidated = 7;
 
     google.protobuf.Int32Value ObligationState = 8;
 

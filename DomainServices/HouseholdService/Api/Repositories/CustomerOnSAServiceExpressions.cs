@@ -41,7 +41,7 @@ internal static class CustomerOnSAServiceExpressions
             InstallmentAmount = entity.InstallmentAmount,
             CreditCardLimit = entity.CreditCardLimit,
             LoanPrincipalAmount = entity.LoanPrincipalAmount,
-            LoanPrincipalAmountConsolidated = entity.LoanPrincipalAmountConsolidated,
+            AmountConsolidated = entity.AmountConsolidated,
             ObligationTypeId = entity.ObligationTypeId,
             ObligationId = entity.CustomerOnSAObligationId,
             Creditor = new Contracts.ObligationCreditor

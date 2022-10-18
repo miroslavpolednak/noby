@@ -60,7 +60,7 @@ CREATE TABLE [dbo].[CustomerOnSAObligation](
 	[InstallmentAmountCorrection] decimal(12,2) NULL,
 	[LoanPrincipalAmountCorrection] decimal(12,2) NULL,
 	[CreditCardLimitCorrection] decimal(12,2) NULL,
-    [LoanPrincipalAmountConsolidated] decimal(12,2) NULL,
+    [AmountConsolidated] decimal(12,2) NULL,
 	[CreatedUserName] [nvarchar](100) NULL,
 	[CreatedUserId] [int] NULL,
 	[CreatedTime] [datetime] NOT NULL,

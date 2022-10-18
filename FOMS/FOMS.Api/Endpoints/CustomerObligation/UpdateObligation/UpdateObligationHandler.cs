@@ -19,7 +19,7 @@ internal class UpdateObligationHandler
             InstallmentAmount = request.InstallmentAmount,
             ObligationTypeId = request.ObligationTypeId,
             LoanPrincipalAmount = request.LoanPrincipalAmount,
-            LoanPrincipalAmountConsolidated = request.LoanPrincipalAmountConsolidated,
+            AmountConsolidated = request.AmountConsolidated,
         };
         if (request.Creditor is not null)
             model.Creditor = new _HO.ObligationCreditor

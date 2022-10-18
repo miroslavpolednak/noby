@@ -300,7 +300,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 return null;
             }
 
-            var vyseKonsolidJistiny = (decimal?)i.LoanPrincipalAmountConsolidated;
+            var vyseKonsolidJistiny = (decimal?)i.AmountConsolidated;
             var vyseNesplaceneJistiny = (decimal?)i.LoanPrincipalAmount;
             var vyseLimitu = (decimal?)i.CreditCardLimit;
 

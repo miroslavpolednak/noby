@@ -13,7 +13,7 @@ internal static class Extensions
             ObligationId = obligationInstance.ObligationId,
             ObligationTypeId = obligationInstance.ObligationTypeId,
             LoanPrincipalAmount = obligationInstance.LoanPrincipalAmount,
-            LoanPrincipalAmountConsolidated = obligationInstance.LoanPrincipalAmountConsolidated,
+            AmountConsolidated = obligationInstance.AmountConsolidated
         };
         if (obligationInstance.Correction is not null)
             model.Correction = new Dto.ObligationCorrectionDto

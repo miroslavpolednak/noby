@@ -51,5 +51,5 @@ internal class CustomerOnSAObligation
 
     [Column(TypeName = "decimal(12, 2)")]
     [Precision(12, 2)]
-    public decimal? LoanPrincipalAmountConsolidated { get; set; }
+    public decimal? AmountConsolidated { get; set; }
 }
