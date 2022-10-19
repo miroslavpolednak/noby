@@ -13,6 +13,7 @@ internal class UpdateIncomeHandler
         var model = new _HO.UpdateIncomeRequest
         {
             IncomeId = request.IncomeId,
+            IncomeTypeId = (int)request.IncomeTypeId,
             BaseData = new _HO.IncomeBaseData
             {
                 CurrencyCode = request.CurrencyCode,
@@ -25,7 +26,7 @@ internal class UpdateIncomeHandler
         {
             string dataString = ((System.Text.Json.JsonElement)request.Data).GetRawText();
 
-            switch ((CIS.Foms.Enums.CustomerIncomeTypes)incomeInstance.IncomeTypeId)
+            switch (request.IncomeTypeId)
             {
                 case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString, _jsonSerializerOptions);
@@ -51,7 +52,7 @@ internal class UpdateIncomeHandler
                     break;
 
                 default:
-                    throw new NotImplementedException($"IncomeType {incomeInstance.IncomeTypeId} cast to domain service is not implemented");
+                    throw new NotImplementedException($"IncomeType {request.IncomeTypeId} cast to domain service is not implemented");
             }
         }
 

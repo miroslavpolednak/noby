@@ -9,6 +9,8 @@ message UpdateIncomeRequest {
 
     DomainServices.HouseholdService.IncomeBaseData BaseData = 2;
     
+    int32 IncomeTypeId = 3;
+
     oneof Data {
         DomainServices.HouseholdService.IncomeDataEmployement Employement = 20;
         DomainServices.HouseholdService.IncomeDataOther Other = 21;
