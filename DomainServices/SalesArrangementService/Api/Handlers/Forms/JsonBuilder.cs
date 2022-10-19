@@ -486,26 +486,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
 
 
             //root
-
             var actualDate = DateTime.Now.Date;
-
-            DateTime firstSignedDate = (data.Arrangement.FirstSignedDate is not null) ? (DateTime)data.Arrangement.FirstSignedDate! : actualDate;
             int? firstEmploymentTypeId = data.EmploymentTypes.OrderBy(i => i.Id).Select(i => i.Id).FirstOrDefault();
             List<int> obligationTypeAmountIds = data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
-
-            var loanAmount = (decimal)data.Offer.SimulationResults.LoanAmount;
-            var financialResourcesOwn = data.Offer.BasicParameters.FinancialResourcesOwn.ToDecimal() ?? 0;
-            var financialResourcesOther = data.Offer.BasicParameters.FinancialResourcesOther.ToDecimal() ?? 0;
-            var financialResourcesTotal = (loanAmount + financialResourcesOwn + financialResourcesOther);
-
-            var developer = data.Offer.SimulationInputs.Developer;
-            var developerDescription = (developer == null) ? null : String.Join(",", new List<string> { developer.NewDeveloperName, developer.NewDeveloperCin, developer.NewDeveloperProjectName }.Where(i => !String.IsNullOrWhiteSpace(i))).ToNullIfWhiteSpace();
-
-            var insuranceSumRiskLife = data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
-            var insuranceSumRealEstate = data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RealEstateInsurance.Sum;
-
-            var typCerpani = data.Offer.SimulationInputs.DrawingTypeId.HasValue ? data.DrawingTypeById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingTypeId.Value)?.StarbuildId : null;
-            var lhutaUkonceniCerpani = data.Offer.SimulationInputs.DrawingDurationId.HasValue ? data.DrawingDurationById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingDurationId.Value)?.DrawingDuration : null;
 
             object MapCustomer(CustomerOnSA i)
             {
@@ -525,6 +508,10 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
+                string? isLegallyIncapable = c.NaturalPerson?.IsLegallyIncapable;
+                int? pravniOmezeniTyp = (string.IsNullOrWhiteSpace(isLegallyIncapable)) ? (int?)null : 
+                    data.LegalCapacitiesByCode.ContainsKey(isLegallyIncapable) ? data.LegalCapacitiesByCode[isLegallyIncapable].Id : null;
+ 
                 var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();
 
                 var incomes = i.Incomes?.ToList() ?? new List<IncomeInList>();
@@ -549,7 +536,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
                     pohlavi = cGenderId.HasValue ? data.GendersById[cGenderId.Value].StarBuildJsonCode : null,
                     statni_prislusnost = cCitizenshipCountriesId.ToJsonString(),
-                    pravni_omezeni_typ = c.NaturalPerson?.IsLegallyIncapable,
+                    pravni_omezeni_typ = pravniOmezeniTyp.ToJsonString(),
                     pravni_omezeni_do = c.NaturalPerson?.LegallyIncapableUntil.ToJsonString(),
                     rezident = (taxResidencyCountryCode?.ToUpperInvariant() == "CZ").ToJsonString(),
                     PEP = c.NaturalPerson?.IsPoliticallyExposed.ToJsonString(),
@@ -586,6 +573,23 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             {
                 var customersOnSa = data.CustomersOnSa.Where(i => i.CustomerOnSAId == household.CustomerOnSAId1 || i.CustomerOnSAId == household.CustomerOnSAId2).ToList();
                 int cisloDomacnosti = householdNumbersById[household.HouseholdId];
+                decimal? interestRateDiscount = data.Offer.SimulationInputs.InterestRateDiscount.ToDecimal();
+
+                DateTime firstSignedDate = (data.Arrangement.FirstSignedDate is not null) ? (DateTime)data.Arrangement.FirstSignedDate! : actualDate;
+
+                var loanAmount = (decimal)data.Offer.SimulationResults.LoanAmount;
+                var financialResourcesOwn = data.Offer.BasicParameters.FinancialResourcesOwn.ToDecimal() ?? 0;
+                var financialResourcesOther = data.Offer.BasicParameters.FinancialResourcesOther.ToDecimal() ?? 0;
+                var financialResourcesTotal = (loanAmount + financialResourcesOwn + financialResourcesOther);
+
+                var developer = data.Offer.SimulationInputs.Developer;
+                var developerDescription = (developer == null) ? null : String.Join(",", new List<string> { developer.NewDeveloperName, developer.NewDeveloperCin, developer.NewDeveloperProjectName }.Where(i => !String.IsNullOrWhiteSpace(i))).ToNullIfWhiteSpace();
+
+                var insuranceSumRiskLife = data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
+                var insuranceSumRealEstate = data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RealEstateInsurance.Sum;
+
+                var typCerpani = data.Offer.SimulationInputs.DrawingTypeId.HasValue ? data.DrawingTypeById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingTypeId.Value)?.StarbuildId : null;
+                var lhutaUkonceniCerpani = data.Offer.SimulationInputs.DrawingDurationId.HasValue ? data.DrawingDurationById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingDurationId.Value)?.DrawingDuration : null;
 
                 var jsonData = new
                 {
@@ -595,7 +599,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     business_case_ID = data.Arrangement.RiskBusinessCaseId,
                     risk_segment = data.Arrangement.RiskSegment,
                     laa_id = data.Arrangement.LoanApplicationAssessmentId,
-                    datum_uzavreni_obchodu = data.Arrangement.RiskBusinessCaseExpirationDate?.ToJsonString(),
+                    max_datum_uzavreni_obchodu = data.Arrangement.RiskBusinessCaseExpirationDate?.ToJsonString(),
                     kanal_ziskani = data.Arrangement.ChannelId.ToJsonString(),
                     datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                     datum_prvniho_podpisu = firstSignedDate.ToJsonString(),
@@ -612,11 +616,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     uv_zvyhodneni = data.Offer.SimulationResults.EmployeeBonusLoanCode.ToJsonString(),                                           // OfferInstance
                     splatnost_uv_mesice = data.Offer.SimulationResults.LoanDuration.ToJsonString(),                                              // OfferInstance (kombinace dvou vstupů roky + měsíce na FE)
                     fixace_uv_mesice = data.Offer.SimulationInputs.FixedRatePeriod.ToJsonString(),                                               // OfferInstance - na FE je to v rocích a je to číselník ?
-                    individualni_cenotvorba_odchylka = data.Offer.SimulationInputs.InterestRateDiscount.ToJsonString(),
+                    individualni_cenotvorba_odchylka = (interestRateDiscount.HasValue ? interestRateDiscount * -1 : null).ToJsonString(),        // Do datové věty dáváme hodnotu se znaménkem mínus(tedy jako záporné číslo)
                     predp_termin_cerpani = data.Arrangement.Mortgage?.ExpectedDateOfDrawing.ToJsonString(),                                      // SalesArrangement 
                     den_splaceni = data.Offer.SimulationInputs.PaymentDay.ToJsonString(),                                                        // OfferInstance
-                    developer_id = WhenFillKey(EJsonKey.DeveloperId, data.Offer.SimulationInputs.Developer?.DeveloperId.ToJsonString()),
-                    developer_projekt_id = WhenFillKey(EJsonKey.DeveloperProjektId, data.Offer.SimulationInputs.Developer?.ProjectId.ToJsonString()),
+                    developer_id = WhenFillKey(EJsonKey.DeveloperId, data.Offer.SimulationInputs.Developer?.DeveloperId.ToNullIfZero().ToJsonString()),
+                    developer_projekt_id = WhenFillKey(EJsonKey.DeveloperProjektId, data.Offer.SimulationInputs.Developer?.ProjectId.ToNullIfZero().ToJsonString()),
                     developer_popis = WhenFillKey(EJsonKey.DeveloperPopis, developerDescription),
                     forma_splaceni = 1.ToJsonString(),                                                                                          // [MOCK] OfferInstance (default 1) // ???  
                     seznam_mark_akci = data.Offer.AdditionalSimulationResults.MarketingActions?.OrderBy(i => i.MarketingActionId).Select(i => MapMarketingAction(i)).ToArray() ?? Array.Empty<object>(),
@@ -688,7 +692,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     cislo_dokumentu = MockDokumentId,                                                                                               // Pro D1.3 zůstává MOCK, bude se řešit v D1.4
                 };
 
-                return new { };
+                return jsonData;
             }
 
 
