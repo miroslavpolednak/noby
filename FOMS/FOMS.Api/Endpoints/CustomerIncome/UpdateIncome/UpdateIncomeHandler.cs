@@ -8,8 +8,6 @@ internal class UpdateIncomeHandler
 {
     protected override async Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
-        var incomeInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Income>(await _customerService.GetIncome(request.IncomeId, cancellationToken));
-
         var model = new _HO.UpdateIncomeRequest
         {
             IncomeId = request.IncomeId,
