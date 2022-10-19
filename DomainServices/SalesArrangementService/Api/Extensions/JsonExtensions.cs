@@ -113,4 +113,10 @@ internal static class JsonExtensions
     {
         return String.IsNullOrWhiteSpace(value) ? null : value;
     }
+
+    public static int? ToNullIfZero(this int? value)
+    {
+        return value == 0 ? null : value;
+    }
+
 }
