@@ -83,6 +83,6 @@ public class NotificationController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(ResultGetResponse), StatusCodes.Status200OK)]
-    public async Task<ResultGetResponse> GetResult([Required] string id, CancellationToken token)
+    public async Task<ResultGetResponse> GetResult([Required] Guid id, CancellationToken token)
         => await _mediator.Send(new ResultGetRequest { NotificationId = id }, token);
 }

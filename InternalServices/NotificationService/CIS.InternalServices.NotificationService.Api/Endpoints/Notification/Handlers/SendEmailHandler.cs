@@ -1,10 +1,9 @@
 ﻿using System.Text.Json;
 using CIS.InternalServices.NotificationService.Api.Mappers;
 using CIS.InternalServices.NotificationService.Api.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
-using CIS.InternalServices.NotificationService.Msc;
-using Confluent.Kafka;
 using cz.kb.osbs.mcs.sender.sendapi.v2;
 using MediatR;
 
@@ -12,16 +11,19 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Ha
 
 public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendResponse>
 {
-    private readonly IProducer<Null, SendApi.v2.email.SendEmail> _mscEmailProducer;
+    private readonly McsBusinessService _mcsBusinessService;
+    private readonly McsLogmanService _mcsLogmanService;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendEmailHandler> _logger;
 
     public SendEmailHandler(
-        IProducer<Null, SendApi.v2.email.SendEmail> mscEmailProducer,
+        McsBusinessService mcsBusinessService,
+        McsLogmanService mcsLogmanService,
         NotificationRepository repository,
         ILogger<SendEmailHandler> logger)
     {
-        _mscEmailProducer = mscEmailProducer;
+        _mcsBusinessService = mcsBusinessService;
+        _mcsLogmanService = mcsLogmanService;
         _repository = repository;
         _logger = logger;
     }
@@ -29,14 +31,14 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
     public async Task<EmailSendResponse> Handle(EmailSendRequest request, CancellationToken cancellationToken)
     {
         var notificationResult = await _repository.CreateResult(NotificationChannel.Email, cancellationToken);
-        var notificationId = notificationResult.Id.ToString();
+        var notificationId = notificationResult.Id;
      
         // todo: send attachments to s3
         
         // todo: mapping attachment, use s3 content
         var sendEmail = new SendApi.v2.email.SendEmail
         {
-            id = notificationId,
+            id = notificationId.ToString(),
             sender = request.From.Map(),
             to = request.To.Map().ToList(),
             bcc = request.Bcc.Map().ToList(),
@@ -47,18 +49,13 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
             attachments = new List<Attachment>(),
         };
         
-        _logger.LogInformation("Sending sms from template: {sendSms}", JsonSerializer.Serialize(sendEmail));
-        
-        await _mscEmailProducer.ProduceAsync(
-            Topics.MscSenderIn,
-            new Message<Null, SendApi.v2.email.SendEmail>
-            {
-                Value = sendEmail
-            },
-            cancellationToken);
+        _logger.LogInformation("Sending email: {sendEmail}", JsonSerializer.Serialize(sendEmail));
 
-        await _repository.UpdateResult(
-            notificationResult.Id,
+        // todo: decide Logman or Business
+        var sendResult = await _mcsLogmanService.SendEmail(sendEmail, cancellationToken);
+        
+        var updateResult = await _repository.UpdateResult(
+            notificationId,
             NotificationState.Sent,
             new HashSet<string>(),
             cancellationToken);

@@ -6,5 +6,5 @@ namespace CIS.InternalServices.NotificationService.Contracts.Email;
 public class EmailFromTemplateSendResponse
 {
     [ProtoMember(1)]
-    public string NotificationId { get; set; } = string.Empty;
+    public Guid NotificationId { get; set; }
 }

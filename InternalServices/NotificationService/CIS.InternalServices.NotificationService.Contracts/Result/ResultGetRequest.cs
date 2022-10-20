@@ -8,5 +8,5 @@ namespace CIS.InternalServices.NotificationService.Contracts.Result;
 public class ResultGetRequest : IRequest<ResultGetResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
-    public string NotificationId { get; set; } = string.Empty;
+    public Guid NotificationId { get; set; }
 }

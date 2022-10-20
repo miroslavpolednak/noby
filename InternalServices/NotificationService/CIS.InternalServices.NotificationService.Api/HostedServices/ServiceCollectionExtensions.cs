@@ -4,6 +4,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBackgroundServices(this IServiceCollection services)
     {
-        return services.AddHostedService<MscResultConsumer>();
+        return services
+            .AddHostedService<McsBusinessConsumerService>()
+            .AddHostedService<McsLogmanConsumerService>();
     }
 }

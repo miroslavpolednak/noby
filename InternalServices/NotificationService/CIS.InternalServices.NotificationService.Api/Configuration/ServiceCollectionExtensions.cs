@@ -17,12 +17,26 @@ public static class ServiceCollectionExtensions
         builder.Services
             .AddOptions<KafkaConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(KafkaConfiguration)))
-            .Validate(config => !string.IsNullOrEmpty(config.ConnectionStrings?.Application),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.ConnectionStrings)}.{nameof(KafkaConfiguration.ConnectionStrings.Application)} required."
-            )
-            .Validate(config => !string.IsNullOrEmpty(config.ConnectionStrings?.Logging),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.ConnectionStrings)}.{nameof(KafkaConfiguration.ConnectionStrings.Logging)} required."
-            )
+            .Validate(config => !string.IsNullOrEmpty(config.GroupId),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)}")
+            .Validate(config => !string.IsNullOrEmpty(config.SchemaRegistryUrl),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SchemaRegistryUrl)}")
+            .Validate(config => !string.IsNullOrEmpty(config.BootstrapServers?.Business),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.BootstrapServers)}.{nameof(KafkaConfiguration.BootstrapServers.Business)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.BootstrapServers?.Logman),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.BootstrapServers)}.{nameof(KafkaConfiguration.BootstrapServers.Logman)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.SslKeystoreLocation),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslKeystoreLocation)}")
+            .Validate(config => !string.IsNullOrEmpty(config.SslKeystorePassword),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslKeystorePassword)}")
+            .Validate(config => !string.IsNullOrEmpty(config.SecurityProtocol),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SecurityProtocol)}")
+            .Validate(config => !string.IsNullOrEmpty(config.SslCaLocation),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslCaLocation)}")
+            .Validate(config => !string.IsNullOrEmpty(config.SslCertificateLocation),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslCertificateLocation)}")
+            .Validate(config => !string.IsNullOrEmpty(config.Debug),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Debug)}")
             .ValidateOnStart();
         
         return builder;

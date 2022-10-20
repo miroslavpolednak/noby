@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Repositories;
+﻿using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
@@ -17,18 +16,12 @@ public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetRespo
     
     public async Task<ResultGetResponse> Handle(ResultGetRequest request, CancellationToken cancellationToken)
     {
-        if (!Guid.TryParse(request.NotificationId, out var notificationId))
-        {
-            throw new CisValidationException(300, $"Could not parse notificationId: {notificationId}");
-        }
+        var notificationResult = await _repository.GetResult(request.NotificationId, cancellationToken);
         
-        var notificationResult = await _repository.GetResult(notificationId, cancellationToken);
-
-        // todo: Error mapping
-        
+        // todo: error codes from codebook service
         return new ResultGetResponse
         {
-            NotificationId = notificationResult.Id.ToString(),
+            NotificationId = notificationResult.Id,
             Channel = notificationResult.Channel,
             State = notificationResult.State,
             Errors = notificationResult.ErrorSet.Select(e => new ResultError

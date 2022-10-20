@@ -23,7 +23,7 @@ public class NotificationRepository
         var result = new Result
         {
             Channel = channel,
-            State = NotificationState.Unsent,
+            State = NotificationState.InProgress,
             Created = _dateTime.Now,
             Updated = _dateTime.Now,
             ErrorSet = new HashSet<string>()

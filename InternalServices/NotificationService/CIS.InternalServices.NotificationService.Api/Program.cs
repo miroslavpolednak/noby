@@ -9,6 +9,7 @@ using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.HostedServices;
 using CIS.InternalServices.NotificationService.Api.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
 using Confluent.Kafka.DependencyInjection;
 using DomainServices.CodebookService.Abstraction;
@@ -70,17 +71,27 @@ var kafkaConfiguration = builder.GetKafkaConfiguration();
 
 builder.Services
     .AddAvroSerializers()
-    .AddKafkaClient(new Dictionary<string, string>
+    .AddKafkaClient<McsBusinessService>(new Dictionary<string, string>
     {
-        { "bootstrap.servers", kafkaConfiguration.ConnectionStrings.Logging },
-        { "enable.idempotence", "true" },
-        { "group.id", "notification-api" }
+        { "group.id", kafkaConfiguration.GroupId},
+        { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Logman },
+        { "ssl.keystore.location", kafkaConfiguration.SslKeystoreLocation },
+        { "ssl.keystore.password", kafkaConfiguration.SslKeystorePassword },
+        { "security.protocol", kafkaConfiguration.SecurityProtocol },
+        { "ssl.ca.location", kafkaConfiguration.SslCaLocation },
+        { "ssl.certificate.location", kafkaConfiguration.SslCertificateLocation },
+        { "debug", kafkaConfiguration.Debug }
     })
-    .AddKafkaClient<MscResultConsumer>(new Dictionary<string, string>
+    .AddKafkaClient<McsLogmanService>(new Dictionary<string, string>
     {
-        { "bootstrap.servers", kafkaConfiguration.ConnectionStrings.Logging },
-        { "enable.idempotence", "true" },
-        { "group.id", "notification-api" }
+        { "group.id", kafkaConfiguration.GroupId},
+        { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Business },
+        { "ssl.keystore.location", kafkaConfiguration.SslKeystoreLocation },
+        { "ssl.keystore.password", kafkaConfiguration.SslKeystorePassword },
+        { "security.protocol", kafkaConfiguration.SecurityProtocol },
+        { "ssl.ca.location", kafkaConfiguration.SslCaLocation },
+        { "ssl.certificate.location", kafkaConfiguration.SslCertificateLocation },
+        { "debug", kafkaConfiguration.Debug }
     })
     .AddBackgroundServices();
 

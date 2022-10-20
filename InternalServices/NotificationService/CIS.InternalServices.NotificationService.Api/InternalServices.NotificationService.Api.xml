@@ -36,7 +36,7 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.GetResult(System.String,System.Threading.CancellationToken)">
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.GetResult(System.Guid,System.Threading.CancellationToken)">
             <summary>
             Získat výsledek o notifikaci
             </summary>

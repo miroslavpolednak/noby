@@ -7,7 +7,7 @@ namespace CIS.InternalServices.NotificationService.Contracts.Result;
 public class ResultGetResponse
 {
     [ProtoMember(1)]
-    public string NotificationId { get; set; } = string.Empty;
+    public Guid NotificationId { get; set; }
     
     [ProtoMember(2)]
     public NotificationState State { get; set; }
