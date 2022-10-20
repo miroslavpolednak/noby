@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FOMS.Api.Endpoints.CustomerIncome.UpdateIncome;
 
@@ -10,6 +11,9 @@ public sealed class UpdateIncomeRequest
 
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }
+
+    [Required]
+    public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
 
     /// <summary>
     /// Detailni informace o prijmu

@@ -12,6 +12,14 @@ internal class UpdateIncomeMediatrRequestValidator
             .GreaterThan(0)
             .WithMessage("IncomeId must be > 0").WithErrorCode("16055");
 
+        RuleFor(t => t.Request.IncomeTypeId)
+            .GreaterThan(0)
+            .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
+
+        RuleFor(t => t.Request.IncomeTypeId)
+            .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
+            .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
+
         RuleFor(t => t.Request.BaseData)
             .SetInheritanceValidator(v =>
             {

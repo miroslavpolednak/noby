@@ -18,7 +18,7 @@ internal class CreateIncomeHandler
         // kontrola poctu prijmu
         int totalIncomesOfType = await _dbContext.CustomersIncomes
             .CountAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellation);
-        if (alreadyMaxIncomes(incomeType, totalIncomesOfType))
+        if (IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType))
             throw new CisValidationException(16047, "Max incomes of the type has been reached");
 
         var entity = new Repositories.Entities.CustomerOnSAIncome
@@ -48,16 +48,6 @@ internal class CreateIncomeHandler
             IncomeId = entity.CustomerOnSAIncomeId
         };
     }
-
-    static bool alreadyMaxIncomes(CustomerIncomeTypes incomeType, int count)
-        => incomeType switch
-        {
-            CustomerIncomeTypes.Employement => count >= 3,
-            CustomerIncomeTypes.Enterprise => count >= 1,
-            CustomerIncomeTypes.Rent => count >= 1,
-            CustomerIncomeTypes.Other => count >= 10,
-            _ => throw new NotImplementedException("This customer income type count check is not implemented")
-        };
 
     static bool? getProofOfIncomeToggle(CreateIncomeRequest request)
         => (CustomerIncomeTypes)request.IncomeTypeId switch
