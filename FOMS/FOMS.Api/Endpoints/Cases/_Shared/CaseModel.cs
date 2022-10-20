@@ -69,5 +69,9 @@ public class CaseModel
 	/// </summary>
 	public DateTime StateUpdated { get; set; }
 
-	public List<TaskModel>? ActiveTasks { get; set; }
+	public string? EmailForOffer { get; set; }
+
+	public string? PhoneNumberForOffer { get; set; }
+
+    public List<TaskModel>? ActiveTasks { get; set; }
 }

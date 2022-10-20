@@ -1,5 +1,4 @@
 ﻿using _SA = DomainServices.HouseholdService.Contracts;
-using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
 using CIS.Foms.Enums;
 
@@ -10,15 +9,25 @@ internal sealed class UpdateIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeMediatrRequest request, CancellationToken cancellation)
     {
+        // entita existujiciho prijmu
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.Request.IncomeId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");
 
-        var dataObject = getDataObject(entity.IncomeTypeId, request.Request);
+        var incomeTypeId = (CustomerIncomeTypes)request.Request.IncomeTypeId;
+
+        // kontrola poctu prijmu
+        int totalIncomesOfType = await _dbContext.CustomersIncomes
+            .CountAsync(t => t.CustomerOnSAIncomeId != request.Request.IncomeId && t.CustomerOnSAId == entity.CustomerOnSAId && t.IncomeTypeId == incomeTypeId, cancellation);
+        if (IncomeHelpers.AlreadyHasMaxIncomes(incomeTypeId, totalIncomesOfType))
+            throw new CisValidationException(16047, "Max incomes of the type has been reached");
+
+        var dataObject = getDataObject(incomeTypeId, request.Request);
+        entity.IncomeTypeId = incomeTypeId;
         entity.Sum = request.Request.BaseData?.Sum;
         entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
-        entity.IncomeSource = await getIncomeSource(request.Request, entity.IncomeTypeId, cancellation);
-        entity.HasProofOfIncome = getProofOfIncomeToggle(request.Request, entity.IncomeTypeId);
+        entity.IncomeSource = await getIncomeSource(request.Request, incomeTypeId, cancellation);
+        entity.HasProofOfIncome = getProofOfIncomeToggle(request.Request, incomeTypeId);
         entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
         entity.DataBin = dataObject?.ToByteArray();
 

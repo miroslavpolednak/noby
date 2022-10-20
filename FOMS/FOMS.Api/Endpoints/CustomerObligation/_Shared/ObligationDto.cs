@@ -22,7 +22,7 @@ public abstract class ObligationDto
     /// </summary>
     public decimal? CreditCardLimit { get; set; }
 
-    public decimal? LoanPrincipalAmountConsolidated { get; set; }
+    public decimal? AmountConsolidated { get; set; }
 
     /// <summary>
     /// Určuje stav závazku (prohlášený vs neprohlášený. V MPV bude vždy prohlášený.<br />Z číselníku <a href="https://wiki.kb.cz/display/HT/ObligationState">ObligationState</a>

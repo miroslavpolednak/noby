@@ -16,7 +16,7 @@ internal sealed class UpdateObligationHandler
         entity.InstallmentAmount = request.Request.InstallmentAmount;
         entity.LoanPrincipalAmount = request.Request.LoanPrincipalAmount;
         entity.CreditCardLimit = request.Request.CreditCardLimit;
-        entity.LoanPrincipalAmountConsolidated = request.Request.LoanPrincipalAmountConsolidated;
+        entity.AmountConsolidated = request.Request.AmountConsolidated;
         entity.CreditorId = request.Request.Creditor?.CreditorId;
         entity.CreditorName = request.Request.Creditor?.Name;
         entity.CreditorIsExternal = request.Request.Creditor?.IsExternal;

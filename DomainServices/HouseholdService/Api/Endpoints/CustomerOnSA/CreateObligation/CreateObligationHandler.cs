@@ -20,7 +20,7 @@ internal class CreateObligationHandler
             InstallmentAmount = request.Request.InstallmentAmount,
             LoanPrincipalAmount = request.Request.LoanPrincipalAmount,
             CreditCardLimit = request.Request.CreditCardLimit,
-            LoanPrincipalAmountConsolidated = request.Request.LoanPrincipalAmountConsolidated,
+            AmountConsolidated = request.Request.AmountConsolidated,
             CreditorId = request.Request.Creditor?.CreditorId ?? "",
             CreditorName = request.Request.Creditor?.Name ?? "",
             CreditorIsExternal = request.Request.Creditor?.IsExternal,

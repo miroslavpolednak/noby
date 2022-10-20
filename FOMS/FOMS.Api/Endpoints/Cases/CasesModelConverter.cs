@@ -34,7 +34,9 @@ internal class CasesModelConverter
 			DateOfBirth = model.Customer?.DateOfBirthNaturalPerson,
 			CustomerIdentity = model.Customer?.Identity,
 			FirstName = model.Customer?.FirstNameNaturalPerson,
-			LastName = model.Customer?.Name
+			LastName = model.Customer?.Name,
+            EmailForOffer = model.Customer?.EmailForOffer,
+            PhoneNumberForOffer = model.Customer?.PhoneNumberForOffer
 		};
 
 		if (model.Tasks is not null && model.Tasks.Any())
