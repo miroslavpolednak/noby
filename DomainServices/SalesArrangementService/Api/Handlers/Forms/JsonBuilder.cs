@@ -508,9 +508,9 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
-                string? isLegallyIncapable = c.NaturalPerson?.IsLegallyIncapable;
-                int? pravniOmezeniTyp = (string.IsNullOrWhiteSpace(isLegallyIncapable)) ? (int?)null : 
-                    data.LegalCapacitiesByCode.ContainsKey(isLegallyIncapable) ? data.LegalCapacitiesByCode[isLegallyIncapable].Id : null;
+                //string? isLegallyIncapable = c.NaturalPerson?.IsLegallyIncapable;
+                //int? pravniOmezeniTyp = (string.IsNullOrWhiteSpace(isLegallyIncapable)) ? (int?)null : 
+                //    data.LegalCapacitiesByCode.ContainsKey(isLegallyIncapable) ? data.LegalCapacitiesByCode[isLegallyIncapable].Id : null;
  
                 var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();
 
@@ -519,11 +519,11 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 var incomeEntrepreneur = incomes.FirstOrDefault(i => i.IncomeTypeId == 2);  // Prijem z danoveho priznani
                 var incomeRent = incomes.FirstOrDefault(i => i.IncomeTypeId == 3);          // Prijem z pronajmu
                 var incomesOther = incomes.Where(i => i.IncomeTypeId == 4).ToList();        // Prijmy ostatní
-
+                
                 return new
                 {
                     rodne_cislo = c.NaturalPerson?.BirthNumber,
-                    // segment =    // pro D1.3 neplníme, bude se řešit později
+                    segment = c.NaturalPerson?.Segment,
                     kb_id = identityKb.IdentityId.ToJsonString(),
                     mp_id = identityMp.IdentityId.ToJsonString(),                                   // NOTE: v rámci Create/Update CustomerOnSA musí být vytvořena KB a MP identita !!!
                                                                                                     //datum_svadby =    // D1.3 nepracujeme se zástavci, zatím nesbíráme a neplníme
@@ -536,7 +536,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     misto_narozeni_stat = c.NaturalPerson?.BirthCountryId.ToJsonString(),
                     pohlavi = cGenderId.HasValue ? data.GendersById[cGenderId.Value].StarBuildJsonCode : null,
                     statni_prislusnost = cCitizenshipCountriesId.ToJsonString(),
-                    pravni_omezeni_typ = pravniOmezeniTyp.ToJsonString(),
+                    //pravni_omezeni_typ = pravniOmezeniTyp.ToJsonString(),
+                    pravni_omezeni_typ = c.NaturalPerson?.IsLegallyIncapable,
                     pravni_omezeni_do = c.NaturalPerson?.LegallyIncapableUntil.ToJsonString(),
                     rezident = (taxResidencyCountryCode?.ToUpperInvariant() == "CZ").ToJsonString(),
                     PEP = c.NaturalPerson?.IsPoliticallyExposed.ToJsonString(),
@@ -677,8 +678,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     cislo_smlouvy = data.Arrangement.ContractNumber,
                     case_id = data.Arrangement.CaseId.ToJsonString(),
                     business_case_ID = data.Arrangement.RiskBusinessCaseId,
-                    datum_vytvoreni_zadosti = actualDate.ToJsonString(),
-                    seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i, 2, cisloDomacnosti)).ToArray() ?? Array.Empty<object>(), // pro F3602 roleId = 2
+                    datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                       // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
+                    seznam_ucastniku = customersOnSa?.OrderBy(i => i.CustomerOnSAId).Select(i => MapCustomerOnSA(i, i.CustomerRoleId, cisloDomacnosti)).ToArray() ?? Array.Empty<object>(),
                     sjednal_CPM = UserCPM,
                     sjednal_ICP = UserICP,
                     zpusob_podpisu_smluv_dok = data.Arrangement.Mortgage?.ContractSignatureTypeId.ToJsonString(),
