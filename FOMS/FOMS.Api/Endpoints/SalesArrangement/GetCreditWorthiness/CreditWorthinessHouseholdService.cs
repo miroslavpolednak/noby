@@ -14,7 +14,7 @@ internal sealed class CreditWorthinessHouseholdService
         if (!households.Any())
             throw new CisValidationException("There is no household bound for this SA");
 
-        return (await households.SelectAsync(async household =>
+        return (await households.Where(t => t.HouseholdTypeId == 1 || t.HouseholdTypeId == 2).SelectAsync(async household =>
         {
             var h = new _Rip.CreditWorthinessHousehold
             {
