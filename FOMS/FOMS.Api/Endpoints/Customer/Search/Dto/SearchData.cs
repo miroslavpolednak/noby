@@ -22,4 +22,14 @@ public class SearchData
     /// [optional] Cislo dokladu
     /// </summary>
     public string? IdentificationDocumentNumber { get; set; }
+
+    /// <summary>
+    /// [optional] Email
+    /// </summary>
+    public string? Email { get; set; }
+
+    /// <summary>
+    /// [optional] Telefon
+    /// </summary>
+    public string? Phone { get; set; }
 }
