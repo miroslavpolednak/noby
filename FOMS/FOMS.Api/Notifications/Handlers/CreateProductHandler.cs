@@ -69,8 +69,9 @@ internal class CreateProductHandler
                     City = x.City,
                     AddressTypeId = x.AddressTypeId,
                     BuildingIdentificationNumber = x.BuildingIdentificationNumber,
-                    LandRegistryNumber = x.EvidenceNumber,
-                    Postcode = x.Postcode.Replace(" ", "")
+                    LandRegistryNumber = x.LandRegistryNumber,
+                    EvidenceNumber = x.EvidenceNumber,
+                    Postcode = x.Postcode
                 }));
 
             await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
