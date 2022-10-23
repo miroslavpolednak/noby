@@ -12,6 +12,9 @@ internal class CaseService : Contracts.v1.CaseService.CaseServiceBase
     public CaseService(IMediator mediator)
         => _mediator = mediator;
 
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateOfferContacts(UpdateOfferContactsRequest request, ServerCallContext context)
+        => await _mediator.Send(new Dto.UpdateOfferContactsMediatrRequest(request), context.CancellationToken);
+
     public override async Task<CreateCaseResponse> CreateCase(CreateCaseRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.CreateCaseMediatrRequest(request), context.CancellationToken);
 
