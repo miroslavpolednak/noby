@@ -1,29 +1,53 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
+﻿using CIS.InternalServices.DocumentDataAggregator.Configuration;
+using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+using CIS.InternalServices.DocumentDataAggregator.Configuration.Dto;
+using CIS.InternalServices.DocumentDataAggregator.DataServices;
+using CIS.InternalServices.DocumentDataAggregator.Mapper;
 
 namespace CIS.InternalServices.DocumentDataAggregator;
 
-internal class DataAggregator
+internal class DataAggregator : IDataAggregator
 {
-    private readonly OfferDataService _offerDataService;
-    private readonly UserDataService _userDataService;
+    private readonly DocumentConfigurationManager _configurationManager;
+    private readonly DataServicesLoader _dataServicesLoader;
 
-    public DataAggregator(OfferDataService offerDataService, UserDataService userDataService)
+    public DataAggregator(DocumentConfigurationManager configurationManager, DataServicesLoader dataServicesLoader)
     {
-        _offerDataService = offerDataService;
-        _userDataService = userDataService;
+        _configurationManager = configurationManager;
+        _dataServicesLoader = dataServicesLoader;
     }
 
     public async Task<ICollection<KeyValuePair<string, object>>> GetDocumentData(int offerId)
     {
-        var offer = await _offerDataService.LoadData(offerId);
-
-        var user = await _userDataService.LoadData(offer.Created.UserId.Value);
-
-        var data = new AggregatedData
+        var test = new InputConfig
         {
-            Offer = offer,
-            User = user
+            DataSources = new[]
+            {
+                DataSource.OfferService, DataSource.UserService
+            },
+            DynamicInputParameters = new[]
+            {
+                new DynamicInputParameter
+                {
+                    InputParameterName = "UserId",
+                    TargetDataSource = DataSource.UserService,
+                    SourceField = new DataSourceField
+                    {
+                        DataSource = DataSource.OfferService,
+                        Path = "Offer.Created.UserId"
+                    }
+                }
+            }
         };
+
+        var config = await _configurationManager.Load(CancellationToken.None);
+
+        var data = await _dataServicesLoader.LoadData(test, new InputParameters
+        {
+            OfferId = 111
+        });
+
+        var testOutput = DocumentMapper.Map(config[DataSource.OfferService], data);
 
         return Enumerable.Empty<KeyValuePair<string, object>>().ToList();
     }
