@@ -7,6 +7,5 @@ import "OfferContacts.proto";
 message UpdateOfferContactsRequest {
 	int64 CaseId = 1;
 
-	// Upravena dada o klientovi
 	OfferContacts OfferContacts = 2;
 }

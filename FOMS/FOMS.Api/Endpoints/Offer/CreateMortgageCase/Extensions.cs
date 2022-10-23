@@ -39,6 +39,11 @@ internal static class Extensions
                 Name = request.LastName ?? "",
                 Identity = request.Identity is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Identity)
             },
+            OfferContacts = new _Case.OfferContacts
+            {
+                EmailForOffer = request.EmailForOffer,
+                PhoneNumberForOffer = request.PhoneNumberForOffer
+            },
             Data = new _Case.CaseData
             {
                 ProductTypeId = offerInstance.ProductTypeId,
