@@ -1,6 +1,4 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.Configuration;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Dto;
 using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
 
@@ -19,35 +17,14 @@ internal class DataAggregator : IDataAggregator
 
     public async Task<ICollection<KeyValuePair<string, object>>> GetDocumentData(int offerId)
     {
-        var test = new InputConfig
-        {
-            DataSources = new[]
-            {
-                DataSource.OfferService, DataSource.UserService
-            },
-            DynamicInputParameters = new[]
-            {
-                new DynamicInputParameter
-                {
-                    InputParameterName = "UserId",
-                    TargetDataSource = DataSource.UserService,
-                    SourceField = new DataSourceField
-                    {
-                        DataSource = DataSource.OfferService,
-                        Path = "Offer.Created.UserId"
-                    }
-                }
-            }
-        };
+        var config = await _configurationManager.LoadDocumentConfiguration();
 
-        var config = await _configurationManager.Load(CancellationToken.None);
-
-        var data = await _dataServicesLoader.LoadData(test, new InputParameters
+        var data = await _dataServicesLoader.LoadData(config.InputConfig, new InputParameters
         {
             OfferId = 111
         });
 
-        var testOutput = DocumentMapper.Map(config[DataSource.OfferService], data);
+        var testOutput = DocumentMapper.Map(config.SourceFields, data);
 
         return Enumerable.Empty<KeyValuePair<string, object>>().ToList();
     }

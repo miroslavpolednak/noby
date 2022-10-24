@@ -1,10 +1,9 @@
-﻿using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration;
 
-[ScopedService, SelfService]
+[TransientService, SelfService]
 internal class DocumentConfigurationManager
 {
     private readonly ConfigurationRepository _repository;
@@ -14,10 +13,18 @@ internal class DocumentConfigurationManager
         _repository = repository;
     }
 
-    public async Task<ImmutableDictionary<DataSource, ReadOnlyCollection<DataSourceField>>> Load(CancellationToken cancellationToken)
+    public async Task<DocumentConfiguration> LoadDocumentConfiguration()
     {
-        var fields = _repository.LoadDocumentFields();
+        var fields = await _repository.LoadSourceFields(1, 1);
 
-        return fields.GroupBy(f => f.DataSource).ToImmutableDictionary(g => g.Key, g => g.ToList().AsReadOnly());
+        return new DocumentConfiguration
+        {
+            InputConfig = new InputConfig
+            {
+                DataSources = fields.Select(f => f.DataSource).Distinct(),
+                DynamicInputParameters = await _repository.LoadDynamicInputFields(1, 1)
+            },
+            SourceFields = fields
+        };
     }
 }

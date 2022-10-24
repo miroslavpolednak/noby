@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
 using FastMember;
 
@@ -8,7 +8,7 @@ internal static class MapperExtensions
 {
     public static void Map(this InputParameters parameters, DynamicInputParameter dynamicParameter, AggregatedData aggregatedData)
     {
-        var propertyValue = aggregatedData.GetValue(dynamicParameter.SourceField.Path);
+        var propertyValue = aggregatedData.GetValue(dynamicParameter.SourceFieldPath);
 
         if (propertyValue == null)
             throw new InvalidOperationException();

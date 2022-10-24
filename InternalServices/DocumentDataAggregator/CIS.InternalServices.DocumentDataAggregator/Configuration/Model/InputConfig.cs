@@ -1,6 +1,4 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
-
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Dto;
+﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 
 internal record InputConfig
 {

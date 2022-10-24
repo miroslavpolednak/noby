@@ -1,5 +1,5 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.Configuration;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices;
 

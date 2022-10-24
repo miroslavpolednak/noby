@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Dto;
+﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
@@ -59,7 +58,7 @@ internal class DataServicesLoader
 
     private void SetInputParameters(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData)
     {
-        var loadedParameters = status.RelatedInputParameters.Where(p => status.LoadedDataSources.Contains(p.SourceField.DataSource)).ToList();
+        var loadedParameters = status.RelatedInputParameters.Where(p => status.LoadedDataSources.Contains(p.SourceDataSource)).ToList();
 
         loadedParameters.ForEach(dynamicParameter =>
         {
