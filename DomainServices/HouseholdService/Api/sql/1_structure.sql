@@ -123,7 +123,6 @@ CREATE TABLE [dbo].[Household](
       HousingExpenseAmount [int] NULL,
       OtherExpenseAmount [int] NULL,
       AreBothPartnersDeptors bit NULL,
-      AreCustomersPartners bit NULL,
       [CustomerOnSAId1] [int] NULL,
       [CustomerOnSAId2] [int] NULL,
       [CreatedUserName] [nvarchar](100) NULL,

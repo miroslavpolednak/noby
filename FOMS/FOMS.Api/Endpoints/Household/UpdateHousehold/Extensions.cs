@@ -10,8 +10,7 @@ internal static class Extensions
             ChildrenOverTenYearsCount = model.ChildrenOverTenYearsCount,
             ChildrenUpToTenYearsCount = model.ChildrenUpToTenYearsCount,
             PropertySettlementId = model.PropertySettlementId,
-            AreBothPartnersDeptors = model.AreBothPartnersDeptors,
-            AreCustomersPartners = model.AreCustomersPartners
+            AreBothPartnersDeptors = model.AreBothPartnersDeptors
         };
 
     public static contracts.Expenses? ToDomainServiceRequest(this Dto.HouseholdExpenses? model)

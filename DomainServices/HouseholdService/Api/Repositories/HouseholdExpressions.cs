@@ -20,8 +20,7 @@ internal static class HouseholdExpressions
                 ChildrenOverTenYearsCount = t.ChildrenOverTenYearsCount,
                 ChildrenUpToTenYearsCount = t.ChildrenUpToTenYearsCount,
                 PropertySettlementId = t.PropertySettlementId,
-                AreBothPartnersDeptors = t.AreBothPartnersDeptors,
-                AreCustomersPartners = t.AreCustomersPartners
+                AreBothPartnersDeptors = t.AreBothPartnersDeptors
             },
             Expenses = new Expenses
             {

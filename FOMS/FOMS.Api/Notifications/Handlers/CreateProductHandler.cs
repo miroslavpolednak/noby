@@ -9,7 +9,7 @@ using Google.Protobuf;
 
 namespace FOMS.Api.Notifications.Handlers;
 
-internal class CreateProductHandler
+internal sealed class CreateProductHandler
     : INotificationHandler<MainCustomerUpdatedNotification>
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
