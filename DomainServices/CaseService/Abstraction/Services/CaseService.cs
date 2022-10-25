@@ -122,6 +122,18 @@ internal class CaseService : ICaseServiceAbstraction
         return new SuccessfulServiceCallResult<GetTaskListResponse>(result);
     }
 
+    public async Task<IServiceCallResult> UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _logger.RequestHandlerStarted(nameof(UpdateOfferContacts));
+        var result = await _service.UpdateOfferContactsAsync(
+            new()
+            {
+                CaseId = caseId,
+                OfferContacts = contacts
+            }, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult();
+    }
+
     private readonly ILogger<CaseService> _logger;
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
 

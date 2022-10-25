@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _HO = DomainServices.HouseholdService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
@@ -14,7 +15,7 @@ internal sealed class CreditWorthinessHouseholdService
         if (!households.Any())
             throw new CisValidationException("There is no household bound for this SA");
 
-        return (await households.SelectAsync(async household =>
+        return (await households.Where(t => t.HouseholdTypeId == 1 || t.HouseholdTypeId == 2).SelectAsync(async household =>
         {
             var h = new _Rip.CreditWorthinessHousehold
             {
@@ -30,12 +31,25 @@ internal sealed class CreditWorthinessHouseholdService
                 Customers = new()
             };
 
-            // clients
+            // get customers
+            int? maritalState1 = null;
+            int? maritalState2 = null;
             if (household.CustomerOnSAId1.HasValue)
-                h.Customers.Add(await createClient(household.CustomerOnSAId1.Value, household.Data.AreCustomersPartners, cancellationToken));
+            {
+                var c = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSaService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken));
+                h.Customers.Add(createClient(c));
+                maritalState1 = c.MaritalStatusId;
+            }
             if (household.CustomerOnSAId2.HasValue)
-                h.Customers.Add(await createClient(household.CustomerOnSAId2.Value, household.Data.AreCustomersPartners, cancellationToken));
+            {
+                var c = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSaService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken));
+                h.Customers.Add(createClient(c));
+                maritalState2 = c.MaritalStatusId;
+            }
 
+            bool isPartner = DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(maritalState1, maritalState2);
+            h.Customers.ForEach(t => t.HasPartner = isPartner);
+            
             // Upravit validaci na FE API tak, aby hlídala, že aspoň jeden žadatel v každé z domácností na SA má vyplněný aspoň jeden příjem (=tedy nevalidovat, že každý žadatel musí mít vyplněný příjem)
             if (!h.Customers.Any(t => t.Incomes?.Any() ?? false))
                 throw new CisValidationException("At least one customer in household must have some income");
@@ -44,11 +58,8 @@ internal sealed class CreditWorthinessHouseholdService
         })).ToList();
     }
 
-    private async Task<_Rip.CreditWorthinessCustomer> createClient(int customerOnSAId, bool? areCustomersPartners, CancellationToken cancellationToken)
+    private static _Rip.CreditWorthinessCustomer createClient(_HO.CustomerOnSA customer)
     {
-        // customer on SA instance
-        var customer = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSaService.GetCustomer(customerOnSAId, cancellationToken));
-
         var c = new _Rip.CreditWorthinessCustomer
         {
             PrimaryCustomerId = customer
@@ -56,7 +67,6 @@ internal sealed class CreditWorthinessHouseholdService
                 .FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
                 ?.IdentityId
                 .ToString(System.Globalization.CultureInfo.InvariantCulture),
-            HasPartner = areCustomersPartners.GetValueOrDefault(),
             MaritalStateId = customer.MaritalStatusId
         };
 

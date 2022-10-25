@@ -12,6 +12,13 @@ internal class LinkModelationHandler
 
         // nalinkovat novou simulaci
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
+        
+        // update kontaktu
+        await _caseService.UpdateOfferContacts(saInstance.CaseId, new DomainServices.CaseService.Contracts.OfferContacts
+        {
+            EmailForOffer = request.EmailForOffer,
+            PhoneNumberForOffer = request.PhoneNumberForOffer
+        }, cancellationToken);
 
         // smazat objekty uveru
         if (saInstance.Mortgage?.LoanRealEstates is not null && saInstance.Mortgage.LoanRealEstates.Any())
@@ -26,12 +33,15 @@ internal class LinkModelationHandler
     }
 
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly ILogger<LinkModelationHandler> _logger;
 
     public LinkModelationHandler(
+        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ILogger<LinkModelationHandler> logger)
     {
+        _caseService = caseService;
         _logger = logger;
         _salesArrangementService = salesArrangementService;
     }

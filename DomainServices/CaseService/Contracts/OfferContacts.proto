@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+message OfferContacts {
+	// Email (pouze pro účel nabídky)
+	string EmailForOffer = 1;
+
+	// Telefon (pouze pro účel nabídky)
+	string PhoneNumberForOffer = 2;
+}

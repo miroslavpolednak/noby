@@ -34,12 +34,15 @@ internal static class Extensions
             CaseOwnerUserId = userId,
             Customer = new _Case.CustomerData
             {
-                EmailForOffer = request.EmailForOffer ?? "",
-                PhoneNumberForOffer = request.PhoneNumberForOffer ?? "",
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName ?? "",
                 Name = request.LastName ?? "",
                 Identity = request.Identity is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Identity)
+            },
+            OfferContacts = new _Case.OfferContacts
+            {
+                EmailForOffer = request.EmailForOffer,
+                PhoneNumberForOffer = request.PhoneNumberForOffer
             },
             Data = new _Case.CaseData
             {

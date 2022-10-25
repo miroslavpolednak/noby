@@ -15,6 +15,7 @@ import "GetCaseCounts.proto";
 import "DeleteCase.proto";
 import "GetTaskList.proto";
 import "UpdateActiveTasks.proto";
+import "UpdateOfferContacts.proto";
 
 service CaseService {
    rpc CreateCase (DomainServices.CaseService.CreateCaseRequest) returns (DomainServices.CaseService.CreateCaseResponse);
@@ -38,4 +39,6 @@ service CaseService {
    rpc GetTaskList (DomainServices.CaseService.GetTaskListRequest) returns (DomainServices.CaseService.GetTaskListResponse);
 
    rpc UpdateActiveTasks (DomainServices.CaseService.UpdateActiveTasksRequest) returns (google.protobuf.Empty);
+
+   rpc UpdateOfferContacts (DomainServices.CaseService.UpdateOfferContactsRequest) returns (google.protobuf.Empty);
 }

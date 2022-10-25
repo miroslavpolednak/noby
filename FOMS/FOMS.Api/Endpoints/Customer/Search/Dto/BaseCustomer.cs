@@ -31,14 +31,4 @@ public abstract class BaseCustomer
     /// IC pravnicke osoby
     /// </summary>
     public string? Cin { get; set; }
-    
-    /// <summary>
-    /// Email
-    /// </summary>
-    public string? Email { get; set; }
-    
-    /// <summary>
-    /// Telefon
-    /// </summary>
-    public string? Phone { get; set; }
 }

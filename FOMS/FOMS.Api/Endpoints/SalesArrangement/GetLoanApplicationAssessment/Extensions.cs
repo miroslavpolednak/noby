@@ -88,7 +88,7 @@ internal static class Extensions
 
         cLA.LoanApplicationHousehold MapHousehold(cHousehold.Household h)
         {
-            cLA.LoanApplicationCustomer MapCustomer(cHousehold.CustomerOnSA cOnSA)
+            cLA.LoanApplicationCustomer MapCustomer(cHousehold.CustomerOnSA cOnSA, bool isPartner)
             {
                 var obligationTypeAmountIds = data.ObligationTypeIdsByObligationProperty["amount"] ?? new List<int>();
 
@@ -269,7 +269,7 @@ internal static class Extensions
                     AcademicTitlePrefix = academicTitlePrefix,
                     MobilePhoneNumber = contactMobilePhone?.Value,
                     HasEmail = !String.IsNullOrEmpty(contactEmail?.Value),
-                    IsPartner = (h.Data?.AreCustomersPartners == true),
+                    IsPartner = isPartner,
                     Taxpayer = taxResidencyCountryCode?.ToUpperInvariant() == "CZ",      //Customer.NaturalPerson.TaxResidencyCountryId = "CZ", V CM taxResidence.countryCode = "CZ"
                     Address = (addressPermanent is null) ? null : MapAddress(addressPermanent),
                     IdentificationDocument = MapIdentificationDocument(c.IdentificationDocument),
@@ -291,6 +291,7 @@ internal static class Extensions
             var childrenOverTenYearsCount = h.Data?.ChildrenOverTenYearsCount;
 
             var householdCustomersOnSA = data.CustomersOnSa.Where(c => c.CustomerOnSAId == h.CustomerOnSAId1 || c.CustomerOnSAId == h.CustomerOnSAId2).ToArray();
+            bool isPartner = householdCustomersOnSA.Length == 2 ? DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(householdCustomersOnSA[0].MaritalStatusId, householdCustomersOnSA[1].MaritalStatusId) : false;
 
             return new cLA.LoanApplicationHousehold
             {
@@ -300,7 +301,7 @@ internal static class Extensions
                 ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
                 ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
-                Customers = householdCustomersOnSA.Select(i => MapCustomer(i)).ToList(),
+                Customers = householdCustomersOnSA.Select(i => MapCustomer(i, isPartner)).ToList(),
             };
         }
 

@@ -54,9 +54,7 @@ internal class Case : CIS.Core.Data.BaseCreatedWithModifiedUserId
             FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,
             DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
             Cin = request.Customer.Cin,
-            EmailForOffer = request.Customer.EmailForOffer,
-            PhoneNumberForOffer = request.Customer.PhoneNumberForOffer,
-
+            
             TargetAmount = request.Data.TargetAmount,
             ContractNumber = request.Data.ContractNumber,
 

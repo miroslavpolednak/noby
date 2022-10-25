@@ -1002,16 +1002,6 @@
             IC pravnicke osoby
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Phone">
-            <summary>
-            Telefon
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentityId">
             <summary>
             [optional] ID klienta v MP nebo KB
@@ -1030,6 +1020,16 @@
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentNumber">
             <summary>
             [optional] Cislo dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.Email">
+            <summary>
+            [optional] Email
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.Phone">
+            <summary>
+            [optional] Telefon
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchRequest.SearchData">
@@ -1130,7 +1130,7 @@
             Detail domacnosti
             </summary>
             <remarks>
-            Vraci detail dane domacnosti vcetne detailu navazanych CustomerOnSA.<br/>
+            Vrací detail dané domácnosti včetně detailu navázaných CustomerOnSA. Příznak druh/družka (areCustomersPartners) je počítán dynamicky při každém provolání dle logiky ve společných algoritmech.
             <i>DS:</i> SalesArrangementService/GetHousehold
             </remarks>
             <param name="householdId">ID domacnosti</param>

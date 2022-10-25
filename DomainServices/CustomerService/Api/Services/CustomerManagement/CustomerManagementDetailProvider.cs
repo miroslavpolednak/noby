@@ -142,7 +142,7 @@ internal class CustomerManagementDetailProvider
             City = address.City ?? string.Empty,
             IsPrimary = addressType == AddressTypes.Permanent,
             CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id,
-            Postcode = address.PostCode ?? string.Empty,
+            Postcode = address.PostCode?.Replace(" ", "") ?? string.Empty,
             Street = (componentAddress?.Street ?? address.Street) ?? string.Empty,
             DeliveryDetails = address.DeliveryDetails ?? string.Empty,
             CityDistrict = componentAddress?.CityDistrict ?? string.Empty,

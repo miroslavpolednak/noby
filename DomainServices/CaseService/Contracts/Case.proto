@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "UserInfo.proto";
 import "CustomerData.proto";
+import "OfferContacts.proto";
 import "CaseData.proto";
 import "GrpcDateTime.proto";
 import "ModificationStamp.proto";
@@ -22,6 +23,9 @@ message Case {
 	
 	// Hlavni klient Case
 	CustomerData Customer = 6;
+
+	// kontaktni informace
+	OfferContacts OfferContacts = 10;
 
 	// Poradce vlastnici Case
 	cis.types.UserInfo CaseOwner = 7;

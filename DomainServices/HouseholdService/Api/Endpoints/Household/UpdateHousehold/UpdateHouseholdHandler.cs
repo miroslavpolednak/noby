@@ -24,7 +24,6 @@ internal class UpdateHouseholdHandler
         household.ChildrenUpToTenYearsCount = request.Request.Data?.ChildrenUpToTenYearsCount;
         household.PropertySettlementId = request.Request.Data?.PropertySettlementId;
         household.AreBothPartnersDeptors = request.Request.Data?.AreBothPartnersDeptors;
-        household.AreCustomersPartners = request.Request.Data?.AreCustomersPartners;
         
         household.SavingExpenseAmount = request.Request.Expenses?.SavingExpenseAmount;
         household.InsuranceExpenseAmount = request.Request.Expenses?.InsuranceExpenseAmount;
