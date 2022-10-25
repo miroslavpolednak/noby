@@ -136,8 +136,8 @@ internal class CustomerManagementDetailProvider
         onAddAddress(new GrpcAddress
         {
             AddressTypeId = (int)addressType,
-            BuildingIdentificationNumber = componentAddress?.HouseNumber ?? string.Empty,
-            LandRegistryNumber = componentAddress?.StreetNumber ?? string.Empty,
+            BuildingIdentificationNumber = componentAddress?.StreetNumber ?? string.Empty,
+            LandRegistryNumber = componentAddress?.HouseNumber ?? string.Empty,
             EvidenceNumber = componentAddress?.EvidenceNumber ?? string.Empty,
             City = address.City ?? string.Empty,
             IsPrimary = addressType == AddressTypes.Permanent,
