@@ -16,8 +16,8 @@ internal class LinkModelationHandler
         // update kontaktu
         await _caseService.UpdateOfferContacts(saInstance.CaseId, new DomainServices.CaseService.Contracts.OfferContacts
         {
-            EmailForOffer = request.EmailForOffer,
-            PhoneNumberForOffer = request.PhoneNumberForOffer
+            EmailForOffer = request.EmailForOffer ?? "",
+            PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
         }, cancellationToken);
 
         // smazat objekty uveru
