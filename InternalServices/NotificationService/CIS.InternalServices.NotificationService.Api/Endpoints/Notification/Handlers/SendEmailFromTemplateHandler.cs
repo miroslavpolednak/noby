@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
+using CIS.InternalServices.NotificationService.Api.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
@@ -9,19 +9,19 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Ha
 
 public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSendRequest, EmailFromTemplateSendResponse>
 {
-    private readonly McsBusinessService _mcsBusinessService;
-    private readonly McsLogmanService _mcsLogmanService;
+    private readonly BusinessEmailProducer _businessEmailProducer;
+    private readonly LogmanEmailProducer _logmanEmailProducer;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendEmailFromTemplateHandler> _logger;
 
     public SendEmailFromTemplateHandler(
-        McsBusinessService mcsBusinessService,
-        McsLogmanService mcsLogmanService,
+        BusinessEmailProducer businessEmailProducer,
+        LogmanEmailProducer logmanEmailProducer,
         NotificationRepository repository,
         ILogger<SendEmailFromTemplateHandler> logger)
     {
-        _mcsBusinessService = mcsBusinessService;
-        _mcsLogmanService = mcsLogmanService;
+        _businessEmailProducer = businessEmailProducer;
+        _logmanEmailProducer = logmanEmailProducer;
         _repository = repository;
         _logger = logger;
     }
@@ -43,7 +43,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
         _logger.LogInformation("Sending email from template: {sendEmail}", JsonSerializer.Serialize(sendEmail));
 
         // todo: decide Logman or Business
-        var sendResult = await _mcsLogmanService.SendEmail(sendEmail, cancellationToken);
+        var sendResult = await _logmanEmailProducer.SendEmail(sendEmail, cancellationToken);
         
         var updateResult = await _repository.UpdateResult(
             notificationId,

@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using Confluent.Kafka;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Abstraction;
+namespace CIS.InternalServices.NotificationService.Api.Messaging.Producers;
 
-public abstract class BaseMcsService
+public static class HeadersHelpers
 {
-    protected Headers CreateHeaders(Dictionary<string, string> keyValues)
+    public static Headers CreateHeaders(Dictionary<string, string> keyValues)
     {
         var headers = new Headers();
         

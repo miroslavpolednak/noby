@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using CIS.InternalServices.NotificationService.Api.Mappers;
+using CIS.InternalServices.NotificationService.Api.Messaging.Producers;
 using CIS.InternalServices.NotificationService.Api.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using MediatR;
@@ -10,16 +10,16 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.Notification.Ha
 
 public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
-    private readonly McsLogmanService _mcsLogmanService;
+    private readonly LogmanSmsProducer _logmanSmsProducer;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
-        McsLogmanService mcsLogmanService,
+        LogmanSmsProducer logmanSmsProducer,
         NotificationRepository repository,
         ILogger<SendSmsHandler> logger)
     {
-        _mcsLogmanService = mcsLogmanService;
+        _logmanSmsProducer = logmanSmsProducer;
         _repository = repository;
         _logger = logger;
     }
@@ -40,7 +40,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
         
         _logger.LogInformation("Sending sms: {sendSms}", JsonSerializer.Serialize(sendSms));
 
-        var sendResult = await _mcsLogmanService.SendSms(sendSms, cancellationToken);
+        var sendResult = await _logmanSmsProducer.SendSms(sendSms, cancellationToken);
         
         var updateResult = await _repository.UpdateResult(
             notificationId,

@@ -11,7 +11,7 @@ IHost host = Host.CreateDefaultBuilder(args)
             {
                 { "bootstrap.servers", "localhost:9092" },
                 { "enable.idempotence", "true" },
-                { "group.id", "group1" }
+                { "group.id", "mock-mcs" }
             });
         services.AddHostedService<Worker>();
     })

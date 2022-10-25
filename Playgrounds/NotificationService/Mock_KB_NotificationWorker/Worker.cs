@@ -9,13 +9,13 @@ namespace Mock_KB_NotificationWorker;
 
 public class Worker : BackgroundService
 {
-    private readonly IConsumer<Null, SendSMS> _mscSmsConsumer;
-    private readonly IProducer<Null, NotificationReport> _mscResultProducer;
+    private readonly IConsumer<string, SendSMS> _mscSmsConsumer;
+    private readonly IProducer<string, NotificationReport> _mscResultProducer;
     private readonly ILogger<Worker> _logger;
     
     public Worker(
-        IConsumer<Null, SendSMS> mscSmsConsumer,
-        IProducer<Null, NotificationReport> mscResultProducer,
+        IConsumer<string, SendSMS> mscSmsConsumer,
+        IProducer<string, NotificationReport> mscResultProducer,
         ILogger<Worker> logger)
     {
         _mscSmsConsumer = mscSmsConsumer;
@@ -40,8 +40,9 @@ public class Worker : BackgroundService
                 
                 await _mscResultProducer.ProduceAsync(
                     Topics.MscResultIn,
-                    new Message<Null, NotificationReport>
+                    new Message<string, NotificationReport>
                     {
+                        Key = "",
                         Value = new NotificationReport
                         {
                             id = sendSms.id,

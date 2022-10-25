@@ -7,11 +7,8 @@ using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
-using CIS.InternalServices.NotificationService.Api.HostedServices;
+using CIS.InternalServices.NotificationService.Api.Messaging;
 using CIS.InternalServices.NotificationService.Api.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services;
-using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
-using Confluent.Kafka.DependencyInjection;
 using DomainServices.CodebookService.Abstraction;
 using FluentValidation;
 using MediatR;
@@ -68,33 +65,7 @@ builder.Services.AddCodebookService();
 
 // kafka
 var kafkaConfiguration = builder.GetKafkaConfiguration();
-
-builder.Services
-    .AddAvroSerializers()
-    .AddKafkaClient(new Dictionary<string, string>
-    {
-        { "group.id", kafkaConfiguration.GroupId},
-        { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Logman },
-        { "ssl.keystore.location", kafkaConfiguration.SslKeystoreLocation },
-        { "ssl.keystore.password", kafkaConfiguration.SslKeystorePassword },
-        { "security.protocol", kafkaConfiguration.SecurityProtocol },
-        { "ssl.ca.location", kafkaConfiguration.SslCaLocation },
-        { "ssl.certificate.location", kafkaConfiguration.SslCertificateLocation },
-        { "enable.ssl.certificate.verification", "false" },
-        { "debug", kafkaConfiguration.Debug }
-    })
-    .AddKafkaClient<McsLogmanService>(new Dictionary<string, string>
-    {
-        { "group.id", kafkaConfiguration.GroupId},
-        { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Logman },
-        { "ssl.keystore.location", kafkaConfiguration.SslKeystoreLocation },
-        { "ssl.keystore.password", kafkaConfiguration.SslKeystorePassword },
-        { "security.protocol", kafkaConfiguration.SecurityProtocol },
-        { "ssl.ca.location", kafkaConfiguration.SslCaLocation },
-        { "ssl.certificate.location", kafkaConfiguration.SslCertificateLocation },
-        { "debug", kafkaConfiguration.Debug }
-    })
-    .AddBackgroundServices();
+builder.Services.AddMessaging(kafkaConfiguration);
 
 // database
 builder.AddEntityFramework<NotificationDbContext>("nobyDb");
