@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.Configuration;
 using CIS.InternalServices.DocumentDataAggregator.DataServices;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
 
 namespace CIS.InternalServices.DocumentDataAggregator;
@@ -15,17 +16,16 @@ internal class DataAggregator : IDataAggregator
         _dataServicesLoader = dataServicesLoader;
     }
 
-    public async Task<ICollection<KeyValuePair<string, object>>> GetDocumentData(int offerId)
+    public async Task<IReadOnlyCollection<DocumentFieldData>> GetDocumentData(InputParameters input)
     {
         var config = await _configurationManager.LoadDocumentConfiguration();
 
-        var data = await _dataServicesLoader.LoadData(config.InputConfig, new InputParameters
-        {
-            OfferId = 111
-        });
+        var documentData = DocumentDataFactory.Create(Document.Offer);
 
-        var testOutput = DocumentMapper.Map(config.SourceFields, data);
+        await _dataServicesLoader.LoadData(config.InputConfig, input, documentData);
 
-        return Enumerable.Empty<KeyValuePair<string, object>>().ToList();
+        var testOutput = DocumentMapper.Map(config.SourceFields, documentData);
+
+        return testOutput;
     }
 }

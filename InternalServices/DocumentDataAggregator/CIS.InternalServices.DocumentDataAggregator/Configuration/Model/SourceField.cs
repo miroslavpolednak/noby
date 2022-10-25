@@ -7,4 +7,6 @@ internal record SourceField
     public string FieldPath { get; init; } = null!;
 
     public string TemplateFieldName { get; init; } = null!;
+
+    public string? StringFormat { get; init; }
 }

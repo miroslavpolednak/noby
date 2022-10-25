@@ -3,6 +3,7 @@ using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrations
 {
     [DbContext(typeof(ConfigurationContext))]
-    partial class ConfigurationContextModelSnapshot : ModelSnapshot
+    [Migration("20221024160424_DocumentSpecialDataFields")]
+    partial class DocumentSpecialDataFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,9 +89,6 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<int>("DataFieldId")
                         .HasColumnType("int");
-
-                    b.Property<string>("StringFormat")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TemplateFieldName")
                         .IsRequired()

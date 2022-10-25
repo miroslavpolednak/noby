@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="AcroForm\" />
+    <Folder Include="AcroFieldFormatters\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

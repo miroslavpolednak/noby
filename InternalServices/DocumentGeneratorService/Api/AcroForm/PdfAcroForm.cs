@@ -41,7 +41,7 @@ public class PdfAcroForm
                 break;
 
             case GenerateDocumentPartData.ValueOneofCase.DecimalNumber:
-                Write(field, value.DecimalNumber);
+                Write(field, (decimal)value.DecimalNumber);
                 break;
 
             case GenerateDocumentPartData.ValueOneofCase.LogicalValue:

@@ -1,12 +1,18 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Mapper;
 
 internal static class DocumentMapper
 {
-    public static Dictionary<string, object?> Map(IReadOnlyCollection<SourceField> fields, AggregatedData aggregatedData)
+    public static IReadOnlyCollection<DocumentFieldData> Map(IReadOnlyCollection<SourceField> fields, AggregatedData aggregatedData)
     {
-        return fields.ToDictionary(f => f.TemplateFieldName, f => aggregatedData.GetValue(f.FieldPath));
+        return fields.Select(f => new DocumentFieldData
+        {
+            FieldName = f.TemplateFieldName,
+            Value = aggregatedData.GetValue(f.FieldPath),
+            StringFormat = f.StringFormat
+        }).ToList();
     }
 }

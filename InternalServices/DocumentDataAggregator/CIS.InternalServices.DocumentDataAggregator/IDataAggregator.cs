@@ -1,6 +1,8 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator;
+﻿using CIS.InternalServices.DocumentDataAggregator.Documents;
+
+namespace CIS.InternalServices.DocumentDataAggregator;
 
 public interface IDataAggregator
 {
-    Task<ICollection<KeyValuePair<string, object>>> GetDocumentData(int offerId);
+    Task<IReadOnlyCollection<DocumentFieldData>> GetDocumentData(InputParameters input);
 }

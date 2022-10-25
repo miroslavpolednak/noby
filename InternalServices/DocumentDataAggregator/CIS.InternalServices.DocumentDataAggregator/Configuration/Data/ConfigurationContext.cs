@@ -23,6 +23,8 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<DocumentDynamicInputParameter> DocumentDynamicInputParameters => Set<DocumentDynamicInputParameter>();
 
+    public DbSet<DocumentSpecialDataField> DocumentSpecialDataFields => Set<DocumentSpecialDataField>();
+
     public DbSet<InputParameter> InputParameter => Set<InputParameter>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,6 +1,7 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,7 +22,7 @@ internal class DataServicesLoader
         ConfigureServiceMap();
     }
 
-    public async Task<AggregatedData> LoadData(InputConfig inputConfig, InputParameters parameters)
+    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData)
     {
         var status = new DataLoaderStatus
         {
@@ -29,15 +30,11 @@ internal class DataServicesLoader
             RelatedInputParameters = inputConfig.DynamicInputParameters.ToList()
         };
 
-        var aggregatedData = new AggregatedData();
-        
         while (status.RemainingDataSources.Any())
         {
             await ProcessRemainingDataSources(status, parameters, aggregatedData);
             SetInputParameters(status, parameters, aggregatedData);
         }
-
-        return aggregatedData;
     }
 
     private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData)

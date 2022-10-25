@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
 using DomainServices.OfferService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;

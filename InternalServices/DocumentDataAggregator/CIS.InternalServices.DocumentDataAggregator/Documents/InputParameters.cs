@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator;
+﻿namespace CIS.InternalServices.DocumentDataAggregator.Documents;
 
 public class InputParameters
 {

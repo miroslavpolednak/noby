@@ -1,4 +1,6 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
+using Console_DocumentDataAggregator;
 using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("Hello, World!");
@@ -9,6 +11,12 @@ services.AddDataAggregator();
 
 var serviceProvider = services.BuildServiceProvider();
 
-await serviceProvider.GetRequiredService<IDataAggregator>().GetDocumentData(123);
+var input = new InputParameters { OfferId = 111 };
 
-Console.ReadKey();
+var data = await serviceProvider.GetRequiredService<IDataAggregator>().GetDocumentData(input);
+
+var dataToFormat = data.First(x => x.FieldName == "LoanAmount");
+
+var s = string.Format(new CustomFormatter(), dataToFormat.StringFormat!, (decimal)dataToFormat.Value);
+
+ Console.ReadKey();

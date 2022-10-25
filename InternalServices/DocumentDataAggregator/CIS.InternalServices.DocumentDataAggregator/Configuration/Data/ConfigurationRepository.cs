@@ -13,20 +13,6 @@ internal class ConfigurationRepository
         _dbContext = dbContext;
     }
 
-    public Task<List<SourceField>> LoadSourceFields(int documentId, int documentVersion)
-    {
-        return _dbContext.DocumentDataFields
-                         .AsNoTracking()
-                         .Where(f => f.DocumentId == documentId && f.DocumentVersion == documentVersion)
-                         .Select(f => new SourceField
-                         {
-                             DataSource = (DataSource)f.DataField.DataServiceId,
-                             FieldPath = f.DataField.FieldPath,
-                             TemplateFieldName = f.TemplateFieldName
-                         })
-                         .ToListAsync();
-    }
-
     public Task<List<DynamicInputParameter>> LoadDynamicInputFields(int documentId, int documentVersion)
     {
         return _dbContext.DocumentDynamicInputParameters
@@ -40,5 +26,38 @@ internal class ConfigurationRepository
                              SourceFieldPath = d.SourceDataField.FieldPath
                          })
                          .ToListAsync();
+    }
+
+    public Task<List<SourceField>> LoadSourceFields(int documentId, int documentVersion)
+    {
+        return GetSourceFieldsQuery().Union(GetSpecialSourceFields()).ToListAsync();
+
+        IQueryable<SourceField> GetSourceFieldsQuery()
+        {
+            return _dbContext.DocumentDataFields
+                             .AsNoTracking()
+                             .Where(f => f.DocumentId == documentId && f.DocumentVersion == documentVersion)
+                             .Select(f => new SourceField
+                             {
+                                 DataSource = (DataSource)f.DataField.DataServiceId,
+                                 FieldPath = f.DataField.FieldPath,
+                                 TemplateFieldName = f.TemplateFieldName,
+                                 StringFormat = f.StringFormat
+                             });
+        }
+
+        IQueryable<SourceField> GetSpecialSourceFields()
+        {
+            return _dbContext.DocumentSpecialDataFields
+                             .AsNoTracking()
+                             .Where(f => f.DocumentId == documentId)
+                             .Select(f => new SourceField
+                             {
+                                 DataSource = (DataSource)f.DataServiceId,
+                                 FieldPath = Convert.ToString(f.FieldPath),
+                                 TemplateFieldName = f.TemplateFieldName,
+                                 StringFormat = default
+                             });
+        }
     }
 }

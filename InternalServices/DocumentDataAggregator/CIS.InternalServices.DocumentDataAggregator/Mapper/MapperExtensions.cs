@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
 using FastMember;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Mapper;
