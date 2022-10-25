@@ -17,6 +17,7 @@ var serviceProvider = new ServiceCollection()
     .BuildServiceProvider();
     
 var s3Client = serviceProvider.GetRequiredService<IAmazonS3>();
-var buckets = await s3Client.ListBucketsAsync();
+var response = await s3Client.ListBucketsAsync();
+var bucket = response.Buckets.FirstOrDefault(b => b.BucketName == "b-s3-mcs");
 
 Console.WriteLine("end");

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>CIS.InternalServices.NotificationService.Clients</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Net.Client" Version="2.48.0" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.177" />
+    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.177" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
+    <ProjectReference Include="..\..\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+    <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

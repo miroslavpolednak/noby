@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.InternalServices.NotificationService.Api</name>
+    </assembly>
+    <members>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.SendSms(CIS.InternalServices.NotificationService.Contracts.Sms.SmsSendRequest,System.Threading.CancellationToken)">
+            <summary>
+            Odeslat sms notifikaci
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.SendSmsFromTemplate(CIS.InternalServices.NotificationService.Contracts.Sms.SmsFromTemplateSendRequest,System.Threading.CancellationToken)">
+            <summary>
+            Odeslat sms notifikaci ze šablony
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.SendEmail(CIS.InternalServices.NotificationService.Contracts.Email.EmailSendRequest,System.Threading.CancellationToken)">
+            <summary>
+            Odeslat email notifikaci
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.SendEmailFromTemplate(CIS.InternalServices.NotificationService.Contracts.Email.EmailFromTemplateSendRequest,System.Threading.CancellationToken)">
+            <summary>
+            Odeslat email notifikaci ze šablony
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.Notification.NotificationController.GetResult(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Získat výsledek o notifikaci
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+    </members>
+</doc>
