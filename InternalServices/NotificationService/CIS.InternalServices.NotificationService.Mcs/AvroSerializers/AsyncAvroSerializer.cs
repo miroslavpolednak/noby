@@ -3,7 +3,7 @@ using Avro.Specific;
 using Confluent.Kafka;
 using SolTechnology.Avro;
 
-namespace CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+namespace CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
 
 public class AsyncAvroSerializer<T>: IAsyncSerializer<T> where T : ISpecificRecord
 {

@@ -14,6 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Msc\CIS.InternalServices.NotificationService.Msc.csproj" />
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
     </ItemGroup>
 </Project>

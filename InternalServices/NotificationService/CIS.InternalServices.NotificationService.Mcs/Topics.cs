@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.NotificationService.Msc;
+﻿namespace CIS.InternalServices.NotificationService.Mcs;
 
 public class Topics
 {

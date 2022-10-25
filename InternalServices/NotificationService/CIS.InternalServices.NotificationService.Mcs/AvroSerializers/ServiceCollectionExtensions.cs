@@ -2,7 +2,7 @@
 using Confluent.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+namespace CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
 
 public static class ServiceCollectionExtensions
 {

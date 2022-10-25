@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.Attributes;
 using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Requests;
-using CIS.InternalServices.NotificationService.Msc;
+using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;
 using MediatR;

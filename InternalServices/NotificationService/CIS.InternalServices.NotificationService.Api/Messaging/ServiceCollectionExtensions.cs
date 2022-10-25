@@ -2,7 +2,7 @@
 using CIS.InternalServices.NotificationService.Api.Messaging.Consumers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.BackgroundServices;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers;
-using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+using CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
 using Confluent.Kafka;
 using Confluent.Kafka.DependencyInjection;
 

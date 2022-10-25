@@ -1,5 +1,5 @@
 using System.Text.Json;
-using CIS.InternalServices.NotificationService.Msc;
+using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;

@@ -1,7 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Infrastructure.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Msc;
+using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.sender.sendapi.v2.email;
 using Microsoft.Extensions.Options;

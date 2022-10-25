@@ -1,4 +1,4 @@
-using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+using CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
 using Confluent.Kafka.DependencyInjection;
 using Mock_KB_NotificationWorker;
 
