@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Services;
 
-[TransientService, SelfService]
+[ScopedService, SelfService]
 public class McsBusinessService : BaseMcsService
 {
     private readonly IProducer<string, SendEmail> _mcsEmailProducer;

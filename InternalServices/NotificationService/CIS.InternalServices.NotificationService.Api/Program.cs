@@ -71,7 +71,7 @@ var kafkaConfiguration = builder.GetKafkaConfiguration();
 
 builder.Services
     .AddAvroSerializers()
-    .AddKafkaClient<McsBusinessService>(new Dictionary<string, string>
+    .AddKafkaClient(new Dictionary<string, string>
     {
         { "group.id", kafkaConfiguration.GroupId},
         { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Logman },
@@ -80,12 +80,13 @@ builder.Services
         { "security.protocol", kafkaConfiguration.SecurityProtocol },
         { "ssl.ca.location", kafkaConfiguration.SslCaLocation },
         { "ssl.certificate.location", kafkaConfiguration.SslCertificateLocation },
+        { "enable.ssl.certificate.verification", "false" },
         { "debug", kafkaConfiguration.Debug }
     })
     .AddKafkaClient<McsLogmanService>(new Dictionary<string, string>
     {
         { "group.id", kafkaConfiguration.GroupId},
-        { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Business },
+        { "bootstrap.servers", kafkaConfiguration.BootstrapServers.Logman },
         { "ssl.keystore.location", kafkaConfiguration.SslKeystoreLocation },
         { "ssl.keystore.password", kafkaConfiguration.SslKeystorePassword },
         { "security.protocol", kafkaConfiguration.SecurityProtocol },
