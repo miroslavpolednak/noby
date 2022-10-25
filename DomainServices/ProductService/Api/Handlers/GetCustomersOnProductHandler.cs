@@ -18,7 +18,8 @@ internal class GetCustomersOnProductHandler
         // Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
         var customers = await _dbContext.Relationships
             .AsNoTracking()
-            .Where(t => t.UverId == request.ProductId).Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBPartyId })
+            .Where(t => t.UverId == request.ProductId)
+            .Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBPartyId })
             .ToListAsync(cancellation);
         if (!customers.Any())
             throw new CisValidationException(12020, "Customers not found for product.");

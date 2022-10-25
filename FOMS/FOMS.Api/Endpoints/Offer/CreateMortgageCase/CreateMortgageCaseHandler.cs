@@ -32,6 +32,13 @@ internal class CreateMortgageCaseHandler
         long caseId = ServiceCallResult.ResolveAndThrowIfError<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.SimulationInputs), cancellationToken));
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 
+        // updatovat kontakty
+        await _caseService.UpdateOfferContacts(caseId, new _Case.OfferContacts
+        {
+            EmailForOffer = request.EmailForOffer,
+            PhoneNumberForOffer = request.PhoneNumberForOffer
+        }, cancellationToken);
+
         // vytvorit zadost
         _logger.SharedCreateSalesArrangementStarted(salesArrangementTypeId, caseId, request.OfferId);
         int salesArrangementId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
