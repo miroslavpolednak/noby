@@ -24,16 +24,19 @@ internal sealed class UpdateCustomerService
         entity.MaritalStatusId = _cachedCustomerInstance.NaturalPerson?.MaritalStatusStateId;
 
         // get CaseId
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation));
-
-        // update case service
-        await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData
+        if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
         {
-            DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth,
-            FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName,
-            Name = _cachedCustomerInstance.NaturalPerson?.LastName,
-            Identity = kbIdentity
-        }, cancellation);
+            var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation));
+
+            // update case service
+            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData
+            {
+                DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth,
+                FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName,
+                Name = _cachedCustomerInstance.NaturalPerson?.LastName,
+                Identity = kbIdentity
+            }, cancellation);
+        }
     }
 
     public async Task TryCreateMpIdentity(Repositories.Entities.CustomerOnSA entity)
