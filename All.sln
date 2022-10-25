@@ -191,11 +191,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Sulm", "Ex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{46414B85-D1B6-411D-B232-C6CC8B35FE57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Clients", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Clients\CIS.InternalServices.NotificationService.Clients.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Clients", "InternalServices\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Contracts", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj", "{67BB0077-7777-4F58-AE62-99072014325C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Contracts", "InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj", "{67BB0077-7777-4F58-AE62-99072014325C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Api", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Api\CIS.InternalServices.NotificationService.Api.csproj", "{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Api", "InternalServices\NotificationService\Api\CIS.InternalServices.NotificationService.Api.csproj", "{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.AddressWhisperer", "ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj", "{1A72059E-47EB-4371-9F9E-250B4F902C89}"
 EndProject
@@ -213,7 +213,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_NotificationService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock_KB_NotificationWorker", "Playgrounds\NotificationService\Mock_KB_NotificationWorker\Mock_KB_NotificationWorker.csproj", "{A8931807-0751-4BED-A3A1-987BF6C932B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Mcs", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Mcs\CIS.InternalServices.NotificationService.Mcs.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Mcs", "InternalServices\NotificationService\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HouseholdService", "HouseholdService", "{9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}"
 EndProject

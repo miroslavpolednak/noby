@@ -30,8 +30,8 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
-    <ProjectReference Include="..\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\CIS.InternalServices.NotificationService.Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
+    <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
+    <ProjectReference Include="..\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
   </ItemGroup>
 
 </Project>

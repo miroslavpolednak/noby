@@ -9,8 +9,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
-      <ProjectReference Include="..\..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
-      <ProjectReference Include="..\..\..\InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
