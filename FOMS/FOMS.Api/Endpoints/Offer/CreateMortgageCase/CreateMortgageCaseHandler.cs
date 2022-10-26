@@ -35,8 +35,8 @@ internal class CreateMortgageCaseHandler
         // updatovat kontakty
         await _caseService.UpdateOfferContacts(caseId, new _Case.OfferContacts
         {
-            EmailForOffer = request.EmailForOffer,
-            PhoneNumberForOffer = request.PhoneNumberForOffer
+            EmailForOffer = request.EmailForOffer ?? "",
+            PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
         }, cancellationToken);
 
         // vytvorit zadost
