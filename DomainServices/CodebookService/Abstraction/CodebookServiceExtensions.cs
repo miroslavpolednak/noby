@@ -7,6 +7,8 @@ namespace DomainServices.CodebookService.Abstraction;
 
 public static class CodebookServiceExtensions
 {
+    public static int DefaultAbsoluteCacheExpirationMinutes { get; private set; } = 1;
+
     public static IServiceCollection AddCodebookService(this IServiceCollection services)
         => services
             .TryAddGrpcClient<Contracts.ICodebookService>(a =>

@@ -7,7 +7,7 @@ namespace DomainServices.CodebookService.Endpoints;
 public sealed class FastMemoryCache
 {
     //TODO zatim se mi to nechce datavat do appsettings
-    public const int AbsoluteExpirationInMinutes = 10;
+    public const int AbsoluteExpirationInMinutes = 1;
 
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
