@@ -225,13 +225,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdSer
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentArchiveService", "DocumentArchiveService", "{FD432970-0CA5-4632-9121-6A24C1B5A967}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Contracts", "DomainServices\DocumentArchiveService\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Clients", "DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Api", "DomainServices\DocumentArchiveService\Api\DomainServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_ClientS3", "Playgrounds\NotificationService\Console_ClientS3\Console_ClientS3.csproj", "{700E8F2D-66FC-491F-8544-9127FC93D410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ClientS3", "Playgrounds\NotificationService\Console_ClientS3\Console_ClientS3.csproj", "{700E8F2D-66FC-491F-8544-9127FC93D410}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1023,7 +1023,7 @@ Global
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{6A12E6D1-613A-46EB-AD42-625D7DC5AB21} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{2AB718B0-5F91-4909-82B3-DC576747EBA8} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
-		{FD432970-0CA5-4632-9121-6A24C1B5A967} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
+		{FD432970-0CA5-4632-9121-6A24C1B5A967} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{235157F3-EC56-44F3-9ACC-4956E6262E24} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{D4C76CA4-518A-40EE-BAC0-584389478B19} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
