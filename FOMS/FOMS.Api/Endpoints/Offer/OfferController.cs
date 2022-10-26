@@ -87,8 +87,8 @@ public class OfferController : ControllerBase
     /// Nalinkuje novou modelaci na stavajici SA.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/GetSalesArrangement<br/>
-    /// <i>DS:</i> OfferService/LinkModelationToSalesArrangement
+    /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/link")]
     [Produces("application/json")]
