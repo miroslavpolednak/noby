@@ -89,7 +89,6 @@ public class OfferController : ControllerBase
     /// <remarks>
     /// <i>DS:</i> SalesArrangementService/GetSalesArrangement<br/>
     /// <i>DS:</i> OfferService/LinkModelationToSalesArrangement
-    /// <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/link")]
     [Produces("application/json")]

@@ -1413,7 +1413,6 @@
             <remarks>
             <i>DS:</i> SalesArrangementService/GetSalesArrangement<br/>
             <i>DS:</i> OfferService/LinkModelationToSalesArrangement
-            <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
             </remarks>
         </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.GetFullPaymentScheduleByOfferId(System.Int32,System.Threading.CancellationToken)">
