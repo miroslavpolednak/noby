@@ -8,6 +8,7 @@ internal class DeleteCustomerHandler
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCustomerMediatrRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.Customers
+            .Include(t => t.Identities)
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
 
@@ -15,17 +16,19 @@ internal class DeleteCustomerHandler
         if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
             throw new CisValidationException(16053, "CustomerOnSA is in role=Debtor -> can't be deleted");
 
+        var kbIdentity = entity.Identities?.FirstOrDefault(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+
         // smazat customera
         _dbContext.Customers.Remove(entity);
+
         // smazat vazbu na identity
         await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={request.CustomerOnSAId}", cancellation);
         await _dbContext.SaveChangesAsync(cancellation);
 
         // SULM
-        if (entity.Identities?.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb) ?? false)
+        if (kbIdentity is not null)
         {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _sulmClient.StopUse(identity.IdentityId, "MPAP", cancellation);
+            await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
         }
 
         // smazat Agent z SA, pokud je Agent=aktualni CustomerOnSAId
