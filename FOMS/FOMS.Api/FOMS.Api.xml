@@ -1360,35 +1360,25 @@
             <summary>
             Jméno
             </summary>
-            <example>
-            Jonatán
-            </example>
+            <example>Jonatán</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.LastName">
             <summary>
             Příjmení
             </summary>
-            <example>
-            Skočdopole
-            </example>
+            <example>Skočdopole</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.DateOfBirth">
             <summary>
             Datum narození
             </summary>
-            <example>
-            2002-10-26
-            </example>
+            <example>2002-10-26</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.PhoneNumberForOffer">
-            <example>
-            777111222
-            </example>
+            <example>777111222</example>
         </member>
         <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.EmailForOffer">
-            <example>
-            jonatan.skocdopole@mpss.cz
-            </example>
+            <example>jonatan.skocdopole@mpss.cz</example>
         </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.SimulateMortgage(FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
             <summary>

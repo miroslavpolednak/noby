@@ -10,34 +10,24 @@ public class LinkModelationRequest
     /// <summary>
     /// Jméno
     /// </summary>
-    /// <example>
-    /// Jonatán
-    /// </example>
+    /// <example>Jonatán</example>
     public string? FirstName { get; set; }
 
     /// <summary>
     /// Příjmení
     /// </summary>
-    /// <example>
-    /// Skočdopole
-    /// </example>
+    /// <example>Skočdopole</example>
     public string? LastName { get; set; }
 
     /// <summary>
     /// Datum narození
     /// </summary>
-    /// <example>
-    /// 2002-10-26
-    /// </example>
+    /// <example>2002-10-26</example>
     public DateTime? DateOfBirth { get; set; }
 
-    /// <example>
-    /// 777111222
-    /// </example>
+    /// <example>777111222</example>
     public string? PhoneNumberForOffer { get; set; }
 
-    /// <example>
-    /// jonatan.skocdopole@mpss.cz
-    /// </example>
+    /// <example>jonatan.skocdopole@mpss.cz</example>
     public string? EmailForOffer { get; set; }
 }
