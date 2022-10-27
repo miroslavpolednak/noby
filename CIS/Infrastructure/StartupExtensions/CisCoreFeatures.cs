@@ -7,10 +7,11 @@ namespace CIS.Infrastructure.StartupExtensions;
 
 public static class CisCoreFeatures
 {
-    public static WebApplicationBuilder AddCisCoreFeatures(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddCisCoreFeatures(this WebApplicationBuilder builder, bool useDefaultDateTimeService = true)
     {
         // datetime unification
-        builder.Services.AddSingleton<IDateTime, LocalDateTime>();
+        if (useDefaultDateTimeService)
+            builder.Services.AddSingleton<IDateTime, LocalDateTime>();
 
         builder.Services.AddOptions();
 
