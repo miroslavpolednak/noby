@@ -22,7 +22,7 @@ internal class DeleteCustomerHandler
         _dbContext.Customers.Remove(entity);
 
         // smazat vazbu na identity
-        await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={request.CustomerOnSAId}", cancellation);
+        //await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={request.CustomerOnSAId}", cancellation);
         await _dbContext.SaveChangesAsync(cancellation);
 
         // SULM
