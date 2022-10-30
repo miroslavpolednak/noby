@@ -24,7 +24,8 @@ internal class DocumentConfigurationManager
                 DataSources = fields.Select(f => f.DataSource).Distinct(),
                 DynamicInputParameters = await _repository.LoadDynamicInputFields(1, 1)
             },
-            SourceFields = fields
+            SourceFields = fields,
+            DynamicStringFormats = await _repository.LoadDocumentDynamicStringFormats()
         };
     }
 }

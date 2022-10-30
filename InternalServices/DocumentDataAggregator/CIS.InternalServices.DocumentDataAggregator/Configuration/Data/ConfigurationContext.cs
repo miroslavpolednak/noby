@@ -13,8 +13,6 @@ internal class ConfigurationContext : DbContext
     {
     }
 
-    public DbSet<DataField> DataFields => Set<DataField>();
-
     public DbSet<DataService> DataServices => Set<DataService>();
 
     public DbSet<Document> Documents => Set<Document>();
@@ -25,7 +23,7 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<DocumentSpecialDataField> DocumentSpecialDataFields => Set<DocumentSpecialDataField>();
 
-    public DbSet<InputParameter> InputParameter => Set<InputParameter>();
+    public DbSet<DynamicStringFormat> DynamicStringFormats => Set<DynamicStringFormat>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,5 +8,7 @@ internal class DataField
 
     public string FieldPath { get; set; } = null!;
 
+    public string? DefaultStringFormat { get; set; }
+
     public DataService DataService { get; set; } = null!;
 }

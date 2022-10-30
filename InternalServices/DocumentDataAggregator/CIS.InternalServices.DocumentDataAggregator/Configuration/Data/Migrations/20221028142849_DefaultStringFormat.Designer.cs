@@ -3,6 +3,7 @@ using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrations
 {
     [DbContext(typeof(ConfigurationContext))]
-    partial class ConfigurationContextModelSnapshot : ModelSnapshot
+    [Migration("20221028142849_DefaultStringFormat")]
+    partial class DefaultStringFormat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,73 +157,6 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.ToTable("DocumentSpecialDataField");
                 });
 
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", b =>
-                {
-                    b.Property<int>("DynamicStringFormatId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatId"), 1L, 1);
-
-                    b.Property<int>("DataFieldId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DocumentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DocumentVersion")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Format")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.HasKey("DynamicStringFormatId");
-
-                    b.HasIndex("DocumentId", "DocumentVersion", "DataFieldId");
-
-                    b.ToTable("DynamicStringFormat");
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatCondition", b =>
-                {
-                    b.Property<int>("DynamicStringFormatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DynamicStringFormatDataFieldId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EqualToValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DynamicStringFormatId", "DynamicStringFormatDataFieldId");
-
-                    b.HasIndex("DynamicStringFormatDataFieldId");
-
-                    b.ToTable("DynamicStringFormatCondition");
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatDataField", b =>
-                {
-                    b.Property<int>("DynamicStringFormatDataFieldId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatDataFieldId"), 1L, 1);
-
-                    b.Property<string>("FieldPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DynamicStringFormatDataFieldId");
-
-                    b.ToTable("DynamicStringFormatDataField");
-                });
-
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.InputParameter", b =>
                 {
                     b.Property<int>("InputParameterId")
@@ -321,42 +256,6 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Navigation("DataService");
 
                     b.Navigation("Document");
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", b =>
-                {
-                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DocumentDataField", null)
-                        .WithMany("DynamicStringFormats")
-                        .HasForeignKey("DocumentId", "DocumentVersion", "DataFieldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatCondition", b =>
-                {
-                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatDataField", "DynamicStringFormatDataField")
-                        .WithMany()
-                        .HasForeignKey("DynamicStringFormatDataFieldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", null)
-                        .WithMany("DynamicStringFormatConditions")
-                        .HasForeignKey("DynamicStringFormatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DynamicStringFormatDataField");
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DocumentDataField", b =>
-                {
-                    b.Navigation("DynamicStringFormats");
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", b =>
-                {
-                    b.Navigation("DynamicStringFormatConditions");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,5 +15,7 @@ internal class DocumentDataFieldConfiguration : IEntityTypeConfiguration<Documen
         builder.HasOne(x => x.DataField);
 
         builder.Property(x => x.TemplateFieldName).IsRequired();
+
+        builder.HasMany(x => x.DynamicStringFormats).WithOne().HasForeignKey(x => new { x.DocumentId, x.DocumentVersion, x.DataFieldId });
     }
 }

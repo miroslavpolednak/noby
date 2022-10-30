@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
 using DomainServices.OfferService.Contracts;
@@ -21,7 +22,12 @@ internal class OfferServiceWrapper : IServiceWrapper
 
         //return ServiceCallResult.ResolveAndThrowIfError<GetMortgageOfferDetailResponse>(result);
 
-        data.Offer = new Fixture().Build<GetMortgageOfferDetailResponse>().With(c => c.OfferId, input.OfferId).Create();
+        data.Offer = new Fixture().Build<GetMortgageOfferDetailResponse>()
+                                  .With(c => c.OfferId, input.OfferId)
+                                  .Create();
+
+        data.Offer.SimulationInputs.ExpectedDateOfDrawing = new NullableGrpcDate(1980, 10, 25);
+
         data.OfferCustom = new OfferCustomData();
     }
 }

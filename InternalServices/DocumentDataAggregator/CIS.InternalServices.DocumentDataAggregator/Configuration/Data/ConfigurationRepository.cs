@@ -39,10 +39,11 @@ internal class ConfigurationRepository
                              .Where(f => f.DocumentId == documentId && f.DocumentVersion == documentVersion)
                              .Select(f => new SourceField
                              {
+                                 SourceFieldId = f.DataFieldId,
                                  DataSource = (DataSource)f.DataField.DataServiceId,
                                  FieldPath = f.DataField.FieldPath,
                                  TemplateFieldName = f.TemplateFieldName,
-                                 StringFormat = f.StringFormat
+                                 StringFormat = f.StringFormat ?? f.DataField.DefaultStringFormat
                              });
         }
 
@@ -53,11 +54,35 @@ internal class ConfigurationRepository
                              .Where(f => f.DocumentId == documentId)
                              .Select(f => new SourceField
                              {
+                                 SourceFieldId = default,
                                  DataSource = (DataSource)f.DataServiceId,
                                  FieldPath = Convert.ToString(f.FieldPath),
                                  TemplateFieldName = f.TemplateFieldName,
                                  StringFormat = default
                              });
         }
+    }
+
+    public async Task<ILookup<int, DynamicStringFormat>> LoadDocumentDynamicStringFormats()
+    {
+        var data = await _dbContext.DynamicStringFormats
+                                   .AsNoTracking()
+                                   .Where(x => x.DocumentId == 1 && x.DocumentVersion == 1)
+                                   .Include(x => x.DynamicStringFormatConditions)
+                                   .ThenInclude(x => x.DynamicStringFormatDataField)
+                                   .AsSplitQuery()
+                                   .Select(x => new DynamicStringFormat
+                                   {
+                                       SourceFieldId = x.DataFieldId,
+                                       Format = x.Format,
+                                       Priority = x.Priority,
+                                       Conditions = x.DynamicStringFormatConditions.Select(c => new DynamicStringFormatCondition
+                                       {
+                                           SourceFieldPath = c.DynamicStringFormatDataField.FieldPath,
+                                           EqualToValue = c.EqualToValue
+                                       }).ToList()
+                                   }).ToListAsync();
+
+        return data.ToLookup(x => x.SourceFieldId);
     }
 }

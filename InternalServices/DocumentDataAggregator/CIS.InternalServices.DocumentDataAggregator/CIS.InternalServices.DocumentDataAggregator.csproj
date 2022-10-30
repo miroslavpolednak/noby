@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\Data\Entities\" />
     <Folder Include="Configuration\Data\EntityConfiguration\" />
     <Folder Include="DataServices\ServiceWrappers\" />
   </ItemGroup>

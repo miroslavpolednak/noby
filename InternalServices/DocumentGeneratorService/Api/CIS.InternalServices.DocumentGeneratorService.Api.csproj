@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="kestrel.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="11.35.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.48.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
@@ -21,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="AcroForm\" />
-    <Folder Include="AcroFieldFormatters\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

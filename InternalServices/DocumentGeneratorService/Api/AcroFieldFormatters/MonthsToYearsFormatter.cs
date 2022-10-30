@@ -6,7 +6,7 @@ public class MonthsToYearsFormatter : IAcroFieldFormatter
     {
     }
 
-    public static MonthsToYearsFormatter Instance { get; } = new MonthsToYearsFormatter();
+    public static MonthsToYearsFormatter Instance { get; } = new();
 
     public string Format(object obj, IFormatProvider formatProvider)
     {
@@ -16,10 +16,14 @@ public class MonthsToYearsFormatter : IAcroFieldFormatter
         var years = number / 12;
         var months = number % 12;
 
-        return months == 0 ? $"{years} {GetYearsText(years)}" : $"{years} {GetYearsText(years)} a {months} {GetMonthsText(months)}";
+        var formattableString = (months == 0)
+            ? (FormattableString)$"{years} {GetYearsText(years)}"
+            : $"{years} {GetYearsText(years)} a {months} {GetMonthsText(months)}";
+
+        return formattableString.ToString(formatProvider);
     }
 
-    private string GetYearsText(int numberOfYears) =>
+    private static string GetYearsText(int numberOfYears) =>
         numberOfYears switch
         {
             1 => "rok",
@@ -28,7 +32,7 @@ public class MonthsToYearsFormatter : IAcroFieldFormatter
             _ => throw new ArgumentOutOfRangeException(nameof(numberOfYears), numberOfYears, null)
         };
 
-    private string GetMonthsText(int numberOfMonths) =>
+    private static string GetMonthsText(int numberOfMonths) =>
         numberOfMonths switch
         {
             1 => "měsíc",

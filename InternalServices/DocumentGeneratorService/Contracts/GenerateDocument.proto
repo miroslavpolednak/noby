@@ -34,12 +34,14 @@ message GenerateDocumentPart {
 message GenerateDocumentPartData {
 	string Key = 1;
 
+	string StringFormat = 2;
+
 	oneof Value {
-		string Text = 2;
-		cis.types.GrpcDate Date = 3;
-		int32 Number = 4;
-		cis.types.GrpcDecimal DecimalNumber = 5;
-		bool LogicalValue = 6;
-		GenericTable Table = 7;
+		string Text = 3;
+		cis.types.GrpcDate Date = 4;
+		int32 Number = 5;
+		cis.types.GrpcDecimal DecimalNumber = 6;
+		bool LogicalValue = 7;
+		GenericTable Table = 8;
 	}
 }

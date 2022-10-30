@@ -24,7 +24,10 @@ internal class DataAggregator : IDataAggregator
 
         await _dataServicesLoader.LoadData(config.InputConfig, input, documentData);
 
-        var testOutput = DocumentMapper.Map(config.SourceFields, documentData);
+
+        DocumentMapperStatic.Test(config, documentData);
+
+        var testOutput = DocumentMapperStatic.Map(config.SourceFields, documentData);
 
         return testOutput;
     }

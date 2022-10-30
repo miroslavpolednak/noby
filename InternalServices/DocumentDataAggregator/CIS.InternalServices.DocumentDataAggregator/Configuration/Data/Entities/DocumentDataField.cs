@@ -15,4 +15,6 @@ internal class DocumentDataField
     public Document Document { get; set; } = null!;
 
     public DataField DataField { get; set; } = null!;
+
+    public ICollection<DynamicStringFormat> DynamicStringFormats { get; set; } = null!;
 }
