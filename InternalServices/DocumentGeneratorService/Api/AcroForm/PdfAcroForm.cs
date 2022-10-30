@@ -33,7 +33,7 @@ public class PdfAcroForm
     {
         return value.ValueCase switch
         {
-            GenerateDocumentPartData.ValueOneofCase.None => string.Empty,
+            GenerateDocumentPartData.ValueOneofCase.None => GetFormattedString(string.Empty, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Text => GetFormattedString(value.Text, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Date => GetFormattedString<DateTime>(value.Date, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Number => GetFormattedString(value.Number, value.StringFormat),
@@ -43,9 +43,9 @@ public class PdfAcroForm
         };
     }
 
-    private static string GetFormattedString(string text, string format) => string.IsNullOrWhiteSpace(format) ? text : string.Format(format, text);
+    private static string GetFormattedString(string text, string? format) => format is null ? text : string.Format(format, text);
 
     private static string GetFormattedString(bool boolean) => boolean ? "Yes" : "No";
 
-    private string GetFormattedString<TValue>(TValue value, string format) where TValue : notnull => _fieldFormatProvider.Format(value, format);
+    private string GetFormattedString<TValue>(TValue value, string? format) where TValue : notnull => _fieldFormatProvider.Format(value, format);
 }

@@ -10,6 +10,6 @@ internal class InputParameterConfiguration : IEntityTypeConfiguration<InputParam
     {
         builder.HasKey(x => x.InputParameterId);
 
-        builder.Property(x => x.InputParameterName).IsRequired();
+        builder.Property(x => x.InputParameterName).HasMaxLength(50).IsRequired();
     }
 }

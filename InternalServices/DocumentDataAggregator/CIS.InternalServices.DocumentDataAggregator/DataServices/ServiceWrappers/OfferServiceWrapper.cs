@@ -1,12 +1,10 @@
 ﻿using AutoFixture;
 using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
-using CIS.InternalServices.DocumentDataAggregator.Documents;
 using DomainServices.OfferService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 
-[ScopedService, SelfService]
+[TransientService, SelfService]
 internal class OfferServiceWrapper : IServiceWrapper
 {
     //private readonly IOfferServiceAbstraction _offerService;
@@ -27,6 +25,12 @@ internal class OfferServiceWrapper : IServiceWrapper
                                   .Create();
 
         data.Offer.SimulationInputs.ExpectedDateOfDrawing = new NullableGrpcDate(1980, 10, 25);
+
+        data.Offer.AdditionalSimulationResults.MarketingActions.Add(new ResultMarketingAction
+        {
+            Applied = 1,
+            Code = "DOMICILACE"
+        });
 
         data.OfferCustom = new OfferCustomData();
     }

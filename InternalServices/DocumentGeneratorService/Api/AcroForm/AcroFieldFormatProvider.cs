@@ -18,10 +18,8 @@ public class AcroFieldFormatProvider : IFormatProvider, ICustomFormatter
         _cultureInfo = test;
     }
 
-    public string Format(object value, string format) =>
-        string.IsNullOrWhiteSpace(format)
-            ? FormatValueType(value)
-            : string.Format(this, format, value);
+    public string Format(object value, string? format) =>
+        format is null ? FormatValueType(value) : string.Format(this, format, value);
 
     object? IFormatProvider.GetFormat(Type? formatType)
     {

@@ -10,6 +10,6 @@ internal class DocumentConfiguration : IEntityTypeConfiguration<Document>
     {
         builder.HasKey(x => x.DocumentId);
 
-        builder.Property(x => x.DocumentName).IsRequired();
+        builder.Property(x => x.DocumentName).HasMaxLength(50).IsRequired();
     }
 }

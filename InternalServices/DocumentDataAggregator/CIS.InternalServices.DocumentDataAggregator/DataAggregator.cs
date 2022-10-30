@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration;
-using CIS.InternalServices.DocumentDataAggregator.DataServices;
+﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
 
@@ -7,28 +6,30 @@ namespace CIS.InternalServices.DocumentDataAggregator;
 
 internal class DataAggregator : IDataAggregator
 {
-    private readonly DocumentConfigurationManager _configurationManager;
+    private readonly Configuration.DocumentConfigurationManager _configurationManager;
     private readonly DataServicesLoader _dataServicesLoader;
 
-    public DataAggregator(DocumentConfigurationManager configurationManager, DataServicesLoader dataServicesLoader)
+    public DataAggregator(Configuration.DocumentConfigurationManager configurationManager, DataServicesLoader dataServicesLoader)
     {
         _configurationManager = configurationManager;
         _dataServicesLoader = dataServicesLoader;
     }
 
-    public async Task<IReadOnlyCollection<DocumentFieldData>> GetDocumentData(InputParameters input)
+    public async Task<IReadOnlyCollection<DocumentFieldData>> GetDocumentData(Document document, string documentVersion, InputParameters input)
     {
-        var config = await _configurationManager.LoadDocumentConfiguration();
+        var config = await _configurationManager.LoadDocumentConfiguration((int)document, documentVersion);
 
-        var documentData = DocumentDataFactory.Create(Document.Offer);
+        var documentMapper = await LoadDocumentData(document, input, config);
 
-        await _dataServicesLoader.LoadData(config.InputConfig, input, documentData);
+        return documentMapper.GetDocumentFields();
+    }
 
+    private async Task<DocumentMapper> LoadDocumentData(Document document, InputParameters inputParameters, DocumentConfiguration config)
+    {
+        var documentData = DocumentDataFactory.Create(document);
 
-        DocumentMapperStatic.Test(config, documentData);
+        await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData);
 
-        var testOutput = DocumentMapperStatic.Map(config.SourceFields, documentData);
-
-        return testOutput;
+        return DocumentMapper.CreateInstance(config, documentData);
     }
 }

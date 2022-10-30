@@ -10,6 +10,8 @@ internal class DocumentDynamicInputParameterConfiguration : IEntityTypeConfigura
     {
         builder.HasKey(x => new { x.DocumentId, x.DocumentVersion, x.InputParameterId });
 
+        builder.Property(x => x.DocumentVersion).HasMaxLength(5);
+
         builder.HasOne(x => x.Document);
 
         builder.HasOne(x => x.InputParameter);

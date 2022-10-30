@@ -10,6 +10,6 @@ internal class DataServiceConfiguration : IEntityTypeConfiguration<DataService>
     {
         builder.HasKey(x => x.DataServiceId);
 
-        builder.Property(x => x.DataServiceName).IsRequired();
+        builder.Property(x => x.DataServiceName).HasMaxLength(50).IsRequired();
     }
 }

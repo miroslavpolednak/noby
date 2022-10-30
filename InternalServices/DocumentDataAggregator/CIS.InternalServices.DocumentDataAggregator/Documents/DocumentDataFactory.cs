@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
-using CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
+﻿using CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Documents;
 

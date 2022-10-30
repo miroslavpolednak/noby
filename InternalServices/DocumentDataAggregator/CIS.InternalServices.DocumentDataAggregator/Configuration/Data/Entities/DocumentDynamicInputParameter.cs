@@ -4,7 +4,7 @@ internal class DocumentDynamicInputParameter
 {
     public int DocumentId { get; set; }
 
-    public int DocumentVersion { get; set; }
+    public string DocumentVersion { get; set; } = null!;
 
     public int InputParameterId { get; set; }
 

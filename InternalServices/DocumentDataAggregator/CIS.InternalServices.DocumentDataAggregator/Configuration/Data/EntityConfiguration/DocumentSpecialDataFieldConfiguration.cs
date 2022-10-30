@@ -10,10 +10,12 @@ internal class DocumentSpecialDataFieldConfiguration : IEntityTypeConfiguration<
     {
         builder.HasKey(x => new { x.DocumentId, x.FieldPath });
 
+        builder.Property(x => x.FieldPath).HasMaxLength(500);
+
+        builder.Property(x => x.TemplateFieldName).HasMaxLength(100).IsRequired();
+
         builder.HasOne(x => x.Document);
 
         builder.HasOne(x => x.DataService).WithMany().IsRequired();
-
-        builder.Property(x => x.TemplateFieldName).IsRequired();
     }
 }

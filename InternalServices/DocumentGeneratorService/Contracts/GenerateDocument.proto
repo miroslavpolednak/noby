@@ -34,7 +34,7 @@ message GenerateDocumentPart {
 message GenerateDocumentPartData {
 	string Key = 1;
 
-	string StringFormat = 2;
+	google.protobuf.StringValue StringFormat = 2;
 
 	oneof Value {
 		string Text = 3;

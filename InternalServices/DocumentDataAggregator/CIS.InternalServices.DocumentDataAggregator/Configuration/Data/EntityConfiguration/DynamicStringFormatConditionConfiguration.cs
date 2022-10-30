@@ -10,8 +10,8 @@ internal class DynamicStringFormatConditionConfiguration : IEntityTypeConfigurat
     {
         builder.HasKey(x => new { x.DynamicStringFormatId, x.DynamicStringFormatDataFieldId });
 
-        builder.HasOne(x => x.DynamicStringFormatDataField).WithMany();
+        builder.Property(x => x.EqualToValue).HasMaxLength(50).IsRequired();
 
-        builder.Property(x => x.EqualToValue).IsRequired();
+        builder.HasOne(x => x.DynamicStringFormatDataField).WithMany();
     }
 }

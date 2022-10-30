@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrations
 {
     [DbContext(typeof(ConfigurationContext))]
-    [Migration("20221024160424_DocumentSpecialDataFields")]
-    partial class DocumentSpecialDataFields
+    [Migration("20221030231528_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,9 +34,14 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DataServiceId")
                         .HasColumnType("int");
 
+                    b.Property<string>("DefaultStringFormat")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("FieldPath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("DataFieldId");
 
@@ -55,7 +60,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("DataServiceName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("DataServiceId");
 
@@ -72,7 +78,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("DocumentId");
 
@@ -84,15 +91,21 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentVersion")
-                        .HasColumnType("int");
+                    b.Property<string>("DocumentVersion")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<int>("DataFieldId")
                         .HasColumnType("int");
 
+                    b.Property<string>("StringFormat")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("TemplateFieldName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DocumentId", "DocumentVersion", "DataFieldId");
 
@@ -106,8 +119,9 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentVersion")
-                        .HasColumnType("int");
+                    b.Property<string>("DocumentVersion")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<int>("InputParameterId")
                         .HasColumnType("int");
@@ -135,20 +149,93 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .HasColumnType("int");
 
                     b.Property<string>("FieldPath")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("DataServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("TemplateFieldName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DocumentId", "FieldPath");
 
                     b.HasIndex("DataServiceId");
 
                     b.ToTable("DocumentSpecialDataField");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", b =>
+                {
+                    b.Property<int>("DynamicStringFormatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatId"), 1L, 1);
+
+                    b.Property<int>("DataFieldId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.HasKey("DynamicStringFormatId");
+
+                    b.HasIndex("DocumentId", "DocumentVersion", "DataFieldId");
+
+                    b.ToTable("DynamicStringFormat");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatCondition", b =>
+                {
+                    b.Property<int>("DynamicStringFormatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DynamicStringFormatDataFieldId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EqualToValue")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("DynamicStringFormatId", "DynamicStringFormatDataFieldId");
+
+                    b.HasIndex("DynamicStringFormatDataFieldId");
+
+                    b.ToTable("DynamicStringFormatCondition");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatDataField", b =>
+                {
+                    b.Property<int>("DynamicStringFormatDataFieldId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatDataFieldId"), 1L, 1);
+
+                    b.Property<string>("FieldPath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("DynamicStringFormatDataFieldId");
+
+                    b.ToTable("DynamicStringFormatDataField");
                 });
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.InputParameter", b =>
@@ -161,7 +248,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("InputParameterName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("InputParameterId");
 
@@ -250,6 +338,42 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Navigation("DataService");
 
                     b.Navigation("Document");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", b =>
+                {
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DocumentDataField", null)
+                        .WithMany("DynamicStringFormats")
+                        .HasForeignKey("DocumentId", "DocumentVersion", "DataFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatCondition", b =>
+                {
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatDataField", "DynamicStringFormatDataField")
+                        .WithMany()
+                        .HasForeignKey("DynamicStringFormatDataFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", null)
+                        .WithMany("DynamicStringFormatConditions")
+                        .HasForeignKey("DynamicStringFormatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DynamicStringFormatDataField");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DocumentDataField", b =>
+                {
+                    b.Navigation("DynamicStringFormats");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", b =>
+                {
+                    b.Navigation("DynamicStringFormatConditions");
                 });
 #pragma warning restore 612, 618
         }

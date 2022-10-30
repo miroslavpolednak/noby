@@ -9,5 +9,7 @@ internal class DynamicStringFormatDataFieldConfiguration : IEntityTypeConfigurat
     public void Configure(EntityTypeBuilder<DynamicStringFormatDataField> builder)
     {
         builder.HasKey(x => x.DynamicStringFormatDataFieldId);
+
+        builder.Property(x => x.FieldPath).HasMaxLength(500).IsRequired();
     }
 }

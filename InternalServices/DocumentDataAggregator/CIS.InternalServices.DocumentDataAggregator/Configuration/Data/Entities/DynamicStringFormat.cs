@@ -6,7 +6,7 @@ internal class DynamicStringFormat
 
     public int DocumentId { get; set; }
 
-    public int DocumentVersion { get; set; }
+    public string DocumentVersion { get; set; } = null!;
 
     public int DataFieldId { get; set; }
 

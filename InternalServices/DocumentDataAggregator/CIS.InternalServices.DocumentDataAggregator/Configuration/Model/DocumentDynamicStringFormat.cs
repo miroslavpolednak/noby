@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 
-internal class DynamicStringFormat
+internal class DocumentDynamicStringFormat
 {
     public int SourceFieldId { get; init; }
 
@@ -8,5 +8,5 @@ internal class DynamicStringFormat
 
     public int Priority { get; init; }
 
-    public ICollection<DynamicStringFormatCondition> Conditions { get; init; } = new List<DynamicStringFormatCondition>();
+    public ICollection<DocumentDynamicStringFormatCondition> Conditions { get; init; } = new List<DocumentDynamicStringFormatCondition>();
 }

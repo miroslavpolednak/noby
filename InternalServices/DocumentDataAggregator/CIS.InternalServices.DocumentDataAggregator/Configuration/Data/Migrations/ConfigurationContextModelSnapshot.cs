@@ -33,11 +33,13 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .HasColumnType("int");
 
                     b.Property<string>("DefaultStringFormat")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FieldPath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("DataFieldId");
 
@@ -56,7 +58,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("DataServiceName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("DataServiceId");
 
@@ -73,7 +76,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("DocumentId");
 
@@ -85,18 +89,21 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentVersion")
-                        .HasColumnType("int");
+                    b.Property<string>("DocumentVersion")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<int>("DataFieldId")
                         .HasColumnType("int");
 
                     b.Property<string>("StringFormat")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TemplateFieldName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DocumentId", "DocumentVersion", "DataFieldId");
 
@@ -110,8 +117,9 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentVersion")
-                        .HasColumnType("int");
+                    b.Property<string>("DocumentVersion")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<int>("InputParameterId")
                         .HasColumnType("int");
@@ -139,14 +147,16 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .HasColumnType("int");
 
                     b.Property<string>("FieldPath")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("DataServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("TemplateFieldName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DocumentId", "FieldPath");
 
@@ -169,12 +179,14 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentVersion")
-                        .HasColumnType("int");
+                    b.Property<string>("DocumentVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Format")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
@@ -196,7 +208,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("EqualToValue")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("DynamicStringFormatId", "DynamicStringFormatDataFieldId");
 
@@ -215,7 +228,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("FieldPath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("DynamicStringFormatDataFieldId");
 
@@ -232,7 +246,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.Property<string>("InputParameterName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("InputParameterId");
 

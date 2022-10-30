@@ -1,13 +1,10 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
-using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
-using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
-using CIS.InternalServices.DocumentDataAggregator.Documents;
+﻿using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices;
 
-[SingletonService, SelfService]
+[TransientService, SelfService]
 internal class DataServicesLoader
 {
     private delegate Task ServiceCall(InputParameters input, AggregatedData data, CancellationToken cancellationToken);
@@ -59,7 +56,7 @@ internal class DataServicesLoader
 
         loadedParameters.ForEach(dynamicParameter =>
         {
-            parameters.Map(dynamicParameter, aggregatedData);
+            MapperHelper.MapInputParameters(parameters, dynamicParameter, aggregatedData);
             status.RelatedInputParameters.Remove(dynamicParameter);
         });
     }

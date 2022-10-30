@@ -10,7 +10,9 @@ internal class DynamicStringFormatConfiguration : IEntityTypeConfiguration<Dynam
     {
         builder.HasKey(x => x.DynamicStringFormatId);
 
-        builder.Property(x => x.Format).IsRequired();
+        builder.Property(x => x.Format).HasMaxLength(50).IsRequired();
+
+        builder.Property(x => x.Priority).IsRequired();
 
         builder.HasMany(x => x.DynamicStringFormatConditions).WithOne().HasForeignKey(x => x.DynamicStringFormatId);
     }

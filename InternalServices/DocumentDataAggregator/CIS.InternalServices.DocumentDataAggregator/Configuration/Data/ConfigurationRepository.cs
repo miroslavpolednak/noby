@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
 
@@ -13,7 +12,7 @@ internal class ConfigurationRepository
         _dbContext = dbContext;
     }
 
-    public Task<List<DynamicInputParameter>> LoadDynamicInputFields(int documentId, int documentVersion)
+    public Task<List<DynamicInputParameter>> LoadDocumentDynamicInputFields(int documentId, string documentVersion)
     {
         return _dbContext.DocumentDynamicInputParameters
                          .AsNoTracking()
@@ -28,7 +27,7 @@ internal class ConfigurationRepository
                          .ToListAsync();
     }
 
-    public Task<List<SourceField>> LoadSourceFields(int documentId, int documentVersion)
+    public Task<List<SourceField>> LoadSourceFields(int documentId, string documentVersion)
     {
         return GetSourceFieldsQuery().Union(GetSpecialSourceFields()).ToListAsync();
 
@@ -43,7 +42,7 @@ internal class ConfigurationRepository
                                  DataSource = (DataSource)f.DataField.DataServiceId,
                                  FieldPath = f.DataField.FieldPath,
                                  TemplateFieldName = f.TemplateFieldName,
-                                 StringFormat = f.StringFormat ?? f.DataField.DefaultStringFormat
+                                 StringFormat = Convert.ToString(f.StringFormat ?? f.DataField.DefaultStringFormat)
                              });
         }
 
@@ -56,27 +55,27 @@ internal class ConfigurationRepository
                              {
                                  SourceFieldId = default,
                                  DataSource = (DataSource)f.DataServiceId,
-                                 FieldPath = Convert.ToString(f.FieldPath),
+                                 FieldPath = f.FieldPath,
                                  TemplateFieldName = f.TemplateFieldName,
                                  StringFormat = default
                              });
         }
     }
 
-    public async Task<ILookup<int, DynamicStringFormat>> LoadDocumentDynamicStringFormats()
+    public async Task<ILookup<int, DocumentDynamicStringFormat>> LoadDocumentDynamicStringFormats(int documentId, string documentVersion)
     {
         var data = await _dbContext.DynamicStringFormats
                                    .AsNoTracking()
-                                   .Where(x => x.DocumentId == 1 && x.DocumentVersion == 1)
+                                   .Where(x => x.DocumentId == documentId && x.DocumentVersion == documentVersion)
                                    .Include(x => x.DynamicStringFormatConditions)
                                    .ThenInclude(x => x.DynamicStringFormatDataField)
                                    .AsSplitQuery()
-                                   .Select(x => new DynamicStringFormat
+                                   .Select(x => new DocumentDynamicStringFormat
                                    {
                                        SourceFieldId = x.DataFieldId,
                                        Format = x.Format,
                                        Priority = x.Priority,
-                                       Conditions = x.DynamicStringFormatConditions.Select(c => new DynamicStringFormatCondition
+                                       Conditions = x.DynamicStringFormatConditions.Select(c => new DocumentDynamicStringFormatCondition
                                        {
                                            SourceFieldPath = c.DynamicStringFormatDataField.FieldPath,
                                            EqualToValue = c.EqualToValue
