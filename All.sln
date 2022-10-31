@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.WebApi",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerService", "CustomerService", "{7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Abstraction", "DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj", "{7A1307BD-0B58-4F54-831C-6B7FE507F7EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Clients", "DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj", "{7A1307BD-0B58-4F54-831C-6B7FE507F7EE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Api", "DomainServices\CustomerService\Api\DomainServices.CustomerService.Api.csproj", "{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB}"
 EndProject

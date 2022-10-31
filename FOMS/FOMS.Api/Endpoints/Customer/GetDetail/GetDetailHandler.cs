@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Clients;
 using contracts = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Api.Endpoints.Customer.GetDetail;
@@ -18,10 +19,10 @@ internal class GetDetailHandler
     }
 
     private readonly ILogger<GetDetailHandler> _logger;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
     public GetDetailHandler(
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         ILogger<GetDetailHandler> logger)
     {
         _customerService = customerService;

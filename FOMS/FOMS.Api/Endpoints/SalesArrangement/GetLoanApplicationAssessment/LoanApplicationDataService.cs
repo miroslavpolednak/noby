@@ -3,7 +3,6 @@
 using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;
 
 using cSA = DomainServices.SalesArrangementService.Contracts;
@@ -13,6 +12,7 @@ using cOffer = DomainServices.OfferService.Contracts;
 using cCustomer = DomainServices.CustomerService.Contracts;
 using cUser = DomainServices.UserService.Contracts;
 using DomainServices.CodebookService.Abstraction;
+using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
 
 namespace FOMS.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
@@ -30,7 +30,7 @@ internal class LoanApplicationDataService
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IUserServiceClient _userService;
-    private readonly ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly ICodebookServiceAbstraction _codebookService;
 
     public LoanApplicationDataService(
@@ -41,7 +41,7 @@ internal class LoanApplicationDataService
         IHouseholdServiceClient householdService,
         ICaseServiceAbstraction caseService,
         IUserServiceClient userService,
-        ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         ICodebookServiceAbstraction codebookService
         )
     {

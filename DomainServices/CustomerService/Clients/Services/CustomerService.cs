@@ -2,9 +2,9 @@
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Abstraction;
+namespace DomainServices.CustomerService.Clients;
 
-internal class CustomerService : ICustomerServiceAbstraction
+internal class CustomerService : ICustomerServiceClient
 {
     private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
 

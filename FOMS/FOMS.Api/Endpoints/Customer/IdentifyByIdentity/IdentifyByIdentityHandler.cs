@@ -1,7 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.CaseService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
+using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _CS = DomainServices.CustomerService.Contracts;
@@ -49,7 +49,7 @@ internal sealed class IdentifyByIdentityHandler
 
     private readonly IMediator _mediator;
     private readonly ICaseServiceAbstraction _caseService;
-    private readonly ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
 
@@ -57,7 +57,7 @@ internal sealed class IdentifyByIdentityHandler
         IMediator mediator,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICaseServiceAbstraction caseService,
-        ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService)
     {
         _mediator = mediator;

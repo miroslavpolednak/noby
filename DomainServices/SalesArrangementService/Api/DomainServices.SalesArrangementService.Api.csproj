@@ -38,7 +38,7 @@
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
-		<ProjectReference Include="..\..\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
+		<ProjectReference Include="..\..\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
 		<ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
 		<ProjectReference Include="..\..\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
 		<ProjectReference Include="..\..\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />

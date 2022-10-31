@@ -5,7 +5,6 @@ using CIS.Foms.Enums;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.OfferService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
 using DomainServices.ProductService.Abstraction;
 using DomainServices.UserService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -21,7 +20,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
-
+using DomainServices.CustomerService.Clients;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms;
 
@@ -37,7 +36,7 @@ internal class FormsService
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ICaseServiceAbstraction _caseService;
     private readonly IOfferServiceAbstraction _offerService;
-    private readonly ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly IProductServiceAbstraction _productService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -54,7 +53,7 @@ internal class FormsService
         ICodebookServiceAbstraction codebookService,
         ICaseServiceAbstraction caseService,
         IOfferServiceAbstraction offerService,
-        ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         IProductServiceAbstraction productService,
         IUserServiceClient userService,
         Repositories.NobyRepository repository,
