@@ -30,8 +30,8 @@ internal class LinkModelationHandler
             await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,
-                FirstNameNaturalPerson = request.FirstName,
-                Name = request.LastName
+                FirstNameNaturalPerson = request.FirstName ?? "",
+                Name = request.LastName ?? ""
             }, cancellationToken);
         }
     }
