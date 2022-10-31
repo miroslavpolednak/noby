@@ -67,8 +67,8 @@ internal sealed class CreateProductHandler
                 Street = x.Street,
                 City = x.City,
                 AddressTypeId = x.AddressTypeId,
-                BuildingIdentificationNumber = x.BuildingIdentificationNumber,
-                LandRegistryNumber = x.LandRegistryNumber,
+                StreetNumber = x.StreetNumber,
+                HouseNumber = x.HouseNumber,
                 EvidenceNumber = x.EvidenceNumber,
                 Postcode = x.Postcode
             }));

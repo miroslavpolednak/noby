@@ -245,8 +245,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             {
                 typ_adresy = i.AddressTypeId.ToJsonString(),    // D1.3 zrušení defaultu, plníme reálnými daty; Hodnota odpovídají v číselníku sloupci SbJsonValue
                 ulice = i.Street ?? i.City,                     // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
-                cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1
-                cislo_orientacni = i.LandRegistryNumber,        // D1.3 změna datového typu z Int na String
+                cislo_popisne = i.StreetNumber, // D1.3 změna kardinality z 1..1 na 0..1
+                cislo_orientacni = i.HouseNumber,        // D1.3 změna datového typu z Int na String
 
                 cislo_evidencni = i.EvidenceNumber,
                 ulice_dodatek = i.DeliveryDetails,
@@ -357,8 +357,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             //        return null;
             //    }
 
-            //    //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
-            //    var parts = new string?[] { address.BuildingIdentificationNumber, address.LandRegistryNumber };
+            //    //složit string ve formátu "StreetNumber/HouseNumber"
+            //    var parts = new string?[] { address.StreetNumber, address.HouseNumber };
 
             //    var number = String.Join("/", parts.Where(i => !string.IsNullOrEmpty(i)));
 

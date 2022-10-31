@@ -17,12 +17,12 @@ public class AddressDetail
     /// <summary>
     /// Číslo orientační - AddressWhispererBEService|streetNumber
     /// </summary>
-    public string? BuildingIdentificationNumber { get; set; }
+    public string? StreetNumber { get; set; }
 
     /// <summary>
     /// Číslo popisné - AddressWhispererBEService|landRegisterNumber
     /// </summary>
-    public string? LandRegistryNumber { get; set; }
+    public string? HouseNumber { get; set; }
 
     /// <summary>
     /// Číslo evidenční - AddressWhispererBEService|evidenceNumber
