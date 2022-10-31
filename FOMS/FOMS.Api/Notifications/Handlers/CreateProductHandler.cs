@@ -4,12 +4,13 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Abstraction;
 using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Clients;
 using _Product = DomainServices.ProductService.Contracts;
 using Google.Protobuf;
 
 namespace FOMS.Api.Notifications.Handlers;
 
-internal class CreateProductHandler
+internal sealed class CreateProductHandler
     : INotificationHandler<MainCustomerUpdatedNotification>
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
@@ -40,40 +41,40 @@ internal class CreateProductHandler
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
 
         // pokud neexistuje customer v konsDb, tak ho vytvor
+        var customerDetail = ServiceCallResult.ResolveAndThrowIfError<_Cu.CustomerDetailResponse>(await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken));
+
+        // zalozit noveho klienta
+        var createCustomerRequest = new _Cu.CreateCustomerRequest
+        {
+            Identity = mpIdentity,
+            HardCreate = true,
+            NaturalPerson = customerDetail.NaturalPerson
+        };
+        if (customerDetail.IdentificationDocument is not null)
+            createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument
+            {
+                IssuedBy = customerDetail.IdentificationDocument.IssuedBy,
+                IssuedOn = customerDetail.IdentificationDocument.IssuedOn,
+                IssuingCountryId = customerDetail.IdentificationDocument.IssuingCountryId,
+                Number = customerDetail.IdentificationDocument.Number,
+                RegisterPlace = customerDetail.IdentificationDocument.RegisterPlace,
+                IdentificationDocumentTypeId = customerDetail.IdentificationDocument.IdentificationDocumentTypeId,
+                ValidTo = customerDetail.IdentificationDocument.ValidTo
+            };
+        if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
+            createCustomerRequest.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
+            {
+                Street = x.Street,
+                City = x.City,
+                AddressTypeId = x.AddressTypeId,
+                StreetNumber = x.StreetNumber,
+                HouseNumber = x.HouseNumber,
+                EvidenceNumber = x.EvidenceNumber,
+                Postcode = x.Postcode
+            }));
+
         try
         {
-            var customerDetail = ServiceCallResult.ResolveAndThrowIfError<_Cu.CustomerDetailResponse>(await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken));
-
-            // zalozit noveho klienta
-            var createCustomerRequest = new _Cu.CreateCustomerRequest
-            {
-                Identity = mpIdentity,
-                HardCreate = true,
-                NaturalPerson = customerDetail.NaturalPerson
-            };
-            if (customerDetail.IdentificationDocument is not null)
-                createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument
-                {
-                    IssuedBy = customerDetail.IdentificationDocument.IssuedBy,
-                    IssuedOn = customerDetail.IdentificationDocument.IssuedOn,
-                    IssuingCountryId = customerDetail.IdentificationDocument.IssuingCountryId,
-                    Number = customerDetail.IdentificationDocument.Number,
-                    RegisterPlace = customerDetail.IdentificationDocument.RegisterPlace,
-                    IdentificationDocumentTypeId = customerDetail.IdentificationDocument.IdentificationDocumentTypeId,
-                    ValidTo = customerDetail.IdentificationDocument.ValidTo
-                };
-            if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
-                createCustomerRequest.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
-                {
-                    Street = x.Street,
-                    City = x.City,
-                    AddressTypeId = x.AddressTypeId,
-                    BuildingIdentificationNumber = x.BuildingIdentificationNumber,
-                    LandRegistryNumber = x.LandRegistryNumber,
-                    EvidenceNumber = x.EvidenceNumber,
-                    Postcode = x.Postcode
-                }));
-
             await _customerService.CreateCustomer(createCustomerRequest, cancellationToken);
         }
         catch (CisAlreadyExistsException)
@@ -96,14 +97,14 @@ internal class CreateProductHandler
         _logger.EntityCreated(nameof(_Product.Product), result.ProductId);
     }
 
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IProductServiceAbstraction _productService;
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         IOfferServiceAbstraction offerService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         IProductServiceAbstraction productService,

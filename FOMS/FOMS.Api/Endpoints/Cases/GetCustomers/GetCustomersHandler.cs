@@ -6,6 +6,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using CIS.Core;
+using DomainServices.CustomerService.Clients;
 
 namespace FOMS.Api.Endpoints.Cases.GetCustomers;
 
@@ -121,7 +122,7 @@ internal class GetCustomersHandler
     private static List<int>? _allowedSalesArrangementTypes;
 
     private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
@@ -129,7 +130,7 @@ internal class GetCustomersHandler
 
     public GetCustomersHandler(
         DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService, 

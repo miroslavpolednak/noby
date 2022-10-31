@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "CustomerData.proto";
 import "CaseData.proto";
+import "OfferContacts.proto";
 
 message CreateCaseRequest {
 	// Hlavni klient na Case
@@ -14,6 +15,8 @@ message CreateCaseRequest {
 	
 	// Vlastnosti Case
 	CaseData Data = 3;
+
+	OfferContacts OfferContacts = 4;
 }
 
 message CreateCaseResponse {

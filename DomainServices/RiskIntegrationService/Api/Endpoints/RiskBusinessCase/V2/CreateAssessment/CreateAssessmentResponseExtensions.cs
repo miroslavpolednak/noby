@@ -104,7 +104,7 @@ internal static class CreateAssessmentExtensions
             InternalCustomerId = t.CounterPartyId,
             //TODO C4M 
             PrimaryCustomerId = t.CustomerId?.ToPrimaryCustomerId(),
-            AssessmentDetail = t.AssessmentDetail.ToDetail()
+            Detail = t.AssessmentDetail.ToDetail()
         };
 
     private static _sh.LoanApplicationAssessmentCollateralRiskCharacteristics ToCollateral(this _C4M.CollateralRiskCharacteristics model)

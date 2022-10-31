@@ -17,4 +17,8 @@ public class ContactTypeItem
     [DataMember(Order = 4)]
     [JsonIgnore]
     public bool IsValid { get; set; }
+
+    [DataMember(Order = 5)]
+    public int MandantId { get; set; }
+
 }

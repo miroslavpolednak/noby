@@ -12,6 +12,4 @@ message HouseholdData {
     google.protobuf.Int32Value PropertySettlementId = 3;
 
     google.protobuf.BoolValue AreBothPartnersDeptors = 4;
-
-    google.protobuf.BoolValue AreCustomersPartners = 5;
 }

@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Clients;
 using Contracts = DomainServices.CustomerService.Contracts;
 
 namespace FOMS.Api.Endpoints.Customer.ProfileCheck;
@@ -24,9 +25,9 @@ internal sealed class ProfileCheckHandler
         };
     }
 
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
-    public ProfileCheckHandler(DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService)
+    public ProfileCheckHandler(ICustomerServiceClient customerService)
     {
         _customerService = customerService;
     }

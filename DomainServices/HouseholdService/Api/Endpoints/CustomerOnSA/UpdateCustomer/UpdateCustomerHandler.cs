@@ -22,14 +22,6 @@ internal class UpdateCustomerHandler
         // customerOnSA byl jiz updatovan z KB CM
         bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
 
-        // provolat sulm
-        if (alreadyKbUpdatedCustomer)
-        {
-            var identity = entity.Identities!.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _sulmClient.StopUse(identity.IdentityId, "MPAP", cancellation);
-            await _sulmClient.StartUse(identity.IdentityId, "MPAP", cancellation);
-        }
-
         // vychazim z toho, ze identitu klienta nelze menit. Tj. z muze prijit prazdna kolekce CustomerIdentifiers v requestu, ale to neznamena, ze jiz existujici identity na COnSA odstranim.
         if (request.Request.Customer.CustomerIdentifiers is not null && request.Request.Customer.CustomerIdentifiers.Any())
         {
@@ -39,20 +31,26 @@ internal class UpdateCustomerHandler
             entity.Identities.AddRange(newSchemasToAdd.Select(t => new Repositories.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
         }
 
-        // uz ma KB identitu, ale jeste nema MP identitu
-        if (!entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp)
-            && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb))
+        // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
+        var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
+        if (kbIdentity is not null)
         {
-            var identity = entity.Identities.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
-            await _updateService.GetCustomerAndUpdateEntity(entity, identity.IdentityId, identity.IdentityScheme, cancellation);
+            await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
+            await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+        }
+
+        // uz ma KB identitu, ale jeste nema MP identitu
+        if (!entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp) && kbIdentity is not null)
+        {
+            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, kbIdentity.IdentityScheme, cancellation);
 
             // zavolat EAS
             await _updateService.TryCreateMpIdentity(entity);
         }
         // nove byl customer identifikovan KB identitou
-        else if (!alreadyKbUpdatedCustomer && entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb))
+        else if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
         {
-            await _updateService.GetCustomerAndUpdateEntity(entity, entity.Identities.First(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb).IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellation);
+            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellation);
         }
         // customer zije zatim jen v NOBY, mohu updatovat maritalState
         else if (!alreadyKbUpdatedCustomer)

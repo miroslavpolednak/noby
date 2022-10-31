@@ -1,5 +1,4 @@
 ﻿using DomainServices.HouseholdService.Clients;
-using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Case = DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Abstraction;
 using _HO = DomainServices.HouseholdService.Contracts;
@@ -14,27 +13,27 @@ internal class UpdateCustomerOnCaseHandler
         // detail customera
         var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken));
 
-        // update case detailu
-        await _caseService.UpdateCaseCustomer(notification.CaseId, new _Case.CustomerData
+        if (customerInstance.CustomerRoleId == (int)CIS.Foms.Enums.CustomerRoles.Debtor)
         {
-            DateOfBirthNaturalPerson = customerInstance.DateOfBirthNaturalPerson,
-            FirstNameNaturalPerson = customerInstance.FirstNameNaturalPerson,
-            Name = customerInstance.Name,
-            Identity = customerInstance.CustomerIdentifiers?.FirstOrDefault()
-        }, cancellationToken);
+            // update case detailu
+            await _caseService.UpdateCaseCustomer(notification.CaseId, new _Case.CustomerData
+            {
+                DateOfBirthNaturalPerson = customerInstance.DateOfBirthNaturalPerson,
+                FirstNameNaturalPerson = customerInstance.FirstNameNaturalPerson,
+                Name = customerInstance.Name,
+                Identity = customerInstance.CustomerIdentifiers?.FirstOrDefault()
+            }, cancellationToken);
+        }
     }
 
     private readonly ICaseServiceAbstraction _caseService;
     private readonly ICustomerOnSAServiceClient _customerService;
-    private readonly ILogger<UpdateCustomerOnCaseHandler> _logger;
 
     public UpdateCustomerOnCaseHandler(
         ICustomerOnSAServiceClient customerService,
-        ICaseServiceAbstraction caseService,
-        ILogger<UpdateCustomerOnCaseHandler> logger)
+        ICaseServiceAbstraction caseService)
     {
         _customerService = customerService;
         _caseService = caseService;
-        _logger = logger;
     }
 }

@@ -22,6 +22,4 @@ public class HouseholdData
     public int? PropertySettlementId { get; set; }
 
     public bool? AreBothPartnersDeptors { get; set; }
-
-    public bool? AreCustomersPartners { get; set; }
 }

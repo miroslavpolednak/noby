@@ -6,8 +6,6 @@ namespace DomainServices.CodebookService.Abstraction;
 
 internal sealed class AbstractionMemoryCache
 {
-    public const int AbsoluteExpirationInMinutes = 13;
-
     private MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
     private static CancellationTokenSource _changeTokenSource = new CancellationTokenSource();
@@ -34,7 +32,7 @@ internal sealed class AbstractionMemoryCache
                     // opts
                     var cacheOptions = new MemoryCacheEntryOptions()
                     {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(AbsoluteExpirationInMinutes)
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(CodebookServiceExtensions.DefaultAbsoluteCacheExpirationMinutes)
                     };
                     cacheOptions.AddExpirationToken(new CancellationChangeToken(_changeTokenSource.Token));
 

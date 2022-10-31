@@ -1,4 +1,5 @@
-﻿using _Cust = DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Clients;
+using _Cust = DomainServices.CustomerService.Contracts;
 using _Pr = DomainServices.ProductService.Contracts;
 
 namespace FOMS.Api.Endpoints.Product.GetCustomersOnProduct;
@@ -42,11 +43,11 @@ internal sealed class GetCustomersOnProductHandler
     }
 
     private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
     public GetCustomersOnProductHandler(
         DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService, 
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService)
+        ICustomerServiceClient customerService)
     {
         _productService = productService;
         _customerService = customerService;

@@ -1,4 +1,4 @@
-using CIS.InternalServices.NotificationService.Msc.AvroSerializers;
+using CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
 using Confluent.Kafka.DependencyInjection;
 using Mock_KB_NotificationWorker;
 
@@ -11,7 +11,7 @@ IHost host = Host.CreateDefaultBuilder(args)
             {
                 { "bootstrap.servers", "localhost:9092" },
                 { "enable.idempotence", "true" },
-                { "group.id", "group1" }
+                { "group.id", "mock-mcs" }
             });
         services.AddHostedService<Worker>();
     })

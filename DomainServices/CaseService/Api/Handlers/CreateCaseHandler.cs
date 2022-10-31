@@ -28,6 +28,8 @@ internal class CreateCaseHandler
         var entity = Repositories.Entities.Case.Create(newCaseId, request.Request, _dateTime.Now);
         entity.OwnerUserName = userInstance.FullName;//dotazene jmeno majitele caseu (poradce)
         entity.State = defaultCaseState;//vychozi status
+        entity.EmailForOffer = request.Request.OfferContacts?.EmailForOffer;
+        entity.PhoneNumberForOffer = request.Request.OfferContacts?.PhoneNumberForOffer;
 
         try
         {

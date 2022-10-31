@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using FOMS.Api.Endpoints.Customer.Search;
 using FOMS.Api.Endpoints.Customer.Search.Dto;
@@ -58,9 +59,9 @@ internal sealed class IdentifyHandler
     }
 
     private readonly ILogger<IdentifyHandler> _logger;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
-    public IdentifyHandler(DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService, ILogger<IdentifyHandler> logger)
+    public IdentifyHandler(ICustomerServiceClient customerService, ILogger<IdentifyHandler> logger)
     {
         _customerService = customerService;
         _logger = logger;

@@ -7,6 +7,8 @@ public class GetHouseholdResponse
     /// </summary>
     public int HouseholdId { get; set; }
 
+    public bool AreCustomersPartners { get; set; }
+
     /// <summary>
     /// Sekce Ostatni parametry
     /// </summary>

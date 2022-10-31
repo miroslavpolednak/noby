@@ -31,7 +31,7 @@ public class HouseholdController : ControllerBase
     /// Detail domacnosti
     /// </summary>
     /// <remarks>
-    /// Vraci detail dane domacnosti vcetne detailu navazanych CustomerOnSA.<br/>
+    /// Vrací detail dané domácnosti včetně detailu navázaných CustomerOnSA. Příznak druh/družka (areCustomersPartners) je počítán dynamicky při každém provolání dle logiky ve společných algoritmech.
     /// <i>DS:</i> SalesArrangementService/GetHousehold
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>

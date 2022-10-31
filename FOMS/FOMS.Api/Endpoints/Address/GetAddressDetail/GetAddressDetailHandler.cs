@@ -13,11 +13,11 @@ internal sealed class GetAddressDetailHandler
 
         return new GetAddressDetailResponse
         {
-            BuildingIdentificationNumber = result.BuildingIdentificationNumber,
+            StreetNumber = result.StreetNumber,
             City = result.City,
             CountryId = (await _codebookService.Countries(cancellationToken)).FirstOrDefault(t => t.ShortName == result.Country)?.Id,
             CityDistrict = result.CityDistrict,
-            LandRegistryNumber = result.LandRegistryNumber,
+            HouseNumber = result.HouseNumber,
             Street = result.Street,
             PragueDistrict = result.PragueDistrict,
             Postcode = result.Postcode,

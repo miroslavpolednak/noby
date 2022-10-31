@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Abstraction;
+using _Ca = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace FOMS.Api.Endpoints.Offer.LinkModelation;
@@ -8,31 +9,41 @@ internal class LinkModelationHandler
 {
     protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
+        // get SA data
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        // get case instance
+        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Ca.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
 
         // nalinkovat novou simulaci
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
 
-        // smazat objekty uveru
-        if (saInstance.Mortgage?.LoanRealEstates is not null && saInstance.Mortgage.LoanRealEstates.Any())
+        // update kontaktu
+        await _caseService.UpdateOfferContacts(saInstance.CaseId, new DomainServices.CaseService.Contracts.OfferContacts
         {
-            saInstance.Mortgage.LoanRealEstates.Clear();
-            await _salesArrangementService.UpdateSalesArrangementParameters(new _SA.UpdateSalesArrangementParametersRequest
+            EmailForOffer = request.EmailForOffer ?? "",
+            PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
+        }, cancellationToken);
+
+        // update customer
+        if (caseInstance.Customer?.Identity is null || caseInstance.Customer.Identity.IdentityId == 0)
+        {
+            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
             {
-                SalesArrangementId = request.SalesArrangementId,
-                Mortgage = saInstance.Mortgage
+                DateOfBirthNaturalPerson = request.DateOfBirth,
+                FirstNameNaturalPerson = request.FirstName,
+                Name = request.LastName
             }, cancellationToken);
         }
     }
 
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly ILogger<LinkModelationHandler> _logger;
+    private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
 
     public LinkModelationHandler(
-        ISalesArrangementServiceAbstraction salesArrangementService,
-        ILogger<LinkModelationHandler> logger)
+        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService,
+        ISalesArrangementServiceAbstraction salesArrangementService)
     {
-        _logger = logger;
+        _caseService = caseService;
         _salesArrangementService = salesArrangementService;
     }
 }

@@ -11,5 +11,5 @@ public sealed class LoanApplicationAssessmentCustomerDetail
     public string? PrimaryCustomerId { get; set; }
 
     [ProtoMember(3)]
-    public LoanApplicationAssessmentDetail? AssessmentDetail { get; set; }
+    public LoanApplicationAssessmentDetail? Detail { get; set; }
 }

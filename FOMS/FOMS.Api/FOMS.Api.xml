@@ -1002,16 +1002,6 @@
             IC pravnicke osoby
             </summary>
         </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.BaseCustomer.Phone">
-            <summary>
-            Telefon
-            </summary>
-        </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentityId">
             <summary>
             [optional] ID klienta v MP nebo KB
@@ -1030,6 +1020,16 @@
         <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.IdentificationDocumentNumber">
             <summary>
             [optional] Cislo dokladu
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.Email">
+            <summary>
+            [optional] Email
+            </summary>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Customer.Search.Dto.SearchData.Phone">
+            <summary>
+            [optional] Telefon
             </summary>
         </member>
         <member name="P:FOMS.Api.Endpoints.Customer.Search.SearchRequest.SearchData">
@@ -1130,7 +1130,7 @@
             Detail domacnosti
             </summary>
             <remarks>
-            Vraci detail dane domacnosti vcetne detailu navazanych CustomerOnSA.<br/>
+            Vrací detail dané domácnosti včetně detailu navázaných CustomerOnSA. Příznak druh/družka (areCustomersPartners) je počítán dynamicky při každém provolání dle logiky ve společných algoritmech.
             <i>DS:</i> SalesArrangementService/GetHousehold
             </remarks>
             <param name="householdId">ID domacnosti</param>
@@ -1356,6 +1356,30 @@
             Vytvoreni requestu pro zalozeni CASE
             </summary>
         </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.FirstName">
+            <summary>
+            Jméno
+            </summary>
+            <example>Jonatán</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.LastName">
+            <summary>
+            Příjmení
+            </summary>
+            <example>Skočdopole</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+            <example>2002-10-26</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.PhoneNumberForOffer">
+            <example>777111222</example>
+        </member>
+        <member name="P:FOMS.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.EmailForOffer">
+            <example>jonatan.skocdopole@mpss.cz</example>
+        </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.SimulateMortgage(FOMS.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest,System.Threading.CancellationToken)">
             <summary>
             Simulace KB hypoteky.
@@ -1411,9 +1435,8 @@
             Nalinkuje novou modelaci na stavajici SA.
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/GetSalesArrangement<br/>
-            <i>DS:</i> OfferService/LinkModelationToSalesArrangement
-            <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
+            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:FOMS.Api.Endpoints.Offer.OfferController.GetFullPaymentScheduleByOfferId(System.Int32,System.Threading.CancellationToken)">

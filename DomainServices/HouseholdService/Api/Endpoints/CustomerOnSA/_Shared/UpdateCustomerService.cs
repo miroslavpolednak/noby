@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
+using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Customer = DomainServices.CustomerService.Contracts;
@@ -24,16 +24,19 @@ internal sealed class UpdateCustomerService
         entity.MaritalStatusId = _cachedCustomerInstance.NaturalPerson?.MaritalStatusStateId;
 
         // get CaseId
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation));
-
-        // update case service
-        await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData
+        if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
         {
-            DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth,
-            FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName,
-            Name = _cachedCustomerInstance.NaturalPerson?.LastName,
-            Identity = kbIdentity
-        }, cancellation);
+            var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation));
+
+            // update case service
+            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData
+            {
+                DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth,
+                FirstNameNaturalPerson = _cachedCustomerInstance.NaturalPerson?.FirstName,
+                Name = _cachedCustomerInstance.NaturalPerson?.LastName,
+                Identity = kbIdentity
+            }, cancellation);
+        }
     }
 
     public async Task TryCreateMpIdentity(Repositories.Entities.CustomerOnSA entity)
@@ -74,7 +77,7 @@ internal sealed class UpdateCustomerService
     
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ICaseServiceAbstraction _caseService;
-    private readonly ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly Eas.IEasClient _easClient;
     private readonly Repositories.HouseholdServiceDbContext _dbContext;
 
@@ -82,7 +85,7 @@ internal sealed class UpdateCustomerService
         Eas.IEasClient easClient,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICaseServiceAbstraction caseService,
-        ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         Repositories.HouseholdServiceDbContext dbContext)
     {
         _salesArrangementService = salesArrangementService;

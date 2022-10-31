@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.WebApi",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerService", "CustomerService", "{7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Abstraction", "DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj", "{7A1307BD-0B58-4F54-831C-6B7FE507F7EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Clients", "DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj", "{7A1307BD-0B58-4F54-831C-6B7FE507F7EE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Api", "DomainServices\CustomerService\Api\DomainServices.CustomerService.Api.csproj", "{EDB5ADA8-B0DA-4F61-B3EB-346AB7BC96DB}"
 EndProject
@@ -191,11 +191,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Sulm", "Ex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{46414B85-D1B6-411D-B232-C6CC8B35FE57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Clients", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Clients\CIS.InternalServices.NotificationService.Clients.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Clients", "InternalServices\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj", "{FCD3AC0C-04FE-4DD1-8279-21FA0510D633}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Contracts", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Contracts\CIS.InternalServices.NotificationService.Contracts.csproj", "{67BB0077-7777-4F58-AE62-99072014325C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Contracts", "InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj", "{67BB0077-7777-4F58-AE62-99072014325C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Api", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Api\CIS.InternalServices.NotificationService.Api.csproj", "{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Api", "InternalServices\NotificationService\Api\CIS.InternalServices.NotificationService.Api.csproj", "{CE140FFD-1014-4F3C-BAE2-1D39F6F9129F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.AddressWhisperer", "ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj", "{1A72059E-47EB-4371-9F9E-250B4F902C89}"
 EndProject
@@ -213,7 +213,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_NotificationService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock_KB_NotificationWorker", "Playgrounds\NotificationService\Mock_KB_NotificationWorker\Mock_KB_NotificationWorker.csproj", "{A8931807-0751-4BED-A3A1-987BF6C932B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Msc", "InternalServices\NotificationService\CIS.InternalServices.NotificationService.Msc\CIS.InternalServices.NotificationService.Msc.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.NotificationService.Mcs", "InternalServices\NotificationService\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj", "{FA542662-EE7D-44DD-9E17-647751C627DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HouseholdService", "HouseholdService", "{9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}"
 EndProject
@@ -225,17 +225,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.HouseholdSer
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentArchiveService", "DocumentArchiveService", "{FD432970-0CA5-4632-9121-6A24C1B5A967}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Contracts", "InternalServices\DocumentArchiveService\Contracts\CIS.InternalServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Contracts", "DomainServices\DocumentArchiveService\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj", "{6C0E2E65-F93A-460A-82F9-BC861D60E7D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Clients", "InternalServices\DocumentArchiveService\Clients\CIS.InternalServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Clients", "DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj", "{235157F3-EC56-44F3-9ACC-4956E6262E24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentArchiveService.Api", "InternalServices\DocumentArchiveService\Api\CIS.InternalServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.Api", "DomainServices\DocumentArchiveService\Api\DomainServices.DocumentArchiveService.Api.csproj", "{D4C76CA4-518A-40EE-BAC0-584389478B19}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentDataAggregator", "DocumentDataAggregator", "{0294E55C-BAAF-4A36-86BC-5CE95E2D0D31}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ClientS3", "Playgrounds\NotificationService\Console_ClientS3\Console_ClientS3.csproj", "{700E8F2D-66FC-491F-8544-9127FC93D410}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentDataAggregator", "InternalServices\DocumentDataAggregator\CIS.InternalServices.DocumentDataAggregator\CIS.InternalServices.DocumentDataAggregator.csproj", "{BB82DA43-0566-417D-AA0E-E27C5918E1A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_DocumentDataAggregator", "Playgrounds\Console_DocumentDataAggregator\Console_DocumentDataAggregator\Console_DocumentDataAggregator.csproj", "{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_DocumentDataAggregator", "Playgrounds\Console_DocumentDataAggregator\Console_DocumentDataAggregator\Console_DocumentDataAggregator.csproj", "{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -917,6 +919,14 @@ Global
 		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|x64.ActiveCfg = Release|Any CPU
 		{D4C76CA4-518A-40EE-BAC0-584389478B19}.Release|x64.Build.0 = Release|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Debug|x64.Build.0 = Debug|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Release|x64.ActiveCfg = Release|Any CPU
+		{700E8F2D-66FC-491F-8544-9127FC93D410}.Release|x64.Build.0 = Release|Any CPU
 		{BB82DA43-0566-417D-AA0E-E27C5918E1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB82DA43-0566-417D-AA0E-E27C5918E1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB82DA43-0566-417D-AA0E-E27C5918E1A2}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1035,7 +1045,7 @@ Global
 		{32D80892-7DB3-4BCC-AA23-55254FB478BA} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{6A12E6D1-613A-46EB-AD42-625D7DC5AB21} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
 		{2AB718B0-5F91-4909-82B3-DC576747EBA8} = {9A7EA3D2-ACFF-46A1-8F0B-7E2AA09BBF5D}
-		{FD432970-0CA5-4632-9121-6A24C1B5A967} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
+		{FD432970-0CA5-4632-9121-6A24C1B5A967} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{6C0E2E65-F93A-460A-82F9-BC861D60E7D8} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{235157F3-EC56-44F3-9ACC-4956E6262E24} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{D4C76CA4-518A-40EE-BAC0-584389478B19} = {FD432970-0CA5-4632-9121-6A24C1B5A967}

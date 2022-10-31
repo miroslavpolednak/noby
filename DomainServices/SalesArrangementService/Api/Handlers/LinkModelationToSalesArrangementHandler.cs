@@ -3,7 +3,6 @@ using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using Azure.Core;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
@@ -15,7 +14,10 @@ internal class LinkModelationToSalesArrangementHandler
         // overit existenci SA
         var salesArrangementInstance = await _dbContext.SalesArrangements.FindAsync(new object[] { request.SalesArrangementId }, cancellation) 
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
-        
+
+        // instance Case
+        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation));
+
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}", 18012);
@@ -48,6 +50,14 @@ internal class LinkModelationToSalesArrangementHandler
         // update parametru
         await updateParameters(salesArrangementInstance, offerInstance, cancellation);
 
+        // HFICH-3088 - Dashboard - Výši úvěru na case je třeba updatovat při přelinkování simulace
+        await _caseService.UpdateCaseData(salesArrangementInstance.CaseId, new CaseService.Contracts.CaseData
+        {
+            ContractNumber = caseInstance.Data.ContractNumber,
+            ProductTypeId = caseInstance.Data.ProductTypeId,
+            TargetAmount = offerInstance.SimulationInputs.LoanAmount
+        }, cancellation);
+        
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
@@ -85,13 +95,16 @@ internal class LinkModelationToSalesArrangementHandler
         }
     }
 
+    private readonly CaseService.Abstraction.ICaseServiceAbstraction _caseService;
     private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
 
     public LinkModelationToSalesArrangementHandler(
+        CaseService.Abstraction.ICaseServiceAbstraction caseService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         OfferService.Abstraction.IOfferServiceAbstraction offerService)
     {
+        _caseService = caseService;
         _dbContext = dbContext;
         _offerService = offerService;
     }

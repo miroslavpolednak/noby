@@ -1,7 +1,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CodebookService.Abstraction;
-using DomainServices.CustomerService.Abstraction;
 using DomainServices.ProductService.Abstraction;
 using DomainServices.CaseService.Abstraction;
 using DomainServices.UserService.Clients;
@@ -9,6 +8,7 @@ using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.RiskIntegrationService.Clients;
 using FOMS.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
 
 var builder = WebApplication.CreateBuilder(args);

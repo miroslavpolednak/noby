@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "OfferContacts.proto";
+
+message UpdateOfferContactsRequest {
+	int64 CaseId = 1;
+
+	OfferContacts OfferContacts = 2;
+}

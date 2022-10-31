@@ -1,0 +1,1 @@
+powershell.exe -file windows-services-registration.ps1 -env fat

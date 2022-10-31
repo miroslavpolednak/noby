@@ -92,8 +92,8 @@ public class MpDigiCreateClient
             {
                 Type = (AddressType)(x.AddressTypeId ?? (int)AddressType.Permanent),
                 Street = x.Street,
-                BuildingIdentificationNumber = x.BuildingIdentificationNumber,
-                LandRegistryNumber = string.IsNullOrWhiteSpace(x.EvidenceNumber) ? x.LandRegistryNumber : x.EvidenceNumber,
+                BuildingIdentificationNumber = x.StreetNumber,
+                LandRegistryNumber = string.IsNullOrWhiteSpace(x.EvidenceNumber) ? x.HouseNumber : x.EvidenceNumber,
                 PostCode = x.Postcode,
                 City = x.City
             }).ToList(),
