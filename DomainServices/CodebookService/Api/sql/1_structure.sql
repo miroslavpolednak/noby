@@ -181,6 +181,30 @@ INSERT INTO [dbo].[ObligationTypeExtension]([ObligationTypeId],[ObligationProper
 GO
 
 
+-- table 'DocumentOnSAType'
+DROP TABLE IF EXISTS [dbo].[DocumentOnSAType];
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'DocumentOnSAType')
+BEGIN
+	CREATE TABLE [dbo].[DocumentOnSAType](
+		[Id] [int] NOT NULL,
+		[Name] [nvarchar](150) NOT NULL,
+		[SalesArrangementTypeId] [int] NULL,
+		[FormTypeId] [int] NOT NULL
+		CONSTRAINT [PK_DocumentOnSAType] PRIMARY KEY CLUSTERED
+		(
+		[Id] ASC
+		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY];
+
+	INSERT INTO [dbo].[DocumentOnSAType]([Id],[Name],[SalesArrangementTypeId], [FormTypeId])
+   VALUES
+    (1, 'Žádost o poskytnutí úvěru', NULL, 3601001),
+	(2, 'Prohlášení účastníka k žádosti o úvěr (spolužadatelská domácnost)', NULL, 3602001),
+	(3, 'Prohlášení účastníka k žádosti o úvěr (ručitelská domácnost)', NULL, 3602001),
+	(4, 'Žádost o čerpání', 6, 3700001);
+END
+
+
 /*
 TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
 GO
