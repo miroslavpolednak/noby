@@ -24,6 +24,29 @@ steps:
 #    version: '6.0.x'
 #    includePreviewVersions: true
 
+- task: InlinePowershell@1
+  inputs:
+    Script: |
+      $file = '$(Build.SourcesDirectory)\$(projectFile)'
+      $regex = '(?<=<Version>)[^<]*'
+      
+      $buildVersion='$(Build.BuildId)'
+      
+      $versionFromFile = Select-String -Path $file $regex
+      $versionFromFile = $versionFromFile.Matches[0].Value
+      $versionFromFile = $versionFromFile.Substring(0, $versionFromFile.lastIndexOf('.'))
+      
+      $finalVersion = $versionFromFile + "." + $buildVersion
+     
+      (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
+ 
+      Write-Host "Build.BuildNumber - " -NoNewline
+      Write-Host $(Build.BuildNumber)
+      Write-Host "Build.BuildId - " -NoNewline
+      Write-Host $(Build.BuildId)
+      Write-Host "Final version - " -NoNewline
+      Write-Host $finalVersion
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
