@@ -14,7 +14,8 @@ variables:
   buildPlatform: 'Any CPU'
   solution: 'FOMS\FOMS.Api\FOMS.Api.csproj'
 
-name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
+# custom BuildNumber
+name: $(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
 
 steps:
 
@@ -68,12 +69,12 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/FEAPI_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/FEAPI_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\'
