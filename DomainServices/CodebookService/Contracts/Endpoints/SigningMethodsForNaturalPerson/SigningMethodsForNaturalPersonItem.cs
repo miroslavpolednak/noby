@@ -1,4 +1,6 @@
-﻿namespace DomainServices.CodebookService.Contracts.Endpoints.SigningMethodsForNaturalPerson
+﻿using System.Text.Json.Serialization;
+
+namespace DomainServices.CodebookService.Contracts.Endpoints.SigningMethodsForNaturalPerson
 {
     [DataContract]
     public sealed class SigningMethodsForNaturalPersonItem
@@ -20,6 +22,7 @@
 
 
         [DataMember(Order = 5)]
+        [JsonIgnore]
         public bool IsValid { get; set; }
     }
 }
