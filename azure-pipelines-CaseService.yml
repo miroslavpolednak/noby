@@ -11,6 +11,11 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  buildPlatform: 'Any CPU'
+  projectFile: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
+
+# custom BuildNumber
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
 
 steps:
 #- task: UseDotNet@2
@@ -22,7 +27,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
+    projects: '$(projectFile)'
     feedsToUse: 'config'
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
@@ -38,7 +43,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: 'DomainServices/CaseService/Api/DomainServices.CaseService.Api.csproj'
+    projects: '$(projectFile)'
     arguments: '--output $(Build.BinariesDirectory)'
 
 #- task: SonarQubeAnalyze@5
@@ -48,12 +53,12 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/CaseService_$(Build.BuildNumber)_$(Build.SourceBranchName).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\'
