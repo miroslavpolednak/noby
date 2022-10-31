@@ -154,9 +154,9 @@ GO
 INSERT INTO [dbo].[ContactTypeExtension]([ContactTypeId],[MpDigiApiCode])
     VALUES
     (1, 'Mobile'),
-	(2, 'BusinessMobile'),
-	(3, 'FixedHomeLine'),
-	(5, 'Email');
+	(5, 'Email'),
+	(13, 'Mobile'),
+	(14, 'Email');
 GO
 
 -- table 'ObligationTypeExtension'
