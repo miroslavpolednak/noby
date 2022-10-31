@@ -35,7 +35,7 @@ public class ContactTypesHandler
     #endregion
 
     // dotaz na codebook do SB
-    const string _sql = @"SELECT TYP_KONTAKTU 'Id', TEXT 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+    const string _sql = @"SELECT TYP_KONTAKTU 'Id', TEXT 'Name', MANDANT 'MandantId', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
                                FROM [SBR].[CIS_TYPY_KONTAKTOV] ORDER BY TYP_KONTAKTU ASC";
 
     // dotaz na extenstion
