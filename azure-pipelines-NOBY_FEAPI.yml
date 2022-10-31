@@ -12,7 +12,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
-  solution: 'FOMS\FOMS.Api\FOMS.Api.csproj'
+  projectFile: 'FOMS\FOMS.Api\FOMS.Api.csproj'
 
 # custom BuildNumber
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
@@ -28,7 +28,7 @@ steps:
 - task: InlinePowershell@1
   inputs:
     Script: |
-      $file = '$(Build.SourcesDirectory)\FOMS\FOMS.Api\FOMS.Api.csproj'
+      $file = '$(Build.SourcesDirectory)\$(projectFile)'
       $regex = '(?<=<Version>)[^<]*'
       
       $buildVersion='$(Build.BuildId)'
@@ -52,7 +52,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '$(solution)'
+    projects: '$(projectFile)'
     feedsToUse: 'config'
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: false
@@ -60,7 +60,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '$(solution)'
+    projects: '$(projectFile)'
     arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)'
     noCache: false
 
