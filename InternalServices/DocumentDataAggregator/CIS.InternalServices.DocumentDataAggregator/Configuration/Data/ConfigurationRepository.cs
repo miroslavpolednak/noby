@@ -42,7 +42,7 @@ internal class ConfigurationRepository
                                  DataSource = (DataSource)f.DataField.DataServiceId,
                                  FieldPath = f.DataField.FieldPath,
                                  TemplateFieldName = f.TemplateFieldName,
-                                 StringFormat = Convert.ToString(f.StringFormat ?? f.DataField.DefaultStringFormat)
+                                 StringFormat = f.StringFormat ?? f.DataField.DefaultStringFormat
                              });
         }
 
@@ -57,7 +57,7 @@ internal class ConfigurationRepository
                                  DataSource = (DataSource)f.DataServiceId,
                                  FieldPath = f.FieldPath,
                                  TemplateFieldName = f.TemplateFieldName,
-                                 StringFormat = default
+                                 StringFormat = f.StringFormat
                              });
         }
     }
@@ -66,13 +66,13 @@ internal class ConfigurationRepository
     {
         var data = await _dbContext.DynamicStringFormats
                                    .AsNoTracking()
-                                   .Where(x => x.DocumentId == documentId && x.DocumentVersion == documentVersion)
+                                   .Where(x => x.DocumentDataField.DocumentId == documentId && x.DocumentDataField.DocumentVersion == documentVersion)
                                    .Include(x => x.DynamicStringFormatConditions)
                                    .ThenInclude(x => x.DynamicStringFormatDataField)
                                    .AsSplitQuery()
                                    .Select(x => new DocumentDynamicStringFormat
                                    {
-                                       SourceFieldId = x.DataFieldId,
+                                       SourceFieldId = x.DocumentDataField.DataFieldId,
                                        Format = x.Format,
                                        Priority = x.Priority,
                                        Conditions = x.DynamicStringFormatConditions.Select(c => new DocumentDynamicStringFormatCondition

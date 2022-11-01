@@ -2,6 +2,8 @@
 
 internal class DocumentDataField
 {
+    public int DocumentDataFieldId { get; set; }
+
     public int DocumentId { get; set; }
 
     public string DocumentVersion { get; set; } = null!;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Mapper;

@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Configuration\Data\EntityConfiguration\" />
-    <Folder Include="DataServices\ServiceWrappers\" />
+    <Folder Include="DataServices\Dto\" />
   </ItemGroup>
 
   <ItemGroup>

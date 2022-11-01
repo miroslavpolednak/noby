@@ -20,18 +20,19 @@ internal class OfferServiceWrapper : IServiceWrapper
 
         //return ServiceCallResult.ResolveAndThrowIfError<GetMortgageOfferDetailResponse>(result);
 
-        data.Offer = new Fixture().Build<GetMortgageOfferDetailResponse>()
-                                  .With(c => c.OfferId, input.OfferId)
-                                  .Create();
+        var fixture = new Fixture();
 
-        data.Offer.SimulationInputs.ExpectedDateOfDrawing = new NullableGrpcDate(1980, 10, 25);
+        fixture.Customize<GrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()).OmitAutoProperties());
+        fixture.Customize<NullableGrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()!).OmitAutoProperties());
+
+        data.Offer = fixture.Build<GetMortgageOfferDetailResponse>()
+                            .With(c => c.OfferId, input.OfferId)
+                            .Create();
 
         data.Offer.AdditionalSimulationResults.MarketingActions.Add(new ResultMarketingAction
         {
             Applied = 1,
             Code = "DOMICILACE"
         });
-
-        data.OfferCustom = new OfferCustomData();
     }
 }

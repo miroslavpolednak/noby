@@ -63,6 +63,8 @@ internal class DataServicesLoader
 
     private void ConfigureServiceMap()
     {
+        AddService<SalesArrangementServiceWrapper>(DataSource.SalesArrangementService);
+        AddService<CaseServiceWrapper>(DataSource.CaseService);
         AddService<OfferServiceWrapper>(DataSource.OfferService);
         AddService<UserServiceWrapper>(DataSource.UserService);
     }

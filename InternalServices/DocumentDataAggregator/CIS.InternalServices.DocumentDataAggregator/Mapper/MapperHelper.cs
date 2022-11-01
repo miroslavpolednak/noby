@@ -1,4 +1,5 @@
-﻿using FastMember;
+﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
+using FastMember;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Mapper;
 
