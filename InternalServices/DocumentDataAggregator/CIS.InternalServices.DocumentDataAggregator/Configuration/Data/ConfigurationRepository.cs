@@ -38,7 +38,7 @@ internal class ConfigurationRepository
                              .Where(f => f.DocumentId == documentId && f.DocumentVersion == documentVersion)
                              .Select(f => new SourceField
                              {
-                                 SourceFieldId = f.DataFieldId,
+                                 SourceFieldId = f.DocumentDataFieldId,
                                  DataSource = (DataSource)f.DataField.DataServiceId,
                                  FieldPath = f.DataField.FieldPath,
                                  TemplateFieldName = f.TemplateFieldName,
@@ -72,7 +72,7 @@ internal class ConfigurationRepository
                                    .AsSplitQuery()
                                    .Select(x => new DocumentDynamicStringFormat
                                    {
-                                       SourceFieldId = x.DocumentDataField.DataFieldId,
+                                       SourceFieldId = x.DocumentDataField.DocumentDataFieldId,
                                        Format = x.Format,
                                        Priority = x.Priority,
                                        Conditions = x.DynamicStringFormatConditions.Select(c => new DocumentDynamicStringFormatCondition

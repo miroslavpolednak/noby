@@ -20,7 +20,7 @@ internal class DocumentConfigurationManager
         {
             InputConfig = new InputConfig
             {
-                DataSources = fields.Select(f => f.DataSource).Distinct(),
+                DataSources = fields.Select(f => f.DataSource).Where(d => d != DataSource.General).Distinct(),
                 DynamicInputParameters = await _repository.LoadDocumentDynamicInputFields(documentId, documentVersion)
             },
             SourceFields = fields,

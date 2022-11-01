@@ -2,7 +2,8 @@
 
 internal enum DataSource
 {
-    SalesArrangementService = 1,
+    General = 0,
+    SalesArrangementService,
     CaseService,
     OfferService,
     UserService

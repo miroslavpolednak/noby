@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
 
@@ -114,6 +115,20 @@ internal class DocumentMapper
             return false;
 
         var converter = TypeDescriptor.GetConverter(value.GetType());
+
+        if (converter.GetType() != typeof(TypeConverter)) 
+            return Equals(value, converter.ConvertFromString(stringValue));
+
+        //Probly GrpcDecimal etc
+        var implicitConverter = value.GetType()
+                                     .GetMethods()
+                                     .FirstOrDefault(m => m.Name == "op_Implicit" && m.GetParameters().Single().ParameterType == value.GetType());
+
+        if (implicitConverter is null)
+            return Equals(value, converter.ConvertFromString(stringValue));
+
+        value = implicitConverter.Invoke(null, new[] { value }) ?? throw new InvalidOperationException();
+        converter = TypeDescriptor.GetConverter(value.GetType());
 
         return Equals(value, converter.ConvertFromString(stringValue));
     }

@@ -14,4 +14,6 @@ internal class AggregatedData
     public GetMortgageOfferDetailResponse Offer { get; set; }
 
     public User User { get; set; }
+
+    public DateTime CurrentDateTime => DateTime.Now;
 }
