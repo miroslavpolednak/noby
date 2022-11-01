@@ -1,7 +1,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.HouseholdService.Api;
 using DomainServices.CodebookService.Abstraction;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;

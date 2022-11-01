@@ -2,7 +2,7 @@
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.ProductService.Abstraction;
+namespace DomainServices.ProductService.Clients;
 
 public static class ProductServiceExtensions
 {
@@ -21,7 +21,7 @@ public static class ProductServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register storage services
-        services.AddTransient<IProductServiceAbstraction, Services.ProductService>();
+        services.AddTransient<IProductServiceClient, Services.ProductService>();
 
         services.AddGrpcClientFromCisEnvironment<Contracts.v1.ProductService.ProductServiceClient>();
 

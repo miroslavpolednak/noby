@@ -1,4 +1,4 @@
-﻿using DomainServices.ProductService.Abstraction;
+﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Cu = DomainServices.CustomerService.Contracts;
@@ -99,14 +99,14 @@ internal sealed class CreateProductHandler
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly IProductServiceAbstraction _productService;
+    private readonly IProductServiceClient _productService;
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         IOfferServiceAbstraction offerService,
         ISalesArrangementServiceAbstraction salesArrangementService,
-        IProductServiceAbstraction productService,
+        IProductServiceClient productService,
         ILogger<CreateProductHandler> logger)
     {
         _customerService = customerService;

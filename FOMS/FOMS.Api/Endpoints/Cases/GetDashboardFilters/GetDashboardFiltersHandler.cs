@@ -21,12 +21,12 @@ internal class GetDashboardFiltersHandler
 
     private readonly ILogger<GetDashboardFiltersHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public GetDashboardFiltersHandler(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ILogger<GetDashboardFiltersHandler> logger,
-        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
+        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
     {
         _userAccessor = userAccessor;
         _logger = logger;

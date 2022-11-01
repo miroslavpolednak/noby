@@ -18,7 +18,7 @@ internal class DrawingValidator
     /// </remarks>
     public async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
     {
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Abstraction.IProductServiceAbstraction>();
+        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         // instance hypo
         var productInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));
 

@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 
 using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;
@@ -28,7 +28,7 @@ internal class LoanApplicationDataService
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IHouseholdServiceClient _householdService;
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly ICodebookServiceAbstraction _codebookService;
@@ -39,7 +39,7 @@ internal class LoanApplicationDataService
         ISalesArrangementServiceAbstraction salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         IUserServiceClient userService,
         ICustomerServiceAbstraction customerService,
         ICodebookServiceAbstraction codebookService

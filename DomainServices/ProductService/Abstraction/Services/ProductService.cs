@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 using DomainServices.ProductService.Contracts;
 
-namespace DomainServices.ProductService.Abstraction.Services;
+namespace DomainServices.ProductService.Clients.Services;
 
-internal class ProductService : IProductServiceAbstraction
+internal class ProductService : IProductServiceClient
 {
 
     #region Construction

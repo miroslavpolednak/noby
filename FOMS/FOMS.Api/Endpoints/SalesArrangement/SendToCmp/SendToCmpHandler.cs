@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Abstraction;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Abstraction;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -10,12 +10,12 @@ internal class SendToCmpHandler
 
     #region Construction
 
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly ILogger<SendToCmpHandler> _logger;
 
     public SendToCmpHandler(
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         ILogger<SendToCmpHandler> logger)
     {

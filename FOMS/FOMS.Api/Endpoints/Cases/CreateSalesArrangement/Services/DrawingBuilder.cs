@@ -25,7 +25,7 @@ internal class DrawingBuilder
         };
 
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Abstraction.IProductServiceAbstraction>();
+        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         try
         {
             var mortgageInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));

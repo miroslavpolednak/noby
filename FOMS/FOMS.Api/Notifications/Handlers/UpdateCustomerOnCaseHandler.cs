@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace FOMS.Api.Notifications.Handlers;
@@ -26,12 +26,12 @@ internal class UpdateCustomerOnCaseHandler
         }
     }
 
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly ICustomerOnSAServiceClient _customerService;
 
     public UpdateCustomerOnCaseHandler(
         ICustomerOnSAServiceClient customerService,
-        ICaseServiceAbstraction caseService)
+        ICaseServiceClient caseService)
     {
         _customerService = customerService;
         _caseService = caseService;

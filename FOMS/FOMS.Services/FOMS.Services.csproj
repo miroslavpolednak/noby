@@ -17,7 +17,7 @@
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
-    <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj" />
     <ProjectReference Include="..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
   </ItemGroup>

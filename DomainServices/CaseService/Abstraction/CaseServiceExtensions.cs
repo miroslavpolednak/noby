@@ -2,7 +2,7 @@
 using CIS.InternalServices.ServiceDiscovery.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.CaseService.Abstraction;
+namespace DomainServices.CaseService.Clients;
 
 public static class CaseServiceExtensions
 {
@@ -21,7 +21,7 @@ public static class CaseServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register service
-        services.AddTransient<ICaseServiceAbstraction, Services.CaseService>();
+        services.AddTransient<ICaseServiceClient, Services.CaseService>();
 
         // exception handling
         services.AddSingleton<ExceptionInterceptor>();

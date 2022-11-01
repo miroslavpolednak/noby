@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Abstraction;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Abstraction;
 using _CA = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
@@ -79,13 +79,13 @@ internal class GetDetailHandler
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };
 
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
     
     public GetDetailHandler(
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
         DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
         ISalesArrangementServiceAbstraction salesArrangementService)

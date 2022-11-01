@@ -1,6 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Abstraction;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
@@ -48,7 +48,7 @@ internal sealed class IdentifyByIdentityHandler
     }
 
     private readonly IMediator _mediator;
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
@@ -56,7 +56,7 @@ internal sealed class IdentifyByIdentityHandler
     public IdentifyByIdentityHandler(
         IMediator mediator,
         ISalesArrangementServiceAbstraction salesArrangementService,
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         ICustomerServiceAbstraction customerService,
         ICustomerOnSAServiceClient customerOnSAService)
     {
