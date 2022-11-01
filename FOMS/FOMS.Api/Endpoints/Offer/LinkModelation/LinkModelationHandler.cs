@@ -18,7 +18,7 @@ internal class LinkModelationHandler
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
 
         // update kontaktu
-        await _caseService.UpdateOfferContacts(saInstance.CaseId, new DomainServices.CaseService.Contracts.OfferContacts
+        await _caseService.UpdateOfferContacts(saInstance.CaseId, new _Ca.OfferContacts
         {
             EmailForOffer = request.EmailForOffer ?? "",
             PhoneNumberForOffer = request.PhoneNumberForOffer ?? ""
@@ -27,7 +27,7 @@ internal class LinkModelationHandler
         // update customer
         if (caseInstance.Customer?.Identity is null || caseInstance.Customer.Identity.IdentityId == 0)
         {
-            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new DomainServices.CaseService.Contracts.CustomerData
+            await _caseService.UpdateCaseCustomer(saInstance.CaseId, new _Ca.CustomerData
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName ?? "",

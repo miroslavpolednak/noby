@@ -14,33 +14,26 @@ internal sealed class DeleteHouseholdHandler
             throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
 
-        // smazat customerOnSA
-        if (householdInstance.CustomerOnSAId1.HasValue)
-            await removeCustomer(householdInstance.CustomerOnSAId1.Value, cancellation);
-        if (householdInstance.CustomerOnSAId2.HasValue)
-            await removeCustomer(householdInstance.CustomerOnSAId2.Value, cancellation);
         // smazat domacnost
         _dbContext.Households.Remove(householdInstance);
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        // smazat customerOnSA
+        if (householdInstance.CustomerOnSAId1.HasValue)
+            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId1.Value), cancellation);
+        if (householdInstance.CustomerOnSAId2.HasValue)
+            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId2.Value), cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    async Task removeCustomer(int customerOnSAId, CancellationToken cancellation)
-    {
-        _dbContext.Customers.Remove(await _dbContext.Customers.FirstAsync(t => t.CustomerOnSAId == customerOnSAId, cancellation));
-
-        var identities = await _dbContext.Database.ExecuteSqlInterpolatedAsync(@$"
-DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={customerOnSAId};
-DELETE FROM CustomerOnSAIncome WHERE CustomerOnSAId={customerOnSAId};
-DELETE FROM dbo.CustomerOnSAObligation WHERE CustomerOnSAId={customerOnSAId}", cancellation);
-    }
-
+    private readonly IMediator _mediator;
     private readonly Repositories.HouseholdServiceDbContext _dbContext;
 
-    public DeleteHouseholdHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public DeleteHouseholdHandler(Repositories.HouseholdServiceDbContext dbContext, IMediator mediator)
     {
         _dbContext = dbContext;
+        _mediator = mediator;
     }
 }

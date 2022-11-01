@@ -21,7 +21,11 @@ internal class DeleteCustomerHandler
         // smazat customera
         _dbContext.Customers.Remove(entity);
 
-        // smazat vazbu na identity
+        // v EF7 zmenit na nativni delete
+        await _dbContext.Database.ExecuteSqlInterpolatedAsync(@$"
+DELETE FROM dbo.CustomerOnSAIncome WHERE CustomerOnSAId={entity.CustomerOnSAId};
+DELETE FROM dbo.CustomerOnSAObligation WHERE CustomerOnSAId={entity.CustomerOnSAId}", cancellation);
+
         await _dbContext.SaveChangesAsync(cancellation);
 
         // SULM
