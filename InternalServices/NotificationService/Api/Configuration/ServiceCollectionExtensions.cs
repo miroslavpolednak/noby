@@ -7,6 +7,16 @@ public static class ServiceCollectionExtensions
     public static WebApplicationBuilder Configure(this WebApplicationBuilder builder)
     {
         builder.Services
+            .AddOptions<S3Configuration>()
+            .Bind(builder.Configuration.GetSection(nameof(S3Configuration)))
+            .Validate(config => !string.IsNullOrEmpty(config.ServiceURL),
+                $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceURL)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.AccessKey),
+                $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.SecretKey),
+                $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
+
+        builder.Services
             .AddOptions<AppConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(AppConfiguration)))
             .Validate(config =>
@@ -18,23 +28,13 @@ public static class ServiceCollectionExtensions
             .AddOptions<KafkaConfiguration>()
             .Bind(builder.Configuration.GetSection(nameof(KafkaConfiguration)))
             .Validate(config => !string.IsNullOrEmpty(config.GroupId),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)}")
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.SchemaRegistryUrl),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SchemaRegistryUrl)}")
-            .Validate(config => !string.IsNullOrEmpty(config.BootstrapServers?.Business),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.BootstrapServers)}.{nameof(KafkaConfiguration.BootstrapServers.Business)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.BootstrapServers?.Logman),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.BootstrapServers)}.{nameof(KafkaConfiguration.BootstrapServers.Logman)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.SslKeystoreLocation),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslKeystoreLocation)}")
-            .Validate(config => !string.IsNullOrEmpty(config.SslKeystorePassword),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslKeystorePassword)}")
-            .Validate(config => !string.IsNullOrEmpty(config.SecurityProtocol),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SecurityProtocol)}")
-            .Validate(config => !string.IsNullOrEmpty(config.SslCaLocation),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslCaLocation)}")
-            .Validate(config => !string.IsNullOrEmpty(config.SslCertificateLocation),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SslCertificateLocation)}")
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SchemaRegistryUrl)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Business?.BootstrapServers),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Business)}.{nameof(KafkaConfiguration.Nodes.Business.BootstrapServers)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Logman?.BootstrapServers),
+                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Logman)}.{nameof(KafkaConfiguration.Nodes.Logman.BootstrapServers)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.Debug),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Debug)}")
             .ValidateOnStart();
@@ -42,10 +42,22 @@ public static class ServiceCollectionExtensions
         return builder;
     }
 
+    public static S3Configuration GetS3Configuration(this WebApplicationBuilder builder)
+    {
+        return builder.GetConfiguration<S3Configuration>();
+    }
+    
     public static KafkaConfiguration GetKafkaConfiguration(this WebApplicationBuilder builder)
     {
+        return builder.GetConfiguration<KafkaConfiguration>();
+    }
+
+    private static TConfiguration GetConfiguration<TConfiguration>(this WebApplicationBuilder builder)
+        where TConfiguration : class
+    {
         var provider = builder.Services.BuildServiceProvider();
-        var options = provider.GetRequiredService<IOptions<KafkaConfiguration>>();
+        var options = provider.GetRequiredService<IOptions<TConfiguration>>();
         return options.Value;
     }
+
 }

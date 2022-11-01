@@ -25,7 +25,7 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _mscSmsConsumer.Subscribe(Topics.MscSenderIn);
+        _mscSmsConsumer.Subscribe(Topics.McsSenderIn);
 
         await Task.Run(async () =>
         {
@@ -39,7 +39,7 @@ public class Worker : BackgroundService
                 await Task.Delay(TimeSpan.FromSeconds(16), stoppingToken);
                 
                 await _mscResultProducer.ProduceAsync(
-                    Topics.MscResultIn,
+                    Topics.McsResultIn,
                     new Message<string, NotificationReport>
                     {
                         Key = "",

@@ -2,6 +2,6 @@
 
 public class Topics
 {
-    public const string MscResultIn = "buapp-msc_result-in";
-    public const string MscSenderIn = "buapp-msc_sender-in";
+    public const string McsResultIn = "buapp-mcs_result-in";
+    public const string McsSenderIn = "buapp-mcs_sender-in";
 }
