@@ -1,6 +1,6 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 
-namespace CIS.InternalServices.NotificationService.Api.Mappers;
+namespace CIS.InternalServices.NotificationService.Api.Mcs.Mappers;
 
 public static class EmailMappers
 {

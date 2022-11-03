@@ -26,8 +26,8 @@ public class LogmanResultConsumer
     
     public async Task ConsumeAsync(CancellationToken stoppingToken)
     {
-        _consumer.Subscribe(Topics.MscResultIn);
-        _logger.LogInformation($"Consumer '{nameof(LogmanResultConsumer)}': Topic '{Topics.MscResultIn}' subscribed.");
+        _consumer.Subscribe(Topics.McsResultIn);
+        _logger.LogInformation($"Consumer '{nameof(LogmanResultConsumer)}': Topic '{Topics.McsResultIn}' subscribed.");
 
         await Task.Run(async () =>
         {
