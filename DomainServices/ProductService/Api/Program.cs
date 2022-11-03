@@ -1,7 +1,7 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.ProductService.Api;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using DomainServices.CaseService.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;

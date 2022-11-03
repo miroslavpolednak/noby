@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Types;
 using System.Collections.Immutable;
 
-namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
+namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
 internal sealed class DiscoveryService : IDiscoveryServiceAbstraction
 {

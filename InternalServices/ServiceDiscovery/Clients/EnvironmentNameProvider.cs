@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
+﻿namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
 internal sealed class EnvironmentNameProvider
 {

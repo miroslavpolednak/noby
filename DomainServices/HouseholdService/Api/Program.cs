@@ -5,7 +5,7 @@ using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
 using DomainServices.SalesArrangementService.Abstraction;

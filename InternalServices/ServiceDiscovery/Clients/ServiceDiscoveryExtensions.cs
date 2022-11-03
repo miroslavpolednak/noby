@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
+namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
 public static class ServiceDiscoveryExtensions
 {

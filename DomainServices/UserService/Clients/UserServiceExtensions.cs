@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 
 namespace DomainServices.UserService.Clients;
 

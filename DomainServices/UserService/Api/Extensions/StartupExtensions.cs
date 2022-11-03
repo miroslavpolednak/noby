@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.Caching;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.UserService.Api;

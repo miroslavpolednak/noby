@@ -24,7 +24,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
 	</ItemGroup>
 

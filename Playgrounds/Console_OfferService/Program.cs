@@ -1,7 +1,7 @@
 ﻿using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
 using DomainServices.OfferService.Abstraction;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using System;
 using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;

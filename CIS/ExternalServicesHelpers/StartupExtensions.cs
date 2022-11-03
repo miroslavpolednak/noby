@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.ServiceDiscovery.Abstraction;
+﻿using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

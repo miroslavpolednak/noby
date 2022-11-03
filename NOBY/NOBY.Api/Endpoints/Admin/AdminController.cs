@@ -7,9 +7,9 @@ namespace NOBY.Api.Endpoints.Admin;
 [Route("api/admin")]
 public class AdminController : ControllerBase
 {
-    private readonly CIS.InternalServices.ServiceDiscovery.Abstraction.IDiscoveryServiceAbstraction _discoveryService;
+    private readonly CIS.InternalServices.ServiceDiscovery.Clients.IDiscoveryServiceAbstraction _discoveryService;
 
-    public AdminController(CIS.InternalServices.ServiceDiscovery.Abstraction.IDiscoveryServiceAbstraction discoveryService)
+    public AdminController(CIS.InternalServices.ServiceDiscovery.Clients.IDiscoveryServiceAbstraction discoveryService)
     {
         _discoveryService = discoveryService;
     }
@@ -21,7 +21,7 @@ public class AdminController : ControllerBase
     [HttpGet("discovery-service")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "System Administration" })]
-    [ProducesResponseType(typeof(IEnumerable<CIS.InternalServices.ServiceDiscovery.Abstraction.DiscoverableService>), StatusCodes.Status200OK)]
-    public async Task<IEnumerable<CIS.InternalServices.ServiceDiscovery.Abstraction.DiscoverableService>> GetDiscoveryServices(CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(IEnumerable<CIS.InternalServices.ServiceDiscovery.Clients.DiscoverableService>), StatusCodes.Status200OK)]
+    public async Task<IEnumerable<CIS.InternalServices.ServiceDiscovery.Clients.DiscoverableService>> GetDiscoveryServices(CancellationToken cancellationToken)
         => await _discoveryService.GetServices(cancellationToken);
 }

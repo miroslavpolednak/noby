@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.ServiceDiscovery.Abstraction;
+﻿using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ExternalServices.EasSimulationHT;

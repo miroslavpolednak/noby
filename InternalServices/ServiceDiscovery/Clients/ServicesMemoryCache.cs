@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
 
-namespace CIS.InternalServices.ServiceDiscovery.Abstraction;
+namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
 internal sealed class ServicesMemoryCache
 {

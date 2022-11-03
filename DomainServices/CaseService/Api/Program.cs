@@ -3,7 +3,7 @@ using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CaseService.Api;
 using DomainServices.CodebookService.Abstraction;
 using DomainServices.UserService.Clients;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
 using DomainServices.SalesArrangementService.Abstraction;
