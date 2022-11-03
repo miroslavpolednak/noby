@@ -152,7 +152,7 @@ internal class CreateIdentifiedSubject
 
     private static PrimaryPhone? CreatePrimaryPhone(IEnumerable<Contact> contacts)
     {
-        var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.MobilPrivate);
+        var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
 
         if (phone is null || string.IsNullOrWhiteSpace(phone.Value))
             return default;

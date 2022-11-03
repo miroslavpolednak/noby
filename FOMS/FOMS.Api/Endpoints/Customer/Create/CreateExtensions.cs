@@ -125,7 +125,7 @@ internal static class CreateExtensions
     public static CreateResponse InputDataComparison(this CreateResponse response, CreateRequest originalRequest)
     {
         if (
-            !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.MobilPrivate)?.Value)
+            !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value)
             || !stringCompare(originalRequest.Email, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value)
             || originalRequest.BirthDate != originalRequest.BirthDate
             || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)

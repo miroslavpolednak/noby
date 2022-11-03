@@ -9,14 +9,8 @@ public enum ContactTypes : byte
     Unknown = 0,
 
     [EnumMember]
-    MobilPrivate = 1,
+    Mobil = 13,
 
     [EnumMember]
-    MobilWork = 2,
-
-    [EnumMember]
-    LandlineHome = 3,
-
-    [EnumMember]
-    Email = 5
+    Email = 14
 }
