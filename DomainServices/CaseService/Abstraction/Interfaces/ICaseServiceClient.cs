@@ -2,9 +2,9 @@
 using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
 
-namespace DomainServices.CaseService.Abstraction;
+namespace DomainServices.CaseService.Clients;
 
-public interface ICaseServiceAbstraction
+public interface ICaseServiceClient
 {
     /// <summary>
     /// Vytvoreni Case

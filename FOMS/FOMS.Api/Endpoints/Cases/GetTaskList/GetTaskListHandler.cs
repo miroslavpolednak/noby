@@ -25,11 +25,11 @@ internal sealed class GetTaskListHandler
     }
 
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public GetTaskListHandler(
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
+        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
     {
         _codebookService = codebookService;
         _caseService = caseService;

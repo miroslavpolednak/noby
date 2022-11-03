@@ -1,7 +1,7 @@
 ﻿using DomainServices.ProductService.Contracts;
 using ExternalServices.MpHome.V1._1;
 using DomainServices.CodebookService.Abstraction;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 
 
 namespace DomainServices.ProductService.Api.Handlers;
@@ -11,11 +11,11 @@ internal class CreateMortgageHandler
 {
     #region Construction
 
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
 
     public CreateMortgageHandler(
         ICodebookServiceAbstraction codebookService,
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         Repositories.LoanRepository repository,
         IMpHomeClient mpHomeClient,
         ILogger<CreateMortgageHandler> logger

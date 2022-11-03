@@ -107,7 +107,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Contracts", "DomainServices\CustomerService\Contracts\DomainServices.CustomerService.Contracts.csproj", "{66E6AE74-95C6-41DC-B32B-A7FE02395930}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.Abstraction", "DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj", "{7E78FAF4-E885-459B-9FBB-2D91B5867344}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.Clients", "DomainServices\ProductService\Abstraction\DomainServices.ProductService.Clients.csproj", "{7E78FAF4-E885-459B-9FBB-2D91B5867344}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalServices", "ExternalServices", "{024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}"
 EndProject
@@ -129,7 +129,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ProductService", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Eas", "ExternalServices\Eas\ExternalServices.Eas.csproj", "{2E4D42D7-F764-4E3A-B05F-13E2A83F4853}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.Abstraction", "DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj", "{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.Clients", "DomainServices\CaseService\Abstraction\DomainServices.CaseService.Clients.csproj", "{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SalesArrangementService", "SalesArrangementService", "{36409700-CB0A-4C91-97A5-071D3300FF91}"
 EndProject

@@ -41,11 +41,11 @@ internal sealed class GetCustomersOnProductHandler
             .ToList();
     }
 
-    private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
+    private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
 
     public GetCustomersOnProductHandler(
-        DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService, 
+        DomainServices.ProductService.Clients.IProductServiceClient productService, 
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService)
     {
         _productService = productService;

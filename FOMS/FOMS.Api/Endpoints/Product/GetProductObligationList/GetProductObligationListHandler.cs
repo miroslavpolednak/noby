@@ -1,4 +1,4 @@
-﻿using DomainServices.ProductService.Abstraction;
+﻿using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using FOMS.Api.SharedDto;
 using Contracts = DomainServices.ProductService.Contracts;
@@ -8,9 +8,9 @@ namespace FOMS.Api.Endpoints.Product.GetProductObligationList;
 
 internal sealed class GetProductObligationListHandler : IRequestHandler<GetProductObligationListRequest, List<Dto.ProductObligation>>
 {
-    private readonly IProductServiceAbstraction _productService;
+    private readonly IProductServiceClient _productService;
 
-    public GetProductObligationListHandler(IProductServiceAbstraction productService)
+    public GetProductObligationListHandler(IProductServiceClient productService)
     {
         _productService = productService;
     }

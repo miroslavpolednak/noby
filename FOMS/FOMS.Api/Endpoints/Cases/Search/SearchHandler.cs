@@ -48,13 +48,13 @@ internal class SearchHandler
     private readonly ILogger<SearchHandler> _logger;
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly CasesModelConverter _converter;
-    private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public SearchHandler(
         ICurrentUserAccessor userAccessor,
         ILogger<SearchHandler> logger,
         CasesModelConverter converter,
-        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService)
+        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
     {
         _converter = converter;
         _userAccessor = userAccessor;

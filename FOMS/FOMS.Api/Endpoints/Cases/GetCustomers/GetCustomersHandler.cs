@@ -120,19 +120,19 @@ internal class GetCustomersHandler
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
     private static List<int>? _allowedSalesArrangementTypes;
 
-    private readonly DomainServices.ProductService.Abstraction.IProductServiceAbstraction _productService;
+    private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
     private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
     private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly DomainServices.CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public GetCustomersHandler(
-        DomainServices.ProductService.Abstraction.IProductServiceAbstraction productService,
+        DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        DomainServices.CaseService.Abstraction.ICaseServiceAbstraction caseService, 
+        DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
         DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
     {
         _productService = productService;

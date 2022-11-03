@@ -2,7 +2,7 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
@@ -84,7 +84,7 @@ internal class CreateMortgageCaseHandler
     private readonly ICodebookServiceAbstraction _codebookService;
     private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
@@ -96,7 +96,7 @@ internal class CreateMortgageCaseHandler
         ICustomerOnSAServiceClient customerOnSAService,
         ISalesArrangementServiceAbstraction salesArrangementService,
         IHouseholdServiceClient householdService,
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         ICodebookServiceAbstraction codebookService, 
         IOfferServiceAbstraction offerService, 
         ILogger<CreateMortgageCaseHandler> logger)

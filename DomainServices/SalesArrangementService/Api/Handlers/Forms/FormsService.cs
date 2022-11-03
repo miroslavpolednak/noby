@@ -3,10 +3,10 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.Foms.Enums;
 
 using DomainServices.CodebookService.Abstraction;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Abstraction;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.ProductService.Abstraction;
+using DomainServices.ProductService.Clients;
 using DomainServices.UserService.Clients;
 using DomainServices.HouseholdService.Clients;
 
@@ -35,10 +35,10 @@ internal class FormsService
 
     private readonly SulmService.ISulmClient _sulmClient;
     private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly IOfferServiceAbstraction _offerService;
     private readonly ICustomerServiceAbstraction _customerService;
-    private readonly IProductServiceAbstraction _productService;
+    private readonly IProductServiceClient _productService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IHouseholdServiceClient _householdService;
@@ -52,10 +52,10 @@ internal class FormsService
         IHouseholdServiceClient householdService,
         SulmService.ISulmClient sulmClient,
         ICodebookServiceAbstraction codebookService,
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         IOfferServiceAbstraction offerService,
         ICustomerServiceAbstraction customerService,
-        IProductServiceAbstraction productService,
+        IProductServiceClient productService,
         IUserServiceClient userService,
         Repositories.NobyRepository repository,
         ILogger<FormsService> logger,
