@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 var appConfiguration = builder.AddFomsConfig();
 
 // vlozit do DI vsechny custom services
-builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly), typeof(FOMS.Api.IApiAssembly), typeof(FOMS.Services.IServicesAssembly));
+builder.Services.AddAttributedServices(typeof(FOMS.Infrastructure.IInfrastructureAssembly), typeof(FOMS.Api.IApiAssembly));
 
 // add CIS pipeline
 builder

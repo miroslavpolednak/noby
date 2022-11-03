@@ -52,7 +52,6 @@
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
     <ProjectReference Include="..\FOMS.Infrastructure\FOMS.Infrastructure.csproj" />
-    <ProjectReference Include="..\FOMS.Services\FOMS.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
