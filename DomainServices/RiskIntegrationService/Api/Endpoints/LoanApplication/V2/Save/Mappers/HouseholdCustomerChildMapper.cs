@@ -42,9 +42,9 @@ internal sealed class HouseholdCustomerChildMapper
                 City = customer.Address.City,
                 CountryCode = countries.FirstOrDefault(t => t.Id == customer.Address.CountryId)?.ShortName,
                 Street = customer.Address.Street,
-                StreetNumber = customer.Address.HouseNumber,
+                HouseNumber = customer.Address.HouseNumber,
                 PostCode = getZipCode(customer.Address.Postcode),//TODO zmeni c4m long na string?
-                HouseNumber = customer.Address.StreetNumber,
+                StreetNumber = customer.Address.StreetNumber,
                 RegionCode = "16"
             },
             AcademicTitlePrefix = customer.AcademicTitlePrefix,
