@@ -46,13 +46,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.gRPC", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.gRPC.Tests", "CIS\Tests\CIS.Infrastructure.gRPC.Tests\CIS.Infrastructure.gRPC.Tests.csproj", "{7DA287EF-22CE-4114-9E89-C310E6217080}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FOMS", "FOMS", "{CD425435-2BA9-44DF-9AC5-945D08380C08}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NOBY", "NOBY", "{CD425435-2BA9-44DF-9AC5-945D08380C08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Api", "FOMS\FOMS.Api\FOMS.Api.csproj", "{EA856A99-17EE-4834-A5E4-212C87F9B963}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Api", "NOBY\NOBY.Api\NOBY.Api.csproj", "{EA856A99-17EE-4834-A5E4-212C87F9B963}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Core", "FOMS\FOMS.Core\FOMS.Core.csproj", "{B04E3BC0-2F79-4BB3-85D6-768AD3DB98E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Core", "NOBY\NOBY.Core\NOBY.Core.csproj", "{B04E3BC0-2F79-4BB3-85D6-768AD3DB98E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Infrastructure", "FOMS\FOMS.Infrastructure\FOMS.Infrastructure.csproj", "{BE9FCE3F-E547-4E4D-BD3F-C9BE487E6E9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Infrastructure", "NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj", "{BE9FCE3F-E547-4E4D-BD3F-C9BE487E6E9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFB9F887-CE43-4CC7-AADF-B55CFDC6400F}"
 	ProjectSection(SolutionItems) = preProject
@@ -173,7 +173,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.DomainServicesSecurity", "CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj", "{AE3021C4-2C68-4ED5-B39D-CEB7FE96F218}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.LogApi", "FOMS\FOMS.LogApi\FOMS.LogApi.csproj", "{0620778C-3839-4F6B-9A3F-FF15B4F5E2E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.LogApi", "NOBY\NOBY.LogApi\NOBY.LogApi.csproj", "{0620778C-3839-4F6B-9A3F-FF15B4F5E2E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.Clients", "DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj", "{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C}"
 EndProject
