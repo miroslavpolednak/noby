@@ -159,7 +159,7 @@ internal class CustomerManagementDetailProvider
         {
             onAddContact(new Contact
             {
-                ContactTypeId = (int)ContactTypes.MobilPrivate,
+                ContactTypeId = (int)ContactTypes.Mobil,
                 Value = customer.PrimaryPhone.PhoneNumber,
                 IsPrimary = true
             });

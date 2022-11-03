@@ -100,7 +100,7 @@ internal class GetCustomersHandler
             {
                 Agent = t.Agent,
                 Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
-                Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.MobilPrivate)?.Value,
+                Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
                 KBID = customer.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 RoleName = ((CIS.Foms.Enums.CustomerRoles)t.Role).GetAttribute<DisplayAttribute>()!.Name,
                 DateOfBirth = customer.NaturalPerson?.DateOfBirth,

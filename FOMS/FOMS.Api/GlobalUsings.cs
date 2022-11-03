@@ -4,4 +4,3 @@ global using CIS.Core.Results;
 global using CIS.Core.Exceptions;
 global using Microsoft.AspNetCore.Mvc;
 global using FOMS.Core;
-global using FOMS.Services;

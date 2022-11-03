@@ -1,52 +1,56 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Net;
-using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Console_ClientS3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 Console.WriteLine("run");
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", false, true)
+    .AddCommandLine(args)
     .Build();
 
-var awsOptions = configuration.GetAWSOptions("AWS");
-
-var config = new AmazonS3Config()
-{
-    ServiceURL = "https://ecs-s3.sos.kb.cz:9021",
-    ForcePathStyle = true,
-    ProxyHost = "wproxy.kb.cz",
-    ProxyPort = 8080,
-    ProxyCredentials = CredentialCache.DefaultCredentials
-};
-
-var serviceProvider = new ServiceCollection()
+var services = new ServiceCollection();
+    
+services
     .AddSingleton<IConfiguration>(configuration)
-    .AddDefaultAWSOptions(awsOptions)
-    .AddAWSService<IAmazonS3>()
+    .AddOptions<S3Configuration>()
+    .Bind(configuration.GetSection(nameof(S3Configuration)));
+    
+var serviceProvider = services
+    .AddScoped<IAmazonS3, AmazonS3Client>(provider =>
+    {
+        var options = provider.GetRequiredService<IOptions<S3Configuration>>();
+        var config = new AmazonS3Config
+        {
+            ServiceURL = options.Value.ServiceURL,
+            ForcePathStyle = true
+        };
+
+        var credentials = new BasicAWSCredentials(options.Value.AccessKey, options.Value.SecretKey);
+        return new AmazonS3Client(credentials, config);
+    })
     .BuildServiceProvider();
 
-var s3Client = new AmazonS3Client(new BasicAWSCredentials("AKIAC2FA54725D65F6FF", "J0EvmiuUN0iVQAtod/lEc9dGIsJNECBJvA5AeWwJ"), config);
-// var s3Client = serviceProvider.GetRequiredService<IAmazonS3>();
+var s3Client = serviceProvider.GetRequiredService<IAmazonS3>();
 var response = await s3Client.ListBucketsAsync();
-var bucket = response.Buckets.FirstOrDefault(b => b.BucketName == "b-s3-mcs");
 
-// var listRequest = new ListObjectsRequest
-// {
-//     BucketName = "b-s3-mcs"
-// };
-//
-// var bucketObjects = await s3Client.ListObjectsAsync(listRequest);
+var bucketName = "b-s3-mpss-noby-nofication_service";
+if (response.Buckets.All(b => b.BucketName != bucketName))
+{
+    Console.WriteLine($"Bucket '{bucketName}' does not exist");
+    return;
+}
 
 var key = Guid.NewGuid().ToString();
 var putRequest = new PutObjectRequest
 {
-    BucketName = "b-s3-mcs",
+    BucketName = bucketName,
     Key = key,
     ContentBody = "Content"
 };
@@ -55,7 +59,7 @@ var putResponse = await s3Client.PutObjectAsync(putRequest);
 
 var getRequest = new GetObjectRequest()
 {
-    BucketName = "b-s3-mcs",
+    BucketName = bucketName,
     Key = key
 };
 
