@@ -95,8 +95,8 @@ internal static class Extensions
                 var MapAddress = (cCis.GrpcAddress a) => new cRS.AddressDetail
                 {
                     Street = a.Street,
-                    BuildingIdentificationNumber = a.BuildingIdentificationNumber,
-                    LandRegistryNumber = a.LandRegistryNumber,
+                    StreetNumber = a.BuildingIdentificationNumber,
+                    HouseNumber = a.LandRegistryNumber,
                     EvidenceNumber = a.EvidenceNumber,
                     City = a.City,
                     CountryId = a.CountryId,

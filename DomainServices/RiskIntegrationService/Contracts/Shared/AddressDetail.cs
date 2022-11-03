@@ -7,13 +7,13 @@ public class AddressDetail
     public string? Street { get; set; }
 
     [ProtoMember(2)]
-    public string? BuildingIdentificationNumber { get; set; }
+    public string? StreetNumber { get; set; }
 
     [ProtoMember(3)]
     public string? EvidenceNumber { get; set; }
 
     [ProtoMember(4)]
-    public string? LandRegistryNumber { get; set; }
+    public string? HouseNumber { get; set; }
 
     [ProtoMember(5)]
     public string? City { get; set; }
