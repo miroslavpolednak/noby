@@ -40,7 +40,7 @@ function WinSvcCreate([string] $service) {
 $env = CheckEnv($env)
 
 # domain services
-[string[]] $domain_services = "ServiceDiscovery", "HouseholdService", "CaseService", "CodebookService", "CustomerService", "OfferService", "ProductService", "RiskIntegrationService", "SalesArrangementService", "UserService"
+[string[]] $domain_services = "ServiceDiscovery", "HouseholdService", "CaseService", "CodebookService", "CustomerService", "OfferService", "ProductService", "RiskIntegrationService", "SalesArrangementService", "UserService", "DocumentArchiveService", "NotificationService"
 
 $domain_services.ForEach({
     WinSvcCreate($_)
