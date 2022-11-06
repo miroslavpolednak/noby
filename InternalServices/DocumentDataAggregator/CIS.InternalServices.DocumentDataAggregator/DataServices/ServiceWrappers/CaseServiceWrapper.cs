@@ -15,7 +15,6 @@ internal class CaseServiceWrapper : IServiceWrapper
         fixture.Customize<NullableGrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()!).OmitAutoProperties());
 
         data.Case = fixture.Build<Case>().Create();
-        
 
         return Task.CompletedTask;
     }

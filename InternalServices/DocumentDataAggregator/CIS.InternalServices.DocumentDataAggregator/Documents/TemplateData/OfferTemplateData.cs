@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
+﻿using System.Globalization;
+using CIS.InternalServices.DocumentDataAggregator.DataServices;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
 
@@ -27,5 +28,18 @@ internal class OfferTemplateData : AggregatedData
 
     public string FeeNames => string.Join(Environment.NewLine, Offer.AdditionalSimulationResults.Fees.Select(f => f.Name));
 
-    public string FeeFinalSums => string.Join(Environment.NewLine, Offer.AdditionalSimulationResults.Fees.Select(f => f.FinalSum));
+    public string FeeFinalSums
+    {
+        get
+        {
+            var numberProvider = (NumberFormatInfo)CultureInfo.GetCultureInfo("cs").NumberFormat.Clone();
+            numberProvider.CurrencySymbol = "Kč";
+
+            return string.Join(Environment.NewLine,
+                               Offer.AdditionalSimulationResults
+                                    .Fees
+                                    .Select(f => (decimal?)f.FinalSum ?? 0m)
+                                    .Select(f => f.ToString("C2", numberProvider)));
+        }
+    }
 }

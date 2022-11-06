@@ -1,6 +1,6 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
-using CIS.InternalServices.DocumentDataAggregator.Mapper;
+using CIS.InternalServices.DocumentDataAggregator.Documents.Mapper;
 
 namespace CIS.InternalServices.DocumentDataAggregator;
 
@@ -21,7 +21,9 @@ internal class DataAggregator : IDataAggregator
 
         var documentMapper = await LoadDocumentData(document, input, config);
 
-        return documentMapper.GetDocumentFields();
+        var dynamicStringFormats = documentMapper.GetDynamicStringFormats(config.DynamicStringFormats);
+
+        return documentMapper.GetDocumentFields(config.SourceFields, dynamicStringFormats).ToList();
     }
 
     private async Task<DocumentMapper> LoadDocumentData(Document document, InputParameters inputParameters, DocumentConfiguration config)
@@ -30,6 +32,6 @@ internal class DataAggregator : IDataAggregator
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData);
 
-        return DocumentMapper.CreateInstance(config, documentData);
+        return DocumentMapper.Create(documentData);
     }
 }

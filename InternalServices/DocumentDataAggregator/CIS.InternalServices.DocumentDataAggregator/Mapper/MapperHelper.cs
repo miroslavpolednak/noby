@@ -35,4 +35,16 @@ internal static class MapperHelper
 
         return currentObject;
     }
+
+    public static object ConvertObjectImplicitly(object obj)
+    {
+        var implicitConverter = obj.GetType()
+                                   .GetMethods()
+                                   .FirstOrDefault(m => m.Name == "op_Implicit" && m.GetParameters().Single().ParameterType == obj.GetType());
+
+        if (implicitConverter is null)
+            return obj;
+
+        return implicitConverter.Invoke(null, new[] { obj }) ?? throw new InvalidOperationException();
+    }
 }

@@ -2,6 +2,8 @@
 
 internal class DocumentConfiguration
 {
+    public const string FieldPathCollectionMarker = "[]";
+
     public InputConfig InputConfig { get; init; } = null!;
 
     public IReadOnlyCollection<SourceField> SourceFields { get; init; } = null!;

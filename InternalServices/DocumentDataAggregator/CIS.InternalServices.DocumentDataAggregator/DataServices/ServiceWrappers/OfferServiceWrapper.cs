@@ -29,10 +29,21 @@ internal class OfferServiceWrapper : IServiceWrapper
                             .With(c => c.OfferId, input.OfferId)
                             .Create();
 
+        data.Offer.AdditionalSimulationResults.PaymentScheduleSimple.Add(fixture.Create<PaymentScheduleSimple>());
+
+        data.Offer.AdditionalSimulationResults.Fees.Add(fixture.Create<ResultFee>());
+
         data.Offer.AdditionalSimulationResults.MarketingActions.Add(new ResultMarketingAction
         {
             Applied = 1,
             Code = "DOMICILACE"
         });
+    }
+
+    public class TestFixture
+    {
+        public string Name { get; set; }
+
+        public ICollection<GrpcDate> Test { get; set; }
     }
 }
