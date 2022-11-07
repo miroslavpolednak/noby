@@ -1,6 +1,6 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.RiskIntegrationService.Api;

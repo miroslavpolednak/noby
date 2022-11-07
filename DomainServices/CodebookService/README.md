@@ -39,7 +39,7 @@ Testování endpointu pomocí *grpcurl* (https://github.com/fullstorydev/grpcurl
  - hlavní projekt - web application
  - zpracování requestu je napojeno na *MediatR* pipeline, pro každý endpoint se tedy vytváří nový *RequestHandler*
 
-**DomainService.CodebookService.Abstraction**
+**DomainService.CodebookService.Clients**
  - NuGet balíček zjednodušující konzumaci Codebook služby. Umožňuje volat službu pomocí strongly-typed rozhraní, tj. abstrahuje konzumenta od implentace gRPC nebo Http klienta.
  - balíček interně používá *CIS Service Discovery*, konzumující strana tedy nemusí znát adresu Codebook služby
  - pokud je konzumující aplikace správně nastavena do CIS prostředí, tak si balíček dokáže zjistit technického uživatele dané aplikace a provést autentizaci pod tímto účtem
@@ -108,7 +108,7 @@ Adresa: */codebooks/{nazev_metody_konvertovany_z_camelcase_na_dash_delimited}*
 Příklad: https://127.0.0.1:5061/codebooks/my-test-codebook
 
 Zároveň služba podporuje *gRPC Reflection* a standardní CIS *Healthcheck* endpoint.  
-Pro zjednodušení může konzumující aplikace nainstalovat *CodebookService.Abstraction* NuGet a používat pro komunikaci se službou rozhraní v C#.
+Pro zjednodušení může konzumující aplikace nainstalovat *CodebookService.Clients* NuGet a používat pro komunikaci se službou rozhraní v C#.
 
 ## Autentizace a autorizace
 

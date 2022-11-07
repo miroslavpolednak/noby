@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using System;
 using Grpc.Net.Client;
@@ -81,7 +81,7 @@ var serviceProvider = new ServiceCollection()
     .AddOfferService("https://localhost:5010")
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.OfferService.Abstraction.IOfferServiceAbstraction>();
+var service = serviceProvider.GetService<DomainServices.OfferService.Clients.IOfferServiceClients>();
 
 /*var inputData = new SimulateMortgageRequest
 {

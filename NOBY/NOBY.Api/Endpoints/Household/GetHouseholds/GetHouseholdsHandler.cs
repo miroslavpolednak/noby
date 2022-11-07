@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using contracts = DomainServices.HouseholdService.Contracts;
 
@@ -26,13 +26,13 @@ internal class GetHouseholdsHandler
             .ToList();
     }
 
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ILogger<GetHouseholdsHandler> _logger;
     
     public GetHouseholdsHandler(
         IHouseholdServiceClient householdService,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         ILogger<GetHouseholdsHandler> logger)
     {
         _logger = logger;

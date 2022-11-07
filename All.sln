@@ -40,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OfferService", "OfferServic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Api", "DomainServices\OfferService\API\DomainServices.OfferService.Api.csproj", "{853F7808-DAE9-4A13-A6A6-CBC7A1EFC969}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Abstraction", "DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj", "{C575CD43-C9FD-4221-A518-1199253BE6FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Clients", "DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj", "{C575CD43-C9FD-4221-A518-1199253BE6FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.gRPC", "CIS\gRPC\CIS.Infrastructure.gRPC.csproj", "{4FE907A0-58DB-4B94-A1D8-02EDB598D6B7}"
 EndProject
@@ -76,11 +76,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Api", "DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj", "{96A9DCD2-4A3A-4C48-A3C4-63E7DBC7047B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Abstraction", "DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj", "{ADF64991-2512-4F52-918A-755E9AA3AD30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Clients", "DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj", "{ADF64991-2512-4F52-918A-755E9AA3AD30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ApiGenerators", "DomainServices\CodebookService\ApiGenerators\DomainServices.CodebookService.ApiGenerators.csproj", "{FA114815-6534-4B0B-A8EB-A70554E78BD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.AbstractionGenerators", "DomainServices\CodebookService\AbstractionGenerators\DomainServices.CodebookService.AbstractionGenerators.csproj", "{1DF285A9-0B91-4FAA-9B6D-0D12EEF0740B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ClientsGenerators", "DomainServices\CodebookService\ClientsGenerators\DomainServices.CodebookService.ClientsGenerators.csproj", "{1DF285A9-0B91-4FAA-9B6D-0D12EEF0740B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Endpoints", "DomainServices\CodebookService\Endpoints\DomainServices.CodebookService.Endpoints.csproj", "{FE48768D-D1AE-4CF9-9CFD-FD77A46F4706}"
 EndProject
@@ -137,7 +137,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrange
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Api", "DomainServices\SalesArrangementService\Api\DomainServices.SalesArrangementService.Api.csproj", "{3ADB008A-E627-45B0-B46F-EACEA1A55A20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Abstraction", "DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj", "{1940849F-E9B4-4C09-A10A-870988C94D4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Clients", "DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj", "{1940849F-E9B4-4C09-A10A-870988C94D4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.MpHome", "ExternalServices\MpHome\ExternalServices.MpHome.csproj", "{7A8F1EC8-FB16-4E28-90F3-513EA98C0181}"
 EndProject

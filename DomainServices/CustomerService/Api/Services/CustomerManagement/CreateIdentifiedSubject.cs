@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using CIS.Foms.Enums;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Api.Clients;
 using DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
 using DomainServices.CustomerService.Api.Extensions;
@@ -14,7 +14,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal class CreateIdentifiedSubject
 {
     private readonly IIdentifiedSubjectClient _identifiedSubjectClient;
-    private readonly ICodebookServiceAbstraction _codebook;
+    private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
 
     private List<Endpoints.Genders.GenderItem> _genders = null!;
@@ -23,7 +23,7 @@ internal class CreateIdentifiedSubject
     private List<Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CreateIdentifiedSubject(IIdentifiedSubjectClient identifiedSubjectClient, ICodebookServiceAbstraction codebook, CustomerManagementErrorMap errorMap)
+    public CreateIdentifiedSubject(IIdentifiedSubjectClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
     {
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;

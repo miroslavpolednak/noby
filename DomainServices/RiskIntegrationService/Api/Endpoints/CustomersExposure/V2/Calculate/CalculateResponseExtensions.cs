@@ -9,7 +9,7 @@ internal static class CalculateResponseExtensions
 {
     public static async Task<_V2.CustomersExposureCalculateResponse> ToServiceResponse(
         this _C4M.LoanApplicationRelatedExposureResult response, 
-        CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService, 
+        CodebookService.Clients.ICodebookServiceClients _codebookService, 
         CancellationToken cancellation)
     {
         var customerRoles = await _codebookService.CustomerRoles(cancellation);

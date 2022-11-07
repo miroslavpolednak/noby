@@ -1,13 +1,13 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 public class CodebookEndpoint<TReturn> : ICodebookEndpoint where TReturn : class
 {
-    private readonly Func<ICodebookServiceAbstraction, Delegate> _endpointCallFactory;
+    private readonly Func<ICodebookServiceClients, Delegate> _endpointCallFactory;
     private readonly Func<IEnumerable<object>, IEnumerable<object>>? _resultCustomizer;
 
-    public CodebookEndpoint(string code, Func<ICodebookServiceAbstraction, Delegate> endpointCallFactory, Func<IEnumerable<object>, IEnumerable<object>>? resultCustomizer)
+    public CodebookEndpoint(string code, Func<ICodebookServiceClients, Delegate> endpointCallFactory, Func<IEnumerable<object>, IEnumerable<object>>? resultCustomizer)
     {
         _endpointCallFactory = endpointCallFactory;
         _resultCustomizer = resultCustomizer;
@@ -18,7 +18,7 @@ public class CodebookEndpoint<TReturn> : ICodebookEndpoint where TReturn : class
 
     public Type ReturnType => typeof(TReturn);
 
-    public async Task<IEnumerable<object>> GetObjects(ICodebookServiceAbstraction codebookService, CancellationToken cancellationToken)
+    public async Task<IEnumerable<object>> GetObjects(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
         IEnumerable<object> codebookList = await CallEndpoint(codebookService, cancellationToken);
 
@@ -28,7 +28,7 @@ public class CodebookEndpoint<TReturn> : ICodebookEndpoint where TReturn : class
         return codebookList;
     }
 
-    private Task<List<TReturn>> CallEndpoint(ICodebookServiceAbstraction codebookService, CancellationToken cancellationToken)
+    private Task<List<TReturn>> CallEndpoint(ICodebookServiceClients codebookService, CancellationToken cancellationToken)
     {
         var endpointCall = (Func<CancellationToken, Task<List<TReturn>>>)_endpointCallFactory(codebookService);
 

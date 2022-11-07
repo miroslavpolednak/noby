@@ -102,7 +102,7 @@ internal sealed class SaveRequestMapper
     }
 
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
 
@@ -110,7 +110,7 @@ internal sealed class SaveRequestMapper
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+        CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         _configuration = configuration;
         _serviceUserAccessor = serviceUserAccessor;

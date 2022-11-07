@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Contracts;
 using Grpc.Core;
 using CIS.Infrastructure.gRPC;
@@ -13,7 +13,7 @@ internal class GetTaskListHandler
 
     private readonly ILogger<GetTaskListHandler> _logger;
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
@@ -22,7 +22,7 @@ internal class GetTaskListHandler
     public GetTaskListHandler(
         ILogger<GetTaskListHandler> logger,
         Repositories.CaseServiceRepository repository,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         UserService.Clients.IUserServiceClient userService,
         EasSimulationHT.IEasSimulationHTClient easSimulationHTClient,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,

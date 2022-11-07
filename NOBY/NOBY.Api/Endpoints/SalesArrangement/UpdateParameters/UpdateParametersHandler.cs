@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
@@ -47,10 +47,10 @@ internal class UpdateParametersHandler
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
 
     public UpdateParametersHandler(
-        ISalesArrangementServiceAbstraction salesArrangementService)
+        ISalesArrangementServiceClients salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
     }

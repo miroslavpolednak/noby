@@ -1,5 +1,5 @@
 ﻿using ExternalServices.MpHome.V1._1;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -9,7 +9,7 @@ internal class UpdateMortgageHandler
     #region Construction
 
     public UpdateMortgageHandler(
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         Repositories.LoanRepository repository,
         IMpHomeClient mpHomeClient,
         ILogger<UpdateMortgageHandler> logger) : base(codebookService, repository, mpHomeClient, logger){}

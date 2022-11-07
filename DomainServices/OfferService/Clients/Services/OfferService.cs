@@ -5,9 +5,9 @@ using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 
-namespace DomainServices.OfferService.Abstraction;
+namespace DomainServices.OfferService.Clients;
 
-internal class OfferService : IOfferServiceAbstraction
+internal class OfferService : IOfferServiceClients
 {
 
     #region Construction
@@ -60,13 +60,13 @@ internal class OfferService : IOfferServiceAbstraction
         {
             var result = await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
 
-            _logger.LogDebug("Abstraction SimulateMortgage saved as #{id}", result.OfferId);
+            _logger.LogDebug("Clients SimulateMortgage saved as #{id}", result.OfferId);
 
             return new SuccessfulServiceCallResult<SimulateMortgageResponse>(result);
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument) // EAS chyba zadani
         {
-            _logger.LogDebug("Abstraction SimulateMortgage failed gracefully with code {code}", ex.GetExceptionCodeFromTrailers());
+            _logger.LogDebug("Clients SimulateMortgage failed gracefully with code {code}", ex.GetExceptionCodeFromTrailers());
 
             return new ErrorServiceCallResult(ex.GetErrorMessagesFromRpcExceptionWithIntKeys());
         }
@@ -74,7 +74,7 @@ internal class OfferService : IOfferServiceAbstraction
         {
             int code = ex.GetExceptionCodeFromTrailers();
 
-            _logger.LogDebug("Abstraction SimulateMortgage failed gracefully with code {code}", code);
+            _logger.LogDebug("Clients SimulateMortgage failed gracefully with code {code}", code);
             _logger.LogDebug("EAS error codes: {code} || {text}", ex.GetValueFromTrailers("eassimerrorcode-bin"), ex.GetValueFromTrailers("eassimerrortext-bin"));
 
             return code switch

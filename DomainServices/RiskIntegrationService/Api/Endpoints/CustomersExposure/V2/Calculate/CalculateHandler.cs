@@ -32,7 +32,7 @@ internal sealed class CalculateHandler
 
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly Clients.CustomersExposure.V1.ICustomersExposureClient _client;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
@@ -41,7 +41,7 @@ internal sealed class CalculateHandler
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         Clients.CustomersExposure.V1.ICustomersExposureClient client,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+        CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;

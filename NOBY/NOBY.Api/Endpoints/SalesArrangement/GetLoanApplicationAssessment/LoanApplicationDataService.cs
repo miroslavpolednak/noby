@@ -1,8 +1,8 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;
 
@@ -12,7 +12,7 @@ using cCase = DomainServices.CaseService.Contracts;
 using cOffer = DomainServices.OfferService.Contracts;
 using cCustomer = DomainServices.CustomerService.Contracts;
 using cUser = DomainServices.UserService.Contracts;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
@@ -24,25 +24,25 @@ internal class LoanApplicationDataService
     #region Construction
 
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly IOfferServiceAbstraction _offerService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly IOfferServiceClients _offerService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceAbstraction _customerService;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
 
     public LoanApplicationDataService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        IOfferServiceAbstraction offerService,
-        ISalesArrangementServiceAbstraction salesArrangementService,
+        IOfferServiceClients offerService,
+        ISalesArrangementServiceClients salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
         IUserServiceClient userService,
         ICustomerServiceAbstraction customerService,
-        ICodebookServiceAbstraction codebookService
+        ICodebookServiceClients codebookService
         )
     {
         _userAccessor = userAccessor;

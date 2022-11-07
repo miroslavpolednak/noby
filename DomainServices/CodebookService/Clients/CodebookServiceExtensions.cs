@@ -3,7 +3,7 @@ using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
 
-namespace DomainServices.CodebookService.Abstraction;
+namespace DomainServices.CodebookService.Clients;
 
 public static class CodebookServiceExtensions
 {
@@ -26,10 +26,10 @@ public static class CodebookServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register services
-        services.AddTransient<ICodebookServiceAbstraction, CodebookService>();
+        services.AddTransient<ICodebookServiceClients, CodebookService>();
 
         // register cache
-        services.AddSingleton(new AbstractionMemoryCache());
+        services.AddSingleton(new ClientsMemoryCache());
 
         services
             .AddCodeFirstGrpcClient<Contracts.ICodebookService>((provider, options) =>

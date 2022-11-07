@@ -1,14 +1,14 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.HouseholdService.Api;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.DomainServicesSecurity;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 

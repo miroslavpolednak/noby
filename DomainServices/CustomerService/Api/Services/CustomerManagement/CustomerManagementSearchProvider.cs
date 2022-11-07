@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using CIS.Foms.Enums;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
 using DomainServices.CustomerService.Api.Extensions;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
@@ -11,13 +11,13 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal class CustomerManagementSearchProvider
 {
     private readonly ICustomerManagementClient _customerManagement;
-    private readonly ICodebookServiceAbstraction _codebook;
+    private readonly ICodebookServiceClients _codebook;
 
     private List<Endpoints.Countries.CountriesItem> _countries = null!;
     private List<Endpoints.Genders.GenderItem> _genders = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CustomerManagementSearchProvider(ICustomerManagementClient customerManagement, ICodebookServiceAbstraction codebook)
+    public CustomerManagementSearchProvider(ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;

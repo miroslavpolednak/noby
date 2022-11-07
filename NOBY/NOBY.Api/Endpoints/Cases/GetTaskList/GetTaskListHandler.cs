@@ -24,11 +24,11 @@ internal sealed class GetTaskListHandler
         };
     }
 
-    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public GetTaskListHandler(
-        DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService)
     {
         _codebookService = codebookService;

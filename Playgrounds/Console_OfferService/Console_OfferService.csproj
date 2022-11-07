@@ -17,7 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
   </ItemGroup>
 
 </Project>

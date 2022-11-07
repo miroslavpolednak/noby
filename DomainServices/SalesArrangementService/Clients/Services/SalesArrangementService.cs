@@ -1,8 +1,8 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Abstraction.Services;
+namespace DomainServices.SalesArrangementService.Clients.Services;
 
-internal class SalesArrangementService : ISalesArrangementServiceAbstraction
+internal class SalesArrangementService : ISalesArrangementServiceClients
 {
     public async Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {

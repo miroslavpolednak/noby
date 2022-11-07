@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Abstraction;
+﻿using DomainServices.OfferService.Clients;
 using DSContracts = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageByOfferId;
@@ -22,10 +22,10 @@ internal class GetMortgageByOfferIdHandler
         };
     }
 
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ILogger<GetMortgageByOfferIdHandler> _logger;
 
-    public GetMortgageByOfferIdHandler(IOfferServiceAbstraction offerService, ILogger<GetMortgageByOfferIdHandler> logger)
+    public GetMortgageByOfferIdHandler(IOfferServiceClients offerService, ILogger<GetMortgageByOfferIdHandler> logger)
     {
         _logger = logger;
         _offerService = offerService;

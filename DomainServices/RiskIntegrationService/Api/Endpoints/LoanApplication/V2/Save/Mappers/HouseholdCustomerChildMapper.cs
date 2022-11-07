@@ -83,13 +83,13 @@ internal sealed class HouseholdCustomerChildMapper
         return long.TryParse(zip?.Replace(" ", ""), out code) ? code : null;
     }
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CancellationToken _cancellationToken;
     private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
     private readonly HouseholdCustomerIncomeChildMapper _incomeMapper;
 
     public HouseholdCustomerChildMapper(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {
