@@ -1,5 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.OfferService.Abstraction;
+﻿using DomainServices.SalesArrangementService.Clients;
+using DomainServices.OfferService.Clients;
 using DomainServices.CaseService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
@@ -92,9 +92,9 @@ internal class CreateRiskBusinessCaseHandler
     }
 
     private readonly IHouseholdServiceClient _householdService;
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
     private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
     private readonly ILogger<CreateRiskBusinessCaseHandler> _logger;
@@ -104,9 +104,9 @@ internal class CreateRiskBusinessCaseHandler
         DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
         IHouseholdServiceClient householdService,
-        IOfferServiceAbstraction offerService,
+        IOfferServiceClients offerService,
         ICaseServiceClient caseService,
-        ISalesArrangementServiceAbstraction salesArrangementService)
+        ISalesArrangementServiceClients salesArrangementService)
     {
         _logger = logger;
         _loanApplicationService = loanApplicationService;

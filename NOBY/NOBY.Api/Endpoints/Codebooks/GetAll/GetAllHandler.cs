@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 namespace NOBY.Api.Endpoints.Codebooks.GetAll;
@@ -25,11 +25,11 @@ internal class GetAllHandler
         return model;
     }
 
-    private readonly ICodebookServiceAbstraction _codebooks;
+    private readonly ICodebookServiceClients _codebooks;
     private readonly ICodebookMap _codebookMap;
     private readonly ILogger<GetAllHandler> _logger;
 
-    public GetAllHandler(ICodebookServiceAbstraction codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
+    public GetAllHandler(ICodebookServiceClients codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
     {
         _logger = logger;
         _codebooks = codebooks;

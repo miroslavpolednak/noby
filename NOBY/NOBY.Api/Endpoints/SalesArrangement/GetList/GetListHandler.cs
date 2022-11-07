@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DSContracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetList;
@@ -40,13 +40,13 @@ internal class GetListHandler
         return model;
     }
 
-    private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly ILogger<GetListHandler> _logger;
 
     public GetListHandler(
-        ISalesArrangementServiceAbstraction salesArrangementService, 
-        ICodebookServiceAbstraction codebookService, 
+        ISalesArrangementServiceClients salesArrangementService, 
+        ICodebookServiceClients codebookService, 
         ILogger<GetListHandler> logger)
     {
         _logger = logger;

@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.ProductService.Contracts;
 using DomainServices.ProductService.Api.Repositories;
@@ -14,13 +14,13 @@ internal class BaseMortgageHandler
 
     #region Construction
 
-    protected readonly ICodebookServiceAbstraction _codebookService;
+    protected readonly ICodebookServiceClients _codebookService;
     protected readonly LoanRepository _repository;
     protected readonly IMpHomeClient _mpHomeClient;
     protected readonly ILogger _logger;
 
     public BaseMortgageHandler(
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         LoanRepository repository,
         IMpHomeClient mpHomeClient,
         ILogger logger)

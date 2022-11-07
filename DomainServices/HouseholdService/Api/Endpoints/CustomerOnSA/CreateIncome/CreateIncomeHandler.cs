@@ -79,12 +79,12 @@ internal class CreateIncomeHandler
             _ => throw new NotImplementedException("This customer income type serializer is not implemented")
         };
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Repositories.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateIncomeHandler> _logger;
 
     public CreateIncomeHandler(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.HouseholdServiceDbContext dbContext,
         ILogger<CreateIncomeHandler> logger)
     {

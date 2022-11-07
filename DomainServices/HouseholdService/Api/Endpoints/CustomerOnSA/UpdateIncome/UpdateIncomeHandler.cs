@@ -66,10 +66,10 @@ internal sealed class UpdateIncomeHandler
             _ => throw new NotImplementedException("This customer income type serializer is not implemented")
         };
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Repositories.HouseholdServiceDbContext _dbContext;
 
-    public UpdateIncomeHandler(Repositories.HouseholdServiceDbContext dbContext, CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public UpdateIncomeHandler(Repositories.HouseholdServiceDbContext dbContext, CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

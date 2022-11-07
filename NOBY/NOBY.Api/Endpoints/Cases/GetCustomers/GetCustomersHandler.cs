@@ -122,8 +122,8 @@ internal class GetCustomersHandler
 
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
-    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
@@ -131,9 +131,9 @@ internal class GetCustomersHandler
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
-        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
     {
         _productService = productService;
         _customerService = customerService;

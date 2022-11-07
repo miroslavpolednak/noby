@@ -141,12 +141,12 @@ internal sealed class ProductChildMapper
             Code = (product.ProductTypeId == 20001 && product.LoanKindId == 2001) ? 35 : purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
         };
     
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CancellationToken _cancellationToken;
     private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
 
     public ProductChildMapper(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {

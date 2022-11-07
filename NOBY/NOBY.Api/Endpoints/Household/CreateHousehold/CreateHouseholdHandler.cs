@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 
@@ -44,7 +44,7 @@ internal class CreateHouseholdHandler
         };
     }
 
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ILogger<CreateHouseholdHandler> _logger;
@@ -52,7 +52,7 @@ internal class CreateHouseholdHandler
     public CreateHouseholdHandler(
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         ILogger<CreateHouseholdHandler> logger)
     {
         _logger = logger;

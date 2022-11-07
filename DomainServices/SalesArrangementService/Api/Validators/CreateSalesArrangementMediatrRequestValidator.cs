@@ -5,7 +5,7 @@ namespace DomainServices.SalesArrangementService.Api.Validators;
 internal class CreateSalesArrangementMediatrRequestValidator 
     : AbstractValidator<Dto.CreateSalesArrangementMediatrRequest>
 {
-    public CreateSalesArrangementMediatrRequestValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public CreateSalesArrangementMediatrRequestValidator(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.CaseId)
             .GreaterThan(0)

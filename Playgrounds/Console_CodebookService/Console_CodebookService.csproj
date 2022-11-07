@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -19,7 +19,7 @@
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CodebookService\Contracts\DomainServices.CodebookService.Contracts.csproj" />
   </ItemGroup>
 

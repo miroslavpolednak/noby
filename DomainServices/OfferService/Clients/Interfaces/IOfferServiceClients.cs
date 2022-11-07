@@ -1,9 +1,9 @@
 ﻿using CIS.Core.Results;
 using DomainServices.OfferService.Contracts;
 
-namespace DomainServices.OfferService.Abstraction;
+namespace DomainServices.OfferService.Clients;
 
-public interface IOfferServiceAbstraction
+public interface IOfferServiceClients
 {
 
     /// <summary>

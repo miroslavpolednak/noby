@@ -34,7 +34,7 @@
 		<ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CaseService\Abstraction\DomainServices.CaseService.Clients.csproj" />
-		<ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
+		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.ProductService.Contracts.csproj" />
 	</ItemGroup>
 </Project>

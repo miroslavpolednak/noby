@@ -2,7 +2,7 @@
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.OfferService.Abstraction;
+namespace DomainServices.OfferService.Clients;
 
 public static class OfferServiceExtensions
 {
@@ -21,7 +21,7 @@ public static class OfferServiceExtensions
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         // register storage services
-        services.AddTransient<IOfferServiceAbstraction, OfferService>();
+        services.AddTransient<IOfferServiceClients, OfferService>();
 
         // exception handling
         services.AddSingleton<ExceptionInterceptor>();

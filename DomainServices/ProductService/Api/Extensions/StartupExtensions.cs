@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using ExternalServices.Eas;
 using ExternalServices.MpHome;
 namespace DomainServices.ProductService.Api;

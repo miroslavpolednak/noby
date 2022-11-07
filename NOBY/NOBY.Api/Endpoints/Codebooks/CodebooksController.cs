@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.LoanKinds;
 
 namespace NOBY.Api.Endpoints.Codebooks;
@@ -103,7 +103,7 @@ public class CodebooksController : ControllerBase
     [HttpGet("fixation-period-length")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
-    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId)
             .Select(t => t.FixedRatePeriod)
@@ -117,7 +117,7 @@ public class CodebooksController : ControllerBase
     [HttpGet("product-loan-kinds")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<LoanKindsItem>), StatusCodes.Status200OK)]
-    public async Task<List<LoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+    public async Task<List<LoanKindsItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == productTypeId && t.IsValid)?
@@ -137,7 +137,7 @@ public class CodebooksController : ControllerBase
     [HttpGet("fixed-rate-periods")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>), StatusCodes.Status200OK)]
-    public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceAbstraction svc, CancellationToken cancellationToken)
+    public async Task<List<DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods.FixedRatePeriodsItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClients svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct && t.IsValid)
             .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })

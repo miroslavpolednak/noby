@@ -1,5 +1,5 @@
 ﻿using DomainServices.ProductService.Contracts;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -9,7 +9,7 @@ internal class GetProductListHandler
     #region Construction
 
     public GetProductListHandler(
-      ICodebookServiceAbstraction codebookService,
+      ICodebookServiceClients codebookService,
       Repositories.LoanRepository repository,
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         ILogger<GetProductListHandler> logger) : base(codebookService, repository, null, logger) { }

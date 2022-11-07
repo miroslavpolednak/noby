@@ -520,20 +520,20 @@
              <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
              <returns>Kolekce vyzadanych ciselniku.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
             Ciselnik fixace uveru.
             </summary>
             <returns>Kolekce dob fixaci v mesicich.</returns>
             <param name="productTypeId">ID typu produktu, pro ktery se maji vratit fixace.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
             Ciselnik druhu uveru.
             </summary>
             <param name="productTypeId">ID typu produktu, pro ktery se maji vratit druhy uveru.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClients,System.Threading.CancellationToken)">
             <summary>
             FixedRatePeriod s filtraci na product
             </summary>

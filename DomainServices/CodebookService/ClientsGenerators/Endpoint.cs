@@ -1,4 +1,4 @@
-﻿namespace DomainServices.CodebookService.AbstractionGenerators
+﻿namespace DomainServices.CodebookService.ClientsGenerators
 {
     internal class Endpoint
     {

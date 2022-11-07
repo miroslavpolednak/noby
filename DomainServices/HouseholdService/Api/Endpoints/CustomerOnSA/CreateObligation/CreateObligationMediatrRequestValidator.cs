@@ -5,7 +5,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateOblig
 internal class CreateObligationMediatrRequestValidator
     : AbstractValidator<CreateObligationMediatrRequest>
 {
-    public CreateObligationMediatrRequestValidator(CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public CreateObligationMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.CustomerOnSAId)
             .GreaterThan(0)

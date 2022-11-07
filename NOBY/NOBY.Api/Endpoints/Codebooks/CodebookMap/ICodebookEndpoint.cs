@@ -1,4 +1,4 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
@@ -8,5 +8,5 @@ public interface ICodebookEndpoint
 
     Type ReturnType { get; }
 
-    Task<IEnumerable<object>> GetObjects(ICodebookServiceAbstraction codebookService, CancellationToken cancellationToken);
+    Task<IEnumerable<object>> GetObjects(ICodebookServiceClients codebookService, CancellationToken cancellationToken);
 }

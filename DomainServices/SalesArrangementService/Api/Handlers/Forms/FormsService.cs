@@ -2,9 +2,9 @@
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.Foms.Enums;
 
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.ProductService.Clients;
 using DomainServices.UserService.Clients;
@@ -34,9 +34,9 @@ internal class FormsService
     private static readonly string StringJoinSeparator = ",";
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly IProductServiceClient _productService;
     private readonly IUserServiceClient _userService;
@@ -51,9 +51,9 @@ internal class FormsService
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
         SulmService.ISulmClient sulmClient,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
-        IOfferServiceAbstraction offerService,
+        IOfferServiceClients offerService,
         ICustomerServiceAbstraction customerService,
         IProductServiceClient productService,
         IUserServiceClient userService,

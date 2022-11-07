@@ -1,8 +1,8 @@
 ﻿using DomainServices.ProductService.Clients;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Cu = DomainServices.CustomerService.Contracts;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using Google.Protobuf;
@@ -97,15 +97,15 @@ internal sealed class CreateProductHandler
     }
 
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
-    private readonly IOfferServiceAbstraction _offerService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly IOfferServiceClients _offerService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly IProductServiceClient _productService;
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
-        IOfferServiceAbstraction offerService,
-        ISalesArrangementServiceAbstraction salesArrangementService,
+        IOfferServiceClients offerService,
+        ISalesArrangementServiceClients salesArrangementService,
         IProductServiceClient productService,
         ILogger<CreateProductHandler> logger)
     {

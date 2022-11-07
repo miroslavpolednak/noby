@@ -1,4 +1,4 @@
-﻿using Abstraction = DomainServices.SalesArrangementService.Abstraction;
+﻿using Abstraction = DomainServices.SalesArrangementService.Clients;
 using DSContracts = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
@@ -18,14 +18,14 @@ internal class GetMortgageBySalesArrangementHandler
         return await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(salesArrangementInstance.OfferId.Value), cancellationToken);
     }
 
-    private readonly Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly Abstraction.ISalesArrangementServiceClients _salesArrangementService;
     private readonly IMediator _mediator;
     private readonly ILogger<GetMortgageBySalesArrangementHandler> _logger;
     
     public GetMortgageBySalesArrangementHandler(
         IMediator mediator, 
         ILogger<GetMortgageBySalesArrangementHandler> logger, 
-        Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+        Abstraction.ISalesArrangementServiceClients salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
         _logger = logger;

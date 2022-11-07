@@ -1,5 +1,5 @@
 ﻿using _OS = DomainServices.OfferService.Contracts;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using Grpc.Core;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.CisTypes;
@@ -14,7 +14,7 @@ internal class SimulateMortgageHandler
     #region Construction
 
     private readonly ILogger<SimulateMortgageHandler> _logger;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
     private readonly OfferServiceDbContext _dbContext;
@@ -22,7 +22,7 @@ internal class SimulateMortgageHandler
     public SimulateMortgageHandler(
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         EasSimulationHT.IEasSimulationHTClient easSimulationHTClient
         )
     {

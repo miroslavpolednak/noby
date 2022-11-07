@@ -52,14 +52,14 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
     private readonly Repositories.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateHouseholdHandler> _logger;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
 
     public CreateHouseholdHandler(
-        DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.HouseholdServiceDbContext dbContext,
         ILogger<CreateHouseholdHandler> logger)
     {

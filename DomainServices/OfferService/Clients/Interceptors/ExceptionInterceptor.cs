@@ -3,8 +3,9 @@ using CIS.Infrastructure.gRPC;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
-namespace DomainServices.CodebookService.Abstraction;
+namespace DomainServices.OfferService.Clients;
 
 internal class ExceptionInterceptor : Interceptor
 {
@@ -30,24 +31,10 @@ internal class ExceptionInterceptor : Interceptor
         {
             return await responseAsync;
         }
-        catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition) // nedostupna sluzba EAS atd.
         {
-            _logger.LogError(ex, "CodebookService unavailable");
-            throw new CisServiceUnavailableException("CodebookService", methodFullName, ex.Message);
-        }
-        catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
-        {
-            throw new CisArgumentException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
-        }
-        catch (RpcException ex)
-        {
-            _logger.LogError(ex, $"Uncought RpcException: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex) when (ex is not RpcException)
-        {
-            _logger.LogError(ex, $"[{methodFullName}] {ex.Message}");
-            throw;
+            _logger.ExtServiceUnavailable("OfferService", ex);
+            throw new CisServiceUnavailableException("OfferService/dependant_service", methodFullName, ex.Message);
         }
     }
 }

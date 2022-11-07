@@ -33,9 +33,9 @@ internal sealed class DeveloperSearchHandler
         new ("developerName", "DeveloperName")
     };
 
-    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
 
-    public DeveloperSearchHandler(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public DeveloperSearchHandler(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         _codebookService = codebookService;
     }

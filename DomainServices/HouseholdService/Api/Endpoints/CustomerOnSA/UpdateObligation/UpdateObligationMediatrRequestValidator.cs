@@ -5,7 +5,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateOblig
 internal class UpdateObligationMediatrRequestValidator
     : AbstractValidator<UpdateObligationMediatrRequest>
 {
-    public UpdateObligationMediatrRequestValidator(CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public UpdateObligationMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.CustomerOnSAId)
             .GreaterThan(0)

@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Clients;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using _CA = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
@@ -80,15 +80,15 @@ internal class GetDetailHandler
         };
 
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly DomainServices.OfferService.Abstraction.IOfferServiceAbstraction _offerService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly DomainServices.OfferService.Clients.IOfferServiceClients _offerService;
     
     public GetDetailHandler(
         ICaseServiceClient caseService,
-        DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
-        DomainServices.OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        ISalesArrangementServiceAbstraction salesArrangementService)
+        DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
+        DomainServices.OfferService.Clients.IOfferServiceClients offerService,
+        ISalesArrangementServiceClients salesArrangementService)
     {
         _codebookService = codebookService;
         _offerService = offerService;

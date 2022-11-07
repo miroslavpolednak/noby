@@ -96,13 +96,13 @@ internal class LinkModelationToSalesArrangementHandler
     }
 
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
-    private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;
+    private readonly OfferService.Clients.IOfferServiceClients _offerService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
 
     public LinkModelationToSalesArrangementHandler(
         CaseService.Clients.ICaseServiceClient caseService,
         Repositories.SalesArrangementServiceDbContext dbContext,
-        OfferService.Abstraction.IOfferServiceAbstraction offerService)
+        OfferService.Clients.IOfferServiceClients offerService)
     {
         _caseService = caseService;
         _dbContext = dbContext;
