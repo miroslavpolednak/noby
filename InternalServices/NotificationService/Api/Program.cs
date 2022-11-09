@@ -10,7 +10,7 @@ using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.Mcs;
 using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Api.S3;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;

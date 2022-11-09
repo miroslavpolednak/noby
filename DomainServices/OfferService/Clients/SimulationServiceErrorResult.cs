@@ -1,4 +1,4 @@
-﻿namespace DomainServices.OfferService.Abstraction;
+﻿namespace DomainServices.OfferService.Clients;
 
 public sealed class SimulationServiceErrorResult : CIS.Core.Results.IServiceCallResult
 {

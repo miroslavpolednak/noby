@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Primitives;
 using System.Collections.Concurrent;
 
-namespace DomainServices.CodebookService.Abstraction;
+namespace DomainServices.CodebookService.Clients;
 
-internal sealed class AbstractionMemoryCache
+internal sealed class ClientsMemoryCache
 {
     private MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();

@@ -1,5 +1,4 @@
-﻿using DomainServices.OfferService.Abstraction;
-using Microsoft.Azure.Services.AppAuthentication;
+﻿using DomainServices.OfferService.Clients;
 using NOBY.Api.Endpoints.Offer.Dto;
 using DSContracts = DomainServices.OfferService.Contracts;
 
@@ -32,10 +31,10 @@ internal class GetFullPaymentScheduleByOfferIdHandler
         };
     }
 
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ILogger<GetFullPaymentScheduleByOfferIdHandler> _logger;
 
-    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceAbstraction offerService, ILogger<GetFullPaymentScheduleByOfferIdHandler> logger)
+    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClients offerService, ILogger<GetFullPaymentScheduleByOfferIdHandler> logger)
     {
         _logger = logger;
         _offerService = offerService;

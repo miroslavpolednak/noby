@@ -38,12 +38,12 @@ internal class UpdateCaseStateHandler
     }
 
     private readonly IMediator _mediator;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Repositories.CaseServiceRepository _repository;
 
     public UpdateCaseStateHandler(
         IMediator mediator,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.CaseServiceRepository repository)
     {
         _mediator = mediator;

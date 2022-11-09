@@ -66,10 +66,10 @@ internal class CasesModelConverter
 	private List<DomainServices.CodebookService.Contracts.Endpoints.CaseStates.CaseStateItem> _caseStates;
 	private List<DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskTypes.WorkflowTaskTypeItem> _taskTypes;
 
-	private readonly DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+	private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public CasesModelConverter(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public CasesModelConverter(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _codebookService = codebookService;

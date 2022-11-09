@@ -1,6 +1,6 @@
 ﻿using CIS.ExternalServicesHelpers;
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Api.Clients;
 using ExternalServices.MpHome;
 using FluentValidation;

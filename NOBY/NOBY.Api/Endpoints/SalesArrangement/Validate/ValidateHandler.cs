@@ -12,9 +12,9 @@ internal sealed class ValidateHandler
         return new ValidateResponse(response);
     }
 
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
 
-    public ValidateHandler(DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+    public ValidateHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
     }

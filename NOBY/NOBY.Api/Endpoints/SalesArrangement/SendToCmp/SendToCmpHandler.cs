@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Clients;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
@@ -11,12 +11,12 @@ internal class SendToCmpHandler
     #region Construction
 
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly ILogger<SendToCmpHandler> _logger;
 
     public SendToCmpHandler(
         ICaseServiceClient caseService,
-        ISalesArrangementServiceAbstraction salesArrangementService,
+        ISalesArrangementServiceClients salesArrangementService,
         ILogger<SendToCmpHandler> logger)
     {
         _caseService = caseService;

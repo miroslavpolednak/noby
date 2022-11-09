@@ -1,5 +1,5 @@
-using DomainServices.SalesArrangementService.Abstraction;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
+using DomainServices.OfferService.Clients;
 using DomainServices.RiskIntegrationService.Clients.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
@@ -13,15 +13,15 @@ internal class GetLoanApplicationAssessmentHandler
     #region Construction
 
     private readonly LoanApplicationDataService _loanApplicationDataService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ILoanApplicationServiceClient _loanApplicationService;
     private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
 
     public GetLoanApplicationAssessmentHandler(
         LoanApplicationDataService loanApplicationDataService,
-        ISalesArrangementServiceAbstraction salesArrangementService,
-        IOfferServiceAbstraction offerService,
+        ISalesArrangementServiceClients salesArrangementService,
+        IOfferServiceClients offerService,
         ILoanApplicationServiceClient loanApplicationService,
         IRiskBusinessCaseServiceClient riskBusinessCaseService
         )

@@ -1,8 +1,8 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Abstraction;
+namespace DomainServices.SalesArrangementService.Clients;
 
-public interface ISalesArrangementServiceAbstraction
+public interface ISalesArrangementServiceClients
 {
     /// <summary>
     /// Vytvoreni Sales Arrangement

@@ -1,11 +1,11 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.OfferService.Abstraction;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.OfferService.Clients;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.ProductService.Clients;
 using DomainServices.CaseService.Clients;
 using DomainServices.UserService.Clients;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.RiskIntegrationService.Clients;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;

@@ -42,7 +42,7 @@ internal sealed class CalculateHandler
             .FirstOrDefault(t => t.ProductTypeId is not null && t.ProductTypeId.Contains(productTypeId))
         ?? throw new CisValidationException(17006, $"ProductTypeId={productTypeId} is missing in RiskApplicationTypes codebook");
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;
     private readonly Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient _riskCharacteristicsClient;
     private readonly Mappers.CalculateRequestMapper _requestMapper;
@@ -53,7 +53,7 @@ internal sealed class CalculateHandler
         Mappers.CalculateRequestMapper requestMapper,
         Mappers.DtiRequestMapper dtiRequestMapper,
         Mappers.DstiRequestMapper dstiRequestMapper,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Clients.RiskCharakteristics.V1.IRiskCharakteristicsClient riskCharacteristicsClient,
         Clients.CreditWorthiness.V1.ICreditWorthinessClient client)
     {

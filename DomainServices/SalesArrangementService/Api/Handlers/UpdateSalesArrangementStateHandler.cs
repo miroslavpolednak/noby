@@ -22,12 +22,12 @@ internal class UpdateSalesArrangementStateHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<UpdateSalesArrangementStateHandler> _logger;
 
     public UpdateSalesArrangementStateHandler(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.SalesArrangementServiceRepository repository,
         ILogger<UpdateSalesArrangementStateHandler> logger)
     {

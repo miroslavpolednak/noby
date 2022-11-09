@@ -8,9 +8,9 @@ internal sealed class DeleteSalesArrangementHandler
         await _salesArrangementService.DeleteSalesArrangement(request.SalesArrangementId, cancellationToken);
     }
 
-    private readonly DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
 
-    public DeleteSalesArrangementHandler(DomainServices.SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService)
+    public DeleteSalesArrangementHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
     }

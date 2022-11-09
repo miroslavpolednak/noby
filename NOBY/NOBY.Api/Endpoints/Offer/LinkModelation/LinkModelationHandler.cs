@@ -1,4 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.SalesArrangementService.Clients;
 using _Ca = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -36,12 +36,12 @@ internal class LinkModelationHandler
         }
     }
 
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public LinkModelationHandler(
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
-        ISalesArrangementServiceAbstraction salesArrangementService)
+        ISalesArrangementServiceClients salesArrangementService)
     {
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;

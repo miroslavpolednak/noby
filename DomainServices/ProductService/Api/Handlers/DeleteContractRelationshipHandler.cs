@@ -1,6 +1,6 @@
 ﻿using ExternalServices.MpHome.V1._1;
 using ExternalServices.MpHome.V1._1.MpHomeWrapper;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -10,7 +10,7 @@ internal class DeleteContractRelationshipHandler
     #region Construction
 
     public DeleteContractRelationshipHandler(
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         Repositories.LoanRepository repository,
         IMpHomeClient mpHomeClient,
         ILogger<DeleteContractRelationshipHandler> logger) : base(codebookService, repository, mpHomeClient, logger)

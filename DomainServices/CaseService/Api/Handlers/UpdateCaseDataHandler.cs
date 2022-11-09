@@ -18,11 +18,11 @@ internal class UpdateCaseDataHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
     
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Repositories.CaseServiceRepository _repository;
     
     public UpdateCaseDataHandler(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.CaseServiceRepository repository)
     {
         _codebookService = codebookService;

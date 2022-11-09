@@ -1,7 +1,7 @@
-﻿using DomainServices.CodebookService.Abstraction;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.OfferService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.OfferService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.CaseService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
@@ -81,11 +81,11 @@ internal class CreateMortgageCaseHandler
     }
 
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IMediator _mediator;
@@ -94,11 +94,11 @@ internal class CreateMortgageCaseHandler
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceAbstraction salesArrangementService,
+        ISalesArrangementServiceClients salesArrangementService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
-        ICodebookServiceAbstraction codebookService, 
-        IOfferServiceAbstraction offerService, 
+        ICodebookServiceClients codebookService, 
+        IOfferServiceClients offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
         _customerOnSAService = customerOnSAService;

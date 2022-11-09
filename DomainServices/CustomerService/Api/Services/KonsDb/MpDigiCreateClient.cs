@@ -5,7 +5,7 @@ using CIS.Core.Results;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using ExternalServices.MpHome.V1._1;
 using ExternalServices.MpHome.V1._1.MpHomeWrapper;
 using FastEnumUtility;
@@ -19,14 +19,14 @@ public class MpDigiCreateClient
 {
     private readonly IMpHomeClient _mpHomeClient;
     private readonly IConnectionProvider _konsDbProvider;
-    private readonly ICodebookServiceAbstraction _codebook;
+    private readonly ICodebookServiceClients _codebook;
 
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
     private List<Endpoints.Countries.CountriesItem> _countries = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
     private List<Endpoints.ContactTypes.ContactTypeItem> _contactTypes = null!;
 
-    public MpDigiCreateClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceAbstraction codebook)
+    public MpDigiCreateClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceClients codebook)
     {
         _mpHomeClient = mpHomeClient;
         _konsDbProvider = konsDbProvider;

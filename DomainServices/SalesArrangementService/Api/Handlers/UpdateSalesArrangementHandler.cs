@@ -3,7 +3,7 @@ using _Case = DomainServices.CaseService.Contracts;
 using CIS.Core.Security;
 using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using CIS.Foms.Enums;
 using System.ComponentModel.DataAnnotations;
 using DomainServices.CaseService.Clients;
@@ -72,7 +72,7 @@ internal class UpdateSalesArrangementHandler
 
     private readonly ICaseServiceClient _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly IUserServiceClient _userService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
@@ -81,7 +81,7 @@ internal class UpdateSalesArrangementHandler
     public UpdateSalesArrangementHandler(
         ICaseServiceClient caseService,
         ICurrentUserAccessor userAccessor,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         IUserServiceClient userService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient)

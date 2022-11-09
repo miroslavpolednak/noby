@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using CIS.DomainServicesSecurity.ContextUser;
 
 Console.WriteLine("run!");
@@ -19,7 +19,7 @@ var serviceProvider = new ServiceCollection()
     .AddCodebookService()
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction>() ?? throw new Exception();
+var service = serviceProvider.GetService<DomainServices.CodebookService.Clients.ICodebookServiceClients>() ?? throw new Exception();
 
 Console.WriteLine("RUN 1");
 var result = await service.ProductTypes();

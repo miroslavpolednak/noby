@@ -6,7 +6,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncom
 internal class UpdateIncomeBaseDataMediatrRequestValidator
     : AbstractValidator<UpdateIncomeBaseDataMediatrRequest>
 {
-    public UpdateIncomeBaseDataMediatrRequestValidator(CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public UpdateIncomeBaseDataMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.IncomeId)
             .GreaterThan(0)

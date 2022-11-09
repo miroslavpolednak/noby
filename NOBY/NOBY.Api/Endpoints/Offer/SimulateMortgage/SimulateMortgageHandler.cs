@@ -1,5 +1,5 @@
-﻿using DomainServices.OfferService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
+﻿using DomainServices.OfferService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using DSContract = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
@@ -52,10 +52,10 @@ internal class SimulateMortgageHandler
         }
     }
 
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly IOfferServiceClients _offerService;
     
-    public SimulateMortgageHandler(IOfferServiceAbstraction offerService, ISalesArrangementServiceAbstraction salesArrangementService)
+    public SimulateMortgageHandler(IOfferServiceClients offerService, ISalesArrangementServiceClients salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;

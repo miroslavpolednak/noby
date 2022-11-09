@@ -129,11 +129,11 @@ internal sealed class HouseholdsChildMapper
     private List<CodebookService.Contracts.Endpoints.ObligationTypes.ObligationTypesItem>? _obligationTypes;
     
     private readonly CustomersChildMapper _customersMapper;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
 
     public HouseholdsChildMapper(
         CustomersChildMapper customersMapper,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+        CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         _customersMapper = customersMapper;
         _codebookService = codebookService;

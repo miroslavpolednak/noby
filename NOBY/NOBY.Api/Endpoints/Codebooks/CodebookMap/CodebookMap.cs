@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts;
 using NOBY.Api.Endpoints.Codebooks.GetAll.Dto;
 using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
@@ -87,7 +87,7 @@ public class CodebookMap : ICodebookMap
         _endpoints.Add(productTypesEndpoint.Code, productTypesEndpoint);
     }
 
-    private void AddCodebook(Expression<Func<ICodebookServiceAbstraction, Delegate>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!)
+    private void AddCodebook(Expression<Func<ICodebookServiceClients, Delegate>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!)
     {
         var methodName = GetMethodName((UnaryExpression)expression.Body);
         var returnType = GetCodebookReturnType(expression.Body);
@@ -117,7 +117,7 @@ public class CodebookMap : ICodebookMap
         return returnTaskListType.GetGenericArguments().First();
     }
 
-    private static Func<CancellationToken, Task<List<ProductTypeItem>>> ProductTypesCall(ICodebookServiceAbstraction codebookService)
+    private static Func<CancellationToken, Task<List<ProductTypeItem>>> ProductTypesCall(ICodebookServiceClients codebookService)
     {
         return CallProductTypesEndpoint;
 

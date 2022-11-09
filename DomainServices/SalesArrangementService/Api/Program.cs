@@ -1,8 +1,8 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.SalesArrangementService.Api;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using DomainServices.CustomerService.Abstraction;
 using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;

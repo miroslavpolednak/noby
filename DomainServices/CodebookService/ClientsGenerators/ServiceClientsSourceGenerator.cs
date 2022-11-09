@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace DomainServices.CodebookService.AbstractionGenerators
+namespace DomainServices.CodebookService.ClientsGenerators
 {
     [Generator]
-    public class ServiceAbstractionSourceGenerator : ISourceGenerator
+    public class ServiceClientsSourceGenerator : ISourceGenerator
     {
         private static string[] _hardcodedCodebooks = new[] { "DeveloperSearch", "Reset" };
 
@@ -32,12 +32,12 @@ namespace DomainServices.CodebookService.AbstractionGenerators
                 .ToList();
 
             var sbImpl = new StringBuilder();
-            sbImpl.AppendLine("namespace DomainServices.CodebookService.Abstraction;");
+            sbImpl.AppendLine("namespace DomainServices.CodebookService.Clients;");
             sbImpl.AppendLine("internal partial class CodebookService {");
 
             var sbInterface = new StringBuilder();
-            sbInterface.AppendLine("namespace DomainServices.CodebookService.Abstraction;");
-            sbInterface.AppendLine("public partial interface ICodebookServiceAbstraction {");
+            sbInterface.AppendLine("namespace DomainServices.CodebookService.Clients;");
+            sbInterface.AppendLine("public partial interface ICodebookServiceClients {");
 
             endpoints.ForEach(m =>
             {
@@ -53,7 +53,7 @@ namespace DomainServices.CodebookService.AbstractionGenerators
             sbInterface.Append("}");
 
             // generate source using targets ...
-            context.AddSource("ICodebookServiceAbstraction_generated.cs", sbInterface.ToString());
+            context.AddSource("ICodebookServiceClients_generated.cs", sbInterface.ToString());
             context.AddSource("CodebookService_generated.cs", sbImpl.ToString());
         }
     }

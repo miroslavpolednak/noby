@@ -14,7 +14,7 @@ public class GrpcValidationBehaviour<TRequest, TResponse>
         _validators = validators;
     }
 
-    public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var validationFailures = _validators
             .Select(validator => validator.ValidateAsync(request, cancellationToken))

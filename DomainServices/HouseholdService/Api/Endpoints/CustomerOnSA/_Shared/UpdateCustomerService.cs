@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Customer = DomainServices.CustomerService.Contracts;
 
@@ -75,7 +75,7 @@ internal sealed class UpdateCustomerService
 
     private _Customer.CustomerDetailResponse? _cachedCustomerInstance;
     
-    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceAbstraction _customerService;
     private readonly Eas.IEasClient _easClient;
@@ -83,7 +83,7 @@ internal sealed class UpdateCustomerService
 
     public UpdateCustomerService(
         Eas.IEasClient easClient,
-        ISalesArrangementServiceAbstraction salesArrangementService,
+        ISalesArrangementServiceClients salesArrangementService,
         ICaseServiceClient caseService,
         ICustomerServiceAbstraction customerService,
         Repositories.HouseholdServiceDbContext dbContext)
