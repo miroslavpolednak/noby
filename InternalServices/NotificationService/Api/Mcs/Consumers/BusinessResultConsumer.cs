@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.Attributes;
-using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Requests;
+using CIS.InternalServices.NotificationService.Api.Mcs.Consumers.Requests;
 using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;
 using MediatR;
 
-namespace CIS.InternalServices.NotificationService.Api.Messaging.Consumers;
+namespace CIS.InternalServices.NotificationService.Api.Mcs.Consumers;
 
 [ScopedService, SelfService]
 public class BusinessResultConsumer
@@ -33,9 +33,17 @@ public class BusinessResultConsumer
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var result = _consumer.Consume(stoppingToken);
-                var request = new ResultConsumeRequest { Message = result.Message };
-                await _mediator.Send(request, stoppingToken);
+                try
+                {
+                    var result = _consumer.Consume(stoppingToken);
+                    var request = new ResultConsumeRequest { Message = result.Message };
+                    await _mediator.Send(request, stoppingToken);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e,$"Consumer '{nameof(BusinessResultConsumer)}': Consuming topic '{Topics.McsResultIn}' failed.");
+                }
+
             }
         }, stoppingToken);
 

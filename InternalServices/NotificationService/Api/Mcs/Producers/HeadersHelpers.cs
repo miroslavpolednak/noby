@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Confluent.Kafka;
 
-namespace CIS.InternalServices.NotificationService.Api.Messaging.Producers;
+namespace CIS.InternalServices.NotificationService.Api.Mcs.Producers;
 
 public static class HeadersHelpers
 {

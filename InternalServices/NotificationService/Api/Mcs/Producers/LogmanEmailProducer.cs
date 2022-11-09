@@ -6,7 +6,7 @@ using Confluent.Kafka;
 using cz.kb.osbs.mcs.sender.sendapi.v2.email;
 using Microsoft.Extensions.Options;
 
-namespace CIS.InternalServices.NotificationService.Api.Messaging.Producers;
+namespace CIS.InternalServices.NotificationService.Api.Mcs.Producers;
 
 [ScopedService, SelfService]
 public class LogmanEmailProducer

@@ -7,7 +7,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
-using CIS.InternalServices.NotificationService.Api.Messaging;
+using CIS.InternalServices.NotificationService.Api.Mcs;
 using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Api.S3;
 using DomainServices.CodebookService.Abstraction;

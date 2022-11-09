@@ -1,12 +1,12 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Messaging.Consumers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.BackgroundServices;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Mcs.Consumers;
+using CIS.InternalServices.NotificationService.Api.Mcs.Consumers.BackgroundServices;
+using CIS.InternalServices.NotificationService.Api.Mcs.Producers;
 using CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
 using Confluent.Kafka;
 using Confluent.Kafka.DependencyInjection;
 
-namespace CIS.InternalServices.NotificationService.Api.Messaging;
+namespace CIS.InternalServices.NotificationService.Api.Mcs;
 
 public static class ServiceCollectionExtensions
 {

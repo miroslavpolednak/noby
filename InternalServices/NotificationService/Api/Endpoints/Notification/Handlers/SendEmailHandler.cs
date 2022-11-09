@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using CIS.InternalServices.NotificationService.Api.Mcs.Mappers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Mcs.Producers;
 using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Api.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
