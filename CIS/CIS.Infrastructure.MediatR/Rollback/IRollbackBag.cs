@@ -12,6 +12,8 @@ public interface IRollbackBag
     /// </summary>
     int Count { get; }
 
+    bool ContainsKey(string key);
+
     /// <summary>
     /// Prida dalsi polozku do bagu. Jednotlive polozky jsou nasledne readonly dostupne jako dictionary.
     /// </summary>

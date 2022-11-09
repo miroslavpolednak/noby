@@ -8,6 +8,8 @@ internal sealed class RollbackBag
 {
     private Dictionary<string, object> _traceValues = new();
 
+    public bool ContainsKey(string key) => _traceValues.ContainsKey(key);
+
     public object? this[string key] => _traceValues.ContainsKey(key) ? _traceValues[key] : null;
 
     public int Count => _traceValues.Count;
