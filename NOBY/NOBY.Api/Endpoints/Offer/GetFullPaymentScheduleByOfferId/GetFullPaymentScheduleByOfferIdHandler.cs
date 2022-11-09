@@ -1,5 +1,4 @@
 ﻿using DomainServices.OfferService.Clients;
-using Microsoft.Azure.Services.AppAuthentication;
 using NOBY.Api.Endpoints.Offer.Dto;
 using DSContracts = DomainServices.OfferService.Contracts;
 
