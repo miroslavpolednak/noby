@@ -58,7 +58,6 @@ internal sealed class HouseholdCustomerChildMapper
                 },
             HasEmail = customer.HasEmail,
             IsPartner = customer.IsPartner,
-            ManagementType = "XX",
             Income = await _incomeMapper.MapIncomes(customer.Income, verification),
             Taxpayer = customer.Taxpayer,
             CounterpartyType = "FOO",
