@@ -30,7 +30,7 @@ public class PdfDocumentManager
 
         //pdf.OutputIntents.Add(outputIntents);
 
-        var path = Path.Combine("D:\\MPSS\\TestPdf", "NABIDKA_091122_result.pdf");
+        var path = Path.Combine("D:\\MPSS\\TestPdf", "KALKULHU_101122_result.pdf");
 
         pdf.Draw(path);
 
@@ -64,7 +64,7 @@ public class PdfDocumentManager
 
     private Pdf.Document LoadPdfTemplate()
     {
-        var path = Path.Combine("D:\\MPSS\\TestPdf", "NABIDKA_091122.pdf");
+        var path = Path.Combine("D:\\MPSS\\TestPdf", "KALKULHU_101122.pdf");
 
         var fileStream = File.OpenRead(path);
 

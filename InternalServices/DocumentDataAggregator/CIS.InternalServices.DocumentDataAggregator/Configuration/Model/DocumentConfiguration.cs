@@ -4,9 +4,9 @@ internal class DocumentConfiguration
 {
     public const string FieldPathCollectionMarker = "[]";
 
-    public InputConfig InputConfig { get; init; } = null!;
+    public required InputConfig InputConfig { get; init; }
 
-    public IReadOnlyCollection<SourceField> SourceFields { get; init; } = null!;
+    public required IReadOnlyCollection<SourceField> SourceFields { get; init; }
 
-    public ILookup<int, DocumentDynamicStringFormat> DynamicStringFormats { get; init; } = null!;
+    public required ILookup<int, DocumentDynamicStringFormat> DynamicStringFormats { get; init; }
 }

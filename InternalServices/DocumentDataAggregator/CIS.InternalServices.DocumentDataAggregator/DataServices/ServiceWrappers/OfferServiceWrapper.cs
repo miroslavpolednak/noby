@@ -22,7 +22,5 @@ internal class OfferServiceWrapper : IServiceWrapper
         var result = await _offerService.GetMortgageOfferDetail(input.OfferId.Value, cancellationToken);
 
         data.Offer = ServiceCallResult.ResolveAndThrowIfError<GetMortgageOfferDetailResponse>(result);
-
-        data.Offer.AdditionalSimulationResults.PaymentScheduleSimple.RemoveAt(2);
     }
 }

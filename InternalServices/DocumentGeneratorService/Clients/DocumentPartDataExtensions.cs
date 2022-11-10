@@ -13,6 +13,10 @@ public static class DocumentPartDataExtensions
                 partData.Text = text;
                 break;
 
+            case DateTime date:
+                partData.Date = date;
+                break;
+
             case GrpcDate date:
                 partData.Date = date;
                 break;
