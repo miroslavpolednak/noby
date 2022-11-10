@@ -1,6 +1,5 @@
 ﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using NOBY.Api.SharedDto;
-using dto = NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
