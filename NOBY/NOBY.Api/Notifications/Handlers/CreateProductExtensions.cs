@@ -14,6 +14,7 @@ internal static class CreateProductExtensions
             LoanInterestRate = offerData.SimulationResults.LoanInterestRate,
             ProductTypeId = offerData.SimulationInputs.ProductTypeId,
             LoanPaymentAmount = offerData.SimulationResults.LoanPaymentAmount,
+            LoanKindId= offerData.SimulationInputs.LoanKindId,
             PartnerId = partnerId
         };
         model.Relationships.Add(new Relationship { ContractRelationshipTypeId = 1, PartnerId = partnerId });//TODO tady je vzdy 1? Jako Vlastnik?
