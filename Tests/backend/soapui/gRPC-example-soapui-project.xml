@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="6772e154-74c4-481d-ad13-8d10ceb3b504" activeEnvironment="Default" name="Project 1" resourceRoot="" soapui-version="5.7.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:testSuite id="5defff0b-9981-44e3-8322-11df36ecd01d" name="gRPC Call Basic Test"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="be871b63-d0fb-49ea-883f-127392b2fb0b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="gRPC Call 0001" searchProperties="true"><con:settings/><con:testStep type="groovy" name="Groovy Script" id="a61f0cce-a517-41fa-8878-f87396b067aa"><con:settings/><con:config><script>import ReflectionCall;
+import com.google.common.base.Preconditions;
+import org.json.JSONObject;
+
+log.info "Toto je test"
+
+int portBase=31000; //FAT
+String host= "172.30.35.51";
+
+ReflectionCall callerServiceDiscovery=new ReflectionCall(host , portBase+0, "CIS.InternalServices.ServiceDiscovery.v1.DiscoveryService","Basic YTph",3,null);
+
+        JSONObject joA = new JSONObject();
+        JSONObject joB = new JSONObject();
+        JSONObject joC = new JSONObject();
+
+
+        joA = new JSONObject();
+        joB = new JSONObject();
+        joC = new JSONObject();
+        joA.put("Environment","FAT");
+        joA.put("ServiceType","Grpc");
+        log.info(joA.toString(2));
+        joB=callerServiceDiscovery.call("GetServices", joA);
+        log.info(joB.toString(2));
+
+
+log.info "Konec testu"
+
+//log.info callerServiceDiscovery.testString();
+
+</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
