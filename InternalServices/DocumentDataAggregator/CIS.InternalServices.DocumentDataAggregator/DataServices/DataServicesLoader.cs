@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 using CIS.InternalServices.DocumentDataAggregator.Mapper;
+using DomainServices.CodebookService.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices;
@@ -10,11 +11,13 @@ internal class DataServicesLoader
     private delegate Task ServiceCall(InputParameters input, AggregatedData data, CancellationToken cancellationToken);
 
     private readonly IServiceProvider _serviceProvider;
+    private readonly ICodebookServiceAbstraction _codebookService;
     private readonly Dictionary<DataSource, ServiceCall> _serviceMap = new();
 
-    public DataServicesLoader(IServiceProvider serviceProvider)
+    public DataServicesLoader(IServiceProvider serviceProvider, ICodebookServiceAbstraction codebookService)
     {
         _serviceProvider = serviceProvider;
+        _codebookService = codebookService;
 
         ConfigureServiceMap();
     }
@@ -32,6 +35,8 @@ internal class DataServicesLoader
             await ProcessRemainingDataSources(status, parameters, aggregatedData);
             SetInputParameters(status, parameters, aggregatedData);
         }
+
+        await aggregatedData.LoadCodebooks(_codebookService);
     }
 
     private async Task ProcessRemainingDataSources(DataLoaderStatus status, InputParameters parameters, AggregatedData aggregatedData)

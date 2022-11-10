@@ -21,7 +21,15 @@ internal static class MapperHelper
 
         if (memberNames.Length == 1)
         {
-            return ObjectAccessor.Create(obj)[memberNames.First()];
+            try
+            {
+                return ObjectAccessor.Create(obj)[memberNames.First()];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         var currentObject = obj;

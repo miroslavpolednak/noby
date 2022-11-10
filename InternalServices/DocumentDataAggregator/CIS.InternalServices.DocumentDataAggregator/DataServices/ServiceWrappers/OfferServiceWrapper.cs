@@ -1,5 +1,5 @@
-﻿using AutoFixture;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Core.Results;
+using DomainServices.OfferService.Abstraction;
 using DomainServices.OfferService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
@@ -7,43 +7,22 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class OfferServiceWrapper : IServiceWrapper
 {
-    //private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceAbstraction _offerService;
 
-    //public OfferServiceWrapper(IOfferServiceAbstraction offerService)
-    //{
-    //    _offerService = offerService;
-    //}
+    public OfferServiceWrapper(IOfferServiceAbstraction offerService)
+    {
+        _offerService = offerService;
+    }
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
-        //var result = await _offerService.GetMortgageOfferDetail(offerId, cancellationToken);
+        if (!input.OfferId.HasValue)
+            throw new ArgumentNullException(nameof(InputParameters.OfferId));
 
-        //return ServiceCallResult.ResolveAndThrowIfError<GetMortgageOfferDetailResponse>(result);
+        var result = await _offerService.GetMortgageOfferDetail(input.OfferId.Value, cancellationToken);
 
-        var fixture = new Fixture();
+        data.Offer = ServiceCallResult.ResolveAndThrowIfError<GetMortgageOfferDetailResponse>(result);
 
-        fixture.Customize<GrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()).OmitAutoProperties());
-        fixture.Customize<NullableGrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()!).OmitAutoProperties());
-
-        data.Offer = fixture.Build<GetMortgageOfferDetailResponse>()
-                            .With(c => c.OfferId, input.OfferId)
-                            .Create();
-
-        data.Offer.AdditionalSimulationResults.PaymentScheduleSimple.Add(fixture.Create<PaymentScheduleSimple>());
-
-        data.Offer.AdditionalSimulationResults.Fees.Add(fixture.Create<ResultFee>());
-
-        data.Offer.AdditionalSimulationResults.MarketingActions.Add(new ResultMarketingAction
-        {
-            Applied = 1,
-            Code = "DOMICILACE"
-        });
-    }
-
-    public class TestFixture
-    {
-        public string Name { get; set; }
-
-        public ICollection<GrpcDate> Test { get; set; }
+        data.Offer.AdditionalSimulationResults.PaymentScheduleSimple.RemoveAt(2);
     }
 }

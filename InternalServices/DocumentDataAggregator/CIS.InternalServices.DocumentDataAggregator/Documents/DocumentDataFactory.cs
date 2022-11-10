@@ -9,6 +9,7 @@ internal static class DocumentDataFactory
         document switch
         {
             Document.Offer => new OfferTemplateData(),
+            Document.Calculation => new OfferTemplateData(),
             _ => new AggregatedData()
         };
 }

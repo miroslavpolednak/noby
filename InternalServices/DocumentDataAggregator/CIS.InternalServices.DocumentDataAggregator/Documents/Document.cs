@@ -2,5 +2,6 @@
 
 public enum Document
 {
-    Offer = 1
+    Offer = 1,
+    Calculation = 2
 }

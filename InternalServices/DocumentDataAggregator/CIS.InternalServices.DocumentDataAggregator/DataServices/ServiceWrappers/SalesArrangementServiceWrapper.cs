@@ -1,5 +1,5 @@
-﻿using AutoFixture;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Core.Results;
+using DomainServices.SalesArrangementService.Abstraction;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
@@ -7,15 +7,20 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class SalesArrangementServiceWrapper : IServiceWrapper
 {
-    public Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
+    private readonly ISalesArrangementServiceAbstraction _salesArrangementService;
+
+    public SalesArrangementServiceWrapper(ISalesArrangementServiceAbstraction salesArrangementService)
     {
-        var fixture = new Fixture();
-        
-        fixture.Customize<GrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()).OmitAutoProperties());
-        fixture.Customize<NullableGrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()!).OmitAutoProperties());
+        _salesArrangementService = salesArrangementService;
+    }
 
-        data.SalesArrangement = fixture.Build<SalesArrangement>().Create();
+    public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
+    {
+        if (!input.SalesArrangementId.HasValue)
+            throw new ArgumentNullException(nameof(InputParameters.SalesArrangementId));
 
-        return Task.CompletedTask;
+        var result = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId.Value, cancellationToken);
+
+        data.SalesArrangement = ServiceCallResult.ResolveAndThrowIfError<SalesArrangement>(result);
     }
 }

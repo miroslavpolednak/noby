@@ -1,5 +1,5 @@
-﻿using AutoFixture;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Core.Results;
+using DomainServices.CaseService.Abstraction;
 using DomainServices.CaseService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
@@ -7,15 +7,20 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class CaseServiceWrapper : IServiceWrapper
 {
-    public Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
+    private readonly ICaseServiceAbstraction _caseService;
+
+    public CaseServiceWrapper(ICaseServiceAbstraction caseService)
     {
-        var fixture = new Fixture();
+        _caseService = caseService;
+    }
 
-        fixture.Customize<GrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()).OmitAutoProperties());
-        fixture.Customize<NullableGrpcDate>(x => x.FromFactory(() => fixture.Create<DateTime>()!).OmitAutoProperties());
+    public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
+    {
+        if (!input.CaseId.HasValue)
+            throw new ArgumentNullException(nameof(InputParameters.CaseId));
 
-        data.Case = fixture.Build<Case>().Create();
+        var result = await _caseService.GetCaseDetail(input.CaseId.Value, cancellationToken);
 
-        return Task.CompletedTask;
+        data.Case = ServiceCallResult.ResolveAndThrowIfError<Case>(result);
     }
 }
