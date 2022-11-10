@@ -30,7 +30,7 @@ internal class SalesArrangementParametersMortgageValidator
     {
         RuleFor(t => t.IncomeCurrencyCode)
             .NotEmpty()
-            .WithMessage("IncomeCurrencyCode is empty").WithErrorCode("16034");
+            .WithMessage("IncomeCurrencyCode is empty").WithErrorCode("18034");
         RuleFor(t => t.IncomeCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {

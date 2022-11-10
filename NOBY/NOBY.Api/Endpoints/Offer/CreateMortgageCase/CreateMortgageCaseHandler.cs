@@ -7,6 +7,7 @@ using _Case = DomainServices.CaseService.Contracts;
 using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
+using CIS.Infrastructure.MediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -30,6 +31,7 @@ internal class CreateMortgageCaseHandler
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);
         long caseId = ServiceCallResult.ResolveAndThrowIfError<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.SimulationInputs), cancellationToken));
+        _bag.Add(CreateMortgageCaseRollback.BagKeyCaseId, caseId);
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 
         // updatovat kontakty
@@ -42,10 +44,12 @@ internal class CreateMortgageCaseHandler
         // vytvorit zadost
         _logger.SharedCreateSalesArrangementStarted(salesArrangementTypeId, caseId, request.OfferId);
         int salesArrangementId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
+        _bag.Add(CreateMortgageCaseRollback.BagKeySalesArrangementId, salesArrangementId);
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
         // create customer on SA
         var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
+        _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
         
         // create household
         int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
@@ -54,22 +58,13 @@ internal class CreateMortgageCaseHandler
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken));
+        _bag.Add(CreateMortgageCaseRollback.BagKeyHouseholdId, householdId);
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
         var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
-        //try
-        //{
-            await _mediator.Publish(notification, cancellationToken);
-        /*}
-        catch (Exception err)
-        {
-            //TODO osetrit rollback?
-            _logger.LogError(err, "TODO rollback create case?");
-        }*/
-
-        //TODO co udelat, kdyz se neco z toho nepovede?
-
+        await _mediator.Publish(notification, cancellationToken);
+        
         return new CreateMortgageCaseResponse
         {
             SalesArrangementId = salesArrangementId,
@@ -80,6 +75,7 @@ internal class CreateMortgageCaseHandler
         };
     }
 
+    private readonly IRollbackBag _bag;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICodebookServiceClients _codebookService;
     private readonly ISalesArrangementServiceClients _salesArrangementService;
@@ -91,6 +87,7 @@ internal class CreateMortgageCaseHandler
     private readonly IMediator _mediator;
 
     public CreateMortgageCaseHandler(
+        IRollbackBag bag,
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ICustomerOnSAServiceClient customerOnSAService,
@@ -101,6 +98,7 @@ internal class CreateMortgageCaseHandler
         IOfferServiceClients offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
+        _bag = bag;
         _customerOnSAService = customerOnSAService;
         _mediator = mediator;
         _userAccessor = userAccessor;

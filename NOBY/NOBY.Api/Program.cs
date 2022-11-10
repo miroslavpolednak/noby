@@ -10,6 +10,7 @@ using DomainServices.RiskIntegrationService.Clients;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.HouseholdService.Clients;
+using CIS.Infrastructure.MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,9 @@ builder.Services.AddSpaStaticFiles(configuration =>
 {
     configuration.RootPath = "wwwroot";
 });
+
+// pridat moznost rollbacku mediatr handleru
+builder.Services.AddCisMediatrRollbackCapability();
 #endregion register services
 
 // BUILD APP

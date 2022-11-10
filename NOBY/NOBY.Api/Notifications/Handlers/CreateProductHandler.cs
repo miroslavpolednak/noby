@@ -6,6 +6,8 @@ using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using Google.Protobuf;
+using CIS.Infrastructure.MediatR.Rollback;
+using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 namespace NOBY.Api.Notifications.Handlers;
 
@@ -83,7 +85,7 @@ internal sealed class CreateProductHandler
         catch (Exception ex)
         {
             _logger.LogInformation("MpHome create client failed", ex);
-            return;
+            throw new CisConflictException(0, "MpHome client can't be created");
         }
 
         var request = new _Product.CreateMortgageRequest
@@ -92,10 +94,13 @@ internal sealed class CreateProductHandler
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
         };
         var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
+        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result.ProductId);
+        //TODO rollbackovat i vytvoreni klienta?
 
         _logger.EntityCreated(nameof(_Product.Product), result.ProductId);
     }
 
+    private readonly IRollbackBag _bag;
     private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
     private readonly IOfferServiceClients _offerService;
     private readonly ISalesArrangementServiceClients _salesArrangementService;
@@ -103,12 +108,14 @@ internal sealed class CreateProductHandler
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
+        IRollbackBag bag,
         DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
         IOfferServiceClients offerService,
         ISalesArrangementServiceClients salesArrangementService,
         IProductServiceClient productService,
         ILogger<CreateProductHandler> logger)
     {
+        _bag = bag;
         _customerService = customerService;
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;

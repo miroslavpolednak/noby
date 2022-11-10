@@ -1,9 +1,7 @@
-﻿using CIS.Core.Validation;
-
-namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
+﻿namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 public sealed class CreateMortgageCaseRequest
-    : IRequest<CreateMortgageCaseResponse>
+    : IRequest<CreateMortgageCaseResponse>, CIS.Infrastructure.MediatR.Rollback.IRollbackCapable
 {
     /// <summary>
     /// ID simulace ze ktere se ma vytvorit Case.
