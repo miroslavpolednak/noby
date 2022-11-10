@@ -1,8 +1,6 @@
 ﻿using CIS.Infrastructure.MediatR.Rollback;
 using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
