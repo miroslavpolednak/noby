@@ -1,9 +1,9 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
-using DomainServices.CaseService.Abstraction;
-using DomainServices.CodebookService.Abstraction;
-using DomainServices.OfferService.Abstraction;
-using DomainServices.SalesArrangementService.Abstraction;
+using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
+using DomainServices.OfferService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Microsoft.Extensions.DependencyInjection;
 

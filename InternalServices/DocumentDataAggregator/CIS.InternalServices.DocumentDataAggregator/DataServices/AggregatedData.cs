@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Contracts;
@@ -18,5 +18,5 @@ internal class AggregatedData
 
     public DateTime CurrentDateTime => DateTime.Now;
 
-    public virtual Task LoadCodebooks(ICodebookServiceAbstraction codebookService) => Task.CompletedTask;
+    public virtual Task LoadCodebooks(ICodebookServiceClients codebookService) => Task.CompletedTask;
 }

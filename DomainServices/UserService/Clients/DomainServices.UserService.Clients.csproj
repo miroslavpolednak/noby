@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
 	  <Authors>Filip Tuma</Authors>
@@ -13,16 +13,16 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.21.6" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.48.0" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.48.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.21.9" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.49.0" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.49.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
-		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.UserService.Contracts.csproj" />
 	</ItemGroup>
 </Project>

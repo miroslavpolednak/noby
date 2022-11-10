@@ -21,8 +21,11 @@ internal class DeleteCustomerHandler
         // smazat customera
         _dbContext.Customers.Remove(entity);
 
-        // smazat vazbu na identity
-        //await _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM dbo.CustomerOnSAIdentity WHERE CustomerOnSAId={request.CustomerOnSAId}", cancellation);
+        // v EF7 zmenit na nativni delete
+        await _dbContext.Database.ExecuteSqlInterpolatedAsync(@$"
+DELETE FROM dbo.CustomerOnSAIncome WHERE CustomerOnSAId={entity.CustomerOnSAId};
+DELETE FROM dbo.CustomerOnSAObligation WHERE CustomerOnSAId={entity.CustomerOnSAId}", cancellation);
+
         await _dbContext.SaveChangesAsync(cancellation);
 
         // SULM
@@ -53,12 +56,12 @@ internal class DeleteCustomerHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction _salesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
     private readonly SulmService.ISulmClient _sulmClient;
     private readonly Repositories.HouseholdServiceDbContext _dbContext;
 
     public DeleteCustomerHandler(
-        SalesArrangementService.Abstraction.ISalesArrangementServiceAbstraction salesArrangementService,
+        SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
         SulmService.ISulmClient sulmClient,
         Repositories.HouseholdServiceDbContext dbContext)
     {

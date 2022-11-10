@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 	<Company>Wookiee.Apps s.r.o.</Company>
 	<Product>Common Infrastructure Solution</Product>
 	<Authors>Filip Tuma</Authors>
@@ -18,7 +18,7 @@
 	
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.2.2" />
-    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>

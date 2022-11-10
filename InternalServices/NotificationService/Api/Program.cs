@@ -7,9 +7,10 @@ using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
 using CIS.InternalServices.NotificationService.Api.Extensions;
-using CIS.InternalServices.NotificationService.Api.Messaging;
+using CIS.InternalServices.NotificationService.Api.Mcs;
 using CIS.InternalServices.NotificationService.Api.Repositories;
-using DomainServices.CodebookService.Abstraction;
+using CIS.InternalServices.NotificationService.Api.S3;
+using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
@@ -60,12 +61,15 @@ builder.Services
         config.Interceptors.Add<GenericServerExceptionInterceptor>();
     });
 
-// Codebook service
+// codebook client
 builder.Services.AddCodebookService();
 
-// kafka
-var kafkaConfiguration = builder.GetKafkaConfiguration();
-builder.Services.AddMessaging(kafkaConfiguration);
+// messaging - kafka consumers and producers
+builder.Services.AddMessaging(builder.GetKafkaConfiguration());
+
+// s3 client
+builder.Services.AddS3Client(builder.GetS3Configuration());
+
 
 // database
 builder.AddEntityFramework<NotificationDbContext>("nobyDb");
@@ -73,13 +77,15 @@ builder.AddEntityFramework<NotificationDbContext>("nobyDb");
 // swagger
 builder.AddCustomSwagger();
 
-// kestrel configuration
+// kestrel
 builder.UseKestrelWithCustomConfiguration();
 
 if (winSvc)
 {
     builder.Host.UseWindowsService();
 }
+
+// ---------------------------------------------------------------------------------
 
 var app = builder.Build();
 

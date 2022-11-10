@@ -80,9 +80,9 @@ internal class CreateSalesArrangementHandler
             _ => throw new CisValidationException(0, $"CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={salesArrangementTypeId}")
         };
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
-    private readonly OfferService.Abstraction.IOfferServiceAbstraction _offerService;
-    private readonly CaseService.Abstraction.ICaseServiceAbstraction _caseService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
+    private readonly OfferService.Clients.IOfferServiceClients _offerService;
+    private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
     private readonly CIS.Core.IDateTime _dateTime;
@@ -91,9 +91,9 @@ internal class CreateSalesArrangementHandler
     public CreateSalesArrangementHandler(
         IMediator mediator,
         CIS.Core.IDateTime dateTime,
-        OfferService.Abstraction.IOfferServiceAbstraction offerService,
-        CaseService.Abstraction.ICaseServiceAbstraction caseService,
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        OfferService.Clients.IOfferServiceClients offerService,
+        CaseService.Clients.ICaseServiceClient caseService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.SalesArrangementServiceRepository repository,
         ILogger<CreateSalesArrangementHandler> logger)
     {

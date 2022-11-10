@@ -6,7 +6,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncom
 internal class CreateIncomeMediatrRequestValidator
     : AbstractValidator<CreateIncomeMediatrRequest>
 {
-    public CreateIncomeMediatrRequestValidator(CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public CreateIncomeMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.CustomerOnSAId)
             .GreaterThan(0)

@@ -1,5 +1,5 @@
 ﻿using _OS = DomainServices.OfferService.Contracts;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +15,11 @@ internal class GetMortgageOfferFPScheduleHandler
     #region Construction
 
     private readonly Repositories.OfferServiceDbContext _dbContext;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
 
     public GetMortgageOfferFPScheduleHandler(
-        Repositories.OfferServiceDbContext dbContext, ICodebookServiceAbstraction codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
+        Repositories.OfferServiceDbContext dbContext, ICodebookServiceClients codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

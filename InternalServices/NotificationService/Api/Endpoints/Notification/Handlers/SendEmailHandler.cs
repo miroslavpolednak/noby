@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
-using CIS.InternalServices.NotificationService.Api.Mappers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers;
+using CIS.InternalServices.NotificationService.Api.Mcs.Mappers;
+using CIS.InternalServices.NotificationService.Api.Mcs.Producers;
 using CIS.InternalServices.NotificationService.Api.Repositories;
+using CIS.InternalServices.NotificationService.Api.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using cz.kb.osbs.mcs.sender.sendapi.v2;
@@ -14,17 +15,20 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
     private readonly BusinessEmailProducer _businessEmailProducer;
     private readonly LogmanEmailProducer _logmanEmailProducer;
     private readonly NotificationRepository _repository;
+    private readonly S3AdapterService _s3Service;
     private readonly ILogger<SendEmailHandler> _logger;
 
     public SendEmailHandler(
         BusinessEmailProducer businessEmailProducer,
         LogmanEmailProducer logmanEmailProducer,
         NotificationRepository repository,
+        S3AdapterService s3Service,
         ILogger<SendEmailHandler> logger)
     {
         _businessEmailProducer = businessEmailProducer;
         _logmanEmailProducer = logmanEmailProducer;
         _repository = repository;
+        _s3Service = s3Service;
         _logger = logger;
     }
     
@@ -32,10 +36,32 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
     {
         var notificationResult = await _repository.CreateResult(NotificationChannel.Email, cancellationToken);
         var notificationId = notificationResult.Id;
-     
-        // todo: send attachments to s3
         
-        // todo: mapping attachment, use s3 content
+        var attachments = new List<Attachment>();
+
+        try
+        {
+            foreach (var attachment in request.Attachments)
+            {
+                // todo: Buckets.Mcs or Buckets.Mpss
+                var bucketName = Buckets.Mcs;
+                var objectKey = await _s3Service.UploadFile(attachment.Binary, bucketName);
+                attachments.Add(new Attachment
+                {
+                    s3Content = new S3Content
+                    {
+                        filename = attachment.Filename,
+                        objectKey = objectKey
+                    }
+                });
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Could not upload attachments.");
+            throw;
+        }
+
         var sendEmail = new SendApi.v2.email.SendEmail
         {
             id = notificationId.ToString(),
@@ -46,7 +72,7 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
             replyTo = request.ReplyTo?.Map(),
             subject = request.Subject,
             content = request.Content.Map(),
-            attachments = new List<Attachment>(),
+            attachments = attachments
         };
         
         _logger.LogInformation("Sending email: {sendEmail}", JsonSerializer.Serialize(sendEmail));

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -9,19 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.*" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.*" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.8.*" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.*" />
-    <PackageReference Include="System.ServiceModel.Security" Version="4.8.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
-    <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+    <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
   </ItemGroup>
 
 </Project>

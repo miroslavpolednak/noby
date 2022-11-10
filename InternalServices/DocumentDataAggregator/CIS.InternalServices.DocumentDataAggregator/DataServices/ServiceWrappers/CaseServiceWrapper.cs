@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Results;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
@@ -7,9 +7,9 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class CaseServiceWrapper : IServiceWrapper
 {
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
 
-    public CaseServiceWrapper(ICaseServiceAbstraction caseService)
+    public CaseServiceWrapper(ICaseServiceClient caseService)
     {
         _caseService = caseService;
     }

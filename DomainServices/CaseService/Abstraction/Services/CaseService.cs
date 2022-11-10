@@ -4,9 +4,9 @@ using DomainServices.CaseService.Contracts;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 
-namespace DomainServices.CaseService.Abstraction.Services;
+namespace DomainServices.CaseService.Clients.Services;
 
-internal class CaseService : ICaseServiceAbstraction
+internal class CaseService : ICaseServiceClient
 {
     public async Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {

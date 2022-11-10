@@ -22,7 +22,7 @@ internal sealed class ProductChildMapper
             AplType = product.AplType ?? _riskApplicationType?.C4mAplTypeId,
             GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
             IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
-            LoanApplicationPurpose = product.Purposes?.Select(tranformPurpose(purposes, product))?.ToList(),
+            LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product),
             LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),
             AmountInvestment = product.InvestmentAmount.ToAmount(),
@@ -134,19 +134,23 @@ internal sealed class ProductChildMapper
             CategoryCode = collaterals.FirstOrDefault(x => x.CollateralType == t.CollateralType)?.CodeBgm ?? "NE"
         };
 
-    private static Func<_V2.LoanApplicationProductPurpose, LoanApplicationPurpose> tranformPurpose(List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes, _V2.LoanApplicationProduct product)
-        => t => new LoanApplicationPurpose
-        {
-            Amount = t.Amount,
-            Code = (product.ProductTypeId == 20001 && product.LoanKindId == 2001) ? 35 : purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
-        };
+    private static List<LoanApplicationPurpose>? tranformPurposes(List<_V2.LoanApplicationProductPurpose>? productPurposes, List<DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes.LoanPurposesItem> purposes, _V2.LoanApplicationProduct product)
+        => (product.ProductTypeId == 20001 && product.LoanKindId == 2001)
+            ? new List<LoanApplicationPurpose> { new LoanApplicationPurpose { Code = 35, Amount = product.RequiredAmount } }
+            : productPurposes?
+                .Select(t => new LoanApplicationPurpose
+                {
+                    Amount = t.Amount,
+                    Code = purposes.FirstOrDefault(x => x.C4mId.HasValue && x.Id == t.LoanPurposeId)?.C4mId ?? -1
+                })
+                .ToList();
     
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CancellationToken _cancellationToken;
     private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
 
     public ProductChildMapper(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {

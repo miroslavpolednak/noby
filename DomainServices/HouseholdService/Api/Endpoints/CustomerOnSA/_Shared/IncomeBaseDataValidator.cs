@@ -6,7 +6,7 @@ namespace DomainServices.HouseholdService.Api.Validators;
 public class IncomeBaseDataValidator
     : AbstractValidator<IncomeBaseData>
 {
-    public IncomeBaseDataValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public IncomeBaseDataValidator(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         // check codebooks
         RuleFor(t => t.CurrencyCode)

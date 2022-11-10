@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Results;
-using DomainServices.OfferService.Abstraction;
+using DomainServices.OfferService.Clients;
 using DomainServices.OfferService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
@@ -7,9 +7,9 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class OfferServiceWrapper : IServiceWrapper
 {
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly IOfferServiceClients _offerService;
 
-    public OfferServiceWrapper(IOfferServiceAbstraction offerService)
+    public OfferServiceWrapper(IOfferServiceClients offerService)
     {
         _offerService = offerService;
     }

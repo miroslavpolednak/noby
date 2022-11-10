@@ -110,11 +110,11 @@ internal sealed class HouseholdChildMapper
         };
 
     private readonly HouseholdCustomerChildMapper _customerMapper;
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CancellationToken _cancellationToken;
 
     public HouseholdChildMapper(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {

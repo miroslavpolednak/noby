@@ -5,7 +5,7 @@ namespace DomainServices.SalesArrangementService.Api.Validators;
 internal class UpdateSalesArrangementParametersMediatrRequestValidator
     : AbstractValidator<Dto.UpdateSalesArrangementParametersMediatrRequest>
 {
-    public UpdateSalesArrangementParametersMediatrRequestValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public UpdateSalesArrangementParametersMediatrRequestValidator(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)
@@ -26,11 +26,11 @@ internal class UpdateSalesArrangementParametersMediatrRequestValidator
 internal class SalesArrangementParametersMortgageValidator
     : AbstractValidator<Contracts.SalesArrangementParametersMortgage>
 {
-    public SalesArrangementParametersMortgageValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public SalesArrangementParametersMortgageValidator(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.IncomeCurrencyCode)
             .NotEmpty()
-            .WithMessage("IncomeCurrencyCode is empty").WithErrorCode("16034");
+            .WithMessage("IncomeCurrencyCode is empty").WithErrorCode("18034");
         RuleFor(t => t.IncomeCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
@@ -63,7 +63,7 @@ internal class SalesArrangementParametersMortgageValidator
 internal class MortgageLoanRealEstateValidator
     : AbstractValidator<Contracts.SalesArrangementParametersMortgage.Types.LoanRealEstate>
 {
-    public MortgageLoanRealEstateValidator(DomainServices.CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public MortgageLoanRealEstateValidator(DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.RealEstateTypeId)
             .MustAsync(async (id, cancellation) =>

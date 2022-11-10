@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Core.Types;
 using System.Linq;
 

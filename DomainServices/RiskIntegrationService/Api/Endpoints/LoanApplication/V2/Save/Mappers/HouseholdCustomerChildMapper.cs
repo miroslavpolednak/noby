@@ -42,9 +42,9 @@ internal sealed class HouseholdCustomerChildMapper
                 City = customer.Address.City,
                 CountryCode = countries.FirstOrDefault(t => t.Id == customer.Address.CountryId)?.ShortName,
                 Street = customer.Address.Street,
-                StreetNumber = customer.Address.HouseNumber,
+                HouseNumber = customer.Address.HouseNumber,
                 PostCode = getZipCode(customer.Address.Postcode),//TODO zmeni c4m long na string?
-                HouseNumber = customer.Address.StreetNumber,
+                StreetNumber = customer.Address.StreetNumber,
                 RegionCode = "16"
             },
             AcademicTitlePrefix = customer.AcademicTitlePrefix,
@@ -58,7 +58,6 @@ internal sealed class HouseholdCustomerChildMapper
                 },
             HasEmail = customer.HasEmail,
             IsPartner = customer.IsPartner,
-            ManagementType = "XX",
             Income = await _incomeMapper.MapIncomes(customer.Income, verification),
             Taxpayer = customer.Taxpayer,
             CounterpartyType = "FOO",
@@ -83,13 +82,13 @@ internal sealed class HouseholdCustomerChildMapper
         return long.TryParse(zip?.Replace(" ", ""), out code) ? code : null;
     }
 
-    private readonly CodebookService.Abstraction.ICodebookServiceAbstraction _codebookService;
+    private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CancellationToken _cancellationToken;
     private readonly _RAT.RiskApplicationTypeItem _riskApplicationType;
     private readonly HouseholdCustomerIncomeChildMapper _incomeMapper;
 
     public HouseholdCustomerChildMapper(
-        CodebookService.Abstraction.ICodebookServiceAbstraction codebookService,
+        CodebookService.Clients.ICodebookServiceClients codebookService,
         _RAT.RiskApplicationTypeItem riskApplicationType,
         CancellationToken cancellationToken)
     {

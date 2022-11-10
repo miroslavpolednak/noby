@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
 using _Clients = DomainServices.RiskIntegrationService.Clients;

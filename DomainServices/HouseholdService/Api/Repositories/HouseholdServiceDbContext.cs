@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CIS.Infrastructure.Data;
+﻿using CIS.Infrastructure.Data;
 
 namespace DomainServices.HouseholdService.Api.Repositories;
 

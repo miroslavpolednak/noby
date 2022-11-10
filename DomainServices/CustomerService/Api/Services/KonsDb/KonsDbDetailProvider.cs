@@ -4,7 +4,7 @@ using CIS.Core.Exceptions;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Api.Services.KonsDb.Dto;
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
@@ -13,11 +13,11 @@ namespace DomainServices.CustomerService.Api.Services.KonsDb;
 public class KonsDbDetailProvider
 {
     private readonly IConnectionProvider _connectionProvider;
-    private readonly ICodebookServiceAbstraction _codebook;
+    private readonly ICodebookServiceClients _codebook;
 
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
 
-    public KonsDbDetailProvider(IConnectionProvider connectionProvider, ICodebookServiceAbstraction codebook)
+    public KonsDbDetailProvider(IConnectionProvider connectionProvider, ICodebookServiceClients codebook)
     {
         _connectionProvider = connectionProvider;
         _codebook = codebook;

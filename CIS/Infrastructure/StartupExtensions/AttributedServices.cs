@@ -11,8 +11,8 @@ namespace CIS.Infrastructure.StartupExtensions
             // register all services
             services.Scan(selector => selector
                 .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithoutAttribute<SelfServiceAttribute>())
-                .AsMatchingInterface()
+                .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+                .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
             services.Scan(selector => selector
@@ -23,8 +23,8 @@ namespace CIS.Infrastructure.StartupExtensions
             
             services.Scan(selector => selector
                 .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithoutAttribute<SelfServiceAttribute>())
-                .AsMatchingInterface()
+                .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+                .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
             services.Scan(selector => selector
@@ -35,8 +35,8 @@ namespace CIS.Infrastructure.StartupExtensions
 
             services.Scan(selector => selector
                 .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithoutAttribute<SelfServiceAttribute>())
-                .AsMatchingInterface()
+                .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+                .AsImplementedInterfaces()
                 .WithSingletonLifetime());
 
             services.Scan(selector => selector

@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceDiscovery", "Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Api", "InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj", "{AF160DD6-9B07-47AE-9818-CF521D8832A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Abstraction", "InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj", "{3CD474EA-4748-4C52-9B64-DA6B9DFC5F2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Clients", "InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj", "{3CD474EA-4748-4C52-9B64-DA6B9DFC5F2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{05167A25-8885-4D0E-9BBB-F45E1C5BB9B4}"
 EndProject
@@ -40,19 +40,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OfferService", "OfferServic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Api", "DomainServices\OfferService\API\DomainServices.OfferService.Api.csproj", "{853F7808-DAE9-4A13-A6A6-CBC7A1EFC969}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Abstraction", "DomainServices\OfferService\Abstraction\DomainServices.OfferService.Abstraction.csproj", "{C575CD43-C9FD-4221-A518-1199253BE6FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.OfferService.Clients", "DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj", "{C575CD43-C9FD-4221-A518-1199253BE6FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.gRPC", "CIS\gRPC\CIS.Infrastructure.gRPC.csproj", "{4FE907A0-58DB-4B94-A1D8-02EDB598D6B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.gRPC.Tests", "CIS\Tests\CIS.Infrastructure.gRPC.Tests\CIS.Infrastructure.gRPC.Tests.csproj", "{7DA287EF-22CE-4114-9E89-C310E6217080}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FOMS", "FOMS", "{CD425435-2BA9-44DF-9AC5-945D08380C08}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NOBY", "NOBY", "{CD425435-2BA9-44DF-9AC5-945D08380C08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Api", "FOMS\FOMS.Api\FOMS.Api.csproj", "{EA856A99-17EE-4834-A5E4-212C87F9B963}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Api", "NOBY\NOBY.Api\NOBY.Api.csproj", "{EA856A99-17EE-4834-A5E4-212C87F9B963}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Core", "FOMS\FOMS.Core\FOMS.Core.csproj", "{B04E3BC0-2F79-4BB3-85D6-768AD3DB98E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Core", "NOBY\NOBY.Core\NOBY.Core.csproj", "{B04E3BC0-2F79-4BB3-85D6-768AD3DB98E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Infrastructure", "FOMS\FOMS.Infrastructure\FOMS.Infrastructure.csproj", "{BE9FCE3F-E547-4E4D-BD3F-C9BE487E6E9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Infrastructure", "NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj", "{BE9FCE3F-E547-4E4D-BD3F-C9BE487E6E9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFB9F887-CE43-4CC7-AADF-B55CFDC6400F}"
 	ProjectSection(SolutionItems) = preProject
@@ -76,11 +76,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Api", "DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj", "{96A9DCD2-4A3A-4C48-A3C4-63E7DBC7047B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Abstraction", "DomainServices\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj", "{ADF64991-2512-4F52-918A-755E9AA3AD30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Clients", "DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj", "{ADF64991-2512-4F52-918A-755E9AA3AD30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ApiGenerators", "DomainServices\CodebookService\ApiGenerators\DomainServices.CodebookService.ApiGenerators.csproj", "{FA114815-6534-4B0B-A8EB-A70554E78BD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.AbstractionGenerators", "DomainServices\CodebookService\AbstractionGenerators\DomainServices.CodebookService.AbstractionGenerators.csproj", "{1DF285A9-0B91-4FAA-9B6D-0D12EEF0740B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ClientsGenerators", "DomainServices\CodebookService\ClientsGenerators\DomainServices.CodebookService.ClientsGenerators.csproj", "{1DF285A9-0B91-4FAA-9B6D-0D12EEF0740B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.Endpoints", "DomainServices\CodebookService\Endpoints\DomainServices.CodebookService.Endpoints.csproj", "{FE48768D-D1AE-4CF9-9CFD-FD77A46F4706}"
 EndProject
@@ -107,7 +107,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.Contracts", "DomainServices\CustomerService\Contracts\DomainServices.CustomerService.Contracts.csproj", "{66E6AE74-95C6-41DC-B32B-A7FE02395930}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.Abstraction", "DomainServices\ProductService\Abstraction\DomainServices.ProductService.Abstraction.csproj", "{7E78FAF4-E885-459B-9FBB-2D91B5867344}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.Clients", "DomainServices\ProductService\Abstraction\DomainServices.ProductService.Clients.csproj", "{7E78FAF4-E885-459B-9FBB-2D91B5867344}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalServices", "ExternalServices", "{024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}"
 EndProject
@@ -129,7 +129,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ProductService", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Eas", "ExternalServices\Eas\ExternalServices.Eas.csproj", "{2E4D42D7-F764-4E3A-B05F-13E2A83F4853}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.Abstraction", "DomainServices\CaseService\Abstraction\DomainServices.CaseService.Abstraction.csproj", "{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.Clients", "DomainServices\CaseService\Abstraction\DomainServices.CaseService.Clients.csproj", "{0983FAF5-AA4A-4D81-BE5C-D696612F1FA4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SalesArrangementService", "SalesArrangementService", "{36409700-CB0A-4C91-97A5-071D3300FF91}"
 EndProject
@@ -137,7 +137,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrange
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Api", "DomainServices\SalesArrangementService\Api\DomainServices.SalesArrangementService.Api.csproj", "{3ADB008A-E627-45B0-B46F-EACEA1A55A20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Abstraction", "DomainServices\SalesArrangementService\Abstraction\DomainServices.SalesArrangementService.Abstraction.csproj", "{1940849F-E9B4-4C09-A10A-870988C94D4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.SalesArrangementService.Clients", "DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj", "{1940849F-E9B4-4C09-A10A-870988C94D4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.MpHome", "ExternalServices\MpHome\ExternalServices.MpHome.csproj", "{7A8F1EC8-FB16-4E28-90F3-513EA98C0181}"
 EndProject
@@ -165,8 +165,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Logging.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Foms.Types", "CIS\Foms.Types\CIS.Foms.Types.csproj", "{3428A3F8-F671-406E-B1E0-63885A96F527}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.Services", "FOMS\FOMS.Services\FOMS.Services.csproj", "{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RiskIntegrationService", "RiskIntegrationService", "{FA204FC0-70AF-4FBB-A148-49FD214AC1DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.Contracts", "DomainServices\RiskIntegrationService\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj", "{0E10ED2B-884F-484B-A24B-5D0F62E5CE0D}"
@@ -175,7 +173,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.DomainServicesSecurity", "CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj", "{AE3021C4-2C68-4ED5-B39D-CEB7FE96F218}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FOMS.LogApi", "FOMS\FOMS.LogApi\FOMS.LogApi.csproj", "{0620778C-3839-4F6B-9A3F-FF15B4F5E2E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.LogApi", "NOBY\NOBY.LogApi\NOBY.LogApi.csproj", "{0620778C-3839-4F6B-9A3F-FF15B4F5E2E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.Clients", "DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj", "{0C83B5DE-9BAF-4FFE-9A97-83AE072A134C}"
 EndProject
@@ -238,6 +236,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentDataAggregator", "InternalServices\DocumentDataAggregator\CIS.InternalServices.DocumentDataAggregator\CIS.InternalServices.DocumentDataAggregator.csproj", "{BB82DA43-0566-417D-AA0E-E27C5918E1A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_DocumentDataAggregator", "Playgrounds\Console_DocumentDataAggregator\Console_DocumentDataAggregator\Console_DocumentDataAggregator.csproj", "{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Infrastructure.MediatR", "CIS\CIS.Infrastructure.MediatR\CIS.Infrastructure.MediatR.csproj", "{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -703,14 +703,6 @@ Global
 		{3428A3F8-F671-406E-B1E0-63885A96F527}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3428A3F8-F671-406E-B1E0-63885A96F527}.Release|x64.ActiveCfg = Release|Any CPU
 		{3428A3F8-F671-406E-B1E0-63885A96F527}.Release|x64.Build.0 = Release|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Debug|x64.Build.0 = Debug|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Release|x64.ActiveCfg = Release|Any CPU
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC}.Release|x64.Build.0 = Release|Any CPU
 		{0E10ED2B-884F-484B-A24B-5D0F62E5CE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E10ED2B-884F-484B-A24B-5D0F62E5CE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E10ED2B-884F-484B-A24B-5D0F62E5CE0D}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -943,6 +935,14 @@ Global
 		{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B}.Release|x64.ActiveCfg = Release|Any CPU
 		{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B}.Release|x64.Build.0 = Release|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Debug|x64.Build.0 = Debug|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Release|x64.ActiveCfg = Release|Any CPU
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1016,7 +1016,6 @@ Global
 		{66BDC101-1194-4772-AEC7-609CC994DF55} = {024DEFE9-2886-4C04-A3B0-118BE9B9C0DB}
 		{14E6A65E-30EE-4F78-A76D-8D6ED3467A0B} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{3428A3F8-F671-406E-B1E0-63885A96F527} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
-		{5FEC5F40-BFC3-4B70-9006-9D7C21CC5ECC} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{FA204FC0-70AF-4FBB-A148-49FD214AC1DF} = {6AE4D7B4-CC30-494F-8E9A-0EA5EC721A1E}
 		{0E10ED2B-884F-484B-A24B-5D0F62E5CE0D} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 		{DB728629-D622-4950-BA50-A587D2C262E1} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
@@ -1052,6 +1051,8 @@ Global
 		{0294E55C-BAAF-4A36-86BC-5CE95E2D0D31} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
 		{BB82DA43-0566-417D-AA0E-E27C5918E1A2} = {0294E55C-BAAF-4A36-86BC-5CE95E2D0D31}
 		{5BE68A76-FEF8-4FE8-92A5-2A22791A0A7B} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
+		{700E8F2D-66FC-491F-8544-9127FC93D410} = {6AF68A4E-BDE9-4A1A-BA14-4AF3BB038CC2}
+		{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

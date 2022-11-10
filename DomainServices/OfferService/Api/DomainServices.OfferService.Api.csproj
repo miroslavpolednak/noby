@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Authors>Filip Tuma</Authors>
     <Company>Wookiee.Apps s.r.o.</Company>
     <Product>MPSS DomainServices</Product>
@@ -24,11 +24,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-	  <PackageReference Include="Grpc.AspNetCore" Version="2.48.0" />
-	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.48.0" />
+    <PackageReference Include="MediatR" Version="11.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
+	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.49.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
   </ItemGroup>
@@ -39,8 +39,8 @@
     <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
-    <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
-    <ProjectReference Include="..\..\CodebookService\Abstraction\DomainServices.CodebookService.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
+    <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>
 

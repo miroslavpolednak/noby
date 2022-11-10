@@ -3,10 +3,10 @@ using _Case = DomainServices.CaseService.Contracts;
 using CIS.Core.Security;
 using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using CIS.Foms.Enums;
 using System.ComponentModel.DataAnnotations;
-using DomainServices.CaseService.Abstraction;
+using DomainServices.CaseService.Clients;
 using CIS.Core;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
@@ -70,18 +70,18 @@ internal class UpdateSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly ICaseServiceAbstraction _caseService;
+    private readonly ICaseServiceClient _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ICodebookServiceAbstraction _codebookService;
+    private readonly ICodebookServiceClients _codebookService;
     private readonly IUserServiceClient _userService;
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
 
 
     public UpdateSalesArrangementHandler(
-        ICaseServiceAbstraction caseService,
+        ICaseServiceClient caseService,
         ICurrentUserAccessor userAccessor,
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         IUserServiceClient userService,
         Repositories.SalesArrangementServiceDbContext dbContext,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient)

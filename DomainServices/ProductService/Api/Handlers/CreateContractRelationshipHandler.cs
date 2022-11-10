@@ -1,6 +1,6 @@
 ﻿using ExternalServices.MpHome.V1._1;
 using ExternalServices.MpHome.V1._1.MpHomeWrapper;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 
 using DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustomerProductTypes;
 
@@ -12,7 +12,7 @@ internal class CreateContractRelationshipHandler
     #region Construction
 
     public CreateContractRelationshipHandler(
-        ICodebookServiceAbstraction codebookService,
+        ICodebookServiceClients codebookService,
         Repositories.LoanRepository repository,
         IMpHomeClient mpHomeClient,
         ILogger<CreateContractRelationshipHandler> logger) : base(codebookService, repository, mpHomeClient, logger)

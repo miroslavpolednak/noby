@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CIS.InternalServices.DocumentDataAggregator.DataServices;
-using DomainServices.CodebookService.Abstraction;
+using DomainServices.CodebookService.Clients;
 using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
@@ -78,7 +78,7 @@ internal class OfferTemplateData : AggregatedData
         }
     }
 
-    public override async Task LoadCodebooks(ICodebookServiceAbstraction codebookService)
+    public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
     {
         _productTypes = await codebookService.ProductTypes();
         _loanKinds = await codebookService.LoanKinds();

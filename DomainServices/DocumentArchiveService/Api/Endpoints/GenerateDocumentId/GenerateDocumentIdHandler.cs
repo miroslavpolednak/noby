@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.Data;
+using FastEnumUtility;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
@@ -16,19 +17,19 @@ internal sealed class GenerateDocumentIdHandler
     }
 
     private static string getEnvCode(Contracts.GenerateDocumentIdRequest request)
-        => $"{request.EnvironmentName.ToString()[0]}{request.EnvironmentIndex ?? 0}";
+        => $"{request.EnvironmentName.GetEnumMemberValue()}{request.EnvironmentIndex ?? 0}";
 
     private string getLoginFromServiceUser()
     {
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
         if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
-            throw new CisConfigurationException(500, "ServiceUser2LoginBinding configuration is not set");
+            throw new CisConfigurationException(14012, "ServiceUser2LoginBinding configuration is not set");
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))
             return _configuration.ServiceUser2LoginBinding[serviceUser ?? "_default"];
         else
-            throw new CisConfigurationException(501, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
+            throw new CisConfigurationException(14013, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
     }
 
     private readonly AppConfiguration _configuration;

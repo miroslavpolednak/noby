@@ -15,11 +15,12 @@ internal sealed class GenerateDocumentIdMediatrRequestValidator
         {
             RuleFor(t => t.Request.EnvironmentName)
                 .IsInEnum()
-                .NotEqual(EnvironmentNames.Unknown).WithErrorCode("14009");
+                .NotEqual(EnvironmentNames.Unknown)
+                .WithMessage("Unknown EnvironmentName.").WithErrorCode("14009");
 
             RuleFor(t => t.Request.EnvironmentIndex)
                 .LessThanOrEqualTo(9)
-                .WithMessage("Environment Index must be less than 10").WithErrorCode("14010");
+                .WithMessage("Unknown EnvironmentIndex.").WithErrorCode("14010");
         });
     }
 }

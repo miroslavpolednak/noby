@@ -2,10 +2,11 @@
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.Foms.Enums;
 
-using DomainServices.CodebookService.Abstraction;
-using DomainServices.CaseService.Abstraction;
-using DomainServices.OfferService.Abstraction;
-using DomainServices.ProductService.Abstraction;
+using DomainServices.CodebookService.Clients;
+using DomainServices.CaseService.Clients;
+using DomainServices.OfferService.Clients;
+using DomainServices.CustomerService.Clients;
+using DomainServices.ProductService.Clients;
 using DomainServices.UserService.Clients;
 using DomainServices.HouseholdService.Clients;
 
@@ -20,7 +21,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
-using DomainServices.CustomerService.Clients;
+
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms;
 
@@ -33,11 +34,11 @@ internal class FormsService
     private static readonly string StringJoinSeparator = ",";
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly ICodebookServiceAbstraction _codebookService;
-    private readonly ICaseServiceAbstraction _caseService;
-    private readonly IOfferServiceAbstraction _offerService;
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly ICaseServiceClient _caseService;
+    private readonly IOfferServiceClients _offerService;
     private readonly ICustomerServiceClient _customerService;
-    private readonly IProductServiceAbstraction _productService;
+    private readonly IProductServiceClient _productService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IHouseholdServiceClient _householdService;
@@ -50,11 +51,11 @@ internal class FormsService
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
         SulmService.ISulmClient sulmClient,
-        ICodebookServiceAbstraction codebookService,
-        ICaseServiceAbstraction caseService,
-        IOfferServiceAbstraction offerService,
+        ICodebookServiceClients codebookService,
+        ICaseServiceClient caseService,
+        IOfferServiceClients offerService,
         ICustomerServiceClient customerService,
-        IProductServiceAbstraction productService,
+        IProductServiceClient productService,
         IUserServiceClient userService,
         Repositories.NobyRepository repository,
         ILogger<FormsService> logger,
@@ -224,8 +225,8 @@ internal class FormsService
             var kbIdentity = customer.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
             if (kbIdentity is not null)
             {
-                await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
-                await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+                await _sulmClient.StopUse(kbIdentity.IdentityId, "MLAP", cancellation);
+                await _sulmClient.StartUse(kbIdentity.IdentityId, "MLAP", cancellation);
             }
         }
     }

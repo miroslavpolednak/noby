@@ -5,7 +5,7 @@ using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 
-namespace DomainServices.CaseService.Abstraction;
+namespace DomainServices.CaseService.Clients;
 
 internal class ExceptionInterceptor : Interceptor
 {

@@ -7,7 +7,7 @@ internal class CreateCustomerMediatrRequestValidator
 {
     static DateTime _dateOfBirthMin = new DateTime(1900, 1, 1);
 
-    public CreateCustomerMediatrRequestValidator(CodebookService.Abstraction.ICodebookServiceAbstraction codebookService)
+    public CreateCustomerMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         RuleFor(t => t.Request.SalesArrangementId)
             .GreaterThan(0)

@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Types;
 using CIS.ExternalServicesHelpers;
 using CIS.ExternalServicesHelpers.Configuration;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.InternalServices.ServiceDiscovery.Contracts;
 using DomainServices.CustomerService.Api.Clients.CustomerManagement;
 using DomainServices.CustomerService.Api.Clients.CustomerProfile;

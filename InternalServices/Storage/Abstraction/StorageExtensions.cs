@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.ServiceDiscovery.Abstraction;
+﻿using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

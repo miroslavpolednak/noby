@@ -5,7 +5,7 @@ using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentGeneratorService.Api.Services;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
-using CIS.InternalServices.ServiceDiscovery.Abstraction;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 using Console_CustomerService;
 using Console_DocumentDataAggregator;
 using Microsoft.Extensions.DependencyInjection;
