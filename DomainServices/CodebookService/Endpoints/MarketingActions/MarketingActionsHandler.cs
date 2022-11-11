@@ -20,7 +20,7 @@ public class MarketingActionsHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT KOD_MA_AKCIE 'Id', TYP_AKCIE 'Code', MANDANT 'MandantId', NAZOV 'Name', POPIS 'Description', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_MA_AKCIE] ORDER BY KOD_MA_AKCIE ASC";
+    const string _sqlQuery = @"SELECT KOD_MA_AKCIE 'Id', TYP_AKCIE 'Code', NULLIF(MANDANT, 0) 'MandantId', NAZOV 'Name', POPIS 'Description', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_MA_AKCIE] ORDER BY KOD_MA_AKCIE ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<MarketingActionsHandler> _logger;

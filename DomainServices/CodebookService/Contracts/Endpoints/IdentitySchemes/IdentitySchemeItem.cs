@@ -17,7 +17,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.IdentitySchemes
 
         [DataMember(Order = 4)]
         [JsonIgnore]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
         [DataMember(Order = 5)]
         [JsonIgnore]

@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics;
+using System.Runtime.Intrinsics.X86;
+using System.Text.Json.Serialization;
 namespace DomainServices.CodebookService.Contracts.Endpoints.RealEstateTypes;
 
 [DataContract]
@@ -20,4 +22,7 @@ public class RealEstateTypeItem
     [DataMember(Order = 5)]
     [JsonIgnore]
     public int Order { get; set; }
+
+    [DataMember(Order = 6)]
+    public int? MandantId { get; set; }
 }

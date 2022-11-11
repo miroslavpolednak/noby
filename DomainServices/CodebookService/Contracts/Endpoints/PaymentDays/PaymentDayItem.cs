@@ -13,7 +13,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.PaymentDays
         public int PaymentAccountDay { get; set; }
 
         [DataMember(Order = 3)]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
         [DataMember(Order = 4)]
         public bool IsDefault { get; set; }

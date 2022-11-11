@@ -21,7 +21,7 @@ public class PaymentDaysHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT DEN_SPLACENI 'PaymentDay', DEN_ZAPOCTENI_SPLATKY 'PaymentAccountDay', MANDANT 'MandantId', DEF 'IsDefault', NABIZET_PORTAL 'ShowOnPortal'
+    const string _sqlQuery = @"SELECT DEN_SPLACENI 'PaymentDay', DEN_ZAPOCTENI_SPLATKY 'PaymentAccountDay', NULLIF(MANDANT, 0) 'MandantId', DEF 'IsDefault', NABIZET_PORTAL 'ShowOnPortal'
                                FROM [SBR].[CIS_DEN_SPLACENI] ORDER BY DEN_SPLACENI ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

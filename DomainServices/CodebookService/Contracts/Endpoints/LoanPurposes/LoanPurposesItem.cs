@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.LoanPurposes
 
 
         [DataMember(Order = 3)]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
 
         [DataMember(Order = 4)]
