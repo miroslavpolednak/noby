@@ -10,6 +10,7 @@ internal static class DocumentDataFactory
         {
             Document.Offer => new OfferTemplateData(),
             Document.Calculation => new OfferTemplateData(),
+            Document.LoanApplication => new LoanApplicationTemplateData(),
             _ => new AggregatedData()
         };
 }

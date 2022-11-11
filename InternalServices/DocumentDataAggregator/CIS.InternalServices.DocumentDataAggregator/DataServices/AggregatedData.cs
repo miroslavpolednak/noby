@@ -1,5 +1,6 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Contracts;
@@ -15,6 +16,8 @@ internal class AggregatedData
     public GetMortgageOfferDetailResponse Offer { get; set; }
 
     public User User { get; set; }
+
+    public CustomerDetailResponse Customer { get; set; }
 
     public DateTime CurrentDateTime => DateTime.Now;
 

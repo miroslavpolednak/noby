@@ -6,5 +6,6 @@ internal enum DataSource
     SalesArrangementService,
     CaseService,
     OfferService,
-    UserService
+    UserService,
+    CustomerService
 }

@@ -11,9 +11,9 @@ internal class OfferTemplateData : AggregatedData
     private List<Codebook.LoanKinds.LoanKindsItem> _loanKinds = null!;
     private List<Codebook.LoanPurposes.LoanPurposesItem> _loanPurposes = null!;
 
-    public string OfferHeader1 => GetLoanKindOfferHeader().ToUpperInvariant();
+    public string OfferHeader1 => GetLoanKindOfferHeader();
 
-    public string OfferHeader2 => GetProductTypeOfferHeader().ToUpperInvariant();
+    public string OfferHeader2 => GetProductTypeOfferHeader();
 
     public string OfferHeader3
     {
@@ -24,7 +24,7 @@ internal class OfferTemplateData : AggregatedData
             if (string.IsNullOrWhiteSpace(text))
                 text = GetProductTypeOfferHeader();
 
-            return text.ToUpperInvariant();
+            return text;
         }
     }
 
@@ -90,11 +90,10 @@ internal class OfferTemplateData : AggregatedData
         if (Offer.SimulationInputs.LoanKindId == 2001)
             return string.Empty;
 
-        var loanKind = _loanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.LoanKindId)
-                                 .Select(x => x.Name.ToUpperInvariant())
-                                 .FirstOrDefault();
-
-        return $"NABÍDKA – {loanKind}";
+        return _productTypes.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)
+                            .Select(x => x.Name.ToUpperInvariant())
+                            .DefaultIfEmpty(string.Empty)
+                            .First();
     }
 
     private string GetProductTypeOfferHeader()
@@ -102,10 +101,9 @@ internal class OfferTemplateData : AggregatedData
         if (Offer.SimulationInputs.LoanKindId != 2001)
             return string.Empty;
 
-        var productType = _productTypes.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)
-                                       .Select(x => x.Name.ToUpperInvariant())
-                                       .FirstOrDefault();
-
-        return $"NABÍDKA – {productType}";
+        return _loanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.LoanKindId)
+                         .Select(x => x.Name.ToUpperInvariant())
+                         .DefaultIfEmpty(string.Empty)
+                         .First();
     }
 }

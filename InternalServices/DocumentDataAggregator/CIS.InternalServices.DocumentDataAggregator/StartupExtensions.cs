@@ -2,6 +2,7 @@
 using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CustomerService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
@@ -29,5 +30,6 @@ public static class StartupExtensions
                 .AddSalesArrangementService()
                 .AddCaseService()
                 .AddOfferService()
-                .AddUserService();
+                .AddUserService()
+                .AddCustomerService();
 }

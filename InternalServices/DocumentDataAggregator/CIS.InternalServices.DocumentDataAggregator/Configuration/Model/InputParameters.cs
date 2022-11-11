@@ -1,4 +1,6 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+
+namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 
 public class InputParameters
 {
@@ -9,4 +11,6 @@ public class InputParameters
     public int? OfferId { get; set; }
 
     public int? UserId { get; set; }
+
+    public Identity? CustomerIdentity { get; set; }
 }

@@ -16,7 +16,7 @@
     <ProjectReference Include="..\..\..\InternalServices\DocumentDataAggregator\CIS.InternalServices.DocumentDataAggregator\CIS.InternalServices.DocumentDataAggregator.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\DocumentGeneratorService\Api\CIS.InternalServices.DocumentGeneratorService.Api.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
-    <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Abstraction\CIS.InternalServices.ServiceDiscovery.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
   </ItemGroup>
 
 </Project>
