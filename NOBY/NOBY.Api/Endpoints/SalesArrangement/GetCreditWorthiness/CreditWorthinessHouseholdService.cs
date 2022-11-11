@@ -1,4 +1,5 @@
 ﻿using CIS.Core;
+using DomainServices.CustomerService.Clients;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts;
@@ -103,11 +104,11 @@ internal sealed class CreditWorthinessHouseholdService
 
     private readonly DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
     public CreditWorthinessHouseholdService(
         DomainServices.HouseholdService.Clients.IHouseholdServiceClient householdService,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
     {
         _householdService = householdService;

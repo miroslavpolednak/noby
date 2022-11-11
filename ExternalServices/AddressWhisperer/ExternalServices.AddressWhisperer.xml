@@ -14,12 +14,12 @@
             Ulice - AddressWhispererBEService|street
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.BuildingIdentificationNumber">
+        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.StreetNumber">
             <summary>
             Číslo orientační - AddressWhispererBEService|streetNumber
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.LandRegistryNumber">
+        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.HouseNumber">
             <summary>
             Číslo popisné - AddressWhispererBEService|landRegisterNumber
             </summary>

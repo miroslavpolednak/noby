@@ -9,12 +9,12 @@
             Ulice
             </summary>
         </member>
-        <member name="P:CIS.Foms.Types.Address.BuildingIdentificationNumber">
+        <member name="P:CIS.Foms.Types.Address.StreetNumber">
             <summary>
             Číslo orientační
             </summary>
         </member>
-        <member name="P:CIS.Foms.Types.Address.LandRegistryNumber">
+        <member name="P:CIS.Foms.Types.Address.HouseNumber">
             <summary>
             Číslo popisné
             </summary>

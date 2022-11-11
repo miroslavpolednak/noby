@@ -5,7 +5,7 @@ using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
-using DomainServices.CustomerService.Abstraction;
+using DomainServices.CustomerService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.UserService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -37,7 +37,7 @@ internal class FormsService
     private readonly ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
     private readonly IOfferServiceClients _offerService;
-    private readonly ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly IProductServiceClient _productService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -54,7 +54,7 @@ internal class FormsService
         ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
         IOfferServiceClients offerService,
-        ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         IProductServiceClient productService,
         IUserServiceClient userService,
         Repositories.NobyRepository repository,

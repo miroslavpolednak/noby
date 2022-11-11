@@ -1,4 +1,5 @@
-﻿using DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
@@ -56,9 +57,9 @@ internal class GetCustomersHandler
                     {
                         Street = address.Street,
                         City = address.City,
-                        BuildingIdentificationNumber = address.BuildingIdentificationNumber,
+                        StreetNumber = address.StreetNumber,
                         CountryId = address.CountryId,
-                        LandRegistryNumber = address.LandRegistryNumber,
+                        HouseNumber = address.HouseNumber,
                         Postcode = address.Postcode
                     };
                 }
@@ -70,9 +71,9 @@ internal class GetCustomersHandler
                     {
                         Street = address2.Street,
                         City = address2.City,
-                        BuildingIdentificationNumber = address2.BuildingIdentificationNumber,
+                        StreetNumber = address2.StreetNumber,
                         CountryId = address2.CountryId,
-                        LandRegistryNumber = address2.LandRegistryNumber,
+                        HouseNumber = address2.HouseNumber,
                         Postcode = address2.Postcode
                     };
                 }
@@ -91,11 +92,11 @@ internal class GetCustomersHandler
 
     private readonly ILogger<GetCustomersHandler> _logger;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
     public GetCustomersHandler(
         ILogger<GetCustomersHandler> logger,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
     {
         _customerService = customerService;

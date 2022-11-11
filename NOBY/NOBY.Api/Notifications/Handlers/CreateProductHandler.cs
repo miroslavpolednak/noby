@@ -67,8 +67,8 @@ internal sealed class CreateProductHandler
                 Street = x.Street,
                 City = x.City,
                 AddressTypeId = x.AddressTypeId,
-                BuildingIdentificationNumber = x.BuildingIdentificationNumber,
-                LandRegistryNumber = x.LandRegistryNumber,
+                HouseNumber = x.HouseNumber,
+                StreetNumber = x.StreetNumber,
                 EvidenceNumber = x.EvidenceNumber,
                 Postcode = x.Postcode
             }));
@@ -100,7 +100,7 @@ internal sealed class CreateProductHandler
     }
 
     private readonly IRollbackBag _bag;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly IOfferServiceClients _offerService;
     private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly IProductServiceClient _productService;
@@ -108,7 +108,7 @@ internal sealed class CreateProductHandler
 
     public CreateProductHandler(
         IRollbackBag bag,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         IOfferServiceClients offerService,
         ISalesArrangementServiceClients salesArrangementService,
         IProductServiceClient productService,

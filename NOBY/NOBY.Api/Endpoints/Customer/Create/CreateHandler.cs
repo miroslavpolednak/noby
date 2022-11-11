@@ -1,4 +1,5 @@
-﻿using _HO = DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CustomerService.Clients;
+using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
@@ -87,11 +88,11 @@ internal sealed class CreateHandler
 
     private readonly ILogger<CreateHandler> _logger;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
     public CreateHandler(
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         ILogger<CreateHandler> logger)
     {
         _customerOnSAService = customerOnSAService;

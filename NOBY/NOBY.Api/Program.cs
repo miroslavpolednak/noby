@@ -1,7 +1,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.OfferService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Abstraction;
+using DomainServices.CustomerService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.CaseService.Clients;
 using DomainServices.UserService.Clients;

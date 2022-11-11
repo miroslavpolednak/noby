@@ -8,9 +8,9 @@ import "NullableGrpcDate.proto";
 message GrpcAddress {
   string Street = 1;
   
-  string BuildingIdentificationNumber = 2;
+  string StreetNumber = 2;
   
-  string LandRegistryNumber = 3;
+  string HouseNumber = 3;
   
   string Postcode = 4;
   
