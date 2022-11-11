@@ -10,6 +10,8 @@ public sealed class Paginable : IPaginableRequest
     public Type TypeOfSortingField => typeof(SortField);
     public IEnumerable<IPaginableSortingField>? GetSorting() => Sorting;
 
+    private const int _maxPageSize = 1000;
+
     public override string ToString()
         => $"RecordOffset: {RecordOffset}; PageSize: {PageSize}; Sorting: {HasSorting}";
 
@@ -28,10 +30,10 @@ public sealed class Paginable : IPaginableRequest
 
     public static Paginable FromRequest(IPaginableRequest? request, int defaultPageSize = 10, int defaultRecordOffset = 0)
     {
-        if (request is null || request.PageSize <= 0)
+        if (request is null)
             return new Paginable(defaultRecordOffset, defaultPageSize);
         else
-            return new Paginable(request.RecordOffset, request.PageSize, request.GetSorting());
+            return new Paginable(request.RecordOffset, request.PageSize == 0 ? _maxPageSize : request.PageSize, request.GetSorting());
     }
 
     /// <summary>
