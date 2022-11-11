@@ -21,6 +21,32 @@ internal class LoanApplicationTemplateData : AggregatedData
                              $"{_countries.First(c => c.Id == a.CountryId).LongName}")
                 .First();
 
+    public string PaymentAccount
+    {
+        get
+        {
+            var bankAccount = $"{Mortgage.PaymentAccount.Prefix}-{Mortgage.PaymentAccount.Number}/{Mortgage.PaymentAccount.BankCode}";
+
+            if (SalesArrangement.Drawing.IsImmediateDrawing)
+                return bankAccount + " a to bezokladně";
+
+            return bankAccount + $" a to k datu: {SalesArrangement.Drawing.DrawingDate}";
+        }
+    }
+
+    public string RepaymentAccount
+    {
+        get
+        {
+            if (SalesArrangement.Drawing.RepaymentAccount is null)
+                return string.Empty;
+
+            var account = SalesArrangement.Drawing.RepaymentAccount;
+
+            return $"{account.Prefix}-{account.Number}/{account.BankCode}";
+        }
+    }
+
     public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
     {
         _countries = await codebookService.Countries();

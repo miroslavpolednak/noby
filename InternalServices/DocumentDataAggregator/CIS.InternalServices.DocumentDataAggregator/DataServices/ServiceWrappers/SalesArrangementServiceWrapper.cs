@@ -20,7 +20,7 @@ internal class SalesArrangementServiceWrapper : IServiceWrapper
             throw new ArgumentNullException(nameof(InputParameters.SalesArrangementId));
 
         var result = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId.Value, cancellationToken);
-
+        
         data.SalesArrangement = ServiceCallResult.ResolveAndThrowIfError<SalesArrangement>(result);
     }
 }

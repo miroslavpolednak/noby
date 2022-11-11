@@ -4,6 +4,7 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.OfferService.Clients;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,5 +32,6 @@ public static class StartupExtensions
                 .AddCaseService()
                 .AddOfferService()
                 .AddUserService()
-                .AddCustomerService();
+                .AddCustomerService()
+                .AddProductService();
 }

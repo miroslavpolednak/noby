@@ -72,7 +72,8 @@ internal class DataServicesLoader
         AddService<CaseServiceWrapper>(DataSource.CaseService);
         AddService<OfferServiceWrapper>(DataSource.OfferService);
         AddService<UserServiceWrapper>(DataSource.UserService);
-        //AddService<CustomerServiceWrapper>(DataSource.CustomerService);
+        AddService<CustomerServiceWrapper>(DataSource.CustomerService);
+        AddService<ProductServiceWrapper>(DataSource.ProductService);
 
         void AddService<TSource>(DataSource dataSource) where TSource : IServiceWrapper =>
             _serviceMap.Add(dataSource, _serviceProvider.GetRequiredService<TSource>().LoadData);

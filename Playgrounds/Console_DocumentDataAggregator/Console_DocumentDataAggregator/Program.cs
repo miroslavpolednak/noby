@@ -24,9 +24,10 @@ services.AddCisServiceDiscovery("https://localhost:5005");
 var serviceProvider = services.BuildServiceProvider();
 
 //var input = new InputParameters { OfferId = 554, UserId = 3048 };
-var input = new InputParameters { SalesArrangementId = 180 };
+//var input = new InputParameters { SalesArrangementId = 180 };
+var input = new InputParameters { SalesArrangementId = 84 };
 
-var data = await serviceProvider.GetRequiredService<IDataAggregator>().GetDocumentData(Document.Offer, "001A", input);
+var data = await serviceProvider.GetRequiredService<IDataAggregator>().GetDocumentData(Document.LoanApplication, "001A", input);
 
 var request = new GenerateDocumentRequest
 {
