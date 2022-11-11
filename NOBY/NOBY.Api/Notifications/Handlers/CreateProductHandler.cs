@@ -5,7 +5,6 @@ using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
-using Google.Protobuf;
 using CIS.Infrastructure.MediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
