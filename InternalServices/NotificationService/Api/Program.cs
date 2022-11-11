@@ -10,6 +10,7 @@ using CIS.InternalServices.NotificationService.Api.Extensions;
 using CIS.InternalServices.NotificationService.Api.Mcs;
 using CIS.InternalServices.NotificationService.Api.Repositories;
 using CIS.InternalServices.NotificationService.Api.S3;
+using CIS.InternalServices.NotificationService.Api.Smtp;
 using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using MediatR;
@@ -70,6 +71,8 @@ builder.Services.AddMessaging(builder.GetKafkaConfiguration());
 // s3 client
 builder.Services.AddS3Client(builder.GetS3Configuration());
 
+// smtp
+builder.Services.AddSmtpClient(builder.GetSmtpConfiguration());
 
 // database
 builder.AddEntityFramework<NotificationDbContext>("nobyDb");
