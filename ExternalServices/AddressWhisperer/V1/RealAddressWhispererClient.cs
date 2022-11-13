@@ -168,11 +168,11 @@ internal class RealAddressWhispererClient
       <v1:systemIdentity>
          <v11:originator>
             <v11:application>NOBY</v11:application>
-            <v11:applicationComponent>NOBY.FE</v11:applicationComponent>
+            <v11:applicationComponent>NOBY.FEAPI</v11:applicationComponent>
          </v11:originator>
          <v11:caller>
             <v11:application>NOBY</v11:application>
-            <v11:applicationComponent>NOBY.FE</v11:applicationComponent>
+            <v11:applicationComponent>NOBY.FEAPI</v11:applicationComponent>
          </v11:caller>
       </v1:systemIdentity>
    </soapenv:Header>";
