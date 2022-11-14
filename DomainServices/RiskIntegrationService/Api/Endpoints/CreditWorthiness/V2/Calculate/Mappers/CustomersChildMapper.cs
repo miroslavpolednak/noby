@@ -6,7 +6,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class CustomersChildMapper
 {
-    public async Task<List<_C4M.LoanApplicationCounterParty>> MapCustomers(List<_V2.CreditWorthinessCustomer> customers, int mandantId, CancellationToken cancellation)
+    public async Task<List<_C4M.LoanApplicationCounterParty>> MapCustomers(List<_V2.CreditWorthinessCustomer> customers, int? mandantId, CancellationToken cancellation)
     {
         var maritalStatuses = await _codebookService.MaritalStatuses(cancellation);
         var mainIncomeTypes = await _codebookService.IncomeMainTypes(cancellation);
@@ -36,7 +36,7 @@ internal sealed class CustomersChildMapper
                 Id = string.IsNullOrEmpty(t.PrimaryCustomerId) ? null : new _C4M.ResourceIdentifier
                 {
                     Id = t.PrimaryCustomerId,
-                    Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
+                    Instance = !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS",
                     Domain = "CM",
                     Resource = "Customer"
                 },
