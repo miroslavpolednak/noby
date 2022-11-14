@@ -55,7 +55,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
         /// </summary>
         private static readonly Dictionary<EJsonKey, EProductTypeKind> SpecificJsonKeys = new Dictionary<EJsonKey, EProductTypeKind>
         {
-            {EJsonKey.UvDruh, EProductTypeKind.KBMortgage | EProductTypeKind.KBMortgageWithoutRealEstate },
             {EJsonKey.PojisteniNemSuma, EProductTypeKind.KBMortgage | EProductTypeKind.KBAmericanMortgage },
             {EJsonKey.DeveloperId, EProductTypeKind.KBMortgage },
             {EJsonKey.DeveloperProjektId, EProductTypeKind.KBMortgage },
@@ -606,7 +605,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                     datum_prvniho_podpisu = firstSignedDate.ToJsonString(),
                     uv_produkt = data.ProductType.Id.ToJsonString(),
-                    uv_druh = WhenFillKey(EJsonKey.UvDruh, data.Offer.SimulationInputs.LoanKindId.ToJsonString()),
+                    //uv_druh = WhenFillKey(EJsonKey.UvDruh, data.Offer.SimulationInputs.LoanKindId.ToJsonString()),
+                    uv_druh = data.Offer.SimulationInputs.LoanKindId.ToJsonString(),
                     indikativni_LTV = data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
                     termin_cerpani_do = ((DateTime)data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
                     sazba_vyhlasovana = data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance
