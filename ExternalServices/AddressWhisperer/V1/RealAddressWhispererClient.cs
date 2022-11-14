@@ -67,7 +67,7 @@ internal class RealAddressWhispererClient
                         City = baseNode.Element(_ns2 + "city")?.Value,
                         CityDistrict = baseNode.Element(_ns2 + "cityDistrict")?.Value,
                         Country = baseNode.Element(_ns2 + "country")?.Value,
-                        LandRegistryNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
+                        HouseNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
                         Postcode = baseNode.Element(_ns2 + "postcode")?.Value,
                         Street = baseNode.Element(_ns2 + "street")?.Value
                     });
@@ -168,11 +168,11 @@ internal class RealAddressWhispererClient
       <v1:systemIdentity>
          <v11:originator>
             <v11:application>NOBY</v11:application>
-            <v11:applicationComponent>NOBY.FE</v11:applicationComponent>
+            <v11:applicationComponent>NOBY.FEAPI</v11:applicationComponent>
          </v11:originator>
          <v11:caller>
             <v11:application>NOBY</v11:application>
-            <v11:applicationComponent>NOBY.FE</v11:applicationComponent>
+            <v11:applicationComponent>NOBY.FEAPI</v11:applicationComponent>
          </v11:caller>
       </v1:systemIdentity>
    </soapenv:Header>";

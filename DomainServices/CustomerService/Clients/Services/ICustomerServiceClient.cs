@@ -3,9 +3,9 @@ using CIS.Core.Results;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Abstraction;
+namespace DomainServices.CustomerService.Clients;
 
-public interface ICustomerServiceAbstraction
+public interface ICustomerServiceClient
 {
     /// <summary>
     /// Kontrola zda klient v KB CM splňuje plně identifikovaný profil.

@@ -55,7 +55,6 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
         /// </summary>
         private static readonly Dictionary<EJsonKey, EProductTypeKind> SpecificJsonKeys = new Dictionary<EJsonKey, EProductTypeKind>
         {
-            {EJsonKey.UvDruh, EProductTypeKind.KBMortgage | EProductTypeKind.KBMortgageWithoutRealEstate },
             {EJsonKey.PojisteniNemSuma, EProductTypeKind.KBMortgage | EProductTypeKind.KBAmericanMortgage },
             {EJsonKey.DeveloperId, EProductTypeKind.KBMortgage },
             {EJsonKey.DeveloperProjektId, EProductTypeKind.KBMortgage },
@@ -245,8 +244,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             {
                 typ_adresy = i.AddressTypeId.ToJsonString(),    // D1.3 zrušení defaultu, plníme reálnými daty; Hodnota odpovídají v číselníku sloupci SbJsonValue
                 ulice = i.Street ?? i.City,                     // D1.3 ACE změnilo kardinalitu zpět na 1..1 s tím, že se případně plní atributem 136 [misto]
-                cislo_popisne = i.BuildingIdentificationNumber, // D1.3 změna kardinality z 1..1 na 0..1
-                cislo_orientacni = i.LandRegistryNumber,        // D1.3 změna datového typu z Int na String
+                cislo_popisne = i.HouseNumber, // D1.3 změna kardinality z 1..1 na 0..1
+                cislo_orientacni = i.StreetNumber,        // D1.3 změna datového typu z Int na String
 
                 cislo_evidencni = i.EvidenceNumber,
                 ulice_dodatek = i.DeliveryDetails,
@@ -357,8 +356,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             //        return null;
             //    }
 
-            //    //složit string ve formátu "BuildingIdentificationNumber/LandRegistryNumber"
-            //    var parts = new string?[] { address.BuildingIdentificationNumber, address.LandRegistryNumber };
+            //    //složit string ve formátu "StreetNumber/HouseNumber"
+            //    var parts = new string?[] { address.StreetNumber, address.HouseNumber };
 
             //    var number = String.Join("/", parts.Where(i => !string.IsNullOrEmpty(i)));
 
@@ -606,7 +605,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     datum_vygenerovani_dokumentu = actualDate.ToJsonString(),                                                                    // [MOCK] SalesArrangement - byla domluva posílat pro D1.1 aktuální datum
                     datum_prvniho_podpisu = firstSignedDate.ToJsonString(),
                     uv_produkt = data.ProductType.Id.ToJsonString(),
-                    uv_druh = WhenFillKey(EJsonKey.UvDruh, data.Offer.SimulationInputs.LoanKindId.ToJsonString()),
+                    //uv_druh = WhenFillKey(EJsonKey.UvDruh, data.Offer.SimulationInputs.LoanKindId.ToJsonString()),
+                    uv_druh = data.Offer.SimulationInputs.LoanKindId.ToJsonString(),
                     indikativni_LTV = data.Offer.SimulationResults.LoanToValue.ToJsonString(),                                                   // OfferInstance
                     termin_cerpani_do = ((DateTime)data.Offer.SimulationResults.DrawingDateTo).ToJsonString(),
                     sazba_vyhlasovana = data.Offer.SimulationResults.LoanInterestRateAnnounced.ToJsonString(),                                   // OfferInstance

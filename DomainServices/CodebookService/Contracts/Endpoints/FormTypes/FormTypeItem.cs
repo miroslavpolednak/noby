@@ -22,7 +22,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.FormTypes
 
 
         [DataMember(Order = 5)]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
 
         [DataMember(Order = 6)]

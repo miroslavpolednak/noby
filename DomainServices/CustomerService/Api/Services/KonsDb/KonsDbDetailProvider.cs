@@ -165,8 +165,8 @@ public class KonsDbDetailProvider
         {
             AddressTypeId = (int)addressType,
             Street = street ?? string.Empty,
-            BuildingIdentificationNumber = houseNumber ?? string.Empty ,
-            LandRegistryNumber = streetNumber ?? string.Empty,
+            StreetNumber = streetNumber ?? string.Empty ,
+            HouseNumber = houseNumber ?? string.Empty,
             Postcode = postCode ?? string.Empty,
             City = city ?? string.Empty
         };

@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.Net.Client" Version="2.49.0" />
-    <PackageReference Include="protobuf-net.Grpc" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.177" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.179" />
+    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.179" />
   </ItemGroup>
 
   <ItemGroup>

@@ -18,10 +18,10 @@ variables:
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
 
 steps:
-#- task: UseDotNet@2
-#  inputs:
+# - task: UseDotNet@2
+#   inputs:
 #    packageType: 'sdk'
-#    version: '6.0.x'
+#    version: '7.0.x'
 #    includePreviewVersions: true
 
 - task: InlinePowershell@1

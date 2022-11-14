@@ -17,12 +17,12 @@ public class Address
     /// <summary>
     /// Číslo orientační
     /// </summary>
-    public string? BuildingIdentificationNumber { get; set; }
+    public string? StreetNumber { get; set; }
 
     /// <summary>
     /// Číslo popisné
     /// </summary>
-    public string? LandRegistryNumber { get; set; }
+    public string? HouseNumber { get; set; }
 
     /// <summary>
     /// Číslo evidenční
@@ -71,8 +71,8 @@ public class Address
 
         if (stringCompare(this.Street, address2?.Street)
             && stringCompare(this.City, address2?.City)
-            && stringCompare(this.BuildingIdentificationNumber, address2?.BuildingIdentificationNumber)
-            && stringCompare(this.LandRegistryNumber, address2?.LandRegistryNumber))
+            && stringCompare(this.StreetNumber, address2?.StreetNumber)
+            && stringCompare(this.HouseNumber, address2?.HouseNumber))
             return true;
         else
             return false;
@@ -86,8 +86,8 @@ public class Address
         HashCode hash = new HashCode();
         hash.Add(AddressTypeId);
         hash.Add(Street);
-        hash.Add(BuildingIdentificationNumber);
-        hash.Add(LandRegistryNumber);
+        hash.Add(StreetNumber);
+        hash.Add(HouseNumber);
         hash.Add(Postcode);
         hash.Add(City);
         hash.Add(CountryId);

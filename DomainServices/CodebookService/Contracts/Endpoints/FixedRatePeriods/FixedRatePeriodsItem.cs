@@ -12,7 +12,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.FixedRatePeriods
         public int FixedRatePeriod { get; set; }
 
         [DataMember(Order = 3)]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
         [DataMember(Order = 4)]
         public bool IsNewProduct { get; set; }

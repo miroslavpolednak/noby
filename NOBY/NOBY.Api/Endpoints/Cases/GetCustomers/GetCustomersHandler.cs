@@ -121,7 +121,7 @@ internal class GetCustomersHandler
     private static List<int>? _allowedSalesArrangementTypes;
 
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
@@ -129,7 +129,7 @@ internal class GetCustomersHandler
 
     public GetCustomersHandler(
         DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService, 

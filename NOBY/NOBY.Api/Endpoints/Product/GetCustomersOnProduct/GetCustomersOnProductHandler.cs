@@ -42,11 +42,11 @@ internal sealed class GetCustomersOnProductHandler
     }
 
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
 
     public GetCustomersOnProductHandler(
         DomainServices.ProductService.Clients.IProductServiceClient productService, 
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService)
+        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService)
     {
         _productService = productService;
         _customerService = customerService;

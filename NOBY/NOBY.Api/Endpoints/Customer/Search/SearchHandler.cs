@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
+using DomainServices.CustomerService.Clients;
 using contracts = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.Search;
@@ -47,10 +48,10 @@ internal class SearchHandler
     };
 
     private readonly ILogger<SearchHandler> _logger;
-    private readonly DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction _customerService;
+    private readonly ICustomerServiceClient _customerService;
 
     public SearchHandler(
-        DomainServices.CustomerService.Abstraction.ICustomerServiceAbstraction customerService,
+        ICustomerServiceClient customerService,
         ILogger<SearchHandler> logger)
     {
         _customerService = customerService;

@@ -30,4 +30,6 @@ public sealed partial class GrpcDecimal
 
     public static implicit operator NullableGrpcDecimal(GrpcDecimal grpcDecimal)
         => new NullableGrpcDecimal(grpcDecimal.Units, grpcDecimal.Nanos);
+
+    public static explicit operator GrpcDecimal(NullableGrpcDecimal nullableGrpcDecimal) => new(nullableGrpcDecimal.Units, nullableGrpcDecimal.Nanos);
 }

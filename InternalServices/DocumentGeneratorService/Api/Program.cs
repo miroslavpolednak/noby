@@ -17,6 +17,8 @@ builder.AddCisEnvironmentConfiguration() // globalni nastaveni prostredi
        .AddCisTracing()
        .AddCisHealthChecks();
 
+builder.Services.AddAttributedServices(typeof(Program));
+
 builder.Services.AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
 builder.Services.AddGrpcReflection();
 

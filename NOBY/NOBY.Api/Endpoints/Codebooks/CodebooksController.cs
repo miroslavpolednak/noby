@@ -56,6 +56,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MarketingActions</a>  - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426150084">ObligationTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=409432393">FormTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046178">PaymentDays</a>
     /// - <a href="https://wiki.kb.cz/display/HT/PayoutType">PayoutTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421389753">PostCodes</a>
