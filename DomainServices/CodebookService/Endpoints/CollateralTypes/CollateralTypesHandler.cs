@@ -20,7 +20,7 @@ public class CollateralTypesHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT TYP_ZABEZPECENIA 'CollateralType', MANDANT 'MandantId', KOD_BGM 'CodeBgm', TEXT_BGM 'TextBgm', TEXT_K_TYPU 'NameType'
+    const string _sqlQuery = @"SELECT TYP_ZABEZPECENIA 'CollateralType', NULLIF(MANDANT, 0) 'MandantId', KOD_BGM 'CodeBgm', TEXT_BGM 'TextBgm', TEXT_K_TYPU 'NameType'
                                FROM [SBR].[CIS_VAHY_ZABEZPECENI] ORDER BY TYP_ZABEZPECENIA ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

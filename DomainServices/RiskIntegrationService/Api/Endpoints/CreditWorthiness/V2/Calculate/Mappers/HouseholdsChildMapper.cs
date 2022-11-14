@@ -9,7 +9,7 @@ internal sealed class HouseholdsChildMapper
 {
     public async Task<List<_C4M.LoanApplicationHousehold>> MapHouseholds(
         List<_V2.CreditWorthinessHousehold> households, 
-        int mandantId,
+        int? mandantId,
         CancellationToken cancellation)
     {
         // inicializovat ciselniky

@@ -30,7 +30,7 @@ public class RiskApplicationTypesHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT ID 'Id', MANDANT 'MandantId', UV_PRODUKT_ID 'ProductId', MA, DRUH_UVERU 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4mAplCode', C4M_APL_TYPE_ID 'C4mAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CASE WHEN SYSDATETIME() BETWEEN [DATUM_OD] AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+    const string _sqlQuery = @"SELECT ID 'Id', NULLIF(MANDANT, 0) 'MandantId', UV_PRODUKT_ID 'ProductId', MA, DRUH_UVERU 'LoanKindId', CAST(LTV_OD as int) 'LtvFrom', CAST(LTV_DO as int) 'LtvTo', CLUSTER_CODE 'C4mAplCode', C4M_APL_TYPE_ID 'C4mAplTypeId', C4M_APL_TYPE_NAZEV 'Name', CASE WHEN SYSDATETIME() BETWEEN [DATUM_OD] AND ISNULL([DATUM_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
 FROM [SBR].CIS_APL_TYPE ORDER BY ID ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

@@ -7,7 +7,7 @@
         public int CollateralType { get; set; }
 
         [DataMember(Order = 2)]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
         [DataMember(Order = 3)]
         public string CodeBgm { get; set; }

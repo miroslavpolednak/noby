@@ -19,6 +19,6 @@ public class ContactTypeItem
     public bool IsValid { get; set; }
 
     [DataMember(Order = 5)]
-    public int MandantId { get; set; }
+    public int? MandantId { get; set; }
 
 }
