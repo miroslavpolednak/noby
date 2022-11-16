@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
             .AddKafkaClient<BusinessResultConsumer>(businessConsumerConfig)
             .AddKafkaClient<BusinessEmailProducer>(businessProducerConfig)
             .AddKafkaClient<LogmanResultConsumer>(logmanConsumerConfig)
+            .AddKafkaClient<LogmanSendEmailConsumer>(logmanConsumerConfig)
             .AddKafkaClient<LogmanEmailProducer>(logmanProducerConfig)
             .AddKafkaClient<LogmanSmsProducer>(logmanProducerConfig);
     }
