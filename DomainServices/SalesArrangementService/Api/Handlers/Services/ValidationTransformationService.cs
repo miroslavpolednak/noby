@@ -1,8 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Api.Handlers.Forms;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Primitives;
-using System.Collections.Concurrent;
+using Microsoft.SqlServer.Server;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
@@ -10,7 +8,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
 
 internal sealed class ValidationTransformationService
 {
-    private static Regex _arrayIndexesRegex = new Regex(@"/(\[\d\])/g", RegexOptions.Compiled);
+    private static Regex _arrayIndexesRegex = new Regex(@"\[(?<idx>\d)\]", RegexOptions.Compiled | RegexOptions.NonBacktracking);
 
     public List<Contracts.ValidationMessage> TransformErrors(string formId, Form form, Dictionary<string, ExternalServices.Eas.R21.CheckFormV2.Error[]>? errors)
     {
@@ -18,13 +16,7 @@ internal sealed class ValidationTransformationService
 
         var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
         // get transformation values from DB
-        ValidationTransformationCache.GetOrCreate(formId, () =>
-        {
-            _dbContext.FormValidationTransformations
-            .AsNoTracking()
-            .Where(t => t.FormId == formId)
-            .Select(t => new  )
-        })
+        var transformationMatrix = ValidationTransformationCache.GetOrCreate(formId, _getCacheItemsFce);
 
         foreach (var errorGroup in errors)
         {
@@ -37,20 +29,12 @@ internal sealed class ValidationTransformationService
                     Code = error.ErrorCode,
                     ErrorQueue = error.ErrorQueue,
                     Message = error.ErrorMessage,
-                    Severity= error.Severity,
+                    Severity = error.Severity,
                     Value = error.Value,
                     Parameter = errorGroup.Key
                 };
-
-                // transformace na NOBY chybu
-                var matches = _arrayIndexesRegex.Matches(errorGroup.Key);
-                if (matches.Any())
-                {
-                }
-                else
-                {
-
-                }
+                // transformace na NOBY
+                item.NobyMessageDetail = item.CreateNobyMessage(transformationMatrix);
 
                 transformedItems.Add(item);
             }
@@ -59,65 +43,53 @@ internal sealed class ValidationTransformationService
         return transformedItems;
     }
 
+    static Contracts.ValidationMessageNoby CreateNobyMessage(this Contracts.ValidationMessage item, ImmutableDictionary<string, TransformationItem> transformationItems)
+    {
+        ValidationTransformationCache.TransformationItem titem;
+        var matches = _arrayIndexesRegex.Matches(item.Parameter);
+        if (matches.Any())
+        {
+            titem = transformationItems[_arrayIndexesRegex.Replace(item.Parameter, "[]")];
+            string.Format(titem.Text, matches.Select(t => t.Groups["idx"].Value).ToArray());
+        }
+        else
+            titem = transformationItems[item.Parameter];
+
+        return new Contracts.ValidationMessageNoby
+        {
+            Category = titem.Category,
+            Message = titem.Text,
+            ParameterName = titem.Name,
+            Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None
+        };
+    }
+
+    Func<ImmutableDictionary<string, TransformationItem>> _getCacheItemsFce = () =>
+    {
+        return _dbContext.FormValidationTransformations
+        .AsNoTracking()
+            .Where(t => t.FormId == formId)
+            .Select(t => new {
+                Category = t.Category,
+                Text = t.Text,
+                Name = t.Name,
+                AlterSeverity = t.AlterSeverity,
+                Path = t.Path
+            })
+            .ToList()
+            .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
+            {
+                Category = v.Category,
+                Text = v.Text,
+                Name = v.Name,
+                AlterSeverity = v.AlterSeverity
+            });
+    };
+
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
 
     public ValidationTransformationService(Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-    }
-}
-
-internal sealed class ValidationTransformationCache
-{
-    //TODO zatim se mi to nechce datavat do appsettings
-    public const int AbsoluteExpirationInMinutes = 10;
-
-    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
-    private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
-    private static CancellationTokenSource _changeTokenSource = new CancellationTokenSource();
-
-    public static void Reset()
-    {
-        _changeTokenSource.Cancel();
-        _changeTokenSource = new CancellationTokenSource();
-    }
-
-    public class TransformationItem
-    {
-        public string Category { get; set; } = string.Empty;
-        public string Text { get; set; } = string.Empty;
-    }
-
-    internal static async Task<ImmutableDictionary<TransformationItem>> GetOrCreate<TItem>(string key, Func<Task<List<TransformationItem>>> createItems)
-    {
-        List<TransformationItem> cacheEntry;
-        if (!_cache.TryGetValue(key, out cacheEntry))
-        {
-            SemaphoreSlim mylock = _locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
-
-            await mylock.WaitAsync();
-            try
-            {
-                if (!_cache.TryGetValue(key, out cacheEntry))
-                {
-                    // Key not in cache, so get data.
-                    cacheEntry = await createItems();
-
-                    // opts
-                    var cacheOptions = new MemoryCacheEntryOptions()
-                    {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(AbsoluteExpirationInMinutes)
-                    };
-                    cacheOptions.AddExpirationToken(new CancellationChangeToken(_changeTokenSource.Token));
-
-                    _cache.Set(key, cacheEntry, cacheOptions);
-                }
-            }
-            finally
-            {
-                mylock.Release();
-            }
-        }
-        return cacheEntry;
     }
 }
