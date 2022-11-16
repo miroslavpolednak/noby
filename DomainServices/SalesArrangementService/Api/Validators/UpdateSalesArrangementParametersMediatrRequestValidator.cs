@@ -36,24 +36,24 @@ internal class SalesArrangementParametersMortgageValidator
             {
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
-            .WithMessage("IncomeCurrencyCode not found").WithErrorCode("16059");
+            .WithMessage("IncomeCurrencyCode not found").WithErrorCode("18059");
 
         RuleFor(t => t.ResidencyCurrencyCode)
             .NotEmpty()
-            .WithMessage("ResidencyCurrencyCode is empty").WithErrorCode("16035");
+            .WithMessage("ResidencyCurrencyCode is empty").WithErrorCode("18035");
         RuleFor(t => t.ResidencyCurrencyCode)
             .MustAsync(async (code, cancellation) =>
             {
                 return (await codebookService.Currencies(cancellation)).Any(t => t.Code == code);
             })
-            .WithMessage("ResidencyCurrencyCode not found").WithErrorCode("16060");
+            .WithMessage("ResidencyCurrencyCode not found").WithErrorCode("18060");
 
         RuleFor(t => t.ContractSignatureTypeId)
             .MustAsync(async (id, cancellation) =>
             {
                 return id.HasValue ? (await codebookService.SignatureTypes(cancellation)).Any(t => t.Id == id) : true;
             })
-            .WithMessage("ContractSignatureTypeId not found").WithErrorCode("99999"); // TODO: Error code (16061)
+            .WithMessage("ContractSignatureTypeId not found").WithErrorCode("18061");
 
         RuleForEach(t => t.LoanRealEstates)
             .SetValidator(new MortgageLoanRealEstateValidator(codebookService));
@@ -70,6 +70,6 @@ internal class MortgageLoanRealEstateValidator
             {
                 return (await codebookService.RealEstateTypes(cancellation)).Any(t => t.Id == id);
             })
-            .WithMessage("RealEstateTypeId not found").WithErrorCode("16037");
+            .WithMessage("RealEstateTypeId not found").WithErrorCode("18037");
     }
 };
