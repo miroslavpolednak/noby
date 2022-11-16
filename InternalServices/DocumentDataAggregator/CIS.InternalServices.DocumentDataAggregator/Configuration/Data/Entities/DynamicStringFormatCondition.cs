@@ -6,7 +6,7 @@ internal class DynamicStringFormatCondition
 
     public int DynamicStringFormatDataFieldId { get; set; }
 
-    public string EqualToValue { get; set; } = null!;
+    public string? EqualToValue { get; set; }
 
-    public DynamicStringFormatDataField DynamicStringFormatDataField { get; set; } = null!;
+    public DataField DataField { get; set; } = null!;
 }

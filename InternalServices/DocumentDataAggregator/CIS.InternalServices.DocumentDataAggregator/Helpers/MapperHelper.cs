@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using FastMember;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Mapper;
+namespace CIS.InternalServices.DocumentDataAggregator.Helpers;
 
 internal static class MapperHelper
 {
@@ -21,15 +21,7 @@ internal static class MapperHelper
 
         if (memberNames.Length == 1)
         {
-            try
-            {
-                return ObjectAccessor.Create(obj)[memberNames.First()];
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return ObjectAccessor.Create(obj)[memberNames.First()];
         }
 
         var currentObject = obj;

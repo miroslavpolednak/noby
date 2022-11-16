@@ -16,10 +16,10 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataField", b =>
                 {
@@ -27,7 +27,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DataFieldId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DataFieldId"));
 
                     b.Property<int>("DataServiceId")
                         .HasColumnType("int");
@@ -54,7 +54,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DataServiceId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DataServiceId"));
 
                     b.Property<string>("DataServiceName")
                         .IsRequired()
@@ -72,7 +72,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentId"));
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
@@ -90,7 +90,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentDataFieldId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentDataFieldId"));
 
                     b.Property<int>("DataFieldId")
                         .HasColumnType("int");
@@ -133,13 +133,13 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("InputParameterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SourceDataFieldId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TargetDataServiceId")
                         .HasColumnType("int");
 
-                    b.HasKey("DocumentId", "DocumentVersion", "InputParameterId");
+                    b.Property<int>("SourceDataFieldId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentId", "DocumentVersion", "InputParameterId", "TargetDataServiceId");
 
                     b.HasIndex("InputParameterId");
 
@@ -184,15 +184,14 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatId"));
 
                     b.Property<int>("DocumentDataFieldId")
                         .HasColumnType("int");
 
                     b.Property<string>("Format")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
@@ -213,9 +212,8 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .HasColumnType("int");
 
                     b.Property<string>("EqualToValue")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DynamicStringFormatId", "DynamicStringFormatDataFieldId");
 
@@ -230,7 +228,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatDataFieldId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatDataFieldId"));
 
                     b.Property<string>("FieldPath")
                         .IsRequired()
@@ -242,13 +240,108 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.ToTable("DynamicStringFormatDataField");
                 });
 
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDataField", b =>
+                {
+                    b.Property<int>("EasFormDataFieldId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EasFormDataFieldId"));
+
+                    b.Property<int>("DataFieldId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EasFormTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EasRequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JsonPropertyName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("EasFormDataFieldId");
+
+                    b.HasIndex("DataFieldId");
+
+                    b.HasIndex("EasFormTypeId");
+
+                    b.HasIndex("EasRequestTypeId", "EasFormTypeId", "JsonPropertyName")
+                        .IsUnique();
+
+                    b.ToTable("EasFormDataField");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDynamicInputParameter", b =>
+                {
+                    b.Property<int>("EasRequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InputParameterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TargetDataServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceDataFieldId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EasRequestTypeId", "InputParameterId", "TargetDataServiceId");
+
+                    b.HasIndex("InputParameterId");
+
+                    b.HasIndex("SourceDataFieldId");
+
+                    b.HasIndex("TargetDataServiceId");
+
+                    b.ToTable("EasFormDynamicInputParameter");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormType", b =>
+                {
+                    b.Property<int>("EasFormTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EasFormTypeId"));
+
+                    b.Property<string>("EasFormTypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("EasFormTypeId");
+
+                    b.ToTable("EasFormType");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasRequestType", b =>
+                {
+                    b.Property<int>("EasRequestTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EasRequestTypeId"));
+
+                    b.Property<string>("EasRequestTypeName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("EasRequestTypeId");
+
+                    b.ToTable("EasRequestType");
+                });
+
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.InputParameter", b =>
                 {
                     b.Property<int>("InputParameterId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InputParameterId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InputParameterId"));
 
                     b.Property<string>("InputParameterName")
                         .IsRequired()
@@ -370,6 +463,68 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .IsRequired();
 
                     b.Navigation("DynamicStringFormatDataField");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDataField", b =>
+                {
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataField", "DataField")
+                        .WithMany()
+                        .HasForeignKey("DataFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormType", "EasFormType")
+                        .WithMany()
+                        .HasForeignKey("EasFormTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasRequestType", "EasRequestType")
+                        .WithMany()
+                        .HasForeignKey("EasRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DataField");
+
+                    b.Navigation("EasFormType");
+
+                    b.Navigation("EasRequestType");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDynamicInputParameter", b =>
+                {
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasRequestType", "EasRequestType")
+                        .WithMany()
+                        .HasForeignKey("EasRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.InputParameter", "InputParameter")
+                        .WithMany()
+                        .HasForeignKey("InputParameterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataField", "SourceDataField")
+                        .WithMany()
+                        .HasForeignKey("SourceDataFieldId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataService", "TargetDataService")
+                        .WithMany()
+                        .HasForeignKey("TargetDataServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EasRequestType");
+
+                    b.Navigation("InputParameter");
+
+                    b.Navigation("SourceDataField");
+
+                    b.Navigation("TargetDataService");
                 });
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DocumentDataField", b =>

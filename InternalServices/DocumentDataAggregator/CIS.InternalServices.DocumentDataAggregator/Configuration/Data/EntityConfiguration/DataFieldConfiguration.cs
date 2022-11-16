@@ -14,6 +14,8 @@ internal class DataFieldConfiguration : IEntityTypeConfiguration<DataField>
 
         builder.Property(x => x.FieldPath).HasMaxLength(500).IsRequired();
 
+        builder.HasIndex(x => x.FieldPath).IsUnique();
+
         builder.Property(x => x.DefaultStringFormat).HasMaxLength(50).IsRequired(false);
     }
 }

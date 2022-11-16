@@ -8,7 +8,7 @@ internal class DocumentDynamicInputParameterConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<DocumentDynamicInputParameter> builder)
     {
-        builder.HasKey(x => new { x.DocumentId, x.DocumentVersion, x.InputParameterId });
+        builder.HasKey(x => new { x.DocumentId, x.DocumentVersion, x.InputParameterId, x.TargetDataServiceId });
 
         builder.Property(x => x.DocumentVersion).HasMaxLength(5);
 

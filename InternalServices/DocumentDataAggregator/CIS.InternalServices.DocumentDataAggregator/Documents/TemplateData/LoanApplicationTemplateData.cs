@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Globalization;
+using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using DomainServices.CodebookService.Clients;
@@ -16,7 +17,7 @@ internal class LoanApplicationTemplateData : AggregatedData
         Customer.Addresses
                 .Where(c => c.AddressTypeId == (int)AddressTypes.Permanent)
                 .DefaultIfEmpty(new GrpcAddress())
-                .Select(a => $"{a.Street} {a.HouseNumber}/{a.StreetNumber}, " +
+                .Select(a => $"{a.Street} {string.Join("/", new[] { a.HouseNumber, a.StreetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)))}, " +
                              $"{a.Postcode} {a.City}, " +
                              $"{_countries.First(c => c.Id == a.CountryId).LongName}")
                 .First();
@@ -30,7 +31,7 @@ internal class LoanApplicationTemplateData : AggregatedData
             if (SalesArrangement.Drawing.IsImmediateDrawing)
                 return bankAccount + " a to bezokladně";
 
-            return bankAccount + $" a to k datu: {SalesArrangement.Drawing.DrawingDate}";
+            return bankAccount + $" a to k datu: {((DateTime)SalesArrangement.Drawing.DrawingDate).ToString("d", CultureInfo.GetCultureInfo("cs"))}";
         }
     }
 
@@ -43,7 +44,7 @@ internal class LoanApplicationTemplateData : AggregatedData
 
             var account = SalesArrangement.Drawing.RepaymentAccount;
 
-            return $"{account.Prefix}-{account.Number}/{account.BankCode}";
+            return "Číslo účtu pro splácení úvěru: " + $"{account.Prefix}-{account.Number}/{account.BankCode}";
         }
     }
 

@@ -10,9 +10,11 @@ internal class DocumentDataField
 
     public int DataFieldId { get; set; }
 
-    public string TemplateFieldName { get; set; } = null!;
+    public string AcroFieldName { get; set; } = null!;
 
-    public string? StringFormat { get; set; } = null!;
+    public string? StringFormat { get; set; }
+
+    public string? DefaultTextIfNull { get; set; }
 
     public Document Document { get; set; } = null!;
 

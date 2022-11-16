@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
+using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
 
@@ -27,36 +29,37 @@ internal class ConfigurationRepository
                          .ToListAsync();
     }
 
-    public Task<List<SourceField>> LoadSourceFields(int documentId, string documentVersion)
+    public Task<List<DocumentSourceField>> LoadDocumentSourceFields(int documentId, string documentVersion)
     {
         return GetSourceFieldsQuery().Union(GetSpecialSourceFields()).ToListAsync();
 
-        IQueryable<SourceField> GetSourceFieldsQuery()
+        IQueryable<DocumentSourceField> GetSourceFieldsQuery()
         {
             return _dbContext.DocumentDataFields
                              .AsNoTracking()
                              .Where(f => f.DocumentId == documentId && f.DocumentVersion == documentVersion)
-                             .Select(f => new SourceField
+                             .Select(f => new DocumentSourceField
                              {
                                  SourceFieldId = f.DocumentDataFieldId,
                                  DataSource = (DataSource)f.DataField.DataServiceId,
                                  FieldPath = f.DataField.FieldPath,
-                                 TemplateFieldName = f.TemplateFieldName,
-                                 StringFormat = f.StringFormat ?? f.DataField.DefaultStringFormat
+                                 AcroFieldName = f.AcroFieldName,
+                                 StringFormat = f.StringFormat ?? f.DataField.DefaultStringFormat,
+                                 DefaultTextIfNull = f.DefaultTextIfNull
                              });
         }
 
-        IQueryable<SourceField> GetSpecialSourceFields()
+        IQueryable<DocumentSourceField> GetSpecialSourceFields()
         {
             return _dbContext.DocumentSpecialDataFields
                              .AsNoTracking()
                              .Where(f => f.DocumentId == documentId)
-                             .Select(f => new SourceField
+                             .Select(f => new DocumentSourceField
                              {
                                  SourceFieldId = default,
                                  DataSource = (DataSource)f.DataServiceId,
                                  FieldPath = f.FieldPath,
-                                 TemplateFieldName = f.TemplateFieldName,
+                                 AcroFieldName = f.AcroFieldName,
                                  StringFormat = f.StringFormat
                              });
         }
@@ -68,7 +71,7 @@ internal class ConfigurationRepository
                                    .AsNoTracking()
                                    .Where(x => x.DocumentDataField.DocumentId == documentId && x.DocumentDataField.DocumentVersion == documentVersion)
                                    .Include(x => x.DynamicStringFormatConditions)
-                                   .ThenInclude(x => x.DynamicStringFormatDataField)
+                                   .ThenInclude(x => x.DataField)
                                    .AsSplitQuery()
                                    .Select(x => new DocumentDynamicStringFormat
                                    {
@@ -77,11 +80,42 @@ internal class ConfigurationRepository
                                        Priority = x.Priority,
                                        Conditions = x.DynamicStringFormatConditions.Select(c => new DocumentDynamicStringFormatCondition
                                        {
-                                           SourceFieldPath = c.DynamicStringFormatDataField.FieldPath,
+                                           SourceFieldPath = c.DataField.FieldPath,
                                            EqualToValue = c.EqualToValue
                                        }).ToList()
                                    }).ToListAsync();
 
         return data.ToLookup(x => x.SourceFieldId);
+    }
+
+    public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId)
+    {
+        return _dbContext.EasFormDataFields
+                         .AsNoTracking()
+                         .Where(e => e.EasRequestTypeId == requestTypeId)
+                         .Select(e => new EasFormSourceField
+                         {
+                             SourceFieldId = e.EasFormTypeId,
+                             DataSource = (DataSource)e.DataField.DataServiceId,
+                             FormType = (EasFormType)e.EasFormTypeId,
+                             FieldPath = e.DataField.FieldPath,
+                             JsonPropertyName = e.JsonPropertyName
+                         })
+                         .ToListAsync();
+    }
+
+    public Task<List<DynamicInputParameter>> LoadEasFormDynamicInputFields(int requestTypeId)
+    {
+        return _dbContext.EasFormDynamicInputParameters
+                         .AsNoTracking()
+                         .Where(e => e.EasRequestTypeId == requestTypeId)
+                         .Select(e => new DynamicInputParameter
+                         {
+                             InputParameterName = e.InputParameter.InputParameterName,
+                             TargetDataSource = (DataSource)e.TargetDataService.DataServiceId,
+                             SourceDataSource = (DataSource)e.SourceDataField.DataServiceId,
+                             SourceFieldPath = e.SourceDataField.FieldPath
+                         })
+                         .ToListAsync();
     }
 }

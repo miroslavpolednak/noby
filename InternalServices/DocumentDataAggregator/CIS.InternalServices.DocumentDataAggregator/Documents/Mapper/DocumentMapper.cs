@@ -1,5 +1,5 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
-using CIS.InternalServices.DocumentDataAggregator.Mapper;
+﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
+using CIS.InternalServices.DocumentDataAggregator.DataServices;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Documents.Mapper;
 
@@ -23,7 +23,7 @@ internal class DocumentMapper
                             .Where(d => d.Format is not null)
                             .ToDictionary(d => d.Key, d => d.Format!);
 
-    public IEnumerable<DocumentFieldData> GetDocumentFields(IReadOnlyCollection<SourceField> sourceFields, IDictionary<int, string> dynamicStringFormats)
+    public IEnumerable<DocumentFieldData> GetDocumentFields(IReadOnlyCollection<DocumentSourceField> sourceFields, IDictionary<int, string> dynamicStringFormats)
     {
         return sourceFields.GroupBy(f => CollectionPathHelper.GetCollectionPath(f.FieldPath))
                            .SelectMany(GetSourceFieldDataSequence)
@@ -38,14 +38,14 @@ internal class DocumentMapper
 
             return new DocumentFieldData
             {
-                FieldName = fieldData.TemplateFieldName,
+                FieldName = fieldData.AcroFieldName,
                 Value = fieldData.Value!,
                 StringFormat = stringFormat
             };
         }
     }
 
-    private IEnumerable<SourceFieldData> GetSourceFieldDataSequence(IGrouping<string, SourceField> sourceFieldGroups)
+    private IEnumerable<SourceFieldData> GetSourceFieldDataSequence(IGrouping<string, DocumentSourceField> sourceFieldGroups)
     {
         ISourceFieldParser valueParser = sourceFieldGroups.Key == string.Empty ? new SingleValueFieldParser() : new CollectionFieldParser();
 
@@ -63,8 +63,8 @@ internal class DocumentMapper
     internal class SourceFieldData
     {
         public int? SourceFieldId { get; init; }
-        public string TemplateFieldName { get; init; } = null!;
+        public required string AcroFieldName { get; init; }
         public string? StringFormat { get; init; }
-        public object? Value { get; init; }
+        public required object? Value { get; init; }
     }
 }

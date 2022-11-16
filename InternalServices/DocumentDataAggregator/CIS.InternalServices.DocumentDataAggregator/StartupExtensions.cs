@@ -1,5 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+using CIS.InternalServices.DocumentDataAggregator.EasForms;
+using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
@@ -17,7 +19,8 @@ public static class StartupExtensions
     {
         services.AddDbContext<ConfigurationContext>(ServiceLifetime.Transient);
 
-        services.AddTransient<IDataAggregator, DataAggregator>();
+        services.AddTransient<IDataAggregator, DataAggregator>()
+                .AddTransient<IServiceFormData, ServiceFormData>();
 
         services.AddAttributedServices(typeof(StartupExtensions));
 

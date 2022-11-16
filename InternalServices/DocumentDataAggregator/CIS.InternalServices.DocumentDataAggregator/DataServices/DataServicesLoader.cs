@@ -1,5 +1,4 @@
 ﻿using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
-using CIS.InternalServices.DocumentDataAggregator.Mapper;
 using DomainServices.CodebookService.Clients;
 using Microsoft.Extensions.DependencyInjection;
 

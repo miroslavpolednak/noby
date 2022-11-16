@@ -8,11 +8,11 @@ internal class DocumentSpecialDataFieldConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<DocumentSpecialDataField> builder)
     {
-        builder.HasKey(x => new { x.DocumentId, x.FieldPath });
+        builder.HasKey(x => new { x.DocumentId, x.AcroFieldName });
+
+        builder.Property(x => x.AcroFieldName).HasMaxLength(100).IsRequired();
 
         builder.Property(x => x.FieldPath).HasMaxLength(500);
-
-        builder.Property(x => x.TemplateFieldName).HasMaxLength(100).IsRequired();
 
         builder.Property(x => x.StringFormat).HasMaxLength(50).IsRequired(false);
 

@@ -15,7 +15,7 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<DataService> DataServices => Set<DataService>();
 
-    public DbSet<Document> Documents => Set<Document>();
+    public DbSet<Entities.Document> Documents => Set<Entities.Document>();
 
     public DbSet<DocumentDataField> DocumentDataFields => Set<DocumentDataField>();
 
@@ -24,6 +24,10 @@ internal class ConfigurationContext : DbContext
     public DbSet<DocumentSpecialDataField> DocumentSpecialDataFields => Set<DocumentSpecialDataField>();
 
     public DbSet<DynamicStringFormat> DynamicStringFormats => Set<DynamicStringFormat>();
+
+    public DbSet<EasFormDataField> EasFormDataFields => Set<EasFormDataField>();
+
+    public DbSet<EasFormDynamicInputParameter> EasFormDynamicInputParameters => Set<EasFormDynamicInputParameter>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

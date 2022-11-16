@@ -21,6 +21,14 @@ internal class ProductServiceWrapper : IServiceWrapper
 
         var result = await _productService.GetMortgage(input.CaseId.Value, cancellationToken);
 
-        data.Mortgage = ServiceCallResult.ResolveAndThrowIfError<MortgageData>(result);
+        data.Mortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(result).Mortgage;
+
+        //TODO: Mock
+        data.Mortgage.PaymentAccount = new PaymentAccount
+        {
+            Prefix = "001",
+            Number = "123456789",
+            BankCode = "0000"
+        };
     }
 }

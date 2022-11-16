@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
+﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
 
 internal class DocumentDynamicStringFormatCondition
 {
