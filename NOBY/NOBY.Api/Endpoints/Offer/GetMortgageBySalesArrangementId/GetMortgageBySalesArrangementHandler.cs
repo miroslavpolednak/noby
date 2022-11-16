@@ -14,21 +14,18 @@ internal class GetMortgageBySalesArrangementHandler
         // kontrola, zda ma SA OfferId
         if (!salesArrangementInstance.OfferId.HasValue)
             throw new CisArgumentNullException(ErrorCodes.SalesArrangementNotLinkedToOffer, "SalesArrangement is not linked to any Offer", nameof(request));
-        
+         
         return await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(salesArrangementInstance.OfferId.Value), cancellationToken);
     }
 
     private readonly Abstraction.ISalesArrangementServiceClients _salesArrangementService;
     private readonly IMediator _mediator;
-    private readonly ILogger<GetMortgageBySalesArrangementHandler> _logger;
     
     public GetMortgageBySalesArrangementHandler(
-        IMediator mediator, 
-        ILogger<GetMortgageBySalesArrangementHandler> logger, 
+        IMediator mediator,
         Abstraction.ISalesArrangementServiceClients salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
-        _logger = logger;
         _mediator = mediator;
     }
 }

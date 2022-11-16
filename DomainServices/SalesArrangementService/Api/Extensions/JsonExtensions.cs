@@ -103,7 +103,7 @@ internal static class JsonExtensions
 
         if (!isNumber)
         {
-            throw new CisArgumentException(16062, $"PostCode value '{value}' isn't covertable to number.", nameof(value));
+            throw new CisArgumentException(18062, $"PostCode value '{value}' isn't covertable to number.", nameof(value));
         }
 
         return valueWithoutSpaces;

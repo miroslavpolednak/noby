@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Clients;
 using ExternalServices.Eas;
 using ExternalServices.MpHome;
@@ -40,7 +39,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceMpHome(appConfiguration.MpHome);
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.ProductServiceDbContext>();
+        builder.AddEntityFramework<Repositories.ProductServiceDbContext>("konsDb");
 
         // repos
         builder.Services.AddScoped<Repositories.LoanRepository>();

@@ -123,11 +123,11 @@ internal class ValidateSalesArrangementHandler
                 var message = $"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]";
                 if (checkFormResult.CommonValue == 2)
                 {
-                    throw new CisValidationException(16041, message);
+                    throw new CisValidationException(18041, message);
                 }
                 else
                 {
-                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, message, 16040);
+                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, message, 18040);
                 }
             }
 
