@@ -2,5 +2,7 @@
 
 public sealed class OutputWarning
 {
-    public string? WarningMessage { get; set; }
+    public string? InternalMessage { get; set; }
+
+    public string? Text { get; set; }
 }
