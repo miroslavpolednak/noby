@@ -89,7 +89,8 @@ internal static class OfferApiModuleDtoExtensions
     public static Dto.OutputWarning ToApiResponseItem(this SimulationResultWarning resultItem)
         => new Dto.OutputWarning()
         {
-            WarningMessage = resultItem.WarningInternalMessage
+            InternalMessage = resultItem.WarningInternalMessage,
+            Text = resultItem.WarningText
         };
 
     public static Dto.PaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)
