@@ -101,12 +101,13 @@ public class OfferController : ControllerBase
     /// Plný splátkový kalendář dle ID simulace.
     /// </summary>
     /// <remarks>
+    /// Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId. Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy. Chyba simulační služby se propaguje.<br/>
     /// <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
     /// </remarks>
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře" })]
+    [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře", "UC: Modelace Hypoteky" })]
     [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);

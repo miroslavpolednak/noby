@@ -149,7 +149,6 @@ internal class SimulateMortgageHandler
        result switch
        {
            SuccessfulServiceCallResult<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
-           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
            _ => throw new NotImplementedException("RunSimulationHT")
        };
 }

@@ -20,7 +20,7 @@ internal class UpdateSalesArrangementParametersHandler
             {
                 var customersOnSA = ServiceCallResult.ResolveAndThrowIfError<List<_HO.CustomerOnSA>>(await _customerOnSAService.GetCustomerList(request.Request.SalesArrangementId, cancellation));
                 if (!customersOnSA.Any(t => t.CustomerOnSAId == request.Request.Mortgage.Agent))
-                    throw new CisNotFoundException(16078, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
+                    throw new CisNotFoundException(18078, $"Agent {request.Request.Mortgage.Agent} not found amoung customersOnSA for SAID {request.Request.SalesArrangementId}");
             }
         }
 

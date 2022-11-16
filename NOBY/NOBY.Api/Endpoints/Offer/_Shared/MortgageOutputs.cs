@@ -37,4 +37,6 @@ public class MortgageOutputs
     public List<PaymentScheduleSimpleItem>? PaymentScheduleSimple { get; set; }
 
     public List<FeeItem>? Fees { get; set; }
+
+    public List<OutputWarning>? Warnings { get; set; }
 }

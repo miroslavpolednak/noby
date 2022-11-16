@@ -82,7 +82,14 @@ internal static class OfferApiModuleDtoExtensions
             MarketingActionsDeviation = result.MarketingActionsDeviation,
             MarketingActions = additionalResults.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
             PaymentScheduleSimple = additionalResults.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList(),
-            Fees = additionalResults.Fees is null ? null : additionalResults.Fees.ToApiResponse()
+            Fees = additionalResults.Fees is null ? null : additionalResults.Fees.ToApiResponse(),
+            Warnings = result.Warnings?.Select(t => t.ToApiResponseItem())?.ToList()
+        };
+
+    public static Dto.OutputWarning ToApiResponseItem(this SimulationResultWarning resultItem)
+        => new Dto.OutputWarning()
+        {
+            WarningMessage = resultItem.WarningInternalMessage
         };
 
     public static Dto.PaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)

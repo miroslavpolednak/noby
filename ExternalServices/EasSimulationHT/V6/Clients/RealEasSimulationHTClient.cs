@@ -1,6 +1,6 @@
 ﻿using ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper;
 using CIS.Infrastructure.Logging;
-
+using CIS.Core.Exceptions;
 
 namespace ExternalServices.EasSimulationHT.V6;
 
@@ -31,7 +31,7 @@ internal sealed class RealEasSimulationHTClient : Shared.BaseClient<RealEasSimul
             {
                 var message = $"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]";
                 _logger.LogWarning(message);
-                return new ErrorServiceCallResult(9202, message);
+                throw new CisValidationException(10020, result.errorInfo!.textChyby);
             }
 
             return new SuccessfulServiceCallResult<SimulationHTResponse>(result);

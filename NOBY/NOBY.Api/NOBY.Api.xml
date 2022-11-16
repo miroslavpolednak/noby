@@ -1446,6 +1446,7 @@
             Plný splátkový kalendář dle ID simulace.
             </summary>
             <remarks>
+            Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId. Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy. Chyba simulační služby se propaguje.<br/>
             <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
             </remarks>
             <returns>Plný splátkový kalendář simulace.</returns>
