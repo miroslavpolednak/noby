@@ -4,7 +4,7 @@ namespace CIS.InternalServices.NotificationService.Api.Mcs.Consumers.BackgroundS
 
 public static class RetryPolicies
 {
-    private static readonly TimeSpan _period = new(0, 0, 8);
+    private static readonly TimeSpan _period = new(0, 1, 0);
 
     public static readonly AsyncPolicy ForeverRetryPolicy = Policy
         .Handle<Exception>()
