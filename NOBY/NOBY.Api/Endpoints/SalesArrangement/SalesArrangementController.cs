@@ -132,14 +132,20 @@ public class SalesArrangementController : ControllerBase
         => await _mediator.Send(request.InfuseId(salesArrangementId));
 
     /// <summary>
-    /// Odeslani SA do SB
+    /// Validace SalesArrangementu a odeslání do StarBuildu
     /// </summary>
-    [HttpPut("{salesArrangementId:int}/send")]
+    /// <remarks>
+    /// Dojde ke zvalidování obsahu žádosti stejně, jako při operaci validace a předání datových vět na rozhraní Starbuildu.<br /><br />
+    /// Pokud žádost obsahuje chyby, které nejsou/nemohou být ignorovány, vrací se chyba.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
+    [HttpPost("{salesArrangementId:int}/send")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: SendToCmp" })]
+    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement", "UC: SendToCmp" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId)
-        => await _mediator.Send(new SendToCmp.SendToCmpRequest{ SalesArrangementId = salesArrangementId });
+    public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
+        => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
 
     private readonly IMediator _mediator;
     public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;

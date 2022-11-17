@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.SqlServer.Server;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
+using static DomainServices.SalesArrangementService.Api.Handlers.Services.ValidationTransformationCache;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
 
@@ -65,26 +67,27 @@ internal sealed class ValidationTransformationService
 
     static Contracts.ValidationMessageNoby CreateNobyMessage(Contracts.ValidationMessage item, ImmutableDictionary<string, ValidationTransformationCache.TransformationItem> transformationItems)
     {
+        ValidationTransformationCache.TransformationItem titem;
+        var message = new Contracts.ValidationMessageNoby();
+
         var matches = _arrayIndexesRegex.Matches(item.Parameter);
         if (matches.Any())
         {
-            var titem = transformationItems[_arrayIndexesRegex.Replace(item.Parameter, "[]")];
-            return CreateNobyMessage(titem, string.Format(titem.Text, matches.Select(t => t.Groups["idx"].Value).ToArray()));
+            titem = transformationItems[_arrayIndexesRegex.Replace(item.Parameter, "[]")];
+            message.Message = string.Format(titem.Text, matches.Select(t => t.Groups["idx"].Value).ToArray());
         }
         else
         {
-            return CreateNobyMessage(transformationItems[item.Parameter]);
+            titem = transformationItems[item.Parameter];
+            message.Message = titem.Text;
         }
-    }
 
-    static Contracts.ValidationMessageNoby CreateNobyMessage(ValidationTransformationCache.TransformationItem item, string? text = null)
-        => new Contracts.ValidationMessageNoby
-        {
-            Category = item.Category,
-            Message = text ?? item.Text,
-            ParameterName = item.Name,
-            Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None
-        };
+        message.ParameterName = titem.Name;
+        message.Category = titem.Category;
+        message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
+
+        return message;
+    }
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
 

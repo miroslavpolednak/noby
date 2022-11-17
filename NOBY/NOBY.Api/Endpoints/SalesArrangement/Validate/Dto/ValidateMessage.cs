@@ -23,11 +23,14 @@ public sealed class ValidateMessage
     /// </summary>
     /// <example>Error</example>
     [Required]
-    public MessageSeverity Severity { get; set; }
+    public MessageSeverity Severity { get; set; }   
+}
 
-    public enum MessageSeverity
-    {
-        Warning = 1,
-        Error = 2
-    }
+/// <summary>
+/// Severita chyby
+/// </summary>
+public enum MessageSeverity
+{
+    Warning = 1,
+    Error = 2
 }

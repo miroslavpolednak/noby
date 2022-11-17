@@ -20,7 +20,7 @@ internal sealed class ValidateHandler
                     {
                         Message = t2.NobyMessageDetail.Message,
                         Parameter = t2.NobyMessageDetail.ParameterName,
-                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? Dto.ValidateMessage.MessageSeverity.Error : Dto.ValidateMessage.MessageSeverity.Warning
+                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? Dto.MessageSeverity.Error : Dto.MessageSeverity.Warning
                     }).ToList()
                 }).ToList()
         };   

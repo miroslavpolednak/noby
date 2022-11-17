@@ -35,29 +35,24 @@ internal class SendToCmpHandler
 
         // provolat validaci SA
         var validationResult = await callSaValidation(request.SalesArrangementId, cancellationToken);
-
-        if (validationResult?.ValidationMessages?.Any() ?? false)
+        if (validationResult?.ValidationMessages?.Any() ?? false && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
         {
             return new SendToCmpResponse
             {
-                Categories = validationResult.ValidationMessages?
-                .GroupBy(t => t.NobyMessageDetail.Category)
-                .Select(t => new ValidateCategory
-                {
-                    CategoryName = t.Key,
-                    ValidationMessages = t.Select(t2 => new ValidateMessage
+                Categories = validationResult.ValidationMessages
+                    .GroupBy(t => t.NobyMessageDetail.Category)
+                    .Select(t => new ValidateCategory
                     {
-                        Message = t2.NobyMessageDetail.Message,
-                        Parameter = t2.NobyMessageDetail.ParameterName,
-                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? ValidateMessage.MessageSeverity.Error : ValidateMessage.MessageSeverity.Warning
+                        CategoryName = t.Key,
+                        ValidationMessages = t.Select(t2 => new ValidateMessage
+                        {
+                            Message = t2.NobyMessageDetail.Message,
+                            Parameter = t2.NobyMessageDetail.ParameterName,
+                            Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? MessageSeverity.Error : MessageSeverity.Warning
+                        }).ToList()
                     }).ToList()
-                }).ToList()
             };
         }
-
-        // TODO: relevant for Drop1-3: SendToCmp & UpdateCaseState call only when validation result is OK (validationResult.Errors.Count() == 0)
-        // Dočasně je validace volána až po odeslání (aby odeslání nebylo závislé na případných fatalních chybách při volání validace ... ošetření pro Drop1-2)
-        // -------------------------------------------------------------------------------------------------------------------------------------
 
         // odeslat do SB
         await _salesArrangementService.SendToCmp(request.SalesArrangementId, cancellationToken);
