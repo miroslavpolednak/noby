@@ -11,15 +11,18 @@ internal class ValidateSalesArrangementHandler
 
     #region Construction
 
+    private readonly Services.ValidationTransformationService _transformationService;
     private readonly FormsService _formsService;
     private readonly ILogger<ValidateSalesArrangementHandler> _logger;
     private readonly Eas.IEasClient _easClient;
 
     public ValidateSalesArrangementHandler(
+        Services.ValidationTransformationService transformationService,
         FormsService formsService,
         ILogger<ValidateSalesArrangementHandler> logger,
         Eas.IEasClient easClient)
     {
+        _transformationService = transformationService;
         _formsService = formsService;
         _logger = logger;
         _easClient = easClient;
@@ -38,9 +41,7 @@ internal class ValidateSalesArrangementHandler
         var forms = await GetForms(arrangement, cancellation);
 
         // check forms
-        var results = await CheckForms(forms, arrangement.ContractNumber);
-
-        return ResultsToResponse(results);
+        return await CheckForms(forms, arrangement.ContractNumber);
     }
 
     private async Task<List<Form>> GetForms(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
@@ -84,7 +85,7 @@ internal class ValidateSalesArrangementHandler
         return builder.BuildForms(formData);  // ??? HH jaké FormId použít pro CheckForm 
     }
 
-    private async Task<List<Eas.CheckFormV2.Response>> CheckForms(List<Form> forms, string contractNumber)
+    private async Task<ValidateSalesArrangementResponse> CheckForms(List<Form> forms, string contractNumber)
     {
         int GetFormularId(EFormType type) {
             switch (type)
@@ -98,7 +99,7 @@ internal class ValidateSalesArrangementHandler
 
         var actualDate = DateTime.Now.Date;
 
-        List<Eas.CheckFormV2.Response> results = new List<Eas.CheckFormV2.Response>();
+        var response = new ValidateSalesArrangementResponse { };
 
         for (int i = 0; i < forms.Count; i++)
         {
@@ -131,10 +132,10 @@ internal class ValidateSalesArrangementHandler
                 }
             }
 
-            results.Add(checkFormResult);
+            response.ValidationMessages.AddRange(_transformationService.TransformErrors(checkFormData.formular_id.ToString(), form, checkFormResult.Detail?.errors));
         }
 
-        return results;
+        return response;
     }
 
     private static Eas.CheckFormV2.Response ResolveCheckForm(IServiceCallResult result) =>
@@ -144,38 +145,5 @@ internal class ValidateSalesArrangementHandler
           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
           _ => throw new NotImplementedException()
       };
-
-    private static ValidateSalesArrangementResponse ResultsToResponse(List<Eas.CheckFormV2.Response> results)
-    {
-        ValidationMessage ToMessage(string parameter, Eas.CheckFormV2.Error e)
-        {
-            return new ValidationMessage
-            {
-                Parameter = parameter,
-                Value = e.Value,
-                Code = e.ErrorCode,
-                Message = e.ErrorMessage,
-                AdditionalInformation = e.AdditionalInformation
-            };
-        };
-
-        var response = new ValidateSalesArrangementResponse { };
-
-        results.ForEach(result =>
-        {
-            if (result.Detail != null)
-            {
-                var parameters = result.Detail.errors.Select(i => i.Key);
-
-                var errors = parameters?.SelectMany(p => result.Detail.errors[p].Where(i => i.Severity).Select(e => ToMessage(p, e)));
-                var warnings = parameters?.SelectMany(p => result.Detail.errors[p].Where(i => !i.Severity).Select(e => ToMessage(p, e)));
-
-                response.Errors.AddRange(errors);
-                response.Warnings.AddRange(warnings);
-            }
-        });
-
-        return response;
-    }
 }
 

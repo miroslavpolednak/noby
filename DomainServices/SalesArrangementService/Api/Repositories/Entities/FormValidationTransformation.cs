@@ -20,4 +20,6 @@ internal class FormValidationTransformation
     public string Text { get; set; } = string.Empty;
 
     public FormValidationTransformationAlterSeverity AlterSeverity { get; set; }
+
+    public FormValidationTransformationCustomTextHandling CustomTextHandling { get; set; }
 }

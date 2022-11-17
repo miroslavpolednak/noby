@@ -15,8 +15,28 @@ internal sealed class ValidationTransformationService
         if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
 
         var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
+
         // get transformation values from DB
-        var transformationMatrix = ValidationTransformationCache.GetOrCreate(formId, _getCacheItemsFce);
+        var transformationMatrix = ValidationTransformationCache.GetOrCreate(formId, () =>
+            _dbContext.FormValidationTransformations
+                .AsNoTracking()
+                .Where(t => t.FormId == formId)
+                .Select(t => new {
+                    Category = t.Category,
+                    Text = t.Text,
+                    Name = t.Name,
+                    AlterSeverity = t.AlterSeverity,
+                    Path = t.Path
+                })
+                .ToList()
+                .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
+                {
+                    Category = v.Category,
+                    Text = v.Text,
+                    Name = v.Name,
+                    AlterSeverity = v.AlterSeverity
+                })
+        );
 
         foreach (var errorGroup in errors)
         {
@@ -34,7 +54,7 @@ internal sealed class ValidationTransformationService
                     Parameter = errorGroup.Key
                 };
                 // transformace na NOBY
-                item.NobyMessageDetail = item.CreateNobyMessage(transformationMatrix);
+                item.NobyMessageDetail = CreateNobyMessage(item, transformationMatrix);
 
                 transformedItems.Add(item);
             }
@@ -43,48 +63,28 @@ internal sealed class ValidationTransformationService
         return transformedItems;
     }
 
-    static Contracts.ValidationMessageNoby CreateNobyMessage(this Contracts.ValidationMessage item, ImmutableDictionary<string, TransformationItem> transformationItems)
+    static Contracts.ValidationMessageNoby CreateNobyMessage(Contracts.ValidationMessage item, ImmutableDictionary<string, ValidationTransformationCache.TransformationItem> transformationItems)
     {
-        ValidationTransformationCache.TransformationItem titem;
         var matches = _arrayIndexesRegex.Matches(item.Parameter);
         if (matches.Any())
         {
-            titem = transformationItems[_arrayIndexesRegex.Replace(item.Parameter, "[]")];
-            string.Format(titem.Text, matches.Select(t => t.Groups["idx"].Value).ToArray());
+            var titem = transformationItems[_arrayIndexesRegex.Replace(item.Parameter, "[]")];
+            return CreateNobyMessage(titem, string.Format(titem.Text, matches.Select(t => t.Groups["idx"].Value).ToArray()));
         }
         else
-            titem = transformationItems[item.Parameter];
-
-        return new Contracts.ValidationMessageNoby
         {
-            Category = titem.Category,
-            Message = titem.Text,
-            ParameterName = titem.Name,
-            Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None
-        };
+            return CreateNobyMessage(transformationItems[item.Parameter]);
+        }
     }
 
-    Func<ImmutableDictionary<string, TransformationItem>> _getCacheItemsFce = () =>
-    {
-        return _dbContext.FormValidationTransformations
-        .AsNoTracking()
-            .Where(t => t.FormId == formId)
-            .Select(t => new {
-                Category = t.Category,
-                Text = t.Text,
-                Name = t.Name,
-                AlterSeverity = t.AlterSeverity,
-                Path = t.Path
-            })
-            .ToList()
-            .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
-            {
-                Category = v.Category,
-                Text = v.Text,
-                Name = v.Name,
-                AlterSeverity = v.AlterSeverity
-            });
-    };
+    static Contracts.ValidationMessageNoby CreateNobyMessage(ValidationTransformationCache.TransformationItem item, string? text = null)
+        => new Contracts.ValidationMessageNoby
+        {
+            Category = item.Category,
+            Message = text ?? item.Text,
+            ParameterName = item.Name,
+            Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None
+        };
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
 
