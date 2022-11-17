@@ -10,7 +10,8 @@ public class SalesArrangementController : ControllerBase
     /// Validace dat SalesArrangementu - checkform.
     /// </summary>
     /// <remarks>
-    /// Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />
+    /// Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br />
+    /// Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br />
     /// <i>DS:</i> SalesArrangementService/validateSalesArrangement
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/validate")]
