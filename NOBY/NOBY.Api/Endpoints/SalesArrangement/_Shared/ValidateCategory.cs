@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.Validate.Dto;
+namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 public sealed class ValidateCategory
 {

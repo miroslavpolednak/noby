@@ -11,9 +11,9 @@ internal class FormValidationTransformation
 
     public string FormId { get; set; } = string.Empty;
 
-    public string Name { get; set; } = string.Empty;
+    public string FieldName { get; set; } = string.Empty;
 
-    public string Path { get; set; } = string.Empty;
+    public string FieldPath { get; set; } = string.Empty;
 
     public string? Category { get; set; }
 

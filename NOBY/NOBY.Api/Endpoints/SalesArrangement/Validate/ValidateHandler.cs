@@ -1,4 +1,5 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.Validate;
 
@@ -20,7 +21,7 @@ internal sealed class ValidateHandler
                     {
                         Message = t2.NobyMessageDetail.Message,
                         Parameter = t2.NobyMessageDetail.ParameterName,
-                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? Dto.MessageSeverity.Error : Dto.MessageSeverity.Warning
+                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? MessageSeverity.Error : MessageSeverity.Warning
                     }).ToList()
                 }).ToList()
         };   

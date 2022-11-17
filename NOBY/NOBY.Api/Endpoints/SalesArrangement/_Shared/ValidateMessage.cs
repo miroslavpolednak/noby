@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.Validate.Dto;
+namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 public sealed class ValidateMessage
 {
@@ -23,7 +23,7 @@ public sealed class ValidateMessage
     /// </summary>
     /// <example>Error</example>
     [Required]
-    public MessageSeverity Severity { get; set; }   
+    public MessageSeverity Severity { get; set; }
 }
 
 /// <summary>

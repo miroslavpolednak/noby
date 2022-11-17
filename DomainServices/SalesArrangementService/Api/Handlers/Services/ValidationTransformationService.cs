@@ -26,9 +26,9 @@ internal sealed class ValidationTransformationService
                 .Select(t => new {
                     Category = t.Category,
                     Text = t.Text,
-                    Name = t.Name,
+                    Name = t.FieldName,
                     AlterSeverity = t.AlterSeverity,
-                    Path = t.Path
+                    Path = t.FieldPath
                 })
                 .ToList()
                 .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem

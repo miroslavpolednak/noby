@@ -1,6 +1,8 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
+﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
 public sealed class SendToCmpResponse
 {
-    public List<Validate.Dto.ValidateCategory>? Categories { get; set; }
+    public List<ValidateCategory>? Categories { get; set; }
 }

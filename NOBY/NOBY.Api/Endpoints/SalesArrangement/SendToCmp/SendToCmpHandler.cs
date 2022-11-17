@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Api.Endpoints.SalesArrangement.Validate.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
