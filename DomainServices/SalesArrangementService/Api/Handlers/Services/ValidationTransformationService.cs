@@ -1,13 +1,11 @@
 ﻿using DomainServices.SalesArrangementService.Api.Handlers.Forms;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.SqlServer.Server;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
-using static DomainServices.SalesArrangementService.Api.Handlers.Services.ValidationTransformationCache;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
 
+[CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class ValidationTransformationService
 {
     private static Regex _arrayIndexesRegex = new Regex(@"\[(?<idx>\d)\]", RegexOptions.Compiled | RegexOptions.NonBacktracking);
