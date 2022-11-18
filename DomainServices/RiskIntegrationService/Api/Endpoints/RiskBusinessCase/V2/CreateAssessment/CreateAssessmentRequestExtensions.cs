@@ -5,10 +5,10 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V
 
 internal static class CreateAssessmentRequestExtensions
 {
-    public static _C4M.LoanApplicationAssessmentCreate ToC4M(this _V2.RiskBusinessCaseCreateAssessmentRequest request, string chanel)
+    public static _C4M.LoanApplicationAssessmentCreate ToC4M(this _V2.RiskBusinessCaseCreateAssessmentRequest request, string chanel, string environmentName)
         => new ()
         {
-            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
+            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId.ToEnvironmentId(environmentName), chanel),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
             ItChannel = FastEnum.Parse<_C4M.LoanApplicationAssessmentCreateItChannel>(chanel, true),
             ItChannelPrevious = request.ItChannelPrevious != Contracts.Shared.ItChannels.Unknown

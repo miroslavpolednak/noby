@@ -3,6 +3,7 @@ using _C4M = DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V
 using _RAT = DomainServices.CodebookService.Contracts.Endpoints.RiskApplicationTypes;
 using CIS.Core.Security;
 using DomainServices.RiskIntegrationService.Api.Clients.LoanApplication.V1.Contracts;
+using CIS.Core.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -42,7 +43,7 @@ internal sealed class SaveRequestMapper
 
         var requestModel = new _C4M.LoanApplication
         {
-            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId, _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)),
+            Id = _C4M.ResourceIdentifier.CreateId(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), _configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name!)),
             AppendixCode = request.AppendixCode,
             DistributionChannelCode = Helpers.GetEnumFromString<_C4M.LoanApplicationDistributionChannelCode>((await _codebookService.Channels(cancellation)).FirstOrDefault(t => t.Id == request.DistributionChannelId)?.Code, LoanApplicationDistributionChannelCode.BR),
             LoanApplicationDataVersion = request.LoanApplicationDataVersion,
@@ -105,16 +106,19 @@ internal sealed class SaveRequestMapper
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
+    private readonly ICisEnvironmentConfiguration _cisEnvironment;
 
     public SaveRequestMapper(
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
-        CodebookService.Clients.ICodebookServiceClients codebookService)
+        CodebookService.Clients.ICodebookServiceClients codebookService,
+        ICisEnvironmentConfiguration cisEnvironment)
     {
         _configuration = configuration;
         _serviceUserAccessor = serviceUserAccessor;
         _codebookService = codebookService;
         _xxvConnectionProvider = xxvConnectionProvider;
+        _cisEnvironment = cisEnvironment;
     }
 }
