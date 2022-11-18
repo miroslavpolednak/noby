@@ -5,7 +5,6 @@
 
 trigger:
 - main
-- Drop1-3
 
 pool:
   name: MPSS Common
@@ -62,8 +61,10 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'NOBY.DS.CaseService'
     projectName: 'NOBY.DS.CaseService'
-    projectVersion: 1.0.0.$(Build.BuildId)
-    extraProperties: 'sonar.verbose=true'
+    projectVersion: '1.0.0.$(Build.BuildId)'
+    extraProperties: |
+      sonar.verbose=true
+      sonar.branch.name=master
 
 - task: DotNetCoreCLI@2
   inputs:
