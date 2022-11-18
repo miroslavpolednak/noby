@@ -15,8 +15,8 @@ internal class HouseholdService : Contracts.v1.HouseholdService.HouseholdService
     public override async Task<CreateHouseholdResponse> CreateHousehold(CreateHouseholdRequest request, ServerCallContext context)
         => await _mediator.Send(new Endpoints.Household.CreateHousehold.CreateHouseholdMediatrRequest(request), context.CancellationToken);
     
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteHousehold(HouseholdIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Endpoints.Household.DeleteHousehold.DeleteHouseholdMediatrRequest(request.HouseholdId), context.CancellationToken);
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteHousehold(DeleteHouseholdRequest request, ServerCallContext context)
+        => await _mediator.Send(new Endpoints.Household.DeleteHousehold.DeleteHouseholdMediatrRequest(request.HouseholdId, request.HardDelete), context.CancellationToken);
     
     public override async Task<Household> GetHousehold(HouseholdIdRequest request, ServerCallContext context)
         => await _mediator.Send(new Endpoints.Household.GetHousehold.GetHouseholdMediatrRequest(request.HouseholdId), context.CancellationToken);

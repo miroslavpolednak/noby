@@ -9,11 +9,12 @@ import "GetHouseholdList.proto";
 import "Household.proto";
 import "UpdateHousehold.proto";
 import "LinkCustomerOnSAToHousehold.proto";
+import "DeleteHousehold.proto";
 
 service HouseholdService {
     rpc CreateHousehold (DomainServices.HouseholdService.CreateHouseholdRequest) returns (DomainServices.HouseholdService.CreateHouseholdResponse);
     
-    rpc DeleteHousehold (DomainServices.HouseholdService.HouseholdIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteHousehold (DomainServices.HouseholdService.DeleteHouseholdRequest) returns (google.protobuf.Empty);
     
     rpc GetHousehold (DomainServices.HouseholdService.HouseholdIdRequest) returns (DomainServices.HouseholdService.Household);
     

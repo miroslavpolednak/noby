@@ -9,7 +9,7 @@ internal sealed class DeleteHouseholdHandler
             .Where(t => t.HouseholdId == request.HouseholdId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
 
-        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main)
+        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main && !request.HardDelete)
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly

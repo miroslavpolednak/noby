@@ -19,7 +19,7 @@ public interface IHouseholdServiceClient
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 16022; Household ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> DeleteHousehold(int householdId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> DeleteHousehold(int householdId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci instanci pozadovane domacnosti

@@ -13,7 +13,7 @@ internal class CreateMortgageCaseRollback
     {
         // smazat domacnost
         if (_bag.ContainsKey(BagKeyHouseholdId))
-            await _householdService.DeleteHousehold((int)_bag[BagKeyHouseholdId]!, cancellationToken);
+            await _householdService.DeleteHousehold((int)_bag[BagKeyHouseholdId]!, true, cancellationToken);
 
         // smazat customer on SA
         if (_bag.ContainsKey(BagKeyCustomerOnSAId))
