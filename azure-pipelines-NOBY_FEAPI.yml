@@ -75,6 +75,10 @@ steps:
 
 - task: SonarQubeAnalyze@5
 
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
