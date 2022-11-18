@@ -5,6 +5,7 @@
 
 trigger:
 - main
+- Drop1-3
 
 pool:
   name: MPSS Common
