@@ -5,7 +5,6 @@
 
 trigger:
 - main
-- Drop1-3
 
 pool:
   name: MPSS Common
@@ -67,7 +66,7 @@ steps:
     projectVersion: '1.0.0.$(Build.BuildId)'
     extraProperties: |
       sonar.verbose=true
-      sonar.branch.name=master
+#      sonar.branch.name=master
 
 - task: DotNetCoreCLI@2
   inputs:
