@@ -61,9 +61,9 @@ steps:
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
-    projectKey: 'NOBY.DS.CaseService'
-    projectName: 'NOBY.DS.CaseService'
-    projectVersion: 1.0.0.$(Build.BuildId)
+    projectKey: 'NOBY.FEAPI'
+    projectName: 'NOBY.FEAPI'
+    projectVersion: '1.0.0.$(Build.BuildId)'
     extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2

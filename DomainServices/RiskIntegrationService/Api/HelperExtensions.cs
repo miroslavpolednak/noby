@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Api;
+﻿using CIS.Core.Types;
+
+namespace DomainServices.RiskIntegrationService.Api;
 
 internal static class HelperExtensions
 {
@@ -10,11 +12,23 @@ internal static class HelperExtensions
             _ => null
         };
 
-    public static long? ToSalesArrangementId(this string resourceIdentifier)
-        => !string.IsNullOrEmpty(resourceIdentifier)
-            ? long.Parse(resourceIdentifier.Split(".").Last().Split("~")[0], System.Globalization.CultureInfo.InvariantCulture)
-            : null;
+    public static long? ToSalesArrangementId(this string resourceIdentifier, string environmentName)
+    {
+        if (string.IsNullOrEmpty(resourceIdentifier))
+            return null;
 
+        var id = resourceIdentifier.Split(".").Last().Split("~")[0];
+        id = id.Replace(environmentName, "", StringComparison.InvariantCultureIgnoreCase);
+
+        return long.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
+    }
     public static string? ToPrimaryCustomerId(this string resourceIdentifier)
         => !string.IsNullOrEmpty(resourceIdentifier) ? resourceIdentifier.Split(".").Last() : null;
+
+    public static string ToEnvironmentId(this long salesArrangementId, string environmentName)
+        => environmentName.ToLower() switch
+        {
+            "prod" => salesArrangementId.ToString(),
+            _ => $"{environmentName}{salesArrangementId}"
+        };
 }

@@ -37,7 +37,7 @@ def test_run():
     cert_cn = "adpra191.vsskb.cz"
     options = (('grpc.ssl_target_name_override', cert_cn,),)
     #get cert from server - we trust servers certificate
-    channelCredentials=grpc.ssl_channel_credentials(ssl.get_server_certificate(('adpra191.vsskb.cz', 31001)).encode('utf-8'))
+    channelCredentials=grpc.ssl_channel_credentials(ssl.get_server_certificate(('adpra191.vsskb.cz', 30001)).encode('utf-8'))
     #add both auth and cert into one object - secure_channel can only accept one parameter of this kind, so combined one should be provided
     compositeCredentials = grpc.composite_channel_credentials(
         channelCredentials,
@@ -45,9 +45,9 @@ def test_run():
     )
 
     #create channel
-    with grpc.secure_channel('adpra191:31001', compositeCredentials, options) as channel:
+    with grpc.secure_channel('adpra191:30001', compositeCredentials, options) as channel:
             stub = CaseServiceStub(channel)
-            req = GetCaseDetail.GetCaseDetailRequest(CaseId=2975970)
+            req = GetCaseDetail.GetCaseDetailRequest(CaseId=2993166)
             case = stub.GetCaseDetail(req)
             print(case)
             print(case.Customer)
@@ -55,7 +55,7 @@ def test_run():
             assert case.Customer.FirstNameNaturalPerson == "klient"
             assert case.CaseOwner.userName == "Filip Tůma"
 
-            req = GetCaseDetail.GetCaseDetailRequest(CaseId=2975950)
+            req = GetCaseDetail.GetCaseDetailRequest(CaseId=2993166)
             case = stub.GetCaseDetail(req)
             print(case)
             print(case.Customer)

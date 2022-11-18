@@ -6,11 +6,11 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V
 
 internal static class CreateAssessmentExtensions
 {
-    public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response)
+    public static _sh.LoanApplicationAssessmentResponse ToRIP(this _C4M.Identified response, string environmentName)
         => new()
         {
             LoanApplicationAssessmentId = response.Id,
-            SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(),
+            SalesArrangementId = response.LoanApplicationId.ToSalesArrangementId(environmentName),
             RiskBusinesscaseId = response.RiskBusinesscaseId,
             RiskBusinessCaseExpirationDate = response.RiskBusinesscaseExpirationDate?.DateTime,
             AssessmentResult = response.AssessmentResult,
