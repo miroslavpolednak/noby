@@ -1,96 +1,102 @@
 ﻿using DomainServices.SalesArrangementService.Api.Handlers.Forms;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
+using static DomainServices.SalesArrangementService.Api.Handlers.Services.ValidationTransformationCache;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
 
-[CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
-internal sealed class ValidationTransformationService
+internal sealed partial class ValidationTransformationServiceFactory
 {
-    private static Regex _arrayIndexesRegex = new Regex(@"\[(?<idx>\d)\]", RegexOptions.Compiled | RegexOptions.NonBacktracking);
-
-    public List<Contracts.ValidationMessage> TransformErrors(string formId, Form form, Dictionary<string, ExternalServices.Eas.R21.CheckFormV2.Error[]>? errors)
+    private class ValidationTransformationService
+        : IValidationTransformationService
     {
-        if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
-
-        var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
-
-        // get transformation values from DB
-        var transformationMatrix = ValidationTransformationCache.GetOrCreate(formId, () =>
-            _dbContext.FormValidationTransformations
-                .AsNoTracking()
-                .Where(t => t.FormId == formId)
-                .Select(t => new {
-                    Category = t.Category,
-                    Text = t.Text,
-                    Name = t.FieldName,
-                    AlterSeverity = t.AlterSeverity,
-                    Path = t.FieldPath
-                })
-                .ToList()
-                .ToImmutableDictionary(k => k.Path, v => new ValidationTransformationCache.TransformationItem
-                {
-                    Category = v.Category,
-                    Text = v.Text,
-                    Name = v.Name,
-                    AlterSeverity = v.AlterSeverity
-                })
-        );
-
-        foreach (var errorGroup in errors)
+        public List<Contracts.ValidationMessage> TransformErrors(Form form, Dictionary<string, ExternalServices.Eas.R21.CheckFormV2.Error[]>? errors)
         {
-            foreach (var error in errorGroup.Value)
+            // no errors -> empty list
+            if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
+
+            // init method result
+            var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
+
+            // parse json data to searchable object
+            _jsonFormData = JObject.Parse(form.JSON)!;
+
+            // for each error field
+            foreach (var errorGroup in errors)
             {
-                // kopie chyby SB
-                var item = new Contracts.ValidationMessage
+                // each error field may contain multiple error messages
+                foreach (var error in errorGroup.Value)
                 {
-                    AdditionalInformation = error.AdditionalInformation,
-                    Code = error.ErrorCode,
-                    ErrorQueue = error.ErrorQueue,
-                    Message = error.ErrorMessage,
-                    Severity = error.Severity,
-                    Value = error.Value,
-                    Parameter = errorGroup.Key
-                };
-                // transformace na NOBY
-                item.NobyMessageDetail = CreateNobyMessage(item, transformationMatrix);
+                    // kopie chyby SB
+                    var item = new Contracts.ValidationMessage
+                    {
+                        AdditionalInformation = error.AdditionalInformation,
+                        Code = error.ErrorCode,
+                        ErrorQueue = error.ErrorQueue,
+                        Message = error.ErrorMessage,
+                        Severity = error.Severity,
+                        Value = error.Value,
+                        Parameter = errorGroup.Key
+                    };
+                    // transformace na NOBY
+                    item.NobyMessageDetail = CreateNobyMessage(item);
 
-                transformedItems.Add(item);
+                    transformedItems.Add(item);
+                }
             }
+
+            return transformedItems;
         }
 
-        return transformedItems;
-    }
-
-    static Contracts.ValidationMessageNoby CreateNobyMessage(Contracts.ValidationMessage item, ImmutableDictionary<string, ValidationTransformationCache.TransformationItem> transformationItems)
-    {
-        ValidationTransformationCache.TransformationItem titem;
-        var message = new Contracts.ValidationMessageNoby();
-
-        var matches = _arrayIndexesRegex.Matches(item.Parameter);
-        if (matches.Any())
+        private Contracts.ValidationMessageNoby CreateNobyMessage(Contracts.ValidationMessage item)
         {
-            titem = transformationItems[_arrayIndexesRegex.Replace(item.Parameter, "[]")];
-            message.Message = string.Format(titem.Text, matches.Select(t => t.Groups["idx"].Value).ToArray());
+            ValidationTransformationCache.TransformationItem titem;
+            var message = new Contracts.ValidationMessageNoby();
+
+            var matches = _arrayIndexesRegex.Matches(item.Parameter);
+            if (matches.Any())
+            {
+                titem = _transformationMatrix[_arrayIndexesRegex.Replace(item.Parameter, _parameterReplaceEvaluator)];
+                string[] arguments = matches.Select(m =>
+                {
+                    switch (m.Groups["par"].Value)
+                    {
+                        case "seznam_ucastniku":
+                            return getJsonValue($"seznam_ucastniku[{m.Groups["idx"].Value}].klient.jmeno") + " " + getJsonValue($"seznam_ucastniku[{m.Groups["idx"].Value}].klient.prijmeni_nazev");
+                        default:
+                            return (Convert.ToInt32(m.Groups["idx"].Value) + 1).ToString();
+                    }
+                }).ToArray();
+                message.Message = string.Format(titem.Text, arguments);
+            }
+            else
+            {
+                titem = _transformationMatrix[item.Parameter];
+                message.Message = titem.Text;
+            }
+
+            message.ParameterName = titem.Name;
+            message.Category = titem.Category;
+            message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
+
+            return message;
         }
-        else
+
+        private string getJsonValue(string path)
+            => _jsonFormData?.SelectToken(path)?.Value<string>() ?? "???";
+
+        // global props
+        private static Regex _arrayIndexesRegex = new Regex(@"(?<par>\w+)\[(?<idx>\d)\]", RegexOptions.Compiled | RegexOptions.NonBacktracking);
+        private static MatchEvaluator _parameterReplaceEvaluator = new MatchEvaluator((Match m) => $"{m.Groups["par"]}[]");
+
+        // instance props
+        private JObject? _jsonFormData;
+        private readonly ImmutableDictionary<string, TransformationItem> _transformationMatrix;
+
+        public ValidationTransformationService(ImmutableDictionary<string, TransformationItem> transformationMatrix)
         {
-            titem = transformationItems[item.Parameter];
-            message.Message = titem.Text;
+            _transformationMatrix = transformationMatrix;
         }
-
-        message.ParameterName = titem.Name;
-        message.Category = titem.Category;
-        message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
-
-        return message;
-    }
-
-    private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
-
-    public ValidationTransformationService(Repositories.SalesArrangementServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

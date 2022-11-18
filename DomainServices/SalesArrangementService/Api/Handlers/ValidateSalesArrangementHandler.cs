@@ -11,18 +11,18 @@ internal class ValidateSalesArrangementHandler
 
     #region Construction
 
-    private readonly Services.ValidationTransformationService _transformationService;
+    private readonly Services.ValidationTransformationServiceFactory _transformationServiceFactory;
     private readonly FormsService _formsService;
     private readonly ILogger<ValidateSalesArrangementHandler> _logger;
     private readonly Eas.IEasClient _easClient;
 
     public ValidateSalesArrangementHandler(
-        Services.ValidationTransformationService transformationService,
+        Services.ValidationTransformationServiceFactory transformationServiceFactory,
         FormsService formsService,
         ILogger<ValidateSalesArrangementHandler> logger,
         Eas.IEasClient easClient)
     {
-        _transformationService = transformationService;
+        _transformationServiceFactory = transformationServiceFactory;
         _formsService = formsService;
         _logger = logger;
         _easClient = easClient;
@@ -132,7 +132,8 @@ internal class ValidateSalesArrangementHandler
                 }
             }
 
-            response.ValidationMessages.AddRange(_transformationService.TransformErrors(checkFormData.formular_id.ToString(), form, checkFormResult.Detail?.errors));
+            var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);
+            response.ValidationMessages.AddRange(transformationService.TransformErrors(form, checkFormResult.Detail?.errors));
         }
 
         return response;

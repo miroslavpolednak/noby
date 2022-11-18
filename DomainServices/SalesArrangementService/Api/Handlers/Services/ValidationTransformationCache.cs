@@ -27,7 +27,7 @@ internal static class ValidationTransformationCache
         public Repositories.FormValidationTransformationAlterSeverity AlterSeverity { get; init; }
     }
 
-    internal static ImmutableDictionary<string, TransformationItem> GetOrCreate(string key, Func<ImmutableDictionary<string, TransformationItem>> createItems)
+    internal static ImmutableDictionary<string, TransformationItem> GetOrCreate(int key, Func<ImmutableDictionary<string, TransformationItem>> createItems)
     {
         ImmutableDictionary<string, TransformationItem> cacheEntry;
         if (!_cache.TryGetValue(key, out cacheEntry))
