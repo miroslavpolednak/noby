@@ -62,9 +62,7 @@ steps:
     projectKey: 'NOBY.DS.DocumentArchiveService'
     projectName: 'NOBY.DS.DocumentArchiveService'
     projectVersion: '1.0.0.$(Build.BuildId)'
-    extraProperties: |
-      sonar.verbose=true
-      sonar.branch.name=master
+    extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2
   inputs:
