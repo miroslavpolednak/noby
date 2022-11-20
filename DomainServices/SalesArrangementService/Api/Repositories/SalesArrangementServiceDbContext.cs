@@ -11,6 +11,7 @@ internal sealed class SalesArrangementServiceDbContext
 #pragma warning restore CS8618
         : base(aggregate) { }
 
+    public DbSet<Entities.FormValidationTransformation> FormValidationTransformations { get; set; }
     public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }
     public DbSet<Entities.SalesArrangementParameters> SalesArrangementsParameters { get; set; }
 
