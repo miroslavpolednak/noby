@@ -78,7 +78,14 @@ internal sealed partial class ValidationTransformationServiceFactory
 
             message.ParameterName = titem.Name;
             message.Category = titem.Category;
-            message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
+            
+            // severity
+            if (titem.AlterSeverity == Repositories.FormValidationTransformationAlterSeverity.Ignore)
+                message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.None;
+            else if (titem.AlterSeverity == Repositories.FormValidationTransformationAlterSeverity.AlterToWarning)
+                message.Severity = Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
+            else
+                message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
 
             return message;
         }
