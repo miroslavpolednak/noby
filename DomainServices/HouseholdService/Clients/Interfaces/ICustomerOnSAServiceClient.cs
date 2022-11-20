@@ -19,7 +19,7 @@ public interface ICustomerOnSAServiceClient
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci instanci vybraneho klienta

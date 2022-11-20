@@ -11,13 +11,9 @@ internal class CreateMortgageCaseRollback
 {
     public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
-        // smazat domacnost
+        // smazat domacnost a customery
         if (_bag.ContainsKey(BagKeyHouseholdId))
             await _householdService.DeleteHousehold((int)_bag[BagKeyHouseholdId]!, true, cancellationToken);
-
-        // smazat customer on SA
-        if (_bag.ContainsKey(BagKeyCustomerOnSAId))
-            await _customerOnSAService.DeleteCustomer((int)_bag[BagKeyCustomerOnSAId]!, cancellationToken);
 
         // smazat SA
         if (_bag.ContainsKey(BagKeySalesArrangementId))

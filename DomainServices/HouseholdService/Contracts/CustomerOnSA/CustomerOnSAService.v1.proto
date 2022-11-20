@@ -18,13 +18,14 @@ import "ObligationIdRequest.proto";
 import "Obligation.proto";
 import "CreateObligation.proto";
 import "GetObligationList.proto";
+import "DeleteCustomer.proto";
 
 service CustomerOnSAService {
     // zalozeni noveho customera
 	rpc CreateCustomer (DomainServices.HouseholdService.CreateCustomerRequest) returns (DomainServices.HouseholdService.CreateCustomerResponse);
 	
 	// smazat
-	rpc DeleteCustomer (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (google.protobuf.Empty);
+	rpc DeleteCustomer (DomainServices.HouseholdService.DeleteCustomerRequest) returns (google.protobuf.Empty);
 	
 	// get single
 	rpc GetCustomer (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (DomainServices.HouseholdService.CustomerOnSA);

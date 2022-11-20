@@ -21,9 +21,9 @@ internal sealed class DeleteHouseholdHandler
 
         // smazat customerOnSA
         if (householdInstance.CustomerOnSAId1.HasValue)
-            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId1.Value), cancellation);
+            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId1.Value, request.HardDelete), cancellation);
         if (householdInstance.CustomerOnSAId2.HasValue)
-            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId2.Value), cancellation);
+            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId2.Value, request.HardDelete), cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

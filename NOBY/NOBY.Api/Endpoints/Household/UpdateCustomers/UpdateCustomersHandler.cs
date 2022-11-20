@@ -43,13 +43,13 @@ internal class UpdateCustomersHandler
         // smazat existujiciho, neni misto nej zadny novy
         if (customer is null && householdCustomerId.HasValue)
         {
-            await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
+            await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
         }
         else if (customer is not null)
         {
             // smazat existujiciho, je nahrazen novym
             if (customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue)
-                await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
+                await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
 
             // update stavajiciho
             if (customer.CustomerOnSAId.HasValue)

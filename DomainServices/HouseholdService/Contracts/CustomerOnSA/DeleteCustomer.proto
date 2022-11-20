@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+message DeleteCustomerRequest {
+    int32 CustomerOnSAId = 1;
+
+    bool HardDelete = 2;
+}
