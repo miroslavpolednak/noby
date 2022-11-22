@@ -22,7 +22,7 @@ message SearchCustomersRequest {
 
     string PhoneNumber = 6;
 
-    bool ShowOnlyIdentified = 7;
+    google.protobuf.BoolValue ShowOnlyIdentified = 7;
 }
 
 message SearchCustomersResponse {
