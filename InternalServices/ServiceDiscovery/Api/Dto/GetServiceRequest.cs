@@ -3,15 +3,16 @@ using CIS.InternalServices.ServiceDiscovery.Contracts;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Dto;
 
-internal record GetServiceRequest : IRequest<GetServiceResponse> 
+internal record GetServiceRequest 
+    : IRequest<GetServiceResponse> 
 {
     public ApplicationEnvironmentName Environment { get; init; }
-    public ServiceName ServiceName { get; init; }
+    public ApplicationKey ServiceName { get; init; }
     public ServiceTypes ServiceType { get; init; }
 
     public GetServiceRequest(
         ApplicationEnvironmentName environment,
-        ServiceName serviceName,
+        ApplicationKey serviceName,
         ServiceTypes serviceType
     )
     {

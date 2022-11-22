@@ -1,89 +1,108 @@
 ﻿namespace CIS.Core.Configuration;
 
+/// <summary>
+/// Nastavení Kestrel serveru v gRPC službách.
+/// </summary>
+/// <remarks>
+/// Nepoužíváme standardní Kestrel konfigurační soubor, protože nám neumožňuje zadávat např. SSL certifikáty.
+/// </remarks>
 public sealed class KestrelConfiguration
 {
+    /// <summary>
+    /// Nastavené endpointy pro danou službu
+    /// </summary>
     public List<EndpointInfo>? Endpoints { get; set; }
 
     /// <summary>
-    /// Certifikat pouzity pro vytvoreni SSL
+    /// SSL certifikát použitý pro vytvoření HTTPS tunelu
     /// </summary>
     public CertificateInfo? Certificate {  get; set; }
 
+    /// <summary>
+    /// Nastavení endpointu
+    /// </summary>
     public sealed class EndpointInfo
     {
+        /// <summary>
+        /// Port na kterém endpoint poslouchá
+        /// </summary>
+        /// <example>30000</example>
         public int Port {  get; set; }
 
         /// <summary>
-        /// 1 = HTTP1.1
-        /// 2 = HTTP2
+        /// Druh protokolu použitý pro daný endpoint
         /// </summary>
+        /// <remarks>
+        /// 1 = HTTP 1.1
+        /// 2 = HTTP 2
+        /// </remarks>
         public int Protocol {  get; set; }
     }
 
+    /// <summary>
+    /// Nastavení SSL certifikátu
+    /// </summary>
     public sealed class CertificateInfo
     {
         /// <summary>
-        /// Typ ulozeni certifikatu
+        /// Druh úložiště certifkátu
         /// </summary>
         public LocationTypes Location { get; set; }
 
         /// <summary>
-        /// URI souboru s certifikatem
+        /// URI souboru s certifikátem na filesystému
         /// </summary>
         /// <remarks>
-        /// Pokud Location=FileSystem
+        /// Pouze pokud Location=FileSystem
         /// </remarks>
         public string? Path { get; set; }
 
         /// <summary>
-        /// Heslo k certifikatu
+        /// Heslo certifikátu uloženého na filesystému
         /// </summary>
         /// <remarks>
-        /// Pokud Location=FileSystem
+        /// Pouze pokud Location=FileSystem
         /// </remarks>
         public string? Password {  get; set; }
 
         /// <summary>
-        /// Nazev slozky v certstore
+        /// Název složky ve Windows Certificate store
         /// </summary>
-        /// <example>
-        /// My, Root...
-        /// </example>
+        /// <example>My, Root</example>
         /// <remarks>
-        /// Pokud Location=CertStore
+        /// Pouze pokud Location=CertStore
         /// </remarks>
         public System.Security.Cryptography.X509Certificates.StoreName CertStoreName { get; set; }
 
         /// <summary>
-        /// Typ certstore
+        /// Typ Windows Certificate store
         /// </summary>
-        /// <example>
-        /// LocalMachine, CurrenUser
-        /// </example>
+        /// <example>LocalMachine, CurrenUser</example>
         /// <remarks>
-        /// Pokud Location=CertStore
+        /// Pouze pokud Location=CertStore
         /// </remarks>
         public System.Security.Cryptography.X509Certificates.StoreLocation CertStoreLocation { get; set; }
 
         /// <summary>
-        /// Thumbprint certifikatu
+        /// Thumbprint certifikátu
         /// </summary>
         /// <remarks>
-        /// Pokud Location=CertStore
+        /// Pouze pokud Location=CertStore
         /// </remarks>
         public string? Thumbprint { get; set; }
 
+        /// <summary>
+        /// Možné způsoby 
+        /// </summary>
         public enum LocationTypes
         {
-            Unknown = 0,
-
             /// <summary>
-            /// Certifikat je ulozeny jako soubor na filesystemu
+            /// Certifikát je uložený na filesystému
             /// </summary>
             FileSystem = 1,
 
             /// <summary>
-            /// Certifikat je ulozeny ve Win certstoru
+            /// Certifikát je uložený ve Windows Certificate store
             /// </summary>
             CertStore = 2
         }

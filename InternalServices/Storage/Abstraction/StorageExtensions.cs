@@ -41,7 +41,7 @@ public static class StorageExtensions
             services.TryAddSingleton(provider =>
             {
                 string url = provider.GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetService(new(Core.Types.ServiceName.WellKnownServices.Storage), ServiceDiscovery.Contracts.ServiceTypes.Grpc)
+                    .GetService(new("CIS:StorageService"), ServiceDiscovery.Contracts.ServiceTypes.Grpc)
                     .GetAwaiter()
                     .GetResult()?
                     .ServiceUrl ?? throw new ArgumentNullException("StorageServiceUrl");
@@ -52,7 +52,7 @@ public static class StorageExtensions
             {
                 string url = provider
                     .GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetServiceUrlSynchronously(new(Core.Types.ServiceName.WellKnownServices.Storage), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc) ?? throw new ArgumentNullException("StorageServiceUrl");
+                    .GetServiceUrlSynchronously(new("CIS:StorageService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc) ?? throw new ArgumentNullException("StorageServiceUrl");
                 return new GrpcServiceUriSettings<Contracts.v1.BlobTemp.BlobTempClient>(url);
             });
         }

@@ -17,7 +17,7 @@ internal class DiscoveryService : Contracts.v1.DiscoveryService.DiscoveryService
     /// <exception cref="CIS.Core.Exceptions.CisInvalidEnvironmentNameException"></exception>
     /// <exception cref="Grpc.Core.RpcException">102</exception>
     public override async Task<GetServicesResponse> GetServices(GetServicesRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetServicesRequest(new ApplicationEnvironmentName(request.Environment), request.ServiceType), context.CancellationToken);
+        => await _mediator.Send(new Dto.GetServicesRequest(new(request.Environment), request.ServiceType), context.CancellationToken);
 
     /// <summary>
     /// Nastaveni konkretni sluzby pro dane prostredi
@@ -25,7 +25,7 @@ internal class DiscoveryService : Contracts.v1.DiscoveryService.DiscoveryService
     /// <exception cref="CIS.Core.Exceptions.CisInvalidEnvironmentNameException"></exception>
     /// <exception cref="Grpc.Core.RpcException">101, 102, 103</exception>
     public override async Task<GetServiceResponse> GetService(GetServiceRequest request, ServerCallContext context)
-        => await _mediator.Send(new Dto.GetServiceRequest(new ApplicationEnvironmentName(request.Environment), new ServiceName(request.ServiceName), request.ServiceType), context.CancellationToken);
+        => await _mediator.Send(new Dto.GetServiceRequest(new(request.Environment), new(request.ServiceName), request.ServiceType), context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> ClearCache(ClearCacheRequest request, ServerCallContext context)
         => await _mediator.Send(new Dto.ClearCacheRequest(), context.CancellationToken);

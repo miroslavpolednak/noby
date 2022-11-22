@@ -1,6 +1,10 @@
 ﻿namespace CIS.Core.Types;
 
-public sealed class Paginable : IPaginableRequest
+/// <summary>
+/// Implementace <see cref="IPaginableRequest"/>
+/// </summary>
+public sealed class Paginable 
+    : IPaginableRequest
 {
     public int RecordOffset { get; init; }
     public int PageSize { get; init; }
@@ -10,6 +14,9 @@ public sealed class Paginable : IPaginableRequest
     public Type TypeOfSortingField => typeof(SortField);
     public IEnumerable<IPaginableSortingField>? GetSorting() => Sorting;
 
+    /// <summary>
+    /// Safe guard - nastavení max. množství vrácených záznamů
+    /// </summary>
     private const int _maxPageSize = 1000;
 
     public override string ToString()

@@ -1,9 +1,18 @@
 ﻿namespace CIS.Core.Types;
 
-public record ApplicationEnvironmentName
+/// <summary>
+/// Value type pro název/typ aplikačního prostředí.
+/// </summary>
+public sealed record ApplicationEnvironmentName
 {
+    /// <summary>
+    /// Název aplikačního prostředí.
+    /// </summary>
+    /// <example>FAT</example>
     public string Name { get; init; }
 
+    /// <param name="environment">Název prostředí</param>
+    /// <exception cref="Exceptions.CisInvalidEnvironmentNameException">Název prostředí není zadaný nebo nemá platný formát.</exception>
     public ApplicationEnvironmentName(string? environment)
     {
         if (string.IsNullOrEmpty(environment))

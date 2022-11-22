@@ -13,7 +13,6 @@ internal class RealSbWebApiClient
         return await WithClient(async c => {
 
             return await callMethod(async () => {
-
                 var easRequest = new WFS_Request_CaseStateChanged
                 {
                     Header = new WFS_Header

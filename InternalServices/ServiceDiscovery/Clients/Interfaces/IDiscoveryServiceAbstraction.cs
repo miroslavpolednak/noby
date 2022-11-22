@@ -9,9 +9,9 @@ public interface IDiscoveryServiceAbstraction
 
     Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<DiscoverableService> GetService(ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
+    Task<DiscoverableService> GetService(ApplicationKey serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
+    Task<DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ApplicationKey serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken));
 
-    string GetServiceUrlSynchronously(ServiceName serviceName, Contracts.ServiceTypes serviceType);
+    string GetServiceUrlSynchronously(ApplicationKey serviceName, Contracts.ServiceTypes serviceType);
 }

@@ -38,7 +38,7 @@ internal static class ClientsStartupExtensions
 
         TConfig DiscoverAndSetServiceUrl(IServiceProvider serviceProvider)
         {
-            var name = new ServiceName(Constants.ExternalServicesServiceDiscoveryKeyPrefix + CustomerManagementServiceName);
+            var name = new ApplicationKey(Constants.ExternalServicesServiceDiscoveryKeyPrefix + CustomerManagementServiceName);
 
             config.ServiceUrl = serviceProvider.GetRequiredService<IDiscoveryServiceAbstraction>()
                                                .GetServiceUrlSynchronously(name, ServiceTypes.Proprietary);
