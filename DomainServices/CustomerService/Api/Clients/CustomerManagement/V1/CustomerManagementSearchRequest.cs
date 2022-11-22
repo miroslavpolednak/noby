@@ -79,4 +79,9 @@ internal class CustomerManagementSearchRequest
     /// Flag indicating whether segment (fixed and float) should be returnd in response
     /// </summary>
     public bool? ShowSegment { get; set; }
+
+    /// <summary>
+    /// Flag indicating whether unidentified subjects should filtered out from result
+    /// </summary>
+    public bool ShowOnlyIdentified { get; set; }
 }

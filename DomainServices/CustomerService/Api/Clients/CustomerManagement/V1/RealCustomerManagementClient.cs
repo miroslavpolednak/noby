@@ -133,6 +133,7 @@ internal class RealCustomerManagementClient : BaseClient<CustomerManagementWrapp
                 legalStatusCode: searchRequest.LegalStatusCode,
                 includeArchived: searchRequest.IncludeArchived,
                 showSegment: searchRequest.ShowSegment,
+                showOnlyIdentified: searchRequest.ShowOnlyIdentified,
                 x_B3_TraceId: traceId,
                 x_KB_Caller_System_Identity: "",
                 cancellationToken
