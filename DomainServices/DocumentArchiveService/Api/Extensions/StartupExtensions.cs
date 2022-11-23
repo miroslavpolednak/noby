@@ -22,15 +22,12 @@ internal static class StartupExtensions
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-        // json
-        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-        {
-            options.SerializerOptions.PropertyNameCaseInsensitive = true;
-            options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
-        });
-
-        // MVC
-        builder.Services.AddControllers();
+        //// json
+        //builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+        //{
+        //    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+        //    options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
+        //});
 
         // databases
         builder.Services

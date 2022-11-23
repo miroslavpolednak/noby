@@ -3,7 +3,6 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.DocumentArchiveService.Api;
 using CIS.DomainServicesSecurity;
-using ProtoBuf.Grpc.Server;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -41,11 +40,12 @@ builder.AddCisServiceAuthentication();
 // add this service
 builder.AddDocumentArchiveService();
 
-// swagger
-builder.AddDocumentArchiveSwagger();
-
 // add grpc
 builder.AddDocumentArchiveGrpc();
+
+// add grpc swagger 
+builder.AddDocumentArchiveGrpcSwagger();
+
 #endregion register builder
 
 // kestrel configuration
@@ -60,9 +60,13 @@ app.UseGrpc2WebApiException();
 
 app.UseRouting();
 
+app.UseDocumentArchiveGrpcSwagger();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
+
+
 app.UseCisLogging();
 
 app.UseEndpoints(endpoints =>
@@ -71,13 +75,8 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
 
-    endpoints.MapCodeFirstGrpcReflectionService();
-
-    endpoints.MapControllers();
+    endpoints.MapGrpcReflectionService();
 });
-
-// swagger
-app.UseDocumentArchiveSwagger();
 
 // print gRPC PROTO file
 //var schemaGenerator = new ProtoBuf.Grpc.Reflection.SchemaGenerator();
@@ -92,6 +91,7 @@ finally
 {
     LoggingExtensions.CloseAndFlush();
 }
+
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DomainServices.DocumentArchiveService.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection">
+            <summary>Holder for reflection information generated from DocumentArchiveService.v1.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection.Descriptor">
+            <summary>File descriptor for DocumentArchiveService.v1.proto</summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService">
+             <summary>
+            Document archive service
+             </summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase">
+            <summary>Base class for server-side implementations of DocumentArchiveService</summary>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GenerateDocumentId(DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Vygeneruje Id dokumentu. EnvironmentName je nutné zadat jako číslo např (EnvironmentName:1) Dev:1, Fat:2, Sit:3, Uat:4, Preprod:5, Edu:6, Prod:7  
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.UploadDocument(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient">
+            <summary>Client for DocumentArchiveService</summary>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.#ctor(Grpc.Core.ChannelBase)">
+            <summary>Creates a new client for DocumentArchiveService</summary>
+            <param name="channel">The channel to use to make remote calls.</param>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.#ctor(Grpc.Core.CallInvoker)">
+            <summary>Creates a new client for DocumentArchiveService that uses a custom <c>CallInvoker</c>.</summary>
+            <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.#ctor">
+            <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Protected constructor to allow creation of configured clients.</summary>
+            <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GenerateDocumentId(DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vygeneruje Id dokumentu. EnvironmentName je nutné zadat jako číslo např (EnvironmentName:1) Dev:1, Fat:2, Sit:3, Uat:4, Preprod:5, Edu:6, Prod:7  
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GenerateDocumentId(DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vygeneruje Id dokumentu. EnvironmentName je nutné zadat jako číslo např (EnvironmentName:1) Dev:1, Fat:2, Sit:3, Uat:4, Preprod:5, Edu:6, Prod:7  
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GenerateDocumentIdAsync(DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vygeneruje Id dokumentu. EnvironmentName je nutné zadat jako číslo např (EnvironmentName:1) Dev:1, Fat:2, Sit:3, Uat:4, Preprod:5, Edu:6, Prod:7  
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GenerateDocumentIdAsync(DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vygeneruje Id dokumentu. EnvironmentName je nutné zadat jako číslo např (EnvironmentName:1) Dev:1, Fat:2, Sit:3, Uat:4, Preprod:5, Edu:6, Prod:7  
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocument(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocument(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocumentAsync(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocumentAsync(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.BindService(DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.BindService(Grpc.Core.ServiceBinderBase,DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdReflection">
+            <summary>Holder for reflection information generated from GenerateDocumentId.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdReflection.Descriptor">
+            <summary>File descriptor for GenerateDocumentId.proto</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentNameFieldNumber">
+            <summary>Field number for the "EnvironmentName" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentName">
+            <summary>
+            kód volajícího prostředí systému
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndexFieldNumber">
+            <summary>Field number for the "EnvironmentIndex" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndex">
+            <summary>
+            index prostředí (default 0) - jednociferné číslo
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdResponse.DocumentIdFieldNumber">
+            <summary>Field number for the "DocumentId" field.</summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.UploadDocumentReflection">
+            <summary>Holder for reflection information generated from UploadDocument.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentReflection.Descriptor">
+            <summary>File descriptor for UploadDocument.proto</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentStatus.Z">
+            <summary>
+            Default standardní platný dokument
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentStatus.L">
+            <summary>
+            Dokument logicky smazaný (v EA zůstává, ale běžní uživatelé jej nemohou vidět)
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.FolderDocument.N">
+            <summary>
+            Nesložkový dokument
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.FolderDocument.S">
+            <summary>
+            Hlavní dokument složky
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.FolderDocument.P">
+            <summary>
+            Podřízený dokument složky
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.E">
+            <summary>
+            Vstupní
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.A">
+            <summary>
+            Výstupní
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.I">
+            <summary>
+            Interní
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.MetadataFieldNumber">
+            <summary>Field number for the "Metadata" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Metadata">
+            <summary>
+            Metadata dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryDataFieldNumber">
+            <summary>Field number for the "BinaryData" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string 
+            </summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata">
+            <summary>
+            Metadata dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.DocumentIdFieldNumber">
+            <summary>Field number for the "DocumentId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.DocumentId">
+            <summary>
+            ID dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.EaCodeMainIdFieldNumber">
+            <summary>Field number for the "EaCodeMainId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.EaCodeMainId">
+            <summary>
+            EaCodeMain.Id https://wiki.kb.cz/display/HT/EaCodeMain
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.FilenameFieldNumber">
+            <summary>Field number for the "Filename" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.Filename">
+            <summary>
+            Jméno souboru
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.Description">
+            <summary>
+            Popis dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.OrderIdFieldNumber">
+            <summary>Field number for the "OrderId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.CreatedOnFieldNumber">
+            <summary>Field number for the "CreatedOn" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.CreatedOn">
+            <summary>
+            Datum přijetí dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.AuthorUserLoginFieldNumber">
+            <summary>Field number for the "AuthorUserLogin" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.AuthorUserLogin">
+            <summary>
+            Login autora dokumentu, kdo dokument uložil
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.PriorityFieldNumber">
+            <summary>Field number for the "Priority" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.StatusFieldNumber">
+            <summary>Field number for the "Status" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.Status">
+            <summary>
+            Status dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.FolderDocumentFieldNumber">
+            <summary>Field number for the "FolderDocument" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.FolderDocument">
+            <summary>
+            Jedná se o seskupování dokumentů do virtuálních složek
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.FolderDocumentIdFieldNumber">
+            <summary>Field number for the "FolderDocumentId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.DocumentDirectionFieldNumber">
+            <summary>Field number for the "DocumentDirection" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.SourceSystemFieldNumber">
+            <summary>Field number for the "SourceSystem" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.SourceSystem">
+            <summary>
+            zdrojová aplikace dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.FormIdFieldNumber">
+            <summary>Field number for the "FormId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.FormId">
+            <summary>
+            ID formuláře
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.ContractNumberFieldNumber">
+            <summary>Field number for the "ContractNumber" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.ContractNumber">
+            <summary>
+            Číslo smlouvy
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.PledgeAgreementNumberFieldNumber">
+            <summary>Field number for the "PledgeAgreementNumber" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.PledgeAgreementNumber">
+            <summary>
+            Číslo zástavní smlouvy
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.CompletenessFieldNumber">
+            <summary>Field number for the "Completeness" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.Completeness">
+            <summary>
+            Kompletnost jen archiv TCP 1 - kompletní, 0 = nekompletní, null = neurčeno
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.MinorCodesFieldNumber">
+            <summary>Field number for the "MinorCodes" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.MinorCodes">
+            <summary>
+            Vedlejší heslo jen archiv TCP
+            </summary>
+        </member>
+    </members>
+</doc>
