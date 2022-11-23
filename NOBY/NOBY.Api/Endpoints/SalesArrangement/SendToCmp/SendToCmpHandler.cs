@@ -60,7 +60,7 @@ internal class SendToCmpHandler
         catch (CisArgumentException ex)
         {
             // rethrow to be catched by validation middleware
-            throw new CisValidationException(ex);
+            throw new CisValidationException(ex.ExceptionCode, ex.Message);
         }
     }
 }

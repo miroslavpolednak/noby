@@ -1,5 +1,11 @@
 ﻿namespace CIS.Core.Exceptions;
 
+/// <summary>
+/// Chyba, která vzniká při volání API třetích stran. Pokud se nepodaří deserializovat response volaného API, vyhodíme tuto vyjímku.
+/// </summary>
+/// <remarks>
+/// Vznikne, pokud API třetí strany vrátí jiný JSON, než jaký očekáváme my.
+/// </remarks>
 public sealed class CisExtServiceResponseDeserializationException 
     : BaseCisException
 {

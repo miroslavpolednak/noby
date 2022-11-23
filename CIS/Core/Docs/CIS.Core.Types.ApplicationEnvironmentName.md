@@ -32,7 +32,7 @@ Název prostředí
 
 #### Exceptions
 
-[CIS.Core.Exceptions.CisInvalidEnvironmentNameException](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Exceptions.CisInvalidEnvironmentNameException 'CIS.Core.Exceptions.CisInvalidEnvironmentNameException')  
+[CisInvalidEnvironmentNameException](CIS.Core.Exceptions.CisInvalidEnvironmentNameException.md 'CIS.Core.Exceptions.CisInvalidEnvironmentNameException')  
 Název prostředí není zadaný nebo nemá platný formát.
 ### Properties
 

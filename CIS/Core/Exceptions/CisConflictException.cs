@@ -1,10 +1,25 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Immutable;
+using System.Runtime.Serialization;
 
 namespace CIS.Core.Exceptions;
 
-public class CisConflictException : BaseCisException
+/// <summary>
+/// HTTP 409. Vyhazovat pokud prováděná akce je v konfliktu s existující byznys logikou. Podporuje kolekci chybových hlášení.
+/// </summary>
+/// <remarks>
+/// Např. pokud mám vrátit detail klienta, ale v CM je více klientů se stejným ID.
+/// </remarks>
+public sealed class CisConflictException 
+    : BaseCisException
 {
-    public IReadOnlyCollection<(string Key, string Message)>? Errors { get; init; }
+    /// <summary>
+    /// Seznam chyb.
+    /// </summary>
+    /// <remarks>
+    /// Key: CIS error kód <br/>
+    /// Message: chybová zpráva
+    /// </remarks>
+    public IImmutableList<(string Key, string Message)>? Errors { get; init; }
 
     public CisConflictException(string message)
         : base(BaseCisException.UnknownExceptionCode, message)
@@ -19,13 +34,13 @@ public class CisConflictException : BaseCisException
     public CisConflictException(IEnumerable<(string Key, string Message)> errors, string message = "")
         : base(BaseCisException.UnknownExceptionCode, message)
     {
-        Errors = errors.ToList().AsReadOnly();
+        Errors = errors.ToImmutableList();
     }
 
     public CisConflictException(IEnumerable<(int Key, string Message)> errors, string message = "")
         : base(BaseCisException.UnknownExceptionCode, message)
     {
-        Errors = errors.Select(t => (t.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), t.Message)).ToList().AsReadOnly();
+        Errors = errors.Select(t => (t.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), t.Message)).ToImmutableList();
     }
 
     public override void GetObjectData(SerializationInfo info, StreamingContext context)

@@ -32,7 +32,7 @@ Název aplikace {DS|CIS}:{app_name}
 
 #### Exceptions
 
-[CIS.Core.Exceptions.CisInvalidApplicationKeyException](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Exceptions.CisInvalidApplicationKeyException 'CIS.Core.Exceptions.CisInvalidApplicationKeyException')  
+[CisInvalidApplicationKeyException](CIS.Core.Exceptions.CisInvalidApplicationKeyException.md 'CIS.Core.Exceptions.CisInvalidApplicationKeyException')  
 Název aplikace není vyplněný nebo nemá povolený formát.
 ### Properties
 

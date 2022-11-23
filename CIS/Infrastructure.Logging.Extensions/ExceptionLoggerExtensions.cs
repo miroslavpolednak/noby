@@ -49,5 +49,5 @@ public static class ExceptionLoggerExtensions
         => _validationException(logger, string.Join(";", messages.Select(t => $"{t.Key}: {t.Message}")), null!);
 
     public static void ValidationException(this ILogger logger, Core.Exceptions.CisValidationException exception)
-        => _validationException(logger, string.Join(";", exception.ContainErrorsList ? exception.Errors!.Select(t => $"{t.Key}: {t.Message}") : exception.Message), null!);
+        => _validationException(logger, string.Join(";", exception.Errors!.Select(t => $"{t.Key}: {t.Message}")), null!);
 }

@@ -37,43 +37,12 @@ public sealed class Grpc2WebApiExceptionMiddleware
             await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
-        catch (Core.Exceptions.CisExtServiceValidationException ex)
+        catch (Core.Exceptions.BaseCisValidationException ex)
         {
-            IResult result;
-            // osetrena validace v pripade, ze se vraci vice validacnich hlasek
-            if (ex.ContainErrorsList)
-            {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
+            var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
-                result = Results.ValidationProblem(errors, title: "External service validation failed", detail: ex.Message);
-            }
-            else if (!string.IsNullOrEmpty(ex.Message))
-                result = Results.BadRequest(new ProblemDetails() 
-                { 
-                    Title = "External service validation failed", 
-                    Detail = ex.Message 
-                });
-            else
-                result = Results.BadRequest(new ProblemDetails() { Title = "External service: Untreated validation exception" });
-
-            await result.ExecuteAsync(context);
-        }
-        // osetrena validace na urovni api call
-        catch (Core.Exceptions.CisValidationException ex)
-        {
-            // osetrena validace v pripade, ze se vraci vice validacnich hlasek
-            if (ex.ContainErrorsList)
-            {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
-                await getValidationProblemObject(context, errors);
-            }
-            else if (!string.IsNullOrEmpty(ex.Message))
-                await getValidationProblemObject(context, ex.Message);
-            else
-                await Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" }).ExecuteAsync(context);
+            await getValidationProblemObject(context, errors!);
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.InvalidArgument)
         {

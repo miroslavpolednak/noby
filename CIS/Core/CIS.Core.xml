@@ -436,6 +436,61 @@
             URL health check endpointu pro vsechny sluzby/aplikace.
             </summary>
         </member>
+        <member name="T:CIS.Core.Exceptions.BaseCisArgumentException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.ArgumentException"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.BaseCisArgumentException.ExceptionCode">
+            <summary>
+            CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisArgumentException.#ctor(System.Int32,System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+            <param name="paramName">Název parametru, který chybu vyvolal</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.BaseCisException">
+            <summary>
+            Base třída pro CIS vyjímky. Obsahuje vlastnost ExceptionCode, která určuje o jakou vyjímku se jedná.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Exceptions.BaseCisException.UnknownExceptionCode">
+            <summary>
+            Společný kód pro neznámou chybu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.BaseCisException.ExceptionCode">
+            <summary>
+            CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="P:CIS.Core.Exceptions.BaseCisValidationException.Errors">
+            <summary>
+            Seznam chyb.
+            </summary>
+            <remarks>
+            Key: CIS error kód <br/>
+            Message: chybová zpráva
+            </remarks>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
         <member name="T:CIS.Core.Exceptions.CisAlreadyExistsException">
             <summary>
             Objekt již existuje.
@@ -454,10 +509,232 @@
             </summary>
             <example>111</example>
         </member>
+        <member name="M:CIS.Core.Exceptions.CisAlreadyExistsException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="message">Text chyby</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisAlreadyExistsException.#ctor(System.Int32,System.String,System.Object)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="entityName">Název entity, která chybu vyvolala</param>
+            <param name="entityId">ID entity, která chybu vyvolala</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisArgumentException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.ArgumentException"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisArgumentException.#ctor(System.Int32,System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+            <param name="paramName">Název parametru, který chybu vyvolal</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisArgumentNullException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.ArgumentNullException"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisArgumentNullException.ExceptionCode">
+            <summary>
+            CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisArgumentNullException.#ctor(System.Int32,System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+            <param name="paramName">Název parametru, který chybu vyvolal</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConflictException">
+            <summary>
+            HTTP 409. Vyhazovat pokud prováděná akce je v konfliktu s existující byznys logikou. Podporuje kolekci chybových hlášení.
+            </summary>
+            <remarks>
+            Např. pokud mám vrátit detail klienta, ale v CM je více klientů se stejným ID.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisConflictException.Errors">
+            <summary>
+            Seznam chyb.
+            </summary>
+            <remarks>
+            Key: CIS error kód <br/>
+            Message: chybová zpráva
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.Exception"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisExtServiceResponseDeserializationException">
+            <summary>
+            Chyba, která vzniká při volání API třetích stran. Pokud se nepodaří deserializovat response volaného API, vyhodíme tuto vyjímku.
+            </summary>
+            <remarks>
+            Vznikne, pokud API třetí strany vrátí jiný JSON, než jaký očekáváme my.
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisExtServiceValidationException">
+            <summary>
+            HTTP 400. Chyba, která vzniká při volání API třetích stran. Pokud API vrátí HTTP 4xx, vytáhneme z odpovědi chybu a vyvoláme tuto vyjímku. Podporuje seznam chyb.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisExtServiceValidationException.#ctor(System.String)">
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisExtServiceValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisNotFoundException">
+            <summary>
+            Objekt nebyl nalezen.
+            </summary>
+            <remarks>
+            Např. při dotazu do databáze dané ID neexistuje.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisNotFoundException.EntityName">
+            <summary>
+            Název entity
+            </summary>
+            <example>DomainServices.Api.TestClass</example>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisNotFoundException.EntityId">
+            <summary>
+            Id entity, která vyvolala vyjímku
+            </summary>
+            <example>111</example>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisNotFoundException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="message">Text chyby</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisNotFoundException.#ctor(System.Int32,System.String,System.Object)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="entityName">Název entity, která chybu vyvolala</param>
+            <param name="entityId">ID entity, která chybu vyvolala</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisServiceCallResultErrorException">
+            <summary>
+            nevim? asi zrusit spolu s ServiceCallResult
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisValidationException">
+            <summary>
+            HTTP 400. Validační chyba.
+            </summary>
+            <remarks>
+            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. Podporuje seznam chyb.
+            </remarks>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.String)">
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="F:CIS.Core.Exceptions.ExceptionHandlingConstants.GrpcTrailerCisCodeKey">
+            <summary>
+            Klíč v gRPC Trailers kolekci, který označuje záznam s CIS error kódy
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Exceptions.ExceptionHandlingConstants.GrpcTrailerCisArgumentKey">
+            <summary>
+            Klíč v gRPC Trailers kolekci, který označuje záznam s názvem argumentu, který vyvolal vyjímku (CisArgumentException)
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConfigurationException">
+            <summary>
+            Pokud nastavení konfigurace v appsettings.json pro danou konfigurační sekci nelze zvalidovat - tj. chybí nastavit některá z required props atd.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisConfigurationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConfigurationNotFound">
+            <summary>
+            Pokud chybí požadované nastavení konfigurace v appsettings.json
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisConfigurationNotFound.#ctor(System.String)">
+            <param name="sectionName">Název sekce v appsettings.json, která chybí</param>
+        </member>
         <member name="T:CIS.Core.Exceptions.CisConfigurationNotRegisteredException">
             <summary>
             Chyba v pripade, kdy nelze v DI najit instanci konfigurace CIS
             </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisInvalidApplicationKeyException">
+            <summary>
+            Chyba validace názvu aplikace - vyvoláno z konstruktoru value type ApplicationKey
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidApplicationKeyException.#ctor(System.String)">
+            <param name="key">Název aplikace</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidApplicationKeyException.#ctor(System.String,System.String)">
+            <param name="key">Název aplikace</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisInvalidEnvironmentNameException">
+            <summary>
+            Chyba validace názvu prostředí - vyvoláno z konstruktoru value type EnvironmentName
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidEnvironmentNameException.#ctor(System.String)">
+            <param name="name">Název prostředí</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidEnvironmentNameException.#ctor(System.String,System.String)">
+            <param name="name">Název prostředí</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisServiceServerErrorException">
+            <summary>
+            HTTP 500. Vyhazuje se pokud naše doménová nebo infrastrkuturní služba vrátí server error - 500.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceServerErrorException.ServiceName">
+            <summary>
+            Název služby, která selhala
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceServerErrorException.MethodName">
+            <summary>
+            Metoda / endpoint jehož volání selhalo
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisServiceServerErrorException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="methodName">Metoda / endpoint jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisServiceUnavailableException">
+            <summary>
+            Doménová nebo infrastrukturní služba není k dispozici - např. špatné URL volané služby, nebo volaná služba vůbec neběží.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceUnavailableException.ServiceName">
+            <summary>
+            Název služby, která selhala
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceUnavailableException.MethodName">
+            <summary>
+            Metoda / endpoint jehož volání selhalo
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisServiceUnavailableException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="methodName">Metoda / endpoint jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
         </member>
         <member name="T:CIS.Core.AttributeExtensions">
             <summary>

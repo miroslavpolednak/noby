@@ -61,7 +61,7 @@ public class ApiExceptionMiddleware
             await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
         // conflict 409
-        catch (Core.Exceptions.CisConflictException ex)
+        catch (CisConflictException ex)
         {
             await Results.Problem(ex.Message, statusCode: 409).ExecuteAsync(context);
         }
@@ -70,18 +70,10 @@ public class ApiExceptionMiddleware
         {
             logger.GeneralException(ex);
 
-            // osetrena validace v pripade, ze se vraci vice validacnich hlasek
-            if (ex.ContainErrorsList)
-            {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray()) ?? throw new Core.Exceptions.CisArgumentNullException(15, "Errors collection is empty", "errors");
+            var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
-                await Results.ValidationProblem(errors).ExecuteAsync(context);
-            }
-            else if (!string.IsNullOrEmpty(ex.Message))
-                await Results.BadRequest(new ProblemDetails() { Title = ex.Message }).ExecuteAsync(context);
-            else
-                await Results.BadRequest(new ProblemDetails() { Title = "Untreated validation exception" }).ExecuteAsync(context);
+            await Results.ValidationProblem(errors).ExecuteAsync(context);
         }
         // jakakoliv jina chyba
         catch (Exception ex)

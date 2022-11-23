@@ -1,29 +1,41 @@
-﻿namespace CIS.Core.Exceptions
+﻿namespace CIS.Core.Exceptions;
+
+/// <summary>
+/// Objekt nebyl nalezen.
+/// </summary>
+/// <remarks>
+/// Např. při dotazu do databáze dané ID neexistuje.
+/// </remarks>
+public sealed class CisNotFoundException 
+    : BaseCisException
 {
-    public sealed class CisNotFoundException : BaseCisException
+    /// <summary>
+    /// Název entity
+    /// </summary>
+    /// <example>DomainServices.Api.TestClass</example>
+    public string? EntityName { get; private set; }
+
+    /// <summary>
+    /// Id entity, která vyvolala vyjímku
+    /// </summary>
+    /// <example>111</example>
+    public object? EntityId { get; private set; }
+
+    /// <param name="exceptionCode">CIS kód chyby</param>
+    /// <param name="message">Text chyby</param>
+    public CisNotFoundException(int exceptionCode, string message) 
+        : base(exceptionCode, message) 
+    { }
+
+    /// <param name="exceptionCode">CIS kód chyby</param>
+    /// <param name="entityName">Název entity, která chybu vyvolala</param>
+    /// <param name="entityId">ID entity, která chybu vyvolala</param>
+    public CisNotFoundException(int exceptionCode, string entityName, object entityId)
+        : base(exceptionCode, $"{entityName} {entityId} not found.")
     {
-        public string? EntityName { get; private set; }
-        public long? EntityIdLong { get; private set; }
-        public int? EntityIdInt { get; private set; }
-
-        public CisNotFoundException(int exceptionCode, string message) 
-            : base(exceptionCode, message) 
-        { }
-
-        public CisNotFoundException(int exceptionCode, string entityName, int entityId)
-            : base(exceptionCode, $"{entityName} {entityId} not found.")
-        {
-            EntityName = entityName;
-            EntityIdInt = entityId;
-        }
-
-        public CisNotFoundException(int exceptionCode, string entityName, long entityId)
-            : base(exceptionCode, $"{entityName} {entityId} not found.")
-        {
-            EntityName = entityName;
-            EntityIdLong = entityId;
-        }
-
-        public long GetId() => EntityIdLong ?? EntityIdInt ?? 0;
+        EntityName = entityName;
+        EntityId = entityId;
     }
+
+    public object? GetId() => EntityId;
 }

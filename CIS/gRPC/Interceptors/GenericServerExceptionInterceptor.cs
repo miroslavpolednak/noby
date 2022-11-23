@@ -59,13 +59,8 @@ public class GenericServerExceptionInterceptor : Interceptor
         catch (Core.Exceptions.CisValidationException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
-            if (e.ContainErrorsList)
-            {
-                var collection = new GrpcErrorCollection(e.Errors!.Select(t => new GrpcErrorCollection.GrpcErrorCollectionItem(t.Key, t.Message)));
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, e.Message, collection);
-            }
-            else
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, e.Message, 0);
+            var collection = new GrpcErrorCollection(e.Errors!.Select(t => new GrpcErrorCollection.GrpcErrorCollectionItem(t.Key, t.Message)));
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, e.Message, collection);
         }
         catch (Core.Exceptions.BaseCisException e)
         {
