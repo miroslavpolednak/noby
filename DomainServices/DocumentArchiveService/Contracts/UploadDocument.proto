@@ -16,11 +16,11 @@ message UploadDocumentRequest{
 // Metadata dokumentu
 message DocumentMetadata {
     // Unikátní Id obchodního případu
-    int64 CaseId = 1;
+    google.protobuf.Int64Value CaseId = 1;
     // ID dokumentu
     string DocumentId = 2;
     // EaCodeMain.Id https://wiki.kb.cz/display/HT/EaCodeMain
-    int32 EaCodeMainId = 3;
+    google.protobuf.Int32Value EaCodeMainId = 3;
     // Jméno souboru
     string Filename = 4;
     // Popis dokumentu
