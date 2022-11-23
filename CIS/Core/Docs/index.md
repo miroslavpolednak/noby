@@ -12,5 +12,5 @@ Základní projekt ekosystému obsahující base interfaces, types, exceptions a
 | [CIS.Core.Data](CIS.Core.Data.md 'CIS.Core.Data') | Interfaces a implementace pro timestamp sloupce EF entit. |
 | [CIS.Core.Exceptions](CIS.Core.Exceptions.md 'CIS.Core.Exceptions') | |
 | [CIS.Core.Security](CIS.Core.Security.md 'CIS.Core.Security') | |
-| [CIS.Core.Types](CIS.Core.Types.md 'CIS.Core.Types') | |
+| [CIS.Core.Types](CIS.Core.Types.md 'CIS.Core.Types') | Obecně používané typy a interfaces, které nespadají do žádného z adresářů v CIS.Core. |
 | [CIS.Core.Validation](CIS.Core.Validation.md 'CIS.Core.Validation') | |

@@ -3,7 +3,7 @@
 
 ## ICurrentUserAccessor Interface
 
-Helper pro ziskani fyzickeho uzivatele, ktery aplikaci/sluzbu vola
+Helper pro ziskani akltuálně přihlášeného fyzickeho uzivatele, ktery aplikaci/sluzbu vola
 
 ```csharp
 public interface ICurrentUserAccessor
@@ -47,7 +47,7 @@ CIS.Core.Security.ICurrentUserDetails? UserDetails { get; }
 ```
 
 #### Property Value
-[CIS.Core.Security.ICurrentUserDetails](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Security.ICurrentUserDetails 'CIS.Core.Security.ICurrentUserDetails')
+[ICurrentUserDetails](CIS.Core.Security.ICurrentUserDetails.md 'CIS.Core.Security.ICurrentUserDetails')
 ### Methods
 
 <a name='CIS.Core.Security.ICurrentUserAccessor.EnsureDetails(System.Threading.CancellationToken)'></a>
@@ -66,4 +66,28 @@ System.Threading.Tasks.Task<CIS.Core.Security.ICurrentUserDetails> EnsureDetails
 `cancellationToken` [System.Threading.CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.CancellationToken 'System.Threading.CancellationToken')
 
 #### Returns
-[System.Threading.Tasks.Task&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task-1 'System.Threading.Tasks.Task`1')[CIS.Core.Security.ICurrentUserDetails](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Security.ICurrentUserDetails 'CIS.Core.Security.ICurrentUserDetails')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task-1 'System.Threading.Tasks.Task`1')
+[System.Threading.Tasks.Task&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task-1 'System.Threading.Tasks.Task`1')[ICurrentUserDetails](CIS.Core.Security.ICurrentUserDetails.md 'CIS.Core.Security.ICurrentUserDetails')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task-1 'System.Threading.Tasks.Task`1')
+
+<a name='CIS.Core.Security.ICurrentUserAccessor.EnsureDetails_TDetails_(System.Threading.CancellationToken)'></a>
+
+## ICurrentUserAccessor.EnsureDetails<TDetails>(CancellationToken) Method
+
+Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+
+```csharp
+System.Threading.Tasks.Task<TDetails> EnsureDetails<TDetails>(System.Threading.CancellationToken cancellationToken)
+    where TDetails : CIS.Core.Security.ICurrentUserDetails;
+```
+#### Type parameters
+
+<a name='CIS.Core.Security.ICurrentUserAccessor.EnsureDetails_TDetails_(System.Threading.CancellationToken).TDetails'></a>
+
+`TDetails`
+#### Parameters
+
+<a name='CIS.Core.Security.ICurrentUserAccessor.EnsureDetails_TDetails_(System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System.Threading.CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.CancellationToken 'System.Threading.CancellationToken')
+
+#### Returns
+[System.Threading.Tasks.Task&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task-1 'System.Threading.Tasks.Task`1')[TDetails](CIS.Core.Security.ICurrentUserAccessor.md#CIS.Core.Security.ICurrentUserAccessor.EnsureDetails_TDetails_(System.Threading.CancellationToken).TDetails 'CIS.Core.Security.ICurrentUserAccessor.EnsureDetails<TDetails>(System.Threading.CancellationToken).TDetails')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Threading.Tasks.Task-1 'System.Threading.Tasks.Task`1')

@@ -29,3 +29,11 @@ namespace CIS.Core.Data
     /// </summary>
     internal static class NamespaceDoc { }
 }
+
+namespace CIS.Core.Types
+{
+    /// <summary>
+    /// Obecně používané typy a interfaces, které nespadají do žádného z adresářů v CIS.Core.
+    /// </summary>
+    internal static class NamespaceDoc { }
+}

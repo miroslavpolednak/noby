@@ -3,6 +3,8 @@
 
 ## Constants Class
 
+Konstanty pro nastavení auth providerů atd.
+
 ```csharp
 public sealed class Constants
 ```
@@ -14,7 +16,7 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 ## Constants.ContextUserHttpHeaderKey Field
 
-ID aktualne prihlaseneho uzivatele - dava se do HTTP headeru requestu
+Klíč pro HTTP hlavičku s informací o v33id aktuálně přihlášeného uživatele.
 
 ```csharp
 public const string ContextUserHttpHeaderKey = mp-user-id;

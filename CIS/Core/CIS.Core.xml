@@ -283,120 +283,9 @@
             Jméno a příjmení uživatele
             </summary>
         </member>
-        <member name="T:CIS.Core.CisGlobalConstants">
+        <member name="T:CIS.Core.Types.NamespaceDoc">
             <summary>
-            Globální konstanty aplikace.
-            </summary>
-        </member>
-        <member name="F:CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl">
-            <summary>
-            URL health check endpointu pro vsechny sluzby/aplikace.
-            </summary>
-        </member>
-        <member name="T:CIS.Core.Exceptions.CisConfigurationNotRegisteredException">
-            <summary>
-            Chyba v pripade, kdy nelze v DI najit instanci konfigurace CIS
-            </summary>
-        </member>
-        <member name="T:CIS.Core.AttributeExtensions">
-            <summary>
-            Extension metody na C# atributy
-            </summary>
-        </member>
-        <member name="M:CIS.Core.AttributeExtensions.GetAttribute``1(System.Enum)">
-            <summary>
-            A generic extension method that aids in reflecting and retrieving any attribute that is applied to an `Enum`.
-            </summary>
-        </member>
-        <member name="M:CIS.Core.AttributeExtensions.HasAttribute``1(System.Enum)">
-            <summary>
-            Vrací informaci o tom, zda daná enum value obsahuje požadovaný atribut.
-            </summary>
-            <typeparam name="TAttribute">Typ hledaného atributu</typeparam>
-            <param name="enumValue">Hodnota enumu</param>
-            <returns>True, pokud daná hodnota enumu obsahuje TAttribut</returns>
-        </member>
-        <member name="M:CIS.Core.LinqExtensions.SelectAsync``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Int32)">
-            <summary>
-            https://stackoverflow.com/questions/35011656/async-await-in-linq-select
-            </summary>
-        </member>
-        <member name="T:CIS.Core.IDateTime">
-            <summary>
-            Interface pro získání instance aktuálního času z DI.
-            </summary>
-            <remarks>
-            Bylo by užitečné, kdyby servery běželi v UTC, nicméně v aktuálním stavu asi není potřeba.
-            </remarks>
-        </member>
-        <member name="P:CIS.Core.IDateTime.Now">
-            <summary>
-            Current time
-            </summary>
-        </member>
-        <member name="P:CIS.Core.IDateTime.OffsetNow">
-            <summary>
-            Current time
-            </summary>
-        </member>
-        <member name="F:CIS.Core.Security.Constants.ContextUserHttpHeaderKey">
-            <summary>
-            ID aktualne prihlaseneho uzivatele - dava se do HTTP headeru requestu
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.ICurrentUser.Id">
-            <summary>
-            v33id
-            </summary>
-        </member>
-        <member name="T:CIS.Core.Security.ICurrentUserAccessor">
-            <summary>
-            Helper pro ziskani fyzickeho uzivatele, ktery aplikaci/sluzbu vola
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.ICurrentUserAccessor.IsAuthenticated">
-            <summary>
-            Pokud je false, uzivatel neni autentikovan - User = null
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.ICurrentUserAccessor.User">
-            <summary>
-            Zakladni data o uzivateli - Id, login?
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.ICurrentUserAccessor.UserDetails">
-            <summary>
-            Kompletni profil uzivatele - neni implicitne naplnen. Pro jeho naplneni je potreba zavolat FetchDetails().
-            </summary>
-        </member>
-        <member name="M:CIS.Core.Security.ICurrentUserAccessor.EnsureDetails(System.Threading.CancellationToken)">
-            <summary>
-            Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
-            </summary>
-        </member>
-        <member name="T:CIS.Core.Security.IServiceUser">
-            <summary>
-            Informace o technickem uzivateli pod kterym je vytvoren request na interni sluzbu
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.IServiceUser.Name">
-            <summary>
-            Login technickeho uzivatele
-            </summary>
-        </member>
-        <member name="T:CIS.Core.Security.IServiceUserAccessor">
-            <summary>
-            Helper pro ziskani instance technickeho uzivatele, pod kterym je spusten request na interni sluzbu.
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.IServiceUserAccessor.IsAuthenticated">
-            <summary>
-            Pokud je false, uzivatel neni autentikovan - User = null
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Security.IServiceUserAccessor.User">
-            <summary>
-            Instance technickeho uzivatele
+            Obecně používané typy a interfaces, které nespadají do žádného z adresářů v CIS.Core.
             </summary>
         </member>
         <member name="T:CIS.Core.Types.ApplicationEnvironmentName">
@@ -454,14 +343,248 @@
             Informace o tom, zda aktuální instance requestu obsahuje nastavení řazení záznamů.
             </summary>
         </member>
+        <member name="P:CIS.Core.Types.IPaginableRequest.TypeOfSortingField">
+            <summary>
+            Typ IPaginableSortingField, který je v aktuální instanci použit.
+            </summary>
+            <remarks>Je zde pro překlady IPaginableRequest z/do Webapi vs. gRPC služba.</remarks>
+        </member>
+        <member name="M:CIS.Core.Types.IPaginableRequest.GetSorting">
+            <summary>
+            Vrací seznam polí s nastaveným řazením.
+            </summary>
+            <remarks>
+            Implementace IPaginableSortingField je různá pro gRPC a Webapi služby.
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Types.IPaginableResponse">
+            <summary>
+            Obecný resopnse model pro Mediator request podporující stránkování.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableResponse.PageSize">
+            <summary>
+            Aktuální velikost stránky - počet záznamů v tomto response.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableResponse.RecordOffset">
+            <summary>
+            Offset prvního záznamu vytaženého ze zdrojových dat - zero based.
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableResponse.RecordsTotalSize">
+            <summary>
+            Celkový počet záznamů nalezených bez ohledu na stránkování.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Types.IPaginableSortingField">
+            <summary>
+            Nastavení jednoho pole pro řazení stránkovacích requestů.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableSortingField.Field">
+            <summary>
+            Název pole.
+            </summary>
+            <remarks>
+            Nemusí se shodovat s názvem databázového pole.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableSortingField.Descending">
+            <summary>
+            Nastavení řazení sestupně nebo vzestupně.
+            </summary>
+        </member>
         <member name="T:CIS.Core.Types.Paginable">
             <summary>
             Implementace <see cref="T:CIS.Core.Types.IPaginableRequest"/>
             </summary>
         </member>
+        <member name="F:CIS.Core.Types.Paginable._maxPageSize">
+            <summary>
+            Safe guard - nastavení max. množství vrácených záznamů
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Types.Paginable.FromRequest(CIS.Core.Types.IPaginableRequest,System.Int32,System.Int32)">
+            <summary>
+            Vytvori request s podporou strankovani z jiného IPaginableRequest.
+            </summary>
+            <remarks>
+            Používá se pro konverzi s FE requestu na gRPC request, což jsou dvě různé implementace.
+            </remarks>
+        </member>
         <member name="M:CIS.Core.Types.Paginable.EnsureAndTranslateSortFields(System.Collections.Generic.IEnumerable{CIS.Core.Types.Paginable.MapperField})">
             <summary>
             Premapuje Field names na hodnoty v databazi. Zaroven kontroluje, ze v mapperu jsou vsechna Field names z puvodni kolekce.
+            </summary>
+            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">Sort Field not allowed</exception>
+        </member>
+        <member name="M:CIS.Core.Types.Paginable.SetDefaultSort(System.String,System.Boolean)">
+            <summary>
+            Nastaví requestu výchozí řazení - pouze pokud již není řazení nastaveno.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.CisGlobalConstants">
+            <summary>
+            Globální konstanty aplikace.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl">
+            <summary>
+            URL health check endpointu pro vsechny sluzby/aplikace.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisAlreadyExistsException">
+            <summary>
+            Objekt již existuje.
+            </summary>
+            <remarks>Např. pokud vytvářím entitu v databázi, ale toto ID již existuje. Nebo pokud přidávám do kolekce již existující klíč.</remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisAlreadyExistsException.EntityName">
+            <summary>
+            Název entity
+            </summary>
+            <example>DomainServices.Api.TestClass</example>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisAlreadyExistsException.EntityId">
+            <summary>
+            Id entity, která vyvolala vyjímku
+            </summary>
+            <example>111</example>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConfigurationNotRegisteredException">
+            <summary>
+            Chyba v pripade, kdy nelze v DI najit instanci konfigurace CIS
+            </summary>
+        </member>
+        <member name="T:CIS.Core.AttributeExtensions">
+            <summary>
+            Extension metody na C# atributy
+            </summary>
+        </member>
+        <member name="M:CIS.Core.AttributeExtensions.GetAttribute``1(System.Enum)">
+            <summary>
+            A generic extension method that aids in reflecting and retrieving any attribute that is applied to an `Enum`.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.AttributeExtensions.HasAttribute``1(System.Enum)">
+            <summary>
+            Vrací informaci o tom, zda daná enum value obsahuje požadovaný atribut.
+            </summary>
+            <typeparam name="TAttribute">Typ hledaného atributu</typeparam>
+            <param name="enumValue">Hodnota enumu</param>
+            <returns>True, pokud daná hodnota enumu obsahuje TAttribut</returns>
+        </member>
+        <member name="M:CIS.Core.LinqExtensions.SelectAsync``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Int32)">
+            <summary>
+            https://stackoverflow.com/questions/35011656/async-await-in-linq-select
+            </summary>
+        </member>
+        <member name="T:CIS.Core.IDateTime">
+            <summary>
+            Interface pro získání instance aktuálního času z DI.
+            </summary>
+            <remarks>
+            Bylo by užitečné, kdyby servery běželi v UTC, nicméně v aktuálním stavu asi není potřeba.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.IDateTime.Now">
+            <summary>
+            Current time
+            </summary>
+        </member>
+        <member name="P:CIS.Core.IDateTime.OffsetNow">
+            <summary>
+            Current time
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.Constants">
+            <summary>
+            Konstanty pro nastavení auth providerů atd.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Security.Constants.ContextUserHttpHeaderKey">
+            <summary>
+            Klíč pro HTTP hlavičku s informací o v33id aktuálně přihlášeného uživatele.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.ICurrentUser">
+            <summary>
+            Instance aktuálně přihlášeného fyzického uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUser.Id">
+            <summary>
+            v33id
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.ICurrentUserAccessor">
+            <summary>
+            Helper pro ziskani akltuálně přihlášeného fyzickeho uzivatele, ktery aplikaci/sluzbu vola
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserAccessor.IsAuthenticated">
+            <summary>
+            Pokud je false, uzivatel neni autentikovan - User = null
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserAccessor.User">
+            <summary>
+            Zakladni data o uzivateli - Id, login?
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserAccessor.UserDetails">
+            <summary>
+            Kompletni profil uzivatele - neni implicitne naplnen. Pro jeho naplneni je potreba zavolat FetchDetails().
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Security.ICurrentUserAccessor.EnsureDetails(System.Threading.CancellationToken)">
+            <summary>
+            Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Security.ICurrentUserAccessor.EnsureDetails``1(System.Threading.CancellationToken)">
+            <summary>
+            Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.ICurrentUserDetails">
+            <summary>
+            Další informace o uživateli.
+            </summary>
+            <remarks>Tyto informace nejsou v <see cref="T:CIS.Core.Security.ICurrentUser"/>, protože se mohou systém od systému lišit, ale ICurrentUser je stejný pro všechny a nelze ho upravovat per systém.</remarks>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserDetails.DisplayName">
+            <summary>
+            Celé jméno uživatele
+            </summary>
+            <remarks>Filip Tůma</remarks>
+        </member>
+        <member name="T:CIS.Core.Security.IServiceUser">
+            <summary>
+            Informace o technickem uzivateli pod kterym je vytvoren request na interni sluzbu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.IServiceUser.Name">
+            <summary>
+            Login technickeho uzivatele
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.IServiceUserAccessor">
+            <summary>
+            Helper pro ziskani instance technickeho uzivatele, pod kterym je spusten request na interni sluzbu.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.IServiceUserAccessor.IsAuthenticated">
+            <summary>
+            Pokud je false, uzivatel neni autentikovan - User = null
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.IServiceUserAccessor.User">
+            <summary>
+            Instance technickeho uzivatele
             </summary>
         </member>
         <member name="T:CIS.Core.Validation.IValidatableRequest">

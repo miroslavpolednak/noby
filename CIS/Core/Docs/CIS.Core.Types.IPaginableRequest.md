@@ -60,3 +60,36 @@ int RecordOffset { get; }
 
 ### Example
 0
+
+<a name='CIS.Core.Types.IPaginableRequest.TypeOfSortingField'></a>
+
+## IPaginableRequest.TypeOfSortingField Property
+
+Typ IPaginableSortingField, který je v aktuální instanci použit.
+
+```csharp
+System.Type TypeOfSortingField { get; }
+```
+
+#### Property Value
+[System.Type](https://docs.microsoft.com/en-us/dotnet/api/System.Type 'System.Type')
+
+### Remarks
+Je zde pro překlady IPaginableRequest z/do Webapi vs. gRPC služba.
+### Methods
+
+<a name='CIS.Core.Types.IPaginableRequest.GetSorting()'></a>
+
+## IPaginableRequest.GetSorting() Method
+
+Vrací seznam polí s nastaveným řazením.
+
+```csharp
+System.Collections.Generic.IEnumerable<CIS.Core.Types.IPaginableSortingField>? GetSorting();
+```
+
+#### Returns
+[System.Collections.Generic.IEnumerable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.IEnumerable-1 'System.Collections.Generic.IEnumerable`1')[IPaginableSortingField](CIS.Core.Types.IPaginableSortingField.md 'CIS.Core.Types.IPaginableSortingField')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.IEnumerable-1 'System.Collections.Generic.IEnumerable`1')
+
+### Remarks
+Implementace IPaginableSortingField je různá pro gRPC a Webapi služby.

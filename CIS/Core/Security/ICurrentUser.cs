@@ -1,5 +1,8 @@
 ﻿namespace CIS.Core.Security;
 
+/// <summary>
+/// Instance aktuálně přihlášeného fyzického uživatele
+/// </summary>
 public interface ICurrentUser
 {
     /// <summary>

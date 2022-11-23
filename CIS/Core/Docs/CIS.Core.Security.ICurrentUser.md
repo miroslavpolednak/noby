@@ -3,6 +3,8 @@
 
 ## ICurrentUser Interface
 
+Instance aktuálně přihlášeného fyzického uživatele
+
 ```csharp
 public interface ICurrentUser
 ```

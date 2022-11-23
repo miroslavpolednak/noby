@@ -1,28 +1,34 @@
 ﻿namespace CIS.Core.Exceptions;
 
-public sealed class CisAlreadyExistsException : BaseCisException
+/// <summary>
+/// Objekt již existuje.
+/// </summary>
+/// <remarks>Např. pokud vytvářím entitu v databázi, ale toto ID již existuje. Nebo pokud přidávám do kolekce již existující klíč.</remarks>
+public sealed class CisAlreadyExistsException 
+    : BaseCisException
 {
+    /// <summary>
+    /// Název entity
+    /// </summary>
+    /// <example>DomainServices.Api.TestClass</example>
     public string? EntityName { get; private set; }
-    public long? EntityIdLong { get; private set; }
-    public int? EntityIdInt { get; private set; }
-
+    
+    /// <summary>
+    /// Id entity, která vyvolala vyjímku
+    /// </summary>
+    /// <example>111</example>
+    public object? EntityId { get; private set; }
+    
     public CisAlreadyExistsException(int exceptionCode, string message) 
         : base(exceptionCode, message) 
     { }
 
-    public CisAlreadyExistsException(int exceptionCode, string entityName, int entityId)
+    public CisAlreadyExistsException(int exceptionCode, string entityName, object entityId)
         : base(exceptionCode, $"{entityName} {entityId} already exists.")
     {
         EntityName = entityName;
-        EntityIdInt = entityId;
+        EntityId = entityId;
     }
 
-    public CisAlreadyExistsException(int exceptionCode, string entityName, long entityId)
-        : base(exceptionCode, $"{entityName} {entityId} already exists.")
-    {
-        EntityName = entityName;
-        EntityIdLong = entityId;
-    }
-
-    public long GetId() => EntityIdLong ?? EntityIdInt ?? 0;
+    public object? GetId() => EntityId;
 }
