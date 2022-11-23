@@ -243,7 +243,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ClientSMTP", "Playg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{7790592F-176C-4E0C-B240-7B20F099B772}"
 	ProjectSection(SolutionItems) = preProject
-		index.md = index.md
+		Docs\authentication.md = Docs\authentication.md
+		Docs\grpc-services.md = Docs\grpc-services.md
+		Docs\index.md = Docs\index.md
+		Docs\logging.md = Docs\logging.md
+		Docs\validation.md = Docs\validation.md
 	EndProjectSection
 EndProject
 Global

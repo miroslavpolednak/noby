@@ -3,6 +3,12 @@ using MediatR;
 
 namespace CIS.Infrastructure.gRPC.Validation;
 
+/// <summary>
+/// MediatR pipeline, která přidává do flow requestu FluentValidation.
+/// </summary>
+/// <remarks>
+/// Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
+/// </remarks>
 public class GrpcValidationBehaviour<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>, Core.Validation.IValidatableRequest

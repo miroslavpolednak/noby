@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using FluentValidation;
 using ExternalServices.Eas;
 using ExternalServices.EasSimulationHT;
 using ExternalServices.SbWebApi;
@@ -19,17 +18,6 @@ internal static class StartupExtensions
 
     public static WebApplicationBuilder AddCaseService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        builder.Services
-            .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
-
-        // add validators
-        builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(Program))
-                .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
 

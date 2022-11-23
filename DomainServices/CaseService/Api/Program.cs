@@ -45,15 +45,16 @@ builder.Services.AddAttributedServices(typeof(Program));
 // authentication
 builder.AddCisServiceAuthentication();
 
-// add this service
-builder.AddCaseService(appConfiguration);
-
 // add BE services
 builder.Services
     .AddSalesArrangementService()
     .AddCodebookService()
     .AddUserService()
     .AddCisServiceDiscovery();
+
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+// add this service
+builder.AddCaseService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {

@@ -43,10 +43,12 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 
 // add services
-builder.AddProductService(appConfiguration);
 builder.Services
     .AddCisServiceDiscovery()
     .AddCaseService();
+
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.AddProductService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {

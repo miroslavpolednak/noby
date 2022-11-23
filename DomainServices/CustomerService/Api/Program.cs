@@ -31,7 +31,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 // authentication
 builder.AddCisServiceAuthentication();
 
-// add storage services
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddCustomerService();
 
 builder.AddExternalServiceMpHome();

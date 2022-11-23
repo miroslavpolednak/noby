@@ -58,6 +58,7 @@ builder.Services
     .AddHouseholdService()
     .AddUserService();
 
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddSalesArrangementService(appConfiguration);
 
 builder.Services.AddGrpc(options =>

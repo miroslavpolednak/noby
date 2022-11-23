@@ -47,6 +47,7 @@ builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 builder.Services.AddCodebookService();
 
 // add my services
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddOfferService(appConfiguration);
 
 builder.Services.AddGrpc(options =>

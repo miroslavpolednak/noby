@@ -45,6 +45,7 @@ builder.AddDocumentArchiveService();
 builder.AddDocumentArchiveSwagger();
 
 // add grpc
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddDocumentArchiveGrpc();
 #endregion register builder
 
