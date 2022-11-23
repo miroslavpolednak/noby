@@ -1,7 +1,7 @@
 ﻿# Logování
-Komponenty / helpery pro logování jsou umístěny v projektu **CIS.Infrastructure.Telemetry**.
-Pro logování (jako implementaci ILogger) používáme **Serilog** (https://serilog.net/).
-Vždy se používá pouze instance ILogger nebo ILoggerFactory z DI - nikdy nevoláme přímo statické metody Serilogu.
+Komponenty / helpery pro logování jsou umístěny v projektu `CIS.Infrastructure.Telemetry`.
+Pro logování (jako implementaci `ILogger`) používáme **Serilog** (https://serilog.net/).
+Vždy se používá pouze instance `ILogger` nebo `ILoggerFactory` z DI - nikdy nevoláme přímo statické metody **Serilogu**.
 
 Nastavení Serilogu je společné pro všechny projekty, jedná se o extension metodu do startup aplikace:
 ```
@@ -15,7 +15,7 @@ Jedná se o technické logování - je plně v naší režii, logujeme co a jak 
 
 ### Auditní logování
 Jedná se o byznys log. 
-Každý auditní záznam je definován byznys analytikem - definice musí obsahovat jaká akce se má zalogovat, kdy a co má být obsahem logu.
+Každý auditní záznam je definován byznys analytikem - definice musí obsahovat jaká akce a kdy se má zalogovat, co má být obsahem logu.
 Loguje se instancí `IAuditLogger<>` z DI.
 
 ## Konfigurace logování
@@ -67,4 +67,12 @@ Konfigurace jednotlivých Sinků je v *appsettings.json* v sekci "**CisTelemetry
   }
 ```
 
+## Automatické logování
+
+
 # Tracing
+Tracing zajišťuje implementace **OpenTelemetry** (https://opentelemetry.io/). Zatím není kam exportovat data, takže není žádná vizualizace requestu.
+
+OT zajišťuje propagaci Trace a Span pomocí standardního Activity API v .NETu napříč všemi službami použitými v daném requestu.
+Trace se inicializuje na první aplikaci v systému NOBY - většinou tedy na FE API. 
+Pokud se jedná o request z FE API, vrací se po ukončení requestu TraceId v HTTP headeru odpovědi na frontend. Toto je zajištěno middlewarem `CIS.Infrastructure.WebApi.Middleware.TraceIdResponseHeaderMiddleware`.
