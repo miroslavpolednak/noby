@@ -44,10 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CIS\CIS.Infrastructure.MediatR\CIS.Infrastructure.MediatR.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.MediatR\CIS.Infrastructure.MediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />

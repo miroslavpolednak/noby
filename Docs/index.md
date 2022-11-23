@@ -5,9 +5,17 @@
 ### CIS
 Obsahuje podpůrné projekty pro stavbu aplikací a služev v systému NOBY, např. společné interfaces, exceptions, atributy atd.
 
+**Projekty:**
+
+[CIS.Core](CIS.Core/index.md)  
+Základní projekt ekosystému obsahující base interfaces, types, exceptions atd.
+
+[CIS.Infrastructure.Security](CIS.Infrastructure.Security/index.md)  
+Konfigurace a helpery pro autentizaci gRPC služeb.
+
 ### DomainServices
 Obsahuje byznysové služby. Každá služba obsluhuje vlastní byznys doménu, např. klient, domácnost, smlouva.
-Jedná se o gRPC služby, které ale mohou v některých případech vystavovat i REST rozhraní pomocí gRPC Transcoding.
+Jedná se o gRPC služby, které ale mohou v některých případech vystavovat i REST rozhraní pomocí *gRPC Transcoding*.
 Doménové služby jsou poměrně "hloupé", nechceme do nich dávat např. pokročilé validace - to by měl řešit jejich konzument.
 
 ### InternalServices

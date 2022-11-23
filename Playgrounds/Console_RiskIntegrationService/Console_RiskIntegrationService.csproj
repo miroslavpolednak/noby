@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />

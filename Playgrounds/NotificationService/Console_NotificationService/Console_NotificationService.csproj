@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+      <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
       <ProjectReference Include="..\..\..\InternalServices\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
       <ProjectReference Include="..\..\..\InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
     </ItemGroup>

@@ -1,4 +1,5 @@
 {
-  "OutputDirectoryPath": "./Docs",
-  "GeneratedPages": "Namespaces,Classes,Interfaces"
+  "OutputDirectoryPath": "../../Docs/CIS.Core/",
+  "GeneratedPages": "Namespaces,Classes,Interfaces",
+  "GeneratedAccessModifiers": "Public"
 }

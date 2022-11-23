@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Company></Company>
+		<Product>Common Infrastructure Solution</Product>
+		<Authors>Filip Tuma</Authors>
+		<Nullable>enable</Nullable>
+		<Platforms>AnyCPU;x64</Platforms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Version>1.0.0.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<Title>Service authentication helpers</Title>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.Security.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DefaultDocumentation" Version="0.8.0" PrivateAssets="all" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="4.0.0-beta4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
+		<ProjectReference Include="..\Core\CIS.Core.csproj" />
+		<ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
+	</ItemGroup>
+
+</Project>

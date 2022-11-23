@@ -2,7 +2,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.Storage.Api;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 

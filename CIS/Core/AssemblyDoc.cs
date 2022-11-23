@@ -37,3 +37,19 @@ namespace CIS.Core.Types
     /// </summary>
     internal static class NamespaceDoc { }
 }
+
+namespace CIS.Core.Exceptions
+{
+    /// <summary>
+    /// Custom vyjímky nahrazující standardní exceptions v .NETu. Snažíme se používat vlastní vyjímky, abychom dokázali rozeznat o jakou chybu se jedná a jak na ni reagovat.
+    /// </summary>
+    internal static class NamespaceDoc { }
+}
+
+namespace CIS.Core.Security
+{
+    /// <summary>
+    /// Interfaces pro získání informací o přihlášeném uživatel a technickém uživateli služby.
+    /// </summary>
+    internal static class NamespaceDoc { }
+}

@@ -7,7 +7,7 @@ using DomainServices.CustomerService.Clients;
 using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 

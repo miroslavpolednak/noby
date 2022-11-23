@@ -1,0 +1,13 @@
+﻿namespace CIS.Infrastructure.Security;
+
+public static class CurrentUserAccessorHelpers
+{
+    public static int? GetUserIdFromHeaders(HttpRequest request)
+    {
+        int? partyId = null;
+        if (request.Headers.ContainsKey(Core.Security.Constants.ContextUserHttpHeaderKey)
+            && int.TryParse(request.Headers[Core.Security.Constants.ContextUserHttpHeaderKey], out int i))
+            partyId = i;
+        return partyId;
+    }
+}

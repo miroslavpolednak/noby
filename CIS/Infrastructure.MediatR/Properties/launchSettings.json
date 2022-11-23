@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "CIS.Infrastructure.MediatR": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53929;http://localhost:53930"
+    }
+  }
+}

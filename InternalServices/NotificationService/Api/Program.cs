@@ -1,5 +1,5 @@
 using System.IO.Compression;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
