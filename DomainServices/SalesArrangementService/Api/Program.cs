@@ -82,14 +82,11 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
+app.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

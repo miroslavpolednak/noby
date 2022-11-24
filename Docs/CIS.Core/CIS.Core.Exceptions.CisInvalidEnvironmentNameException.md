@@ -45,3 +45,5 @@ Název prostředí
 <a name='CIS.Core.Exceptions.CisInvalidEnvironmentNameException.CisInvalidEnvironmentNameException(string,string).paramName'></a>
 
 `paramName` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Název parametru ve kterém bylo předáno prostředí

@@ -34,7 +34,7 @@ internal sealed class CisServiceAuthenticationHandler
     {
         // http header obsahuje Authorization key
         if (Context.Request.Headers.ContainsKey("Authorization"))
-            return await HandleAuthenticateInternalAsync(Context.Request.Headers["Authorization"]);
+            return await HandleAuthenticateInternalAsync(Context.Request.Headers["Authorization"]!);
         else
         {
             _logger.AuthHeaderNotFound();

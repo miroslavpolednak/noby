@@ -12,9 +12,4 @@ public sealed class CisInvalidApplicationKeyException
     public CisInvalidApplicationKeyException(string key) 
         : base(ExceptionCode, $"Application key '{key}' is invalid", nameof(key))
     { }
-
-    /// <param name="key">Název aplikace</param>
-    public CisInvalidApplicationKeyException(string key, string paramName)
-        : base(ExceptionCode, $"Application key '{key}' is invalid", paramName)
-    { }
 }

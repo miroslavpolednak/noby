@@ -33,7 +33,7 @@ builder
     .AddCisTracing();
 
 // add general Dapper repository
-builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
+builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
 
 builder.Services.AddGrpc(options =>
 {
@@ -52,14 +52,9 @@ var app = builder.Build();
 app.UseRouting();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<CIS.InternalServices.ServiceDiscovery.Api.Services.DiscoveryService>();
-
-    endpoints.MapGrpcReflectionService();
-});
+app.MapCisHealthChecks();
+app.MapGrpcService<CIS.InternalServices.ServiceDiscovery.Api.Services.DiscoveryService>();
+app.MapGrpcReflectionService();
 
 try
 {

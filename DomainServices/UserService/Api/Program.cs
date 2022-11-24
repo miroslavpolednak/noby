@@ -60,14 +60,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.UserService.Api.Services.UserService>();
+app.MapGrpcService<DomainServices.UserService.Api.Services.UserService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

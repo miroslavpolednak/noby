@@ -1,16 +1,15 @@
 ﻿using CIS.Core.Types;
-using System.Collections.Immutable;
 
 namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
 internal sealed class DiscoveryService 
     : IDiscoveryServiceAbstraction
 {
-    public async Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
         => await GetServices(getEnvName(), cancellationToken);
 
     // get services nekesujeme, nemel by to byt casty dotaz
-    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStarted(nameof(GetServices));
 

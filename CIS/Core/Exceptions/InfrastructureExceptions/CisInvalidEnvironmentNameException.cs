@@ -14,6 +14,7 @@ public sealed class CisInvalidEnvironmentNameException
     { }
 
     /// <param name="name">Název prostředí</param>
+    /// <param name="paramName">Název parametru ve kterém bylo předáno prostředí</param>
     public CisInvalidEnvironmentNameException(string name, string paramName)
         : base(_exceptionCode, $"Environment Name '{name}' is invalid", paramName)
     { }

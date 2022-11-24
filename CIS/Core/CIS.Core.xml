@@ -677,9 +677,6 @@
         <member name="M:CIS.Core.Exceptions.CisInvalidApplicationKeyException.#ctor(System.String)">
             <param name="key">Název aplikace</param>
         </member>
-        <member name="M:CIS.Core.Exceptions.CisInvalidApplicationKeyException.#ctor(System.String,System.String)">
-            <param name="key">Název aplikace</param>
-        </member>
         <member name="T:CIS.Core.Exceptions.CisInvalidEnvironmentNameException">
             <summary>
             Chyba validace názvu prostředí - vyvoláno z konstruktoru value type EnvironmentName
@@ -690,6 +687,7 @@
         </member>
         <member name="M:CIS.Core.Exceptions.CisInvalidEnvironmentNameException.#ctor(System.String,System.String)">
             <param name="name">Název prostředí</param>
+            <param name="paramName">Název parametru ve kterém bylo předáno prostředí</param>
         </member>
         <member name="T:CIS.Core.Exceptions.CisServiceServerErrorException">
             <summary>

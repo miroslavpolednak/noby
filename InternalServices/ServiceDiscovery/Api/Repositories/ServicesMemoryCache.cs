@@ -19,7 +19,7 @@ internal sealed class ServicesMemoryCache
 
     public async Task<List<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        List<Contracts.DiscoverableService> cacheEntry;
+        List<Contracts.DiscoverableService>? cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry))
         {
             _logger.ServicesNotFoundInCache(environmentName);
@@ -44,7 +44,7 @@ internal sealed class ServicesMemoryCache
         else
             _logger.ServicesFoundInCache(environmentName);
 
-        return cacheEntry;
+        return cacheEntry ?? new List<Contracts.DiscoverableService>(0);
     }
 
     private async Task<List<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
