@@ -7,17 +7,7 @@ namespace DomainServices.CodebookService.Endpoints.RealEstatePurchaseTypes
     {
         public async Task<List<RealEstatePurchaseTypeItem>> Handle(RealEstatePurchaseTypesRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<RealEstatePurchaseTypeItem>(nameof(RealEstatePurchaseTypesHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<RealEstatePurchaseTypeItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<RealEstatePurchaseTypeItem>(nameof(RealEstatePurchaseTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<RealEstatePurchaseTypeItem>(_sqlQuery, cancellationToken));
         }
 
         private const string _sqlQuery =

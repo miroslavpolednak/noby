@@ -9,22 +9,14 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesBefore
     {
         public async Task<List<GenericCodebookItem>> Handle(AcademicDegreesBeforeRequest request, CancellationToken cancellationToken)
         {
-            try
+            return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(AcademicDegreesBeforeHandler), async () =>
             {
-                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(AcademicDegreesBeforeHandler), async () =>
+                await using (var connection = _connectionProvider.Create())
                 {
-                    await using (var connection = _connectionProvider.Create())
-                    {
-                        await connection.OpenAsync();
-                        return (await connection.QueryAsync<GenericCodebookItem>("SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY] ORDER BY TEXT ASC")).ToList();
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
+                    await connection.OpenAsync();
+                    return (await connection.QueryAsync<GenericCodebookItem>("SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY] ORDER BY TEXT ASC")).ToList();
+                }
+            });
         }
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

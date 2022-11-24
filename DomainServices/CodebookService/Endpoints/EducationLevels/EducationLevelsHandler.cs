@@ -7,27 +7,19 @@ public class EducationLevelsHandler
 {
     public async Task<List<EducationLevelItem>> Handle(EducationLevelsRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<EducationLevelItem>(nameof(EducationLevelsHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<EducationLevelItem>(nameof(EducationLevelsHandler), async () =>
+            var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
+
+            var result = await _connectionProvider.ExecuteDapperRawSqlToList<EducationLevelItem>(_sqlQuery, cancellationToken);
+
+            result.ForEach(t =>
             {
-                var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<EducationLevelItem>(_sqlQuery, cancellationToken);
-
-                result.ForEach(t =>
-                {
-                    t.RdmCode = extMapper.FirstOrDefault(s => s.EducationLevelId == t.Id)?.RDMCode;
-                });
-
-                return result;
+                t.RdmCode = extMapper.FirstOrDefault(s => s.EducationLevelId == t.Id)?.RDMCode;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            throw;
-        }
+
+            return result;
+        });
     }
 
     private class ExtensionMapper

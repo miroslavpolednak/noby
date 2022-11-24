@@ -8,17 +8,9 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesAfter
     {
         public async Task<List<GenericCodebookItem>> Handle(AcademicDegreesAfterRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(AcademicDegreesAfterHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(AcademicDegreesAfterHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
+            );
         }
 
         private const string _sqlQuery =

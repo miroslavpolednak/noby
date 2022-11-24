@@ -7,17 +7,7 @@ namespace DomainServices.CodebookService.Endpoints.StatementTypes
     {
         public async Task<List<StatementTypeItem>> Handle(StatementTypesRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<StatementTypeItem>(nameof(StatementTypesHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<StatementTypeItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<StatementTypeItem>(nameof(StatementTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<StatementTypeItem>(_sqlQuery, cancellationToken));
         }
 
         private const string _sqlQuery =
