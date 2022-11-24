@@ -2,6 +2,8 @@
 
 ## CIS.Infrastructure.Security Assembly
 
+asdfasdf
+
 | Namespaces | |
 | :--- | :--- |
 | [CIS.Infrastructure.Security](CIS.Infrastructure.Security.md 'CIS.Infrastructure.Security') | |

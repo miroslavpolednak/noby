@@ -1,8 +1,15 @@
-# Validace
+# Validace requestu a byznys logiky
 Obecně pro byznys validace incoming requestů používáme **FluentValidation** (https://docs.fluentvalidation.net/). 
-Napojení FluentValidation je rozdílné pro gRPC a REST služby.
+Napojení FluentValidation je rozdílné pro gRPC a REST služby (viz. níže).
 
-Pokud je potřeba dalších byznys validací dál v *MediatR* pipeline (tj. v handleru), vyvoláváme vyjímky z namespace **CIS.Exceptions** - hlavně `CisValidationException`.
+Pokud je potřeba dalších byznys validací dál v *MediatR* pipeline (tj. po validaci requestu - v handleru), vyvoláváme vyjímky z namespace **CIS.Exceptions** - hlavně `CisValidationException`.
+`CisValidationException` je typ vyjímky, který označuje chybu v byznys validacích. Tento typ vyjímky také umožňuje zadání kolekce chyb s různými kódy.
+
+Chyby v gRPC službách mají vždy kromě zprávy také číselný kód. Díky tomuto kódu může následně FE API reagovat na konkrétní chyby.
+Každá služba / komponenta má přiřazený vlastní rozsah kód chyb.
+Základní chyby definuje IT analytik, další chyby vyvolávané v aplikaci si definujeme sami. 
+Seznam chyb a jejich kódy se evidují na Confluence zde https://wiki.kb.cz/display/HT/Error+code+list.
+Zprávy všech vyjímek vyvolaných gRPC službami jsou vždy v angličtině.
 
 ## Validace requestů gRPC služeb
 FluentValidation je napojena pomocí *MediatR.IPipelineBehavior* (`CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour`).

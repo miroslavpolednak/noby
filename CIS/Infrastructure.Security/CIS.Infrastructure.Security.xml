@@ -4,6 +4,11 @@
         <name>CIS.Infrastructure.Security</name>
     </assembly>
     <members>
+        <member name="T:CIS.Infrastructure.Security.AssemblyDoc">
+            <summary>
+            asdfasdf
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.Security.Configuration.AssemblyDoc">
             <summary>
             Nastavení konfigurace autentizace

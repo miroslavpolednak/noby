@@ -7,6 +7,9 @@ namespace CIS.Infrastructure.Telemetry;
 
 public static class LoggingExtensions
 {
+    /// <summary>
+    /// Podle nastavení v appsettings.json zařazuje middleware pro logování buď gRPC nebo Webapi.
+    /// </summary>
     public static IApplicationBuilder UseCisLogging(this IApplicationBuilder webApplication)
     {
         webApplication.UseWhen(
@@ -20,6 +23,14 @@ public static class LoggingExtensions
         return webApplication;
     }
 
+    /// <summary>
+    /// Přidává do aplikace logování pomocí Serilogu.
+    /// </summary>
+    /// <remarks>
+    /// Načte konfiguraci logování z appsettings.json.
+    /// Přidá do DI IAuditLogger pro auditní logování.
+    /// Přidá logování request a response do MediatR pipeline.
+    /// </remarks>
     public static WebApplicationBuilder AddCisLogging(this WebApplicationBuilder builder)
     {
         // get configuration from json file
@@ -32,10 +43,10 @@ public static class LoggingExtensions
         builder.Services.AddSingleton<IAuditLogger>(new AuditLogger());
 
         // pridani serilogu
-        builder.Host.AddCisLogging();
+        builder.Host.AddCisLoggingInternal();
 
         // pridani request behaviour mediatru - loguje request a response objekty
-        builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(Mediatr.LoggingBehaviour<,>));
+        builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(Mediatr.LoggingBehavior<,>));
 
         return builder;
     }
@@ -52,7 +63,7 @@ public static class LoggingExtensions
         Thread.Sleep(2000);
     }
 
-    private static IHostBuilder AddCisLogging(this IHostBuilder builder)
+    private static IHostBuilder AddCisLoggingInternal(this IHostBuilder builder)
     {
         builder.UseSerilog((hostingContext, serviceProvider, loggerConfiguration) =>
         {
