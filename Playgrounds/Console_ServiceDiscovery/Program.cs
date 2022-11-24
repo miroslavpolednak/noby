@@ -39,7 +39,7 @@ var provider = services.BuildServiceProvider();
             
 var svc = provider.GetRequiredService<IDiscoveryServiceAbstraction>();
 
-var result = await svc.GetService(new ApplicationEnvironmentName(env), new CIS.Core.Types.ServiceName("CIS:Storage"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
+var result = await svc.GetService(new(env), new("CIS:Storage"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
 Console.WriteLine(result.ServiceUrl);
 var result3 = await svc.GetServices(new ApplicationEnvironmentName(env));
 Console.WriteLine(result3);

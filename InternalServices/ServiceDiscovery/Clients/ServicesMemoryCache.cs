@@ -10,18 +10,18 @@ internal sealed class ServicesMemoryCache
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
 
-    public static DiscoverableService? GetServiceFromCache(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType)
+    public static DiscoverableService? GetServiceFromCache(ApplicationEnvironmentName environmentName, ApplicationKey serviceName, Contracts.ServiceTypes serviceType)
     {
-        if (_cache.TryGetValue(environmentName, out ImmutableList<DiscoverableService> cacheEntry))
+        if (_cache.TryGetValue(environmentName, out ImmutableList<DiscoverableService>? cacheEntry))
         {
-            return cacheEntry.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType);
+            return cacheEntry?.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType);
         }
         return null;
     }
 
-    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    public async Task<IList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        ImmutableList<DiscoverableService> cacheEntry;
+        ImmutableList<DiscoverableService>? cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry))
         {
             _logger.ServicesNotFoundInCache(environmentName);
@@ -46,7 +46,10 @@ internal sealed class ServicesMemoryCache
         else
             _logger.ServicesFoundInCache(environmentName);
 
-        return cacheEntry;
+        if (cacheEntry == null)
+            return new List<DiscoverableService>(0);
+        else
+            return cacheEntry;
     }
 
     private async Task<ImmutableList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)

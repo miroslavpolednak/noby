@@ -5,7 +5,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using DomainServices.SalesArrangementService.Clients;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
@@ -45,15 +45,16 @@ builder.Services.AddAttributedServices(typeof(Program));
 // authentication
 builder.AddCisServiceAuthentication();
 
-// add this service
-builder.AddCaseService(appConfiguration);
-
 // add BE services
 builder.Services
     .AddSalesArrangementService()
     .AddCodebookService()
     .AddUserService()
     .AddCisServiceDiscovery();
+
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+// add this service
+builder.AddCaseService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {
@@ -76,14 +77,11 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.CaseService.Api.Services.CaseService>();
+app.MapGrpcService<DomainServices.CaseService.Api.Services.CaseService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

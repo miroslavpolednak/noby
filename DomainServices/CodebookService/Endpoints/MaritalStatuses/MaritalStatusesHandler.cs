@@ -7,26 +7,18 @@ public class MaritalStatusesHandler
 {
     public async Task<List<MaritalStatusItem>> Handle(MaritalStatusesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate(nameof(MaritalStatusesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate(nameof(MaritalStatusesHandler), async () =>
-            {
-                var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
+            var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
 
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<MaritalStatusItem>(_sqlQuery, cancellationToken);
+            var result = await _connectionProvider.ExecuteDapperRawSqlToList<MaritalStatusItem>(_sqlQuery, cancellationToken);
 
-                result.ForEach(t => {
-                    t.RdmMaritalStatusCode = extMapper.FirstOrDefault(s => s.MaritalStatusId == t.Id)?.RDMCode;
-                });
-
-                return result;
+            result.ForEach(t => {
+                t.RdmMaritalStatusCode = extMapper.FirstOrDefault(s => s.MaritalStatusId == t.Id)?.RDMCode;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+
+            return result;
+        });
     }
 
     private class ExtensionMapper

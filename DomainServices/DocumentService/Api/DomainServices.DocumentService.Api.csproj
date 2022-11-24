@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+	  <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\ESignatures\ExternalServices.ESignatures.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />

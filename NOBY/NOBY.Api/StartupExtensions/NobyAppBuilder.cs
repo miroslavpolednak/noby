@@ -28,7 +28,8 @@ internal static class NobyAppBuilder
     public static IApplicationBuilder UseFomsHealthChecks(this IApplicationBuilder app)
         => app.MapWhen(_isHealthCheck, appBuilder =>
         {
-            appBuilder.MapCisHealthChecks();
+            /*builder.UseRouting();
+            endpoints.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);*/
         });
 
     public static IApplicationBuilder UseFomsApi(this WebApplication app)

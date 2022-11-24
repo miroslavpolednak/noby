@@ -4,7 +4,7 @@ using DomainServices.ProductService.Api;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using DomainServices.CaseService.Clients;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -43,10 +43,12 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 
 // add services
-builder.AddProductService(appConfiguration);
 builder.Services
     .AddCisServiceDiscovery()
     .AddCaseService();
+
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+builder.AddProductService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {
@@ -69,14 +71,11 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.ProductService.Api.Services.ProductService>();
+app.MapGrpcService<DomainServices.ProductService.Api.Services.ProductService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

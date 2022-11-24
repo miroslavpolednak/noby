@@ -7,7 +7,7 @@ using DomainServices.CustomerService.Clients;
 using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 
@@ -58,6 +58,7 @@ builder.Services
     .AddHouseholdService()
     .AddUserService();
 
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddSalesArrangementService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
@@ -81,14 +82,11 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
+app.MapGrpcService<DomainServices.SalesArrangementService.Api.Services.SalesArrangementService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

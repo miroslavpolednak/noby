@@ -1,5 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts;
-using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
 
 namespace DomainServices.CodebookService.Endpoints.WorkflowTaskStates;
 
@@ -8,29 +7,21 @@ public class WorkflowTaskStatesHandler
 {
     public async Task<List<WorkflowTaskStateItem>> Handle(WorkflowTaskStatesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<WorkflowTaskStateItem>(nameof(WorkflowTaskStatesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<WorkflowTaskStateItem>(nameof(WorkflowTaskStatesHandler), async () =>
+            var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
+
+            var result = await _connectionProvider.ExecuteDapperRawSqlToList<WorkflowTaskStateItem>(_sqlQuery, cancellationToken);
+
+            var flags = extMapper.ToDictionary(i => i.WorkflowTaskStateId, i => i.Flag);
+
+            result.ForEach(i =>
             {
-                var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<WorkflowTaskStateItem>(_sqlQuery, cancellationToken);
-
-                var flags = extMapper.ToDictionary(i => i.WorkflowTaskStateId, i => i.Flag);
-
-                result.ForEach(i =>
-                {
-                    i.Flag = flags.ContainsKey(i.Id) ? flags[i.Id] : EWorkflowTaskStateFlag.Undefined;
-                });
-
-                return result;
+                i.Flag = flags.ContainsKey(i.Id) ? flags[i.Id] : EWorkflowTaskStateFlag.Undefined;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+
+            return result;
+        });
     }
 
 

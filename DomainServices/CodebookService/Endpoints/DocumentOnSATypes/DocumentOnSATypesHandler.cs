@@ -7,17 +7,7 @@ namespace DomainServices.CodebookService.Endpoints.DocumentOnSATypes
     {
         public async Task<List<DocumentOnSATypeItem>> Handle(DocumentOnSATypesRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<DocumentOnSATypeItem>(nameof(DocumentOnSATypesHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<DocumentOnSATypeItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.GeneralException(ex);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<DocumentOnSATypeItem>(nameof(DocumentOnSATypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<DocumentOnSATypeItem>(_sqlQuery, cancellationToken));
         }
 
         private const string _sqlQuery = "SELECT Id, Name, SalesArrangementTypeId, FormTypeId FROM [dbo].[DocumentOnSAType]";

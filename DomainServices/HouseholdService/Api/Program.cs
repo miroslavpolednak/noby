@@ -7,7 +7,7 @@ using DomainServices.CustomerService.Clients;
 using DomainServices.UserService.Clients;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using DomainServices.SalesArrangementService.Clients;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
@@ -56,6 +56,7 @@ builder.Services
     .AddCustomerService()
     .AddUserService();
 
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddHouseholdService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
@@ -79,15 +80,12 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.HouseholdService.Api.Services.HouseholdService>();
-    endpoints.MapGrpcService<DomainServices.HouseholdService.Api.Services.CustomerOnSAService>();
+app.MapGrpcService<DomainServices.HouseholdService.Api.Services.HouseholdService>();
+app.MapGrpcService<DomainServices.HouseholdService.Api.Services.CustomerOnSAService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DomainServices.SalesArrangementService.Clients": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53887;http://localhost:53888"
+    }
+  }
+}

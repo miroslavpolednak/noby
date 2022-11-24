@@ -8,17 +8,7 @@ public class IncomeOtherTypesHandler
 {
     public async Task<List<GenericCodebookItemWithCode>> Handle(IncomeOtherTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(IncomeOtherTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(IncomeOtherTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', CODE 'Code', TEXT_CZE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

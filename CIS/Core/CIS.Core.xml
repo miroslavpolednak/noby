@@ -1,0 +1,881 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Core</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Core.AssemblyDoc">
+            <summary>
+            Základní projekt ekosystému obsahující base interfaces, types, exceptions atd.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Attributes.NamespaceDoc">
+            <summary>
+            Obecně použitelné C# atributy.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Attributes.CisDefaultValueAttribute">
+            <summary>
+            Používá se k označení výchozí hodnoty enumu.
+            </summary>
+            <remarks>
+            Volající kód může podobným dotazem zjistit, zda je daná enum value výchozí:
+            `IsDefault = t.HasAttribute&lt;CIS.Core.Attributes.CisDefaultValueAttribute&gt;()`
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Attributes.CisStarbuildIdAttribute">
+            <summary>
+            Specifický atribut pro číselníkové enumy.
+            </summary>
+            <remarks>
+            Označuje hodnotu dané enum value ve Starbuildu:
+            `StarbuildId = t.GetAttribute&lt;CIS.Core.Attributes.CisStarbuildIdAttribute&gt;()?.StarbuildId`
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Configuration.NamespaceDoc">
+            <summary>
+            Interfaces pro obecné konfigurační objekty ekosystému - appsettings.json, kestrel.json.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Configuration.ICisEnvironmentConfiguration">
+            <summary>
+            Konfigurace služby v prostředí NOBY. Binduje se z elementu *CisEnvironmentConfiguration* v appsettings.json.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.DefaultApplicationKey">
+            <summary>
+            Název služby v systému NOBY
+            </summary>
+            <remarks>[typ_sluzby]:[nazev_sluzby] - DS (Doménová služba), CIS (Infrastrukturní služba)</remarks>
+            <example>DS:CustomerService</example>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.EnvironmentName">
+            <summary>
+            Název aplikačního prostředí
+            </summary>
+            <remarks>Povolené hodnoty: DEV, FAT, UAT, SIT, PROD</remarks>
+            <example>DEV</example>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.ServiceDiscoveryUrl">
+            <summary>
+            Adresa Service discovery služby pro dané prostředí
+            </summary>
+            <remarks>Pokud není zadáno, nebude fungovat automatické dohledávání adres služeb v Clients projektech.</remarks>
+            <example>https://177.0.0.55:30000</example>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.InternalServicesLogin">
+            <summary>
+            Login uživatele pod kterým se daná služba autentizuje do ostatních služeb v rámci NOBY
+            </summary>
+            <remarks>Je nutné zadat pokud má fungovat automatické dohledávání adres služeb v Clients projektech.</remarks>
+            <example>user_a</example>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.InternalServicePassword">
+            <summary>
+            Heslo servisního uživatele
+            </summary>
+            <example>passw0rd</example>
+        </member>
+        <member name="T:CIS.Core.Configuration.ICorsConfiguration">
+            <summary>
+            Nastavení CORS pro REST/Webapi projekty.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICorsConfiguration.EnableCors">
+            <summary>
+            true = zapne CORS middleware v Webapi projektu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.ICorsConfiguration.AllowedOrigins">
+            <summary>
+            Seznam povolených origins
+            </summary>
+            <example>https://localhost:8080, https://dev.noby.cz</example>
+        </member>
+        <member name="T:CIS.Core.Configuration.KestrelConfiguration">
+            <summary>
+            Nastavení Kestrel serveru v gRPC službách.
+            </summary>
+            <remarks>
+            Nepoužíváme standardní Kestrel konfigurační soubor, protože nám neumožňuje zadávat např. SSL certifikáty.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.Endpoints">
+            <summary>
+            Nastavené endpointy pro danou službu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.Certificate">
+            <summary>
+            SSL certifikát použitý pro vytvoření HTTPS tunelu
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Configuration.KestrelConfiguration.EndpointInfo">
+            <summary>
+            Nastavení endpointu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.EndpointInfo.Port">
+            <summary>
+            Port na kterém endpoint poslouchá
+            </summary>
+            <example>30000</example>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.EndpointInfo.Protocol">
+            <summary>
+            Druh protokolu použitý pro daný endpoint
+            </summary>
+            <remarks>
+            1 = HTTP 1.1
+            2 = HTTP 2
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo">
+            <summary>
+            Nastavení SSL certifikátu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.Location">
+            <summary>
+            Druh úložiště certifkátu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.Path">
+            <summary>
+            URI souboru s certifikátem na filesystému
+            </summary>
+            <remarks>
+            Pouze pokud Location=FileSystem
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.Password">
+            <summary>
+            Heslo certifikátu uloženého na filesystému
+            </summary>
+            <remarks>
+            Pouze pokud Location=FileSystem
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.CertStoreName">
+            <summary>
+            Název složky ve Windows Certificate store
+            </summary>
+            <example>My, Root</example>
+            <remarks>
+            Pouze pokud Location=CertStore
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.CertStoreLocation">
+            <summary>
+            Typ Windows Certificate store
+            </summary>
+            <example>LocalMachine, CurrenUser</example>
+            <remarks>
+            Pouze pokud Location=CertStore
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.Thumbprint">
+            <summary>
+            Thumbprint certifikátu
+            </summary>
+            <remarks>
+            Pouze pokud Location=CertStore
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes">
+            <summary>
+            Možné způsoby 
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.FileSystem">
+            <summary>
+            Certifikát je uložený na filesystému
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.CertStore">
+            <summary>
+            Certifikát je uložený ve Windows Certificate store
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.NamespaceDoc">
+            <summary>
+            Interfaces a implementace pro timestamp sloupce EF entit.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.BaseCreated">
+            <summary>
+            Implementace <see cref="T:CIS.Core.Data.ICreated"/>
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.BaseCreatedWithModifiedUserId">
+            <summary>
+            Implementace <see cref="T:CIS.Core.Data.IModifiedUser"/> a <see cref="T:CIS.Core.Data.ICreated"/>
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.BaseIsActual">
+            <summary>
+            Implementace <see cref="T:CIS.Core.Data.IIsActual"/>
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.BaseModifiedUser">
+            <summary>
+            Implementace <see cref="T:CIS.Core.Data.IModifiedUser"/>
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.IConnectionProvider">
+            <summary>
+            Marker interface pro Dapper.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Data.IConnectionProvider.ConnectionString">
+            <summary>
+            Connection string do databáze
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.IConnectionProvider`1">
+            <summary>
+            Marker interface pro Dapper.
+            </summary>
+            <remarks>
+            TRepository je connection string (ve formě třídy/interface) pro který je daný marker uložený v DI. Existuje proto, aby bylo možné používat v jedné aplikaci více různých connection stringů.
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Data.ICreated">
+            <summary>
+            EF entita obsahuje sloupce s informací o uživateli, který ji vytvořil.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Data.ICreated.CreatedUserName">
+            <summary>
+            Jméno a příjmení uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Data.ICreated.CreatedUserId">
+            <summary>
+            v33id uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Data.ICreated.CreatedTime">
+            <summary>
+            Datum vytvoření entity
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Data.IIsActual">
+            <summary>
+            EF entita obsahuje sloupec IsActual.
+            </summary>
+            <remarks>
+            IsActual se používá pro soft-delete entit. False znamená smazanou entitu.
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Data.IModifiedUser">
+            <summary>
+            EF entita obsahuje sloupce s informací o uživateli, který ji naposledy updatoval.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Data.IModifiedUser.ModifiedUserId">
+            <summary>
+            v33id uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Data.IModifiedUser.ModifiedUserName">
+            <summary>
+            Jméno a příjmení uživatele
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Types.NamespaceDoc">
+            <summary>
+            Obecně používané typy a interfaces, které nespadají do žádného z adresářů v CIS.Core.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Types.ApplicationEnvironmentName">
+            <summary>
+            Value type pro název/typ aplikačního prostředí.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.ApplicationEnvironmentName.Name">
+            <summary>
+            Název aplikačního prostředí.
+            </summary>
+            <example>FAT</example>
+        </member>
+        <member name="M:CIS.Core.Types.ApplicationEnvironmentName.#ctor(System.String)">
+            <param name="environment">Název prostředí</param>
+            <exception cref="T:CIS.Core.Exceptions.CisInvalidEnvironmentNameException">Název prostředí není zadaný nebo nemá platný formát.</exception>
+        </member>
+        <member name="T:CIS.Core.Types.ApplicationKey">
+            <summary>
+            Value type pro název aplikace / služby.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.ApplicationKey.Key">
+            <summary>
+            Název aplikace v prostředí NOBY.
+            </summary>
+            <remarks>DS:CustomerService</remarks>
+        </member>
+        <member name="M:CIS.Core.Types.ApplicationKey.#ctor(System.String)">
+            <param name="key">Název aplikace {DS|CIS}:{app_name}</param>
+            <exception cref="T:CIS.Core.Exceptions.CisInvalidApplicationKeyException">Název aplikace není vyplněný nebo nemá povolený formát.</exception>
+        </member>
+        <member name="T:CIS.Core.Types.IPaginableRequest">
+            <summary>
+            Obecný request model pro Mediator request podporující stránkování.
+            </summary>
+            <remarks>
+            Používá se pro gRPC i Webapi aplikace.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableRequest.PageSize">
+            <summary>
+            Velikost jedné stránky - počet záznamů.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableRequest.RecordOffset">
+            <summary>
+            Offset prvního záznamu vytaženého ze zdrojových dat - zero based.
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableRequest.HasSorting">
+            <summary>
+            Informace o tom, zda aktuální instance requestu obsahuje nastavení řazení záznamů.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableRequest.TypeOfSortingField">
+            <summary>
+            Typ IPaginableSortingField, který je v aktuální instanci použit.
+            </summary>
+            <remarks>Je zde pro překlady IPaginableRequest z/do Webapi vs. gRPC služba.</remarks>
+        </member>
+        <member name="M:CIS.Core.Types.IPaginableRequest.GetSorting">
+            <summary>
+            Vrací seznam polí s nastaveným řazením.
+            </summary>
+            <remarks>
+            Implementace IPaginableSortingField je různá pro gRPC a Webapi služby.
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Types.IPaginableResponse">
+            <summary>
+            Obecný resopnse model pro Mediator request podporující stránkování.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableResponse.PageSize">
+            <summary>
+            Aktuální velikost stránky - počet záznamů v tomto response.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableResponse.RecordOffset">
+            <summary>
+            Offset prvního záznamu vytaženého ze zdrojových dat - zero based.
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableResponse.RecordsTotalSize">
+            <summary>
+            Celkový počet záznamů nalezených bez ohledu na stránkování.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Types.IPaginableSortingField">
+            <summary>
+            Nastavení jednoho pole pro řazení stránkovacích requestů.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableSortingField.Field">
+            <summary>
+            Název pole.
+            </summary>
+            <remarks>
+            Nemusí se shodovat s názvem databázového pole.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Types.IPaginableSortingField.Descending">
+            <summary>
+            Nastavení řazení sestupně nebo vzestupně.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Types.Paginable">
+            <summary>
+            Implementace <see cref="T:CIS.Core.Types.IPaginableRequest"/>
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Types.Paginable._maxPageSize">
+            <summary>
+            Safe guard - nastavení max. množství vrácených záznamů
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Types.Paginable.FromRequest(CIS.Core.Types.IPaginableRequest,System.Int32,System.Int32)">
+            <summary>
+            Vytvori request s podporou strankovani z jiného IPaginableRequest.
+            </summary>
+            <remarks>
+            Používá se pro konverzi s FE requestu na gRPC request, což jsou dvě různé implementace.
+            </remarks>
+        </member>
+        <member name="M:CIS.Core.Types.Paginable.EnsureAndTranslateSortFields(System.Collections.Generic.IEnumerable{CIS.Core.Types.Paginable.MapperField})">
+            <summary>
+            Premapuje Field names na hodnoty v databazi. Zaroven kontroluje, ze v mapperu jsou vsechna Field names z puvodni kolekce.
+            </summary>
+            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">Sort Field not allowed</exception>
+        </member>
+        <member name="M:CIS.Core.Types.Paginable.SetDefaultSort(System.String,System.Boolean)">
+            <summary>
+            Nastaví requestu výchozí řazení - pouze pokud již není řazení nastaveno.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.NamespaceDoc">
+            <summary>
+            Custom vyjímky nahrazující standardní exceptions v .NETu. Snažíme se používat vlastní vyjímky, abychom dokázali rozeznat o jakou chybu se jedná a jak na ni reagovat.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.BaseCisArgumentException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.ArgumentException"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.BaseCisArgumentException.ExceptionCode">
+            <summary>
+            CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisArgumentException.#ctor(System.Int32,System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+            <param name="paramName">Název parametru, který chybu vyvolal</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.BaseCisException">
+            <summary>
+            Base třída pro CIS vyjímky. Obsahuje vlastnost ExceptionCode, která určuje o jakou vyjímku se jedná.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Exceptions.BaseCisException.UnknownExceptionCode">
+            <summary>
+            Společný kód pro neznámou chybu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.BaseCisException.ExceptionCode">
+            <summary>
+            CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="P:CIS.Core.Exceptions.BaseCisValidationException.Errors">
+            <summary>
+            Seznam chyb.
+            </summary>
+            <remarks>
+            Key: CIS error kód <br/>
+            Message: chybová zpráva
+            </remarks>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisAlreadyExistsException">
+            <summary>
+            Objekt již existuje.
+            </summary>
+            <remarks>Např. pokud vytvářím entitu v databázi, ale toto ID již existuje. Nebo pokud přidávám do kolekce již existující klíč.</remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisAlreadyExistsException.EntityName">
+            <summary>
+            Název entity
+            </summary>
+            <example>DomainServices.Api.TestClass</example>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisAlreadyExistsException.EntityId">
+            <summary>
+            Id entity, která vyvolala vyjímku
+            </summary>
+            <example>111</example>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisAlreadyExistsException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="message">Text chyby</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisAlreadyExistsException.#ctor(System.Int32,System.String,System.Object)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="entityName">Název entity, která chybu vyvolala</param>
+            <param name="entityId">ID entity, která chybu vyvolala</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisArgumentException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.ArgumentException"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisArgumentException.#ctor(System.Int32,System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+            <param name="paramName">Název parametru, který chybu vyvolal</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisArgumentNullException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.ArgumentNullException"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisArgumentNullException.ExceptionCode">
+            <summary>
+            CIS error kód
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisArgumentNullException.#ctor(System.Int32,System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+            <param name="paramName">Název parametru, který chybu vyvolal</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConflictException">
+            <summary>
+            HTTP 409. Vyhazovat pokud prováděná akce je v konfliktu s existující byznys logikou. Podporuje kolekci chybových hlášení.
+            </summary>
+            <remarks>
+            Např. pokud mám vrátit detail klienta, ale v CM je více klientů se stejným ID.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisConflictException.Errors">
+            <summary>
+            Seznam chyb.
+            </summary>
+            <remarks>
+            Key: CIS error kód <br/>
+            Message: chybová zpráva
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisException">
+            <summary>
+            Stejná chyba jako <see cref="T:System.Exception"/>, ale obsahuje navíc CIS error kód
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisExtServiceResponseDeserializationException">
+            <summary>
+            Chyba, která vzniká při volání API třetích stran. Pokud se nepodaří deserializovat response volaného API, vyhodíme tuto vyjímku.
+            </summary>
+            <remarks>
+            Vznikne, pokud API třetí strany vrátí jiný JSON, než jaký očekáváme my.
+            </remarks>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisExtServiceValidationException">
+            <summary>
+            HTTP 400. Chyba, která vzniká při volání API třetích stran. Pokud API vrátí HTTP 4xx, vytáhneme z odpovědi chybu a vyvoláme tuto vyjímku. Podporuje seznam chyb.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisExtServiceValidationException.#ctor(System.String)">
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisExtServiceValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisNotFoundException">
+            <summary>
+            Objekt nebyl nalezen.
+            </summary>
+            <remarks>
+            Např. při dotazu do databáze dané ID neexistuje.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisNotFoundException.EntityName">
+            <summary>
+            Název entity
+            </summary>
+            <example>DomainServices.Api.TestClass</example>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisNotFoundException.EntityId">
+            <summary>
+            Id entity, která vyvolala vyjímku
+            </summary>
+            <example>111</example>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisNotFoundException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="message">Text chyby</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisNotFoundException.#ctor(System.Int32,System.String,System.Object)">
+            <param name="exceptionCode">CIS kód chyby</param>
+            <param name="entityName">Název entity, která chybu vyvolala</param>
+            <param name="entityId">ID entity, která chybu vyvolala</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisServiceCallResultErrorException">
+            <summary>
+            nevim? asi zrusit spolu s ServiceCallResult
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisValidationException">
+            <summary>
+            HTTP 400. Validační chyba.
+            </summary>
+            <remarks>
+            Vyhazujeme v případě, že chceme propagovat ošetřené chyby v byznys logice - primárně z FluentValidation. Podporuje seznam chyb.
+            </remarks>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.String)">
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="F:CIS.Core.Exceptions.ExceptionHandlingConstants.GrpcTrailerCisCodeKey">
+            <summary>
+            Klíč v gRPC Trailers kolekci, který označuje záznam s CIS error kódy
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Exceptions.ExceptionHandlingConstants.GrpcTrailerCisArgumentKey">
+            <summary>
+            Klíč v gRPC Trailers kolekci, který označuje záznam s názvem argumentu, který vyvolal vyjímku (CisArgumentException)
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConfigurationException">
+            <summary>
+            Pokud nastavení konfigurace v appsettings.json pro danou konfigurační sekci nelze zvalidovat - tj. chybí nastavit některá z required props atd.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisConfigurationException.#ctor(System.Int32,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConfigurationNotFound">
+            <summary>
+            Pokud chybí požadované nastavení konfigurace v appsettings.json
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisConfigurationNotFound.#ctor(System.String)">
+            <param name="sectionName">Název sekce v appsettings.json, která chybí</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisConfigurationNotRegisteredException">
+            <summary>
+            Chyba v pripade, kdy nelze v DI najit instanci konfigurace CIS
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisInvalidApplicationKeyException">
+            <summary>
+            Chyba validace názvu aplikace - vyvoláno z konstruktoru value type ApplicationKey
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidApplicationKeyException.#ctor(System.String)">
+            <param name="key">Název aplikace</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisInvalidEnvironmentNameException">
+            <summary>
+            Chyba validace názvu prostředí - vyvoláno z konstruktoru value type EnvironmentName
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidEnvironmentNameException.#ctor(System.String)">
+            <param name="name">Název prostředí</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisInvalidEnvironmentNameException.#ctor(System.String,System.String)">
+            <param name="name">Název prostředí</param>
+            <param name="paramName">Název parametru ve kterém bylo předáno prostředí</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisServiceServerErrorException">
+            <summary>
+            HTTP 500. Vyhazuje se pokud naše doménová nebo infrastrkuturní služba vrátí server error - 500.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceServerErrorException.ServiceName">
+            <summary>
+            Název služby, která selhala
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceServerErrorException.MethodName">
+            <summary>
+            Metoda / endpoint jehož volání selhalo
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisServiceServerErrorException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="methodName">Metoda / endpoint jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.CisServiceUnavailableException">
+            <summary>
+            Doménová nebo infrastrukturní služba není k dispozici - např. špatné URL volané služby, nebo volaná služba vůbec neběží.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceUnavailableException.ServiceName">
+            <summary>
+            Název služby, která selhala
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.CisServiceUnavailableException.MethodName">
+            <summary>
+            Metoda / endpoint jehož volání selhalo
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.CisServiceUnavailableException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="methodName">Metoda / endpoint jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
+        <member name="T:CIS.Core.Security.NamespaceDoc">
+            <summary>
+            Interfaces pro získání informací o přihlášeném uživatel a technickém uživateli služby.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.Constants">
+            <summary>
+            Konstanty pro nastavení auth providerů atd.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.Security.Constants.ContextUserHttpHeaderKey">
+            <summary>
+            Klíč pro HTTP hlavičku s informací o v33id aktuálně přihlášeného uživatele.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.ICurrentUser">
+            <summary>
+            Instance aktuálně přihlášeného fyzického uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUser.Id">
+            <summary>
+            v33id
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.ICurrentUserAccessor">
+            <summary>
+            Helper pro ziskani akltuálně přihlášeného fyzickeho uzivatele, ktery aplikaci/sluzbu vola
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserAccessor.IsAuthenticated">
+            <summary>
+            Pokud je false, uzivatel neni autentikovan - User = null
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserAccessor.User">
+            <summary>
+            Zakladni data o uzivateli - Id, login?
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserAccessor.UserDetails">
+            <summary>
+            Kompletni profil uzivatele - neni implicitne naplnen. Pro jeho naplneni je potreba zavolat FetchDetails().
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Security.ICurrentUserAccessor.EnsureDetails(System.Threading.CancellationToken)">
+            <summary>
+            Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Security.ICurrentUserAccessor.EnsureDetails``1(System.Threading.CancellationToken)">
+            <summary>
+            Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.ICurrentUserDetails">
+            <summary>
+            Další informace o uživateli.
+            </summary>
+            <remarks>Tyto informace nejsou v <see cref="T:CIS.Core.Security.ICurrentUser"/>, protože se mohou systém od systému lišit, ale ICurrentUser je stejný pro všechny a nelze ho upravovat per systém.</remarks>
+        </member>
+        <member name="P:CIS.Core.Security.ICurrentUserDetails.DisplayName">
+            <summary>
+            Celé jméno uživatele
+            </summary>
+            <remarks>Filip Tůma</remarks>
+        </member>
+        <member name="T:CIS.Core.Security.IServiceUser">
+            <summary>
+            Informace o technickem uzivateli pod kterym je vytvoren request na interni sluzbu
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.IServiceUser.Name">
+            <summary>
+            Login technickeho uzivatele
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Security.IServiceUserAccessor">
+            <summary>
+            Helper pro ziskani instance technickeho uzivatele, pod kterym je spusten request na interni sluzbu.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.IServiceUserAccessor.IsAuthenticated">
+            <summary>
+            Pokud je false, uzivatel neni autentikovan - User = null
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Security.IServiceUserAccessor.User">
+            <summary>
+            Instance technickeho uzivatele
+            </summary>
+        </member>
+        <member name="T:CIS.Core.CisGlobalConstants">
+            <summary>
+            Globální konstanty aplikace.
+            </summary>
+        </member>
+        <member name="F:CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl">
+            <summary>
+            URL health check endpointu pro vsechny sluzby/aplikace.
+            </summary>
+        </member>
+        <member name="T:CIS.Core.AttributeExtensions">
+            <summary>
+            Extension metody na C# atributy
+            </summary>
+        </member>
+        <member name="M:CIS.Core.AttributeExtensions.GetAttribute``1(System.Enum)">
+            <summary>
+            A generic extension method that aids in reflecting and retrieving any attribute that is applied to an `Enum`.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.AttributeExtensions.HasAttribute``1(System.Enum)">
+            <summary>
+            Vrací informaci o tom, zda daná enum value obsahuje požadovaný atribut.
+            </summary>
+            <typeparam name="TAttribute">Typ hledaného atributu</typeparam>
+            <param name="enumValue">Hodnota enumu</param>
+            <returns>True, pokud daná hodnota enumu obsahuje TAttribut</returns>
+        </member>
+        <member name="M:CIS.Core.LinqExtensions.SelectAsync``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Int32)">
+            <summary>
+            https://stackoverflow.com/questions/35011656/async-await-in-linq-select
+            </summary>
+        </member>
+        <member name="T:CIS.Core.IDateTime">
+            <summary>
+            Interface pro získání instance aktuálního času z DI.
+            </summary>
+            <remarks>
+            Bylo by užitečné, kdyby servery běželi v UTC, nicméně v aktuálním stavu asi není potřeba.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.IDateTime.Now">
+            <summary>
+            Current time
+            </summary>
+        </member>
+        <member name="P:CIS.Core.IDateTime.OffsetNow">
+            <summary>
+            Current time
+            </summary>
+        </member>
+        <member name="T:CIS.Core.Validation.IValidatableRequest">
+            <summary>
+            Marker interface, který označuje request zapojený do custom validace v rámci Mediator pipeline.
+            </summary>
+        </member>
+    </members>
+</doc>

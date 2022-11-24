@@ -44,31 +44,23 @@ public class ObligationTypesHandler
 
     public async Task<List<ObligationTypesItem>> Handle(ObligationTypesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<ObligationTypesItem>(nameof(ObligationTypesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<ObligationTypesItem>(nameof(ObligationTypesHandler), async () =>
+            // load codebook items
+            var items = await _connectionProvider.ExecuteDapperRawSqlToList<ObligationTypesItem>(_sql, cancellationToken);
+
+            // load extensions
+            var extensions = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ObligationTypeExtension>(_sqlExtension, cancellationToken);
+            var dictExtensions = extensions.ToDictionary(i => i.ObligationTypeId);
+
+            // assign ObligationProperty mapping to items
+            items.ForEach(item =>
             {
-                // load codebook items
-                var items = await _connectionProvider.ExecuteDapperRawSqlToList<ObligationTypesItem>(_sql, cancellationToken);
-
-                // load extensions
-                var extensions = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ObligationTypeExtension>(_sqlExtension, cancellationToken);
-                var dictExtensions = extensions.ToDictionary(i => i.ObligationTypeId);
-
-                // assign ObligationProperty mapping to items
-                items.ForEach(item =>
-                {
-                    var itemExt = dictExtensions.ContainsKey(item.Id) ? dictExtensions[item.Id] : null;
-                    item.ObligationProperty = itemExt?.ObligationProperty;
-                });
-
-                return items;
+                var itemExt = dictExtensions.ContainsKey(item.Id) ? dictExtensions[item.Id] : null;
+                item.ObligationProperty = itemExt?.ObligationProperty;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+
+            return items;
+        });
     }
 }

@@ -10,13 +10,10 @@ internal class RealSbWebApiClient
 
     public async Task<IServiceCallResult> CaseStateChanged(CaseStateChangedModel request, CancellationToken cancellationToken)
     {
-        _logger.LogSerializedObject("CaseStateChanged", request);
-
         return await WithClient(async c => {
 
             return await callMethod(async () => {
-
-                var result = await c.CaseStateChangedAsync(new WFS_Request_CaseStateChanged 
+                var easRequest = new WFS_Request_CaseStateChanged
                 {
                     Header = new WFS_Header
                     {
@@ -37,7 +34,10 @@ internal class RealSbWebApiClient
                         Mandant = (int)request.Mandant,
                         Risk_business_case_id = request.RiskBusinessCaseId
                     }
-                });
+                };
+                _logger.LogSerializedObject("CaseStateChanged", easRequest);
+
+                var result = await c.CaseStateChangedAsync(easRequest);
 
                 if (result.Result.Return_val.GetValueOrDefault() == 0)
                     return new SuccessfulServiceCallResult();

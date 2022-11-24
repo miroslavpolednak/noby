@@ -27,19 +27,11 @@ namespace DomainServices.CodebookService.Endpoints.HousingConditions
 
         public async Task<List<HousingConditionItem>> Handle(HousingConditionsRequest request, CancellationToken cancellationToken)
         {
-            try
+            return await FastMemoryCache.GetOrCreate(nameof(HousingConditionsHandler), async () =>
             {
-                return await FastMemoryCache.GetOrCreate(nameof(HousingConditionsHandler), async () =>
-                {
-                    // load codebook items
-                    return await _connectionProvider.ExecuteDapperRawSqlToList<HousingConditionItem>(_sql, cancellationToken);
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.GeneralException(ex);
-                throw;
-            }
+                // load codebook items
+                return await _connectionProvider.ExecuteDapperRawSqlToList<HousingConditionItem>(_sql, cancellationToken);
+            });
         }
     }
 }

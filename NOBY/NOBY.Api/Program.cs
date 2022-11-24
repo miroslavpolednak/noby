@@ -47,8 +47,10 @@ builder.Services
 builder
     .AddNobyServices()
     .AddNobyDatabase();
+
 // authentication
 builder.AddFomsAuthentication(appConfiguration);
+
 // swagger
 if (appConfiguration.EnableSwaggerUi)
     builder.AddFomsSwagger();

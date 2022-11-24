@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using CIS.Infrastructure.Caching;
 
 Console.WriteLine("Setting up DI...");
 

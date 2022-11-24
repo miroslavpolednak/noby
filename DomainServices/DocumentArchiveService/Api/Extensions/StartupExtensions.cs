@@ -11,17 +11,6 @@ internal static class StartupExtensions
         // disable default model state validations
         builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
 
-        builder.Services
-            .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
-
-        // add validators
-        builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(Program))
-                .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-
         // json
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
         {

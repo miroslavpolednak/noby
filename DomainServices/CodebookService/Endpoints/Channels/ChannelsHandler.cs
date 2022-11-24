@@ -27,19 +27,11 @@ namespace DomainServices.CodebookService.Endpoints.Channels
 
         public async Task<List<ChannelItem>> Handle(ChannelsRequest request, CancellationToken cancellationToken)
         {
-            try
+            return await FastMemoryCache.GetOrCreate<ChannelItem>(nameof(ChannelsHandler), async () =>
             {
-                return await FastMemoryCache.GetOrCreate<ChannelItem>(nameof(ChannelsHandler), async () =>
-                {
-                    // load codebook items
-                    return await _connectionProvider.ExecuteDapperRawSqlToList<ChannelItem>(_sql, cancellationToken);
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.GeneralException(ex);
-                throw;
-            }
+                // load codebook items
+                return await _connectionProvider.ExecuteDapperRawSqlToList<ChannelItem>(_sql, cancellationToken);
+            });
         }
     }
 }

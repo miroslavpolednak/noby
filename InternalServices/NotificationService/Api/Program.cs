@@ -1,5 +1,5 @@
 using System.IO.Compression;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
@@ -75,7 +75,7 @@ builder.Services.AddS3Client(builder.GetS3Configuration());
 builder.Services.AddSmtpClient(builder.GetSmtpConfiguration());
 
 // database
-builder.AddEntityFramework<NotificationDbContext>("nobyDb");
+builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");
 
 // swagger
 builder.AddCustomSwagger();

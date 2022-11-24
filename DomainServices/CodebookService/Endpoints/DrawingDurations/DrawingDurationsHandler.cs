@@ -7,17 +7,7 @@ public class DrawingDurationsHandler
 {
     public async Task<List<DrawingDurationItem>> Handle(DrawingDurationsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<DrawingDurationItem>(nameof(DrawingDurationsHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<DrawingDurationItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<DrawingDurationItem>(nameof(DrawingDurationsHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<DrawingDurationItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', LHUTA_K_CERPANI 'DrawingDuration', DEF 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

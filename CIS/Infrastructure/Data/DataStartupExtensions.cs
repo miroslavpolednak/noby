@@ -23,7 +23,7 @@ public static class DataStartupExtensions
     /// <summary>
     /// Registrace DbContextu pro EntityFramework
     /// </summary>
-    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
+    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = false, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
         where TDbContext : DbContext
     {
         // add custom CIS options
@@ -32,8 +32,10 @@ public static class DataStartupExtensions
         builder.Services.TryAddScoped<BaseDbContextAggregate<TDbContext>>();
         
         // add DbContext
-        string connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
-        builder.Services.AddDbContext<TDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        string? connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
+        if (!string.IsNullOrEmpty(connectionString))
+            builder.Services
+                .AddDbContext<TDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(enableSensitiveDataLogging), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
         
         return builder;
     }

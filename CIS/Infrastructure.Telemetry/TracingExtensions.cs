@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using System.Diagnostics;
 
 namespace CIS.Infrastructure.Telemetry;
 
+/// <summary>
+/// Extension metody do startupu aplikace pro registraci tracingu.
+/// </summary>
 public static class TracingExtensions
 {
     /// <summary>

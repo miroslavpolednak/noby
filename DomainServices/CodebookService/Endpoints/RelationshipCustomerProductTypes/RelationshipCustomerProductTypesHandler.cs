@@ -43,34 +43,26 @@ public class RelationshipCustomerRelationshipCustomerProductTypesHandler
 
     public async Task<List<RelationshipCustomerProductTypeItem>> Handle(RelationshipCustomerProductTypesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<RelationshipCustomerProductTypeItem>(nameof(RelationshipCustomerRelationshipCustomerProductTypesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<RelationshipCustomerProductTypeItem>(nameof(RelationshipCustomerRelationshipCustomerProductTypesHandler), async () =>
+            // load codebook items from XXD
+            var items = await _connectionProviderXxd.ExecuteDapperRawSqlToList<RelationshipCustomerProductTypeItem>(_sql, cancellationToken);
+
+            // load extensions
+            var extensions = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<RelationshipCustomerProductTypeExtension>(_sqlExtension, cancellationToken);
+            var dictExtensions = extensions.ToDictionary(i => i.RelationshipCustomerProductTypeId);
+
+            // assign MpHome mapping to items
+            items.ForEach(item =>
             {
-                // load codebook items from XXD
-                var items = await _connectionProviderXxd.ExecuteDapperRawSqlToList<RelationshipCustomerProductTypeItem>(_sql, cancellationToken);
-
-                // load extensions
-                var extensions = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<RelationshipCustomerProductTypeExtension>(_sqlExtension, cancellationToken);
-                var dictExtensions = extensions.ToDictionary(i => i.RelationshipCustomerProductTypeId);
-
-                // assign MpHome mapping to items
-                items.ForEach(item =>
-                {
-                    var itemExt = dictExtensions.ContainsKey(item.Id) ? dictExtensions[item.Id] : null;
-                    item.RdmCode = itemExt?.RdmCode;
-                    item.MpDigiApiCode = itemExt?.MpDigiApiCode;
-                    item.NameNoby = itemExt?.NameNoby;
-                });
-
-                return items;
+                var itemExt = dictExtensions.ContainsKey(item.Id) ? dictExtensions[item.Id] : null;
+                item.RdmCode = itemExt?.RdmCode;
+                item.MpDigiApiCode = itemExt?.MpDigiApiCode;
+                item.NameNoby = itemExt?.NameNoby;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+
+            return items;
+        });
     }
 
 }

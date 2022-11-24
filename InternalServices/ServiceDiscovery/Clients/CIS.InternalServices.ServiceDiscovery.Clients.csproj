@@ -31,9 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj" />
   </ItemGroup>
 

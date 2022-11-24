@@ -22,7 +22,8 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\..\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
+    <ProjectReference Include="..\..\Testing\CIS.Testing.csproj" />
   </ItemGroup>
 
 </Project>

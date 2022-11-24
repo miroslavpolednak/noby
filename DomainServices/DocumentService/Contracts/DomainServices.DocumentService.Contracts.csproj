@@ -17,17 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="./DocumentService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-    <Protobuf Include="./GetDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-    <Protobuf Include="./GetDocumentsList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-    <Protobuf Include="./GetDocumentStatus.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+    <Protobuf Include="./DocumentService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+    <Protobuf Include="./GetDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+    <Protobuf Include="./GetDocumentsList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+    <Protobuf Include="./GetDocumentStatus.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
     <Protobuf Include="Types.proto" GrpcServices="None">
       <ProtoRoot>./</ProtoRoot>
-      <AdditionalImportDirs>../../../CIS/gRPC.CisTypes/Protos</AdditionalImportDirs>
+      <AdditionalImportDirs>../../../CIS/Infrastructure.gRPC.CisTypes/Protos</AdditionalImportDirs>
     </Protobuf>
   </ItemGroup>
 

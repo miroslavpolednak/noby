@@ -1,7 +1,7 @@
 ﻿namespace CIS.Core.Security;
 
 /// <summary>
-/// Helper pro ziskani fyzickeho uzivatele, ktery aplikaci/sluzbu vola
+/// Helper pro ziskani akltuálně přihlášeného fyzickeho uzivatele, ktery aplikaci/sluzbu vola
 /// </summary>
 public interface ICurrentUserAccessor
 {
@@ -25,6 +25,9 @@ public interface ICurrentUserAccessor
     /// </summary>
     Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
+    /// </summary>
     Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken) 
         where TDetails : ICurrentUserDetails;
 }

@@ -7,17 +7,7 @@ public class LoanKindsHandler
 {
     public async Task<List<LoanKindsItem>> Handle(LoanKindsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<LoanKindsItem>(nameof(LoanKindsHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<LoanKindsItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<LoanKindsItem>(nameof(LoanKindsHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<LoanKindsItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', NULLIF(MANDANT, 0) 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[DATUM_OD_ES] AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";

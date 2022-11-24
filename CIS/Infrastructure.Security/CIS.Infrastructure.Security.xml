@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.Security</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.Security.AssemblyDoc">
+            <summary>
+            Konfigurace a helpery pro autentizaci gRPC služeb.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.NamespaceDoc">
+            <summary>
+            Helpery pro autentizaci gRPC služeb.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.Configuration.NamespaceDoc">
+            <summary>
+            Nastavení konfigurace autentizace z appsettings.json.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.Configuration.CisSecurityConfiguration">
+            <summary>
+            Sekce v appsettings.json pro nastaveni autentizace
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisSecurityConfiguration.ServiceAuthentication">
+            <summary>
+            Nastavení autentizace doménových služeb
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration">
+            <summary>
+            Konfigurace autentizace doménové služby
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.DomainUsernamePrefix">
+            <summary>
+            Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
+            Pozor, musi byt vcetne \ na konci
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AdHost">
+            <summary>
+            Adresa domenoveho serveru
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AdPort">
+            <summary>
+            Port na domenovem serveru, vychozi je 389
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Security.CisServiceAuthenticationHandler.authenticateUser(System.String,System.String)">
+            <summary>
+            Autentizace uzivatele proti AD
+            </summary>
+            <returns>True pokud se podarilo overit username/password</returns>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.DomainUsernamePrefix">
+            <summary>
+            Domena ve ktere je umisten autentizovany uzivatel. Napr. "vsskb\"
+            Pozor, musi byt vcetne \ na konci
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.AdHost">
+            <summary>
+            Adresa domenoveho serveru
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.CisServiceAuthenticationOptions.AdPort">
+            <summary>
+            Port na domenovem serveru, vychozi je 389
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.AuthHeaderParser">
+            <summary>
+            Parsovat login a heslo z Authorization headeru
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Security.AuthHeaderParser.Parse(System.String)">
+            <param name="authHeaderContent">Basic [{login}:{heslo}]{Base64}</param>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.AdLoginValidator">
+            <summary>
+            Validace login/pwd proti AD
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.ServiceUser.CisServiceIdentity">
+            <summary>
+            Identita technickeho uzivatele pod kterym je volana interni sluzba
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.StartupExtensions">
+            <summary>
+            Extension metody do startupu aplikace.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Security.StartupExtensions.UseCisServiceUserContext(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Pridava moznost ziskani instance fyzickeho uzivatele volajiciho sluzbu
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Security.StartupExtensions.AddCisServiceAuthentication(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Prida autentizaci volajici aplikace do aktualni sluzby - pouziva se pouze pro interni sluzby. Autentizace je technickym uzivatelem.
+            Konfigurace autentizacniho middleware je v CisSecurity:ServiceAuthentication.
+            </summary>
+        </member>
+    </members>
+</doc>

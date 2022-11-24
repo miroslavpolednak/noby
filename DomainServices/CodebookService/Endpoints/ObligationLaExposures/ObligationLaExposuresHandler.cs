@@ -7,17 +7,7 @@ public class ObligationLaExposuresHandler
 {
     public async Task<List<ObligationLaExposureItem>> Handle(ObligationLaExposuresRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<ObligationLaExposureItem>(nameof(ObligationLaExposuresHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<ObligationLaExposureItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<ObligationLaExposureItem>(nameof(ObligationLaExposuresHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<ObligationLaExposureItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', CODE 'RdmCode', TEXT 'Name', DRUH_ZAVAZKU_KATEGORIE 'ObligationTypeId', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

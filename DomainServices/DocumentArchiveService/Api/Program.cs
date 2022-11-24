@@ -2,7 +2,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.DocumentArchiveService.Api;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using ProtoBuf.Grpc.Server;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
@@ -45,6 +45,7 @@ builder.AddDocumentArchiveService();
 builder.AddDocumentArchiveSwagger();
 
 // add grpc
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddDocumentArchiveGrpc();
 #endregion register builder
 
