@@ -28,7 +28,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceMpHome(appConfiguration.MpHome);
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.ProductServiceDbContext>("konsDb");
+        builder.AddEntityFramework<Repositories.ProductServiceDbContext>(connectionStringKey: "konsDb");
 
         // repos
         builder.Services.AddScoped<Repositories.LoanRepository>();

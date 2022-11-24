@@ -27,7 +27,7 @@ internal static class StartupExtensions
 
         // dbcontext
         builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();
-        builder.AddEntityFramework<Repositories.NobyDbContext>("nobyDb");
+        builder.AddEntityFramework<Repositories.NobyDbContext>(connectionStringKey: "nobyDb");
 
         return builder;
     }

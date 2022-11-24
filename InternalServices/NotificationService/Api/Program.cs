@@ -75,7 +75,7 @@ builder.Services.AddS3Client(builder.GetS3Configuration());
 builder.Services.AddSmtpClient(builder.GetSmtpConfiguration());
 
 // database
-builder.AddEntityFramework<NotificationDbContext>("nobyDb");
+builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");
 
 // swagger
 builder.AddCustomSwagger();
