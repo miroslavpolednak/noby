@@ -21,6 +21,8 @@ message SearchCustomersRequest {
     string Email = 5;
 
     string PhoneNumber = 6;
+
+    google.protobuf.BoolValue ShowOnlyIdentified = 7;
 }
 
 message SearchCustomersResponse {
