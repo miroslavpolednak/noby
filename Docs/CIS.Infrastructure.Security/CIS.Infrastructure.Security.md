@@ -5,4 +5,4 @@
 | Classes | |
 | :--- | :--- |
 | [CisServiceAuthenticationOptions](CIS.Infrastructure.Security.CisServiceAuthenticationOptions.md 'CIS.Infrastructure.Security.CisServiceAuthenticationOptions') | |
-| [StartupExtensions](CIS.Infrastructure.Security.StartupExtensions.md 'CIS.Infrastructure.Security.StartupExtensions') | |
+| [StartupExtensions](CIS.Infrastructure.Security.StartupExtensions.md 'CIS.Infrastructure.Security.StartupExtensions') | Extension metody do startupu aplikace. |

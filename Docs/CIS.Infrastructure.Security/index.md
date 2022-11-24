@@ -2,7 +2,7 @@
 
 ## CIS.Infrastructure.Security Assembly
 
-asdfasdf
+Konfigurace a helpery pro autentizaci gRPC služeb.
 
 | Namespaces | |
 | :--- | :--- |

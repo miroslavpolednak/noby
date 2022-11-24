@@ -3,6 +3,8 @@
 
 ## StartupExtensions Class
 
+Extension metody do startupu aplikace.
+
 ```csharp
 public static class StartupExtensions
 ```

@@ -13,6 +13,9 @@ Základní projekt ekosystému obsahující base interfaces, types, exceptions a
 [CIS.Infrastructure.Security](CIS.Infrastructure.Security/index.md)  
 Konfigurace a helpery pro autentizaci gRPC služeb.
 
+[CIS.Infrastructure.Telemetry](CIS.Infrastructure.Telemetry/index.md)  
+Loggování a telemetrie
+
 ### DomainServices
 Obsahuje byznysové služby. Každá služba obsluhuje vlastní byznys doménu, např. klient, domácnost, smlouva.
 Jedná se o **gRPC** služby, které ale mohou v některých případech vystavovat i **REST** rozhraní pomocí *gRPC Transcoding*.

@@ -4,6 +4,9 @@ using DomainServices.UserService.Clients;
 
 namespace CIS.Infrastructure.Security;
 
+/// <summary>
+/// Extension metody do startupu aplikace.
+/// </summary>
 public static class StartupExtensions
 {
     /// <summary>

@@ -6,12 +6,12 @@
     <members>
         <member name="T:CIS.Infrastructure.Security.AssemblyDoc">
             <summary>
-            asdfasdf
+            Konfigurace a helpery pro autentizaci gRPC služeb.
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.Security.Configuration.AssemblyDoc">
             <summary>
-            Nastavení konfigurace autentizace
+            Nastavení konfigurace autentizace z appsettings.json.
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.Security.Configuration.CisSecurityConfiguration">
@@ -83,6 +83,11 @@
         <member name="T:CIS.Infrastructure.Security.ServiceUser.CisServiceIdentity">
             <summary>
             Identita technickeho uzivatele pod kterym je volana interni sluzba
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.StartupExtensions">
+            <summary>
+            Extension metody do startupu aplikace.
             </summary>
         </member>
         <member name="M:CIS.Infrastructure.Security.StartupExtensions.UseCisServiceUserContext(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
