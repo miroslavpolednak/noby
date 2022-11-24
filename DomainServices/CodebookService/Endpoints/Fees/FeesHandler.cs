@@ -7,18 +7,7 @@ public class FeesHandler
 {
     public async Task<List<FeeItem>> Handle(FeesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<FeeItem>(nameof(FeesHandler), async () =>
-            {
-                return await _connectionProvider.ExecuteDapperRawSqlToList<FeeItem>(_sqlQuery, cancellationToken);
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<FeeItem>(nameof(FeesHandler), async () => { return await _connectionProvider.ExecuteDapperRawSqlToList<FeeItem>(_sqlQuery, cancellationToken); });
     }
 
     const string _sqlQuery = @"SELECT POPLATEK_ID 'Id', POPLATEK_ID_KB 'IdKb', NULLIF(MANDANT, 0) 'MandantId', TEXT 'ShortName', TEXT_DOKUMENTACE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

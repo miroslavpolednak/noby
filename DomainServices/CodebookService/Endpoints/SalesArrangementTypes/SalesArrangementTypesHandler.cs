@@ -7,17 +7,9 @@ namespace DomainServices.CodebookService.Endpoints.SalesArrangementTypes
     {
         public async Task<List<SalesArrangementTypeItem>> Handle(SalesArrangementTypesRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<SalesArrangementTypeItem>(nameof(SalesArrangementTypesHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<SalesArrangementTypeItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.GeneralException(ex);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<SalesArrangementTypeItem>(nameof(SalesArrangementTypesHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<SalesArrangementTypeItem>(_sqlQuery, cancellationToken)
+            );
         }
 
         private const string _sqlQuery = "SELECT Id, Name, ProductTypeId, SalesArrangementCategory FROM [dbo].[SalesArrangementType]";

@@ -2,6 +2,9 @@
 
 namespace CIS.Infrastructure.Logging;
 
+/// <summary>
+/// Extension metody pro ILogger pro události týkající se entit.
+/// </summary>
 public static class EntityLoggerExtensions
 {
     private static readonly Action<ILogger, string, object, Exception> _entityAlreadyExist;
@@ -38,9 +41,17 @@ public static class EntityLoggerExtensions
             "{EntityName} created with #{Id}");
     }
 
+    /// <summary>
+    /// Entita již existuje (např. v databázi).
+    /// </summary>
+    /// <param name="entityName">Název typu entity</param>
+    /// <param name="entityId">ID entity</param>
     public static void EntityAlreadyExist(this ILogger logger, string entityName, long entityId, Exception ex)
         => _entityAlreadyExist(logger, entityName, entityId, ex);
 
+    /// <summary>
+    /// Entita již existuje (např. v databázi).
+    /// </summary>
     public static void EntityAlreadyExist(this ILogger logger, Core.Exceptions.CisAlreadyExistsException ex)
     {
         if (ex.GetId() == null)
@@ -48,10 +59,18 @@ public static class EntityLoggerExtensions
         else
             _entityAlreadyExist(logger, ex.EntityName!, ex.GetId()!, ex);
     }
-    
+
+    /// <summary>
+    /// Entita nebyla nalezena (např. ID neexistuje v databázi)
+    /// </summary>
+    /// <param name="entityName">Název typu entity</param>
+    /// <param name="entityId">ID entity</param>
     public static void EntityNotFound(this ILogger logger, string entityName, long entityId, Exception ex)
         => _entityNotFound(logger, entityName, entityId, ex);
 
+    /// <summary>
+    /// Entita nebyla nalezena (např. ID neexistuje v databázi)
+    /// </summary>
     public static void EntityNotFound(this ILogger logger, Core.Exceptions.CisNotFoundException ex)
     {
         if (ex.GetId() == null)
@@ -59,7 +78,12 @@ public static class EntityLoggerExtensions
         else
             _entityNotFound(logger, ex.EntityName!, ex.GetId()!, ex);
     }
-    
+
+    /// <summary>
+    /// Entita byla právě vytvořena.
+    /// </summary>
+    /// <param name="entityName">Název typu entity</param>
+    /// <param name="entityId">ID nové entity</param>
     public static void EntityCreated(this ILogger logger, string entityName, long entityId)
         => _entityCreated(logger, entityName, entityId, null!);
 }

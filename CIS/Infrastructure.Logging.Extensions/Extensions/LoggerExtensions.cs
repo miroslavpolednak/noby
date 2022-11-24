@@ -26,13 +26,30 @@ public static class LoggerExtensions
             "{Name} serialized to: {@Object}");
     }
 
+    /// <summary>
+    /// Nalezeno záznamů / entit / objektů.
+    /// </summary>
+    /// <remarks>
+    /// Např. entit v databázi nebo položek v keši.
+    /// </remarks>
+    /// <param name="count">Počet nalezených záznamů.</param>
     public static void FoundItems(this ILogger logger, int count)
         => _foundItems(logger, count, null!);
-    
+
+    /// <summary>
+    /// Nalezeno záznamů / entit / objektů.
+    /// </summary>
+    /// <remarks>
+    /// Např. entit v databázi nebo položek v keši.
+    /// </remarks>
+    /// <param name="count">Počet nalezených záznamů.</param>
+    /// <param name="entityName">Typ nalezené entity</param>
     public static void FoundItems(this ILogger logger, int count, string entityName)
         => _foundItemsWithName(logger, count, entityName, null!);
 
-    //TODO dodelat ostatni log levels
+    /// <summary>
+    /// TODO: odstranit? Logovat do log contextu?
+    /// </summary>
     public static void LogSerializedObject(this ILogger logger, string name, object objectToLog, LogLevel logLevel = LogLevel.Debug)
         => _logSerializedObject(logger, name, objectToLog, null!);
 }

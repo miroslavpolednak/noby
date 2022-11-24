@@ -9,7 +9,12 @@
             Konfigurace a helpery pro autentizaci gRPC služeb.
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.Security.Configuration.AssemblyDoc">
+        <member name="T:CIS.Infrastructure.Security.NamespaceDoc">
+            <summary>
+            Helpery pro autentizaci gRPC služeb.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Security.Configuration.NamespaceDoc">
             <summary>
             Nastavení konfigurace autentizace z appsettings.json.
             </summary>

@@ -7,17 +7,7 @@ public class ProofTypesHandler
 {
     public async Task<List<ProofTypeItem>> Handle(ProofTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<ProofTypeItem>(nameof(ProofTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<ProofTypeItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<ProofTypeItem>(nameof(ProofTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<ProofTypeItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', CODE 'Code', TEXT_CZE 'Name', TEXT_ENG 'NameEnglish', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

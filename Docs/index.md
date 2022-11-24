@@ -16,6 +16,12 @@ Konfigurace a helpery pro autentizaci gRPC služeb.
 [CIS.Infrastructure.Telemetry](CIS.Infrastructure.Telemetry/index.md)  
 Loggování a telemetrie
 
+[CIS.Infrastructure.MediatR](CIS.Infrastructure.MediatR/index.md)  
+MediatR extensions, behaviors.
+
+[CIS.Infrastructure.Logging.Extensions](CIS.Infrastructure.Logging.Extensions/index.md)  
+Extension metody pro High Performance logging.
+
 ### DomainServices
 Obsahuje byznysové služby. Každá služba obsluhuje vlastní byznys doménu, např. klient, domácnost, smlouva.
 Jedná se o **gRPC** služby, které ale mohou v některých případech vystavovat i **REST** rozhraní pomocí *gRPC Transcoding*.

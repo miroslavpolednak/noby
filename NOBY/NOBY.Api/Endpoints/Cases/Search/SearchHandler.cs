@@ -20,7 +20,7 @@ internal class SearchHandler
         // zavolat BE sluzbu
         var result = ServiceCallResult.ResolveAndThrowIfError<_CS.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
         _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(_CS.Case));
-
+        
         // transform
         return new SearchResponse
         {

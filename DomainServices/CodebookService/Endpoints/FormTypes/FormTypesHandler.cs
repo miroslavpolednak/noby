@@ -8,17 +8,7 @@ public class FormTypesHandler
 {
     public async Task<List<FormTypeItem>> Handle(FormTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<FormTypeItem>(nameof(FormTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<FormTypeItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<FormTypeItem>(nameof(FormTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<FormTypeItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT FORMULAR_ID 'Id', CISLO 'Type', VERZE 'Version', NAZEV 'Name', NULLIF(MANDANT, 0) 'MandantId', CASE WHEN SYSDATETIME() BETWEEN PLATNOST_OD AND ISNULL(PLATNOST_DO, '9999-12-31') THEN 1 ELSE 0 END 'IsValid'

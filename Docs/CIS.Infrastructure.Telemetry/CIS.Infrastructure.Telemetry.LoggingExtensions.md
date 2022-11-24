@@ -3,6 +3,8 @@
 
 ## LoggingExtensions Class
 
+Extension metody do startupu aplikace pro registraci logování.
+
 ```csharp
 public static class LoggingExtensions
 ```

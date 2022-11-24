@@ -3,6 +3,8 @@
 
 ## TracingExtensions Class
 
+Extension metody do startupu aplikace pro registraci tracingu.
+
 ```csharp
 public static class TracingExtensions
 ```

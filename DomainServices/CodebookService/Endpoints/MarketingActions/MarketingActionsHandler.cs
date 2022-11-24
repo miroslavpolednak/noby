@@ -7,17 +7,7 @@ public class MarketingActionsHandler
 {
     public async Task<List<MarketingActionItem>> Handle(MarketingActionsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<MarketingActionItem>(nameof(MarketingActionsHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<MarketingActionItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<MarketingActionItem>(nameof(MarketingActionsHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<MarketingActionItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD_MA_AKCIE 'Id', TYP_AKCIE 'Code', NULLIF(MANDANT, 0) 'MandantId', NAZOV 'Name', POPIS 'Description', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_MA_AKCIE] ORDER BY KOD_MA_AKCIE ASC";

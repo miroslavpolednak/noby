@@ -101,6 +101,19 @@ Oba middleware nastavují *Serilog* tak, aby ignoroval Health Check requesty.
 Registrací logování se do *MediatR* pipeline automaticky přidá `CIS.Infrastructure.Telemetry.MediatrLoggingBehavior`.
 Jedná se handler, který loguje payload všech request a response objektů do kontextu log záznamu pod klíčem **Payload**.
 
+## Jak správně logovat standardní log
+Snažíme se logovat podle doporučení pro **High Performance logging** (https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging).
+Kromě (zřejmě zanedbatelného) přínosu v nižší spotřebě zdrojů serveru je hlavní výhodou, že díky extension metodám logujeme stejné události ve všech službách stejně.
+
+V praxi se tedy snažíme vyhnout standardním metodám `ILogger` jako `_logger.LogInformation()`, ale vytváříme vlastní extension metody pro každý druh logovaného eventu.  
+Např. máme definovanou událost "Entity already exists" - tj. kdykoliv potřebuji zalogovat, že nějaká entita již existuje, tak použiji příslušnou extension metodu `_logger.EntityAlreadyExist()`.
+
+Existuje mnoho již připravených extension metod v projektu `CIS.Infrastructure.Logging.Extensions`.
+Tyto je dobré co nejvíce přepoužívat, abychom vše logovali stejně.
+Zároveň pokud je potřeba v daném projektu logovat vlastní události, vytvořím si vlastní delegáty a extension metody pro tyto události.
+
+Výsledkem by mělo být, že nikde v kódu nebude logování defaultními *ILogger* metodami.
+
 # Tracing
 Tracing zajišťuje implementace **OpenTelemetry** (https://opentelemetry.io/). Zatím není kam exportovat data, takže není žádná vizualizace requestu.
 

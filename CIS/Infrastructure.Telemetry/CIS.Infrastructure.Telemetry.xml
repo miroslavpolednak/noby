@@ -9,6 +9,16 @@
             Loggování a telemetrie
             </summary>
         </member>
+        <member name="T:CIS.Infrastructure.Telemetry.NamespaceDoc">
+            <summary>
+            Loggování a telemetrie
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Telemetry.Configuration.NamespaceDoc">
+            <summary>
+            Konfigurace logování a telemerie
+            </summary>
+        </member>
         <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.File">
             <summary>
             Logovani do souboru
@@ -27,6 +37,11 @@
         <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.Seq">
             <summary>
             Logovani do Sequ
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Telemetry.LoggingExtensions">
+            <summary>
+            Extension metody do startupu aplikace pro registraci logování.
             </summary>
         </member>
         <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.UseCisLogging(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
@@ -52,6 +67,11 @@
         <member name="T:CIS.Infrastructure.Telemetry.Middlewares.LoggerCisUserWebapiMiddleware">
             <summary>
             Middleware, ktery pridava do kontextu logu (serilogu) informace o aktualnim CIS uzivateli
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Telemetry.TracingExtensions">
+            <summary>
+            Extension metody do startupu aplikace pro registraci tracingu.
             </summary>
         </member>
         <member name="M:CIS.Infrastructure.Telemetry.TracingExtensions.AddCisTracing(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String)">

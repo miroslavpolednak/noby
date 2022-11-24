@@ -7,28 +7,20 @@ public class WorkflowTaskTypesHandler
 {
     public async Task<List<WorkflowTaskTypeItem>> Handle(WorkflowTaskTypesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<WorkflowTaskTypeItem>(nameof(WorkflowTaskTypesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<WorkflowTaskTypeItem>(nameof(WorkflowTaskTypesHandler), async () =>
-            {
-                var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
+            var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
 
-                var dictCategoriesById = extMapper.ToDictionary(i => i.WorkflowTaskTypeId, i=>i.CategoryId);
+            var dictCategoriesById = extMapper.ToDictionary(i => i.WorkflowTaskTypeId, i=>i.CategoryId);
 
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<WorkflowTaskTypeItem>(_sqlQuery, cancellationToken);
+            var result = await _connectionProvider.ExecuteDapperRawSqlToList<WorkflowTaskTypeItem>(_sqlQuery, cancellationToken);
 
-                result.ForEach(t => {
-                    t.CategoryId = dictCategoriesById.ContainsKey(t.Id) ? dictCategoriesById[t.Id] : null;
-                });
-
-                return result;
+            result.ForEach(t => {
+                t.CategoryId = dictCategoriesById.ContainsKey(t.Id) ? dictCategoriesById[t.Id] : null;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+
+            return result;
+        });
     }
 
     private class ExtensionMapper

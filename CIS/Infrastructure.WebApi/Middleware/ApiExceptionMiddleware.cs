@@ -28,12 +28,12 @@ public class ApiExceptionMiddleware
         // neprihlaseny uzivatel
         catch (AuthenticationException ex)
         {
-            logger.GeneralException("ApiExceptionMiddleware", ex.Message, ex);
+            logger.WebApiAuthenticationException(ex.Message, ex);
             await Results.Unauthorized().ExecuteAsync(context);
         }
         catch (NotImplementedException ex)
         {
-            logger.GeneralException("ApiExceptionMiddleware", ex.Message, ex);
+            logger.WebApiNotImplementedException(ex.Message, ex);
             await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.NotImplemented).ExecuteAsync(context);
         }
         // DS neni dostupna
@@ -51,7 +51,6 @@ public class ApiExceptionMiddleware
         // serviceCallResult error
         catch (CisServiceCallResultErrorException ex)
         {
-            logger.ValidationException(ex.Errors);
             await Results.ValidationProblem(ex.Errors.ToDictionary(k => k.Key.ToString(System.Globalization.CultureInfo.InvariantCulture), v => new[] { v.Message })).ExecuteAsync(context);
         }
         // object not found
@@ -68,17 +67,15 @@ public class ApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
-            logger.GeneralException(ex);
-
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
-            await Results.ValidationProblem(errors).ExecuteAsync(context);
+            await Results.ValidationProblem(errors!).ExecuteAsync(context);
         }
         // jakakoliv jina chyba
         catch (Exception ex)
         {
-            logger.GeneralException(ex);
+            logger.WebApiUncoughtException(ex);
             await Results.Problem(ex.Message, statusCode: (int)HttpStatusCode.InternalServerError).ExecuteAsync(context);
         }
     }

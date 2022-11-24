@@ -75,7 +75,7 @@ public class GenericServerExceptionInterceptor : Interceptor
         catch (Exception e) when (e is not RpcException) // neosetrena vyjimka
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
-            _logger.GeneralException(e);
+            _logger.ServerUncoughtRpcException(e);
             throw new RpcException(new Status(StatusCode.Internal, e.Message, e), e.Message);
         }
 

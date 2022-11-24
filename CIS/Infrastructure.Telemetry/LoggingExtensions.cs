@@ -5,6 +5,9 @@ using Serilog;
 
 namespace CIS.Infrastructure.Telemetry;
 
+/// <summary>
+/// Extension metody do startupu aplikace pro registraci logování.
+/// </summary>
 public static class LoggingExtensions
 {
     /// <summary>

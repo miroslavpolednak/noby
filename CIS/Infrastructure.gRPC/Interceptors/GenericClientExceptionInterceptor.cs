@@ -50,7 +50,6 @@ public sealed class GenericClientExceptionInterceptor
             var messages = ex.GetErrorMessagesFromRpcException();
             if (messages.Any()) // most likely its validation exception
             {
-                _logger.ValidationException(messages);
                 throw new CisValidationException(messages);
             }
             else // its single argument exception
@@ -59,13 +58,13 @@ public sealed class GenericClientExceptionInterceptor
                 string arg = ex.GetArgumentFromTrailers() ?? "";
                 string message = ex.GetErrorMessageFromRpcException();
 
-                _logger.InvalidArgument(code, arg, message, ex);
+                _logger.ClientInvalidArgument(code, arg, ex);
                 throw new CisArgumentException(code, message, arg);
             }
         }
         catch (RpcException ex)
         {
-            _logger.GeneralException(methodFullName, ex.Message, ex);
+            _logger.ClientUncoughtRpcException(methodFullName, ex);
             throw;
         }
     }

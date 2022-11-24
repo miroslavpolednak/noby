@@ -2,7 +2,10 @@
 
 namespace CIS.Infrastructure.Logging;
 
-public static class RequestLoggerExtensions
+/// <summary>
+/// Extension metody pro ILogger pro logování HTTP requestů a responsů.
+/// </summary>
+public static class RequestResponseLoggerExtensions
 {
     private static readonly Action<ILogger, string, Exception> _requestHandlerStarted;
     private static readonly Action<ILogger, string, string, Exception> _httpRequestStarted;
@@ -12,7 +15,7 @@ public static class RequestLoggerExtensions
     private static readonly Action<ILogger, string, string, Exception> _httpRequestPayload;
     private static readonly Action<ILogger, string, string, int, Exception> _httpResponsePayload;
 
-    static RequestLoggerExtensions()
+    static RequestResponseLoggerExtensions()
     {
         _httpRequestPayload = LoggerMessage.Define<string, string>(
             LogLevel.Information,
