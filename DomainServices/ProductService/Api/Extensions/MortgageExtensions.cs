@@ -20,7 +20,7 @@ internal static class MortgageExtensions
             InterestRate = mortgage.LoanInterestRate,
             FixationPeriod = mortgage.FixedRatePeriod,
             MonthlyInstallment = mortgage.LoanPaymentAmount,
-            //LoanKind = mortgage.LoanKindId.GetValueOrDefault() //TODO nemame plnit, pada na tom MpHome
+            LoanKind = mortgage.LoanKindId.GetValueOrDefault()
             //TODO: add mapping (not specified so far)
         };
 
