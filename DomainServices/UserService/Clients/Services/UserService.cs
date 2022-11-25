@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Results;
-using Microsoft.Extensions.Logging;
 
 namespace DomainServices.UserService.Clients.Services;
 
@@ -7,8 +6,6 @@ internal class UserService : IUserServiceClient
 {
     public async Task<IServiceCallResult> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogDebug("Abstraction GetUserByLogin {login}", login);
-
         try
         {
             var result = await _service.GetUserByLoginAsync(
@@ -41,14 +38,10 @@ internal class UserService : IUserServiceClient
         }
     }
 
-    private readonly ILogger<UserService> _logger;
     private readonly Contracts.v1.UserService.UserServiceClient _service;
 
-    public UserService(
-        ILogger<UserService> logger,
-        Contracts.v1.UserService.UserServiceClient service)
+    public UserService(Contracts.v1.UserService.UserServiceClient service)
     {
         _service = service;
-        _logger = logger;
     }
 }
