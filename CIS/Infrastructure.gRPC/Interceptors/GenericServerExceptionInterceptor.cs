@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions;
-using System.Net;
 
 namespace CIS.Infrastructure.gRPC;
 
-public class GenericServerExceptionInterceptor : Interceptor
+/// <summary>
+/// Server Interceptor který odchytává vyjímky v doménové službě a vytváří z nich RpcException, které dokáže Clients projekt zase přetavit na původní CIS exception.
+/// </summary>
+public sealed class GenericServerExceptionInterceptor 
+    : Interceptor
 {
     private readonly ILogger<GenericServerExceptionInterceptor> _logger;
 

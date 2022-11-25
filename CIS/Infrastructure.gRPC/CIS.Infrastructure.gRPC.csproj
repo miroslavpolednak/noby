@@ -3,10 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
-	<Company>Wookiee.Apps s.r.o.</Company>
     <Product>Common Infrastructure Solution</Product>
     <Authors>Filip Tuma</Authors>
-	<LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -15,7 +13,14 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.gRPC.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<InternalsVisibleTo Include="CIS.Infrastructure.gRPC.Tests" />

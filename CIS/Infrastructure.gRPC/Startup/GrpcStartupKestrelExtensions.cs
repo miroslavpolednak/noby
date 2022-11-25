@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace CIS.Infrastructure.gRPC;
 
+/// <summary>
+/// Nastavení Kestrel serveru pro gRPC služby.
+/// </summary>
 public static class GrpcStartupKestrelExtensions
 {
     /// <summary>

@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace CIS.Foms.Enums;
 
+/// <summary>
+/// Druhy příjmu
+/// </summary>
 [DataContract]
 public enum CustomerIncomeTypes : int
 {

@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace CIS.Foms.Enums;
 
+/// <summary>
+/// Druhy adres
+/// </summary>
 [DataContract]
 public enum AddressTypes : byte
 {

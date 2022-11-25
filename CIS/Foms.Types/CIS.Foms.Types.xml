@@ -4,6 +4,21 @@
         <name>CIS.Foms.Types</name>
     </assembly>
     <members>
+        <member name="T:CIS.Foms.Types.AssemblyDoc">
+            <summary>
+            Custom DTO pro NOBY
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Types.Interfaces.IFomsCurrentUserDetails">
+            <summary>
+            Detail uživatele aplikace NOBY
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Types.Address">
+            <summary>
+            Adresa - bydliste, kontaktni atd.
+            </summary>
+        </member>
         <member name="P:CIS.Foms.Types.Address.Street">
             <summary>
             Ulice
@@ -49,6 +64,11 @@
             Praha obvod
             </summary>
         </member>
+        <member name="T:CIS.Foms.Types.CustomerIdentity">
+            <summary>
+            Identita klienta
+            </summary>
+        </member>
         <member name="P:CIS.Foms.Types.CustomerIdentity.Id">
             <summary>
             ID klienta v danem schematu
@@ -57,6 +77,61 @@
         <member name="P:CIS.Foms.Types.CustomerIdentity.Scheme">
             <summary>
             Schema ve kterem je klient ulozeny - Kb | Mp
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Types.UserIdentity">
+            <summary>
+            Identita uživatele NOBY aplikace
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.UserIdentity.Identity">
+            <summary>
+            ID uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.UserIdentity.Scheme">
+            <summary>
+            Identitní schéma
+            </summary>
+        </member>
+        <member name="M:CIS.Foms.Types.UserIdentity.#ctor(System.String,CIS.Foms.Enums.UserIdentitySchemes)">
+            <param name="identity">ID uživatele</param>
+            <param name="scheme">Identitní schéma</param>
+            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">ID není zadáno</exception>
+        </member>
+        <member name="M:CIS.Foms.Types.UserIdentity.#ctor(System.String,System.String)">
+            <param name="identity">ID uživatele</param>
+            <param name="scheme">Identitní schéma</param>
+            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">ID nebo schéma není zadáno</exception>
+        </member>
+        <member name="T:CIS.Foms.Enums.AddressTypes">
+            <summary>
+            Druhy adres
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Enums.CaseStates">
+            <summary>
+            Stavy Case
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Enums.ContactTypes">
+            <summary>
+            Typy kontaktů
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Enums.CustomerIncomeTypes">
+            <summary>
+            Druhy příjmu
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Enums.CustomerProfiles">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:CIS.Foms.Enums.CustomerRoles">
+            <summary>
+            Role klienta v obchodu
             </summary>
         </member>
     </members>

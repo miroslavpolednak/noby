@@ -1,0 +1,463 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.gRPC.CisTypes</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.AssemblyDoc">
+            <summary>
+            Vlastní gRPC messages, které přepoužíváme v doménových službách.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.StreetFieldNumber">
+            <summary>Field number for the "Street" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.StreetNumberFieldNumber">
+            <summary>Field number for the "StreetNumber" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.HouseNumberFieldNumber">
+            <summary>Field number for the "HouseNumber" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.PostcodeFieldNumber">
+            <summary>Field number for the "Postcode" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.CityFieldNumber">
+            <summary>Field number for the "City" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.CountryIdFieldNumber">
+            <summary>Field number for the "CountryId" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.AddressTypeIdFieldNumber">
+            <summary>Field number for the "AddressTypeId" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.EvidenceNumberFieldNumber">
+            <summary>Field number for the "EvidenceNumber" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.IsPrimaryFieldNumber">
+            <summary>Field number for the "IsPrimary" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.DeliveryDetailsFieldNumber">
+            <summary>Field number for the "DeliveryDetails" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.CityDistrictFieldNumber">
+            <summary>Field number for the "CityDistrict" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.PragueDistrictFieldNumber">
+            <summary>Field number for the "PragueDistrict" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.CountrySubdivisionFieldNumber">
+            <summary>Field number for the "CountrySubdivision" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.PrimaryAddressFromFieldNumber">
+            <summary>Field number for the "PrimaryAddressFrom" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcAddress.AddressPointIdFieldNumber">
+            <summary>Field number for the "AddressPointId" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.Year">
+            <summary>
+            Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+            a year.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.Month">
+            <summary>
+            Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+            month and day.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDate.Day">
+            <summary>
+            Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+            to specify a year by itself or a year and month where the day isn't
+            significant.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Year">
+            <summary>
+            Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
+            datetime without a year.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Month">
+            <summary>
+            Required. Month of year. Must be from 1 to 12.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Day">
+            <summary>
+            Required. Day of month. Must be from 1 to 31 and valid for the year and
+            month.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.HoursFieldNumber">
+            <summary>Field number for the "hours" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Hours">
+            <summary>
+            Required. Hours of day in 24 hour format. Should be from 0 to 23. An API
+            may choose to allow the value "24:00:00" for scenarios like business
+            closing time.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.MinutesFieldNumber">
+            <summary>Field number for the "minutes" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Minutes">
+            <summary>
+            Required. Minutes of hour of day. Must be from 0 to 59.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.SecondsFieldNumber">
+            <summary>Field number for the "seconds" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Seconds">
+            <summary>
+            Required. Seconds of minutes of the time. Must normally be from 0 to 59. An
+            API may allow the value 60 if it allows leap-seconds.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTime.Nanos">
+            <summary>
+            Required. Fractions of seconds in nanoseconds. Must be from 0 to
+            999,999,999.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDecimal.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.GrpcDecimal.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.Identity">
+            <summary>
+            Jednoznacna identifikace klienta s ohledem na ruzne mandanty.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.Identity.IdentityIdFieldNumber">
+            <summary>Field number for the "identityId" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.Identity.IdentityId">
+            <summary>
+            Id klienta - bud ID_PARTNER nebo KBID
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.Identity.IdentitySchemeFieldNumber">
+            <summary>Field number for the "identityScheme" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.Identity.IdentityScheme">
+            <summary>
+            KB nebo MP nebo v budoucnu neco jineho
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.Identity.Types">
+            <summary>Container for nested types declared in the Identity message type.</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp">
+            <summary>
+            Informace o tom kdo a kdy menil/zalozil danou entitu.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp.UserIdFieldNumber">
+            <summary>Field number for the "userId" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp.UserId">
+            <summary>
+            v33id uzivatele
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp.DateTimeFieldNumber">
+            <summary>Field number for the "dateTime" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp.DateTime">
+            <summary>
+            Cas zmeny
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp.UserNameFieldNumber">
+            <summary>Field number for the "userName" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.ModificationStamp.UserName">
+            <summary>
+            Cele jmeno uzivatele
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate.Year">
+            <summary>
+            Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+            a year.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate.Month">
+            <summary>
+            Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+            month and day.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDate.Day">
+            <summary>
+            Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+            to specify a year by itself or a year and month where the day isn't
+            significant.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Year">
+            <summary>
+            Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+            a year.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Month">
+            <summary>
+            Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+            month and day.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Day">
+            <summary>
+            Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+            to specify a year by itself or a year and month where the day isn't
+            significant.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.HoursFieldNumber">
+            <summary>Field number for the "hours" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Hours">
+            <summary>
+            Required. Hours of day in 24 hour format. Should be from 0 to 23. An API
+            may choose to allow the value "24:00:00" for scenarios like business
+            closing time.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.MinutesFieldNumber">
+            <summary>Field number for the "minutes" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Minutes">
+            <summary>
+            Required. Minutes of hour of day. Must be from 0 to 59.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.SecondsFieldNumber">
+            <summary>Field number for the "seconds" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Seconds">
+            <summary>
+            Required. Seconds of minutes of the time. Must normally be from 0 to 59. An
+            API may allow the value 60 if it allows leap-seconds.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTime.Nanos">
+            <summary>
+            Required. Fractions of seconds in nanoseconds. Must be from 0 to
+            999,999,999.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimal.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimal.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationRequest.RecordOffsetFieldNumber">
+            <summary>Field number for the "recordOffset" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationRequest.PageSizeFieldNumber">
+            <summary>Field number for the "pageSize" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationRequest.SortingFieldNumber">
+            <summary>Field number for the "sorting" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationResponse.RecordOffsetFieldNumber">
+            <summary>Field number for the "recordOffset" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationResponse.PageSizeFieldNumber">
+            <summary>Field number for the "pageSize" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationResponse.SortingFieldNumber">
+            <summary>Field number for the "sorting" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationResponse.RecordsTotalSizeFieldNumber">
+            <summary>Field number for the "recordsTotalSize" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationSortingField.FieldFieldNumber">
+            <summary>Field number for the "field" field.</summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.PaginationSortingField.DescendingFieldNumber">
+            <summary>Field number for the "descending" field.</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.UserIdentity">
+            <summary>
+            Jednoznacna identifikace uzivatele
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.UserIdentity.IdentityFieldNumber">
+            <summary>Field number for the "identity" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Identity">
+            <summary>
+            login uzivatele
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.UserIdentity.IdentitySchemeFieldNumber">
+            <summary>Field number for the "identityScheme" field.</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types">
+            <summary>Container for nested types declared in the UserIdentity message type.</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.UserInfo">
+            <summary>
+            Zakladni informace o uzivateli (poradci).
+            Pouziva se hlavne jako info properta na entite kde neni moznost joinovani na tabulku uzivatelu.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.UserInfo.UserIdFieldNumber">
+            <summary>Field number for the "userId" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.UserInfo.UserId">
+            <summary>
+            v33id uzivatele
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.gRPC.CisTypes.UserInfo.UserNameFieldNumber">
+            <summary>Field number for the "userName" field.</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.UserInfo.UserName">
+            <summary>
+            Cele jmeno uzivatele
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.GrpcDateReflection">
+            <summary>Holder for reflection information generated from GrpcDate.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateReflection.Descriptor">
+            <summary>File descriptor for GrpcDate.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.GrpcDecimalReflection">
+            <summary>Holder for reflection information generated from GrpcDecimal.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDecimalReflection.Descriptor">
+            <summary>File descriptor for GrpcDecimal.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.ModificationStampReflection">
+            <summary>Holder for reflection information generated from ModificationStamp.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.ModificationStampReflection.Descriptor">
+            <summary>File descriptor for ModificationStamp.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTimeReflection">
+            <summary>Holder for reflection information generated from GrpcDateTime.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcDateTimeReflection.Descriptor">
+            <summary>File descriptor for GrpcDateTime.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.IdentityReflection">
+            <summary>Holder for reflection information generated from Identity.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.IdentityReflection.Descriptor">
+            <summary>File descriptor for Identity.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateReflection">
+            <summary>Holder for reflection information generated from NullableGrpcDate.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateReflection.Descriptor">
+            <summary>File descriptor for NullableGrpcDate.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.PaginationResponseReflection">
+            <summary>Holder for reflection information generated from PaginationResponse.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.PaginationResponseReflection.Descriptor">
+            <summary>File descriptor for PaginationResponse.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.PaginationRequestReflection">
+            <summary>Holder for reflection information generated from PaginationRequest.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.PaginationRequestReflection.Descriptor">
+            <summary>File descriptor for PaginationRequest.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.PaginationSortingFieldReflection">
+            <summary>Holder for reflection information generated from PaginationSortingField.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.PaginationSortingFieldReflection.Descriptor">
+            <summary>File descriptor for PaginationSortingField.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.UserInfoReflection">
+            <summary>Holder for reflection information generated from UserInfo.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.UserInfoReflection.Descriptor">
+            <summary>File descriptor for UserInfo.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.MandantsReflection">
+            <summary>Holder for reflection information generated from Mandants.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.MandantsReflection.Descriptor">
+            <summary>File descriptor for Mandants.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimalReflection">
+            <summary>Holder for reflection information generated from NullableGrpcDecimal.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDecimalReflection.Descriptor">
+            <summary>File descriptor for NullableGrpcDecimal.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.GrpcAddressReflection">
+            <summary>Holder for reflection information generated from GrpcAddress.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.GrpcAddressReflection.Descriptor">
+            <summary>File descriptor for GrpcAddress.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.UserIdentityReflection">
+            <summary>Holder for reflection information generated from UserIdentity.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.UserIdentityReflection.Descriptor">
+            <summary>File descriptor for UserIdentity.proto</summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTimeReflection">
+            <summary>Holder for reflection information generated from NullableGrpcDateTime.proto</summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.CisTypes.NullableGrpcDateTimeReflection.Descriptor">
+            <summary>File descriptor for NullableGrpcDateTime.proto</summary>
+        </member>
+    </members>
+</doc>

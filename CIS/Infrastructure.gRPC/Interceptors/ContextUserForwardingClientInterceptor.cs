@@ -4,8 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.Infrastructure.gRPC;
 
-//TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru
-public class ContextUserForwardingClientInterceptor : Interceptor
+/// <summary>
+/// Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+/// </summary>
+/// <remarks>
+/// TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru
+/// </remarks>
+public sealed class ContextUserForwardingClientInterceptor 
+    : Interceptor
 {
     private readonly IServiceProvider _serviceProvider;
 

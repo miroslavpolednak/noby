@@ -15,12 +15,13 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.gRPC.CisTypes.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Protos\GrpcAddress.proto" />
-	  <None Remove="Protos\NullableGrpcDateTime.proto" />
-	  <None Remove="Protos\UserIdentity.proto" />
+		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>

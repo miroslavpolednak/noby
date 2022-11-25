@@ -6,6 +6,12 @@ using CIS.Infrastructure.Logging;
 
 namespace CIS.Infrastructure.gRPC;
 
+/// <summary>
+/// Client Interceptor pro konverzi RpcException na CIS vyjímky.
+/// </summary>
+/// <remarks>
+/// Používáme, abychom chyby z doménových služeb přetavili z generické RpcException na konkrétní vyjímky, které vyhodila daná doménová služba.
+/// </remarks>
 public sealed class GenericClientExceptionInterceptor
     : Interceptor
 {

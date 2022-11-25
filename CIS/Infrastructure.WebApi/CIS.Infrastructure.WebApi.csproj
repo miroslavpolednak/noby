@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<Company>Wookiee.Apps s.r.o.</Company>
 	<Product>Common Infrastructure Solution</Product>
 	<Authors>Filip Tuma</Authors>
     <Nullable>enable</Nullable>
@@ -14,7 +13,14 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.WebApi.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
+	</ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.3.0" />

@@ -1,11 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <Company>Wookiee.Apps s.r.o.</Company>
         <Product>Common Infrastructure Solution</Product>
         <Authors>Filip Tuma</Authors>
-        <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <Platforms>AnyCPU;x64</Platforms>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -14,10 +12,16 @@
 
     <PropertyGroup>
         <AnalysisMode>Recommended</AnalysisMode>
+		<Title>Custom DTO pro NOBY</Title>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <DocumentationFile>CIS.Foms.Types.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
     </PropertyGroup>
-    
+
+	<ItemGroup>
+		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
+	</ItemGroup>
+	
     <ItemGroup>
       <ProjectReference Include="..\Core\CIS.Core.csproj" />
     </ItemGroup>
