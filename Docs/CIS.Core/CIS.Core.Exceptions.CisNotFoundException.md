@@ -15,27 +15,6 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 Např. při dotazu do databáze dané ID neexistuje.
 ### Constructors
 
-<a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string)'></a>
-
-## CisNotFoundException(int, string) Constructor
-
-```csharp
-public CisNotFoundException(int exceptionCode, string message);
-```
-#### Parameters
-
-<a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string).exceptionCode'></a>
-
-`exceptionCode` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
-
-CIS kód chyby
-
-<a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string).message'></a>
-
-`message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
-
-Text chyby
-
 <a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string,object)'></a>
 
 ## CisNotFoundException(int, string, object) Constructor
@@ -62,6 +41,27 @@ Název entity, která chybu vyvolala
 `entityId` [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object')
 
 ID entity, která chybu vyvolala
+
+<a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string)'></a>
+
+## CisNotFoundException(int, string) Constructor
+
+```csharp
+public CisNotFoundException(int exceptionCode, string message);
+```
+#### Parameters
+
+<a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string).exceptionCode'></a>
+
+`exceptionCode` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
+CIS kód chyby
+
+<a name='CIS.Core.Exceptions.CisNotFoundException.CisNotFoundException(int,string).message'></a>
+
+`message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Text chyby
 ### Properties
 
 <a name='CIS.Core.Exceptions.CisNotFoundException.EntityId'></a>
