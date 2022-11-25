@@ -1,12 +1,15 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Net;
 using System.Security.Authentication;
 
 namespace CIS.Infrastructure.gRPC.Middleware;
 
+/// <summary>
+/// middleware pro zachytávání vyjímek v grpc code first službách.
+/// po přechodu na grpc transcoding ostraníme
+/// </summary>
 public sealed class Grpc2WebApiExceptionMiddleware
 {
     private readonly RequestDelegate _next;

@@ -1,13 +1,39 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Infrastructure.gRPC;
 
+/// <summary>
+/// Extension metody do startupu aplikace pro registraci gRPC služeb.
+/// </summary>
 public static class GrpcStartupExtensions
 {
+    /// <summary>
+    /// Zaregistruje do DI:
+    /// - MediatR
+    /// - FluentValidation through MediatR pipelines
+    /// </summary>
+    /// <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
+    public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType)
+    {
+        services
+            .AddMediatR(assemblyType.Assembly)
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Validation.GrpcValidationBehaviour<,>));
+
+        // add validators
+        services.Scan(selector => selector
+                .FromAssembliesOf(assemblyType)
+                .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+        return services;
+    }
+
     public static IApplicationBuilder UseGrpc2WebApiException(this IApplicationBuilder app)
         => app.UseWhen(context => context.Request.ContentType == "application/json", builder => app.UseMiddleware<Middleware.Grpc2WebApiExceptionMiddleware>());
 

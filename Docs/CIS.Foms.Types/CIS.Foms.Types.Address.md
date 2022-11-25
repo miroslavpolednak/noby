@@ -3,6 +3,8 @@
 
 ## Address Class
 
+Adresa - bydliste, kontaktni atd.
+
 ```csharp
 public class Address
 ```

@@ -3,7 +3,11 @@ using Grpc.Core;
 
 namespace CIS.Infrastructure.gRPC;
 
-public sealed class GrpcErrorCollection : List<GrpcErrorCollection.GrpcErrorCollectionItem>
+/// <summary>
+/// Kolekce chyb uložená v Trailers grpc response (ve chvíli, kdy se vrací RpcException)
+/// </summary>
+public sealed class GrpcErrorCollection 
+    : List<GrpcErrorCollection.GrpcErrorCollectionItem>
 {
     public GrpcErrorCollection() { }
 
@@ -35,19 +39,19 @@ public sealed class GrpcErrorCollection : List<GrpcErrorCollection.GrpcErrorColl
             return true;
     }
 
-    public class GrpcErrorCollectionItem
+    public sealed class GrpcErrorCollectionItem
     {
         public int Code { get; init; }
         public string? CodeAlt { get; init; }
         public string Message { get; init; }
 
-        public GrpcErrorCollectionItem(int code, string message)
+        internal GrpcErrorCollectionItem(int code, string message)
         {
             Code = code;
             Message = message;
         }
 
-        public GrpcErrorCollectionItem(string code, string message)
+        internal GrpcErrorCollectionItem(string code, string message)
         {
             if (int.TryParse(code, out int code2))
                 Code = code2;

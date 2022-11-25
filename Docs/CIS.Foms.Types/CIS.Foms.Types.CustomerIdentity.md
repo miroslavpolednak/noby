@@ -3,6 +3,8 @@
 
 ## CustomerIdentity Class
 
+Identita klienta
+
 ```csharp
 public sealed class CustomerIdentity
 ```

@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace CIS.Infrastructure.gRPC;
 
+/// <summary>
+/// Helpery pro vytváření RpcException.
+/// </summary>
 public static class GrpcExceptionHelpers
 {
     private const string _errorMessageFromRpcExceptionRegex = "Detail=\"(?<error>.*)\"\\)";
