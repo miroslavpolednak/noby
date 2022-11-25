@@ -247,6 +247,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E99-AE46-4B08-A830-1587E93A950E}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\topics\authentication.md = Docs\topics\authentication.md
+		Docs\topics\grpc-services-clients.md = Docs\topics\grpc-services-clients.md
+		Docs\topics\grpc-services-contracts.md = Docs\topics\grpc-services-contracts.md
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
 		Docs\topics\logging.md = Docs\topics\logging.md
 		Docs\topics\validation.md = Docs\topics\validation.md

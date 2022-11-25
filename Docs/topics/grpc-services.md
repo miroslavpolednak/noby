@@ -45,7 +45,8 @@ Každá služba se skládá min. ze tří projektů:
 - **Api**. Aplikace - implementace gRPC služby.
 - **Contracts**. gRPC kontrakty služby. Obsahuje pouze *.proto soubory s definicí služby a zpráv.  
 [Detail projektu Contracts](grpc-services-contracts.md)
-- **Clients**. C# wrapper nad gRPC službou. Je zde proto, aby konzumenti nemuseli řešit jak volat gRPC, ale mohli ke službě přistupovat přímo přes C# interface.
+- **Clients**. C# wrapper nad gRPC službou. Je zde proto, aby konzumenti nemuseli řešit jak volat gRPC, ale mohli ke službě přistupovat přímo přes C# interface.  
+[Detail projektu Clients](grpc-services-clients.md)
 
 ## Startup gRPC služby
 Standardní flow nastavení služby v Program.cs:

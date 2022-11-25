@@ -49,3 +49,26 @@ package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 ```
 
+## NOBY gRPC custom types
+V projektu `CIS.Infrastructure.gRPC.CisTypes` jsou definované vlastní proto objekty používané obecně ve všech službách.
+Většina těchto typů má zároveň definované implicitní konverze na nativní .NET typy, takže není nutné je přetypovávat.  
+Jedná se zejména o (ale nikoliv pouze):
+- GrpcDate - C# `DateOnly`
+- NullableGrpcDate - C# `DateOnly?`
+- GrpcDateTime - C# `DateTime`
+- NullableGrpcDateTime - C# `DateTime?`
+- GrpcDecimal - C# `decimal`
+- NullableGrpcDecimal - C# `decimal?`
+- UserIdentity - informace o klientovi (schema a ID)
+
+Tyto typy je možné v kontraktech použít následovně:
+- nejdříve se typ musí naimportovat:
+```
+import "NullableGrpcDate.proto";
+```
+- poté je možné ho použít v message:
+```
+message SalesArrangement {
+    cis.types.NullableGrpcDate OfferGuaranteeDateFrom = 12;
+}
+```
