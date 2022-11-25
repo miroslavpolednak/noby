@@ -43,7 +43,8 @@ sc.exe create FAT-ServiceDiscovery binPath= "d:\sluzby\discoveryservice\CIS.Inte
 ## Projekty gRPC služby
 Každá služba se skládá min. ze tří projektů:
 - **Api**. Aplikace - implementace gRPC služby.
-- **Contracts**. gRPC kontrakty služby. Obsahuje pouze *.proto soubory s definicí služby a zpráv.
+- **Contracts**. gRPC kontrakty služby. Obsahuje pouze *.proto soubory s definicí služby a zpráv.  
+[Detail projektu Contracts](grpc-services-contracts.md)
 - **Clients**. C# wrapper nad gRPC službou. Je zde proto, aby konzumenti nemuseli řešit jak volat gRPC, ale mohli ke službě přistupovat přímo přes C# interface.
 
 ## Startup gRPC služby
