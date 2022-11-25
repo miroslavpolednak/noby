@@ -1,5 +1,4 @@
 ﻿using DomainServices.CodebookService.Contracts.Endpoints.EducationLevels;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DomainServices.CodebookService.Endpoints.EducationLevels;
 
