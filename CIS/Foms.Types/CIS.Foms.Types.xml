@@ -4,6 +4,11 @@
         <name>CIS.Foms.Types</name>
     </assembly>
     <members>
+        <member name="T:CIS.Foms.Types.AssemblyDoc">
+            <summary>
+            MediatR custom behaviors
+            </summary>
+        </member>
         <member name="P:CIS.Foms.Types.Address.Street">
             <summary>
             Ulice

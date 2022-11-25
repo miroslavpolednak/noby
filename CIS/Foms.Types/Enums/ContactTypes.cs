@@ -2,6 +2,9 @@
 
 namespace CIS.Foms.Enums;
 
+/// <summary>
+/// Typy kontaktů
+/// </summary>
 [DataContract]
 public enum ContactTypes : byte
 {

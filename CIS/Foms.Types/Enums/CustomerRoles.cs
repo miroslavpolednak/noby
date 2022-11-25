@@ -5,6 +5,9 @@ namespace CIS.Foms.Enums;
 
 // Pokud budes menit, upravit handler pro číselník (CustomerRolesHandler)
 
+/// <summary>
+/// Role klienta v obchodu
+/// </summary>
 [DataContract]
 public enum CustomerRoles : byte
 {

@@ -2,6 +2,9 @@
 
 namespace CIS.Foms.Types;
 
+/// <summary>
+/// Adresa - bydliste, kontaktni atd.
+/// </summary>
 public class Address
 {
     [JsonIgnore]

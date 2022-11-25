@@ -4,6 +4,9 @@ using CIS.Core.Attributes;
 
 namespace CIS.Foms.Enums;
 
+/// <summary>
+/// Stavy Case
+/// </summary>
 [DataContract]
 public enum CaseStates : byte
 {

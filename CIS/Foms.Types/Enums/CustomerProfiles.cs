@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace CIS.Foms.Enums;
 
+/// <summary>
+/// 
+/// </summary>
 [DataContract]
 public enum CustomerProfiles : byte
 {

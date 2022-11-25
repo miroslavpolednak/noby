@@ -22,6 +22,9 @@ MediatR extensions, behaviors.
 [CIS.Infrastructure.Logging.Extensions](CIS.Infrastructure.Logging.Extensions/index.md)  
 Extension metody pro High Performance logging.
 
+[CIS.Foms.Types](CIS.Foms.Types/index.md)  
+Custom DTO pro NOBY
+
 ### DomainServices
 Obsahuje byznysové služby. Každá služba obsluhuje vlastní byznys doménu, např. klient, domácnost, smlouva.
 Jedná se o **gRPC** služby, které ale mohou v některých případech vystavovat i **REST** rozhraní pomocí *gRPC Transcoding*.
