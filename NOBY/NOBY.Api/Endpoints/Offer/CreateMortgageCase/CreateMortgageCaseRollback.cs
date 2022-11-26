@@ -17,7 +17,7 @@ internal class CreateMortgageCaseRollback
 
         // smazat SA
         if (_bag.ContainsKey(BagKeySalesArrangementId))
-            await _salesArrangementService.DeleteSalesArrangement((int)_bag[BagKeySalesArrangementId]!, cancellationToken);
+            await _salesArrangementService.DeleteSalesArrangement((int)_bag[BagKeySalesArrangementId]!, true, cancellationToken);
 
         // smazat case
         if (_bag.ContainsKey(BagKeyCaseId))

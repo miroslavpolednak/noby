@@ -45,6 +45,6 @@ internal class SalesArrangementService : Contracts.v1.SalesArrangementService.Sa
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateLoanAssessmentParameters(UpdateLoanAssessmentParametersRequest request, ServerCallContext context)
        => await _mediator.Send(new Dto.UpdateLoanAssessmentParametersMediatrRequest(request), context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteSalesArrangement(SalesArrangementIdRequest request, ServerCallContext context)
-       => await _mediator.Send(new Dto.DeleteSalesArrangementMediatrRequest(request.SalesArrangementId), context.CancellationToken);
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteSalesArrangement(DeleteSalesArrangementRequest request, ServerCallContext context)
+       => await _mediator.Send(new Dto.DeleteSalesArrangementMediatrRequest(request.SalesArrangementId, request.HardDelete), context.CancellationToken);
 }

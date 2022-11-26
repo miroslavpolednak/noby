@@ -14,7 +14,6 @@ internal class HouseholdService : IHouseholdServiceClient
 
     public async Task<IServiceCallResult> DeleteHousehold(int householdId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteHousehold), householdId);
         var result = await _service.DeleteHouseholdAsync(
             new()
             {
@@ -27,7 +26,6 @@ internal class HouseholdService : IHouseholdServiceClient
     public async Task<IServiceCallResult> GetHousehold(int householdId, CancellationToken cancellationToken = default(CancellationToken))
         => new SuccessfulServiceCallResult<Household>(await _householdCache.GetOrFetch(householdId, async () =>
         {
-            _logger.RequestHandlerStartedWithId(nameof(GetHousehold), householdId);
             var result = await _service.GetHouseholdAsync(
                 new()
                 {
@@ -38,7 +36,6 @@ internal class HouseholdService : IHouseholdServiceClient
 
     public async Task<IServiceCallResult> GetHouseholdList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetHouseholdList), salesArrangementId);
         var result = await _service.GetHouseholdListAsync(
             new()
             {
@@ -49,14 +46,12 @@ internal class HouseholdService : IHouseholdServiceClient
 
     public async Task<IServiceCallResult> UpdateHousehold(UpdateHouseholdRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateHousehold), request.HouseholdId);
         var result = await _service.UpdateHouseholdAsync(request, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult();
     }
 
     public async Task<IServiceCallResult> LinkCustomerOnSAToHousehold(int householdId, int? customerOnSAId1, int? customerOnSAId2, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(LinkCustomerOnSAToHousehold), householdId);
         var result = await _service.LinkCustomerOnSAToHouseholdAsync(new LinkCustomerOnSAToHouseholdRequest
         {
             HouseholdId = householdId,

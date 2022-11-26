@@ -5,7 +5,7 @@ internal sealed class DeleteSalesArrangementHandler
 {
     protected override async Task Handle(DeleteSalesArrangementRequest request, CancellationToken cancellationToken)
     {
-        await _salesArrangementService.DeleteSalesArrangement(request.SalesArrangementId, cancellationToken);
+        await _salesArrangementService.DeleteSalesArrangement(request.SalesArrangementId, cancellationToken: cancellationToken);
     }
 
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;

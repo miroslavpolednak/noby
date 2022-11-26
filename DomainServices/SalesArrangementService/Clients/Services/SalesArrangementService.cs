@@ -4,20 +4,19 @@ namespace DomainServices.SalesArrangementService.Clients.Services;
 
 internal class SalesArrangementService : ISalesArrangementServiceClients
 {
-    public async Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteSalesArrangement), salesArrangementId);
         var result = await _service.DeleteSalesArrangementAsync(
             new()
             {
-                SalesArrangementId = salesArrangementId
+                SalesArrangementId = salesArrangementId,
+                HardDelete = hardDelete
             }, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult();
     }
 
     public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateSalesArrangement), caseId);
         var result = await _service.CreateSalesArrangementAsync(
             new() { 
                 CaseId = caseId, 
@@ -29,14 +28,12 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> CreateSalesArrangement(CreateSalesArrangementRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateSalesArrangement), request.CaseId);
         var result = await _service.CreateSalesArrangementAsync(request, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
     }
 
     public async Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangement), salesArrangementId);
         var result = await _service.GetSalesArrangementAsync(
             new()
             {
@@ -47,7 +44,6 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
     
     public async Task<IServiceCallResult> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementByOfferId), offerId);
         var result = await _service.GetSalesArrangementByOfferIdAsync(
             new()
             {
@@ -58,7 +54,6 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(LinkModelationToSalesArrangement), salesArrangementId);
         var result = await _service.LinkModelationToSalesArrangementAsync(
             new()
             {
@@ -70,7 +65,6 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> GetSalesArrangementList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetSalesArrangementList), caseId);
         var result = await _service.GetSalesArrangementListAsync(
             new()
             {
@@ -81,8 +75,7 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, DateTime? firstSignedDate, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangement), salesArrangementId);
-        var result = await _service.UpdateSalesArrangementAsync(
+         var result = await _service.UpdateSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
@@ -95,8 +88,7 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementState), salesArrangementId);
-        var result = await _service.UpdateSalesArrangementStateAsync(
+         var result = await _service.UpdateSalesArrangementStateAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
@@ -107,15 +99,13 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> UpdateSalesArrangementParameters(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateSalesArrangementParameters), request.SalesArrangementId);
-        var result = await _service.UpdateSalesArrangementParametersAsync(request, cancellationToken: cancellationToken);
+         var result = await _service.UpdateSalesArrangementParametersAsync(request, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult();
     }
 
     public async Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStartedWithId(nameof(ValidateSalesArrangement), salesArrangementId);
-        var result = await _service.ValidateSalesArrangementAsync(
+         var result = await _service.ValidateSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
@@ -125,8 +115,7 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        _logger.RequestHandlerStartedWithId(nameof(SendToCmp), salesArrangementId);
-        var result = await _service.SendToCmpAsync(
+         var result = await _service.SendToCmpAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
@@ -136,8 +125,7 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
 
     public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateLoanAssessmentParameters), salesArrangementId);
-        var result = await _service.UpdateLoanAssessmentParametersAsync(
+         var result = await _service.UpdateLoanAssessmentParametersAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,

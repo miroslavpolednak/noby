@@ -10,14 +10,12 @@ internal class CaseService : ICaseServiceClient
 {
     public async Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStarted(nameof(CreateCase));
         var result = await _service.CreateCaseAsync(model, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult<long>(result.CaseId);
     }
 
     public async Task<IServiceCallResult> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCaseCounts), caseOwnerUserId);
         var result = await _service.GetCaseCountsAsync(
             new()
             {
@@ -28,7 +26,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCaseDetail), caseId);
         var result = await _service.GetCaseDetailAsync(
             new()
             {
@@ -39,7 +36,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(SearchCases), caseOwnerUserId);
         var request = new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
@@ -54,7 +50,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(LinkOwnerToCase), caseId);
         var result = await _service.LinkOwnerToCaseAsync(
             new()
             {
@@ -66,7 +61,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStarted(nameof(UpdateCaseCustomer));
         var result = await _service.UpdateCaseCustomerAsync(
             new()
             {
@@ -78,7 +72,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateCaseData), caseId);
         var result = await _service.UpdateCaseDataAsync(
             new()
             {
@@ -90,7 +83,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateCaseState), caseId);
         var result = await _service.UpdateCaseStateAsync(
             new()
             {
@@ -102,7 +94,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> DeleteCase(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateCaseState), caseId);
         var result = await _service.DeleteCaseAsync(
             new()
             {
@@ -113,7 +104,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetTaskList), caseId);
         var result = await _service.GetTaskListAsync(
             new()
             {
@@ -124,7 +114,6 @@ internal class CaseService : ICaseServiceClient
 
     public async Task<IServiceCallResult> UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStarted(nameof(UpdateOfferContacts));
         var result = await _service.UpdateOfferContactsAsync(
             new()
             {

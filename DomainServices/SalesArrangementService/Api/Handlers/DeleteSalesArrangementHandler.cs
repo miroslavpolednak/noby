@@ -11,13 +11,16 @@ internal sealed class DeleteSalesArrangementHandler
         var saInstance = await _dbContext.SalesArrangements.FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
 
-        // kontrola na kategorii
-        if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == saInstance.SalesArrangementTypeId).SalesArrangementCategory != 2)
-            throw new CisValidationException(18013, $"SalesArrangement type not supported");
+        if (!request.HardDelete)
+        {
+            // kontrola na kategorii
+            if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == saInstance.SalesArrangementTypeId).SalesArrangementCategory != 2)
+                throw new CisValidationException(18013, $"SalesArrangement type not supported");
 
-        // kontrola na stav
-        if (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.IsSigned)
-            throw new CisValidationException($"SalesArrangement cannot be updated/deleted in this state {saInstance.State}");
+            // kontrola na stav
+            if (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.IsSigned)
+                throw new CisValidationException($"SalesArrangement cannot be updated/deleted in this state {saInstance.State}");
+        }
 
         // smazat SA
         _dbContext.Remove(saInstance);

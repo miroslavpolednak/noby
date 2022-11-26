@@ -109,6 +109,6 @@ public interface ISalesArrangementServiceClients
     /// Smazani zadosti
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
-    Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
 }
 
