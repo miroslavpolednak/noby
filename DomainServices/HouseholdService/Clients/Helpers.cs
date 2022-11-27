@@ -2,6 +2,9 @@
 
 public static class Helpers
 {
+    /// <summary>
+    /// Nevim kam jinam to dat, je to nejaka jednoducha logika, ktera se bude pouzivat na vice mistech mimo sluzbu jako takovou
+    /// </summary>
     public static bool AreCustomersPartners(int? maritalStatusId1, int? maritalStatusId2)
     {
         if (!maritalStatusId2.HasValue) return false;

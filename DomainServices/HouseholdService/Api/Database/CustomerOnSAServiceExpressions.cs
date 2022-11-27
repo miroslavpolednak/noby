@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace DomainServices.HouseholdService.Api.Repositories;
+namespace DomainServices.HouseholdService.Api.Database;
 
 internal static class CustomerOnSAServiceExpressions
 {

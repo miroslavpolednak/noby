@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Repositories;
+namespace DomainServices.HouseholdService.Api.Database;
 
 internal static class HouseholdExpressions
 {

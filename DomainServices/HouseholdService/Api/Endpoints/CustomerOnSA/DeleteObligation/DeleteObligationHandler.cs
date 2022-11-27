@@ -16,9 +16,9 @@ internal class DeleteObligationHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public DeleteObligationHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public DeleteObligationHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

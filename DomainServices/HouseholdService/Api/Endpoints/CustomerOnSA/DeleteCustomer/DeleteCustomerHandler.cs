@@ -58,12 +58,12 @@ DELETE FROM dbo.CustomerOnSAObligation WHERE CustomerOnSAId={entity.CustomerOnSA
 
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public DeleteCustomerHandler(
         SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
         SulmService.ISulmClient sulmClient,
-        Repositories.HouseholdServiceDbContext dbContext)
+        Database.HouseholdServiceDbContext dbContext)
     {
         _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;

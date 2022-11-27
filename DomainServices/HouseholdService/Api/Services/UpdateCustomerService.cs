@@ -4,12 +4,12 @@ using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Customer = DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.Shared;
+namespace DomainServices.HouseholdService.Api.Services;
 
 [CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
 internal sealed class UpdateCustomerService
 {
-    public async Task GetCustomerAndUpdateEntity(Repositories.Entities.CustomerOnSA entity, long identityId, CIS.Foms.Enums.IdentitySchemes scheme, CancellationToken cancellation)
+    public async Task GetCustomerAndUpdateEntity(Database.Entities.CustomerOnSA entity, long identityId, CIS.Foms.Enums.IdentitySchemes scheme, CancellationToken cancellation)
     {
         if (_cachedCustomerInstance is not null) return;
 
@@ -39,14 +39,14 @@ internal sealed class UpdateCustomerService
         }
     }
 
-    public async Task TryCreateMpIdentity(Repositories.Entities.CustomerOnSA entity)
+    public async Task TryCreateMpIdentity(Database.Entities.CustomerOnSA entity)
     {
         int? id = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(getEasClientModel()));
 
         if (id.HasValue)
         {
-            entity.Identities ??= new List<Repositories.Entities.CustomerOnSAIdentity>();
-            entity.Identities.Add(new Repositories.Entities.CustomerOnSAIdentity
+            entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
+            entity.Identities.Add(new Database.Entities.CustomerOnSAIdentity
             {
                 CustomerOnSAId = entity.CustomerOnSAId,
                 IdentityId = id.Value,
@@ -54,7 +54,7 @@ internal sealed class UpdateCustomerService
             });
         }
     }
-    
+
     private ExternalServices.Eas.Dto.ClientDataModel getEasClientModel()
         => new()
         {
@@ -74,19 +74,19 @@ internal sealed class UpdateCustomerService
         };
 
     private _Customer.CustomerDetailResponse? _cachedCustomerInstance;
-    
+
     private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly Eas.IEasClient _easClient;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public UpdateCustomerService(
         Eas.IEasClient easClient,
         ISalesArrangementServiceClients salesArrangementService,
         ICaseServiceClient caseService,
         ICustomerServiceClient customerService,
-        Repositories.HouseholdServiceDbContext dbContext)
+        Database.HouseholdServiceDbContext dbContext)
     {
         _salesArrangementService = salesArrangementService;
         _easClient = easClient;

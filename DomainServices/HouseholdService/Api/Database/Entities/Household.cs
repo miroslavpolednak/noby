@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DomainServices.HouseholdService.Api.Repositories.Entities;
+namespace DomainServices.HouseholdService.Api.Database.Entities;
 
 [Table("Household", Schema = "dbo")]
 internal class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId

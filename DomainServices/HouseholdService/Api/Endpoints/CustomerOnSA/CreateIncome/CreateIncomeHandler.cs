@@ -1,6 +1,7 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
 using CIS.Foms.Enums;
+using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.Shared;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
 
@@ -21,7 +22,7 @@ internal class CreateIncomeHandler
         if (IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType))
             throw new CisValidationException(16047, "Max incomes of the type has been reached");
 
-        var entity = new Repositories.Entities.CustomerOnSAIncome
+        var entity = new Database.Entities.CustomerOnSAIncome
         {
             CustomerOnSAId = request.Request.CustomerOnSAId,
             Sum = request.Request.BaseData?.Sum,
@@ -41,7 +42,7 @@ internal class CreateIncomeHandler
         _dbContext.CustomersIncomes.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSAIncome), entity.CustomerOnSAIncomeId);
+        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAIncome), entity.CustomerOnSAIncomeId);
 
         return new CreateIncomeResponse
         {
@@ -80,12 +81,12 @@ internal class CreateIncomeHandler
         };
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateIncomeHandler> _logger;
 
     public CreateIncomeHandler(
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Repositories.HouseholdServiceDbContext dbContext,
+        Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateIncomeHandler> logger)
     {
         _codebookService = codebookService;

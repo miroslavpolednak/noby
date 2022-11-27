@@ -1,4 +1,4 @@
-﻿using DomainServices.HouseholdService.Api.Repositories;
+﻿using DomainServices.HouseholdService.Api.Database;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
 
@@ -13,7 +13,7 @@ internal sealed class GetIncomeListHandler
             .Select(CustomerOnSAServiceExpressions.Income())
             .ToListAsync(cancellation);
 
-        _logger.FoundItems(list.Count, nameof(Repositories.Entities.CustomerOnSAIncome));
+        _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 
         var response = new Contracts.GetIncomeListResponse();
         response.Incomes.AddRange(list);

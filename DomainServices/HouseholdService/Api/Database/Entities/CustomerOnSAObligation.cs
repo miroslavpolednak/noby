@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DomainServices.HouseholdService.Api.Repositories.Entities;
+namespace DomainServices.HouseholdService.Api.Database.Entities;
 
 [Table("CustomerOnSAObligation", Schema = "dbo")]
 internal class CustomerOnSAObligation

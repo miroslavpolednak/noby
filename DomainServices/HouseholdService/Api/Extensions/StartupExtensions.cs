@@ -23,7 +23,7 @@ internal static class StartupExtensions
         builder.AddExternalServiceSulm();
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.HouseholdServiceDbContext>();
+        builder.AddEntityFramework<Database.HouseholdServiceDbContext>();
 
         return builder;
     }

@@ -26,9 +26,9 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     
-    public LinkCustomerOnSAToHouseholdHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public LinkCustomerOnSAToHouseholdHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

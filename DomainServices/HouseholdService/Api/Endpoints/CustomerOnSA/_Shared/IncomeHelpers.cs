@@ -1,6 +1,6 @@
 ﻿using CIS.Foms.Enums;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA;
+namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.Shared;
 
 internal static class IncomeHelpers
 {

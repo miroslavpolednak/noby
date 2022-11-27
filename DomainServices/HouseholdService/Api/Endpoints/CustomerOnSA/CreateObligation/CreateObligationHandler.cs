@@ -12,7 +12,7 @@ internal class CreateObligationHandler
         if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
             throw new CisNotFoundException(16020, "CustomerOnSA", request.Request.CustomerOnSAId);
 
-        var entity = new Repositories.Entities.CustomerOnSAObligation
+        var entity = new Database.Entities.CustomerOnSAObligation
         {
             CustomerOnSAId = request.Request.CustomerOnSAId,
             ObligationState = request.Request.ObligationState,
@@ -33,7 +33,7 @@ internal class CreateObligationHandler
         _dbContext.CustomersObligations.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSAObligation), entity.CustomerOnSAObligationId);
+        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAObligation), entity.CustomerOnSAObligationId);
 
         return new CreateObligationResponse
         {
@@ -41,11 +41,11 @@ internal class CreateObligationHandler
         };
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateObligationHandler> _logger;
 
     public CreateObligationHandler(
-        Repositories.HouseholdServiceDbContext dbContext,
+        Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateObligationHandler> logger)
     {
         _dbContext = dbContext;

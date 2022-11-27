@@ -18,11 +18,11 @@ internal class UpdateIncomeBaseDataHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<UpdateIncomeBaseDataHandler> _logger;
 
     public UpdateIncomeBaseDataHandler(
-        Repositories.HouseholdServiceDbContext dbContext,
+        Database.HouseholdServiceDbContext dbContext,
         ILogger<UpdateIncomeBaseDataHandler> logger)
     {
         _dbContext = dbContext;

@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.Data;
 
-namespace DomainServices.HouseholdService.Api.Repositories;
+namespace DomainServices.HouseholdService.Api.Database;
 
 internal sealed class HouseholdServiceDbContext
     : BaseDbContext<HouseholdServiceDbContext>

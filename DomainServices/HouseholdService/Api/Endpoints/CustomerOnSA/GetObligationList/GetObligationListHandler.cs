@@ -1,5 +1,5 @@
 ﻿using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
-using DomainServices.HouseholdService.Api.Repositories;
+using DomainServices.HouseholdService.Api.Database;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetObligationList;
 
@@ -14,7 +14,7 @@ internal sealed class GetObligationListHandler
             .Select(CustomerOnSAServiceExpressions.Obligation())
             .ToListAsync(cancellation);
 
-        _logger.FoundItems(list.Count, nameof(Repositories.Entities.CustomerOnSAIncome));
+        _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 
         var response = new Contracts.GetObligationListResponse();
         response.Obligations.AddRange(list);

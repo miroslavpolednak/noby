@@ -82,8 +82,8 @@ app.UseCisLogging();
 
 app.MapCisHealthChecks();
 
-app.MapGrpcService<DomainServices.HouseholdService.Api.Services.HouseholdService>();
-app.MapGrpcService<DomainServices.HouseholdService.Api.Services.CustomerOnSAService>();
+app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.HouseholdService>();
+app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.CustomerOnSAService>();
 
 app.MapGrpcReflectionService();
 

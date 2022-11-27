@@ -10,7 +10,7 @@ internal class GetHouseholdListHandler
         var model = await _dbContext.Households
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
             .AsNoTracking()
-            .Select(Repositories.HouseholdExpressions.HouseholdDetail())
+            .Select(Database.HouseholdExpressions.HouseholdDetail())
             .ToListAsync(cancellation);
 
         var response = new GetHouseholdListResponse();
@@ -18,9 +18,9 @@ internal class GetHouseholdListHandler
         return response;
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public GetHouseholdListHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public GetHouseholdListHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }
