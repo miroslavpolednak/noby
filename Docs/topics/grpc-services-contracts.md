@@ -19,6 +19,10 @@ Např. *CreateHousehold.proto*
 - pokud se jedná o definici samostatného objektu, je soubor pojmenován podle daného objektu.  
 Např. *Household.proto*
 
+## Adresářová struktura
+Pokud projekt obsahuje pouze jednu službu, jsou všechny .proto soubory v rootu projektu.
+Pokud obsahuje více služeb, je každá služba (definice a kontrakty) ve vlastním adresáři.
+
 ## Nastavení *.csproj
 Pro správnou funkčnost ProtoC toolu pro generování C# tříd z proto souborů je nutné mít správně nastavený .NET projekt.
 Každý .proto soubor v projektu musí mít nastavený způsob kompilace a odkaz na společně sdílené soubory.
