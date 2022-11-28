@@ -1,8 +1,9 @@
-﻿using ExternalServices.SbWebApi.Shared;
+﻿using ExternalServices.SbWebApi.Dto;
 
 namespace ExternalServices.SbWebApi.V1;
 
-public interface ISbWebApiClient
+public interface ISbWebApiClient 
+    : ISbWebApi
 {
-    Task<IServiceCallResult> CaseStateChanged(CaseStateChangedModel request, CancellationToken cancellationToken);
+    Task<IServiceCallResult> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken);
 }

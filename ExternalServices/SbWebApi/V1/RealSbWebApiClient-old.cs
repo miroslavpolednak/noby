@@ -1,9 +1,6 @@
-﻿using ExternalServices.SbWebApi.Shared;
-using ExternalServices.SbWebApi.V1.SbWebApiWrapper;
+﻿namespace ExternalServices.SbWebApi.V1;
 
-namespace ExternalServices.SbWebApi.V1;
-
-internal class RealSbWebApiClient
+/*internal class RealSbWebApiClient
     : BaseClient<EventReportClient>, ISbWebApiClient
 {
     public RealSbWebApiClient(HttpClient httpClient, ILogger<EventReportClient> logger) : base(httpClient, logger) { }
@@ -65,3 +62,4 @@ internal class RealSbWebApiClient
         }
     }
 }
+*/

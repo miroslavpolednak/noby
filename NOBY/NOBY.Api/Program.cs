@@ -11,6 +11,7 @@ using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.HouseholdService.Clients;
 using CIS.Infrastructure.MediatR;
+using ExternalServices.SbWebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,9 @@ builder.Services
     .AddCaseService()
     .AddSalesArrangementService()
     .AddRiskIntegrationService();
+
+//!!!! odstranit
+builder.AddExternalServiceSbWebApi<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
 
 // FOMS services
 builder

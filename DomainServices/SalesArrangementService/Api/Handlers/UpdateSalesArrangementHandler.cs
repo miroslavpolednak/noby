@@ -52,7 +52,7 @@ internal class UpdateSalesArrangementHandler
             var ownerInstance = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation));
             var productType = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == caseInstance.Data.ProductTypeId);
 
-            var sbNotifyModel = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
+            var sbNotifyModel = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest(
                 userLogin ?? "anonymous",
                 entity.CaseId,
                 entity.ContractNumber ?? "",

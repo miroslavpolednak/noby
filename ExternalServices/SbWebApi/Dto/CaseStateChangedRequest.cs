@@ -1,6 +1,6 @@
-﻿namespace ExternalServices.SbWebApi.Shared;
+﻿namespace ExternalServices.SbWebApi.Dto;
 
-public sealed record CaseStateChangedModel(
+public sealed record CaseStateChangedRequest(
     string Login,
     long CaseId,
     string? ContractNumber,
