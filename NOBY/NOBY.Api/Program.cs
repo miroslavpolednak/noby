@@ -45,7 +45,7 @@ builder.Services
     .AddRiskIntegrationService();
 
 //!!!! odstranit
-builder.AddExternalServiceSbWebApi<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
+builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
 
 // FOMS services
 builder

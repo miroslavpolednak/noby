@@ -5,8 +5,8 @@ namespace ExternalServices.SbWebApi.V1;
 internal sealed class MockSbWebApiClient
     : ISbWebApiClient
 {
-    public Task<IServiceCallResult> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken)
+    public Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken)
     {
-        return Task.FromResult((IServiceCallResult)new SuccessfulServiceCallResult());
+        return Task.CompletedTask;
     }
 }

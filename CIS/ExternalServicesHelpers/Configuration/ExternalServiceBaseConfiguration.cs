@@ -17,12 +17,3 @@ public abstract class ExternalServiceBaseConfiguration
 
     public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
 }
-
-public class ExternalServiceBaseConfiguration<TClient>
-    : ExternalServiceBaseConfiguration, IExternalServiceConfiguration<TClient>
-    where TClient : class
-{
-    [Obsolete]
-    public override string GetVersion() => throw new NotImplementedException();
-
-}

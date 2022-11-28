@@ -5,7 +5,7 @@ namespace ExternalServices.SbWebApi.V1;
 internal sealed class RealSbWebApiClient
     : ISbWebApiClient
 {
-    public async Task<IServiceCallResult> CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken)
+    public async Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var easRequest = new Contracts.WFS_Request_CaseStateChanged
         {
@@ -31,11 +31,15 @@ internal sealed class RealSbWebApiClient
         };
 
         var response = await _httpClient
-            .PutAsJsonAsync(_httpClient.BaseAddress + "", cancellationToken)
+            .PostAsJsonAsync("wfs/eventreport/casestatechanged", easRequest, cancellationToken)
             .ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<CreditWorthinessCalculation>(HttpClientFactoryExtensions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(17001, CreditWorthinessStartupExtensions.ServiceName, nameof(Calculate), nameof(CreditWorthinessCalculation));
+        var result = await response.Content.ReadFromJsonAsync<Contracts.WFS_Event_Response>(cancellationToken: cancellationToken)
+            ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CaseStateChanged), nameof(Contracts.WFS_Event_Response));
+
+        // neco je spatne ve WS
+        if ((result.Result?.Return_val ?? 0) != 0)
+            throw new CisExtServiceValidationException(result.Result?.Return_text ?? "");
     }
 
     private readonly HttpClient _httpClient;
