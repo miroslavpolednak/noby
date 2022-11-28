@@ -1,6 +1,6 @@
-﻿using DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
+﻿using DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
+using DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.DocumentArchiveService.Contracts.v1;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
@@ -9,7 +9,6 @@ namespace DomainServices.DocumentArchiveService.Api.Endpoints;
 [Authorize]
 public class DocumentArchiveServiceGrpc : Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase
 {
-
     private readonly IMediator _mediator;
 
     public DocumentArchiveServiceGrpc(IMediator mediator)
@@ -25,4 +24,7 @@ public class DocumentArchiveServiceGrpc : Contracts.v1.DocumentArchiveService.Do
         await _mediator.Send(new UploadDocumentMediatrRequest(request), context.CancellationToken);
         return new Empty();
     }
+
+    public override async Task<GetDocumentResponse> GetDocument(GetDocumentRequest request, ServerCallContext context)
+     => await _mediator.Send(new GetDocumentMediatrRequest(request), context.CancellationToken);
 }

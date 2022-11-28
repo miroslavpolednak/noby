@@ -37,6 +37,14 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetDocument(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient">
             <summary>Client for DocumentArchiveService</summary>
         </member>
@@ -127,6 +135,42 @@
             <param name="options">The options for the call.</param>
             <returns>The call object.</returns>
         </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocument(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocument(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
             <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
         </member>
@@ -171,6 +215,28 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentReflection.Descriptor">
             <summary>File descriptor for UploadDocument.proto</summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.MetadataFieldNumber">
+            <summary>Field number for the "Metadata" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Metadata">
+            <summary>
+            Metadata dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryDataFieldNumber">
+            <summary>Field number for the "BinaryData" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string 
+            </summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.DocumentMetadataReflection">
+            <summary>Holder for reflection information generated from DocumentMetadata.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadataReflection.Descriptor">
+            <summary>File descriptor for DocumentMetadata.proto</summary>
+        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentStatus.Z">
             <summary>
             Default standardní platný dokument
@@ -209,22 +275,6 @@
         <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.I">
             <summary>
             Interní
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.MetadataFieldNumber">
-            <summary>Field number for the "Metadata" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Metadata">
-            <summary>
-            Metadata dokumentu
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryDataFieldNumber">
-            <summary>Field number for the "BinaryData" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryData">
-            <summary>
-            Soubour (pole bajtů) ve formě base64string 
             </summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata">
@@ -362,6 +412,58 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.MinorCodes">
             <summary>
             Vedlejší heslo jen archiv TCP
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata.TesttimeFieldNumber">
+            <summary>Field number for the "testtime" field.</summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.GetDocumentReflection">
+            <summary>Holder for reflection information generated from GetDocument.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentReflection.Descriptor">
+            <summary>File descriptor for GetDocument.proto</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentIdFieldNumber">
+            <summary>Field number for the "documentId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentId">
+            <summary>
+            ID dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.WithContentFieldNumber">
+            <summary>Field number for the "withContent" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.WithContent">
+            <summary>
+            Vrátit i binární data (default=false)
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentResponse.MetadataFieldNumber">
+            <summary>Field number for the "Metadata" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentResponse.Metadata">
+            <summary>
+            Metadata dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentResponse.ContentFieldNumber">
+            <summary>Field number for the "Content" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.FileInfo.BinaryDataFieldNumber">
+            <summary>Field number for the "BinaryData" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.FileInfo.BinaryData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string 
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.FileInfo.MineTypeFieldNumber">
+            <summary>Field number for the "MineType" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.FileInfo.MineType">
+            <summary>
+            MIME typ dokumentu
             </summary>
         </member>
     </members>

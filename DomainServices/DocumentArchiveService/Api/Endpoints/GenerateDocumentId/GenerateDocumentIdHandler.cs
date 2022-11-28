@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.Data;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
+using Microsoft.Extensions.Options;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
@@ -14,11 +15,11 @@ internal sealed class GenerateDocumentIdHandler
     public GenerateDocumentIdHandler(
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> connectionProvider,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        AppConfiguration configuration)
+        IOptions<AppConfiguration> configuration)
     {
         _connectionProvider = connectionProvider;
         _serviceUserAccessor = serviceUserAccessor;
-        _configuration = configuration;
+        _configuration = configuration?.Value ?? throw new ArgumentNullException();
     }
 
     public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdMediatrRequest request, CancellationToken cancellation)

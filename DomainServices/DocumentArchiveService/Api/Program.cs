@@ -3,6 +3,9 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using DomainServices.DocumentArchiveService.Api;
 using CIS.DomainServicesSecurity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -14,12 +17,12 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+builder.Services.AddOptions<AppConfiguration>()
+    .Bind(builder.Configuration.GetSection(AppConfiguration.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 #region register builder
-// strongly-typed konfigurace aplikace
-builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
 builder
@@ -38,7 +41,7 @@ builder.AddCisHealthChecks();
 builder.AddCisServiceAuthentication();
 
 // add this service
-builder.AddDocumentArchiveService();
+builder.AddDocumentArchiveService(builder.Configuration);
 
 // add grpc
 builder.AddDocumentArchiveGrpc();

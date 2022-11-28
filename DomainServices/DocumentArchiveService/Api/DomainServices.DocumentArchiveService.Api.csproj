@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AnalysisMode>Recommended</AnalysisMode>
+		<AnalysisMode>All</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
@@ -19,6 +19,7 @@
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.179" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
@@ -29,7 +30,7 @@
 		<ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
-		<ProjectReference Include="..\..\..\CIS\WebApi\CIS.Infrastructure.WebApi.csproj" />
+		<ProjectReference Include="..\..\..\ExternalServices\Sdf\ExternalServices.Sdf.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj" />
 	</ItemGroup>
 

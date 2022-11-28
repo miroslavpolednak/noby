@@ -2,9 +2,7 @@
 package DomainServices.DocumentArchiveService;
 option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
 
-import "google/protobuf/timestamp.proto";
-import "GrpcDate.proto";
-import "google/protobuf/wrappers.proto";
+import "DocumentMetadata.proto";
 
 message UploadDocumentRequest{
 	// Metadata dokumentu
@@ -13,69 +11,3 @@ message UploadDocumentRequest{
     bytes BinaryData = 2;
 }
 
-// Metadata dokumentu
-message DocumentMetadata {
-    // Unikátní Id obchodního případu
-    google.protobuf.Int64Value CaseId = 1;
-    // ID dokumentu
-    string DocumentId = 2;
-    // EaCodeMain.Id https://wiki.kb.cz/display/HT/EaCodeMain
-    google.protobuf.Int32Value EaCodeMainId = 3;
-    // Jméno souboru
-    string Filename = 4;
-    // Popis dokumentu
-    string Description = 5;
-    
-    int32 OrderId = 6;
-    // Datum přijetí dokumentu
-    cis.types.GrpcDate CreatedOn = 7;
-    // Login autora dokumentu, kdo dokument uložil
-    string AuthorUserLogin = 8;
-    
-    string Priority = 9;
-    // Status dokumentu
-    DocumentStatus Status = 10;
-    // Jedná se o seskupování dokumentů do virtuálních složek
-    FolderDocument FolderDocument = 11;
-
-    string FolderDocumentId = 12;
-
-    DocumentDirection DocumentDirection = 13;
-    // zdrojová aplikace dokumentu
-    string SourceSystem = 14; 
-    // ID formuláře
-    string FormId = 15;
-    // Číslo smlouvy
-    string ContractNumber = 16;
-    // Číslo zástavní smlouvy
-    string PledgeAgreementNumber = 17;
-    // Kompletnost jen archiv TCP 1 - kompletní, 0 = nekompletní, null = neurčeno
-    google.protobuf.Int32Value Completeness = 18;
-    // Vedlejší heslo jen archiv TCP
-    repeated int32 MinorCodes = 19;
-}
-
-enum DocumentStatus {
-    // Default standardní platný dokument
-    Z = 0;
-    // Dokument logicky smazaný (v EA zůstává, ale běžní uživatelé jej nemohou vidět)
-    L = 1;
-}
-
-enum FolderDocument {
-    // Nesložkový dokument
-    N = 0;
-    // Hlavní dokument složky
-    S = 1;
-    // Podřízený dokument složky
-    P = 2;
-}
-
-enum DocumentDirection {
-    // Vstupní
-    E = 0;
-    // Výstupní
-    A = 1;
-    // Interní
-    I = 2;
-}

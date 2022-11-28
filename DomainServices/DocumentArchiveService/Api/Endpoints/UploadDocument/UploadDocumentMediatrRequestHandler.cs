@@ -4,6 +4,8 @@
     {
         public async Task<Unit> Handle(UploadDocumentMediatrRequest request, CancellationToken cancellationToken)
         {
+            // decimal test = request.Request.Metadata.TestNumber;
+            DateTime testtime = request.Request.Metadata.Testtime.ToDateTime();
             return Unit.Value;
         }
     }

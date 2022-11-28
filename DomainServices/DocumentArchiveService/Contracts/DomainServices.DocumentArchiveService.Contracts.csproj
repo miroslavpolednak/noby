@@ -35,6 +35,8 @@
 		<Protobuf Include="./DocumentArchiveService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./GenerateDocumentId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./UploadDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="./DocumentMetadata.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="./GetDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 
 	<ItemGroup>

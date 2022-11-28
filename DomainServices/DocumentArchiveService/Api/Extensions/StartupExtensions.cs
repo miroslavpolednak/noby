@@ -1,16 +1,19 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using ExternalServices.Sdf;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Configuration;
 
 namespace DomainServices.DocumentArchiveService.Api;
 
 internal static class StartupExtensions
 {
-    public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder, IConfiguration configuration)
     {
-        // disable default model state validations
-        builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
-
+        if (builder is null)
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
+        
         builder.Services
             .AddMediatR(typeof(Program).Assembly)
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
@@ -22,12 +25,9 @@ internal static class StartupExtensions
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-        //// json
-        //builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-        //{
-        //    options.SerializerOptions.PropertyNameCaseInsensitive = true;
-        //    options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
-        //});
+        var appConfig = configuration.GetSection(AppConfiguration.SectionName).Get<AppConfiguration>();
+
+        builder.Services.AddExternalServiceSdf(appConfig?.Sdf);
 
         // databases
         builder.Services

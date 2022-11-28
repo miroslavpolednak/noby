@@ -4,6 +4,8 @@ option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts.v1";
 
 import "GenerateDocumentId.proto";
 import "UploadDocument.proto";
+import "GetDocument.proto";
+
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
@@ -22,5 +24,11 @@ service DocumentArchiveService{
 		 post: "/api/v1/document",
 		 body: "*"
 	  };
+	};
+	// Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+	rpc GetDocument(DomainServices.DocumentArchiveService.GetDocument.GetDocumentRequest) returns (DomainServices.DocumentArchiveService.GetDocument.GetDocumentResponse){
+		 option (google.api.http) = {
+		 get: "/api/v1/document/{documentId}"
+		};
 	};
 }
