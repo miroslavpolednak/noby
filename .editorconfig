@@ -8,3 +8,6 @@ dotnet_diagnostic.CA1416.severity = silent
 
 # CS1573: Parameter has no matching param tag in the XML comment (but other parameters do)
 dotnet_diagnostic.CS1573.severity = silent
+
+# File scoped namespace
+csharp_style_namespace_declarations = file_scoped:warning

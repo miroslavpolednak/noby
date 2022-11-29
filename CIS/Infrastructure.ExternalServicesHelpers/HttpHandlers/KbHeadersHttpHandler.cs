@@ -9,19 +9,19 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 /// <remarks>
 /// Přidává hlavičky X-KB-Caller-System-Identity a X-B3-TraceId a X-B3-SpanId.
 /// </remarks>
-internal sealed class KbHeadersHttpHandler
+public sealed class KbHeadersHttpHandler
     : DelegatingHandler
 {
-    private readonly IExternalServiceConfiguration _configuration;
+    private readonly string _appComponent;
 
-    public KbHeadersHttpHandler(IExternalServiceConfiguration configuration)
+    public KbHeadersHttpHandler(string appComponent = "NOBY")
     {
-        _configuration = configuration;
+        _appComponent = appComponent;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        request.Headers.Add("X-KB-Caller-System-Identity", "{\"app\":\"NOBY\",\"appComp\":\"NOBY\"}");
+        request.Headers.Add("X-KB-Caller-System-Identity", $$"""{"app":"NOBY","appComp":"{{_appComponent}}"}""");
         if (Activity.Current?.Id is not null)
         {
             request.Headers.Add("X-B3-TraceId", Activity.Current?.RootId);

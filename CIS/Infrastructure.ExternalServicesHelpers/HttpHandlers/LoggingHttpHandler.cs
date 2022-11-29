@@ -6,7 +6,7 @@
 /// <remarks>
 /// Vloží do kontextu logovaného záznamu klíče Payload a Headers s odpovídajícími objekty. Pokud např. response payload neobsahuje, není tento klíč do kontextu logovaného záznamu vložen.
 /// </remarks>
-internal sealed class LoggingHttpHandler 
+public sealed class LoggingHttpHandler 
     : DelegatingHandler
 {
     private readonly ILogger _logger;

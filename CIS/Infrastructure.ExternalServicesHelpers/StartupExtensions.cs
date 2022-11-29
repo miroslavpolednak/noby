@@ -39,10 +39,19 @@ public static class StartupExtensions
                 client.BaseAddress = new Uri(configuration.ServiceUrl);
             });
 
+        // vychozi chovani - ignorovat neplatne ssl certifikaty (vetsina sluzeb v KB nema validni cert)
+        clientBuilder.ConfigurePrimaryHttpMessageHandler(b =>
+        {
+            return new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+            };
+        });
+
         // poslat v requestu hlavicky vyzadovane v KB
         if (configuration.PropagateKbHeaders)
         {
-            builder.Services.AddTransient<HttpHandlers.KbHeadersHttpHandler>(provider => new HttpHandlers.KbHeadersHttpHandler(configuration));
+            builder.Services.AddTransient<HttpHandlers.KbHeadersHttpHandler>(provider => new HttpHandlers.KbHeadersHttpHandler());
             clientBuilder.AddHttpMessageHandler<HttpHandlers.KbHeadersHttpHandler>();
         }
 
