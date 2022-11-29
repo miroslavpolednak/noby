@@ -23,7 +23,7 @@ public static class CodebookServiceExtensions
             .registerServices()
         );
 
-    private static IServiceCollection registerServices(this IServiceCollection services)
+    private static IServiceCollection registerServices(this IServiceCollection services, bool validateServiceCertificate = false)
     {
         // register services
         services.AddTransient<ICodebookServiceClients, CodebookService>();
@@ -31,14 +31,16 @@ public static class CodebookServiceExtensions
         // register cache
         services.AddSingleton(new ClientsMemoryCache());
 
-        services
+        var builder = services
             .AddCodeFirstGrpcClient<Contracts.ICodebookService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<Contracts.ICodebookService>>();
                 options.Address = serviceUri.Url;
             })
-            .CisConfigureChannel()
             .AddCisCallCredentials();
+
+        if (!validateServiceCertificate)
+            builder.CisConfigureChannelWithoutCertificateValidation();
 
         return services;
     }

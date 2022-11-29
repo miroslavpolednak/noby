@@ -39,20 +39,24 @@ public static class RiskIntegrationServiceExtensions
         return services;
     }
 
-    static void register<IService, IAbstraction, TAbstraction>(this IServiceCollection services)
+    static void register<IService, IAbstraction, TAbstraction>(this IServiceCollection services, bool validateServiceCertificate = false)
         where IService : class
         where IAbstraction : class
         where TAbstraction : class
-        => services
+    {
+        var builder = services
             .AddTransient(typeof(IAbstraction), typeof(TAbstraction))
             .AddCodeFirstGrpcClient<IService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<_Contracts.IGrpcSettingsMarker>>();
                 options.Address = serviceUri.Url;
             })
-            .CisConfigureChannel()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()
             .AddCisCallCredentials();
+
+        if (!validateServiceCertificate)
+            builder.CisConfigureChannelWithoutCertificateValidation();
+    }
 }

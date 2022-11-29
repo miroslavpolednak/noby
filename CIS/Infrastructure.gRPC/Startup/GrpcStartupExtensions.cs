@@ -46,43 +46,51 @@ public static class GrpcStartupExtensions
         return services;
     }
 
-    public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService>(this IServiceCollection services) 
+    public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService>(this IServiceCollection services, bool validateServiceCertificate = false) 
         where TService : class
     {
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
         
-        return services
+        var builder = services
             .AddGrpcClient<TService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
                 options.Address = serviceUri.Url;
             })
-            .CisConfigureChannel()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()
             .AddCisCallCredentials();
+
+        if (!validateServiceCertificate)
+            builder.CisConfigureChannelWithoutCertificateValidation();
+
+        return builder;
     }
 
-    public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services)
+    public static IHttpClientBuilder AddGrpcClientFromCisEnvironment<TService, TServiceUriSettings>(this IServiceCollection services, bool validateServiceCertificate = false)
         where TService : class 
         where TServiceUriSettings : class
     {
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
 
-        return services
+        var builder = services
             .AddGrpcClient<TService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
                 options.Address = serviceUri.Url;
             })
-            .CisConfigureChannel()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()
             .AddCisCallCredentials();
+
+        if (!validateServiceCertificate)
+            builder.CisConfigureChannelWithoutCertificateValidation();
+
+        return builder;
     }
 
     public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl)
@@ -92,7 +100,7 @@ public static class GrpcStartupExtensions
         return services;
     }
 
-    public static IHttpClientBuilder CisConfigureChannel(this IHttpClientBuilder builder)
+    public static IHttpClientBuilder CisConfigureChannelWithoutCertificateValidation(this IHttpClientBuilder builder)
         => builder.ConfigureChannel(configureChannel);
 
     public static IHttpClientBuilder AddCisCallCredentials(this IHttpClientBuilder builder)
