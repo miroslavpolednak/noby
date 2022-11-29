@@ -61,16 +61,16 @@ public static class StartupExtensions
         builder.Configuration.GetSection(getSectionName(serviceName)).Bind(configurations);
 
         if (configurations == null)
-            throw new Core.Exceptions.CisConfigurationNotFound(getSectionName(serviceName));
+            throw new CisConfigurationNotFound(getSectionName(serviceName));
         else if (!configurations.Any())
-            throw new Core.Exceptions.CisConfigurationNotFound(getSectionName(serviceName));
+            throw new CisConfigurationNotFound(getSectionName(serviceName));
 
         configurations.ForEach(c =>
         {
             if (!c.UseServiceDiscovery && string.IsNullOrEmpty(c.ServiceUrl))
-                throw new Core.Exceptions.CisConfigurationException(0, $"{serviceName} Service URL must be defined");
-            if (c.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
-                throw new Core.Exceptions.CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
+                throw new CisConfigurationException(0, $"{serviceName} Service URL must be defined");
+            if (c.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
+                throw new CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
         });
 
         return configurations;
@@ -85,11 +85,11 @@ public static class StartupExtensions
         builder.Configuration.GetSection(getSectionName(serviceName)).Bind(configuration);
 
         if (configuration == null)
-            throw new Core.Exceptions.CisConfigurationNotFound(getSectionName(serviceName));
+            throw new CisConfigurationNotFound(getSectionName(serviceName));
         if (!configuration.UseServiceDiscovery && string.IsNullOrEmpty(configuration.ServiceUrl))
-            throw new Core.Exceptions.CisConfigurationException(0, $"{serviceName} Service URL must be defined");
+            throw new CisConfigurationException(0, $"{serviceName} Service URL must be defined");
         if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
-            throw new Core.Exceptions.CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
+            throw new CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
 
         return configuration;
     }

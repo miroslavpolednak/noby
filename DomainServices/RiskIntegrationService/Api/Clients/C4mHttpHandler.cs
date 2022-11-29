@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.Logging;
-
-namespace DomainServices.RiskIntegrationService.Api.Clients;
+﻿namespace DomainServices.RiskIntegrationService.Api.Clients;
 
 internal class C4mHttpHandler : DelegatingHandler
 {

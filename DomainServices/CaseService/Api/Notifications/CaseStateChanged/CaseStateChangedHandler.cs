@@ -27,18 +27,19 @@ internal class CaseStateChangedHandler
         string? rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
 
         //TODO login
-        var request = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
-            userInstance.UserIdentifiers.First().Identity,
-            notification.CaseId,
-            notification.ContractNumber, 
-            notification.ClientName ?? "", 
-            caseState.Name, 
-            notification.ProductTypeId,
-            ownerInstance.CPM,
-            ownerInstance.ICP,
-            (CIS.Foms.Enums.Mandants)productType.MandantId,
-            rbcId);
-
+        var request = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
+        {
+            Login = userInstance.UserIdentifiers.First().Identity,
+            CaseId = notification.CaseId,
+            ContractNumber = notification.ContractNumber,
+            ClientFullName = notification.ClientName ?? "",
+            CaseStateName = caseState.Name,
+            ProductTypeId = notification.ProductTypeId,
+            OwnerUserCpm = ownerInstance.CPM,
+            OwnerUserIcp = ownerInstance.ICP,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
+            RiskBusinessCaseId = rbcId
+        };
         await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
     }
 

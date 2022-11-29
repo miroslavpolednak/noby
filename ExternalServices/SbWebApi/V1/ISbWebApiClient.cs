@@ -1,8 +1,11 @@
-﻿using ExternalServices.SbWebApi.Shared;
+﻿using ExternalServices.SbWebApi.Dto;
 
 namespace ExternalServices.SbWebApi.V1;
 
 public interface ISbWebApiClient
 {
-    Task<IServiceCallResult> CaseStateChanged(CaseStateChangedModel request, CancellationToken cancellationToken);
+    /// <summary>
+    /// Notifikace SB o změně stavu Case
+    /// </summary>
+    Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

@@ -1,14 +1,11 @@
-﻿using CIS.ExternalServicesHelpers.Configuration;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 
 namespace CIS.ExternalServicesHelpers.Configuration;
 
-public abstract class ExternalServiceBaseConfiguration
-    : IExternalServiceConfiguration
+public class ExternalServiceConfiguration<TClient>
+    : IExternalServiceConfiguration<TClient>
+    where TClient : class
 {
-    [Obsolete]
-    public abstract string GetVersion();
-
     public int? RequestTimeout { get; set; } = 10;
 
     public string ServiceUrl { get; set; } = "";
@@ -16,4 +13,9 @@ public abstract class ExternalServiceBaseConfiguration
     public bool UseServiceDiscovery { get; set; } = true;
 
     public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
+
+    public string GetVersion()
+    {
+        throw new NotImplementedException();
+    }
 }
