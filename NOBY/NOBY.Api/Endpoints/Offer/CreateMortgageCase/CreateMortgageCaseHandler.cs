@@ -48,16 +48,16 @@ internal class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
         // create customer on SA
-        var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
+        var createCustomerResult = await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
         
         // create household
-        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
+        int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
             HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
-        }, cancellationToken));
+        }, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyHouseholdId, householdId);
         _logger.EntityCreated(nameof(Household), householdId);
 

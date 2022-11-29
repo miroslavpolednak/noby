@@ -19,15 +19,15 @@ internal class CreateHouseholdHandler
             SalesArrangementId = request.SalesArrangementId,
             HouseholdTypeId = request.HouseholdTypeId
         };
-        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(requestModel, cancellationToken));
+        int householdId = await _householdService.CreateHousehold(requestModel, cancellationToken);
 
         // vytvorit customera
-        var customerResponse = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
+        var customerResponse = await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
         {
             SalesArrangementId = request.SalesArrangementId,
             CustomerRoleId = request.HouseholdTypeId,
             Customer = new _HO.CustomerOnSABase()
-        }, cancellationToken));
+        }, cancellationToken);
 
         // vlozit customera na household
         await _householdService.UpdateHousehold(new _HO.UpdateHouseholdRequest

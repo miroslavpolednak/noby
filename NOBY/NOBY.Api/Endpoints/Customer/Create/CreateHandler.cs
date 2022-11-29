@@ -58,10 +58,10 @@ internal sealed class CreateHandler
         }, cancellationToken));
 
         // nas customer
-        var customerOnSA = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken));
+        var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
         // update customerOnSA. Dostanu nove PartnerId
-        var updateResponse = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken));
+        var updateResponse = await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken);
 
         // vytvorit response z API
         var model = customerKb

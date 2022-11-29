@@ -100,7 +100,7 @@ internal class FormsService
     {
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
 
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<Household>>(await _householdService.GetHouseholdList(arrangement.SalesArrangementId, cancellation));
+        var households = await _householdService.GetHouseholdList(arrangement.SalesArrangementId, cancellation);
 
         var incomes = await GetIncomes(customersOnSA, cancellation);
 
@@ -434,13 +434,13 @@ internal class FormsService
 
     private async Task<List<CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
+        var customersOnSa = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation);
 
         var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
         var customers = new List<CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
+            var customer = await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation);
             customers.Add(customer);
         }
         return customers;
@@ -465,7 +465,7 @@ internal class FormsService
         var incomes = new List<Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
-            var income = ServiceCallResult.ResolveAndThrowIfError<Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
+            var income = await _customerOnSAService.GetIncome(incomeIds[i], cancellation);
             incomes.Add(income);
         }
         return incomes;

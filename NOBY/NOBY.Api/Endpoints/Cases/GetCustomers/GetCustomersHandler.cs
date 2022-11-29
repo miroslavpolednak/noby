@@ -38,9 +38,7 @@ internal class GetCustomersHandler
             var saDetail = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(saId, cancellationToken));
             
             // vsichni customeri z CustomerOnSA
-            var customers = ServiceCallResult.ResolveAndThrowIfError<List<_HO.CustomerOnSA>>(
-                await _customerOnSAService.GetCustomerList(saId, cancellationToken)
-            );
+            var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers

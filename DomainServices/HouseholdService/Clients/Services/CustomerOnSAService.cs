@@ -4,96 +4,88 @@ namespace DomainServices.HouseholdService.Clients.Services;
 
 internal class CustomerOnSAService : ICustomerOnSAServiceClient
 {
-    public async Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
+        return await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.DeleteCustomerAsync(
+        await _service.DeleteCustomerAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId,
                 HardDelete = hardDelete
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.GetCustomerAsync(
+        return await _service.GetCustomerAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<CustomerOnSA>(result);
     }
 
-    public async Task<IServiceCallResult> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetCustomerListAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<List<CustomerOnSA>>(result.Customers.ToList());
+        return result.Customers.ToList();
     }
 
-    public async Task<IServiceCallResult> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<UpdateCustomerResponse>(result);
+        return await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
     #region Income
-    public async Task<IServiceCallResult> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateIncomeAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<int>(result.IncomeId);
+        return result.IncomeId;
     }
 
-    public async Task<IServiceCallResult> DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.DeleteIncomeAsync(
+        await _service.DeleteIncomeAsync(
             new()
             {
                 IncomeId = incomeId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Income> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.GetIncomeAsync(
+        return await _service.GetIncomeAsync(
             new()
             {
                 IncomeId = incomeId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<Income>(result);
     }
 
-    public async Task<IServiceCallResult> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<IncomeInList>> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetIncomeListAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<List<IncomeInList>>(result.Incomes.ToList());
+        return result.Incomes.ToList();
     }
 
-    public async Task<IServiceCallResult> UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
+        await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
+        await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
     }
     #endregion Income
 

@@ -67,13 +67,13 @@ internal class LoanApplicationDataService
 
     private async Task<List<cHousehold.Household>> GetHouseholds(int salesArrangementId, CancellationToken cancellation)
     {
-        var householdList = ServiceCallResult.ResolveAndThrowIfError<List<cHousehold.Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellation));
+        var householdList = await _householdService.GetHouseholdList(salesArrangementId, cancellation);
         var householdIds = householdList.Select(i => i.HouseholdId).ToArray();
 
         var households = new List<cHousehold.Household>();
         for (int i = 0; i < householdIds.Length; i++)
         {
-            var household = ServiceCallResult.ResolveAndThrowIfError<cHousehold.Household>(await _householdService.GetHousehold(householdIds[i], cancellation));
+            var household = await _householdService.GetHousehold(householdIds[i], cancellation);
             households.Add(household);
         }
         return households;
@@ -81,13 +81,13 @@ internal class LoanApplicationDataService
 
     private async Task<List<cHousehold.CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customerOnSAList = ServiceCallResult.ResolveAndThrowIfError<List<cHousehold.CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
+        var customerOnSAList = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation);
         var customerOnSAIds = customerOnSAList.Select(i => i.CustomerOnSAId).ToArray();
 
         var customers = new List<cHousehold.CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<cHousehold.CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
+            var customer = await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation);
             customers.Add(customer);
         }
         return customers;
@@ -99,7 +99,7 @@ internal class LoanApplicationDataService
         var incomes = new List<cHousehold.Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
-            var income = ServiceCallResult.ResolveAndThrowIfError<cHousehold.Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
+            var income = await _customerOnSAService.GetIncome(incomeIds[i], cancellation);
             incomes.Add(income);
         }
         return incomes.ToDictionary(i => i.IncomeId);

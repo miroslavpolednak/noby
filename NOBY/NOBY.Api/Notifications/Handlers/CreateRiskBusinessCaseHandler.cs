@@ -41,7 +41,7 @@ internal class CreateRiskBusinessCaseHandler
             throw new CisNotFoundException(0, "SA does not have Offer bound to it");
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
         // household
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<_HO.Household>>(await _householdService.GetHouseholdList(notification.SalesArrangementId, cancellationToken));
+        var households = await _householdService.GetHouseholdList(notification.SalesArrangementId, cancellationToken);
         if (!households.Any())
             throw new CisValidationException("CreateRiskBusinessCase: household does not exist");
 

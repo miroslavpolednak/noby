@@ -12,7 +12,7 @@ internal class GetCustomersHandler
     public async Task<List<Dto.CustomerListItem>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
     {
         // najit existujici customeryOnSA
-        var customersOnSA = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken));
+        var customersOnSA = await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken);
 
         _logger.FoundItems(customersOnSA.Count, nameof(CustomerOnSA));
 
