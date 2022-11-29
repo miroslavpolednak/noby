@@ -42,6 +42,7 @@ public class BusinessResultConsumer
                 catch (Exception e)
                 {
                     _logger.LogError(e,$"Consumer '{nameof(BusinessResultConsumer)}': Consuming topic '{Topics.McsResultIn}' failed.");
+                    throw;
                 }
 
             }

@@ -22,6 +22,7 @@
     <None Remove="Mortgage\TypesMortgage - Copy.proto" />
     <None Remove="OfferIdRequest.proto" />
     <None Remove="SimulateMortgage.proto" />
+    <None Remove="SimulationResultWarning.proto" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -44,7 +45,6 @@
 		<Protobuf Include="./BasicParameters.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./OfferIdRequest.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
-
 		<Protobuf Include="./Mortgage/GetMortgageOffer.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./Mortgage/MortgageSimulationInputs.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="./Mortgage/MortgageSimulationResults.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />

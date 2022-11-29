@@ -386,6 +386,16 @@ internal static class EasSimulationExtensions
             .AddResResults(easSimulationResponse.uverVysledky)                  // loan
             .AddResResults(easSimulationResponse.urokovaSazba);                  // interest rate
 
+        if (easSimulationResponse.errorInfo?.warningy?.Any() ?? false)
+        {
+            results.Warnings.AddRange(easSimulationResponse.errorInfo.warningy.Select(t => new _OS.SimulationResultWarning
+            {
+                WarningCode = t.kodWarningu,
+                WarningInternalMessage = t.internalMsg ?? "",
+                WarningText = t.textWarningu ?? ""
+            }));
+        }
+
         return results;
     }
 

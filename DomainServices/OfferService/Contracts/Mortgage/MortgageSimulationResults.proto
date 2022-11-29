@@ -28,4 +28,6 @@ message MortgageSimulationResults {
 	int32 LoanInterestRateAnnouncedType = 16;
 	cis.types.GrpcDecimal EmployeeBonusDeviation = 17;
 	cis.types.GrpcDecimal MarketingActionsDeviation = 18;
+
+	repeated SimulationResultWarning Warnings = 19;
 }

@@ -12,13 +12,14 @@ internal class HouseholdService : IHouseholdServiceClient
         return new SuccessfulServiceCallResult<int>(result.HouseholdId);
     }
 
-    public async Task<IServiceCallResult> DeleteHousehold(int householdId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> DeleteHousehold(int householdId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(DeleteHousehold), householdId);
         var result = await _service.DeleteHouseholdAsync(
             new()
             {
-                HouseholdId = householdId
+                HouseholdId = householdId,
+                HardDelete = hardDelete
             }, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult();
     }
@@ -30,7 +31,7 @@ internal class HouseholdService : IHouseholdServiceClient
             var result = await _service.GetHouseholdAsync(
                 new()
                 {
-                    HouseholdId = householdId
+                    HouseholdId = householdId,
                 }, cancellationToken: cancellationToken);
             return result;
         }));

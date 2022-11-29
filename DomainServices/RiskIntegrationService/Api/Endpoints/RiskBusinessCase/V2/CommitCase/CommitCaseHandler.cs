@@ -1,6 +1,7 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using _C4M = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1.Contracts;
 using _cl = DomainServices.RiskIntegrationService.Api.Clients.RiskBusinessCase.V1;
+using CIS.Core.Configuration;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CommitCase;
 
@@ -15,7 +16,7 @@ internal sealed class CommitCaseHandler
 
         var requestModel = new _C4M.RiskBusinessCaseCommitCreate
         {
-            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId, chanel),
+            LoanApplicationId = _C4M.ResourceIdentifier.CreateLoanApplication(request.SalesArrangementId.ToEnvironmentId(_cisEnvironment.EnvironmentName!), chanel),
             ItChannel = FastEnum.Parse<_C4M.RiskBusinessCaseCommitCreateItChannel>(chanel, true),
             LoanApplicationProduct = new _C4M.LoanApplicationProduct()
             {
@@ -82,18 +83,21 @@ internal sealed class CommitCaseHandler
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
+    private readonly ICisEnvironmentConfiguration _cisEnvironment;
 
     public CommitCaseHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.IRiskBusinessCaseClient client,
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider)
+        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
+        ICisEnvironmentConfiguration cisEnvironment)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
         _client = client;
         _codebookService = codebookService;
         _xxvConnectionProvider = xxvConnectionProvider;
+        _cisEnvironment = cisEnvironment;
     }
 }

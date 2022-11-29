@@ -9,7 +9,7 @@ internal sealed class DeleteHouseholdHandler
             .Where(t => t.HouseholdId == request.HouseholdId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
 
-        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main)
+        if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main && !request.HardDelete)
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new CisArgumentException(16032, "Can't delete Debtor household", "HouseholdId");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
@@ -21,9 +21,9 @@ internal sealed class DeleteHouseholdHandler
 
         // smazat customerOnSA
         if (householdInstance.CustomerOnSAId1.HasValue)
-            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId1.Value), cancellation);
+            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId1.Value, request.HardDelete), cancellation);
         if (householdInstance.CustomerOnSAId2.HasValue)
-            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId2.Value), cancellation);
+            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId2.Value, request.HardDelete), cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

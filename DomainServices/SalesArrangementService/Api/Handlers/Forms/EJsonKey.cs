@@ -3,10 +3,10 @@
     public enum EJsonKey
     {
 
-        /// <summary>
-        /// 15: Druh úvěru [uv_druh]
-        /// </summary>
-        UvDruh,
+        ///// <summary>
+        ///// 15: Druh úvěru [uv_druh]
+        ///// </summary>
+        //UvDruh,
 
         /// <summary>
         /// 25: Pojištění nemovitosti - suma [pojisteni_nem_suma]

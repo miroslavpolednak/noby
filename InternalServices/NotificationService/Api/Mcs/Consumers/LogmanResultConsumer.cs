@@ -42,6 +42,7 @@ public class LogmanResultConsumer
                 catch (Exception e)
                 {
                     _logger.LogError(e,$"Consumer '{nameof(LogmanResultConsumer)}': Consuming topic '{Topics.McsResultIn}' failed.");
+                    throw;
                 }
 
             }

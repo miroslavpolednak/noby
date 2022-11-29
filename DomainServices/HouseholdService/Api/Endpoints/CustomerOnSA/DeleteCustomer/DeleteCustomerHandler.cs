@@ -13,7 +13,7 @@ internal class DeleteCustomerHandler
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
 
         // nemuze to byt hlavni dluznik
-        if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
+        if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor && !request.HardDelete)
             throw new CisValidationException(16053, "CustomerOnSA is in role=Debtor -> can't be deleted");
 
         var kbIdentity = entity.Identities?.FirstOrDefault(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);

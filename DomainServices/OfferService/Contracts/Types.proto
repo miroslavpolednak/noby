@@ -7,6 +7,12 @@ import "GrpcDecimal.proto";
 import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 
+message SimulationResultWarning {
+	google.protobuf.Int32Value WarningCode = 1;
+	google.protobuf.StringValue WarningText = 2;
+	google.protobuf.StringValue WarningInternalMessage = 3;
+}
+
 message LoanPurpose {
 	int32 LoanPurposeId = 1;
 	cis.types.GrpcDecimal Sum = 2;

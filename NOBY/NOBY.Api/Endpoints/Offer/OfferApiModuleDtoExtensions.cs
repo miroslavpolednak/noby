@@ -24,7 +24,7 @@ internal static class OfferApiModuleDtoExtensions
             Developer = input.Developer is null ? null : new Dto.Developer
             {
                 DeveloperId = input.Developer.DeveloperId,
-                NewDeveloperProjectName = input.Developer.NewDeveloperName,
+                NewDeveloperProjectName = input.Developer.NewDeveloperProjectName,
                 NewDeveloperCin = input.Developer.NewDeveloperCin,
                 NewDeveloperName = input.Developer.NewDeveloperName,
                 ProjectId = input.Developer.ProjectId
@@ -82,7 +82,15 @@ internal static class OfferApiModuleDtoExtensions
             MarketingActionsDeviation = result.MarketingActionsDeviation,
             MarketingActions = additionalResults.MarketingActions?.Select(i => i.ToApiResponseItem()).ToList(),
             PaymentScheduleSimple = additionalResults.PaymentScheduleSimple?.Select(p => p.ToApiResponseItem()).ToList(),
-            Fees = additionalResults.Fees is null ? null : additionalResults.Fees.ToApiResponse()
+            Fees = additionalResults.Fees is null ? null : additionalResults.Fees.ToApiResponse(),
+            Warnings = result.Warnings?.Select(t => t.ToApiResponseItem())?.ToList()
+        };
+
+    public static Dto.OutputWarning ToApiResponseItem(this SimulationResultWarning resultItem)
+        => new Dto.OutputWarning()
+        {
+            InternalMessage = resultItem.WarningInternalMessage,
+            Text = resultItem.WarningText
         };
 
     public static Dto.PaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)

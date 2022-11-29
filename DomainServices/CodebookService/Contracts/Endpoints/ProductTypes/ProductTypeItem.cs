@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.ProductTypes
         public string Name { get; set; }
 
         [DataMember(Order = 3)]
-        public int MandantId { get; set; }
+        public int? MandantId { get; set; }
 
         [JsonIgnore]
         [DataMember(Order = 4)]

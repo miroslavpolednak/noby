@@ -63,12 +63,12 @@ public class OfferController : ControllerBase
     /// Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
     /// V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
     /// Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
-    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/>
+    /// Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
     /// <i>DS:</i> OfferService/GetMortgageData<br/>
-    /// <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId
+    /// <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br/>
     /// <i>DS:</i> CaseService/CreateCase<br/>
     /// <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
-    /// <i>DS:</i> ProductService/CreateProduct<br/>
+    /// <i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br/>
     /// <i>DS:</i> SalesArrangement/CreateHousehold<br/>
     /// <i>DS:</i> SalesArrangement/CreateCustomerOnSA
     /// </remarks>
@@ -101,12 +101,13 @@ public class OfferController : ControllerBase
     /// Plný splátkový kalendář dle ID simulace.
     /// </summary>
     /// <remarks>
+    /// Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId. Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy. Chyba simulační služby se propaguje.<br/>
     /// <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
     /// </remarks>
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře" })]
+    [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře", "UC: Modelace Hypoteky" })]
     [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);

@@ -15,8 +15,8 @@ internal class CustomerOnSAService : Contracts.v1.CustomerOnSAService.CustomerOn
     public override async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)
         => await _mediator.Send(new Endpoints.CustomerOnSA.CreateCustomer.CreateCustomerMediatrRequest(request), context.CancellationToken);
     
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteCustomer(CustomerOnSAIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new Endpoints.CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(request.CustomerOnSAId), context.CancellationToken);
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteCustomer(DeleteCustomerRequest request, ServerCallContext context)
+        => await _mediator.Send(new Endpoints.CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(request.CustomerOnSAId, request.HardDelete), context.CancellationToken);
     
     public override async Task<CustomerOnSA> GetCustomer(CustomerOnSAIdRequest request, ServerCallContext context)
         => await _mediator.Send(new Endpoints.CustomerOnSA.GetCustomer.GetCustomerMediatrRequest(request.CustomerOnSAId), context.CancellationToken);

@@ -16,6 +16,11 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="CustomerOnSA\DeleteCustomer.proto" />
+	  <None Remove="Household\DeleteHousehold.proto" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.21.9" />
@@ -51,6 +56,7 @@
 		<Protobuf Include="CustomerOnSA/ObligationShared.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/Obligation.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/ObligationIdRequest.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA/DeleteCustomer.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 
 		<Protobuf Include="Household/HouseholdService.v1.proto" GrpcServices="Both" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/HouseholdExpenses.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
@@ -61,5 +67,6 @@
 		<Protobuf Include="Household/GetHouseholdList.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/UpdateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/LinkCustomerOnSAToHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household\DeleteHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>

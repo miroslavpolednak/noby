@@ -11,13 +11,14 @@ internal class CustomerOnSAService : ICustomerOnSAServiceClient
         return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
     }
 
-    public async Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RequestHandlerStartedWithId(nameof(DeleteCustomer), customerOnSAId);
         var result = await _service.DeleteCustomerAsync(
             new()
             {
-                CustomerOnSAId = customerOnSAId
+                CustomerOnSAId = customerOnSAId,
+                HardDelete = hardDelete
             }, cancellationToken: cancellationToken);
         return new SuccessfulServiceCallResult();
     }

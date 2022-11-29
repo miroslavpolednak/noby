@@ -18,10 +18,10 @@ variables:
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
 
 steps:
-#- task: UseDotNet@2
-#  inputs:
+# - task: UseDotNet@2
+#   inputs:
 #    packageType: 'sdk'
-#    version: '6.0.x'
+#    version: '7.0.x'
 #    includePreviewVersions: true
 
 - task: InlinePowershell@1
@@ -55,11 +55,22 @@ steps:
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'NOBY - SonarQube'
+    scannerMode: 'MSBuild'
+    projectKey: 'NOBY.DS.CustomerService'
+    projectName: 'NOBY.DS.CustomerService'
+    projectVersion: '1.0.0.$(Build.BuildId)'
+    extraProperties: 'sonar.verbose=true'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: '$(projectFile)'
     arguments: '--output $(Build.BinariesDirectory)'
+
+- task: SonarQubeAnalyze@5
 
 - task: ArchiveFiles@2
   inputs:

@@ -22,7 +22,7 @@ namespace DomainServices.CodebookService.Endpoints.Channels
         #endregion
 
         // dotaz na codebook do SB
-        const string _sql = @"SELECT KOD 'Id', TEXT 'Name', MANDANT 'MandantId', CODE 'Code', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+        const string _sql = @"SELECT KOD 'Id', TEXT 'Name', NULLIF(MANDANT, 0) 'MandantId', CODE 'Code', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
                                 FROM [SBR].[CIS_ALT_KANALY] ORDER BY KOD ASC";
 
         public async Task<List<ChannelItem>> Handle(ChannelsRequest request, CancellationToken cancellationToken)

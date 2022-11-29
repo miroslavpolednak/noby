@@ -2,10 +2,10 @@
 
 internal partial class ResourceIdentifier
 {
-    public static ResourceIdentifier CreateLoanApplication(long id, string variant)
+    public static ResourceIdentifier CreateLoanApplication(string id, string variant)
         => new ResourceIdentifier
         {
-            Id = $"{id}",
+            Id = id,
             Variant = variant,
             Instance = Constants.MPSS,
             Domain = Constants.LA,

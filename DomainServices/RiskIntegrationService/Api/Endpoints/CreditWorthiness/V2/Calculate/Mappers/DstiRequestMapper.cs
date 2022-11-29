@@ -36,7 +36,7 @@ internal sealed class DstiRequestMapper
         };
     }
 
-    private List<_C4M.DSTILoanApplicationHousehold> mapHouseholds(List<_V2.CreditWorthinessHousehold> households, int mandantId)
+    private List<_C4M.DSTILoanApplicationHousehold> mapHouseholds(List<_V2.CreditWorthinessHousehold> households, int? mandantId)
         => households.Select(household =>
         {
             var liabilitiesFlatten = household.Customers!.Where(x => x.Obligations is not null).SelectMany(x => x.Obligations!).ToList();
@@ -52,13 +52,13 @@ internal sealed class DstiRequestMapper
         })
         .ToList();
 
-    private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int mandantId)
+    private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int? mandantId)
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
             CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : new()
             {
                 Id = customer.PrimaryCustomerId,
-                Instance = (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Mp ? "MPSS" : "KBCZ",
+                Instance = !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS",
                 Domain = "CM",
                 Resource = "Customer"
             },

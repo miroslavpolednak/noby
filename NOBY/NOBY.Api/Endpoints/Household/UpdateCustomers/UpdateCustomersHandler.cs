@@ -1,6 +1,5 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Clients;
-using Google.Protobuf.Collections;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
@@ -44,13 +43,13 @@ internal class UpdateCustomersHandler
         // smazat existujiciho, neni misto nej zadny novy
         if (customer is null && householdCustomerId.HasValue)
         {
-            await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
+            await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
         }
         else if (customer is not null)
         {
             // smazat existujiciho, je nahrazen novym
             if (customer.CustomerOnSAId != householdCustomerId && householdCustomerId.HasValue)
-                await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken);
+                await _customerOnSAService.DeleteCustomer(householdCustomerId.Value, cancellationToken: cancellationToken);
 
             // update stavajiciho
             if (customer.CustomerOnSAId.HasValue)
@@ -88,14 +87,6 @@ internal class UpdateCustomersHandler
         }
 
         return (default(int?), default(List<CIS.Infrastructure.gRPC.CisTypes.Identity>?));
-    }
-
-    private static long? getMpId(RepeatedField<CIS.Infrastructure.gRPC.CisTypes.Identity>? identities)
-    {
-        if (identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false)
-            return identities.First(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp).IdentityId;
-        else
-            return default(long?);
     }
 
     private readonly IHouseholdServiceClient _householdService;

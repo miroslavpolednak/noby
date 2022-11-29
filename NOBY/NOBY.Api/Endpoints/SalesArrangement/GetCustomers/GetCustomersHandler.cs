@@ -1,6 +1,7 @@
 ﻿using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
+using ProtoBuf.Serializers;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
@@ -80,8 +81,8 @@ internal class GetCustomersHandler
 
                 // kontakty
                 //TODO jak poznam jake kontakty se maji naplnit?
-                c.Phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 1)?.Value;
-                c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == 5)?.Value;
+                c.Phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value;
+                c.Email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value;
             }
 
             model.Add(c);

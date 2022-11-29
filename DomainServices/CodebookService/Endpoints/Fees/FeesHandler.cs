@@ -21,7 +21,7 @@ public class FeesHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT POPLATEK_ID 'Id', POPLATEK_ID_KB 'IdKb', MANDANT 'MandantId', TEXT 'ShortName', TEXT_DOKUMENTACE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
+    const string _sqlQuery = @"SELECT POPLATEK_ID 'Id', POPLATEK_ID_KB 'IdKb', NULLIF(MANDANT, 0) 'MandantId', TEXT 'ShortName', TEXT_DOKUMENTACE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
                                FROM [SBR].[CIS_POPLATKY_UV_DEF] ORDER BY POPLATEK_ID ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;

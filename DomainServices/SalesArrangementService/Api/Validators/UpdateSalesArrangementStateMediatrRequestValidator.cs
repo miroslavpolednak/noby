@@ -13,6 +13,6 @@ internal class UpdateSalesArrangementStateMediatrRequestValidator
 
         RuleFor(t => t.State)
             .GreaterThan(0)
-            .WithMessage("SalesArrangement State must be > 0").WithErrorCode("16079");
+            .WithMessage("SalesArrangement State must be > 0").WithErrorCode("18079");
     }
 }

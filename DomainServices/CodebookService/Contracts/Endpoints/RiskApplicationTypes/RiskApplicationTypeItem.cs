@@ -9,7 +9,7 @@ public class RiskApplicationTypeItem
     public int Id { get; set; }
 
     [DataMember(Order = 2)]
-    public int MandantId { get; set; }
+    public int? MandantId { get; set; }
 
     [DataMember(Order = 3)]
     public List<int> ProductTypeId { get; set; }

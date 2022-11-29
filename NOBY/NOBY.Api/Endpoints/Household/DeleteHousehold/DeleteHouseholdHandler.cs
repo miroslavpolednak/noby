@@ -7,19 +7,15 @@ internal class DeleteHouseholdHandler
 {
     public async Task<int> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
-        ServiceCallResult.Resolve(await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken));
+        await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken: cancellationToken);
 
         return request.HouseholdId;
     }
 
     private readonly IHouseholdServiceClient _householdService;
-    private readonly ILogger<DeleteHouseholdHandler> _logger;
-
-    public DeleteHouseholdHandler(
-        IHouseholdServiceClient householdService,
-        ILogger<DeleteHouseholdHandler> logger)
+    
+    public DeleteHouseholdHandler(IHouseholdServiceClient householdService)
     {
-        _logger = logger;
         _householdService = householdService;
     }
 }

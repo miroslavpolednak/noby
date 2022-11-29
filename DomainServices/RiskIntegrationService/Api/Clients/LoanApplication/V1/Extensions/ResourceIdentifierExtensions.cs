@@ -2,14 +2,14 @@
 
 internal partial class ResourceIdentifier
 {
-    public static ResourceIdentifier CreateId(long id, string variant)
+    public static ResourceIdentifier CreateId(string id, string variant)
 #pragma warning disable CA1305 // Specify IFormatProvider
         => new ResourceIdentifier
         {
             Instance = "MPSS",
             Domain = "LA",
             Resource = "LoanApplication",
-            Id = id.ToString(),
+            Id = id,
             Variant = variant
         };
 #pragma warning restore CA1305 // Specify IFormatProvider

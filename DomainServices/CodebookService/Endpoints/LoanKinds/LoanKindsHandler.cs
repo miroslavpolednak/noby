@@ -20,7 +20,7 @@ public class LoanKindsHandler
         }
     }
 
-    const string _sqlQuery = @"SELECT KOD 'Id', MANDANT 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[DATUM_OD_ES] AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";
+    const string _sqlQuery = @"SELECT KOD 'Id', NULLIF(MANDANT, 0) 'MandantId', DRUH_UVERU_TEXT 'Name', CAST(DEFAULT_HODNOTA as bit) 'IsDefault', CASE WHEN SYSDATETIME() BETWEEN[DATUM_OD_ES] AND ISNULL([DATUM_DO_ES], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' FROM [SBR].[CIS_DRUH_UVERU] ORDER BY KOD ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<LoanKindsHandler> _logger;

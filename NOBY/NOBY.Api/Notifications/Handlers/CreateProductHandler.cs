@@ -5,7 +5,6 @@ using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
-using Google.Protobuf;
 using CIS.Infrastructure.MediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -24,14 +23,14 @@ internal sealed class CreateProductHandler
             return; // nema modre ID, nezajima me
         }
 
-        try
+        /*try
         {
             // proc to tady bylo?
             await _productService.GetMortgage(notification.CaseId, cancellationToken);
             _logger.LogInformation($"Product already exist for CaseId #{notification.CaseId}");
             return;
         }
-        catch { }
+        catch { }*/
 
         // detail SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
@@ -93,6 +92,7 @@ internal sealed class CreateProductHandler
             CaseId = notification.CaseId,
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
         };
+
         var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result.ProductId);
         //TODO rollbackovat i vytvoreni klienta?

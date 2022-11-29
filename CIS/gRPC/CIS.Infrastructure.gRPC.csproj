@@ -22,7 +22,7 @@
 	</ItemGroup>
 		
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.2.2" />
+    <PackageReference Include="FluentValidation" Version="11.3.0" />
     <PackageReference Include="Google.Protobuf" Version="3.21.9" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.49.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.49.0" />

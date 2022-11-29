@@ -13,8 +13,8 @@ internal static class Helpers
     public static string GetResourceIdentifierInstanceForDealer(string? identityScheme)
         => string.IsNullOrEmpty(identityScheme) ? throw new CisArgumentException(17012, "GetResourceIdentifierInstanceForDealer() input parameter is null", nameof(identityScheme)) : _kbPersonSchemas.Contains(identityScheme) ? _kbInstanceName : _mpInstanceName;
 
-    public static string GetResourceInstanceFromMandant(int mandantId)
-        => mandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS";
+    public static string GetResourceInstanceFromMandant(int? mandantId)
+        => !mandantId.HasValue || mandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS";
 
     public static TResponse? GetEnumFromString<TResponse>(string? enumValue, TResponse? defaultValue = default(TResponse?)) 
         where TResponse : struct
