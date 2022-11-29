@@ -8,8 +8,6 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices.SalesArrangementService.Clients;
 
-string s = "";
-
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
 //TODO workaround until .NET6 UseWindowsService() will work with WebApplication

@@ -15,34 +15,6 @@ Derived
 &#8627; [CisArgumentException](CIS.Core.Exceptions.CisArgumentException.md 'CIS.Core.Exceptions.CisArgumentException')  
 &#8627; [CisInvalidApplicationKeyException](CIS.Core.Exceptions.CisInvalidApplicationKeyException.md 'CIS.Core.Exceptions.CisInvalidApplicationKeyException')  
 &#8627; [CisInvalidEnvironmentNameException](CIS.Core.Exceptions.CisInvalidEnvironmentNameException.md 'CIS.Core.Exceptions.CisInvalidEnvironmentNameException')
-### Constructors
-
-<a name='CIS.Core.Exceptions.BaseCisArgumentException.BaseCisArgumentException(int,string,string)'></a>
-
-## BaseCisArgumentException(int, string, string) Constructor
-
-```csharp
-public BaseCisArgumentException(int exceptionCode, string message, string paramName);
-```
-#### Parameters
-
-<a name='CIS.Core.Exceptions.BaseCisArgumentException.BaseCisArgumentException(int,string,string).exceptionCode'></a>
-
-`exceptionCode` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
-
-CIS error kód
-
-<a name='CIS.Core.Exceptions.BaseCisArgumentException.BaseCisArgumentException(int,string,string).message'></a>
-
-`message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
-
-Chybová zpráva
-
-<a name='CIS.Core.Exceptions.BaseCisArgumentException.BaseCisArgumentException(int,string,string).paramName'></a>
-
-`paramName` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
-
-Název parametru, který chybu vyvolal
 ### Properties
 
 <a name='CIS.Core.Exceptions.BaseCisArgumentException.ExceptionCode'></a>

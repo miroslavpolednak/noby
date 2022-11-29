@@ -20,7 +20,7 @@ public abstract class BaseCisArgumentException
     /// <param name="exceptionCode">CIS error kód</param>
     /// <param name="message">Chybová zpráva</param>
     /// <param name="paramName">Název parametru, který chybu vyvolal</param>
-    public BaseCisArgumentException(int exceptionCode, string message, string paramName)
+    protected BaseCisArgumentException(int exceptionCode, string message, string paramName)
         : base(message, paramName)
     {
         this.ExceptionCode = exceptionCode;
