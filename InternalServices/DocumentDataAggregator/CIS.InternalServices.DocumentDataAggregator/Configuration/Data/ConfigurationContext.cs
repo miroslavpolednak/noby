@@ -29,6 +29,8 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<EasFormDynamicInputParameter> EasFormDynamicInputParameters => Set<EasFormDynamicInputParameter>();
 
+    public DbSet<EasFormSpecialDataField> EasFormSpecialDataFields => Set<EasFormSpecialDataField>(); 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);

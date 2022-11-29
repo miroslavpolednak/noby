@@ -3,5 +3,5 @@
 internal enum EasFormRequestType
 {
     Service = 1,
-    Product
+    Product = 2
 }

@@ -31,6 +31,9 @@ internal static class MapperHelper
             var accessor = ObjectAccessor.Create(currentObject);
 
             currentObject = accessor[propertyName];
+
+            if (currentObject is null)
+                break;
         }
 
         return currentObject;

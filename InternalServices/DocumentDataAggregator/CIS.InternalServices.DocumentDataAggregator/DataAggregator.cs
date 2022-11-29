@@ -3,6 +3,7 @@ using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
 using CIS.InternalServices.DocumentDataAggregator.Documents.Mapper;
 using CIS.InternalServices.DocumentDataAggregator.EasForms;
+using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.DocumentDataAggregator;
@@ -39,7 +40,11 @@ internal class DataAggregator : IDataAggregator
 
         await LoadEasFormData(formData, config.InputConfig, salesArrangementId);
 
-        return new EasForm<TData>(formData, config.SourceFields);
+        return formData switch
+            {
+                ProductFormData productData => (IEasForm<TData>)new ProductEasForm(productData, config.SourceFields),
+                _ => new EasForm<TData>(formData, config.SourceFields)
+            };
     }
 
     private async Task<DocumentMapper> LoadDocumentData(Document document, InputParameters inputParameters, DocumentConfiguration config)

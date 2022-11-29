@@ -3,6 +3,7 @@ using CIS.Core.Security;
 using CIS.InternalServices.DocumentDataAggregator;
 using CIS.InternalServices.DocumentDataAggregator.Configuration;
 using CIS.InternalServices.DocumentDataAggregator.EasForms;
+using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
 using CIS.InternalServices.DocumentGeneratorService.Api.Services;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
@@ -25,15 +26,15 @@ services.AddCisServiceDiscovery("https://localhost:5005");
 var serviceProvider = services.BuildServiceProvider();
 
 //var input = new InputParameters { OfferId = 554, UserId = 3048 };
-var input = new InputParameters { SalesArrangementId = 180 };
+var input = new InputParameters { SalesArrangementId = 97 };
 
 var dataAggregator = serviceProvider.GetRequiredService<IDataAggregator>();
 
-var easForm = await dataAggregator.GetEasForm<IServiceFormData>(180);
+var easForm = await dataAggregator.GetEasForm<IProductFormData>(97);
 
 try
 {
-    var test = easForm.BuildForms();
+    var test = easForm.BuildForms(Enumerable.Empty<DynamicFormValues>());
 }
 catch (Exception e)
 {

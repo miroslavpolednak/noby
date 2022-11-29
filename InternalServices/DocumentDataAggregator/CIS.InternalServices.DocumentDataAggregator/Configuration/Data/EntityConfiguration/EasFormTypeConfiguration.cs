@@ -10,6 +10,8 @@ internal class EasFormTypeConfiguration : IEntityTypeConfiguration<EasFormType>
     {
         builder.HasKey(x => x.EasFormTypeId);
 
+        builder.Property(x => x.EasFormTypeId).ValueGeneratedNever();
+
         builder.Property(x => x.EasFormTypeName).HasMaxLength(50).IsRequired();
     }
 }

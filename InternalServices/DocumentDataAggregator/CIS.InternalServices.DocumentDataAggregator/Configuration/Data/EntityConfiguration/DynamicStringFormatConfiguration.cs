@@ -14,6 +14,6 @@ internal class DynamicStringFormatConfiguration : IEntityTypeConfiguration<Dynam
 
         builder.Property(x => x.Priority).IsRequired();
 
-        builder.HasMany(x => x.DynamicStringFormatConditions).WithOne().HasForeignKey(x => x.DynamicStringFormatId);
+        builder.HasMany(x => x.DynamicStringFormatConditions).WithOne().HasForeignKey(x => x.DynamicStringFormatId).OnDelete(DeleteBehavior.NoAction);
     }
 }

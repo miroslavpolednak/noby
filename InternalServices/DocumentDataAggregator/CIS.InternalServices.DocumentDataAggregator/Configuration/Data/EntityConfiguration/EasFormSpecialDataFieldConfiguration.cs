@@ -8,7 +8,7 @@ internal class EasFormSpecialDataFieldConfiguration : IEntityTypeConfiguration<E
 {
     public void Configure(EntityTypeBuilder<EasFormSpecialDataField> builder)
     {
-        builder.HasKey(x => new { x.EasRequestTypeId, x.JsonPropertyName });
+        builder.HasKey(x => new { x.EasRequestTypeId, x.JsonPropertyName, x.EasFormTypeId });
 
         builder.Property(x => x.JsonPropertyName).HasMaxLength(500);
 
@@ -16,8 +16,8 @@ internal class EasFormSpecialDataFieldConfiguration : IEntityTypeConfiguration<E
 
         builder.HasOne(x => x.EasRequestType).WithMany().IsRequired();
 
-        builder.HasOne(x => x.DataService).WithMany().IsRequired();
-
         builder.HasOne(x => x.EasFormType).WithMany().IsRequired();
+
+        builder.HasOne(x => x.DataService).WithMany().IsRequired();
     }
 }

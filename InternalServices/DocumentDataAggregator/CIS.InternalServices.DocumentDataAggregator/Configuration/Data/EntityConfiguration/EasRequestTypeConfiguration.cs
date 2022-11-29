@@ -10,6 +10,8 @@ internal class EasRequestTypeConfiguration : IEntityTypeConfiguration<EasRequest
     {
         builder.HasKey(x => x.EasRequestTypeId);
 
+        builder.Property(x => x.EasRequestTypeId).ValueGeneratedNever();
+
         builder.Property(x => x.EasRequestTypeName).HasMaxLength(100).IsRequired();
     }
 }

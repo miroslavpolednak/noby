@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.Json.Data;
+namespace CIS.InternalServices.DocumentDataAggregator.EasForms.Json;
 
 internal class EasFormJsonCollection : EasFormJsonObjectImpl
 {
@@ -14,14 +14,21 @@ internal class EasFormJsonCollection : EasFormJsonObjectImpl
         if (_collectionPath == string.Empty || _collectionPath != CollectionPathHelper.GetCollectionPath(dataFieldPath))
             throw new InvalidOperationException();
 
-        base.Add(propertyPath, CollectionPathHelper.GetCollectionMemberPath(dataFieldPath));
+        var collectionMaxDepth = propertyPath.Take(Math.Max(Depth - 1, 0)).Count(path => path.EndsWith(ConfigurationConstants.CollectionMarker));
+
+        base.Add(propertyPath, CollectionPathHelper.GetCollectionMemberPath(dataFieldPath, collectionMaxDepth));
     }
 
     public override object? GetJsonObject(object data)
     {
-        if (MapperHelper.GetValue(data, _collectionPath) is not IEnumerable collection)
+        var obj = MapperHelper.GetValue(data, _collectionPath);
+
+        if (obj is null)
+            return Enumerable.Empty<object>();
+
+        if (obj is not IEnumerable collection)
             throw new InvalidOperationException();
 
-        return collection.Cast<object>().Select(data1 => base.GetJsonObject(data1)).ToList();
+        return collection.Cast<object>().Select(base.GetJsonObject).ToList();
     }
 }

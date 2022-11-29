@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Infrastructure.gRPC.CisTypes;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.Json.Data;
+namespace CIS.InternalServices.DocumentDataAggregator.EasForms.Json;
 
 internal class EasFormJsonValue : EasFormJsonObject
 {

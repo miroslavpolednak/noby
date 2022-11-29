@@ -5,6 +5,7 @@ using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -20,7 +21,8 @@ public static class StartupExtensions
         services.AddDbContext<ConfigurationContext>(ServiceLifetime.Transient);
 
         services.AddTransient<IDataAggregator, DataAggregator>()
-                .AddTransient<IServiceFormData, ServiceFormData>();
+                .AddTransient<IServiceFormData, ServiceFormData>()
+                .AddTransient<IProductFormData, ProductFormData>();
 
         services.AddAttributedServices(typeof(StartupExtensions));
 
@@ -36,5 +38,6 @@ public static class StartupExtensions
                 .AddOfferService()
                 .AddUserService()
                 .AddCustomerService()
-                .AddProductService();
+                .AddProductService()
+                .AddHouseholdService();
 }

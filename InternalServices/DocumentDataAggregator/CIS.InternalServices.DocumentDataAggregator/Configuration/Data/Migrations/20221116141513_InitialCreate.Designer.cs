@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrations
 {
     [DbContext(typeof(ConfigurationContext))]
-    [Migration("20221114093214_DynamicStringFormatCondition_NullableValue")]
-    partial class DynamicStringFormatConditionNullableValue
+    [Migration("20221116141513_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,16 +48,16 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     b.HasIndex("DataServiceId");
 
+                    b.HasIndex("FieldPath")
+                        .IsUnique();
+
                     b.ToTable("DataField");
                 });
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataService", b =>
                 {
                     b.Property<int>("DataServiceId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DataServiceId"));
 
                     b.Property<string>("DataServiceName")
                         .IsRequired()
@@ -95,8 +95,17 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentDataFieldId"));
 
+                    b.Property<string>("AcroFieldName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("DataFieldId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DefaultTextIfNull")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
@@ -107,19 +116,14 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("StringFormat")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("TemplateFieldName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("DocumentDataFieldId");
 
                     b.HasIndex("DataFieldId");
 
-                    b.HasIndex("DocumentId", "DocumentVersion", "TemplateFieldName");
+                    b.HasIndex("DocumentId", "DocumentVersion", "AcroFieldName");
 
                     b.ToTable("DocumentDataField");
                 });
@@ -136,13 +140,13 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("InputParameterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SourceDataFieldId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TargetDataServiceId")
                         .HasColumnType("int");
 
-                    b.HasKey("DocumentId", "DocumentVersion", "InputParameterId");
+                    b.Property<int>("SourceDataFieldId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentId", "DocumentVersion", "InputParameterId", "TargetDataServiceId");
 
                     b.HasIndex("InputParameterId");
 
@@ -158,23 +162,23 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FieldPath")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<string>("AcroFieldName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("DataServiceId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FieldPath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("StringFormat")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("TemplateFieldName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("DocumentId", "FieldPath");
+                    b.HasKey("DocumentId", "AcroFieldName");
 
                     b.HasIndex("DataServiceId");
 
@@ -214,33 +218,18 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.Property<int>("DynamicStringFormatDataFieldId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DataFieldId")
+                        .HasColumnType("int");
+
                     b.Property<string>("EqualToValue")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DynamicStringFormatId", "DynamicStringFormatDataFieldId");
 
-                    b.HasIndex("DynamicStringFormatDataFieldId");
+                    b.HasIndex("DataFieldId");
 
                     b.ToTable("DynamicStringFormatCondition");
-                });
-
-            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatDataField", b =>
-                {
-                    b.Property<int>("DynamicStringFormatDataFieldId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DynamicStringFormatDataFieldId"));
-
-                    b.Property<string>("FieldPath")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("DynamicStringFormatDataFieldId");
-
-                    b.ToTable("DynamicStringFormatDataField");
                 });
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDataField", b =>
@@ -277,13 +266,64 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                     b.ToTable("EasFormDataField");
                 });
 
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDynamicInputParameter", b =>
+                {
+                    b.Property<int>("EasRequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InputParameterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TargetDataServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceDataFieldId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EasRequestTypeId", "InputParameterId", "TargetDataServiceId");
+
+                    b.HasIndex("InputParameterId");
+
+                    b.HasIndex("SourceDataFieldId");
+
+                    b.HasIndex("TargetDataServiceId");
+
+                    b.ToTable("EasFormDynamicInputParameter");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormSpecialDataField", b =>
+                {
+                    b.Property<int>("EasRequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JsonPropertyName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("DataServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EasFormTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FieldPath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("EasRequestTypeId", "JsonPropertyName");
+
+                    b.HasIndex("DataServiceId");
+
+                    b.HasIndex("EasFormTypeId");
+
+                    b.ToTable("EasFormSpecialDataField");
+                });
+
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormType", b =>
                 {
                     b.Property<int>("EasFormTypeId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EasFormTypeId"));
 
                     b.Property<string>("EasFormTypeName")
                         .IsRequired()
@@ -298,10 +338,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasRequestType", b =>
                 {
                     b.Property<int>("EasRequestTypeId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EasRequestTypeId"));
 
                     b.Property<string>("EasRequestTypeName")
                         .IsRequired()
@@ -316,10 +353,7 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.InputParameter", b =>
                 {
                     b.Property<int>("InputParameterId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InputParameterId"));
 
                     b.Property<string>("InputParameterName")
                         .IsRequired()
@@ -428,19 +462,19 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatCondition", b =>
                 {
-                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormatDataField", "DynamicStringFormatDataField")
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataField", "DataField")
                         .WithMany()
-                        .HasForeignKey("DynamicStringFormatDataFieldId")
+                        .HasForeignKey("DataFieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DynamicStringFormat", null)
                         .WithMany("DynamicStringFormatConditions")
                         .HasForeignKey("DynamicStringFormatId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("DynamicStringFormatDataField");
+                    b.Navigation("DataField");
                 });
 
             modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDataField", b =>
@@ -464,6 +498,68 @@ namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Migrati
                         .IsRequired();
 
                     b.Navigation("DataField");
+
+                    b.Navigation("EasFormType");
+
+                    b.Navigation("EasRequestType");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormDynamicInputParameter", b =>
+                {
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasRequestType", "EasRequestType")
+                        .WithMany()
+                        .HasForeignKey("EasRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.InputParameter", "InputParameter")
+                        .WithMany()
+                        .HasForeignKey("InputParameterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataField", "SourceDataField")
+                        .WithMany()
+                        .HasForeignKey("SourceDataFieldId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataService", "TargetDataService")
+                        .WithMany()
+                        .HasForeignKey("TargetDataServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EasRequestType");
+
+                    b.Navigation("InputParameter");
+
+                    b.Navigation("SourceDataField");
+
+                    b.Navigation("TargetDataService");
+                });
+
+            modelBuilder.Entity("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormSpecialDataField", b =>
+                {
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.DataService", "DataService")
+                        .WithMany()
+                        .HasForeignKey("DataServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasFormType", "EasFormType")
+                        .WithMany()
+                        .HasForeignKey("EasFormTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities.EasRequestType", "EasRequestType")
+                        .WithMany()
+                        .HasForeignKey("EasRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DataService");
 
                     b.Navigation("EasFormType");
 

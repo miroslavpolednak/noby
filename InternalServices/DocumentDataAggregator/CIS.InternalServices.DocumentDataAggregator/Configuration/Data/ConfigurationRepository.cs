@@ -31,7 +31,7 @@ internal class ConfigurationRepository
 
     public Task<List<DocumentSourceField>> LoadDocumentSourceFields(int documentId, string documentVersion)
     {
-        return GetSourceFieldsQuery().Union(GetSpecialSourceFields()).ToListAsync();
+        return GetSourceFieldsQuery().Concat(GetSpecialSourceFields()).ToListAsync();
 
         IQueryable<DocumentSourceField> GetSourceFieldsQuery()
         {
@@ -90,18 +90,37 @@ internal class ConfigurationRepository
 
     public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId)
     {
-        return _dbContext.EasFormDataFields
-                         .AsNoTracking()
-                         .Where(e => e.EasRequestTypeId == requestTypeId)
-                         .Select(e => new EasFormSourceField
-                         {
-                             SourceFieldId = e.EasFormTypeId,
-                             DataSource = (DataSource)e.DataField.DataServiceId,
-                             FormType = (EasFormType)e.EasFormTypeId,
-                             FieldPath = e.DataField.FieldPath,
-                             JsonPropertyName = e.JsonPropertyName
-                         })
-                         .ToListAsync();
+        return GetSourceFields().Concat(GetSpecialSourceFields()).ToListAsync();
+
+        IQueryable<EasFormSourceField> GetSourceFields()
+        {
+            return _dbContext.EasFormDataFields
+                             .AsNoTracking()
+                             .Where(e => e.EasRequestTypeId == requestTypeId)
+                             .Select(e => new EasFormSourceField
+                             {
+                                 SourceFieldId = e.EasFormTypeId,
+                                 DataSource = (DataSource)e.DataField.DataServiceId,
+                                 FormType = (EasFormType)e.EasFormTypeId,
+                                 FieldPath = e.DataField.FieldPath,
+                                 JsonPropertyName = e.JsonPropertyName
+                             });
+        }
+
+        IQueryable<EasFormSourceField> GetSpecialSourceFields()
+        {
+            return _dbContext.EasFormSpecialDataFields
+                             .AsNoTracking()
+                             .Where(e => e.EasRequestTypeId == requestTypeId)
+                             .Select(e => new EasFormSourceField
+                             {
+                                 SourceFieldId = default,
+                                 DataSource = (DataSource)e.DataServiceId,
+                                 FormType = (EasFormType)e.EasFormTypeId,
+                                 FieldPath = e.FieldPath,
+                                 JsonPropertyName = e.JsonPropertyName
+                             });
+        }
     }
 
     public Task<List<DynamicInputParameter>> LoadEasFormDynamicInputFields(int requestTypeId)

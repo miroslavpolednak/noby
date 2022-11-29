@@ -9,6 +9,6 @@ public static class CollectionPathHelper
         return splitPath.Length == 1 ? string.Empty : splitPath.First();
     }
 
-    public static string GetCollectionMemberPath(string path) => 
-        path.Split(ConfigurationConstants.CollectionMarker).Last().TrimStart('.');
+    public static string GetCollectionMemberPath(string path, int skip = 0) => 
+        path.Split(ConfigurationConstants.CollectionMarker, 2 + skip).Last().TrimStart('.');
 }

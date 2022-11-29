@@ -4,5 +4,5 @@ public interface IEasForm<out TData>
 {
     TData FormData { get; }
 
-    ICollection<Form> BuildForms();
+    ICollection<Form> BuildForms(IEnumerable<DynamicFormValues> dynamicFormValues);
 }
