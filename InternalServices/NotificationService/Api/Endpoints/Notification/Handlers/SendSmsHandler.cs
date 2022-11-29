@@ -26,6 +26,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
     
     public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
         var notificationResult = await _repository.CreateResult(NotificationChannel.Sms, cancellationToken);
         var notificationId = notificationResult.Id;
 

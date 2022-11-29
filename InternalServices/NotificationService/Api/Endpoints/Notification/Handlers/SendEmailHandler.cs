@@ -34,6 +34,7 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
     
     public async Task<EmailSendResponse> Handle(EmailSendRequest request, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
         var notificationResult = await _repository.CreateResult(NotificationChannel.Email, cancellationToken);
         var notificationId = notificationResult.Id;
         

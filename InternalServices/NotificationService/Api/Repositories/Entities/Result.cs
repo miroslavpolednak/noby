@@ -15,7 +15,7 @@ public class Result
     
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
-    public string Errors { get; set; }
+    public string Errors { get; set; } = null!;
     
     [NotMapped]
     public HashSet<string> ErrorSet

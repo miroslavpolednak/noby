@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
             {
                 var config = new AmazonS3Config
                 {
-                    ServiceURL = s3Configuration.ServiceURL,
+                    ServiceURL = s3Configuration.ServiceUrl,
                     ForcePathStyle = true
                 };
 

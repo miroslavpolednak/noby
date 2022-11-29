@@ -17,8 +17,8 @@ public static class ServiceCollectionExtensions
         builder.Services
             .AddOptions<S3Configuration>()
             .Bind(builder.Configuration.GetSection(nameof(S3Configuration)))
-            .Validate(config => !string.IsNullOrEmpty(config.ServiceURL),
-                $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceURL)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.ServiceUrl),
+                $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceUrl)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.AccessKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.SecretKey),
