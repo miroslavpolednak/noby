@@ -87,8 +87,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Playgrounds", "Playgrounds"
 		Playgrounds\README.md = Playgrounds\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisTest", "Playgrounds\RedisTest\RedisTest.csproj", "{237646E9-FD74-49CE-B851-288E928D7A53}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.ServiceDiscovery.Contracts", "InternalServices\ServiceDiscovery\Contracts\CIS.InternalServices.ServiceDiscovery.Contracts.csproj", "{7674159D-9AFF-4F46-AECF-4AF8763FF522}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Storage.Contracts", "InternalServices\Storage\Contracts\CIS.InternalServices.Storage.Contracts.csproj", "{1C9F9248-6999-4CEE-9F61-EB0C1B1831CB}"
@@ -257,7 +255,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Testing", "CIS\Testing\CIS.Testing.csproj", "{02867ACA-A81B-40CD-87B3-FD97CF82DB04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Infrastructure.ExternalServicesHelpers", "CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj", "{A4EC03E3-2A9D-4C9A-BAA4-DFD4DBC2D6BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.ExternalServicesHelpers", "CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj", "{A4EC03E3-2A9D-4C9A-BAA4-DFD4DBC2D6BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -459,14 +457,6 @@ Global
 		{FE48768D-D1AE-4CF9-9CFD-FD77A46F4706}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE48768D-D1AE-4CF9-9CFD-FD77A46F4706}.Release|x64.ActiveCfg = Release|Any CPU
 		{FE48768D-D1AE-4CF9-9CFD-FD77A46F4706}.Release|x64.Build.0 = Release|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Debug|x64.Build.0 = Debug|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Release|x64.ActiveCfg = Release|Any CPU
-		{237646E9-FD74-49CE-B851-288E928D7A53}.Release|x64.Build.0 = Release|Any CPU
 		{7674159D-9AFF-4F46-AECF-4AF8763FF522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7674159D-9AFF-4F46-AECF-4AF8763FF522}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7674159D-9AFF-4F46-AECF-4AF8763FF522}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1014,7 +1004,6 @@ Global
 		{FA114815-6534-4B0B-A8EB-A70554E78BD0} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
 		{1DF285A9-0B91-4FAA-9B6D-0D12EEF0740B} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
 		{FE48768D-D1AE-4CF9-9CFD-FD77A46F4706} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
-		{237646E9-FD74-49CE-B851-288E928D7A53} = {B4ABFBCA-9641-4C56-A007-2F9347AB50DD}
 		{7674159D-9AFF-4F46-AECF-4AF8763FF522} = {376AF902-B4C3-4C31-9CA1-63F154C18A4C}
 		{1C9F9248-6999-4CEE-9F61-EB0C1B1831CB} = {05167A25-8885-4D0E-9BBB-F45E1C5BB9B4}
 		{2E40E374-7F57-4D9F-A12A-871A43055450} = {2F700A61-C2C8-4740-94CE-633E9B4806AA}
