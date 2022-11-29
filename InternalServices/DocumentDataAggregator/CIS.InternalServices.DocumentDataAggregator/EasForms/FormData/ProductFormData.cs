@@ -17,12 +17,14 @@ internal class ProductFormData : DataServices.AggregatedData, IProductFormData
 
     public ProductFormData(HouseholdData householdData)
     {
-        HouseholdData = householdData;
+        InternalHouseholdData = householdData;
     }
 
     EasFormRequestType IEasFormData.EasFormRequestType => EasFormRequestType.Product;
 
-    public HouseholdData HouseholdData { get; }
+    public IHouseholdData HouseholdData => InternalHouseholdData;
+
+    internal HouseholdData InternalHouseholdData { get; }
 
     public MockValues MockValues { get; } = new();
 
@@ -46,7 +48,7 @@ internal class ProductFormData : DataServices.AggregatedData, IProductFormData
 
     public int? DrawingDurationId => _drawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
 
-    public IEnumerable<Household> HouseholdList => new[] { HouseholdData.Household };
+    public IEnumerable<Household> HouseholdList => new[] { InternalHouseholdData.Household };
 
     public long? MpIdentityId => GetMpIdentityId();
 
@@ -58,7 +60,7 @@ internal class ProductFormData : DataServices.AggregatedData, IProductFormData
 
         ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
-        await HouseholdData.Initialize(SalesArrangement.SalesArrangementId);
+        await InternalHouseholdData.Initialize(SalesArrangement.SalesArrangementId);
     }
 
     public override async Task LoadCodebooks(ICodebookServiceClients codebookService)
@@ -69,7 +71,7 @@ internal class ProductFormData : DataServices.AggregatedData, IProductFormData
         _drawingTypes = await codebookService.DrawingTypes();
         _drawingDurations = await codebookService.DrawingDurations();
 
-        await HouseholdData.LoadCodebooks(codebookService);
+        await InternalHouseholdData.LoadCodebooks(codebookService);
     }
 
     private int GetProductTypeId()

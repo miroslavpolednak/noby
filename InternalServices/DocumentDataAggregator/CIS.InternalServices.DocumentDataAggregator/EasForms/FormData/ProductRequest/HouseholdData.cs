@@ -10,7 +10,7 @@ using DomainServices.HouseholdService.Contracts;
 namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
 
 [TransientService, SelfService]
-public class HouseholdData
+internal class HouseholdData : IHouseholdData
 {
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
     private readonly IHouseholdServiceClient _householdService;
@@ -24,7 +24,7 @@ public class HouseholdData
 
     private int _firstEmploymentTypeId;
 
-    internal HouseholdData(ICustomerOnSAServiceClient customerOnSaService, IHouseholdServiceClient householdService, ICustomerServiceClient customerService)
+    public HouseholdData(ICustomerOnSAServiceClient customerOnSaService, IHouseholdServiceClient householdService, ICustomerServiceClient customerService)
     {
         _customerOnSaService = customerOnSaService;
         _householdService = householdService;
@@ -39,7 +39,7 @@ public class HouseholdData
 
     public Dictionary<int, Income> Incomes { get; private set; } = null!;
 
-    internal IEnumerable<Customer> Customers => GetCustomers();
+    public IEnumerable<Customer> Customers => GetCustomers();
 
     public async Task Initialize(int salesArrangementId)
     {

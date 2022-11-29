@@ -7,5 +7,5 @@ public interface IProductFormData : IEasFormData
 {
     SalesArrangement SalesArrangement { get; }
 
-    HouseholdData HouseholdData { get; }
+    IHouseholdData HouseholdData { get; }
 }

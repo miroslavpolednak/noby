@@ -34,7 +34,11 @@ var easForm = await dataAggregator.GetEasForm<IProductFormData>(97);
 
 try
 {
-    var test = easForm.BuildForms(Enumerable.Empty<DynamicFormValues>());
+    var test = easForm.BuildForms(Enumerable.Range(1, 3).Select(c => new DynamicFormValues
+    {
+        DocumentId = $"ID{c}", 
+        FormId = $"Form{c}"
+    }));
 }
 catch (Exception e)
 {

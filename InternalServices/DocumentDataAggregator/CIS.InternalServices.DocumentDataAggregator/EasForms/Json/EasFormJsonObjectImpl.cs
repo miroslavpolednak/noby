@@ -20,7 +20,18 @@ internal class EasFormJsonObjectImpl : EasFormJsonObject
         jsonObject.Add(propertyPath, dataFieldPath);
     }
 
-    public override object? GetJsonObject(object data) => _jsonData.ToDictionary(k => k.Key, v => v.Value.GetJsonObject(data));
+    public override object? GetJsonObject(object data)
+    {
+        var dictionary = _jsonData.Select(o => new
+                        {
+                            o.Key,
+                            Value = o.Value.GetJsonObject(data)
+                        })
+                        .Where(o => o.Value is not null)
+                        .ToDictionary(k => k.Key, v => v.Value!);
+
+        return dictionary.Any() ? dictionary : null;
+    }
 
     private EasFormJsonObject GetOrAddJsonObject(string key, Func<EasFormJsonObject> factory)
     {

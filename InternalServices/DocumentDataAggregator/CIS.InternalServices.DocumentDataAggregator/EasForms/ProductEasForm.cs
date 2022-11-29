@@ -26,7 +26,7 @@ internal class ProductEasForm : EasForm<ProductFormData>
 
         foreach (var householdType in householdTypes)
         {
-            if (!FormData.HouseholdData.TrySetHousehold(householdType))
+            if (!FormData.InternalHouseholdData.TrySetHousehold(householdType))
                 continue;
 
             FormData.DynamicFormValues = GetDynamicFormValues();
