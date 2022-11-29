@@ -44,9 +44,6 @@ builder.Services
     .AddSalesArrangementService()
     .AddRiskIntegrationService();
 
-//!!!! odstranit
-builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
-
 // FOMS services
 builder
     .AddNobyServices()
