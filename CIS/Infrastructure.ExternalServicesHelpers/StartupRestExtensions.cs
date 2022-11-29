@@ -8,6 +8,10 @@ namespace CIS.Infrastructure.ExternalServicesHelpers;
 
 public static class StartupRestExtensions
 {
+    /// <summary>
+    /// Přidá do HttpClient try-catch tak, aby se nevraceli výchozí vyjímky, ale jejich CIS ekvivalenty.
+    /// </summary>
+    /// <param name="serviceName">Název ExternalServices proxy</param>
     public static IHttpClientBuilder AddExternalServicesErrorHandling(this IHttpClientBuilder builder, string serviceName)
     {
         builder.Services.AddSingleton(provider => new HttpHandlers.ErrorHandlingHttpHandler(serviceName));
@@ -38,7 +42,7 @@ public static class StartupRestExtensions
     }
 
     /// <summary>
-    /// Založení typed HttpClienta
+    /// Založení typed HttpClienta pro implementaci ExternalService.
     /// </summary>
     /// <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
     /// <typeparam name="TImplementation">Interní implementace TClient interface</typeparam>
@@ -46,6 +50,7 @@ public static class StartupRestExtensions
     /// <param name="builder"></param>
     /// <param name="serviceName">Název konzumované služby třetí strany</param>
     /// <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
+    /// <param name="additionalHandlersRegistration">Možnost zaregistrovat další HttpHandlery do pipeline.</param>
     /// <exception cref="CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
     /// <exception cref="CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
     public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(
@@ -68,11 +73,11 @@ public static class StartupRestExtensions
                     .GetService<TConfiguration>()
                     ?? throw new CisConfigurationNotFound($"External service configuration of type {typeof(TConfiguration)} for {typeof(TClient)} version '{serviceImplementationVersion}' not found");
 
-                // service url
-
+                // timeout requestu
                 if (configuration.RequestTimeout.GetValueOrDefault() > 0)
                     client.Timeout = TimeSpan.FromSeconds(configuration.RequestTimeout!.Value);
 
+                // service url
                 client.BaseAddress = new Uri(configuration.ServiceUrl);
             });
 

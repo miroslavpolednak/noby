@@ -2,6 +2,9 @@
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
+/// <summary>
+/// Přidá do requestu hlavičku s Correlation Id.
+/// </summary>
 public sealed class CorrelationIdForwardingHttpHandler
     : DelegatingHandler
 {

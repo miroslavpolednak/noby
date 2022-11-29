@@ -5,7 +5,13 @@
 /// </summary>
 public interface IExternalServiceBasicAuthenticationConfiguration
 {
+    /// <summary>
+    /// Username
+    /// </summary>
     string? Username { get; set; }
 
+    /// <summary>
+    /// Heslo
+    /// </summary>
     string? Password { get; set; }
 }

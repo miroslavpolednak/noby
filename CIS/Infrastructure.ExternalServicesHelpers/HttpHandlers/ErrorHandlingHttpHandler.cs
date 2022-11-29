@@ -1,5 +1,8 @@
 ﻿namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
+/// <summary>
+/// Mění výchozí HTTP vyjímky na jejich CIS ekvivalenty.
+/// </summary>
 public sealed class ErrorHandlingHttpHandler
     : DelegatingHandler
 {

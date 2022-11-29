@@ -5,6 +5,7 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 /// <summary>
 /// Základní konfigurace externí služby (služby třetí strany).
 /// </summary>
+/// <remarks>Pro registraci HTTP klienta by se vždy měla používat generická verze interface.</remarks>
 public interface IExternalServiceConfiguration
 {
     /// <summary>
@@ -41,6 +42,10 @@ public interface IExternalServiceConfiguration
     ServiceImplementationTypes ImplementationType { get; set; }
 }
 
+/// <summary>
+/// Generická verze konfigurace.
+/// </summary>
+/// <typeparam name="TClient">Typ HTTP klienta</typeparam>
 public interface IExternalServiceConfiguration<TClient>
     : IExternalServiceConfiguration
     where TClient : class
