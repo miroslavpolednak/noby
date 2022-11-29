@@ -1,11 +1,11 @@
 ﻿namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers.BackgroundServices;
 
-public class BusinessResultConsumerService : BackgroundService
+public class BusinessResultWorker : BackgroundService
 {
     private readonly IServiceProvider _provider;
-    private readonly ILogger<BusinessResultConsumerService> _logger;
+    private readonly ILogger<BusinessResultWorker> _logger;
 
-    public BusinessResultConsumerService(IServiceProvider provider, ILogger<BusinessResultConsumerService> logger)
+    public BusinessResultWorker(IServiceProvider provider, ILogger<BusinessResultWorker> logger)
     {
         _provider = provider;
         _logger = logger;

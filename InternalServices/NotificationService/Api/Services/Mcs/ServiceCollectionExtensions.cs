@@ -23,8 +23,9 @@ public static class ServiceCollectionExtensions
 
         return services
             .AddAvroSerializers()
-            .AddHostedService<BusinessResultConsumerService>()
-            .AddHostedService<LogmanResultConsumerService>()
+            .AddHostedService<BusinessResultWorker>()
+            .AddHostedService<LogmanResultWorker>()
+            .AddHostedService<LogmanSendEmailWorker>()
             .AddKafkaClient(new Dictionary<string, string>
             {
                 { "group.id", kafkaConfiguration.GroupId },
