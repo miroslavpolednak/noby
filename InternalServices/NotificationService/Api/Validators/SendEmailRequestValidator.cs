@@ -9,8 +9,7 @@ public class SendEmailRequestValidator : AbstractValidator<EmailSendRequest>
     {
         RuleFor(request => request.From)
             .Cascade(CascadeMode.Stop)
-            .NotNull()
-            .SetValidator(new EmailAddressValidator())
+            .SetValidator(new EmailAddressFromValidator())
             .WithErrorCode(nameof(EmailSendRequest.From));
         
         RuleFor(request => request.To)

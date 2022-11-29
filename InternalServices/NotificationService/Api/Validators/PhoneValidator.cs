@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
+﻿using System.Text.RegularExpressions;
+using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators;
@@ -7,15 +8,14 @@ public class PhoneValidator : AbstractValidator<Phone>
 {
     public PhoneValidator()
     {
-        // todo: Standard E164
         RuleFor(phone => phone.CountryCode)
             .NotEmpty()
-            .MaximumLength(5)
+            .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
             .WithErrorCode(nameof(Phone.CountryCode));
         
         RuleFor(phone => phone.NationalNumber)
             .NotEmpty()
-            .MaximumLength(14)
+            .Matches(new Regex(@"^[0-9]{1,14}$"))
             .WithErrorCode(nameof(Phone.NationalNumber));
     }
 }
