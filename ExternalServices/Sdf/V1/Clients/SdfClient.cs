@@ -37,7 +37,7 @@ namespace ExternalServices.Sdf.V1.Clients
             }
         }
 
-        public async Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalQuery query, CancellationToken cancellation)
+        public async Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalIdQuery query, CancellationToken cancellation)
         {
             var user = CreateUser();
             var options = CreateOptions(query.WithContent);

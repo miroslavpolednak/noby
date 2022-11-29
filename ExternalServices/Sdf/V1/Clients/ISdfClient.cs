@@ -5,6 +5,6 @@ namespace ExternalServices.Sdf.V1.Clients
 {
     public interface ISdfClient
     {
-        Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalQuery query, CancellationToken cancellationToken);
+        Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalIdQuery query, CancellationToken cancellationToken);
     }
 }

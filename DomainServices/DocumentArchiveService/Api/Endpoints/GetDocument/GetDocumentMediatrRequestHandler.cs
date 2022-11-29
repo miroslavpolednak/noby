@@ -19,7 +19,7 @@ namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument
         public async Task<GetDocumentResponse> Handle(GetDocumentMediatrRequest request, CancellationToken cancellationToken)
         {
             var cspResponse = await _sdfClient
-                .GetDocumentByExternalId(new GetDocumentByExternalQuery
+                .GetDocumentByExternalId(new GetDocumentByExternalIdQuery
                 {
                     DocumentId = request.Request.DocumentId,
                     WithContent = request.Request.WithContent,
