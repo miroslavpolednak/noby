@@ -14,7 +14,7 @@ public class ExternalServiceConfiguration<TClient>
 
     public bool UseServiceDiscovery { get; set; } = true;
 
-    public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
+    public bool IgnoreServerCertificateErrors { get; set; } = true;
 
-    public bool PropagateKbHeaders { get; set; }
+    public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
 }

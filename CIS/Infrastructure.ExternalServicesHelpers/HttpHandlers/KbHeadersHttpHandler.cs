@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
@@ -12,11 +11,14 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 public sealed class KbHeadersHttpHandler
     : DelegatingHandler
 {
+    public const string DefaultAppValue = "NOBY";
+    public const string DefaultAppCompValue = "NOBY";
+
     private readonly string _appComponent;
 
-    public KbHeadersHttpHandler(string appComponent = "NOBY")
+    public KbHeadersHttpHandler(string? appComponent = null)
     {
-        _appComponent = appComponent;
+        _appComponent = appComponent ?? DefaultAppCompValue;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

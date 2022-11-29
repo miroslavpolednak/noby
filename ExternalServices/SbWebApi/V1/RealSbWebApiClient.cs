@@ -1,4 +1,5 @@
-﻿using ExternalServices.SbWebApi.Dto;
+﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using ExternalServices.SbWebApi.Dto;
 
 namespace ExternalServices.SbWebApi.V1;
 
@@ -35,12 +36,19 @@ internal sealed class RealSbWebApiClient
             .PostAsJsonAsync("wfs/eventreport/casestatechanged", easRequest, cancellationToken)
             .ConfigureAwait(false);
 
-        var result = await response.Content.ReadFromJsonAsync<Contracts.WFS_Event_Response>(cancellationToken: cancellationToken)
-            ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CaseStateChanged), nameof(Contracts.WFS_Event_Response));
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<Contracts.WFS_Event_Response>(cancellationToken: cancellationToken)
+                ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CaseStateChanged), nameof(Contracts.WFS_Event_Response));
 
-        // neco je spatne ve WS
-        if ((result.Result?.Return_val ?? 0) != 0)
-            throw new CisExtServiceValidationException(result.Result?.Return_text ?? "");
+            // neco je spatne ve WS
+            if ((result.Result?.Return_val ?? 0) != 0)
+                throw new CisExtServiceValidationException(result.Result?.Return_text ?? "");
+        }
+        else
+        {
+            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+        }
     }
 
     private readonly HttpClient _httpClient;

@@ -10,6 +10,7 @@ public interface IExternalServiceConfiguration
     /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
     /// </summary>
+    /// <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
     bool LogPayloads { get; set; }
 
     /// <summary>
@@ -30,15 +31,14 @@ public interface IExternalServiceConfiguration
     bool UseServiceDiscovery { get; set; }
 
     /// <summary>
+    /// Pokud =true, ignoruje HttpClient problem s SSL certifikatem remote serveru.
+    /// </summary>
+    bool IgnoreServerCertificateErrors { get; set; }
+
+    /// <summary>
     /// Type of http client implementation - can be mock or real client or something else.
     /// </summary>
     ServiceImplementationTypes ImplementationType { get; set; }
-
-    /// <summary>
-    /// Pokud je true, naplni headers requestu udaji vyzadovanymi KB.
-    /// </summary>
-    /// <remarks>Budeme potrebovat resit X-KB-Caller-System-Identity ?</remarks>
-    bool PropagateKbHeaders { get; set; }
 }
 
 public interface IExternalServiceConfiguration<TClient>
