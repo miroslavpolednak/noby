@@ -92,40 +92,38 @@ public interface ICustomerOnSAServiceClient
     /// <summary>
     /// Vytvoreni noveho zavazku
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="int" /> (ObligationId)</returns>
+    /// <returns><see cref="int"/>ObligationId</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16024; CustomerOnSAId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16028; ObligationTypeId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Smazani zavazku
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
+    Task DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci instanci pozadovaneho zavazku
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="Obligation" /></returns>
+    /// <returns><see cref="Obligation"/>Obligation instance</returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Obligation> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Vraci vsechny zavazky pro daneho Customera
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult{}"/> of type <see cref="List{}" /> where T : <see cref="ObligationInList" /></returns>
+    /// <returns><see cref="List{}"/>where T : <see cref="ObligationInList" /></returns>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<List<Obligation>> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Update detailu dat o zavazku
     /// </summary>
-    /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task<IServiceCallResult> UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken));
 }

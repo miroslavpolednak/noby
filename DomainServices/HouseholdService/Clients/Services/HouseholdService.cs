@@ -55,11 +55,6 @@ internal class HouseholdService : IHouseholdServiceClient
     }
 
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
+    public HouseholdService(Contracts.v1.HouseholdService.HouseholdServiceClient service) => _service = service;
     //private readonly ServiceClientResultCache<Household> _householdCache;
-
-    public HouseholdService(Contracts.v1.HouseholdService.HouseholdServiceClient service)
-    {
-        //_householdCache = new ServiceClientResultCache<Household>();
-        _service = service;
-    }
 }

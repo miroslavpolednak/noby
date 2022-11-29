@@ -8,7 +8,7 @@ internal class GetObligationHandler
 {
     public async Task<Dto.ObligationFullDto> Handle(GetObligationRequest request, CancellationToken cancellationToken)
     {
-        var obligationInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Obligation>(await _customerService.GetObligation(request.ObligationId, cancellationToken));
+        var obligationInstance = await _customerService.GetObligation(request.ObligationId, cancellationToken);
 
         return obligationInstance.ToApiResponse();
     }

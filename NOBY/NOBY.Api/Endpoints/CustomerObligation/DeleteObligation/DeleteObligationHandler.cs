@@ -7,7 +7,7 @@ internal class DeleteObligationHandler
 {
     protected override async Task Handle(DeleteObligationRequest request, CancellationToken cancellationToken)
     {
-        ServiceCallResult.Resolve(await _customerService.DeleteObligation(request.ObligationId, cancellationToken));
+        await _customerService.DeleteObligation(request.ObligationId, cancellationToken);
     }
 
     private readonly ICustomerOnSAServiceClient _customerService;

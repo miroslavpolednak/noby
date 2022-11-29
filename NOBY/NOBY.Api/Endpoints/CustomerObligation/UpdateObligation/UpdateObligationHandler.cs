@@ -8,7 +8,7 @@ internal class UpdateObligationHandler
 {
     protected override async Task Handle(UpdateObligationRequest request, CancellationToken cancellationToken)
     {
-        var obligationInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Obligation>(await _customerService.GetObligation(request.ObligationId, cancellationToken));
+        var obligationInstance = await _customerService.GetObligation(request.ObligationId, cancellationToken);
 
         var model = new _HO.Obligation
         {
@@ -37,7 +37,7 @@ internal class UpdateObligationHandler
                 LoanPrincipalAmountCorrection = request.Correction.LoanPrincipalAmountCorrection
             };
 
-        ServiceCallResult.Resolve(await _customerService.UpdateObligation(model, cancellationToken));
+        await _customerService.UpdateObligation(model, cancellationToken);
     }
 
     private readonly ICustomerOnSAServiceClient _customerService;
