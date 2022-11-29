@@ -3,6 +3,12 @@ using System.Diagnostics;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
+/// <summary>
+/// Middleware přidávájící KB hlavičky do requestu.
+/// </summary>
+/// <remarks>
+/// Přidává hlavičky X-KB-Caller-System-Identity a X-B3-TraceId a X-B3-SpanId.
+/// </remarks>
 internal sealed class KbHeadersHttpHandler
     : DelegatingHandler
 {

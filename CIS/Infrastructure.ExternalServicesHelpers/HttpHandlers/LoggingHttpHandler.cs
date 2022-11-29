@@ -1,5 +1,11 @@
 ﻿namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
+/// <summary>
+/// Middleware pro logování payloadu a hlavičke requestu a responsu.
+/// </summary>
+/// <remarks>
+/// Vloží do kontextu logovaného záznamu klíče Payload a Headers s odpovídajícími objekty. Pokud např. response payload neobsahuje, není tento klíč do kontextu logovaného záznamu vložen.
+/// </remarks>
 internal sealed class LoggingHttpHandler 
     : DelegatingHandler
 {

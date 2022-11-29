@@ -2,6 +2,9 @@
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 
+/// <summary>
+/// Základní konfigurace externí služby (služby třetí strany).
+/// </summary>
 public interface IExternalServiceConfiguration
 {
     /// <summary>
@@ -37,3 +40,8 @@ public interface IExternalServiceConfiguration
     /// <remarks>Budeme potrebovat resit X-KB-Caller-System-Identity ?</remarks>
     bool PropagateKbHeaders { get; set; }
 }
+
+public interface IExternalServiceConfiguration<TClient>
+    : IExternalServiceConfiguration
+    where TClient : class
+{ }

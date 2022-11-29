@@ -7,6 +7,7 @@ internal sealed class RealSbWebApiClient
 {
     public async Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
+        // vytvoreni EAS requestu
         var easRequest = new Contracts.WFS_Request_CaseStateChanged
         {
             Header = new Contracts.WFS_Header

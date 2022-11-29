@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
+/// <summary>
+/// Middleware pridavajici Authorization header do requestu. Username a password je zadavan do konstruktoru handleru pri pridavani HttpClienta.
+/// </summary>
 internal sealed class BasicAuthenticationHttpHandler
     : DelegatingHandler
 {

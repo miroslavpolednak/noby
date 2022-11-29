@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.Eas;
 using ExternalServices.SbWebApi;
+using ExternalServices.SbWebApi.V1;
 using ExternalServices.Sulm;
 
 namespace DomainServices.SalesArrangementService.Api;
@@ -23,7 +24,7 @@ internal static class StartupExtensions
         // sulm
         builder.AddExternalServiceSulm();
         // sb web api
-        builder.AddExternalServiceSbWebApi();
+        builder.AddExternalService<ISbWebApiClient>();
 
         // dbcontext
         builder.AddEntityFramework<Repositories.SalesArrangementServiceDbContext>();

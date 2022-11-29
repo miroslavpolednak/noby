@@ -9,7 +9,7 @@ public static class StartupExtensions
     internal const string ServiceName = "SbWebApi";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class, ISbWebApi
+        where TClient : class
     {
         var httpClientBuilder = typeof(TClient) switch
         {
