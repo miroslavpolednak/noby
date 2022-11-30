@@ -3,7 +3,6 @@
   <PropertyGroup>
 	  <TargetFramework>net7.0</TargetFramework>
 	  <OutputType>Library</OutputType>
-	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
 	  <Authors>Filip Tuma</Authors>
 	  <LangVersion>preview</LangVersion>
@@ -18,7 +17,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.gRPC.CisTypes.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
-		<DisableDefaultDocumentation>true</DisableDefaultDocumentation>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<ItemGroup>
