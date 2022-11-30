@@ -17,6 +17,7 @@
 		<Title>ILogger extension methods</Title>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.Logging.Extensions.xml</DocumentationFile>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<ItemGroup>

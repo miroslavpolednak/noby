@@ -46,25 +46,26 @@ internal class UpdateSalesArrangementHandler
             // get current user's login
             string? userLogin = null;
             if (_userAccessor.User?.Id > 0)
-                userLogin = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.First().Identity;
+                userLogin = (await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.First().Identity;
 
             // get case owner
-            var ownerInstance = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation));
+            var ownerInstance = await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation);
             var productType = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == caseInstance.Data.ProductTypeId);
 
-            var sbNotifyModel = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
-                userLogin ?? "anonymous",
-                entity.CaseId,
-                entity.ContractNumber ?? "",
-                $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
-                ((CaseStates)caseInstance.State).GetAttribute<DisplayAttribute>()!.Name!,
-                caseInstance.Data.ProductTypeId,
-                ownerInstance.CPM,
-                ownerInstance.ICP,
-                (Mandants)productType.MandantId,
-                request.Request.RiskBusinessCaseId);
-
-            bool sbNotified = ServiceCallResult.Resolve(await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellation));
+            var sbNotifyModel = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
+            {
+                Login = userLogin ?? "anonymous",
+                CaseId = entity.CaseId,
+                ContractNumber = entity.ContractNumber ?? "",
+                ClientFullName = $"{caseInstance.Customer?.FirstNameNaturalPerson} {caseInstance.Customer?.Name}",
+                CaseStateName = ((CaseStates)caseInstance.State).GetAttribute<DisplayAttribute>()!.Name!,
+                ProductTypeId = caseInstance.Data.ProductTypeId,
+                OwnerUserCpm = ownerInstance.CPM,
+                OwnerUserIcp = ownerInstance.ICP,
+                Mandant = (Mandants)productType.MandantId,
+                RiskBusinessCaseId = request.Request.RiskBusinessCaseId
+            };
+            await _sbWebApiClient.CaseStateChanged(sbNotifyModel, cancellation);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();

@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
                 // todo: uri from configuration
                 options.Address = new Uri("https://localhost:5003");
             })
-            .CisConfigureChannel()
+            .CisConfigureChannelWithoutCertificateValidation()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()

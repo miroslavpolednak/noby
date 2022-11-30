@@ -43,7 +43,7 @@ public static class DocumentArchiveServiceExtensions
                 var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>();
                 options.Address = serviceUri.Url;
             })
-            .CisConfigureChannel()
+            .CisConfigureChannelWithoutCertificateValidation()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddInterceptor<ContextUserForwardingClientInterceptor>()

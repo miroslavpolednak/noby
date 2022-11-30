@@ -91,7 +91,7 @@ internal sealed class GetGetCaseParametersHandler
 
         // load User
         var userId = caseInstance.CaseOwner?.UserId;
-        var userInstance = userId.HasValue ? ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(userId.Value, cancellation)) : null;
+        var userInstance = userId.HasValue ? await _userService.GetUser(userId.Value, cancellation) : null;
 
         return new GetCaseParametersResponse
         {

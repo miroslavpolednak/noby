@@ -25,7 +25,7 @@ public class AppSecurityMiddleware
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
 
             // ziskat instanci uzivatele z xxv
-            var result = resolveResult(await userService.GetUserByLogin(login));
+            var result = await userService.GetUserByLogin(login);
 
             // vlozit FOMS uzivatele do contextu
             context.User = new FomsUser(context.User.Identity, result);
@@ -39,12 +39,4 @@ public class AppSecurityMiddleware
         "/api/users/signin",
         "/api/admin/discovery-service"
     };
-
-    private  static DomainServices.UserService.Contracts.User resolveResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<DomainServices.UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new System.Security.Authentication.AuthenticationException(err.ToString()),
-            _ => throw new NotImplementedException()
-        };
 }

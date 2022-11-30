@@ -17,6 +17,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.Security.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<ItemGroup>

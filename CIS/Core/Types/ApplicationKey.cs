@@ -20,7 +20,7 @@ public sealed record ApplicationKey
         if (string.IsNullOrEmpty(key))
             throw new CisInvalidApplicationKeyException(key ?? "");
 
-        if (!key.All(t => Char.IsLetterOrDigit(t) || t == ':'))
+        if (!key.All(t => Char.IsLetterOrDigit(t) || t == ':' || t == '_'))
         {
             throw new CisInvalidApplicationKeyException(key);
         }

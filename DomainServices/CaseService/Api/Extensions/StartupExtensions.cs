@@ -2,6 +2,7 @@
 using ExternalServices.Eas;
 using ExternalServices.EasSimulationHT;
 using ExternalServices.SbWebApi;
+using ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.CaseService.Api;
 
@@ -24,8 +25,8 @@ internal static class StartupExtensions
         // EAS EasSimulationHT svc
         builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);
 
-        // MpHome svc
-        builder.AddExternalServiceSbWebApi();
+        // SB webapi svc
+        builder.AddExternalService<ISbWebApiClient>();
 
         // dbcontext
         builder.AddEntityFramework<Repositories.CaseServiceDbContext>();

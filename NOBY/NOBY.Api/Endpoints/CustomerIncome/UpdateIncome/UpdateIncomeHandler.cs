@@ -54,7 +54,7 @@ internal class UpdateIncomeHandler
             }
         }
 
-        ServiceCallResult.Resolve(await _customerService.UpdateIncome(model, cancellationToken));
+        await _customerService.UpdateIncome(model, cancellationToken);
     }
 
     static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions

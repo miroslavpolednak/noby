@@ -138,7 +138,7 @@ internal class SendToCmpHandler
     private async Task SaveForms(Contracts.SalesArrangement arrangement, List<Form> forms, CancellationToken cancellation)
     {
         // load user
-        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(arrangement.Created.UserId!.Value, cancellation));
+        var user = await _userService.GetUser(arrangement.Created.UserId!.Value, cancellation);
 
         // map to entities
         var entities = forms.Select(f => 

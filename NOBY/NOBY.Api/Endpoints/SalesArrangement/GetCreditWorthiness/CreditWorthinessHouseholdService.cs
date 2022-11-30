@@ -12,7 +12,7 @@ internal sealed class CreditWorthinessHouseholdService
     public async Task<List<_Rip.CreditWorthinessHousehold>> CreateHouseholds(int salesArrangementId, CancellationToken cancellationToken)
     {
         // seznam domacnosti na SA
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<_HO.Household>>(await _householdService.GetHouseholdList(salesArrangementId, cancellationToken));
+        var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
         if (!households.Any())
             throw new CisValidationException("There is no household bound for this SA");
 
@@ -37,13 +37,13 @@ internal sealed class CreditWorthinessHouseholdService
             int? maritalState2 = null;
             if (household.CustomerOnSAId1.HasValue)
             {
-                var c = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSaService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken));
+                var c = await _customerOnSaService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken);
                 h.Customers.Add(createClient(c));
                 maritalState1 = c.MaritalStatusId;
             }
             if (household.CustomerOnSAId2.HasValue)
             {
-                var c = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSaService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken));
+                var c = await _customerOnSaService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken);
                 h.Customers.Add(createClient(c));
                 maritalState2 = c.MaritalStatusId;
             }
