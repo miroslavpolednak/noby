@@ -163,6 +163,17 @@
             Vloží do kontextu logovaného záznamu klíče Payload a Headers s odpovídajícími objekty. Pokud např. response payload neobsahuje, není tento klíč do kontextu logovaného záznamu vložen.
             </remarks>
         </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfiguration``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
+            <summary>
+            Načtení konfigurace externí služby a její vložení do DI.
+            </summary>
+            <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
+            <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
+            <param name="serviceName">Název konzumované služby třetí strany</param>
+            <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
+            <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
+            <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
+        </member>
         <member name="F:CIS.Infrastructure.ExternalServicesHelpers.Constants.ExternalServicesConfigurationSectionName">
             <summary>
             Name of section in appsettings.json which holds configuration settings for external services.
@@ -191,7 +202,12 @@
             </summary>
             <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``3(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String,``2,System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,``2})">
+        <member name="T:CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient">
+            <summary>
+            Marker interface for External Services Clients
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``3(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration,System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration})">
             <summary>
             Založení typed HttpClienta pro implementaci ExternalService.
             </summary>
@@ -199,11 +215,8 @@
             <typeparam name="TImplementation">Interní implementace TClient interface</typeparam>
             <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
             <param name="builder"></param>
-            <param name="serviceName">Název konzumované služby třetí strany</param>
             <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
             <param name="additionalHandlersRegistration">Možnost zaregistrovat další HttpHandlery do pipeline.</param>
-            <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
-            <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
         </member>
     </members>
 </doc>

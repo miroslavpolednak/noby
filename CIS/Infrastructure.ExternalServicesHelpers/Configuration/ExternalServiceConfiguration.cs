@@ -7,7 +7,7 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 /// </summary>
 public class ExternalServiceConfiguration<TClient>
     : IExternalServiceConfiguration<TClient>
-    where TClient : class
+    where TClient : class, IExternalServiceClient
 {
     /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true

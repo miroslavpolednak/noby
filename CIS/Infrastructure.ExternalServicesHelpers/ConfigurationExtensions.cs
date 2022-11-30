@@ -7,6 +7,15 @@ namespace CIS.Infrastructure.ExternalServicesHelpers;
 
 public static class ConfigurationExtensions
 {
+    /// <summary>
+    /// Načtení konfigurace externí služby a její vložení do DI.
+    /// </summary>
+    /// <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
+    /// <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
+    /// <param name="serviceName">Název konzumované služby třetí strany</param>
+    /// <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
+    /// <exception cref="CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
+    /// <exception cref="CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
     public static TConfiguration AddExternalServiceConfiguration<TClient, TConfiguration>(
     this WebApplicationBuilder builder,
     string serviceName,

@@ -23,7 +23,7 @@ public static class StartupExtensions
                 break;
 
             case (V1.ISbWebApiClient, ServiceImplementationTypes.Real):
-                builder.AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient, ExternalServiceConfiguration<V1.ISbWebApiClient>>(ServiceName, V1.ISbWebApiClient.Version, configuration, _addAdditionalHttpHandlers);
+                builder.AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient, ExternalServiceConfiguration<V1.ISbWebApiClient>>(V1.ISbWebApiClient.Version, configuration, _addAdditionalHttpHandlers);
                 break;
 
             default:

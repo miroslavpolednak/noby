@@ -8,7 +8,7 @@ Generická verze konfigurace.
 ```csharp
 public interface IExternalServiceConfiguration<TClient> :
 CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration
-    where TClient : class
+    where TClient : class, CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient
 ```
 #### Type parameters
 

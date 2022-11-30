@@ -35,7 +35,7 @@ public static class StartupExtensions
         return builder;
     }*/
 
-    public static IHttpClientBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+    /*public static IHttpClientBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class
     {
         return typeof(TClient) switch
@@ -50,5 +50,5 @@ public static class StartupExtensions
     private static Action<IHttpClientBuilder, ExternalServiceConfiguration<V1.ICustomersExposureClient>> _addAdditionalHttpHandlers = (builder, configuration)
         => builder
             .AddExternalServicesCorrelationIdForwarding()
-            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
+            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);*/
 }

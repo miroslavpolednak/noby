@@ -13,20 +13,16 @@ public static class StartupRestExtensions
     /// <typeparam name="TImplementation">Interní implementace TClient interface</typeparam>
     /// <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
     /// <param name="builder"></param>
-    /// <param name="serviceName">Název konzumované služby třetí strany</param>
     /// <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
     /// <param name="additionalHandlersRegistration">Možnost zaregistrovat další HttpHandlery do pipeline.</param>
-    /// <exception cref="CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
-    /// <exception cref="CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
     public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(
-        this WebApplicationBuilder builder, 
-        string serviceName, 
+        this WebApplicationBuilder builder,  
         string serviceImplementationVersion,
         IExternalServiceConfiguration configuration,
         Action<IHttpClientBuilder, IExternalServiceConfiguration>? additionalHandlersRegistration = null)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
-        where TConfiguration : class, IExternalServiceConfiguration
+        where TConfiguration : class, IExternalServiceConfiguration<TClient>
     {
         var clientBuilder = builder.Services
             .AddHttpClient<TClient, TImplementation>((services, client) =>
