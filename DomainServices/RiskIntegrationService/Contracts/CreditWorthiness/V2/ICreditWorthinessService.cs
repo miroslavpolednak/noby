@@ -4,4 +4,6 @@
 public interface ICreditWorthinessService
 {
     ValueTask<CreditWorthinessCalculateResponse> Calculate(CreditWorthinessCalculateRequest request, CancellationToken cancellationToken = default);
+
+    ValueTask<CreditWorthinessSimpleCalculateResponse> SimpleCalculate(CreditWorthinessSimpleCalculateRequest request, CancellationToken cancellationToken = default);
 }
