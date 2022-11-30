@@ -173,25 +173,25 @@
             Prefix for service's Key in ServiceDiscovery database.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>
             Přidá do HttpClient try-catch tak, aby se nevraceli výchozí vyjímky, ale jejich CIS ekvivalenty.
             </summary>
             <param name="serviceName">Název ExternalServices proxy</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServicesKbHeaders(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesKbHeaders(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>
             Prida do kazdeho requestu HttpClienta hlavicky vyzadovane v KB.
             </summary>
             <param name="appComponent">Hodnota appComp v hlavičce X-KB-Caller-System-Identity. Pokud není vyplněno, je nastavena na "NOBY".</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServicesCorrelationIdForwarding(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesCorrelationIdForwarding(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>
             Doplňuje do každého requestu Correlation Id z OT.
             </summary>
             <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``3(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String,System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,``2})">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``3(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String,``2,System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,``2})">
             <summary>
             Založení typed HttpClienta pro implementaci ExternalService.
             </summary>
