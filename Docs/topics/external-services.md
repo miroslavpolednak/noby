@@ -7,7 +7,7 @@ Konzument by neměl na interface proxy projektu poznat rozdíl mezi REST nebo SO
 
 Proxy projekty nad službami třetích stran vznikají na dvou místech:
 - **služba třetí strany, která může být volána z více projektů NOBY.**  
-Projekt bude založen v adresáři */ExternalServices*, název projektu / namespace je `ExternalServices.{nazev_sluzby_treti_strany}`.
+Projekt bude založen v adresáři */ExternalServices*, název projektu (namespace) je `ExternalServices.{nazev_sluzby_treti_strany}`.
 - **služba třetí strany, která je vždy pevně spjata pouze s jedním projektem/službou NOBY.** 
 Nezakládáme pro službu nový projekt, ale proxy klient bude součástí projektu ----- nebo ano???? TODO domyslet
 
@@ -57,7 +57,7 @@ Příklad pro proxy projekt **Eas**:
 StartupExtensions.cs        (extension metoda pro zapojení proxy projektu do DI konzumující aplikace)
 ```
 
-## Jak implementovat proxy projekt?
+## Jak implementovat proxy projekt (REST služba)?
 Pro vlastní implementaci máme připravenou společnou infrastrukturu v projektu `CIS.Infrastructure.ExternalServicesHelpers`.
 
 Zásadní je extension metoda `AddExternalServiceRestClient()`, která vytváří *HttpClient*-a, registruje vybrané middleware, načítá konfiguraci z *appsettings.json* atd.
@@ -87,7 +87,7 @@ IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfi
     * v rámci callbacku je možné přidat další *HttpHandler-y*
 5. pokud je v konfiguraci *LogPayloads=true*, přidání HttpHandleru který loguje request / response HttpClienta
 
-## Připravené HttpHandlery
+### Připravené HttpHandlery
 V `CIS.Infrastructure.ExternalServicesHelpers` jsou již připravené tyto *HttpHandler*-y.
 
 **BasicAuthenticationHttpHandler**  
@@ -108,7 +108,7 @@ Extension metoda `IHttpClientBuilder.AddExternalServicesKbHeaders()`.
 **LoggingHttpHandler**  
 Přidává logování request a response payloadu a hlavičky.
 
-## Příklad implementace
+### Příklad implementace
 Ukázka nastavení služby v `StartupExtensions.cs`
 ```
 public static class StartupExtensions
@@ -138,3 +138,6 @@ A následně registrace proxy projektu, např. v doménové službě:
 ```
 builder.AddExternalService<IEasClient>();
 ```
+
+## Jak implementovat proxy projekt (SOAP služba)?
+TODO
