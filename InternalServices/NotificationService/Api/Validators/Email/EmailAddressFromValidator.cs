@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Validators;
+namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
 
 public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
 {
@@ -18,7 +18,7 @@ public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
                 var host = email.ToLowerInvariant().Split('@').Last();
                 return _allowedHost.Contains(host);
             })
-            .WithMessage($"Allowed host for sender: {string.Join(',', _allowedHost)}.")
-            .WithErrorCode(nameof(EmailAddress.Value));
+            .WithErrorCode(ErrorCodes.SendEmail.FromInvalid)
+            .WithMessage($"Allowed host for sender: {string.Join(',', _allowedHost)}.");
     }
 }

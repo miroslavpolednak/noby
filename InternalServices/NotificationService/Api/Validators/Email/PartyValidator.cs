@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Validators;
+namespace CIS.InternalServices.NotificationService.Api.Validators.Email;
 
 public class PartyValidator : AbstractValidator<Party>
 {
@@ -16,14 +16,16 @@ public class PartyValidator : AbstractValidator<Party>
         {
             RuleFor(party => party.LegalPerson!)
                 .SetValidator(new LegalPersonValidator())
-                .WithErrorCode(nameof(Party.LegalPerson));
+                    .WithErrorCode(ErrorCodes.EmailParty.LegalPersonInvalid)
+                    .WithMessage($"Invalid {nameof(Party.LegalPerson)}.");
         });
 
         When(party => party.LegalPerson is not null, () =>
         {
             RuleFor(party => party.NaturalPerson!)
                 .SetValidator(new NaturalPersonValidator())
-                .WithErrorCode(nameof(Party.NaturalPerson));
+                    .WithErrorCode(ErrorCodes.EmailParty.NaturalPersonInvalid)
+                    .WithMessage($"Invalid {nameof(Party.NaturalPerson)}.");
         });
     }
 }
