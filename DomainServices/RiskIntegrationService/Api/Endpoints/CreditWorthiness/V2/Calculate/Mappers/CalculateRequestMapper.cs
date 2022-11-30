@@ -10,13 +10,7 @@ internal sealed class CalculateRequestMapper
     {
         var requestModel = new _C4M.CreditWorthinessCalculationArguments
         {
-            ResourceProcessId = new()
-            {
-                Instance = "MPSS",
-                Domain = "OM",
-                Resource = "OfferInstance",
-                Id = request.ResourceProcessId
-            },
+            ResourceProcessId = _C4M.ResourceIdentifier.CreateResourceProcessId(request.ResourceProcessId!),
             ItChannel = FastEnum.Parse<_C4M.CreditWorthinessCalculationArgumentsItChannel>(_configuration.GetItChannelFromServiceUser(_serviceUserAccessor.User!.Name)),
             //RiskBusinessCaseId = request.RiskBusinessCaseId!,//TODO ResourceIdentifier
             LoanApplicationProduct = new()

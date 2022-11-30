@@ -12,4 +12,6 @@ internal static class Constants
     internal const string CAM = "CAM";
     internal const string Collateral = "Collateral";
     internal const string KBCZ = "KBCZ";
+    internal const string CM = "CM";
+    internal const string Customer = "Customer";
 }

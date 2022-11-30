@@ -13,6 +13,13 @@ internal class CreditWorthinessService
         return new SuccessfulServiceCallResult<CreditWorthinessCalculateResponse>(result);
     }
 
+    public async Task<IServiceCallResult> SimpleCalculate(CreditWorthinessSimpleCalculateRequest request, CancellationToken cancellationToken = default)
+    {
+        _logger.RequestHandlerStarted(nameof(SimpleCalculate));
+        var result = await _service.SimpleCalculate(request, cancellationToken: cancellationToken);
+        return new SuccessfulServiceCallResult<CreditWorthinessSimpleCalculateResponse>(result);
+    }
+
     private readonly ILogger<CreditWorthinessService> _logger;
     private readonly ICreditWorthinessService _service;
     
