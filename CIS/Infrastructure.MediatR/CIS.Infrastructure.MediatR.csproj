@@ -16,6 +16,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.MediatR.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<ItemGroup>

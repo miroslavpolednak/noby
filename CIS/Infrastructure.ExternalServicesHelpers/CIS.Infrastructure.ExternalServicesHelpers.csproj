@@ -16,6 +16,7 @@
 		<Title>Third party services helpers</Title>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.ExternalServicesHelpers.xml</DocumentationFile>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<ItemGroup>
