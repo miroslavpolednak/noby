@@ -11,10 +11,10 @@ internal class CaseStateChangedHandler
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == notification.CaseStateId);
 
         // get current user's login
-        var userInstance = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
+        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
         // get case owner
-        var ownerInstance = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken));
+        var ownerInstance = await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken);
 
         // vytahnout povolena SATypeId pro tento ProductTypeId
         var allowedSaTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))

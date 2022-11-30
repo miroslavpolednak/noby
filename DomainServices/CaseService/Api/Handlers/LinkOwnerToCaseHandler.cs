@@ -11,21 +11,13 @@ internal class LinkOwnerToCaseHandler
         await _repository.EnsureExistingCase(request.CaseId, cancellation);
 
         // overit ze existuje uzivatel
-        var userInstance = resolveUserResult(await _userService.GetUser(request.CaseOwnerUserId, cancellation));
+        var userInstance = await _userService.GetUser(request.CaseOwnerUserId, cancellation);
 
         // update majitele v databazi
         await _repository.LinkOwnerToCase(request.CaseId, request.CaseOwnerUserId, userInstance.FullName, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
-
-    private static UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new CisNotFoundException(13022, $"User not found: {err.Errors[0].Message}"),
-            _ => throw new NotImplementedException()
-        };
 
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly Repositories.CaseServiceRepository _repository;

@@ -112,7 +112,7 @@ internal class FormsService
         var offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))
                      ?? throw new CisNotFoundException(18001, $"Offer ID #{arrangement.OfferId} does not exist.");
 
-        var user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))
+        var user = await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation)
             ?? throw new CisNotFoundException(18077, $"User ID #{arrangement.Created.UserId} does not exist.");
 
         var customers = await GetCustomers(customersOnSA, cancellation);

@@ -130,7 +130,7 @@ internal class LoanApplicationDataService
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<cCase.Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation));
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
         //Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode = null;
-        var user = ServiceCallResult.ResolveAndThrowIfError<cUser.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation));
+        var user = await _userService.GetUser(_userAccessor.User!.Id, cancellation);
         var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
         var countries = await _codebookService.Countries(cancellation);
         var obligationTypes = await _codebookService.ObligationTypes(cancellation);

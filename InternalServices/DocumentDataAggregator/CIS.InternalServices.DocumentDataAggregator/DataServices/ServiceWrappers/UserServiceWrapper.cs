@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.UserService.Clients;
-using DomainServices.UserService.Contracts;
+﻿using DomainServices.UserService.Clients;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 
@@ -19,8 +17,6 @@ internal class UserServiceWrapper : IServiceWrapper
         if (!input.UserId.HasValue)
             throw new ArgumentNullException(nameof(InputParameters.UserId));
 
-        var result = await _userService.GetUser(input.UserId.Value, cancellationToken);
-
-        data.User = ServiceCallResult.ResolveAndThrowIfError<User>(result);
+        data.User = await _userService.GetUser(input.UserId.Value, cancellationToken);
     }
 }

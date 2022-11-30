@@ -11,7 +11,7 @@ internal class CreateCaseHandler
     public async Task<CreateCaseResponse> Handle(Dto.CreateCaseMediatrRequest request, CancellationToken cancellation)
     {
         // overit existenci ownera
-        var userInstance = resolveUserResult(await _userService.GetUser(request.Request.CaseOwnerUserId, cancellation));
+        var userInstance = await _userService.GetUser(request.Request.CaseOwnerUserId, cancellation);
         //TODO zkontrolovat existenci klienta?
 
         // pro jakou spolecnost
@@ -64,14 +64,6 @@ internal class CreateCaseHandler
             SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
             SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "Unable to get CaseId from SB", 13004),
             ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
-            _ => throw new NotImplementedException()
-        };
-
-    private static UserService.Contracts.User resolveUserResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<UserService.Contracts.User> r => r.Model,
-            ErrorServiceCallResult err => throw new CisNotFoundException(13022, $"User not found: {err.Errors[0].Message}"),
             _ => throw new NotImplementedException()
         };
 

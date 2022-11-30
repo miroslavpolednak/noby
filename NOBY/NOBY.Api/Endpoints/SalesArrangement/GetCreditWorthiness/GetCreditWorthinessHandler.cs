@@ -20,7 +20,7 @@ internal class GetCreditWorthinessHandler
         // offer instance
         var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
         // user instance
-        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
+        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
 #pragma warning disable CA1305 // Specify IFormatProvider
         var ripRequest = new _Rip.CreditWorthinessCalculateRequest

@@ -9,7 +9,7 @@ internal class GetByIdHandler
         var model = await _converter.FromContract(result);
         
         // case owner
-        var userInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.UserService.Contracts.User>(await _userService.GetUser(result.CaseOwner.UserId, cancellationToken));
+        var userInstance = await _userService.GetUser(result.CaseOwner.UserId, cancellationToken);
         model.CaseOwner = new Dto.CaseOwnerModel
         {
             Cpm = userInstance.CPM,

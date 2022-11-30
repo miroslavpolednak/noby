@@ -11,7 +11,7 @@ internal sealed class SignInHandler
     {
         _logger.UserSigningInAs(request.Login);
 
-        var userInstance = ServiceCallResult.ResolveToDefault<DomainServices.UserService.Contracts.User>(await _userService.GetUserByLogin(request.Login ?? "", cancellationToken));
+        var userInstance = await _userService.GetUserByLogin(request.Login ?? "", cancellationToken);
         if (userInstance is null) throw new CisValidationException("Login not found");
 
         var claims = new List<Claim>

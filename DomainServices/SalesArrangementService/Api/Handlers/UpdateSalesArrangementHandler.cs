@@ -46,10 +46,10 @@ internal class UpdateSalesArrangementHandler
             // get current user's login
             string? userLogin = null;
             if (_userAccessor.User?.Id > 0)
-                userLogin = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.First().Identity;
+                userLogin = (await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.First().Identity;
 
             // get case owner
-            var ownerInstance = ServiceCallResult.ResolveAndThrowIfError<_Usr.User>(await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation));
+            var ownerInstance = await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation);
             var productType = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == caseInstance.Data.ProductTypeId);
 
             var sbNotifyModel = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest

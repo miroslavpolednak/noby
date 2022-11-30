@@ -10,7 +10,7 @@ public interface IUserServiceClient
     /// <returns>
     /// SuccessfulServiceCallResult[int (Contracts.User)] - OK;
     /// </returns>
-    Task<IServiceCallResult> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Contracts.User> GetUserByLogin(string login, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<IServiceCallResult> GetUser(int userId, CancellationToken cancellationToken = default(CancellationToken));
+    Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default(CancellationToken));
 }
