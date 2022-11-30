@@ -139,10 +139,16 @@ public static class StartupRestExtensions
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         TConfiguration configuration = (TConfiguration)Activator.CreateInstance(typeof(TConfiguration));
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-        builder.Configuration.GetSection(getSectionName(serviceName)).Bind(configuration);
+        
+        // zkusit nacist konfiguraci pro danou verzi
+        builder.Configuration.GetSection(getSectionName(serviceName, serviceImplementationVersion)).Bind(configuration);
+        
+        // konfigurace pro konkretni verzi neexistuje, zkus obecnou konfiguraci
+        if (configuration == null)
+            builder.Configuration.GetSection($"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}").Bind(configuration);
 
         if (configuration == null)
-            throw new CisConfigurationNotFound(getSectionName(serviceName));
+            throw new CisConfigurationNotFound(getSectionName(serviceName, serviceImplementationVersion));
         if (!configuration.UseServiceDiscovery && string.IsNullOrEmpty(configuration.ServiceUrl))
             throw new CisConfigurationException(0, $"{serviceName} Service URL must be defined");
         if (configuration.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
@@ -151,6 +157,6 @@ public static class StartupRestExtensions
         return configuration;
     }
 
-    private static string getSectionName(string serviceName)
-        => $"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}";
+    private static string getSectionName(string serviceName, string serviceImplementationVersion)
+        => $"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion}";
 }
