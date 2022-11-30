@@ -12,4 +12,6 @@ public interface ISbWebApiClient
     Task CaseStateChanged(CaseStateChangedRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     const string Version = "V1";
+
+    public new string GetVersion() => "V1";
 }

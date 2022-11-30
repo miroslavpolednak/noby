@@ -13,8 +13,8 @@ public static class StartupExtensions
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
     {
-        string version = getVersion<TClient>();
-        var configuration = builder.GetConfiguration<TClient>(ServiceName, version);
+        // ziskat konfigurace pro danou verzi sluzby
+        var configuration = builder.GetExternalServiceBaseConfiguration<TClient>(ServiceName);
         
         switch (typeof(TClient), configuration.ImplementationType)
         {
@@ -32,17 +32,6 @@ public static class StartupExtensions
 
         return builder;
     }
-
-    private static string getVersion<TClient>()
-        => typeof(TClient) switch
-        {
-            Type t when t.IsAssignableFrom(typeof(V1.ISbWebApiClient)) => V1.ISbWebApiClient.Version,
-            _ => throw new NotImplementedException($"Can't get version fro {ServiceName} using type {typeof(TClient)}")
-        };
-
-    private static ExternalServiceConfiguration<TClient> GetConfiguration<TClient>(this WebApplicationBuilder builder, string serviceName, string serviceImplementationVersion)
-        where TClient : class, IExternalServiceClient
-        => builder.AddExternalServiceConfiguration<TClient, ExternalServiceConfiguration<TClient>>(serviceName, serviceImplementationVersion);
 
     private static Action<IHttpClientBuilder, IExternalServiceConfiguration> _addAdditionalHttpHandlers = (builder, configuration)
         => builder
