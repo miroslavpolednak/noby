@@ -1,5 +1,4 @@
-﻿using DomainServices.RiskIntegrationService.Api.Clients.RiskCharakteristics.V1;
-using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+﻿using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.SimpleCalculate;
@@ -13,7 +12,7 @@ internal sealed class SimpleCalculateHandler
         var riskApplicationType = await getRiskApplicationType(request.Product!.ProductTypeId, cancellationToken);
 
         // request pro hlavni bonita sluzbu
-        var requestModel = await _requestMapper.MapToC4m(request, riskApplicationType, cancellationToken);
+        var requestModel = await _requestMapper.MapToC4m(request.ToFullRequest(), riskApplicationType, cancellationToken);
 
         // volani c4m hlavni bonita sluzby
         var response = await _client.Calculate(requestModel, cancellationToken);
@@ -28,12 +27,12 @@ internal sealed class SimpleCalculateHandler
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Clients.CreditWorthiness.V1.ICreditWorthinessClient _client;
-    private readonly Mappers.SimpleCalculateRequestMapper _requestMapper;
+    private readonly Calculate.Mappers.CalculateRequestMapper _requestMapper;
 
     public SimpleCalculateHandler(
         CodebookService.Clients.ICodebookServiceClients codebookService,
         Clients.CreditWorthiness.V1.ICreditWorthinessClient client,
-        Mappers.SimpleCalculateRequestMapper requestMapper)
+        Calculate.Mappers.CalculateRequestMapper requestMapper)
     {
         _codebookService = codebookService;
         _client = client;
