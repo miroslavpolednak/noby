@@ -5,7 +5,7 @@ from ...construct_api.uc_modelace_hypoteky.post_offer_mortgage import post_offer
 from ...db_util import select_offer_fat
 
 
-@pytest.mark.parametrize("call_json", [
+@pytest.mark.parametrize("call_mortgage_json", [
     (
             json_req_mortgage_basic_params
     )]

@@ -20,6 +20,22 @@ def webapi_url(request):
     return request.config.getoption("--webapi-url")
 
 
+def noby_url():
+    return "https://dev.noby.cz/api"
+
+
+def get_noby_cookies():
+    session = requests.session()
+    session.post(
+        noby_url() + "/users/signin",
+        json={
+            "Login": "99917587"
+        }
+    )
+    return session.cookies
+
+
+
 @pytest.fixture(scope="session")
 def cpm(request):
     return request.config.getoption("--cpm")
@@ -88,12 +104,6 @@ def tomorrow_datetime():
 def guaranteeDateTo_datetime():
     guarantee_date_from = (datetime.date.today() + datetime.timedelta(days=45))
     return guarantee_date_from.strftime("%Y-%m-%dT%H:%M:%S")
-
-
-@pytest.fixture()
-def guarantee_date_from_datetime_OLD():
-    guarantee_date_from = (datetime.date.today())
-    return guarantee_date_from.strftime("%Y-%d-%mT%H:%M:%S")
 
 
 def get_guarantee_date_from():

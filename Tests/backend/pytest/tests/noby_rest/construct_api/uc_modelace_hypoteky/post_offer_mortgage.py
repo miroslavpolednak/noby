@@ -1,16 +1,17 @@
 import requests
 import pytest
 
+from Tests.backend.pytest.tests.noby_rest.conftest import webapi_url, get_cookies, noby_url, get_noby_cookies
 from request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
 
 
 @pytest.fixture()
-def post_offer_mortgage(webapi_url, get_cookies, call_json):
+def post_offer_mortgage(webapi_url, get_cookies, call_mortgage_json):
     session = requests.session()
     resp = session.post(
         webapi_url + "/offer/mortgage",
         cookies=get_cookies,
-        json=call_json
+        json=call_mortgage_json
     )
     return resp
 
@@ -24,6 +25,18 @@ def post_offer_mortgage_basic(webapi_url, get_cookies):
         json=json_req_mortgage_basic_params
     )
     return resp
+
+
+def post_offer_mortgage_basic_2():
+    session = requests.session()
+    resp = session.post(
+        noby_url() + "/offer/mortgage",
+        cookies=get_noby_cookies(),
+        json=json_req_mortgage_basic_params
+    )
+    return resp
+
+
 
 
 
@@ -109,11 +122,11 @@ def post_offer_mortgage_loan_kind_2001(webapi_url, get_cookies, current_datetime
 
 #TODO: předpříprava json plnění dle jsonu
 @pytest.fixture()
-def post_offer_mortgage(webapi_url, get_cookies, call_json):
+def post_offer_mortgage(webapi_url, get_cookies, call_mortgage_json):
     session = requests.session()
     resp = session.post(
         webapi_url + "/offer/mortgage",
         cookies=get_cookies,
-        json=call_json
+        json=call_mortgage_json
     )
     return resp

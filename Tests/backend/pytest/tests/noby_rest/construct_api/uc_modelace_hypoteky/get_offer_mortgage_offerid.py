@@ -1,5 +1,6 @@
 import requests
 import pytest
+from .post_offer_mortgage import post_offer_mortgage_basic, post_offer_mortgage_basic_2
 
 
 @pytest.fixture()
@@ -11,3 +12,11 @@ def get_offer_mortgage_basic(webapi_url, get_cookies, post_offer_mortgage_basic)
         cookies=get_cookies
     )
     return offer_id, resp
+
+
+def get_offer():
+    offer = post_offer_mortgage_basic_2()
+    offer_id = offer.json()['offerId']
+    return offer_id
+
+
