@@ -53,6 +53,8 @@ Obsahuje proxy projekty nad API třetích stran. V zásadě jde o to, aby konzum
 Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzolové aplikace, ukázkové implementace atd. tak takové projekty patří sem.
 
 ## Témata
+[Psaní technické dokumentace](./topics/documentation.md)
+
 [Validace requestu a byznys logiky](./topics/validation.md)
 
 [Autentizace](./topics/authentication.md)
