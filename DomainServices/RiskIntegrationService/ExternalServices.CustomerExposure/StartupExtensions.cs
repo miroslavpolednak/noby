@@ -48,12 +48,8 @@ public static class StartupExtensions
             .AddBadRequestHandling();
 
     private static IHttpClientBuilder AddBadRequestHandling(this IHttpClientBuilder builder)
-    {
-        builder.Services.AddSingleton(provider => new BadRequestHttpHandler(StartupExtensions.ServiceName));
-
-        return builder.AddHttpMessageHandler(b =>
+        => builder.AddHttpMessageHandler(b =>
         {
             return new BadRequestHttpHandler(StartupExtensions.ServiceName);
         });
-    }
 }
