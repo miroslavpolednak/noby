@@ -44,6 +44,8 @@ internal class LinkModelationToSalesArrangementHandler
         salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.BasicParameters.GuaranteeDateTo;
         salesArrangementInstance.OfferId = request.OfferId;
         salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.ResourceProcessId);
+        // HFICH-3391
+        salesArrangementInstance.IsOfferDocumentArchived = false;
 
         await _dbContext.SaveChangesAsync(cancellation);
 
