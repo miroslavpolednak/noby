@@ -1,4 +1,5 @@
 ﻿using ExternalServices.Sdf.Configuration;
+using ExternalServicesTcp.Configuration;
 using System.ComponentModel.DataAnnotations;
 
 namespace DomainServices.DocumentArchiveService.Api;
@@ -16,4 +17,7 @@ internal sealed class AppConfiguration
 
     [Required]
     public SdfConfiguration Sdf { get; set; } = null!;
+
+    [Required]
+    public TcpConfiguration Tcp { get; set; } = null!;
 }

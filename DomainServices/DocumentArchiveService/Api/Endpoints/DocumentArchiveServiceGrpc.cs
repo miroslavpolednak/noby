@@ -21,7 +21,7 @@ public class DocumentArchiveServiceGrpc : Contracts.v1.DocumentArchiveService.Do
 
     public override async Task<Empty> UploadDocument(UploadDocumentRequest request, ServerCallContext context)
     {
-        await _mediator.Send(new UploadDocumentMediatrRequest(request), context.CancellationToken);
+         await _mediator.Send(new UploadDocumentMediatrRequest(request), context.CancellationToken);
         return new Empty();
     }
 

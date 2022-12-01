@@ -31,6 +31,7 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Sdf\ExternalServices.Sdf.csproj" />
+		<ProjectReference Include="..\..\..\ExternalServices\Tcp\ExternalServicesTcp.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj" />
 	</ItemGroup>
 

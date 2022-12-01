@@ -21,7 +21,7 @@ message DocumentMetadata {
     // Popis dokumentu
     string Description = 5;
     
-    int32 OrderId = 6;
+    google.protobuf.Int32Value OrderId = 6;
     // Datum přijetí dokumentu
     cis.types.GrpcDate CreatedOn = 7;
 
@@ -30,13 +30,14 @@ message DocumentMetadata {
     
     string Priority = 9;
     // Status dokumentu
-    DocumentStatus Status = 10;
+    string Status = 10;
+    
     // Jedná se o seskupování dokumentů do virtuálních složek
-    FolderDocument FolderDocument = 11;
+    string FolderDocument = 11;
 
     string FolderDocumentId = 12;
 
-    DocumentDirection DocumentDirection = 13;
+    string DocumentDirection = 13;
     // zdrojová aplikace dokumentu
     string SourceSystem = 14; 
     // ID formuláře
@@ -53,27 +54,3 @@ message DocumentMetadata {
     google.protobuf.Timestamp testtime = 20;
 }
 
-enum DocumentStatus {
-    // Default standardní platný dokument
-    Z = 0;
-    // Dokument logicky smazaný (v EA zůstává, ale běžní uživatelé jej nemohou vidět)
-    L = 1;
-}
-
-enum FolderDocument {
-    // Nesložkový dokument
-    N = 0;
-    // Hlavní dokument složky
-    S = 1;
-    // Podřízený dokument složky
-    P = 2;
-}
-
-enum DocumentDirection {
-    // Vstupní
-    E = 0;
-    // Výstupní
-    A = 1;
-    // Interní
-    I = 2;
-}

@@ -237,46 +237,6 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.DocumentMetadataReflection.Descriptor">
             <summary>File descriptor for DocumentMetadata.proto</summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentStatus.Z">
-            <summary>
-            Default standardní platný dokument
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentStatus.L">
-            <summary>
-            Dokument logicky smazaný (v EA zůstává, ale běžní uživatelé jej nemohou vidět)
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.FolderDocument.N">
-            <summary>
-            Nesložkový dokument
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.FolderDocument.S">
-            <summary>
-            Hlavní dokument složky
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.FolderDocument.P">
-            <summary>
-            Podřízený dokument složky
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.E">
-            <summary>
-            Vstupní
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.A">
-            <summary>
-            Výstupní
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.DocumentDirection.I">
-            <summary>
-            Interní
-            </summary>
-        </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.DocumentMetadata">
             <summary>
             Metadata dokumentu

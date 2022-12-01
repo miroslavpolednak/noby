@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Core.Extensions;
+using CIS.Core.Security;
 using CIS.Infrastructure.Logging.Extensions;
 using ExternalServices.Sdf.Configuration;
 using ExternalServices.Sdf.V1.Model;
@@ -23,7 +24,8 @@ namespace ExternalServices.Sdf.V1.Clients
 
         public SdfClient(
             ILogger<SdfClient> logger,
-            SdfConfiguration sdfConfiguration)
+            SdfConfiguration sdfConfiguration,
+            ICurrentUserAccessor currentUser)
         {
             _sdfConfiguration = sdfConfiguration;
             _retryPolicy = CreatePolicy();
@@ -37,7 +39,7 @@ namespace ExternalServices.Sdf.V1.Clients
             }
         }
 
-        public async Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalIdQuery query, CancellationToken cancellation)
+        public async Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalIdSdfQuery query, CancellationToken cancellation)
         {
             var user = CreateUser();
             var options = CreateOptions(query.WithContent);
@@ -89,7 +91,7 @@ namespace ExternalServices.Sdf.V1.Clients
                 RetrieveAdvancedNodeData = true,
                 RetrieveContent = withContent,
                 RetrieveDocArcId = false,
-                MemberId = "990967y", //getDocument.UserLogin ToDo //Context user
+                MemberId = "990967y", // _currentUser.UserDetails.DisplayName, 
                 MemberIdType = "DmsUserLogin"
             };
             return options;

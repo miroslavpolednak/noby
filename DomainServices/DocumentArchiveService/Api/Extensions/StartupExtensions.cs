@@ -1,5 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.Sdf;
+using ExternalServicesTcp;
+using ExternalServicesTcp.Configuration;
 using FluentValidation;
 using System.Configuration;
 
@@ -27,7 +29,9 @@ internal static class StartupExtensions
 
         var appConfig = configuration.GetSection(AppConfiguration.SectionName).Get<AppConfiguration>();
 
-        builder.Services.AddExternalServiceSdf(appConfig?.Sdf);
+        builder.Services.AddExternalServiceSdf(appConfig.Sdf!);
+
+        builder.Services.AddExternalServiceTcp(appConfig.Tcp!);
 
         // databases
         builder.Services
