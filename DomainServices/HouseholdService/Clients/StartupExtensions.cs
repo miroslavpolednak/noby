@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DomainServices.HouseholdService.Clients;
 
-public static class HouseholdServiceExtensions
+public static class StartupExtensions
 {
     public static IServiceCollection AddHouseholdService(this IServiceCollection services)
         => services.TryAddGrpcClient<Contracts.v1.HouseholdService.HouseholdServiceClient>(a =>
