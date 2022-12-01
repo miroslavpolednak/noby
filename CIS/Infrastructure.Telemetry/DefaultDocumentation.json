@@ -1,4 +1,6 @@
 {
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.Telemetry.dll",
+  "ProjectDirectoryPath": "./",
   "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.Telemetry/",
   "GeneratedPages": "Namespaces,Classes,Interfaces",
   "GeneratedAccessModifiers": "Public"

@@ -1,4 +1,6 @@
 {
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.WebApi.dll",
+  "ProjectDirectoryPath": "./",
   "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.WebApi/",
   "GeneratedPages": "Namespaces,Classes,Interfaces",
   "GeneratedAccessModifiers": "Public"

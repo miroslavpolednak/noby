@@ -20,10 +20,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
-	</ItemGroup>
-
-	<ItemGroup>
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />

@@ -27,10 +27,6 @@
 	  <None Include="DefaultDocumentation.json" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
-	</ItemGroup>
-	
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.4.0" />
     <PackageReference Include="MediatR" Version="11.1.0" />

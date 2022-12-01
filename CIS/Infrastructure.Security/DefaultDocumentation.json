@@ -1,4 +1,6 @@
 {
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.Security.dll",
+  "ProjectDirectoryPath": "./",
   "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.Security/",
   "GeneratedPages": "Namespaces,Classes,Interfaces",
   "GeneratedAccessModifiers": "Public"

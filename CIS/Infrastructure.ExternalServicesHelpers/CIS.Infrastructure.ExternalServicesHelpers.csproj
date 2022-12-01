@@ -19,10 +19,6 @@
 		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
-	</ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
