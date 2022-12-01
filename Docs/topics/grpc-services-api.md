@@ -89,3 +89,50 @@ Příklad konfiguračního souboru:
 ```
 
 ## Konfigurace aplikace
+
+### Nastavení logování
+[Konfigurace logování je popsána zde.](logging.md)
+```
+"Serilog": { ... }
+"CisTelemetry": { ... }
+```
+
+### Nastavení konzumace služeb třetích stran
+[Konfigurace pro External Services je popsána zde.](external-services.md)
+```
+"ExternalServices": { ... }
+```
+
+### Nastavení databáze
+Connection stringy do databází se konfigurují standardním .NET způsobem.
+```
+"ConnectionStrings": { ... }
+```
+
+### Nastavení autentizace služby
+Příchozí requesty vždy procházejí autentizací. Druh autentizace lze nastavit na StaticCollectioni nebo ActiveDirectory.
+```
+"CisSecurity": {
+    "ServiceAuthentication": {
+        "Validator": "StaticCollection"
+    }
+}
+```
+
+### Nastavení ekosystému NOBY
+
+```
+"CisEnvironmentConfiguration": {
+    "DefaultApplicationKey": "DS:HouseholdService",
+    "EnvironmentName": "DEV",
+    "ServiceDiscoveryUrl": "https://172.30.35.51:30000",
+    "InternalServicesLogin": "a",
+    "InternalServicePassword": "a"
+}
+```
+
+### Vlastní konfigurace služby
+Aplikace může obsahovat další, vlastní konfiguraci. V tom případě je tato konfigurace vždy v elementu **AppConfiguration**.
+```
+"AppConfiguration": { ... }
+```
