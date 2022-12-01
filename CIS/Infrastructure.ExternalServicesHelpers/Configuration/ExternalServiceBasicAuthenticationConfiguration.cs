@@ -5,7 +5,7 @@
 /// </summary>
 public class ExternalServiceBasicAuthenticationConfiguration<TClient>
     : ExternalServiceConfiguration<TClient>, IExternalServiceBasicAuthenticationConfiguration
-    where TClient : class
+    where TClient : class, IExternalServiceClient
 
 {
     /// <summary>

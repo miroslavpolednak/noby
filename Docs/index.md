@@ -58,3 +58,5 @@ Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzo
 [Autentizace](./topics/authentication.md)
 
 [gRPC služby - technický popis](./topics/grpc-services.md)
+
+[Implementace služeb třetích stran](./topics/external-services.md)

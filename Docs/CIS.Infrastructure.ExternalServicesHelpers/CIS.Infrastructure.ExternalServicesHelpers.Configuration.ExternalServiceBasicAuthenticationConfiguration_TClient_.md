@@ -8,7 +8,7 @@ Výchozí implementace IExternalServiceBasicAuthenticationConfiguration
 ```csharp
 public class ExternalServiceBasicAuthenticationConfiguration<TClient> : CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration<TClient>,
 CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceBasicAuthenticationConfiguration
-    where TClient : class
+    where TClient : class, CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient
 ```
 #### Type parameters
 

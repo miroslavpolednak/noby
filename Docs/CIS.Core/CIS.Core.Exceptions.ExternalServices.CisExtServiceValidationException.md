@@ -1,5 +1,5 @@
 #### [CIS.Core](index.md 'index')
-### [CIS.Core.Exceptions](CIS.Core.Exceptions.md 'CIS.Core.Exceptions')
+### [CIS.Core.Exceptions.ExternalServices](CIS.Core.Exceptions.ExternalServices.md 'CIS.Core.Exceptions.ExternalServices')
 
 ## CisExtServiceValidationException Class
 
@@ -12,7 +12,7 @@ public sealed class CisExtServiceValidationException : CIS.Core.Exceptions.BaseC
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; [System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception') &#129106; [BaseCisException](CIS.Core.Exceptions.BaseCisException.md 'CIS.Core.Exceptions.BaseCisException') &#129106; [BaseCisValidationException](CIS.Core.Exceptions.BaseCisValidationException.md 'CIS.Core.Exceptions.BaseCisValidationException') &#129106; CisExtServiceValidationException
 ### Constructors
 
-<a name='CIS.Core.Exceptions.CisExtServiceValidationException.CisExtServiceValidationException(string)'></a>
+<a name='CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.CisExtServiceValidationException(string)'></a>
 
 ## CisExtServiceValidationException(string) Constructor
 
@@ -21,7 +21,7 @@ public CisExtServiceValidationException(string message);
 ```
 #### Parameters
 
-<a name='CIS.Core.Exceptions.CisExtServiceValidationException.CisExtServiceValidationException(string).message'></a>
+<a name='CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.CisExtServiceValidationException(string).message'></a>
 
 `message` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 

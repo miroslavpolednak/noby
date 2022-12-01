@@ -19,11 +19,13 @@ Derived
 &#8627; [CisConfigurationNotRegisteredException](CIS.Core.Exceptions.CisConfigurationNotRegisteredException.md 'CIS.Core.Exceptions.CisConfigurationNotRegisteredException')  
 &#8627; [CisConflictException](CIS.Core.Exceptions.CisConflictException.md 'CIS.Core.Exceptions.CisConflictException')  
 &#8627; [CisException](CIS.Core.Exceptions.CisException.md 'CIS.Core.Exceptions.CisException')  
-&#8627; [CisExtServiceResponseDeserializationException](CIS.Core.Exceptions.CisExtServiceResponseDeserializationException.md 'CIS.Core.Exceptions.CisExtServiceResponseDeserializationException')  
 &#8627; [CisNotFoundException](CIS.Core.Exceptions.CisNotFoundException.md 'CIS.Core.Exceptions.CisNotFoundException')  
 &#8627; [CisServiceCallResultErrorException](CIS.Core.Exceptions.CisServiceCallResultErrorException.md 'CIS.Core.Exceptions.CisServiceCallResultErrorException')  
 &#8627; [CisServiceServerErrorException](CIS.Core.Exceptions.CisServiceServerErrorException.md 'CIS.Core.Exceptions.CisServiceServerErrorException')  
-&#8627; [CisServiceUnavailableException](CIS.Core.Exceptions.CisServiceUnavailableException.md 'CIS.Core.Exceptions.CisServiceUnavailableException')
+&#8627; [CisServiceUnavailableException](CIS.Core.Exceptions.CisServiceUnavailableException.md 'CIS.Core.Exceptions.CisServiceUnavailableException')  
+&#8627; [CisExtServiceResponseDeserializationException](CIS.Core.Exceptions.ExternalServices.CisExtServiceResponseDeserializationException.md 'CIS.Core.Exceptions.ExternalServices.CisExtServiceResponseDeserializationException')  
+&#8627; [CisExtServiceServerErrorException](CIS.Core.Exceptions.ExternalServices.CisExtServiceServerErrorException.md 'CIS.Core.Exceptions.ExternalServices.CisExtServiceServerErrorException')  
+&#8627; [CisExtServiceUnavailableException](CIS.Core.Exceptions.ExternalServices.CisExtServiceUnavailableException.md 'CIS.Core.Exceptions.ExternalServices.CisExtServiceUnavailableException')
 ### Constructors
 
 <a name='CIS.Core.Exceptions.BaseCisException.BaseCisException(int,string)'></a>

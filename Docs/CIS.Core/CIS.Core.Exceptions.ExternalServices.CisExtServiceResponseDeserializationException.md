@@ -1,5 +1,5 @@
 #### [CIS.Core](index.md 'index')
-### [CIS.Core.Exceptions](CIS.Core.Exceptions.md 'CIS.Core.Exceptions')
+### [CIS.Core.Exceptions.ExternalServices](CIS.Core.Exceptions.ExternalServices.md 'CIS.Core.Exceptions.ExternalServices')
 
 ## CisExtServiceResponseDeserializationException Class
 

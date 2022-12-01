@@ -10,8 +10,8 @@ public abstract class BaseCisValidationException : CIS.Core.Exceptions.BaseCisEx
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; [System.Exception](https://docs.microsoft.com/en-us/dotnet/api/System.Exception 'System.Exception') &#129106; [BaseCisException](CIS.Core.Exceptions.BaseCisException.md 'CIS.Core.Exceptions.BaseCisException') &#129106; BaseCisValidationException
 
 Derived  
-&#8627; [CisExtServiceValidationException](CIS.Core.Exceptions.CisExtServiceValidationException.md 'CIS.Core.Exceptions.CisExtServiceValidationException')  
-&#8627; [CisValidationException](CIS.Core.Exceptions.CisValidationException.md 'CIS.Core.Exceptions.CisValidationException')
+&#8627; [CisValidationException](CIS.Core.Exceptions.CisValidationException.md 'CIS.Core.Exceptions.CisValidationException')  
+&#8627; [CisExtServiceValidationException](CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.md 'CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException')
 ### Constructors
 
 <a name='CIS.Core.Exceptions.BaseCisValidationException.BaseCisValidationException(int,string)'></a>
