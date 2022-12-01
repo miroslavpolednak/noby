@@ -129,7 +129,8 @@ Nastavuje se automaticky, pokud `TConfiguration` is `IExternalServiceBasicAuthen
 Přidává do HTTP hlavičky correlation Id.
 
 **ErrorHandlingHttpHandler**  
-Middleware, který zachycuje standardní vyjímky a mění je na CIS exceptions.  
+Middleware, který zachycuje standardní vyjímky a mění je na CIS exceptions.
+Zároveň vyhodnocuje HTTP status kódy a pokud je StatusCode>=500, tak vyvolává `CisServiceServerErrorException`.  
 Extension metoda `IHttpClientBuilder.AddExternalServicesErrorHandling()`.
 
 **KbHeadersHttpHandler**  

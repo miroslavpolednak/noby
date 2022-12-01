@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
+    <ProjectReference Include="..\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj" />
   </ItemGroup>
 
 </Project>

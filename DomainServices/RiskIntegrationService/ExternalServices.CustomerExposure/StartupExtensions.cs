@@ -43,6 +43,17 @@ public static class StartupExtensions
 
     private static Action<IHttpClientBuilder, IExternalServiceConfiguration> _addAdditionalHttpHandlers = (builder, configuration)
         => builder
-            .AddExternalServicesCorrelationIdForwarding()
-            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
+            .AddExternalServicesKbHeaders()
+            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
+            .AddBadRequestHandling();
+
+    private static IHttpClientBuilder AddBadRequestHandling(this IHttpClientBuilder builder)
+    {
+        builder.Services.AddSingleton(provider => new BadRequestHttpHandler(StartupExtensions.ServiceName));
+
+        return builder.AddHttpMessageHandler(b =>
+        {
+            return new BadRequestHttpHandler(StartupExtensions.ServiceName);
+        });
+    }
 }

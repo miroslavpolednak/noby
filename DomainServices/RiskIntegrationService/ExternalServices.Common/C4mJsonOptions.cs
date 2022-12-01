@@ -2,7 +2,7 @@
 
 namespace DomainServices.RiskIntegrationService.ExternalServices;
 
-internal static class HttpClientFactoryExtensions
+public static class C4mJsonOptions
 {
     public static System.Text.Json.JsonSerializerOptions CustomJsonOptions
     {
@@ -15,7 +15,7 @@ internal static class HttpClientFactoryExtensions
         NumberHandling = JsonNumberHandling.AllowReadingFromString //TODO odstranit az c4m opravi format cisel
     };
 
-    static HttpClientFactoryExtensions()
+    static C4mJsonOptions()
     {
         _jsonOptions.Converters.Add(new CIS.Infrastructure.Json.DateTimeOffsetConverterUsingDateTimeParse());
     }

@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RiskIntegrationService.Api.Clients;
+﻿using CIS.Core.Exceptions.ExternalServices;
+
+namespace DomainServices.RiskIntegrationService.Api.Clients;
 
 internal class C4mHttpHandler : DelegatingHandler
 {

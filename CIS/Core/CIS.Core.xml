@@ -560,26 +560,6 @@
             Stejná chyba jako <see cref="T:System.Exception"/>, ale obsahuje navíc CIS error kód
             </summary>
         </member>
-        <member name="T:CIS.Core.Exceptions.CisExtServiceResponseDeserializationException">
-            <summary>
-            Chyba, která vzniká při volání API třetích stran. Pokud se nepodaří deserializovat response volaného API, vyhodíme tuto vyjímku.
-            </summary>
-            <remarks>
-            Vznikne, pokud API třetí strany vrátí jiný JSON, než jaký očekáváme my.
-            </remarks>
-        </member>
-        <member name="T:CIS.Core.Exceptions.CisExtServiceValidationException">
-            <summary>
-            HTTP 400. Chyba, která vzniká při volání API třetích stran. Pokud API vrátí HTTP 4xx, vytáhneme z odpovědi chybu a vyvoláme tuto vyjímku. Podporuje seznam chyb.
-            </summary>
-        </member>
-        <member name="M:CIS.Core.Exceptions.CisExtServiceValidationException.#ctor(System.String)">
-            <param name="message">Chybová zpráva</param>
-        </member>
-        <member name="M:CIS.Core.Exceptions.CisExtServiceValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
-            <param name="errors">Seznam chyb</param>
-            <param name="message">Souhrná chybová zpráva</param>
-        </member>
         <member name="T:CIS.Core.Exceptions.CisNotFoundException">
             <summary>
             Objekt nebyl nalezen.
@@ -634,6 +614,61 @@
             <param name="message">Souhrná chybová zpráva</param>
         </member>
         <member name="M:CIS.Core.Exceptions.CisValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.String}},System.String)">
+            <param name="errors">Seznam chyb</param>
+            <param name="message">Souhrná chybová zpráva</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.ExternalServices.CisExtServiceResponseDeserializationException">
+            <summary>
+            Chyba, která vzniká při volání API třetích stran. Pokud se nepodaří deserializovat response volaného API, vyhodíme tuto vyjímku.
+            </summary>
+            <remarks>
+            Vznikne, pokud API třetí strany vrátí jiný JSON, než jaký očekáváme my.
+            </remarks>
+        </member>
+        <member name="P:CIS.Core.Exceptions.ExternalServices.CisExtServiceServerErrorException.ServiceName">
+            <summary>
+            Název služby, která selhala
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.ExternalServices.CisExtServiceServerErrorException.RequestUri">
+            <summary>
+            URI jehož volání selhalo
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceServerErrorException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="requestUri">URI jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.ExternalServices.CisExtServiceUnavailableException">
+            <summary>
+            Služba třetí strany (ExternalServices) není dostupná - např. špatné URL volané služby, nebo volaná služba vůbec neběží.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.ExternalServices.CisExtServiceUnavailableException.ServiceName">
+            <summary>
+            Název služby, která selhala
+            </summary>
+        </member>
+        <member name="P:CIS.Core.Exceptions.ExternalServices.CisExtServiceUnavailableException.RequestUri">
+            <summary>
+            URI jehož volání selhalo
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceUnavailableException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="requestUri">URI jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
+        <member name="T:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException">
+            <summary>
+            HTTP 400. Chyba, která vzniká při volání API třetích stran. Pokud API vrátí HTTP 4xx, vytáhneme z odpovědi chybu a vyvoláme tuto vyjímku. Podporuje seznam chyb.
+            </summary>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.String)">
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExtServiceValidationException.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String)">
             <param name="errors">Seznam chyb</param>
             <param name="message">Souhrná chybová zpráva</param>
         </member>

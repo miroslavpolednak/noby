@@ -260,6 +260,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.External
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure", "DomainServices\RiskIntegrationService\ExternalServices.CustomerExposure\DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.csproj", "{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.RiskIntegrationService.ExternalServices.Common", "DomainServices\RiskIntegrationService\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj", "{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -980,6 +982,14 @@ Global
 		{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2}.Release|x64.ActiveCfg = Release|Any CPU
 		{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2}.Release|x64.Build.0 = Release|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1093,6 +1103,7 @@ Global
 		{02867ACA-A81B-40CD-87B3-FD97CF82DB04} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{A4EC03E3-2A9D-4C9A-BAA4-DFD4DBC2D6BE} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
+		{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE} = {FA204FC0-70AF-4FBB-A148-49FD214AC1DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

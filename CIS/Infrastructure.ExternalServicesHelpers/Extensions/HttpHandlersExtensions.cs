@@ -10,9 +10,7 @@ public static class HttpHandlersExtensions
     /// <param name="serviceName">Název ExternalServices proxy</param>
     public static IHttpClientBuilder AddExternalServicesErrorHandling(this IHttpClientBuilder builder, string serviceName)
     {
-        builder.Services.AddSingleton(provider => new HttpHandlers.ErrorHandlingHttpHandler(serviceName));
-
-        return builder.AddHttpMessageHandler<HttpHandlers.ErrorHandlingHttpHandler>();
+        return builder.AddHttpMessageHandler(b => new HttpHandlers.ErrorHandlingHttpHandler(serviceName));
     }
 
     /// <summary>
@@ -21,9 +19,7 @@ public static class HttpHandlersExtensions
     /// <param name="appComponent">Hodnota appComp v hlavičce X-KB-Caller-System-Identity. Pokud není vyplněno, je nastavena na "NOBY".</param>
     public static IHttpClientBuilder AddExternalServicesKbHeaders(this IHttpClientBuilder builder, string? appComponent = null)
     {
-        builder.Services.AddSingleton(provider => new HttpHandlers.KbHeadersHttpHandler(appComponent));
-
-        return builder.AddHttpMessageHandler<HttpHandlers.KbHeadersHttpHandler>();
+        return builder.AddHttpMessageHandler(b => new HttpHandlers.KbHeadersHttpHandler(appComponent));
     }
 
     /// <summary>
@@ -32,8 +28,6 @@ public static class HttpHandlersExtensions
     /// <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
     public static IHttpClientBuilder AddExternalServicesCorrelationIdForwarding(this IHttpClientBuilder builder, string? headerKey = null)
     {
-        builder.Services.AddSingleton(provider => new HttpHandlers.CorrelationIdForwardingHttpHandler(headerKey));
-
-        return builder.AddHttpMessageHandler<HttpHandlers.CorrelationIdForwardingHttpHandler>();
+        return builder.AddHttpMessageHandler(b => new HttpHandlers.CorrelationIdForwardingHttpHandler(headerKey));
     }
 }
