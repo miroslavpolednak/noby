@@ -30,6 +30,7 @@ internal static class GetDetailExtensions
             Applicant = model.Applicant,
             PayoutList = model.PayoutList?.Select(x => new ParametersDrawingPayout
             {
+                ProductObligationId = x.ProductObligationId,   
                 Order = x.Order,
                 SpecificSymbol = x.SpecificSymbolUcetKeSplaceni,
                 AccountNumber = x.AccountNumber,
