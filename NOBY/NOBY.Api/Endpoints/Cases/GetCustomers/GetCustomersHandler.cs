@@ -89,10 +89,10 @@ internal class GetCustomersHandler
                     LastName = t.CustomerOnSA.Name,
                     DateOfBirth = t.CustomerOnSA.DateOfBirthNaturalPerson
                 }
-            } : customerDetails.First(t => t.Identity.IdentityId == t.Identity.IdentityId);
-            var permanentAddress = customer.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
-            var mailingAddress = customer.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
-            var country = countries.FirstOrDefault(t => t.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
+            } : customerDetails.First(x => x.Identity.IdentityId == t.Identity.IdentityId && x.Identity.IdentityScheme == t.Identity.IdentityScheme);
+            var permanentAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
+            var mailingAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
+            var country = countries.FirstOrDefault(x => x.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
 
             return new GetCustomersResponseCustomer
             {
