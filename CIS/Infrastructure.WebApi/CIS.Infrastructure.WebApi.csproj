@@ -20,6 +20,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="DefaultDocumentation.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="DefaultDocumentation.json" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
 	</ItemGroup>
 	
