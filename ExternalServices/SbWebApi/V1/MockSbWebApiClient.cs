@@ -1,4 +1,5 @@
-﻿using ExternalServices.SbWebApi.Dto;
+﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using ExternalServices.SbWebApi.Dto;
 
 namespace ExternalServices.SbWebApi.V1;
 

@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using CIS.Foms.Enums;
 
-namespace ExternalServices.SbWebApi;
+namespace DomainServices.RiskIntegrationService.ExternalServices.CustomersExposure;
 
 public static class StartupExtensions
 {
-    internal const string ServiceName = "SbWebApi";
+    internal const string ServiceName = "C4MCustomersExposure";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
@@ -19,12 +19,12 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.ISbWebApiClient, V1.MockSbWebApiClient>();
+            case (V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<V1.ICustomersExposureClient, V1.MockCustomersExposureClient>();
                 break;
 
-            case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
-                builder.AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient, ExternalServiceConfiguration<V1.ISbWebApiClient>>(V1.ISbWebApiClient.Version, configuration, _addAdditionalHttpHandlers);
+            case (V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Real):
+                builder.AddExternalServiceRestClient<V1.ICustomersExposureClient, V1.RealCustomersExposureClient, ExternalServiceConfiguration<V1.ICustomersExposureClient>>(V1.ICustomersExposureClient.Version, configuration, _addAdditionalHttpHandlers);
                 break;
 
             default:
@@ -37,7 +37,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(V1.ISbWebApiClient)) => V1.ISbWebApiClient.Version,
+            Type t when t.IsAssignableFrom(typeof(V1.ICustomersExposureClient)) => V1.ICustomersExposureClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 

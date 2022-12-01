@@ -33,7 +33,7 @@ internal sealed class RealSbWebApiClient
         };
 
         var response = await _httpClient
-            .PostAsJsonAsync("wfs/eventreport/casestatechanged", easRequest, cancellationToken)
+            .PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/eventreport/casestatechanged", easRequest, cancellationToken)
             .ConfigureAwait(false);
 
         if (response.IsSuccessStatusCode)

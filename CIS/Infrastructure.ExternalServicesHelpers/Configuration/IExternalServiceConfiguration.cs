@@ -48,5 +48,5 @@ public interface IExternalServiceConfiguration
 /// <typeparam name="TClient">Typ HTTP klienta</typeparam>
 public interface IExternalServiceConfiguration<TClient>
     : IExternalServiceConfiguration
-    where TClient : class
+    where TClient : class, IExternalServiceClient
 { }

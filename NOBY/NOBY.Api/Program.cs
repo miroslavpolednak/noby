@@ -12,6 +12,7 @@ using CIS.Infrastructure.Telemetry;
 using DomainServices.HouseholdService.Clients;
 using CIS.Infrastructure.MediatR;
 using ExternalServices.SbWebApi;
+using ExternalServices.SbWebApi.V1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,8 @@ builder.Services
 builder
     .AddNobyServices()
     .AddNobyDatabase();
+
+builder.AddExternalService<ISbWebApiClient>();
 
 // authentication
 builder.AddFomsAuthentication(appConfiguration);

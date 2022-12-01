@@ -11,6 +11,18 @@ Projekt bude založen v adresáři */ExternalServices*, název projektu (namespa
 - **služba třetí strany, která je vždy pevně spjata pouze s jedním projektem/službou NOBY.** 
 Nezakládáme pro službu nový projekt, ale proxy klient bude součástí projektu ----- nebo ano???? TODO domyslet
 
+## Registrace proxy projektu v aplikaci konzumenta
+Proxy projekt vystavuje vždy jeden public interface pro každou verzi implementace. Tento interface musí dědit z `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.  
+Dále vystavuje extension metodu, kterou zajišťuje vložení proxy do DI konzumenta. Tato metoda má vždy stejnou signaturu:
+```
+public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+    where TClient : class, IExternalServiceClient
+```
+TClient je interface proxy projektu pro danou verzi implementace. Tj. např.:
+```
+builder.AddExternalService<IEasClient>();
+```
+
 ## Konfigurace proxy projektu
 Všechny proxy externích služeb mají společnou strukturu a umístění konfigurace. 
 V *appsettings.json* souboru služby (aplikace), která proxy používá, existuje klíč **ExternalServices*, který obsahuje seznam objektů / konfigurací proxy projektů v této službě použitých.
@@ -60,16 +72,36 @@ StartupExtensions.cs        (extension metoda pro zapojení proxy projektu do DI
 ## Jak implementovat proxy projekt (REST služba)?
 Pro vlastní implementaci máme připravenou společnou infrastrukturu v projektu `CIS.Infrastructure.ExternalServicesHelpers`.
 
-Zásadní je extension metoda `AddExternalServiceRestClient()`, která vytváří *HttpClient*-a, registruje vybrané middleware, načítá konfiguraci z *appsettings.json* atd.
-Celá signatura metody je:
+Zásadní pro implementaci jsou dvě extension metody:
+- `AddExternalServiceConfiguration()`, která načítá konfiguraci proxy z *appsettings.json* a vkládá ji do DI.
+- `AddExternalServiceRestClient()`, která vytváří *HttpClient*-a, registruje vybrané middleware/HttpHandler-y atd.
+
+### AddExternalServiceConfiguration
 ```
-IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(
-        this WebApplicationBuilder builder, 
-        string serviceName, 
-        string serviceImplementationVersion,
-        Action<IHttpClientBuilder, TConfiguration>? additionalHandlersRegistration = null)
+public static TConfiguration AddExternalServiceConfiguration<TClient, TConfiguration>(
+    this WebApplicationBuilder builder,
+    string serviceName,
+    string serviceImplementationVersion)
+        where TClient : class, IExternalServiceClient
+        where TConfiguration : class, IExternalServiceConfiguration<TClient>
 ```
-- **TClient** je interface proxy klienta - z příkladu víše je to `V1.IEasClient`.
+- **TClient** je interface proxy klienta - z příkladu víše je to `V1.IEasClient`. Tento interface musí vždy dědit z marker interface `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.
+- **TConfiguration** typ konfigurace platný pro danou registraci, odvozený z `CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration`.
+- **serviceName** je název služby, např. "Eas".
+- **serviceImplementationVersion** je verze implementace, např. "V1".
+
+### AddExternalServiceRestClient
+```
+public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(
+    this WebApplicationBuilder builder,  
+    string serviceImplementationVersion,
+    IExternalServiceConfiguration configuration,
+    Action<IHttpClientBuilder, IExternalServiceConfiguration>? additionalHandlersRegistration = null)
+        where TClient : class, IExternalServiceClient
+        where TImplementation : class, TClient
+        where TConfiguration : class, IExternalServiceConfiguration<TClient>
+```
+- **TClient** je interface proxy klienta - z příkladu víše je to `V1.IEasClient`. Tento interface musí vždy dědit z marker interface `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.
 - **TImplementation** je implementace proxy klienta - z příkladu víše je to `V1.RealEasClient`.
 - **TConfiguration** typ konfigurace platný pro danou registraci, odvozený z `CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration`.
 - **serviceName** je název služby, např. "Eas".
@@ -77,15 +109,14 @@ IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfi
 - **additionalHandlersRegistration** je callback s možností přidat vlastní *HttpHandlery* do pipeline daného HttpClient-a.
 
 ### Flow akcí v AddExternalServiceRestClient
-1. načtení konfigurace z appsettings.json na základě *serviceName* a *serviceImplementationVersion*
-2. přidání nového typed *HttpClient* do *Services*
+1. přidání nového typed *HttpClient* do *Services*
     * zjištění URL služby pokud se má dočítat z *ServiceDiscovery*
     * nastavení `Timeout` requestu z konfigurace
     * nastavení `BaseAddress` HttpClient-a
-3. pokud je v konfiguraci *IgnoreServerCertificateErrors=true*, přidání HttpHandleru který ignoruje SSL certificate chyby
-4. spuštění callbacku `additionalHandlersRegistration`
+2. pokud je v konfiguraci *IgnoreServerCertificateErrors=true*, přidání HttpHandleru který ignoruje SSL certificate chyby
+3. spuštění callbacku `additionalHandlersRegistration`
     * v rámci callbacku je možné přidat další *HttpHandler-y*
-5. pokud je v konfiguraci *LogPayloads=true*, přidání HttpHandleru který loguje request / response HttpClienta
+4. pokud je v konfiguraci *LogPayloads=true*, přidání HttpHandleru který loguje request / response HttpClienta
 
 ### Připravené HttpHandlery
 V `CIS.Infrastructure.ExternalServicesHelpers` jsou již připravené tyto *HttpHandler*-y.
@@ -115,19 +146,38 @@ public static class StartupExtensions
 {
     internal const string ServiceName = "Eas";
 
-    public static IHttpClientBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
-        where TClient : class
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, IExternalServiceClient
     {
-        return typeof(TClient) switch
+        // ziskat konfigurace pro danou verzi sluzby
+        string version = getVersion<TClient>();
+        var configuration = builder.AddExternalServiceConfiguration<TClient, ExternalServiceConfiguration<TClient>>(ServiceName, version);
+
+        switch (version, configuration.ImplementationType)
         {
-            Type t when t.IsAssignableFrom(typeof(V1.IEasClient)) 
-                => builder
-                    .AddExternalServiceRestClient<V1.IEasClient, V1.RealEasClient, ExternalServiceConfiguration<V1.IEasClient>>(ServiceName, "V1", _addAdditionalHttpHandlers),
-            _ => throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented")
-        };
+            case (V1.IEasClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<V1.IEasClient, V1.MockEasClient>();
+                break;
+
+            case (V1.IEasClient.Version, ServiceImplementationTypes.Real):
+                builder.AddExternalServiceRestClient<V1.IEasClient, V1.RealEasClient, ExternalServiceConfiguration<V1.IEasClient>>(V1.IEasClient.Version, configuration, _addAdditionalHttpHandlers);
+                break;
+
+            default:
+                throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
+        }
+
+        return builder;
     }
 
-    private static Action<IHttpClientBuilder, ExternalServiceConfiguration<V1.IEasClient>> _addAdditionalHttpHandlers = (builder, configuration)
+    static string getVersion<TClient>()
+        => typeof(TClient) switch
+        {
+            Type t when t.IsAssignableFrom(typeof(V1.IEasClient)) => V1.IEasClient.Version,
+            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+        };
+
+    private static Action<IHttpClientBuilder, IExternalServiceConfiguration> _addAdditionalHttpHandlers = (builder, configuration)
         => builder
             .AddExternalServicesCorrelationIdForwarding()
             .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
