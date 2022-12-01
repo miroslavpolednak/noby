@@ -6,13 +6,19 @@ Celá dokumentace je uložena v samostatném adresáři **/Docs**. Struktura adr
 ```
 index.md				Homepage dokumentace
 [topics]				Adresář s *.md soubory s ručně psanou dokumentací.
+	*.md
 [CIS.Core]				Adresář s automaticky vygenerovanou dokumentací pro CIS.Core projekt.
+	index.md
+	*.md
 [CIS.Infrastructure.WebApi]		Adresář s automaticky vygenerovanou dokumentací pro CIS.Infrastructure.WebApi projekt.
+	index.md
+	*.md
 [...]					Další adresáře s automaticky generovanou dokumentací, pojmenované podle projektu, který danou dokumentaci obsahuje.
 ```
 
 ## Automaticky generovaná dokumentace
-Jedná se o dokumentaci generovanou ze standardních XML komentářů v *.cs souborech (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags).  
+Podkladem pro automaticky generovanou dokumentaci jsou [standardní XML komentáře](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags) v *.cs souborech. 
+Je tedy dobré/nutné veřejně dostupné objekty, metody a třídy kvalitně popisovat již v kódu.  
 
 Dokumentace je generována pomocí projektu [DefaultDocumentation](https://github.com/Doraku/DefaultDocumentation) dotnet toolem. Generování dokumentace se pustí souborem **generate_docs.bat** v rootu solution.
 Nepoužíváme pro generování *BuildTask*, který je také k dispozici, protože potom padá CI/CD v Devops.
@@ -20,6 +26,7 @@ Nepoužíváme pro generování *BuildTask*, který je také k dispozici, proto�
 Aby generování dokumentace fungovalo správně, je potřeba:
 - přidat do projektu soubor `DefaultDocumentation.json`
 - přidat do projektu soubor `AssemblyDoc.cs`, který obsahuje popisy assembly a namespace-ů.
+- vytvořit v **Docs** adresář se jménem dokumentovaného projektu.
 
 Obsah souboru *DefaultDocumentation.json*:
 ```
@@ -34,3 +41,5 @@ Obsah souboru *DefaultDocumentation.json*:
 ```
 Klíče `AssemblyFilePath` a `OutputDirectoryPath` se nastavují dle názvu aktuálního projektu.
 
+## Ručně psaná dokumentace
+Jedná se o popisy používaných patternů, dokumentaci a způsob použití jednotlivých infrastrukturních projektů atd.
