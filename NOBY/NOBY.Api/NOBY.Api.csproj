@@ -48,12 +48,12 @@
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
-    <ProjectReference Include="..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
