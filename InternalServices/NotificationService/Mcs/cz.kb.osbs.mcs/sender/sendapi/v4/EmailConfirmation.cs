@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,42 +14,42 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// Juridical person that is NOT <b>fixed</b> to <b>exactly one </b>natural person. CDM entity name(s): LegalPerson.
+	/// Represents email address. CDM entity name(s): EmailAddress.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
-	public partial class LegalPerson : global::Avro.Specific.ISpecificRecord
+	public partial class EmailConfirmation : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LegalPerson"",""doc"":""Juridical person that is NOT <b>fixed</b> to <b>exactly one </b>natural person. CDM entity name(s): LegalPerson."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v2"",""fields"":[{""name"":""name"",""doc"":""Official name of juridical person. CDM attribute class name: JuridicalPersonName."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""EmailConfirmation"",""doc"":""Represents email address. CDM entity name(s): EmailAddress."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""value"",""doc"":""Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}}]}");
 		/// <summary>
-		/// Official name of juridical person. CDM attribute class name: JuridicalPersonName.
+		/// Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.
 		/// </summary>
-		private string _name;
+		private string _value;
 		public virtual global::Avro.Schema Schema
 		{
 			get
 			{
-				return LegalPerson._SCHEMA;
+				return EmailConfirmation._SCHEMA;
 			}
 		}
 		/// <summary>
-		/// Official name of juridical person. CDM attribute class name: JuridicalPersonName.
+		/// Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.
 		/// </summary>
-		public string name
+		public string value
 		{
 			get
 			{
-				return this._name;
+				return this._value;
 			}
 			set
 			{
-				this._name = value;
+				this._value = value;
 			}
 		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
 			{
-			case 0: return this.name;
+			case 0: return this.value;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -57,7 +57,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 		{
 			switch (fieldPos)
 			{
-			case 0: this.name = (System.String)fieldValue; break;
+			case 0: this.value = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

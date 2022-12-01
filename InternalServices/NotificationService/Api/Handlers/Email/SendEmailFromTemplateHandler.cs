@@ -35,7 +35,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
         // todo: send attachments to s3
         
         // todo: mapping attachment, use s3 content
-        var sendEmail = new SendApi.v2.email.SendEmail
+        var sendEmail = new SendApi.v4.email.SendEmail
         {
             id = notificationId.ToString(),
             // todo:

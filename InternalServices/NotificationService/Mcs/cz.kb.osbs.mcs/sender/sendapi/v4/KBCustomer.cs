@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class KBCustomer : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""KBCustomer"",""doc"":""Customer is a party role. It is view on party from banks perspective and context that party had/has/will have or is even only related to a product or service from KB.(party has some relationship to bank in context of Customer Management). CDM entity name(s): KBCustomer."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v2"",""fields"":[{""name"":""id"",""doc"":""Unique identifier of the customer.KBI_ID, sometimes also refered to as KBID e.g. in CB_IdentityScheme. CDM attribute class name: KBCustomerId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""[1-9][0-9]*""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""KBCustomer"",""doc"":""Customer is a party role. It is view on party from banks perspective and context that party had/has/will have or is even only related to a product or service from KB.(party has some relationship to bank in context of Customer Management). CDM entity name(s): KBCustomer."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""id"",""doc"":""Unique identifier of the customer.KBI_ID, sometimes also refered to as KBID e.g. in CB_IdentityScheme. CDM attribute class name: KBCustomerId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""[1-9][0-9]*""}}]}");
 		/// <summary>
 		/// Unique identifier of the customer.KBI_ID, sometimes also refered to as KBID e.g. in CB_IdentityScheme. CDM attribute class name: KBCustomerId.
 		/// </summary>

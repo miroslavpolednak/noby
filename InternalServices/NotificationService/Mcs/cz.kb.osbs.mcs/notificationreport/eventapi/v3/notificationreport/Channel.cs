@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
+namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Channel : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Channel"",""doc"":""Represents communication channel of bank with party. . ## Multicodebook property that uniquely identifies channel. It is multicodebook as here can be any of subsets of Channel codebook, which are defined as standalone codebooks. But here should not be any principally different codebook. (e.g. ObtainType should not be here). CDM entity name(s): Channel,ChannelIdentification."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport"",""fields"":[{""name"":""id"",""doc"":""Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Channel"",""doc"":""Represents communication channel of bank with party. . ## Multicodebook property that uniquely identifies channel. It is multicodebook as here can be any of subsets of Channel codebook, which are defined as standalone codebooks. But here should not be any principally different codebook. (e.g. ObtainType should not be here). CDM entity name(s): Channel,ChannelIdentification."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport"",""fields"":[{""name"":""id"",""doc"":""Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}");
 		/// <summary>
 		/// Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue.
 		/// </summary>

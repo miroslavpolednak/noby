@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
+namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,8 +19,8 @@ namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class PushSpecific : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""PushSpecific"",""doc"":"""",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport"",""fields"":[{""name"":""installation"",""type"":{""type"":""record"",""name"":""Installation"",""doc"":""Specific instance of direct channel fat application, that is installed on specific user's device. CDM entity name(s): DirectChannelFatAppInstallation."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport"",""fields"":[{""name"":""externalId"",""doc"":""Unique identifier of installation. CDM attribute class name: ExternalId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}}]}");
-		private cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport.Installation _installation;
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""PushSpecific"",""doc"":"""",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport"",""fields"":[{""name"":""installation"",""type"":{""type"":""record"",""name"":""Installation"",""doc"":""Specific instance of direct channel fat application, that is installed on specific user's device. CDM entity name(s): DirectChannelFatAppInstallation."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport"",""fields"":[{""name"":""externalId"",""doc"":""Unique identifier of installation. CDM attribute class name: ExternalId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}}]}");
+		private cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation _installation;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -28,7 +28,7 @@ namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
 				return PushSpecific._SCHEMA;
 			}
 		}
-		public cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport.Installation installation
+		public cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation installation
 		{
 			get
 			{
@@ -51,7 +51,7 @@ namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
 		{
 			switch (fieldPos)
 			{
-			case 0: this.installation = (cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport.Installation)fieldValue; break;
+			case 0: this.installation = (cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

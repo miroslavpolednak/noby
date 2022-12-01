@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v3
+namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v3
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Installation : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Installation"",""doc"":""Specific instance of direct channel fat application, that is installed on specific user's device. CDM entity name(s): DirectChannelFatAppInstallation."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v3"",""fields"":[{""name"":""externalId"",""doc"":""Unique identifier of installation. CDM attribute class name: ExternalId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Installation"",""doc"":""Specific instance of direct channel fat application, that is installed on specific user's device. CDM entity name(s): DirectChannelFatAppInstallation."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport"",""fields"":[{""name"":""externalId"",""doc"":""Unique identifier of installation. CDM attribute class name: ExternalId."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}");
 		/// <summary>
 		/// Unique identifier of installation. CDM attribute class name: ExternalId.
 		/// </summary>

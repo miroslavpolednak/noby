@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Content : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Content"",""doc"":""Represents any content. CDM entity name(s): Content."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v2"",""fields"":[{""name"":""charset"",""doc"":""Charset of content. CDM attribute class name: ContentCharset. Codebook type: CB_CharacterSet."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""format"",""doc"":""Format of content stored. CDM attribute class name: ContentFormat. Codebook type: CB_MIMEType."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""language"",""doc"":""Language of content. Codebook value. CDM attribute class name: ContentLanguage. Codebook type: CB_ContentLanguage."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""text"",""doc"":""Content in text format. CDM attribute class name: ContentText."",""type"":{""type"":""string"",""avro.java.string"":""String""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Content"",""doc"":""Represents any content. CDM entity name(s): Content."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""charset"",""doc"":""Charset of content. CDM attribute class name: ContentCharset. Codebook type: CB_CharacterSet."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""format"",""doc"":""Format of content stored. CDM attribute class name: ContentFormat. Codebook type: CB_MIMEType."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""language"",""doc"":""Language of content. Codebook value. CDM attribute class name: ContentLanguage. Codebook type: CB_ContentLanguage."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""text"",""doc"":""Content in text format. CDM attribute class name: ContentText."",""type"":{""type"":""string"",""avro.java.string"":""String""}}]}");
 		/// <summary>
 		/// Charset of content. CDM attribute class name: ContentCharset. Codebook type: CB_CharacterSet.
 		/// </summary>

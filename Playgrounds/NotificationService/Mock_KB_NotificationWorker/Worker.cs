@@ -1,8 +1,8 @@
 using System.Text.Json;
 using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
-using cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport;
-using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 
 namespace Mock_KB_NotificationWorker;
@@ -52,7 +52,6 @@ public class Worker : BackgroundService
                             },
                             state = "ok",
                             exactlyOn = DateTime.Now,
-                            finalState = true,
                             notificationErrors = new List<NotificationError>()
                         }
                     }, 

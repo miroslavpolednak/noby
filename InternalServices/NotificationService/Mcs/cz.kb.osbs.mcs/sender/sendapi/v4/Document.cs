@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,27 +14,27 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// Dokument z DMSX. Identifikovan je pres dokumentID. Volitelne je mozne specifikovat verzi dokumentu. Pokud verze nebude zadana, vezme se posledni.. ## DokumentDocument is any paper or electronic record or information.Dokument je kazdy pisemny, obrazovy, zvukovy, elektronicky nebo jiny zaznam, at jiz v podobe analogove ci digitalni, ktery vznikl z cinnosti puvodce.. ## Unique identifier of document. Does not change with document version.Multi identifier - there are at least two separate identifiers used for documents across bank.. ## Obsah dokumentu/souborDMS: Rendition. ## Verze dokumentuDocument can change over time. Document version captures document in a given time.Verze dokumentu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu dokumentu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt N verzi dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokumentu (smlouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dokumentu. Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatnou. CDM entity name(s): Document,DocumentId,DocumentContent,DocumentVersion.
+	/// Dokument z DMSX. Identifikovan je pres dokumentID. Volitelne je mozne specifikovat verzi dokumentu. Pokud verze nebude zadana, vezme se posledni.. ## Obsah dokumentu/souborDMS: Rendition. ## DokumentDocument is any paper or electronic record or information.Dokument je kazdy pisemny, obrazovy, zvukovy, elektronicky nebo jiny zaznam, at jiz v podobe analogove ci digitalni, ktery vznikl z cinnosti puvodce.. ## Verze dokumentuDocument can change over time. Document version captures document in a given time.Verze dokumentu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu dokumentu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt N verzi dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokumentu (smlouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dokumentu. Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatnou.. ## Unique identifier of document. Does not change with document version.Multi identifier - there are at least two separate identifiers used for documents across bank. CDM entity name(s): DocumentContent,Document,DocumentVersion,DocumentId.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Document : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"Document\",\"doc\":\"Dokument z DMSX. Identifikovan je pres " +
 				"dokumentID. Volitelne je mozne specifikovat verzi dokumentu. Pokud verze nebude " +
-				"zadana, vezme se posledni.. ## DokumentDocument is any paper or electronic recor" +
-				"d or information.Dokument je kazdy pisemny, obrazovy, zvukovy, elektronicky nebo" +
-				" jiny zaznam, at jiz v podobe analogove ci digitalni, ktery vznikl z cinnosti pu" +
-				"vodce.. ## Unique identifier of document. Does not change with document version." +
-				"Multi identifier - there are at least two separate identifiers used for document" +
-				"s across bank.. ## Obsah dokumentu/souborDMS: Rendition. ## Verze dokumentuDocum" +
-				"ent can change over time. Document version captures document in a given time.Ver" +
-				"ze dokumentu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu" +
-				" dokumentu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt " +
-				"N verzi dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokume" +
-				"ntu (smlouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dok" +
-				"umentu. Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatn" +
-				"ou. CDM entity name(s): Document,DocumentId,DocumentContent,DocumentVersion.\",\"n" +
-				"amespace\":\"cz.kb.osbs.mcs.sender.sendapi.v2\",\"fields\":[{\"name\":\"fileExtension\",\"" +
+				"zadana, vezme se posledni.. ## Obsah dokumentu/souborDMS: Rendition. ## Dokument" +
+				"Document is any paper or electronic record or information.Dokument je kazdy pise" +
+				"mny, obrazovy, zvukovy, elektronicky nebo jiny zaznam, at jiz v podobe analogove" +
+				" ci digitalni, ktery vznikl z cinnosti puvodce.. ## Verze dokumentuDocument can " +
+				"change over time. Document version captures document in a given time.Verze dokum" +
+				"entu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu dokumen" +
+				"tu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt N verzi " +
+				"dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokumentu (sml" +
+				"ouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dokumentu. " +
+				"Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatnou.. ## " +
+				"Unique identifier of document. Does not change with document version.Multi ident" +
+				"ifier - there are at least two separate identifiers used for documents across ba" +
+				"nk. CDM entity name(s): DocumentContent,Document,DocumentVersion,DocumentId.\",\"n" +
+				"amespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"fileExtension\",\"" +
 				"doc\":\"File extension of document content stored.E.g. exe, pdf, docx. CDM attribu" +
 				"te class name: DocumentContentFileExtension. Codebook type: CB_FileExtension.\",\"" +
 				"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"id\",\"doc\":\"Unique " +

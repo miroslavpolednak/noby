@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v3
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v3
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"NotificationConsumer\",\"doc\":\"ConsumerID bude prirazeno p" +
 				"ri registraci konzumenta na Sender.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi." +
-				"v3\",\"fields\":[{\"name\":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"S" +
+				"v4\",\"fields\":[{\"name\":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"S" +
 				"tring\"}}]}");
 		private string _consumerId;
 		public virtual global::Avro.Schema Schema

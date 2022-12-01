@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
+namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class MsgAction : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""MsgAction"",""doc"":"" CDM entity name(s): MessageAction."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport"",""fields"":[{""name"":""area"",""doc"":"" CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""platform"",""doc"":"" CDM attribute class name: DirectChannelMessagePlatform. Codebook type: CB_MsgbPlatform."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""MsgAction"",""doc"":"" CDM entity name(s): MessageAction."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport"",""fields"":[{""name"":""area"",""doc"":"" CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]},{""name"":""platform"",""doc"":"" CDM attribute class name: DirectChannelMessagePlatform. Codebook type: CB_MsgbPlatform."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String""}]}]}");
 		/// <summary>
 		///  CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea.
 		/// </summary>

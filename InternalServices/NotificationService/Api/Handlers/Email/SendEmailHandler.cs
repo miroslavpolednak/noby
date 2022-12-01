@@ -5,7 +5,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
-using cz.kb.osbs.mcs.sender.sendapi.v2;
+using cz.kb.osbs.mcs.sender.sendapi.v4;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
@@ -63,7 +63,7 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
             throw;
         }
 
-        var sendEmail = new SendApi.v2.email.SendEmail
+        var sendEmail = new SendApi.v4.email.SendEmail
         {
             id = notificationId.ToString(),
             sender = request.From.Map(),

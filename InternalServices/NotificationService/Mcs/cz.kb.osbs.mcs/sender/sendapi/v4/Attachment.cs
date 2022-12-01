@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	public partial class Attachment : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"Attachment\",\"doc\":\" This element is choice - only one of" +
-				" the child fields can be filled.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v2\"" +
+				" the child fields can be filled.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\"" +
 				",\"fields\":[{\"name\":\"binary\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name" +
 				"\":\"Binary\",\"doc\":\"Verze dokumentuDocument can change over time. Document version" +
 				" captures document in a given time.Verze dokumentu (SLV 24-001, kapitola 01, bod" +
@@ -28,11 +28,11 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				"u verzi. K jednomu dokumentu muze byt N verzi dokumentu. Verze jsou vyuziti pri " +
 				"postupnem vyvoji obsahu jednoho dokumentu (smlouva ve verzi 1, smlouva ve verzi " +
 				"2 atp.)Reprezentuji postupny vyvoj dokumentu. Dalsi verze plne nahrazuje verzi p" +
-				"redchozi, ktera se stava timto neplatnou.. ## Represents activity of content gen" +
-				"eration. Used to hold relationships to entities involved.. ## Represents any con" +
-				"tent.. ## Version information about content template. CDM entity name(s): Docume" +
-				"ntVersion,ContentGeneration,Content,ContentTemplateVersion.\",\"namespace\":\"cz.kb." +
-				"osbs.mcs.sender.sendapi.v2\",\"fields\":[{\"name\":\"binary\",\"doc\":\"Content in base64 " +
+				"redchozi, ktera se stava timto neplatnou.. ## Represents any content.. ## Repres" +
+				"ents activity of content generation. Used to hold relationships to entities invo" +
+				"lved.. ## Version information about content template. CDM entity name(s): Docume" +
+				"ntVersion,Content,ContentGeneration,ContentTemplateVersion.\",\"namespace\":\"cz.kb." +
+				"osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"binary\",\"doc\":\"Content in base64 " +
 				"binary format. CDM attribute class name: ContentBinary.\",\"type\":\"bytes\"},{\"name\"" +
 				":\"filename\",\"doc\":\"Name of the file in which the content is stored. As on filesy" +
 				"stem. Full file name, suffix is included.E.g. consumerLoanContract2410.pdfNazev " +
@@ -42,20 +42,20 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				",\"pattern\":\"^.{0,255}$\"}}]}]},{\"name\":\"document\",\"default\":null,\"type\":[\"null\",{" +
 				"\"type\":\"record\",\"name\":\"Document\",\"doc\":\"Dokument z DMSX. Identifikovan je pres " +
 				"dokumentID. Volitelne je mozne specifikovat verzi dokumentu. Pokud verze nebude " +
-				"zadana, vezme se posledni.. ## DokumentDocument is any paper or electronic recor" +
-				"d or information.Dokument je kazdy pisemny, obrazovy, zvukovy, elektronicky nebo" +
-				" jiny zaznam, at jiz v podobe analogove ci digitalni, ktery vznikl z cinnosti pu" +
-				"vodce.. ## Unique identifier of document. Does not change with document version." +
-				"Multi identifier - there are at least two separate identifiers used for document" +
-				"s across bank.. ## Obsah dokumentu/souborDMS: Rendition. ## Verze dokumentuDocum" +
-				"ent can change over time. Document version captures document in a given time.Ver" +
-				"ze dokumentu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu" +
-				" dokumentu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt " +
-				"N verzi dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokume" +
-				"ntu (smlouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dok" +
-				"umentu. Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatn" +
-				"ou. CDM entity name(s): Document,DocumentId,DocumentContent,DocumentVersion.\",\"n" +
-				"amespace\":\"cz.kb.osbs.mcs.sender.sendapi.v2\",\"fields\":[{\"name\":\"fileExtension\",\"" +
+				"zadana, vezme se posledni.. ## Obsah dokumentu/souborDMS: Rendition. ## Dokument" +
+				"Document is any paper or electronic record or information.Dokument je kazdy pise" +
+				"mny, obrazovy, zvukovy, elektronicky nebo jiny zaznam, at jiz v podobe analogove" +
+				" ci digitalni, ktery vznikl z cinnosti puvodce.. ## Verze dokumentuDocument can " +
+				"change over time. Document version captures document in a given time.Verze dokum" +
+				"entu (SLV 24-001, kapitola 01, bod 38 [1]) je nositelem vlastniho obsahu dokumen" +
+				"tu. Kazdy dokument ma alespon jednu verzi. K jednomu dokumentu muze byt N verzi " +
+				"dokumentu. Verze jsou vyuziti pri postupnem vyvoji obsahu jednoho dokumentu (sml" +
+				"ouva ve verzi 1, smlouva ve verzi 2 atp.)Reprezentuji postupny vyvoj dokumentu. " +
+				"Dalsi verze plne nahrazuje verzi predchozi, ktera se stava timto neplatnou.. ## " +
+				"Unique identifier of document. Does not change with document version.Multi ident" +
+				"ifier - there are at least two separate identifiers used for documents across ba" +
+				"nk. CDM entity name(s): DocumentContent,Document,DocumentVersion,DocumentId.\",\"n" +
+				"amespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"fileExtension\",\"" +
 				"doc\":\"File extension of document content stored.E.g. exe, pdf, docx. CDM attribu" +
 				"te class name: DocumentContentFileExtension. Codebook type: CB_FileExtension.\",\"" +
 				"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"id\",\"doc\":\"Unique " +
@@ -70,10 +70,10 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				"r.Ciselne oznaceni verze v kompetenci DMS. Viz INS 22-011. CDM attribute class n" +
 				"ame: DocumentVersionVersion.\",\"default\":null,\"type\":[\"null\",\"int\"]}]}]},{\"name\":" +
 				"\"s3Content\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"S3Content\",\"d" +
-				"oc\":\"Represents any content.. ## Relation betwwe bucket and content - describes," +
-				" how contents are stored/managed on buckets. Every content managed on bucket has" +
-				" its unique objectKey. CDM entity name(s): Content,ContentInBucket.\",\"namespace\"" +
-				":\"cz.kb.osbs.mcs.sender.sendapi.v2\",\"fields\":[{\"name\":\"filename\",\"doc\":\"Name of " +
+				"oc\":\"Relation betwwe bucket and content - describes, how contents are stored/man" +
+				"aged on buckets. Every content managed on bucket has its unique objectKey.. ## R" +
+				"epresents any content. CDM entity name(s): ContentInBucket,Content.\",\"namespace\"" +
+				":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"filename\",\"doc\":\"Name of " +
 				"the file in which the content is stored. As on filesystem. Full file name, suffi" +
 				"x is included.E.g. consumerLoanContract2410.pdfNazev souboru s priponou windows " +
 				"complaint podobe: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365" +
@@ -82,9 +82,9 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				"\"name\":\"objectKey\",\"doc\":\" CDM attribute class name: ContentInBucketObjectKey.\"," +
 				"\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}}]}]}" +
 				"]}");
-		private cz.kb.osbs.mcs.sender.sendapi.v2.Binary _binary;
-		private cz.kb.osbs.mcs.sender.sendapi.v2.Document _document;
-		private cz.kb.osbs.mcs.sender.sendapi.v2.S3Content _s3Content;
+		private cz.kb.osbs.mcs.sender.sendapi.v4.Binary _binary;
+		private cz.kb.osbs.mcs.sender.sendapi.v4.Document _document;
+		private cz.kb.osbs.mcs.sender.sendapi.v4.S3Content _s3Content;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -92,7 +92,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				return Attachment._SCHEMA;
 			}
 		}
-		public cz.kb.osbs.mcs.sender.sendapi.v2.Binary binary
+		public cz.kb.osbs.mcs.sender.sendapi.v4.Binary binary
 		{
 			get
 			{
@@ -103,7 +103,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				this._binary = value;
 			}
 		}
-		public cz.kb.osbs.mcs.sender.sendapi.v2.Document document
+		public cz.kb.osbs.mcs.sender.sendapi.v4.Document document
 		{
 			get
 			{
@@ -114,7 +114,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				this._document = value;
 			}
 		}
-		public cz.kb.osbs.mcs.sender.sendapi.v2.S3Content s3Content
+		public cz.kb.osbs.mcs.sender.sendapi.v4.S3Content s3Content
 		{
 			get
 			{
@@ -139,9 +139,9 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 		{
 			switch (fieldPos)
 			{
-			case 0: this.binary = (cz.kb.osbs.mcs.sender.sendapi.v2.Binary)fieldValue; break;
-			case 1: this.document = (cz.kb.osbs.mcs.sender.sendapi.v2.Document)fieldValue; break;
-			case 2: this.s3Content = (cz.kb.osbs.mcs.sender.sendapi.v2.S3Content)fieldValue; break;
+			case 0: this.binary = (cz.kb.osbs.mcs.sender.sendapi.v4.Binary)fieldValue; break;
+			case 1: this.document = (cz.kb.osbs.mcs.sender.sendapi.v4.Document)fieldValue; break;
+			case 2: this.s3Content = (cz.kb.osbs.mcs.sender.sendapi.v4.S3Content)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

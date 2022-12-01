@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class NaturalPerson : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""NaturalPerson"",""doc"":""Flesh and blood party - human being.Fyzicka osobaE.g. Jozko Mrkvicka. CDM entity name(s): NaturalPerson."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v2"",""fields"":[{""name"":""firstName"",""doc"":""First name of the NaturalPerson. CDM attribute class name: NaturalPersonFirstName."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,40}$""}},{""name"":""middleName"",""doc"":""Middle name of the natural person. CDM attribute class name: NaturalPersonMiddleName."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,40}$""}]},{""name"":""surname"",""doc"":""Surname of the NaturalPerson. CDM attribute class name: NaturalPersonSurname."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,80}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""NaturalPerson"",""doc"":""Flesh and blood party - human being.Fyzicka osobaE.g. Jozko Mrkvicka. CDM entity name(s): NaturalPerson."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""firstName"",""doc"":""First name of the NaturalPerson. CDM attribute class name: NaturalPersonFirstName."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,40}$""}},{""name"":""middleName"",""doc"":""Middle name of the natural person. CDM attribute class name: NaturalPersonMiddleName."",""default"":null,""type"":[""null"",{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,40}$""}]},{""name"":""surname"",""doc"":""Surname of the NaturalPerson. CDM attribute class name: NaturalPersonSurname."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,80}$""}}]}");
 		/// <summary>
 		/// First name of the NaturalPerson. CDM attribute class name: NaturalPersonFirstName.
 		/// </summary>

@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
+namespace cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class NotificationError : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""NotificationError"",""doc"":""Description of something that went wrong.. ## Any category of error in categorization.. ## Multicodebook property uniquely identifying error type.Multicodebook because there are many different error categorizations. CDM entity name(s): Error,ErrorType,ErrorTypeCode."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v2.notificationreport"",""fields"":[{""name"":""code"",""doc"":""Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}},{""name"":""message"",""doc"":""Message about error given to actor affected by error. CDM attribute class name: ErrorMessage."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,4000}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""NotificationError"",""doc"":""Description of something that went wrong.. ## Any category of error in categorization.. ## Multicodebook property uniquely identifying error type.Multicodebook because there are many different error categorizations. CDM entity name(s): Error,ErrorType,ErrorTypeCode."",""namespace"":""cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport"",""fields"":[{""name"":""code"",""doc"":""Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}},{""name"":""message"",""doc"":""Message about error given to actor affected by error. CDM attribute class name: ErrorMessage."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,4000}$""}}]}");
 		/// <summary>
 		/// Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue.
 		/// </summary>

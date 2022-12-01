@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,12 +14,12 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// Represents any content.. ## Relation betwwe bucket and content - describes, how contents are stored/managed on buckets. Every content managed on bucket has its unique objectKey. CDM entity name(s): Content,ContentInBucket.
+	/// Relation betwwe bucket and content - describes, how contents are stored/managed on buckets. Every content managed on bucket has its unique objectKey.. ## Represents any content. CDM entity name(s): ContentInBucket,Content.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class S3Content : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""S3Content"",""doc"":""Represents any content.. ## Relation betwwe bucket and content - describes, how contents are stored/managed on buckets. Every content managed on bucket has its unique objectKey. CDM entity name(s): Content,ContentInBucket."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v2"",""fields"":[{""name"":""filename"",""doc"":""Name of the file in which the content is stored. As on filesystem. Full file name, suffix is included.E.g. consumerLoanContract2410.pdfNazev souboru s priponou windows complaint podobe: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#naming_conventions. CDM attribute class name: ContentFilename."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}},{""name"":""objectKey"",""doc"":"" CDM attribute class name: ContentInBucketObjectKey."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""S3Content"",""doc"":""Relation betwwe bucket and content - describes, how contents are stored/managed on buckets. Every content managed on bucket has its unique objectKey.. ## Represents any content. CDM entity name(s): ContentInBucket,Content."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""filename"",""doc"":""Name of the file in which the content is stored. As on filesystem. Full file name, suffix is included.E.g. consumerLoanContract2410.pdfNazev souboru s priponou windows complaint podobe: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#naming_conventions. CDM attribute class name: ContentFilename."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,255}$""}},{""name"":""objectKey"",""doc"":"" CDM attribute class name: ContentInBucketObjectKey."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,100}$""}}]}");
 		/// <summary>
 		/// Name of the file in which the content is stored. As on filesystem. Full file name, suffix is included.E.g. consumerLoanContract2410.pdfNazev souboru s priponou windows complaint podobe: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#naming_conventions. CDM attribute class name: ContentFilename.
 		/// </summary>

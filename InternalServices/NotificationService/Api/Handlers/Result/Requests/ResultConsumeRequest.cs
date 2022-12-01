@@ -1,5 +1,5 @@
 ﻿using Confluent.Kafka;
-using cz.kb.osbs.mcs.notificationreport.eventapi.v2.report;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;

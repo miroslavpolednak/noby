@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.osbs.mcs.sender.sendapi.v2
+namespace cz.kb.osbs.mcs.sender.sendapi.v4
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,28 +14,28 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// Represents email address.. ## 'PartyInBankRole'Party role is description of relationship of (any view on) party to KB or KBGroup. I.e. has information about any view on party in context of KB (or other KB group entity) in SPECIFIC CONTEXT/role.. ## Email as a contact on party. CDM entity name(s): EmailAddress,PartyRole,EmailContact.
+	/// Represents email address.. ## Email as a contact on party.. ## 'PartyInBankRole'Party role is description of relationship of (any view on) party to KB or KBGroup. I.e. has information about any view on party in context of KB (or other KB group entity) in SPECIFIC CONTEXT/role. CDM entity name(s): EmailAddress,EmailContact,PartyRole.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class EmailAddress : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"EmailAddress\",\"doc\":\"Represents email address.. ## \'Part" +
-				"yInBankRole\'Party role is description of relationship of (any view on) party to " +
-				"KB or KBGroup. I.e. has information about any view on party in context of KB (or" +
-				" other KB group entity) in SPECIFIC CONTEXT/role.. ## Email as a contact on part" +
-				"y. CDM entity name(s): EmailAddress,PartyRole,EmailContact.\",\"namespace\":\"cz.kb." +
-				"osbs.mcs.sender.sendapi.v2\",\"fields\":[{\"name\":\"party\",\"default\":null,\"type\":[\"nu" +
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"EmailAddress\",\"doc\":\"Represents email address.. ## Email" +
+				" as a contact on party.. ## \'PartyInBankRole\'Party role is description of relati" +
+				"onship of (any view on) party to KB or KBGroup. I.e. has information about any v" +
+				"iew on party in context of KB (or other KB group entity) in SPECIFIC CONTEXT/rol" +
+				"e. CDM entity name(s): EmailAddress,EmailContact,PartyRole.\",\"namespace\":\"cz.kb." +
+				"osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"party\",\"default\":null,\"type\":[\"nu" +
 				"ll\",{\"type\":\"record\",\"name\":\"Party\",\"doc\":\" This element is choice - only one of" +
-				" the child fields can be filled.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v2\"" +
+				" the child fields can be filled.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\"" +
 				",\"fields\":[{\"name\":\"legalPerson\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\"," +
 				"\"name\":\"LegalPerson\",\"doc\":\"Juridical person that is NOT <b>fixed</b> to <b>exac" +
 				"tly one </b>natural person. CDM entity name(s): LegalPerson.\",\"namespace\":\"cz.kb" +
-				".osbs.mcs.sender.sendapi.v2\",\"fields\":[{\"name\":\"name\",\"doc\":\"Official name of ju" +
+				".osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"name\",\"doc\":\"Official name of ju" +
 				"ridical person. CDM attribute class name: JuridicalPersonName.\",\"type\":{\"type\":\"" +
 				"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}]},{\"name\":\"natura" +
 				"lPerson\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NaturalPerson\",\"" +
 				"doc\":\"Flesh and blood party - human being.Fyzicka osobaE.g. Jozko Mrkvicka. CDM " +
-				"entity name(s): NaturalPerson.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v2\",\"" +
+				"entity name(s): NaturalPerson.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"" +
 				"fields\":[{\"name\":\"firstName\",\"doc\":\"First name of the NaturalPerson. CDM attribu" +
 				"te class name: NaturalPersonFirstName.\",\"type\":{\"type\":\"string\",\"avro.java.strin" +
 				"g\":\"String\",\"pattern\":\"^.{0,40}$\"}},{\"name\":\"middleName\",\"doc\":\"Middle name of t" +
@@ -46,7 +46,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				"tring\",\"pattern\":\"^.{0,80}$\"}}]}]}]}]},{\"name\":\"value\",\"doc\":\"Textual email addr" +
 				"essE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.\"," +
 				"\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}}]}");
-		private cz.kb.osbs.mcs.sender.sendapi.v2.Party _party;
+		private cz.kb.osbs.mcs.sender.sendapi.v4.Party _party;
 		/// <summary>
 		/// Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.
 		/// </summary>
@@ -58,7 +58,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 				return EmailAddress._SCHEMA;
 			}
 		}
-		public cz.kb.osbs.mcs.sender.sendapi.v2.Party party
+		public cz.kb.osbs.mcs.sender.sendapi.v4.Party party
 		{
 			get
 			{
@@ -96,7 +96,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v2
 		{
 			switch (fieldPos)
 			{
-			case 0: this.party = (cz.kb.osbs.mcs.sender.sendapi.v2.Party)fieldValue; break;
+			case 0: this.party = (cz.kb.osbs.mcs.sender.sendapi.v4.Party)fieldValue; break;
 			case 1: this.value = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
