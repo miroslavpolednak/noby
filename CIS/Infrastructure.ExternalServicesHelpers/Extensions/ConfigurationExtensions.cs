@@ -17,11 +17,11 @@ public static class ConfigurationExtensions
     /// <exception cref="CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
     /// <exception cref="CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
     public static TConfiguration AddExternalServiceConfiguration<TClient, TConfiguration>(
-    this WebApplicationBuilder builder,
-    string serviceName,
-    string serviceImplementationVersion)
-    where TClient : class, IExternalServiceClient
-    where TConfiguration : class, IExternalServiceConfiguration<TClient>
+        this WebApplicationBuilder builder,
+        string serviceName,
+        string serviceImplementationVersion)
+        where TClient : class, IExternalServiceClient
+        where TConfiguration : class, IExternalServiceConfiguration<TClient>
     {
         // ziskat konfiguraci sluzby z appsettings.json
         var configuration = builder.readConfiguration<TConfiguration>(serviceName, serviceImplementationVersion);
@@ -62,7 +62,7 @@ public static class ConfigurationExtensions
         builder.Configuration.GetSection(getSectionName(serviceName, serviceImplementationVersion)).Bind(configuration);
 
         // konfigurace pro konkretni verzi neexistuje, zkus obecnou konfiguraci
-        if (configuration == null)
+        if (configuration == null || configuration.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
             builder.Configuration.GetSection($"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}").Bind(configuration);
 
         if (configuration == null)

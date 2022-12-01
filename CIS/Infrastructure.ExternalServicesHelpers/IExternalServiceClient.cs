@@ -5,5 +5,4 @@
 /// </summary>
 public interface IExternalServiceClient
 {
-    public string GetVersion() => "";
 }
