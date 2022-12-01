@@ -59,6 +59,7 @@ internal static class UpdateParametersExtensions
         if (parameters.PayoutList is not null)
             model.PayoutList.AddRange(parameters.PayoutList?.Select(x => new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingPayoutList
             {
+                ProductObligationId = x.ProductObligationId,
                 Order = x.Order,
                 SpecificSymbolUcetKeSplaceni = x.SpecificSymbol,
                 AccountNumber = x.AccountNumber,
