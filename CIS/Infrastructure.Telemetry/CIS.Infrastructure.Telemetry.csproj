@@ -17,7 +17,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.Telemetry.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
-		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
 	<ItemGroup>
