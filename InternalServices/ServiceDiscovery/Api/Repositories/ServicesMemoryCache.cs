@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class ServicesMemoryCache
 {
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });

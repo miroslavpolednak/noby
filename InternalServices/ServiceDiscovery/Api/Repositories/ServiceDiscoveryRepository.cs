@@ -4,7 +4,7 @@ using CIS.Core.Data;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class ServiceDiscoveryRepository 
     : DapperBaseRepository<ServiceDiscoveryRepository>
 {

@@ -4,7 +4,7 @@ using CIS.Core;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class HouseholdsChildMapper
 {
     public async Task<List<_C4M.LoanApplicationHousehold>> MapHouseholds(

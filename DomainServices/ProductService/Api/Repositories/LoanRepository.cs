@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace DomainServices.ProductService.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class LoanRepository
 {
     private readonly ProductServiceDbContext _dbContext;

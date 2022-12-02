@@ -1,6 +1,6 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.Attributes;
+using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 

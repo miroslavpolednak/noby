@@ -110,7 +110,8 @@ Connection stringy do databází se konfigurují standardním .NET způsobem.
 ```
 
 ### Nastavení autentizace služby
-Příchozí requesty vždy procházejí autentizací. Druh autentizace lze nastavit na StaticCollectioni nebo ActiveDirectory.
+Příchozí requesty vždy procházejí autentizací. 
+Druh autentizace lze nastavit na StaticCollectioni nebo ActiveDirectory, podle toho zda chci ověřovat uživatele proti AD.
 ```
 "CisSecurity": {
     "ServiceAuthentication": {
@@ -120,7 +121,8 @@ Příchozí requesty vždy procházejí autentizací. Druh autentizace lze nasta
 ```
 
 ### Nastavení ekosystému NOBY
-
+Zapojení aplikace do ekosystému NOBY. 
+Správným nastavením této sekce se zajišťuje korektní funkčnost `Clients` projektů a *ServiceDiscovery*.
 ```
 "CisEnvironmentConfiguration": {
     "DefaultApplicationKey": "DS:HouseholdService",
@@ -130,9 +132,17 @@ Příchozí requesty vždy procházejí autentizací. Druh autentizace lze nasta
     "InternalServicePassword": "a"
 }
 ```
+- **DefaultApplicationKey** - název aplikace v *ServiceDiscovery*
+- **EnvironmentName** - název prostředí ve kterém je aplikace spuštěna
+- **ServiceDiscoveryUrl** - adresa *ServiceDiscovery* služby
+- **InternalServicesLogin**, **InternalServicePassword** - login a heslo pod kterým se tato aplikace autentizuje vůči ostatním aplikacím v ekosystému
 
 ### Vlastní konfigurace služby
 Aplikace může obsahovat další, vlastní konfiguraci. V tom případě je tato konfigurace vždy v elementu **AppConfiguration**.
 ```
 "AppConfiguration": { ... }
 ```
+
+## Startup aplikace
+[Popis a flow startup aplikace](grpc-service-startup.md)
+

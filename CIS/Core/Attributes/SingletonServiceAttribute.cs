@@ -1,9 +1,9 @@
-﻿namespace CIS.Infrastructure.Attributes;
+﻿namespace CIS.Core.Attributes;
 
 /// <summary>
 /// Marker for DependencyInjection
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public sealed class ScopedServiceAttribute : Attribute
+public sealed class SingletonServiceAttribute : Attribute
 {
 }

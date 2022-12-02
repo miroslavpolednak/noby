@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
 
-[CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed partial class ValidationTransformationServiceFactory
 {
     public IValidationTransformationService CreateService(int formId)

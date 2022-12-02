@@ -25,7 +25,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class FormsService
 {
 

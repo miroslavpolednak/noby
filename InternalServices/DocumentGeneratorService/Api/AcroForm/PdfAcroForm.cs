@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.Attributes;
+using CIS.Core.Attributes;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Pdf = ceTe.DynamicPDF;
 
