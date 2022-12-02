@@ -15,7 +15,7 @@ public static class StartupExtensions
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
-        var configuration = builder.AddExternalServiceConfiguration<TClient, ExternalServiceConfiguration<TClient>>(ServiceName, version);
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
         switch (version, configuration.ImplementationType)
         {
@@ -24,7 +24,7 @@ public static class StartupExtensions
                 break;
 
             case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
-                builder.AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient, ExternalServiceConfiguration<V1.ISbWebApiClient>>(V1.ISbWebApiClient.Version, configuration, _addAdditionalHttpHandlers);
+                builder.AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient>(configuration, _addAdditionalHttpHandlers);
                 break;
 
             default:

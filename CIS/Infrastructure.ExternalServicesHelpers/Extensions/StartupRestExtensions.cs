@@ -8,27 +8,26 @@ public static class StartupRestExtensions
     /// <summary>
     /// Založení typed HttpClienta pro implementaci ExternalService.
     /// </summary>
+    /// <remarks>
+    /// Některé HttpHandlery jsou vkládané pomocí konfigurace - to je proto, že potřebujeme na úrovni CI/CD řešit, zda budou v pipeline nebo ne.
+    /// </remarks>
     /// <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
     /// <typeparam name="TImplementation">Interní implementace TClient interface</typeparam>
-    /// <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
     /// <param name="builder"></param>
-    /// <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
     /// <param name="additionalHandlersRegistration">Možnost zaregistrovat další HttpHandlery do pipeline.</param>
-    public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(
+    public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>(
         this WebApplicationBuilder builder,  
-        string serviceImplementationVersion,
         IExternalServiceConfiguration configuration,
         Action<IHttpClientBuilder, IExternalServiceConfiguration>? additionalHandlersRegistration = null)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
-        where TConfiguration : class, IExternalServiceConfiguration<TClient>
     {
         var clientBuilder = builder.Services
             .AddHttpClient<TClient, TImplementation>((services, client) =>
             {
                 var configurationInstance = services
-                    .GetService<TConfiguration>()
-                    ?? throw new CisConfigurationNotFound($"External service configuration of type {typeof(TConfiguration)} for {typeof(TClient)} version '{serviceImplementationVersion}' not found");
+                    .GetService<IExternalServiceConfiguration<TClient>>()
+                    ?? throw new CisConfigurationNotFound($"{typeof(TClient)}");
 
                 // timeout requestu
                 if (configurationInstance.RequestTimeout.GetValueOrDefault() > 0)
@@ -50,12 +49,14 @@ public static class StartupRestExtensions
             });
         }
 
-        // basic authentication
-        if (configuration is IExternalServiceBasicAuthenticationConfiguration)
+        // authentication
+        switch (configuration.Authentication)
         {
-            var basicAuthHeader = HttpHandlers.BasicAuthenticationHttpHandler.PrepareAuthorizationHeaderValue((IExternalServiceBasicAuthenticationConfiguration)configuration);
-            builder.Services.AddSingleton(provider => new HttpHandlers.BasicAuthenticationHttpHandler(basicAuthHeader));
-            clientBuilder.AddHttpMessageHandler<HttpHandlers.BasicAuthenticationHttpHandler>();
+            case ExternalServicesAuthenticationTypes.Basic:
+                var basicAuthHeader = HttpHandlers.BasicAuthenticationHttpHandler.PrepareAuthorizationHeaderValue(configuration);
+                builder.Services.AddSingleton(provider => new HttpHandlers.BasicAuthenticationHttpHandler(basicAuthHeader));
+                clientBuilder.AddHttpMessageHandler<HttpHandlers.BasicAuthenticationHttpHandler>();
+                break;
         }
 
         // zaregistrovat pripadne dalsi httpHandlery

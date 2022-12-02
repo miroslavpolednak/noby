@@ -41,4 +41,23 @@ public class ExternalServiceConfiguration<TClient>
     /// Type of http client implementation - can be mock or real client or something else.
     /// </summary>
     public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
+
+    /// <summary>
+    /// Typ pouzite autentizace na sluzbu treti strany
+    /// </summary>
+    public ExternalServicesAuthenticationTypes Authentication { get; set; } = ExternalServicesAuthenticationTypes.None;
+
+    /// <summary>
+    /// Autentizace - Username
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
+    /// Autentizace - Heslo
+    /// </summary>
+    public string? Password { get; set; }
+
+    // nazev a verze sluzby. Budeme to potrebovat? Vytahnout do interface?
+    internal string? ServiceName;
+    internal string? ServiceImplementationVersion;
 }

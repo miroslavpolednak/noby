@@ -40,6 +40,21 @@ public interface IExternalServiceConfiguration
     /// Type of http client implementation - can be mock or real client or something else.
     /// </summary>
     ServiceImplementationTypes ImplementationType { get; set; }
+
+    /// <summary>
+    /// Typ pouzite autentizace na sluzbu treti strany
+    /// </summary>
+    ExternalServicesAuthenticationTypes Authentication { get; set; }
+
+    /// <summary>
+    /// Autentizace - Username
+    /// </summary>
+    string? Username { get; set; }
+
+    /// <summary>
+    /// Autentizace - Heslo
+    /// </summary>
+    string? Password { get; set; }
 }
 
 /// <summary>

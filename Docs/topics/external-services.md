@@ -42,6 +42,7 @@ Preferovanou variantou je *ServiceDiscovery*.
     "AddressWhisperer:V1": {
         "ImplementationType": "Real",
         "UseServiceDiscovery": true,
+        "Authentication": "Basic",
         "Username": "my_user",
         "Password": "password"
     },
@@ -78,34 +79,27 @@ Zásadní pro implementaci jsou dvě extension metody:
 
 ### AddExternalServiceConfiguration
 ```
-public static TConfiguration AddExternalServiceConfiguration<TClient, TConfiguration>(
+public static IExternalServiceConfiguration<TClient> AddExternalServiceConfiguration<TClient>(
     this WebApplicationBuilder builder,
     string serviceName,
     string serviceImplementationVersion)
         where TClient : class, IExternalServiceClient
-        where TConfiguration : class, IExternalServiceConfiguration<TClient>
 ```
 - **TClient** je interface proxy klienta - z příkladu víše je to `V1.IEasClient`. Tento interface musí vždy dědit z marker interface `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.
-- **TConfiguration** typ konfigurace platný pro danou registraci, odvozený z `CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration`.
 - **serviceName** je název služby, např. "Eas".
 - **serviceImplementationVersion** je verze implementace, např. "V1".
 
 ### AddExternalServiceRestClient
 ```
-public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(
-    this WebApplicationBuilder builder,  
-    string serviceImplementationVersion,
+public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>(
+    this WebApplicationBuilder builder, 
     IExternalServiceConfiguration configuration,
     Action<IHttpClientBuilder, IExternalServiceConfiguration>? additionalHandlersRegistration = null)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
-        where TConfiguration : class, IExternalServiceConfiguration<TClient>
 ```
 - **TClient** je interface proxy klienta - z příkladu víše je to `V1.IEasClient`. Tento interface musí vždy dědit z marker interface `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.
 - **TImplementation** je implementace proxy klienta - z příkladu víše je to `V1.RealEasClient`.
-- **TConfiguration** typ konfigurace platný pro danou registraci, odvozený z `CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration`.
-- **serviceName** je název služby, např. "Eas".
-- **serviceImplementationVersion** je verze implementace, např. "V1".
 - **additionalHandlersRegistration** je callback s možností přidat vlastní *HttpHandlery* do pipeline daného HttpClient-a.
 
 ### Flow akcí v AddExternalServiceRestClient
@@ -123,7 +117,7 @@ V `CIS.Infrastructure.ExternalServicesHelpers` jsou již připravené tyto *Http
 
 **BasicAuthenticationHttpHandler**  
 Přidává Authorization HTTP header pro username a password v konfiguraci služby.
-Nastavuje se automaticky, pokud `TConfiguration` is `IExternalServiceBasicAuthenticationConfiguration`.
+Přidává se do pipeline pokud v konfiguraci služby `Authentication`=Basic.
 
 **CorrelationIdForwardingHttpHandler**  
 Přidává do HTTP hlavičky correlation Id.

@@ -24,7 +24,7 @@ public sealed class BasicAuthenticationHttpHandler
         return await base.SendAsync(request, cancellationToken);
     }
 
-    public static AuthenticationHeaderValue PrepareAuthorizationHeaderValue(IExternalServiceBasicAuthenticationConfiguration configuration)
+    public static AuthenticationHeaderValue PrepareAuthorizationHeaderValue(IExternalServiceConfiguration configuration)
     {
         if (string.IsNullOrEmpty(configuration.Username) || string.IsNullOrEmpty(configuration.Password))
             throw new ArgumentNullException("Username or Password for Basic Authentication has not been set");
