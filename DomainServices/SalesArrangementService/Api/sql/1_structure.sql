@@ -30,6 +30,7 @@ CREATE TABLE [dbo].[SalesArrangement](
     RiskBusinessCaseExpirationDate date NULL,
     [FirstSignedDate] [datetime] NULL,
 	[SalesArrangementSignatureTypeId] [int] NULL,
+	[IsOfferDocumentArchivedRequest] bit default(0) not null,
 	[CreatedUserName] [nvarchar](100) NULL,
 	[CreatedUserId] [int] NULL,
 	[CreatedTime] [datetime] NOT NULL,

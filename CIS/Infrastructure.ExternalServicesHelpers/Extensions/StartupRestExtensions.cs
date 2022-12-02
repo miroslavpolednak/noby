@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.AspNetCore.Builder;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;

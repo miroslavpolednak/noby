@@ -50,6 +50,7 @@ builder
     .AddNobyServices()
     .AddNobyDatabase();
 
+//TODO !!! odstranit, pouze pro test
 builder.AddExternalService<ISbWebApiClient>();
 
 // authentication

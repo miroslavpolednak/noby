@@ -110,5 +110,7 @@ public interface ISalesArrangementServiceClients
     /// </summary>
     /// <returns><see cref="SuccessfulServiceCallResult"/></returns>
     Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task UpdateIsOfferDocumentArchived(int salesArrangementId, bool isOfferDocumentArchived, CancellationToken cancellationToken = default(CancellationToken));
 }
 
