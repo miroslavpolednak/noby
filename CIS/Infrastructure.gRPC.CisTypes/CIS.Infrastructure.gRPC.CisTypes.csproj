@@ -33,6 +33,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
 	  <ProjectReference Include="..\Core\CIS.Core.csproj" />
+	  <ProjectReference Include="..\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
