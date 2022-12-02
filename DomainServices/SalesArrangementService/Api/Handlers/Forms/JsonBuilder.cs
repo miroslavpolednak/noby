@@ -672,7 +672,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             object MapF3602(Household household, DynamicValues? dynamicValues)
             {
                 var customersOnSa = data.CustomersOnSa.Where(i => i.CustomerOnSAId == household.CustomerOnSAId1 || i.CustomerOnSAId == household.CustomerOnSAId2).ToList();
-                bool isPartner = data.CustomersOnSa.Count == 2 ? HouseholdService.Clients.Helpers.AreCustomersPartners(data.CustomersOnSa[0].MaritalStatusId, data.CustomersOnSa[1].MaritalStatusId) : false;
+                bool isPartner = customersOnSa.Count == 2 ? HouseholdService.Clients.Helpers.AreCustomersPartners(customersOnSa[0].MaritalStatusId, customersOnSa[1].MaritalStatusId) : false;
                 int cisloDomacnosti = householdNumbersById[household.HouseholdId];
 
                 var jsonData = new
