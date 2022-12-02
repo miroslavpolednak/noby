@@ -4,7 +4,7 @@ using Dapper;
 
 namespace DomainServices.CodebookService.Endpoints.MyTestCodebook;
 
-[CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService] //! nutne atributy pro registraci do DI
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService] //! nutne atributy pro registraci do DI
 public class MyTestCodebookRepository 
     : DapperBaseRepository<MyTestCodebookRepository> // base Dapper repo - obsahuje helper metody jako WithConnection
 {

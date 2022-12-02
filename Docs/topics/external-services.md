@@ -8,8 +8,8 @@ Konzument by neměl na interface proxy projektu poznat rozdíl mezi REST nebo SO
 Proxy projekty nad službami třetích stran vznikají na dvou místech:
 - **služba třetí strany, která může být volána z více projektů NOBY.**  
 Projekt bude založen v adresáři */ExternalServices*, název projektu (namespace) je `ExternalServices.{nazev_sluzby_treti_strany}`.
-- **služba třetí strany, která je vždy pevně spjata pouze s jedním projektem/službou NOBY.** 
-Nezakládáme pro službu nový projekt, ale proxy klient bude součástí projektu ----- nebo ano???? TODO domyslet
+- **služba třetí strany, která je vždy pevně spjata pouze s jedním projektem/službou NOBY.**  
+Projekt bude založen v adresáři dané služby, v namespace `{název DS}.ExternalServices.{název proxy}`.
 
 ## Registrace proxy projektu v aplikaci konzumenta
 Proxy projekt vystavuje vždy jeden public interface pro každou verzi implementace. Tento interface musí dědit z `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.  

@@ -6,7 +6,7 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CreditWorthinessHouseholdService
 {
     public async Task<List<_Rip.CreditWorthinessHousehold>> CreateHouseholds(int salesArrangementId, CancellationToken cancellationToken)

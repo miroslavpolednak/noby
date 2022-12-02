@@ -1,4 +1,7 @@
 {
+	"LogLevel": "Warn",
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.gRPC.dll",
+  "ProjectDirectoryPath": "./",
   "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.gRPC/",
   "GeneratedPages": "Namespaces,Classes,Interfaces",
   "GeneratedAccessModifiers": "Public"

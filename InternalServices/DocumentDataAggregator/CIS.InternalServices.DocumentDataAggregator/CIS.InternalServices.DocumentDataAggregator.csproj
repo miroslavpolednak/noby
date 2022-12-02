@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DomainServices\CaseService\Abstraction\DomainServices.CaseService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
-    <ProjectReference Include="..\..\..\DomainServices\ProductService\Abstraction\DomainServices.ProductService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class SalesArrangementServiceRepository
 {
     public async Task<int> CreateSalesArrangement(Entities.SalesArrangement entity, CancellationToken cancellation)

@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Attributes;
+﻿using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Mcs.Consumers.Requests;
 using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;

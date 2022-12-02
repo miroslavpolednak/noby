@@ -8,6 +8,7 @@ internal static class SalesArrangementServiceRepositoryExpressions
     {
         return t => new Contracts.SalesArrangement
         {
+            IsOfferDocumentArchived = t.IsOfferDocumentArchived,
             SalesArrangementId = t.SalesArrangementId,
             CaseId = t.CaseId,
             State = t.State,

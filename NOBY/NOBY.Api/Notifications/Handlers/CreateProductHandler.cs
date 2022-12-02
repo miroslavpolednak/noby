@@ -23,14 +23,14 @@ internal sealed class CreateProductHandler
             return; // nema modre ID, nezajima me
         }
 
-        /*try
+        try
         {
-            // proc to tady bylo?
+            // je to tady proto, ze produkt uz muze byt zalozeny, ale ja na instanci CustomerOnSA to nemam jak zjistit
             await _productService.GetMortgage(notification.CaseId, cancellationToken);
             _logger.LogInformation($"Product already exist for CaseId #{notification.CaseId}");
             return;
         }
-        catch { }*/
+        catch { }
 
         // detail SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));

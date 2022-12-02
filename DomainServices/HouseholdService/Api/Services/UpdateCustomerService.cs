@@ -6,7 +6,7 @@ using _Customer = DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Services;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class UpdateCustomerService
 {
     public async Task GetCustomerAndUpdateEntity(Database.Entities.CustomerOnSA entity, long identityId, CIS.Foms.Enums.IdentitySchemes scheme, CancellationToken cancellation)

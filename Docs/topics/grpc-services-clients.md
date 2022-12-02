@@ -27,10 +27,15 @@ Task MyEndpoint(MyRequest request) { }
 ```
 
 ## Adresářová struktura
-- adresář **Interfaces** : soubory s C# interfaces, které budou registrovány v DI. 
-Kopírují 1:1 kontrakty gRPC služeb - jeden interface, jedna služba.
-- adresář **Services** : implementace gRPC klienta a víše uvedeného interface.
-- **xxxServiceExtensions.cs** : extension metoda pro registraci `Clients` projektu v aplikaci konzumenta.
+```
+[Interfaces]
+    IHouseholdService.cs    (interface reprezentující C# kontrakt služby, kopíruje 1:1 kontrakt gRPC služby - jeden interface, jedna služba)
+    ...
+[Services]                  
+    HouseholdService.cs     (implementace gRPC klienta)
+    ...
+StartupExtensions.cs        (extension metoda pro registraci `Clients` projektu v aplikaci konzumenta)
+```
 
 ## Použití v projektu konzumenta
 Registrace v startupu aplikace:

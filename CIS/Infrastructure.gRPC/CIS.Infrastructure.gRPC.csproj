@@ -16,20 +16,16 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Infrastructure.gRPC.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
-		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
-	</ItemGroup>
-	
 	<ItemGroup>
 		<InternalsVisibleTo Include="CIS.Infrastructure.gRPC.Tests" />
 	</ItemGroup>
 		
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.4.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.21.9" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.10" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.50.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.50.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.50.0" />

@@ -16,11 +16,6 @@
 		<Title>CIS shared core interfaces, attributes</Title>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>CIS.Core.xml</DocumentationFile>
-		<DisableDefaultDocumentation Condition=" '$(Configuration)' == 'Release' ">true</DisableDefaultDocumentation>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all" />
-	</ItemGroup>
-	
 </Project>

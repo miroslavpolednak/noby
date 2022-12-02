@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using CIS.Infrastructure.Attributes;
+using CIS.Core.Attributes;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroFieldFormatters;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;

@@ -1,4 +1,7 @@
 {
+	"LogLevel": "Warn",
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.Logging.Extensions.dll",
+  "ProjectDirectoryPath": "./",
   "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.Logging.Extensions/",
   "GeneratedPages": "Namespaces,Classes,Interfaces",
   "GeneratedAccessModifiers": "Public"
