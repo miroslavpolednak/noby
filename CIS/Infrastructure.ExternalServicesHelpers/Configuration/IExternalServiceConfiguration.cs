@@ -7,6 +7,7 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 /// </summary>
 /// <remarks>Pro registraci HTTP klienta by se vždy měla používat generická verze interface.</remarks>
 public interface IExternalServiceConfiguration
+    : CIS.Core.IIsServiceDiscoverable
 {
     /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
@@ -19,17 +20,6 @@ public interface IExternalServiceConfiguration
     /// </summary>
     /// <remarks>Default is set to 10 seconds</remarks>
     int? RequestTimeout { get; set; }
-
-    /// <summary>
-    /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
-    /// </summary>
-    string ServiceUrl { get; set; }
-
-    /// <summary>
-    /// If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
-    /// </summary>
-    /// <remarks>Default is set to True</remarks>
-    bool UseServiceDiscovery { get; set; }
 
     /// <summary>
     /// Pokud =true, ignoruje HttpClient problem s SSL certifikatem remote serveru.

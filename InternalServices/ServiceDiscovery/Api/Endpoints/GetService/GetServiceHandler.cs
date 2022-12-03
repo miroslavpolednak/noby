@@ -1,16 +1,16 @@
-﻿using CIS.InternalServices.ServiceDiscovery.Api.Repositories;
+﻿using CIS.InternalServices.ServiceDiscovery.Api.Common;
 
-namespace CIS.InternalServices.ServiceDiscovery.Api.Handlers;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints.GetService;
 
-internal class GetServiceQueryHandler 
-    : IRequestHandler<Dto.GetServiceRequest, Contracts.GetServiceResponse>
+internal sealed class GetServiceHandler
+    : IRequestHandler<GetServiceRequest, Contracts.GetServiceResponse>
 {
-    public async Task<Contracts.GetServiceResponse> Handle(Dto.GetServiceRequest request, CancellationToken cancellation)
+    public async Task<Contracts.GetServiceResponse> Handle(GetServiceRequest request, CancellationToken cancellation)
     {
         // query from cache
         var foundServices = await _cache.GetServices(request.Environment, cancellation);
         var service = foundServices.FirstOrDefault(t => t.ServiceType == request.ServiceType && t.ServiceName == request.ServiceName)
-            ?? throw new CIS.Core.Exceptions.CisNotFoundException(0, nameof(Contracts.DiscoverableService));
+            ?? throw new Core.Exceptions.CisNotFoundException(0, nameof(Contracts.DiscoverableService));
 
         return new Contracts.GetServiceResponse
         {
@@ -24,14 +24,10 @@ internal class GetServiceQueryHandler
         };
     }
 
-    private readonly ILogger<GetServiceQueryHandler> _logger;
     private readonly ServicesMemoryCache _cache;
 
-    public GetServiceQueryHandler(
-        ILogger<GetServiceQueryHandler> logger,
-        ServicesMemoryCache cache)
+    public GetServiceHandler(ServicesMemoryCache cache)
     {
-        _logger = logger;
         _cache = cache;
     }
 }

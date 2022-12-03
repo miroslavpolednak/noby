@@ -13,6 +13,7 @@ using DomainServices.HouseholdService.Clients;
 using CIS.Infrastructure.MediatR;
 using ExternalServices.SbWebApi;
 using ExternalServices.SbWebApi.V1;
+using CIS.InternalServices.ServiceDiscovery.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,9 +51,6 @@ builder
     .AddNobyServices()
     .AddNobyDatabase();
 
-//TODO !!! odstranit, pouze pro test
-builder.AddExternalService<ISbWebApiClient>();
-
 // authentication
 builder.AddFomsAuthentication(appConfiguration);
 
@@ -66,12 +64,17 @@ builder.Services.AddSpaStaticFiles(configuration =>
     configuration.RootPath = "wwwroot";
 });
 
+//TODO !!! odstranit, pouze pro test
+builder.AddExternalService<ISbWebApiClient>();
+
 // pridat moznost rollbacku mediatr handleru
 builder.Services.AddCisMediatrRollbackCapability();
 #endregion register services
 
 // BUILD APP
 var app = builder.Build();
+
+app.UseServiceDiscovery();
 
 app.UseCisWebRequestLocalization();
 

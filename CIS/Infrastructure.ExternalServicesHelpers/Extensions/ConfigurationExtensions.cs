@@ -25,57 +25,25 @@ public static class ConfigurationExtensions
         var configuration = (ExternalServiceConfiguration<TClient>)Activator.CreateInstance(typeof(ExternalServiceConfiguration<TClient>));
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
-        // zkusit nacist konfiguraci pro danou verzi
-        var section = builder.Configuration.GetSection(getSectionName(serviceName, serviceImplementationVersion));
-        // konfigurace pro konkretni verzi neexistuje, zkus obecnou konfiguraci
-        if (!section.Exists())
-            section = builder.Configuration.GetSection(getSectionName(serviceName));
-        section.Bind(configuration);
+        builder.Configuration
+            .GetSection(getSectionName(serviceName, serviceImplementationVersion))
+            .Bind(configuration);
 
         // validace konfigurace
-        validateConfiguration(configuration, serviceName, serviceImplementationVersion);
-
-        if (configuration!.UseServiceDiscovery)
-        {
-            builder.Services.AddSingleton<IExternalServiceConfiguration<TClient>>(provider =>
-            {
-                configuration.ServiceName = serviceName;
-                configuration.ServiceImplementationVersion = serviceImplementationVersion;
-
-                string? url = provider
-                    .GetRequiredService<IDiscoveryServiceAbstraction>()
-                    .GetServiceUrlSynchronously(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}"), InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
-
-                // nastavit URL ze ServiceDiscovery
-                configuration.ServiceUrl = url
-                    ?? throw new ArgumentNullException("url", $"Service Discovery can not find {Constants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion} Proprietary service URL");
-
-                return configuration;
-            });
-        }
-        else
-            builder.Services.AddSingleton(configuration);
-
-        return configuration;
-    }
-
-    /// <summary>
-    /// Validace konfigurace
-    /// </summary>
-    private static void validateConfiguration<TClient>(ExternalServiceConfiguration<TClient>? configuration, string serviceName, string serviceImplementationVersion)
-        where TClient : class, IExternalServiceClient
-    {
         if (configuration == null)
             throw new CisConfigurationNotFound(getSectionName(serviceName, serviceImplementationVersion));
         if (!configuration.UseServiceDiscovery && string.IsNullOrEmpty(configuration.ServiceUrl))
             throw new CisConfigurationException(0, $"{serviceName} Service URL must be defined");
         if (configuration.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
+
+        configuration!.ServiceName = $"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}:{serviceImplementationVersion}";
+
+        builder.Services.AddSingleton<IExternalServiceConfiguration<TClient>>(configuration);
+
+        return configuration;
     }
 
     private static string getSectionName(string serviceName, string serviceImplementationVersion)
         => $"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion}";
-
-    private static string getSectionName(string serviceName)
-        => $"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}";
 }

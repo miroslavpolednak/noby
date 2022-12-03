@@ -1,12 +1,13 @@
 ﻿using CIS.Core.Types;
-using CIS.Infrastructure.gRPC;
-using Grpc.Core;
+using CIS.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 
-namespace CIS.InternalServices.ServiceDiscovery.Api.Repositories;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Common;
 
-[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
+[Core.Attributes.ScopedService, Core.Attributes.SelfService]
 internal sealed class ServicesMemoryCache
 {
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
@@ -17,10 +18,10 @@ internal sealed class ServicesMemoryCache
         _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
     }
 
-    public async Task<List<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    public async Task<ImmutableList<Contracts.DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        List<Contracts.DiscoverableService>? cacheEntry;
-        if (!_cache.TryGetValue(environmentName, out cacheEntry))
+        ImmutableList<Contracts.DiscoverableService> cacheEntry;
+        if (!_cache.TryGetValue(environmentName, out cacheEntry!))
         {
             _logger.ServicesNotFoundInCache(environmentName);
 
@@ -29,7 +30,7 @@ internal sealed class ServicesMemoryCache
             await mylock.WaitAsync(cancellationToken);
             try
             {
-                if (!_cache.TryGetValue(environmentName, out cacheEntry))
+                if (!_cache.TryGetValue(environmentName, out cacheEntry!))
                 {
                     // Key not in cache, so get data.
                     cacheEntry = await getServicesFromDb(environmentName, cancellationToken);
@@ -44,17 +45,18 @@ internal sealed class ServicesMemoryCache
         else
             _logger.ServicesFoundInCache(environmentName);
 
-        return cacheEntry ?? new List<Contracts.DiscoverableService>(0);
+        return cacheEntry!;
     }
 
-    private async Task<List<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    private async Task<ImmutableList<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        var list = await _repository.GetList(environmentName, cancellationToken);
+        var list = await _connectionProvider
+            .ExecuteDapperRawSqlToList<Dto.ServiceModel>(_sqlQuery, new { name = environmentName.ToString() });
 
         if (!list.Any())
         {
             _logger.NoServicesForEnvironment(environmentName);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, $"Services not found for environment '{environmentName}'", 103);
+            throw new CisNotFoundException(103, $"Services not found for environment '{environmentName}'");
         }
 
         _logger.FoundServices(list.Count, environmentName);
@@ -65,8 +67,10 @@ internal sealed class ServicesMemoryCache
                 ServiceType = t.ServiceType,
                 ServiceUrl = t.ServiceUrl,
             })
-            .ToList();
+            .ToImmutableList();
     }
+
+    const string _sqlQuery = "SELECT ServiceName, ServiceUrl, ServiceType FROM ServiceDiscovery WHERE EnvironmentName=@name";
 
     static MemoryCacheEntryOptions _entryOptions = new()
     {
@@ -76,13 +80,13 @@ internal sealed class ServicesMemoryCache
     };
 
     private readonly ILogger<ServicesMemoryCache> _logger;
-    private readonly ServiceDiscoveryRepository _repository;
+    private readonly Core.Data.IConnectionProvider _connectionProvider;
 
     public ServicesMemoryCache(
-        ServiceDiscoveryRepository repository,
+        Core.Data.IConnectionProvider connectionProvider,
         ILogger<ServicesMemoryCache> logger)
     {
         _logger = logger;
-        _repository = repository;
+        _connectionProvider = connectionProvider;
     }
 }

@@ -1,6 +1,7 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -21,9 +22,6 @@ builder.Services.AddAttributedServices(typeof(Program));
 
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);
-
-// helper pro ziskani aktualniho uzivatele
-builder.Services.AddScoped<CIS.Core.Security.ICurrentUserAccessor, CIS.InternalServices.ServiceDiscovery.Api.ServiceDiscoveryContextUserAccessor>();
 
 // health checks
 builder.AddCisHealthChecks();
@@ -53,7 +51,7 @@ app.UseRouting();
 app.UseCisLogging();
 
 app.MapCisHealthChecks();
-app.MapGrpcService<CIS.InternalServices.ServiceDiscovery.Api.Services.DiscoveryService>();
+app.MapGrpcService<DiscoveryService>();
 app.MapGrpcReflectionService();
 
 try

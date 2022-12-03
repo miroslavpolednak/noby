@@ -927,6 +927,22 @@
             Current time
             </summary>
         </member>
+        <member name="P:CIS.Core.IIsServiceDiscoverable.ServiceUrl">
+            <summary>
+            Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
+            </summary>
+        </member>
+        <member name="P:CIS.Core.IIsServiceDiscoverable.UseServiceDiscovery">
+            <summary>
+            If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
+            </summary>
+            <remarks>Default is set to True</remarks>
+        </member>
+        <member name="P:CIS.Core.IIsServiceDiscoverable.ServiceName">
+            <summary>
+            Nazev sluzby v ServiceDiscovery
+            </summary>
+        </member>
         <member name="T:CIS.Core.Validation.IValidatableRequest">
             <summary>
             Marker interface, který označuje request zapojený do custom validace v rámci Mediator pipeline.

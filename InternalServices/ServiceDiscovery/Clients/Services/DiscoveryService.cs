@@ -1,31 +1,23 @@
-﻿using CIS.Core.Types;
-
-namespace CIS.InternalServices.ServiceDiscovery.Clients;
+﻿namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
 internal sealed class DiscoveryService 
     : IDiscoveryServiceAbstraction
 {
-    public async Task<IList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
         => await GetServices(getEnvName(), cancellationToken);
 
     // get services nekesujeme, nemel by to byt casty dotaz
-    public async Task<IList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        _logger.RequestHandlerStarted(nameof(GetServices));
-
-        return await _cache.GetServices(environmentName, cancellationToken);
-    }
+    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken = default(CancellationToken))
+        => await _cache.GetServices(environmentName, cancellationToken);
     
     public async Task<DiscoverableService> GetService(ApplicationKey serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken))
         => await GetService(getEnvName(), serviceName, serviceType, cancellationToken);
 
     public async Task<DiscoverableService> GetService(ApplicationEnvironmentName environmentName, ApplicationKey serviceName, Contracts.ServiceTypes serviceType, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.GetServiceStarted(serviceName, serviceType, environmentName.Name);
-
         var services = await _cache.GetServices(environmentName, cancellationToken);
         return services.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType) 
-            ?? throw new CIS.Core.Exceptions.CisNotFoundException(0, $"Service {serviceName}:{serviceType} not found");
+            ?? throw new CisNotFoundException(0, $"Service {serviceName}:{serviceType} not found");
     }
 
     public string GetServiceUrlSynchronously(ApplicationKey serviceName, Contracts.ServiceTypes serviceType)
@@ -35,23 +27,25 @@ internal sealed class DiscoveryService
         {
             var url = GetService(serviceName, serviceType).GetAwaiter().GetResult()?.ServiceUrl;
             if (string.IsNullOrEmpty(url))
-                throw new CIS.Core.Exceptions.CisNotFoundException(0, $"Service Discovery can not find {serviceName}{serviceType} service URL");
+                throw new CisNotFoundException(0, $"Service Discovery can not find {serviceName}{serviceType} service URL");
             return url;
         }
         else
             return serviceFromCache.ServiceUrl;
     }
 
+    public ImmutableList<DiscoverableService> GetServicesSynchronously()
+    {
+        return _cache.GetServices(getEnvName(), default(CancellationToken)).GetAwaiter().GetResult();
+    }
+
     private readonly ServicesMemoryCache _cache;
-    private readonly ILogger<DiscoveryService> _logger;
     private readonly EnvironmentNameProvider _envName;
 
     public DiscoveryService(
         ServicesMemoryCache cache,
-        ILogger<DiscoveryService> logger,
         EnvironmentNameProvider envName)
     {
-        _logger = logger;
         _cache = cache;
         _envName = envName;
     }

@@ -67,6 +67,16 @@
             Autentizace - Heslo
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.ServiceName">
+            <summary>
+            Nazev sluzby v ServiceDiscovery
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.ServiceType">
+            <summary>
+            Pro sluzby tretich stran vzdy 3
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes">
             <summary>
             Možné typy autentizace na službu třetí strany.
@@ -99,17 +109,6 @@
             Default request timeout in seconds
             </summary>
             <remarks>Default is set to 10 seconds</remarks>
-        </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ServiceUrl">
-            <summary>
-            Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
-            </summary>
-        </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseServiceDiscovery">
-            <summary>
-            If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
-            </summary>
-            <remarks>Default is set to True</remarks>
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.IgnoreServerCertificateErrors">
             <summary>
@@ -197,11 +196,6 @@
             <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
-        </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.validateConfiguration``1(CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration{``0},System.String,System.String)">
-            <summary>
-            Validace konfigurace
-            </summary>
         </member>
         <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>

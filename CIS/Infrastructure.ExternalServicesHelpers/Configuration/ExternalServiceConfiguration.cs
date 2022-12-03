@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using System.Text.Json.Serialization;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 
@@ -57,7 +58,13 @@ public class ExternalServiceConfiguration<TClient>
     /// </summary>
     public string? Password { get; set; }
 
-    // nazev a verze sluzby. Budeme to potrebovat? Vytahnout do interface?
-    internal string? ServiceName;
-    internal string? ServiceImplementationVersion;
+    /// <summary>
+    /// Nazev sluzby v ServiceDiscovery
+    /// </summary>
+    public string ServiceName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Pro sluzby tretich stran vzdy 3
+    /// </summary>
+    public int ServiceType { get; } = 3;
 }

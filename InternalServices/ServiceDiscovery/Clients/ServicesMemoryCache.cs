@@ -1,7 +1,5 @@
-﻿using CIS.Core.Types;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
 
 namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
@@ -19,13 +17,11 @@ internal sealed class ServicesMemoryCache
         return null;
     }
 
-    public async Task<IList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
+    public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
         ImmutableList<DiscoverableService>? cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry))
         {
-            _logger.ServicesNotFoundInCache(environmentName);
-
             SemaphoreSlim mylock = _locks.GetOrAdd(environmentName, k => new SemaphoreSlim(1, 1));
 
             await mylock.WaitAsync(cancellationToken);
@@ -43,13 +39,8 @@ internal sealed class ServicesMemoryCache
                 mylock.Release();
             }
         }
-        else
-            _logger.ServicesFoundInCache(environmentName);
 
-        if (cacheEntry == null)
-            return new List<DiscoverableService>(0);
-        else
-            return cacheEntry;
+        return cacheEntry!;
     }
 
     private async Task<ImmutableList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
@@ -66,14 +57,10 @@ internal sealed class ServicesMemoryCache
             .ToImmutableList();
     }
 
-    private readonly ILogger<ServicesMemoryCache> _logger;
     private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;
 
-    public ServicesMemoryCache(
-        Contracts.v1.DiscoveryService.DiscoveryServiceClient service,
-        ILogger<ServicesMemoryCache> logger)
+    public ServicesMemoryCache(Contracts.v1.DiscoveryService.DiscoveryServiceClient service)
     {
-        _logger = logger;
         _service = service;
     }
 }

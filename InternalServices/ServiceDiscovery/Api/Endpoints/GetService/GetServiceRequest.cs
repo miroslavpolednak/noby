@@ -1,10 +1,10 @@
 ﻿using CIS.Core.Types;
 using CIS.InternalServices.ServiceDiscovery.Contracts;
 
-namespace CIS.InternalServices.ServiceDiscovery.Api.Dto;
+namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints.GetService;
 
-internal record GetServiceRequest 
-    : IRequest<GetServiceResponse> 
+internal record GetServiceRequest
+    : IRequest<GetServiceResponse>
 {
     public ApplicationEnvironmentName Environment { get; init; }
     public ApplicationKey ServiceName { get; init; }
