@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using CIS.Infrastructure.gRPC.Configuration;
+using Grpc.Core;
 using Grpc.Net.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -55,8 +56,8 @@ public static class GrpcStartupExtensions
         var builder = services
             .AddGrpcClient<TService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TService>>();
-                options.Address = serviceUri.Url;
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<TService>>();
+                options.Address = serviceUri.ServiceUrl;
             })
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
@@ -79,8 +80,8 @@ public static class GrpcStartupExtensions
         var builder = services
             .AddGrpcClient<TService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<TServiceUriSettings>>();
-                options.Address = serviceUri.Url;
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<TServiceUriSettings>>();
+                options.Address = serviceUri.ServiceUrl;
             })
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
@@ -96,7 +97,7 @@ public static class GrpcStartupExtensions
     public static IServiceCollection AddGrpcServiceUriSettings<TService>(this IServiceCollection services, string serviceUrl)
         where TService : class
     {
-        services.TryAddSingleton(new GrpcServiceUriSettings<TService>(serviceUrl));
+        services.TryAddSingleton(new Configuration.GrpcServiceUriSettingsDirect<TService>(serviceUrl));
         return services;
     }
 

@@ -6,7 +6,7 @@ using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Core.Types;
 using System.Linq;
 
-string env = args.Any() ? args[0] : "uat";
+string env = args.Any() ? args[0] : "DEV";
 string uri = args.Any() && args.Length > 1 ? args[1] : "https://127.0.0.1:5005";
 Console.WriteLine($"service discovery for {env} on {uri}");
 
@@ -39,7 +39,7 @@ var provider = services.BuildServiceProvider();
             
 var svc = provider.GetRequiredService<IDiscoveryServiceAbstraction>();
 
-var result = await svc.GetService(new(env), new("CIS:Storage"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
+var result = await svc.GetService(new(env), new("DS:OfferService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
 Console.WriteLine(result.ServiceUrl);
 var result3 = await svc.GetServices(new ApplicationEnvironmentName(env));
 Console.WriteLine(result3);

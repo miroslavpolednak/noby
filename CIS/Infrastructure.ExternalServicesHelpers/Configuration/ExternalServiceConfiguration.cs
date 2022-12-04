@@ -25,7 +25,7 @@ public class ExternalServiceConfiguration<TClient>
     /// <summary>
     /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
     /// </summary>
-    public string ServiceUrl { get; set; } = "";
+    public Uri? ServiceUrl { get; set; }
 
     /// <summary>
     /// If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
@@ -61,7 +61,7 @@ public class ExternalServiceConfiguration<TClient>
     /// <summary>
     /// Nazev sluzby v ServiceDiscovery
     /// </summary>
-    public string ServiceName { get; set; } = string.Empty;
+    public string? ServiceName { get; set; } = null;
 
     /// <summary>
     /// Pro sluzby tretich stran vzdy 3

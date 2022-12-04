@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.gRPC;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
@@ -16,7 +15,7 @@ public static class ServiceDiscoveryHelperExtensions
                 .GetRequiredService<IDiscoveryServiceAbstraction>()
                 .GetServiceUrlSynchronously(new(serviceName), Contracts.ServiceTypes.Grpc);
 
-            return new GrpcServiceUriSettings<TService>(url ?? throw new ArgumentNullException(nameof(serviceName), $"{serviceName} URL can not be determined"));
+            return new Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsDirect<TService>(url ?? throw new ArgumentNullException(nameof(serviceName), $"{serviceName} URL can not be determined"));
         });
 
         return services;

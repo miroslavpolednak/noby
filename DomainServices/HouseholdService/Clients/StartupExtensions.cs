@@ -1,32 +1,34 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DomainServices.HouseholdService.Clients;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddHouseholdService(this IServiceCollection services)
-        => services.TryAddGrpcClient<Contracts.v1.HouseholdService.HouseholdServiceClient>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.HouseholdService.HouseholdServiceClient>("DS:HouseholdService")
-            .registerServices()
-        );
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:HouseholdService";
 
-    public static IServiceCollection AddHouseholdService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<Contracts.v1.HouseholdService.HouseholdServiceClient>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl)
-            .registerServices()
-        );
-
-    private static IServiceCollection registerServices(this IServiceCollection services)
+    public static IServiceCollection AddDomainService<TClient>(this IServiceCollection services)
+        where TClient : IHouseholdServiceClient
     {
-        // register storage services
         services.AddScoped<IHouseholdServiceClient, Services.HouseholdService>();
         services.AddScoped<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
 
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>();
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>();
+        services.AddCisGrpcClientUsingServiceDiscovery<Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        services.AddCisGrpcClientUsingServiceDiscovery<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        return services;
+    }
 
+    public static IServiceCollection AddHouseholdService<TClient>(this IServiceCollection services, string serviceUrl)
+        where TClient : IHouseholdServiceClient
+    {
+        services.AddScoped<IHouseholdServiceClient, Services.HouseholdService>();
+        services.AddScoped<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
+
+        services.AddCisGrpcClientUsingUrl<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
+        services.AddCisGrpcClientUsingUrl<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
         return services;
     }
 }

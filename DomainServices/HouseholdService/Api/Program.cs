@@ -4,7 +4,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.CustomerService.Clients;
-using DomainServices.UserService.Clients;
+using CIS.Core;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
@@ -54,7 +54,7 @@ builder.Services
     .AddOfferService()
     .AddSalesArrangementService()
     .AddCustomerService()
-    .AddUserService();
+    .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddHouseholdService(appConfiguration);

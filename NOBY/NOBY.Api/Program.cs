@@ -4,16 +4,15 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.CaseService.Clients;
-using DomainServices.UserService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.RiskIntegrationService.Clients;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using DomainServices.HouseholdService.Clients;
 using CIS.Infrastructure.MediatR;
 using ExternalServices.SbWebApi;
 using ExternalServices.SbWebApi.V1;
 using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,13 +34,13 @@ builder
 
 // add domain services
 builder.Services
-    .AddHouseholdService()
+    .AddDomainService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>()
     .AddOfferService()
     .AddRiskIntegrationService()
     .AddCodebookService()
     .AddCustomerService()
     .AddProductService()
-    .AddUserService()
+    .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>()
     .AddCaseService()
     .AddSalesArrangementService()
     .AddRiskIntegrationService();

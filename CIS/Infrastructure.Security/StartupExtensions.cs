@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.Security.ContextUser;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using DomainServices.UserService.Clients;
+using CIS.Core;
 
 namespace CIS.Infrastructure.Security;
 
@@ -62,7 +62,7 @@ public static class StartupExtensions
         // helper pro ziskani aktualniho uzivatele
         builder.Services.AddScoped<Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
 
-        builder.Services.AddUserService();
+        builder.Services.AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>();
 
         return builder;
     }

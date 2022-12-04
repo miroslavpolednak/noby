@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.gRPC.Configuration;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
@@ -40,8 +41,8 @@ public static class DocumentArchiveServiceExtensions
             .AddTransient(typeof(IAbstraction), typeof(TAbstraction))
             .AddCodeFirstGrpcClient<IService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>();
-                options.Address = serviceUri.Url;
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>();
+                options.Address = serviceUri.ServiceUrl;
             })
             .CisConfigureChannelWithoutCertificateValidation()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)

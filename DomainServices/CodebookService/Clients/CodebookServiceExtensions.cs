@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.gRPC.Configuration;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
@@ -34,8 +35,8 @@ public static class CodebookServiceExtensions
         var builder = services
             .AddCodeFirstGrpcClient<Contracts.ICodebookService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<Contracts.ICodebookService>>();
-                options.Address = serviceUri.Url;
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<Contracts.ICodebookService>>();
+                options.Address = serviceUri.ServiceUrl;
             })
             .AddCisCallCredentials();
 

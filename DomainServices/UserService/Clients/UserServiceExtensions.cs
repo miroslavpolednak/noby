@@ -1,29 +1,28 @@
 ﻿using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 
 namespace DomainServices.UserService.Clients;
 
 public static class UserServiceExtensions
 {
-    public static IServiceCollection AddUserService(this IServiceCollection services)
-        => services.TryAddGrpcClient<Contracts.v1.UserService.UserServiceClient>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.UserService.UserServiceClient>("DS:UserService")
-            .registerServices()
-        );
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:UserService";
 
-    public static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<Contracts.v1.UserService.UserServiceClient>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.v1.UserService.UserServiceClient>(serviceUrl)
-            .registerServices()
-        );
-
-    private static IServiceCollection registerServices(this IServiceCollection services)
+    public static IServiceCollection AddDomainService<TClient>(this IServiceCollection services)
+        where TClient : IUserServiceClient
     {
         services.AddTransient<IUserServiceClient, Services.UserService>();
+        services.AddCisGrpcClientUsingServiceDiscovery<Contracts.v1.UserService.UserServiceClient>(ServiceName);
+        return services;
+    }
 
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.UserService.UserServiceClient>();
-        
+    public static IServiceCollection AddDomainService<TClient>(this IServiceCollection services, string serviceUrl)
+        where TClient : IUserServiceClient
+    {
+        services.AddTransient<IUserServiceClient, Services.UserService>();
+        services.AddCisGrpcClientUsingUrl<Contracts.v1.UserService.UserServiceClient>(serviceUrl);
         return services;
     }
 }
