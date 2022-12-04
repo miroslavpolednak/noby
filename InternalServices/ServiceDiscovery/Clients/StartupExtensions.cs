@@ -17,6 +17,9 @@ public static class StartupExtensions
     {
         // najit vsechny implementace, ktere maji tento interface
         var tIsDiscoverable = typeof(Core.IIsServiceDiscoverable);
+        var xxx1 = _serviceCollection!.Where(t => t.ServiceType.IsAssignableTo(tIsDiscoverable)).ToList();
+        var xxx2 = _serviceCollection!.Where(t => t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable).ToList();
+        var xxx3 = _serviceCollection!.Where(t => t.ImplementationInstance?.GetType().IsAssignableFrom(tIsDiscoverable) ?? false).ToList();
         var foundServices = _serviceCollection!
             .Where(t => t.ServiceType.IsAssignableTo(tIsDiscoverable))
             .Select(t => t.ImplementationInstance as Core.IIsServiceDiscoverable)
@@ -74,7 +77,7 @@ public static class StartupExtensions
         services.AddTransient<ServicesMemoryCache>();
         
         // abstraction svc
-        services.AddScoped<IDiscoveryServiceAbstraction, DiscoveryService>();
+        services.AddTransient<IDiscoveryServiceAbstraction, DiscoveryService>();
 
         // def environment name
         services.AddSingleton(provider =>
