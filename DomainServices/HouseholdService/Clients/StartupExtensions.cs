@@ -1,7 +1,10 @@
 ﻿using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices.HouseholdService.Clients;
+using __Services = DomainServices.HouseholdService.Clients.Services;
+using __Contracts = DomainServices.HouseholdService.Contracts;
 
-namespace DomainServices.HouseholdService.Clients;
+namespace DomainServices;
 
 public static class StartupExtensions
 {
@@ -10,25 +13,23 @@ public static class StartupExtensions
     /// </summary>
     public const string ServiceName = "DS:HouseholdService";
 
-    public static IServiceCollection AddDomainService<TClient>(this IServiceCollection services)
-        where TClient : IHouseholdServiceClient
+    public static IServiceCollection AddHouseholdService(this IServiceCollection services)
     {
-        services.AddScoped<IHouseholdServiceClient, Services.HouseholdService>();
-        services.AddScoped<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
+        services.AddScoped<IHouseholdServiceClient, __Services.HouseholdService>();
+        services.AddScoped<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 
-        services.AddCisGrpcClientUsingServiceDiscovery<Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
-        services.AddCisGrpcClientUsingServiceDiscovery<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.HouseholdService.HouseholdServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
         return services;
     }
 
-    public static IServiceCollection AddHouseholdService<TClient>(this IServiceCollection services, string serviceUrl)
-        where TClient : IHouseholdServiceClient
+    public static IServiceCollection AddHouseholdService(this IServiceCollection services, string serviceUrl)
     {
-        services.AddScoped<IHouseholdServiceClient, Services.HouseholdService>();
-        services.AddScoped<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
+        services.AddScoped<IHouseholdServiceClient, __Services.HouseholdService>();
+        services.AddScoped<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 
-        services.AddCisGrpcClientUsingUrl<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
-        services.AddCisGrpcClientUsingUrl<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
+        services.AddCisGrpcClientUsingUrl<__Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
+        services.AddCisGrpcClientUsingUrl<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
         return services;
     }
 }

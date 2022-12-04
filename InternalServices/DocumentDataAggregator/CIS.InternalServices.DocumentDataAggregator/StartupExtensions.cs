@@ -6,8 +6,8 @@ using DomainServices.CustomerService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using CIS.Core;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices;
 
 namespace CIS.InternalServices.DocumentDataAggregator;
 
@@ -31,7 +31,7 @@ public static class StartupExtensions
                 .AddSalesArrangementService()
                 .AddCaseService()
                 .AddOfferService()
-                .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>()
+                .AddUserService()
                 .AddCustomerService()
                 .AddProductService();
 }

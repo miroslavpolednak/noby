@@ -2,7 +2,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CaseService.Api;
 using DomainServices.CodebookService.Clients;
-using CIS.Core;
+using DomainServices;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
@@ -49,7 +49,7 @@ builder.AddCisServiceAuthentication();
 builder.Services
     .AddSalesArrangementService()
     .AddCodebookService()
-    .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>()
+    .AddUserService()
     .AddCisServiceDiscovery();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));

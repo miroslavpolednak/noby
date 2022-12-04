@@ -4,11 +4,11 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.CustomerService.Clients;
-using CIS.Core;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -54,7 +54,7 @@ builder.Services
     .AddOfferService()
     .AddSalesArrangementService()
     .AddCustomerService()
-    .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>();
+    .AddUserService();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddHouseholdService(appConfiguration);

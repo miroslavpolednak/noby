@@ -12,7 +12,7 @@ using CIS.Infrastructure.MediatR;
 using ExternalServices.SbWebApi;
 using ExternalServices.SbWebApi.V1;
 using CIS.InternalServices.ServiceDiscovery.Clients;
-using CIS.Core;
+using DomainServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,17 +33,17 @@ builder
     .AddCisHealthChecks();
 
 // add domain services
-builder.Services
-    .AddDomainService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>()
-    .AddOfferService()
-    .AddRiskIntegrationService()
-    .AddCodebookService()
-    .AddCustomerService()
-    .AddProductService()
-    .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>()
-    .AddCaseService()
-    .AddSalesArrangementService()
-    .AddRiskIntegrationService();
+builder.Services    
+    .AddUserService();
+/*.AddHouseholdService()
+.AddOfferService()
+.AddRiskIntegrationService()
+.AddCodebookService()
+.AddCustomerService()
+.AddProductService()
+.AddCaseService()
+.AddSalesArrangementService()
+.AddRiskIntegrationService()*/
 
 // FOMS services
 builder

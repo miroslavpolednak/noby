@@ -8,7 +8,7 @@ using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices.ProductService.Clients;
-using CIS.Core;
+using DomainServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -54,8 +54,8 @@ builder.Services
     .AddCodebookService()
     .AddOfferService()
     .AddCustomerService()
-    .AddDomainService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>()
-    .AddDomainService<DomainServices.UserService.Clients.IUserServiceClient>();
+    .AddHouseholdService()
+    .AddUserService();
 
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddSalesArrangementService(appConfiguration);

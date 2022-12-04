@@ -914,11 +914,6 @@
             Zjisteni, zda je dany typ jiz registrovan v DI
             </summary>
         </member>
-        <member name="M:CIS.Core.ServiceCollectionExtensions.AddDomainService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Abstract method to simplify registration of domain services
-            </summary>
-        </member>
         <member name="T:CIS.Core.IDateTime">
             <summary>
             Interface pro získání instance aktuálního času z DI.
