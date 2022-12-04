@@ -52,13 +52,13 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateHouseholdHandler> _logger;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
 
     public CreateHouseholdHandler(
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateHouseholdHandler> logger)

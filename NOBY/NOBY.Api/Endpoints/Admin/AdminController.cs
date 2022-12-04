@@ -7,9 +7,9 @@ namespace NOBY.Api.Endpoints.Admin;
 [Route("api/admin")]
 public class AdminController : ControllerBase
 {
-    private readonly CIS.InternalServices.ServiceDiscovery.Clients.IDiscoveryServiceAbstraction _discoveryService;
+    private readonly CIS.InternalServices.ServiceDiscovery.Clients.IDiscoveryServiceClient _discoveryService;
 
-    public AdminController(CIS.InternalServices.ServiceDiscovery.Clients.IDiscoveryServiceAbstraction discoveryService)
+    public AdminController(CIS.InternalServices.ServiceDiscovery.Clients.IDiscoveryServiceClient discoveryService)
     {
         _discoveryService = discoveryService;
     }

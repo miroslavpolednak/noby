@@ -16,7 +16,7 @@ internal sealed class GetGetCaseParametersHandler
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.OfferService.Clients.IOfferServiceClients _offerService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
 
     public GetGetCaseParametersHandler(
@@ -24,7 +24,7 @@ internal sealed class GetGetCaseParametersHandler
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.OfferService.Clients.IOfferServiceClients offerService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         DomainServices.UserService.Clients.IUserServiceClient userService
         )
     {

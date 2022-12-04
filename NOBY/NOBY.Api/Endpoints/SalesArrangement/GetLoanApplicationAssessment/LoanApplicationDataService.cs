@@ -25,7 +25,7 @@ internal class LoanApplicationDataService
 
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IOfferServiceClients _offerService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
@@ -36,7 +36,7 @@ internal class LoanApplicationDataService
     public LoanApplicationDataService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         IOfferServiceClients offerService,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,

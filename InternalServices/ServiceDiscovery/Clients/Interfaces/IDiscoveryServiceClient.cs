@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
-public interface IDiscoveryServiceAbstraction
+public interface IDiscoveryServiceClient
 {
     Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken));
 

@@ -3,8 +3,10 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using __Client = CIS.InternalServices.ServiceDiscovery.Clients;
+using __Contracts = CIS.InternalServices.ServiceDiscovery.Contracts;
 
-namespace CIS.InternalServices.ServiceDiscovery.Clients;
+namespace CIS.InternalServices;
 
 public static class StartupExtensions
 {
@@ -16,12 +18,8 @@ public static class StartupExtensions
     public static WebApplication UseServiceDiscovery(this WebApplication builder)
     {
         // najit vsechny implementace, ktere maji tento interface
-        var tIsDiscoverable = typeof(Core.IIsServiceDiscoverable);
-        var xxx1 = _serviceCollection!.Where(t => t.ServiceType.IsAssignableTo(tIsDiscoverable)).ToList();
-        var xxx2 = _serviceCollection!.Where(t => t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable).ToList();
-        var xxx3 = _serviceCollection!.Where(t => t.ImplementationInstance?.GetType().IsAssignableFrom(tIsDiscoverable) ?? false).ToList();
         var foundServices = _serviceCollection!
-            .Where(t => t.ServiceType.IsAssignableTo(tIsDiscoverable))
+            .Where(t => t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable)
             .Select(t => t.ImplementationInstance as Core.IIsServiceDiscoverable)
             .Where(t => t is not null && t.UseServiceDiscovery)
             .ToList();
@@ -29,16 +27,16 @@ public static class StartupExtensions
         if (foundServices.Any())
         {
              var servicesInServiceDiscovery = builder.Services
-                .GetRequiredService<IDiscoveryServiceAbstraction>()
+                .GetRequiredService<__Client.IDiscoveryServiceClient>()
                 .GetServicesSynchronously();
 
             foundServices.ForEach(instance =>
             {
-                var service = servicesInServiceDiscovery.FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (Contracts.ServiceTypes)instance.ServiceType);
+                var service = servicesInServiceDiscovery.FirstOrDefault(t => t.ServiceName == instance!.ServiceName && t.ServiceType == (__Contracts.ServiceTypes)instance.ServiceType);
 
                 // nastavit URL ze ServiceDiscovery
                 instance!.ServiceUrl = new Uri(service?.ServiceUrl
-                    ?? throw new ArgumentNullException("url", $"Service Discovery can not find {instance.ServiceName} {(Contracts.ServiceTypes)instance.ServiceType} service URL"));
+                    ?? throw new ArgumentNullException("url", $"Service Discovery can not find {instance.ServiceName} {(__Contracts.ServiceTypes)instance.ServiceType} service URL"));
             });
         }
 
@@ -47,25 +45,25 @@ public static class StartupExtensions
 
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, bool validateServiceCertificate = false)
     {
-        if (services.AlreadyRegistered<IGrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>())
+        if (services.AlreadyRegistered<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>())
             return services;
 
         return services
-            .AddSingleton<IGrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(provider =>
+            .AddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(provider =>
             {
                 string url = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
-                return new GrpcServiceUriSettingsDirect<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url);
+                return new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url);
             })
             .registerServices(validateServiceCertificate);
     }
 
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, string serviceUrl, bool validateServiceCertificate = false)
     {
-        if (services.AlreadyRegistered<IGrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>())
+        if (services.AlreadyRegistered<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>())
             return services;
 
         return services
-            .AddSingleton<IGrpcServiceUriSettings<Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(new GrpcServiceUriSettingsDirect<Contracts.v1.DiscoveryService.DiscoveryServiceClient>(serviceUrl))
+            .AddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(serviceUrl))
             .registerServices(validateServiceCertificate);
     }
     
@@ -74,20 +72,20 @@ public static class StartupExtensions
         _serviceCollection = services;
 
         // cache
-        services.AddTransient<ServicesMemoryCache>();
+        services.AddTransient<__Client.ServicesMemoryCache>();
         
         // abstraction svc
-        services.AddTransient<IDiscoveryServiceAbstraction, DiscoveryService>();
+        services.AddTransient<__Client.IDiscoveryServiceClient, __Client.DiscoveryServiceClient>();
 
         // def environment name
         services.AddSingleton(provider =>
         {
             var configuration = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>();
-            return new EnvironmentNameProvider(configuration?.EnvironmentName);
+            return new __Client.EnvironmentNameProvider(configuration?.EnvironmentName);
         });
 
         // napojeni na gRPC
-        services.AddCisGrpcClientInner<Contracts.v1.DiscoveryService.DiscoveryServiceClient, Contracts.v1.DiscoveryService.DiscoveryServiceClient>(validateServiceCertificate, false);
+        services.AddCisGrpcClientInner<__Contracts.v1.DiscoveryService.DiscoveryServiceClient, __Contracts.v1.DiscoveryService.DiscoveryServiceClient>(validateServiceCertificate, false);
 
         return services;
     }

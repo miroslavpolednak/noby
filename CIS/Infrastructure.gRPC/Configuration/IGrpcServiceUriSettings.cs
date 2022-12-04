@@ -12,5 +12,5 @@ public interface IGrpcServiceUriSettings<TService>
     /// <summary>
     /// Adresa služby.
     /// </summary>
-    Uri? ServiceUrl { get; set; }
+    Uri? ServiceUrl { get; }
 }

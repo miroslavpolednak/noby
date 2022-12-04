@@ -78,7 +78,7 @@ internal class CreateMortgageCaseHandler
     private readonly IRollbackBag _bag;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
     private readonly IOfferServiceClients _offerService;
@@ -91,7 +91,7 @@ internal class CreateMortgageCaseHandler
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
         ICodebookServiceClients codebookService, 

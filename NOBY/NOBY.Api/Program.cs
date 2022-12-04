@@ -13,6 +13,7 @@ using ExternalServices.SbWebApi;
 using ExternalServices.SbWebApi.V1;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using DomainServices;
+using CIS.InternalServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,17 +34,17 @@ builder
     .AddCisHealthChecks();
 
 // add domain services
-builder.Services    
-    .AddUserService();
-/*.AddHouseholdService()
-.AddOfferService()
-.AddRiskIntegrationService()
-.AddCodebookService()
-.AddCustomerService()
-.AddProductService()
-.AddCaseService()
-.AddSalesArrangementService()
-.AddRiskIntegrationService()*/
+builder.Services
+    .AddUserService()
+    .AddHouseholdService()
+    .AddOfferService()
+    .AddRiskIntegrationService()
+    .AddCodebookService()
+    .AddCustomerService()
+    .AddProductService()
+    .AddCaseService()
+    .AddSalesArrangementService()
+    .AddRiskIntegrationService();
 
 // FOMS services
 builder

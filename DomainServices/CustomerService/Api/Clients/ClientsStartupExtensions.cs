@@ -40,7 +40,7 @@ internal static class ClientsStartupExtensions
         {
             var name = new ApplicationKey(Constants.ExternalServicesServiceDiscoveryKeyPrefix + CustomerManagementServiceName);
 
-            config.ServiceUrl = serviceProvider.GetRequiredService<IDiscoveryServiceAbstraction>()
+            config.ServiceUrl = serviceProvider.GetRequiredService<IDiscoveryServiceClient>()
                                                .GetServiceUrlSynchronously(name, ServiceTypes.Proprietary);
 
             return config;

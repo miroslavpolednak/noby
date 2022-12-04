@@ -10,16 +10,7 @@ public sealed class GrpcServiceUriSettingsDirect<TService>
     /// <summary>
     /// Adresa služby.
     /// </summary>
-    public Uri? ServiceUrl { get; set; }
-
-    public bool UseServiceDiscovery { get; } = false;
-
-    public string? ServiceName { get => throw new NotImplementedException(); }
-
-    /// <summary>
-    /// Always gRPC (=1)
-    /// </summary>
-    public int ServiceType { get => throw new NotImplementedException(); }
+    public Uri? ServiceUrl { get; init; }
 
     public GrpcServiceUriSettingsDirect(in string? serviceUrl)
     {

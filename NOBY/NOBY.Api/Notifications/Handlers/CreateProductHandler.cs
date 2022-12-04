@@ -103,7 +103,7 @@ internal sealed class CreateProductHandler
     private readonly IRollbackBag _bag;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly IOfferServiceClients _offerService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IProductServiceClient _productService;
     private readonly ILogger<CreateProductHandler> _logger;
 
@@ -111,7 +111,7 @@ internal sealed class CreateProductHandler
         IRollbackBag bag,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         IOfferServiceClients offerService,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         IProductServiceClient productService,
         ILogger<CreateProductHandler> logger)
     {

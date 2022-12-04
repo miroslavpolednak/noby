@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DomainServices.UserService.Clients;
 using __Services = DomainServices.UserService.Clients.Services;
 using __Contracts = DomainServices.UserService.Contracts;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.InternalServices;
 
 namespace DomainServices;
 

@@ -36,12 +36,12 @@ internal class LinkModelationHandler
         }
     }
 
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public LinkModelationHandler(
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
-        ISalesArrangementServiceClients salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;

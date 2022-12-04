@@ -12,7 +12,7 @@ public static class ServiceDiscoveryHelperExtensions
         services.AddSingleton(provider =>
         {
             string? url = provider
-                .GetRequiredService<IDiscoveryServiceAbstraction>()
+                .GetRequiredService<IDiscoveryServiceClient>()
                 .GetServiceUrlSynchronously(new(serviceName), Contracts.ServiceTypes.Grpc);
 
             return new Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsDirect<TService>(url ?? throw new ArgumentNullException(nameof(serviceName), $"{serviceName} URL can not be determined"));

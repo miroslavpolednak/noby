@@ -5,6 +5,7 @@ using System;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Core.Types;
 using System.Linq;
+using CIS.InternalServices;
 
 string env = args.Any() ? args[0] : "DEV";
 string uri = args.Any() && args.Length > 1 ? args[1] : "https://127.0.0.1:5005";
@@ -37,7 +38,7 @@ services.AddHttpContextAccessor();
 services.AddCisServiceDiscovery();
 var provider = services.BuildServiceProvider();
             
-var svc = provider.GetRequiredService<IDiscoveryServiceAbstraction>();
+var svc = provider.GetRequiredService<IDiscoveryServiceClient>();
 
 var result = await svc.GetService(new(env), new("DS:OfferService"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Grpc);
 Console.WriteLine(result.ServiceUrl);

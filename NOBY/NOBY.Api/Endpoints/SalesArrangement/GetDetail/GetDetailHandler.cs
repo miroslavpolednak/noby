@@ -80,7 +80,7 @@ internal class GetDetailHandler
         };
 
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly DomainServices.OfferService.Clients.IOfferServiceClients _offerService;
     
@@ -88,7 +88,7 @@ internal class GetDetailHandler
         ICaseServiceClient caseService,
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.OfferService.Clients.IOfferServiceClients offerService,
-        ISalesArrangementServiceClients salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _codebookService = codebookService;
         _offerService = offerService;
