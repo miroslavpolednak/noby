@@ -17,6 +17,9 @@ public static class StartupExtensions
 
     public static WebApplication UseServiceDiscovery(this WebApplication builder)
     {
+        if (_serviceCollection is null)
+            throw new CisArgumentNullException(0, "Do not call UseServiceDiscovery() unless AddCisServiceDiscovery() has been called before.", nameof(_serviceCollection));
+
         // najit vsechny implementace, ktere maji tento interface
         var foundServices = _serviceCollection!
             .Where(t => t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable)
