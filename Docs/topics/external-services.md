@@ -25,12 +25,17 @@ builder.AddExternalService<IEasClient>();
 
 ## Konfigurace proxy projektu
 Všechny proxy externích služeb mají společnou strukturu a umístění konfigurace. 
-V *appsettings.json* souboru služby (aplikace), která proxy používá, existuje klíč **ExternalServices*, který obsahuje seznam objektů / konfigurací proxy projektů v této službě použitých.
+V *appsettings.json* souboru služby (aplikace), která proxy používá, existuje klíč `ExternalServices`, který obsahuje seznam objektů / konfigurací proxy projektů v této službě použitých.
 C# reprezentace konfigurace jsou interface v namespace `CIS.Infrastructure.ExternalServicesHelpers.Configuration`.
 
-Klíč proxy projektu v konfiguračním souboru může mít dva tvary:
-- `{nazev_proxy_projektu}` v tomto případě je konfigurace platná pro jakoukoliv verzi implementace proxy.
-- `{nazev_proxy_projektu}:{verze_implementace}` v tomto případě je konfigurace platná pouze pro specifikovanou verzi implementace proxy.
+Proxy projekt je v konfiguraci vždy ve dvou úrovních.
+Na první je název proxy projektu, na druhé jsou jednotlivé verze implementace.
+```
+    "nazev_projektu": {
+        "verze_implementace_1": { ... },
+        "verze_implementace_2": { ... }
+    }
+```
 
 ### Adresa služby třetí strany
 Adresa / URL služby třetí strany může být zadaná přímo v konfiguračním souboru nebo může být načítána ze *ServiceDiscovery*.
@@ -39,16 +44,20 @@ Preferovanou variantou je *ServiceDiscovery*.
 ### Příklad konfigurace v appsettings.json
 ```
 "ExternalServices": {
-    "AddressWhisperer:V1": {
-        "ImplementationType": "Real",
-        "UseServiceDiscovery": true,
-        "Authentication": "Basic",
-        "Username": "my_user",
-        "Password": "password"
+    "AddressWhisperer": {
+        "V1": {
+            "ImplementationType": "Real",
+            "UseServiceDiscovery": true,
+            "Authentication": "Basic",
+            "Username": "my_user",
+            "Password": "password"
+        }
     },
     "Eas": {
-        "ImplementationType": "Real",
-        "UseServiceDiscovery": true
+        "V1": {
+            "ImplementationType": "Real",
+            "UseServiceDiscovery": true
+        }
     }
 }
 ```
@@ -92,28 +101,22 @@ public static IExternalServiceConfiguration<TClient> AddExternalServiceConfigura
 ### AddExternalServiceRestClient
 ```
 public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>(
-    this WebApplicationBuilder builder, 
-    IExternalServiceConfiguration configuration,
-    Action<IHttpClientBuilder, IExternalServiceConfiguration>? additionalHandlersRegistration = null)
+    this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
 ```
 - **TClient** je interface proxy klienta - z příkladu víše je to `V1.IEasClient`. Tento interface musí vždy dědit z marker interface `CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient`.
 - **TImplementation** je implementace proxy klienta - z příkladu víše je to `V1.RealEasClient`.
-- **additionalHandlersRegistration** je callback s možností přidat vlastní *HttpHandlery* do pipeline daného HttpClient-a.
 
 ### Flow akcí v AddExternalServiceRestClient
 1. přidání nového typed *HttpClient* do *Services*
-    * zjištění URL služby pokud se má dočítat z *ServiceDiscovery*
     * nastavení `Timeout` requestu z konfigurace
     * nastavení `BaseAddress` HttpClient-a
+    * nastavení autentizace (pokud je vyžadována)
 2. pokud je v konfiguraci *IgnoreServerCertificateErrors=true*, přidání HttpHandleru který ignoruje SSL certificate chyby
-3. spuštění callbacku `additionalHandlersRegistration`
-    * v rámci callbacku je možné přidat další *HttpHandler-y*
-4. pokud je v konfiguraci *LogPayloads=true*, přidání HttpHandleru který loguje request / response HttpClienta
 
 ### Připravené HttpHandlery
-V `CIS.Infrastructure.ExternalServicesHelpers` jsou již připravené tyto *HttpHandler*-y.
+V `CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers` jsou již připravené tyto *HttpHandler*-y.
 
 **BasicAuthenticationHttpHandler**  
 Přidává Authorization HTTP header pro username a password v konfiguraci služby.
@@ -146,7 +149,7 @@ public static class StartupExtensions
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
-        var configuration = builder.AddExternalServiceConfiguration<TClient, ExternalServiceConfiguration<TClient>>(ServiceName, version);
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
         switch (version, configuration.ImplementationType)
         {
@@ -155,7 +158,10 @@ public static class StartupExtensions
                 break;
 
             case (V1.IEasClient.Version, ServiceImplementationTypes.Real):
-                builder.AddExternalServiceRestClient<V1.IEasClient, V1.RealEasClient, ExternalServiceConfiguration<V1.IEasClient>>(V1.IEasClient.Version, configuration, _addAdditionalHttpHandlers);
+                builder
+                    .AddExternalServiceRestClient<V1.IEasClient, V1.RealEasClient>()
+                    .AddExternalServicesCorrelationIdForwarding()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
@@ -171,11 +177,6 @@ public static class StartupExtensions
             Type t when t.IsAssignableFrom(typeof(V1.IEasClient)) => V1.IEasClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
-
-    private static Action<IHttpClientBuilder, IExternalServiceConfiguration> _addAdditionalHttpHandlers = (builder, configuration)
-        => builder
-            .AddExternalServicesCorrelationIdForwarding()
-            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
 }
 ```
 

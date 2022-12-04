@@ -215,7 +215,7 @@
             </summary>
             <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder,CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration,System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration})">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             Založení typed HttpClienta pro implementaci ExternalService.
             </summary>
@@ -224,8 +224,6 @@
             </remarks>
             <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
             <typeparam name="TImplementation">Interní implementace TClient interface</typeparam>
-            <param name="builder"></param>
-            <param name="additionalHandlersRegistration">Možnost zaregistrovat další HttpHandlery do pipeline.</param>
         </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient">
             <summary>

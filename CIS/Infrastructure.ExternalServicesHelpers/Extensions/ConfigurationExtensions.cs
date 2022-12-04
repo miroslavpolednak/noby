@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
@@ -14,7 +13,7 @@ public static class ConfigurationExtensions
     /// <param name="serviceName">Název konzumované služby třetí strany</param>
     /// <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
     /// <exception cref="CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
-    /// <exception cref="CisConfigurationNotFound">Konfigurace typu TConfiguration pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
+    /// <exception cref="CisConfigurationNotFound">Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
     public static IExternalServiceConfiguration<TClient> AddExternalServiceConfiguration<TClient>(
         this WebApplicationBuilder builder,
         string serviceName,
