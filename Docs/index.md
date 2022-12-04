@@ -62,3 +62,5 @@ Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzo
 [gRPC služby - technický popis](./topics/grpc-services.md)
 
 [Implementace služeb třetích stran](./topics/external-services.md)
+
+[Jak funguje ServiceDiscovery](./topics/service-discovery.md)

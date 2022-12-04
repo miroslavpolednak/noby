@@ -1,0 +1,2 @@
+# Jak funguje ServiceDiscovery
+TODO
