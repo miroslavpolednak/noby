@@ -1,17 +1,11 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.OfferService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
-using DomainServices.ProductService.Clients;
-using DomainServices.CaseService.Clients;
-using DomainServices.SalesArrangementService.Clients;
 using DomainServices.RiskIntegrationService.Clients;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.MediatR;
 using ExternalServices.SbWebApi;
 using ExternalServices.SbWebApi.V1;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using DomainServices;
 using CIS.InternalServices;
 

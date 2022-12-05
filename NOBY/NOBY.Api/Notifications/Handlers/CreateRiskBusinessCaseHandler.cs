@@ -92,7 +92,7 @@ internal class CreateRiskBusinessCaseHandler
     }
 
     private readonly IHouseholdServiceClient _householdService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
@@ -104,7 +104,7 @@ internal class CreateRiskBusinessCaseHandler
         DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
         IHouseholdServiceClient householdService,
-        IOfferServiceClients offerService,
+        IOfferServiceClient offerService,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService)
     {

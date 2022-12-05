@@ -14,14 +14,14 @@ internal class GetLoanApplicationAssessmentHandler
 
     private readonly LoanApplicationDataService _loanApplicationDataService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ILoanApplicationServiceClient _loanApplicationService;
     private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
 
     public GetLoanApplicationAssessmentHandler(
         LoanApplicationDataService loanApplicationDataService,
         ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClients offerService,
+        IOfferServiceClient offerService,
         ILoanApplicationServiceClient loanApplicationService,
         IRiskBusinessCaseServiceClient riskBusinessCaseService
         )

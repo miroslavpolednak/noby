@@ -3,7 +3,7 @@ using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.OfferService.Clients;
 
-public interface IOfferServiceClients
+public interface IOfferServiceClient
 {
 
     /// <summary>

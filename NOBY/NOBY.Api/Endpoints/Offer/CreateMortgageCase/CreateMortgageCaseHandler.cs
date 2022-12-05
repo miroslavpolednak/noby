@@ -81,7 +81,7 @@ internal class CreateMortgageCaseHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IMediator _mediator;
@@ -95,7 +95,7 @@ internal class CreateMortgageCaseHandler
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
         ICodebookServiceClients codebookService, 
-        IOfferServiceClients offerService, 
+        IOfferServiceClient offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
         _bag = bag;

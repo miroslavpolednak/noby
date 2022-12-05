@@ -82,12 +82,12 @@ internal class GetDetailHandler
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClients _offerService;
+    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     
     public GetDetailHandler(
         ICaseServiceClient caseService,
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
-        DomainServices.OfferService.Clients.IOfferServiceClients offerService,
+        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService)
     {
         _codebookService = codebookService;

@@ -24,7 +24,7 @@ internal class LoanApplicationDataService
     #region Construction
 
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IHouseholdServiceClient _householdService;
@@ -35,7 +35,7 @@ internal class LoanApplicationDataService
 
     public LoanApplicationDataService(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        IOfferServiceClients offerService,
+        IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,

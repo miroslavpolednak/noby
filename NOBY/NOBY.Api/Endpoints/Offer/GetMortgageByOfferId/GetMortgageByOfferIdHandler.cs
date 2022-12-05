@@ -22,10 +22,10 @@ internal class GetMortgageByOfferIdHandler
         };
     }
 
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ILogger<GetMortgageByOfferIdHandler> _logger;
 
-    public GetMortgageByOfferIdHandler(IOfferServiceClients offerService, ILogger<GetMortgageByOfferIdHandler> logger)
+    public GetMortgageByOfferIdHandler(IOfferServiceClient offerService, ILogger<GetMortgageByOfferIdHandler> logger)
     {
         _logger = logger;
         _offerService = offerService;
