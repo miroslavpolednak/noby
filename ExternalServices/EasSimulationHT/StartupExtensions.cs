@@ -33,7 +33,7 @@ public static class StartupExtensions
             if (easSimulationHtConfiguration.UseServiceDiscovery)
             {
                 string? url = provider
-                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetRequiredService<IDiscoveryServiceClient>()
                     .GetServiceUrlSynchronously(new("ES:EasSimulationHT"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                 easSimulationHtConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:EasSimulationHT Proprietary service URL");
             }

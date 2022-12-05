@@ -5,9 +5,9 @@ using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 
-namespace DomainServices.OfferService.Clients;
+namespace DomainServices.OfferService.Clients.Services;
 
-internal class OfferService : IOfferServiceClients
+internal class OfferService : IOfferServiceClient
 {
 
     #region Construction

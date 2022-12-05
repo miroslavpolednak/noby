@@ -41,11 +41,11 @@ internal class GetListHandler
     }
 
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ILogger<GetListHandler> _logger;
 
     public GetListHandler(
-        ISalesArrangementServiceClients salesArrangementService, 
+        ISalesArrangementServiceClient salesArrangementService, 
         ICodebookServiceClients codebookService, 
         ILogger<GetListHandler> logger)
     {

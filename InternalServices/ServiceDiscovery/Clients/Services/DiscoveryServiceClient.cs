@@ -1,7 +1,7 @@
 ﻿namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
-internal sealed class DiscoveryService 
-    : IDiscoveryServiceAbstraction
+internal sealed class DiscoveryServiceClient 
+    : IDiscoveryServiceClient
 {
     public async Task<ImmutableList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default(CancellationToken))
         => await GetServices(getEnvName(), cancellationToken);
@@ -42,7 +42,7 @@ internal sealed class DiscoveryService
     private readonly ServicesMemoryCache _cache;
     private readonly EnvironmentNameProvider _envName;
 
-    public DiscoveryService(
+    public DiscoveryServiceClient(
         ServicesMemoryCache cache,
         EnvironmentNameProvider envName)
     {

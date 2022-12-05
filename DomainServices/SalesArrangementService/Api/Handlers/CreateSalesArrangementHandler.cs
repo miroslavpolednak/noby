@@ -81,7 +81,7 @@ internal class CreateSalesArrangementHandler
         };
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly OfferService.Clients.IOfferServiceClients _offerService;
+    private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
@@ -91,7 +91,7 @@ internal class CreateSalesArrangementHandler
     public CreateSalesArrangementHandler(
         IMediator mediator,
         CIS.Core.IDateTime dateTime,
-        OfferService.Clients.IOfferServiceClients offerService,
+        OfferService.Clients.IOfferServiceClient offerService,
         CaseService.Clients.ICaseServiceClient caseService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
         Repositories.SalesArrangementServiceRepository repository,

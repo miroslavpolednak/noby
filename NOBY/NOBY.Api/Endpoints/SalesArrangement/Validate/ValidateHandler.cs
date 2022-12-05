@@ -27,9 +27,9 @@ internal sealed class ValidateHandler
         };   
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
 
-    public ValidateHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
+    public ValidateHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
     }

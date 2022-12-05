@@ -8,7 +8,7 @@ namespace CIS.Infrastructure.gRPC;
 /// <summary>
 /// Nastavení Kestrel serveru pro gRPC služby.
 /// </summary>
-public static class GrpcStartupKestrelExtensions
+public static class KestrelExtensions
 {
     /// <summary>
     /// Umozni nasatavit kestrel custom konfiguracnim souborem.
@@ -46,7 +46,7 @@ public static class GrpcStartupKestrelExtensions
                             {
                                 var cert = store.Certificates
                                     .FirstOrDefault(x => x.Thumbprint.Equals(kestrelConfiguration.Certificate.Thumbprint, StringComparison.OrdinalIgnoreCase))
-                                    ?? throw new Core.Exceptions.CisConfigurationException(0, $"Kestrel certifikate '{kestrelConfiguration.Certificate.Thumbprint}' not found in '{kestrelConfiguration.Certificate.CertStoreName}' / 'kestrelConfiguration.Certificate.CertStoreLocation'");
+                                    ?? throw new Core.Exceptions.CisConfigurationException(0, $"Kestrel certificate '{kestrelConfiguration.Certificate.Thumbprint}' not found in '{kestrelConfiguration.Certificate.CertStoreName}' / 'kestrelConfiguration.Certificate.CertStoreLocation'");
                                 opts.UseHttps(cert);
                             }
 

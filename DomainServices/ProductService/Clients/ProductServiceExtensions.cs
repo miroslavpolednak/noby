@@ -1,30 +1,31 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices.ProductService.Clients;
+using __Services = DomainServices.ProductService.Clients.Services;
+using __Contracts = DomainServices.ProductService.Contracts;
 
-namespace DomainServices.ProductService.Clients;
+namespace DomainServices;
 
 public static class ProductServiceExtensions
 {
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:ProductService";
+
     public static IServiceCollection AddProductService(this IServiceCollection services)
-        => services.TryAddGrpcClient<Contracts.v1.ProductService.ProductServiceClient>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.ProductService.ProductServiceClient>("DS:ProductService")
-            .registerServices()
-        );
+    {
+        services.AddCisServiceDiscovery();
+        services.AddTransient<IProductServiceClient, __Services.ProductService>();
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.ProductService.ProductServiceClient>(ServiceName);
+        return services;
+    }
 
     public static IServiceCollection AddProductService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<Contracts.v1.ProductService.ProductServiceClient>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.v1.ProductService.ProductServiceClient>(serviceUrl)
-            .registerServices()
-        );
-
-    private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        // register storage services
-        services.AddTransient<IProductServiceClient, Services.ProductService>();
-
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.ProductService.ProductServiceClient>();
-
+        services.AddTransient<IProductServiceClient, __Services.ProductService>();
+        services.AddCisGrpcClientUsingUrl<__Contracts.v1.ProductService.ProductServiceClient>(serviceUrl);
         return services;
     }
 }

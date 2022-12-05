@@ -15,6 +15,8 @@ using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
+using DomainServices;
+using CIS.InternalServices;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -93,6 +95,7 @@ if (winSvc)
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseServiceDiscovery();
 
 app
     .UseCustomSwagger()

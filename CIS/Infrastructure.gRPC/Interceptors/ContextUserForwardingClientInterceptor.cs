@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -27,8 +28,8 @@ public sealed class ContextUserForwardingClientInterceptor
         using (var serviceScope = _serviceProvider.CreateScope())
         {
             var serviceProvider = serviceScope.ServiceProvider;
-            var userAccessor = serviceProvider.GetRequiredService<Core.Security.ICurrentUserAccessor>();
-            if (userAccessor.IsAuthenticated)
+            var userAccessor = serviceProvider.GetService<Core.Security.ICurrentUserAccessor>();
+            if (userAccessor?.IsAuthenticated ?? false)
             {
                 Metadata metadata = new();
                 if (context.Options.Headers is not null && context.Options.Headers.Any())
@@ -38,11 +39,18 @@ public sealed class ContextUserForwardingClientInterceptor
 
                 var newOptions = context.Options.WithHeaders(metadata);
                 var newContext = new ClientInterceptorContext<TRequest, TResponse>(context.Method, context.Host, newOptions);
-                
+
                 return base.AsyncUnaryCall(request, newContext, continuation);
             }
             else
+            {
+                serviceScope.ServiceProvider
+                    .GetRequiredService<ILoggerFactory>()
+                    .CreateLogger<ContextUserForwardingClientInterceptor>()
+                    .LogInformation("Can not obtain current user accessor");
+
                 return base.AsyncUnaryCall(request, context, continuation);
+            }
         }
     }
 }

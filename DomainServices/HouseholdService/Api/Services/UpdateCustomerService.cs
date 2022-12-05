@@ -75,7 +75,7 @@ internal sealed class UpdateCustomerService
 
     private _Customer.CustomerDetailResponse? _cachedCustomerInstance;
 
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly Eas.IEasClient _easClient;
@@ -83,7 +83,7 @@ internal sealed class UpdateCustomerService
 
     public UpdateCustomerService(
         Eas.IEasClient easClient,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         ICaseServiceClient caseService,
         ICustomerServiceClient customerService,
         Database.HouseholdServiceDbContext dbContext)

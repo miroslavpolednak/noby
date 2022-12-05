@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using DomainServices.CodebookService.Clients;
 using CIS.Infrastructure.Security.ContextUser;
+using DomainServices;
 
 Console.WriteLine("run!");
 

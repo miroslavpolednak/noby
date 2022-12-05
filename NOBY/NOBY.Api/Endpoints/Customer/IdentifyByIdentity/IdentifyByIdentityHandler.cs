@@ -51,11 +51,11 @@ internal sealed class IdentifyByIdentityHandler
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public IdentifyByIdentityHandler(
         IMediator mediator,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         ICaseServiceClient caseService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService)

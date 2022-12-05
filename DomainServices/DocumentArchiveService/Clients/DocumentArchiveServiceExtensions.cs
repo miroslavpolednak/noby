@@ -1,26 +1,34 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.Infrastructure.gRPC.Configuration;
+using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProtoBuf.Grpc.ClientFactory;
 using _Contracts = DomainServices.DocumentArchiveService.Contracts;
 
-namespace DomainServices.HouseholdService.Clients;
+namespace DomainServices;
 
 public static class DocumentArchiveServiceExtensions
 {
-    public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services)
-        => services
-            .TryAddGrpcClient<_Contracts.IDocumentArchiveService>(a =>
-                a.AddGrpcServiceUriSettingsFromServiceDiscovery<_Contracts.IDocumentArchiveService>("DS:DocumentArchiveService")
-            .registerServices()
-        );
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:CodebookService";
 
-    public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, string serviceUrl)
-        => services
-            .TryAddGrpcClient<_Contracts.IDocumentArchiveService>(a =>
-                a.AddGrpcServiceUriSettings<_Contracts.IDocumentArchiveService>(serviceUrl)
-            .registerServices()
-        );
+    public static IServiceCollection AddDocumentArchiveService(this IServiceCollection services)
+    {
+        services.AddCisServiceDiscovery();
+        services.TryAddSingleton<IGrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>(new GrpcServiceUriSettingsServiceDiscovery<_Contracts.IDocumentArchiveService>(ServiceName));
+        services.registerServices();
+        return services;
+    }
+
+    public static IServiceCollection AddDocumentArchiveService(this IServiceCollection services, string serviceUrl)
+    {
+        services.TryAddSingleton<IGrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>(new GrpcServiceUriSettingsDirect<_Contracts.IDocumentArchiveService>(serviceUrl));
+        services.registerServices();
+        return services;
+    }
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
@@ -40,8 +48,8 @@ public static class DocumentArchiveServiceExtensions
             .AddTransient(typeof(IAbstraction), typeof(TAbstraction))
             .AddCodeFirstGrpcClient<IService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>();
-                options.Address = serviceUri.Url;
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<_Contracts.IDocumentArchiveService>>();
+                options.Address = serviceUri.ServiceUrl;
             })
             .CisConfigureChannelWithoutCertificateValidation()
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)

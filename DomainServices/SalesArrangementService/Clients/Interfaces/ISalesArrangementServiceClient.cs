@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Clients;
 
-public interface ISalesArrangementServiceClients
+public interface ISalesArrangementServiceClient
 {
     /// <summary>
     /// Vytvoreni Sales Arrangement

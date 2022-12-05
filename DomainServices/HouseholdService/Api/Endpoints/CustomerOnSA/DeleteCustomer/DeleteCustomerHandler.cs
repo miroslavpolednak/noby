@@ -56,12 +56,12 @@ DELETE FROM dbo.CustomerOnSAObligation WHERE CustomerOnSAId={entity.CustomerOnSA
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly SulmService.ISulmClient _sulmClient;
     private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public DeleteCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClient sulmClient,
         Database.HouseholdServiceDbContext dbContext)
     {

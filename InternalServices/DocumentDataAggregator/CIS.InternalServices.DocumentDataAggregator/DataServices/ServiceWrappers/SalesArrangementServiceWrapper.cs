@@ -7,9 +7,9 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class SalesArrangementServiceWrapper : IServiceWrapper
 {
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
-    public SalesArrangementServiceWrapper(ISalesArrangementServiceClients salesArrangementService)
+    public SalesArrangementServiceWrapper(ISalesArrangementServiceClient salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
     }

@@ -26,7 +26,7 @@ public static class StartupRestExtensions
                     client.Timeout = TimeSpan.FromSeconds(configuration.RequestTimeout!.Value);
 
                 // service url
-                client.BaseAddress = new Uri(configuration.ServiceUrl);
+                client.BaseAddress = configuration.ServiceUrl;
 
                 // authentication
                 switch (configuration.Authentication)

@@ -46,7 +46,7 @@ internal class CaseStateChangedHandler
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public CaseStateChangedHandler(
@@ -54,7 +54,7 @@ internal class CaseStateChangedHandler
         CodebookService.Clients.ICodebookServiceClients codebookService, 
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
-        SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _userAccessor = userAccessor;
         _codebookService = codebookService;

@@ -92,9 +92,9 @@ internal class CreateRiskBusinessCaseHandler
     }
 
     private readonly IHouseholdServiceClient _householdService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
     private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
     private readonly ILogger<CreateRiskBusinessCaseHandler> _logger;
@@ -104,9 +104,9 @@ internal class CreateRiskBusinessCaseHandler
         DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
         IHouseholdServiceClient householdService,
-        IOfferServiceClients offerService,
+        IOfferServiceClient offerService,
         ICaseServiceClient caseService,
-        ISalesArrangementServiceClients salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _logger = logger;
         _loanApplicationService = loanApplicationService;
