@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DocumentDataAggregator.Helpers;
 
-public static class CollectionPathHelper
+internal static class CollectionPathHelper
 {
     public static string GetCollectionPath(string path)
     {

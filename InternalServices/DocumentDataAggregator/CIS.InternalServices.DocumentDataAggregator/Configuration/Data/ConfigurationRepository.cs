@@ -44,8 +44,8 @@ internal class ConfigurationRepository
                                  DataSource = (DataSource)f.DataField.DataServiceId,
                                  FieldPath = f.DataField.FieldPath,
                                  AcroFieldName = f.AcroFieldName,
-                                 StringFormat = f.StringFormat ?? f.DataField.DefaultStringFormat,
-                                 DefaultTextIfNull = f.DefaultTextIfNull
+                                 StringFormat = Convert.ToString(f.StringFormat ?? f.DataField.DefaultStringFormat),
+                                 DefaultTextIfNull =  Convert.ToString(f.DefaultTextIfNull)
                              });
         }
 
@@ -60,7 +60,8 @@ internal class ConfigurationRepository
                                  DataSource = (DataSource)f.DataServiceId,
                                  FieldPath = f.FieldPath,
                                  AcroFieldName = f.AcroFieldName,
-                                 StringFormat = f.StringFormat
+                                 StringFormat = Convert.ToString(f.StringFormat),
+                                 DefaultTextIfNull = Convert.ToString(default(string))
                              });
         }
     }

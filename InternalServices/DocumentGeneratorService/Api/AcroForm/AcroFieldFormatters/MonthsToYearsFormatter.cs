@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroFieldFormatters;
+﻿namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
 
 public class MonthsToYearsFormatter : IAcroFieldFormatter
 {

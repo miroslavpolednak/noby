@@ -1,16 +1,16 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
+﻿using CIS.Foms.Enums;
+using CIS.InternalServices.DocumentDataAggregator.DataServices;
 using CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Documents;
 
 internal static class DocumentDataFactory
 {
-    public static AggregatedData Create(Document document) =>
-        document switch
+    public static AggregatedData Create(DocumentTemplateType documentType) =>
+        documentType switch
         {
-            Document.Offer => new OfferTemplateData(),
-            Document.Calculation => new OfferTemplateData(),
-            Document.LoanApplication => new LoanApplicationTemplateData(),
+            DocumentTemplateType.NABIDKA or DocumentTemplateType.KALKULHU => new OfferTemplateData(),
+            DocumentTemplateType.ZADOCERP => new LoanApplicationTemplateData(),
             _ => new AggregatedData()
         };
 }

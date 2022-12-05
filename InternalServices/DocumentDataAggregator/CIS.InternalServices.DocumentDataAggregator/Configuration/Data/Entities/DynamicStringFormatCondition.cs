@@ -4,7 +4,7 @@ internal class DynamicStringFormatCondition
 {
     public int DynamicStringFormatId { get; set; }
 
-    public int DynamicStringFormatDataFieldId { get; set; }
+    public int DataFieldId { get; set; }
 
     public string? EqualToValue { get; set; }
 

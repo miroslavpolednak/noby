@@ -8,7 +8,7 @@ internal class DynamicStringFormatConditionConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<DynamicStringFormatCondition> builder)
     {
-        builder.HasKey(x => new { x.DynamicStringFormatId, x.DynamicStringFormatDataFieldId });
+        builder.HasKey(x => new { x.DynamicStringFormatId, x.DataFieldId });
 
         builder.Property(x => x.EqualToValue).HasMaxLength(100).IsRequired(false);
 

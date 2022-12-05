@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
-using CIS.Infrastructure.Attributes;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
-using Pdf = ceTe.DynamicPDF;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 

@@ -14,8 +14,6 @@ internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.
 
     public override Task<Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
     {
-        var document = _documentManager.GenerateDocument(request);
-
-        return Task.FromResult(document);
+        return _documentManager.GenerateDocument(request);
     }
 }

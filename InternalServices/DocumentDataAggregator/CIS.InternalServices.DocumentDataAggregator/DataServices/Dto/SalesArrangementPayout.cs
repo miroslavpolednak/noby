@@ -3,7 +3,7 @@ using DomainServices.SalesArrangementService.Contracts;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
 
-public class SalesArrangementPayout
+internal class SalesArrangementPayout
 {
     private readonly SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingPayoutList _item;
 

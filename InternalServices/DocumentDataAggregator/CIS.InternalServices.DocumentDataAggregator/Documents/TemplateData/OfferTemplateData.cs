@@ -41,12 +41,21 @@ internal class OfferTemplateData : AggregatedData
         }
     }
 
-    public string LoanPurposes => string.Join("; ",
-                                              Offer.SimulationInputs
-                                                   .LoanPurposes
-                                                   .Select(x => _loanPurposes.Where(p => p.MandantId == 2 && p.Id == x.LoanPurposeId)
-                                                                             .Select(p => p.Name)
-                                                                             .FirstOrDefault()));
+    public string LoanPurposes
+    {
+        get
+        {
+            if (Offer.SimulationInputs.LoanKindId == 2001)
+                return "koupě/výstavba/rekonstrukce";
+
+            return string.Join("; ",
+                               Offer.SimulationInputs
+                                    .LoanPurposes
+                                    .Select(x => _loanPurposes.Where(p => p.MandantId == 2 && p.Id == x.LoanPurposeId)
+                                                              .Select(p => p.Name)
+                                                              .FirstOrDefault()));
+        }
+    }
 
     public string FeeNames => string.Join(Environment.NewLine, Offer.AdditionalSimulationResults.Fees.Select(f => f.Name));
 
