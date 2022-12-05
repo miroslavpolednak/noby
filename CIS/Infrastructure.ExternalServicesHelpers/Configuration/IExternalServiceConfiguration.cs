@@ -7,6 +7,7 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 /// </summary>
 /// <remarks>Pro registraci HTTP klienta by se vždy měla používat generická verze interface.</remarks>
 public interface IExternalServiceConfiguration
+    : CIS.Core.IIsServiceDiscoverable
 {
     /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
@@ -21,17 +22,6 @@ public interface IExternalServiceConfiguration
     int? RequestTimeout { get; set; }
 
     /// <summary>
-    /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
-    /// </summary>
-    string ServiceUrl { get; set; }
-
-    /// <summary>
-    /// If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
-    /// </summary>
-    /// <remarks>Default is set to True</remarks>
-    bool UseServiceDiscovery { get; set; }
-
-    /// <summary>
     /// Pokud =true, ignoruje HttpClient problem s SSL certifikatem remote serveru.
     /// </summary>
     bool IgnoreServerCertificateErrors { get; set; }
@@ -40,6 +30,21 @@ public interface IExternalServiceConfiguration
     /// Type of http client implementation - can be mock or real client or something else.
     /// </summary>
     ServiceImplementationTypes ImplementationType { get; set; }
+
+    /// <summary>
+    /// Typ pouzite autentizace na sluzbu treti strany
+    /// </summary>
+    ExternalServicesAuthenticationTypes Authentication { get; set; }
+
+    /// <summary>
+    /// Autentizace - Username
+    /// </summary>
+    string? Username { get; set; }
+
+    /// <summary>
+    /// Autentizace - Heslo
+    /// </summary>
+    string? Password { get; set; }
 }
 
 /// <summary>

@@ -1,5 +1,4 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Email;
-using Confluent.Kafka;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Email;

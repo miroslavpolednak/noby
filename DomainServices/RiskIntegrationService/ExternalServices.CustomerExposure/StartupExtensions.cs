@@ -15,7 +15,7 @@ public static class StartupExtensions
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
-        var configuration = builder.AddExternalServiceConfiguration<TClient, ExternalServiceConfiguration<TClient>>(ServiceName, version);
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
         switch (version, configuration.ImplementationType)
         {
@@ -24,7 +24,11 @@ public static class StartupExtensions
                 break;
 
             case (V1.ICustomersExposureClient.Version, ServiceImplementationTypes.Real):
-                builder.AddExternalServiceRestClient<V1.ICustomersExposureClient, V1.RealCustomersExposureClient, ExternalServiceConfiguration<V1.ICustomersExposureClient>>(V1.ICustomersExposureClient.Version, configuration, _addAdditionalHttpHandlers);
+                builder
+                    .AddExternalServiceRestClient<V1.ICustomersExposureClient, V1.RealCustomersExposureClient>()
+                    .AddExternalServicesKbHeaders()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
+                    .AddBadRequestHandling();
                 break;
 
             default:
@@ -40,12 +44,6 @@ public static class StartupExtensions
             Type t when t.IsAssignableFrom(typeof(V1.ICustomersExposureClient)) => V1.ICustomersExposureClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
-
-    private static Action<IHttpClientBuilder, IExternalServiceConfiguration> _addAdditionalHttpHandlers = (builder, configuration)
-        => builder
-            .AddExternalServicesKbHeaders()
-            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName)
-            .AddBadRequestHandling();
 
     private static IHttpClientBuilder AddBadRequestHandling(this IHttpClientBuilder builder)
         => builder.AddHttpMessageHandler(b =>

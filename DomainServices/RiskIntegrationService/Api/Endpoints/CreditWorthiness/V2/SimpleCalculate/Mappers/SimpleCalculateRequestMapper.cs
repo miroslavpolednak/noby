@@ -3,7 +3,7 @@ using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.SimpleCalculate.Mappers;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class SimpleCalculateRequestMapper
 {
     public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(

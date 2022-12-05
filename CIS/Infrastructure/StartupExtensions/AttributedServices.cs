@@ -1,51 +1,48 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using CIS.Infrastructure.Attributes;
-using System;
+﻿using CIS.Core.Attributes;
 
-namespace CIS.Infrastructure.StartupExtensions
+namespace CIS.Infrastructure.StartupExtensions;
+
+public static class AttributedServices
 {
-    public static class AttributedServices
+    public static IServiceCollection AddAttributedServices(this IServiceCollection services, params Type[] scannableAssemblies)
     {
-        public static IServiceCollection AddAttributedServices(this IServiceCollection services, params Type[] scannableAssemblies)
-        {
-            // register all services
-            services.Scan(selector => selector
-                .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
-                .AsImplementedInterfaces()
-                .WithScopedLifetime());
+        // register all services
+        services.Scan(selector => selector
+            .FromAssembliesOf(scannableAssemblies)
+            .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
 
-            services.Scan(selector => selector
-                .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<SelfServiceAttribute>())
-                .AsSelf()
-                .WithScopedLifetime());
-            
-            services.Scan(selector => selector
-                .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
+        services.Scan(selector => selector
+            .FromAssembliesOf(scannableAssemblies)
+            .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<SelfServiceAttribute>())
+            .AsSelf()
+            .WithScopedLifetime());
+        
+        services.Scan(selector => selector
+            .FromAssembliesOf(scannableAssemblies)
+            .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+            .AsImplementedInterfaces()
+            .WithTransientLifetime());
 
-            services.Scan(selector => selector
-                .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<SelfServiceAttribute>())
-                .AsSelf()
-                .WithTransientLifetime());
+        services.Scan(selector => selector
+            .FromAssembliesOf(scannableAssemblies)
+            .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<SelfServiceAttribute>())
+            .AsSelf()
+            .WithTransientLifetime());
 
-            services.Scan(selector => selector
-                .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
-                .AsImplementedInterfaces()
-                .WithSingletonLifetime());
+        services.Scan(selector => selector
+            .FromAssembliesOf(scannableAssemblies)
+            .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime());
 
-            services.Scan(selector => selector
-                .FromAssembliesOf(scannableAssemblies)
-                .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<SelfServiceAttribute>())
-                .AsSelf()
-                .WithSingletonLifetime());
+        services.Scan(selector => selector
+            .FromAssembliesOf(scannableAssemblies)
+            .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<SelfServiceAttribute>())
+            .AsSelf()
+            .WithSingletonLifetime());
 
-            return services;
-        }
+        return services;
     }
 }

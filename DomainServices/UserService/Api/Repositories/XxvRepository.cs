@@ -4,7 +4,7 @@ using Dapper;
 
 namespace DomainServices.UserService.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class XxvRepository
     : DapperBaseRepository<XxvRepository>
 {

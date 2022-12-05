@@ -245,7 +245,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E99-AE46-4B08-A830-1587E93A950E}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\topics\authentication.md = Docs\topics\authentication.md
+		Docs\topics\documentation.md = Docs\topics\documentation.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
+		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
 		Docs\topics\grpc-services-api.md = Docs\topics\grpc-services-api.md
 		Docs\topics\grpc-services-clients.md = Docs\topics\grpc-services-clients.md
 		Docs\topics\grpc-services-contracts.md = Docs\topics\grpc-services-contracts.md
@@ -260,7 +262,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.External
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure", "DomainServices\RiskIntegrationService\ExternalServices.CustomerExposure\DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.csproj", "{423B6567-20FA-4DE0-89E6-D7DFD82FDEE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.RiskIntegrationService.ExternalServices.Common", "DomainServices\RiskIntegrationService\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj", "{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.Common", "DomainServices\RiskIntegrationService\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj", "{7FB72DA2-3AC7-472A-B4DA-EAF765DE77FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

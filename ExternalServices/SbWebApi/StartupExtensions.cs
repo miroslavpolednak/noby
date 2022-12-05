@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CIS.Foms.Enums;
 
@@ -15,7 +14,7 @@ public static class StartupExtensions
     {
         // ziskat konfigurace pro danou verzi sluzby
         string version = getVersion<TClient>();
-        var configuration = builder.AddExternalServiceConfiguration<TClient, ExternalServiceConfiguration<TClient>>(ServiceName, version);
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
         switch (version, configuration.ImplementationType)
         {
@@ -24,7 +23,10 @@ public static class StartupExtensions
                 break;
 
             case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
-                builder.AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient, ExternalServiceConfiguration<V1.ISbWebApiClient>>(V1.ISbWebApiClient.Version, configuration, _addAdditionalHttpHandlers);
+                builder
+                    .AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient>()
+                    .AddExternalServicesCorrelationIdForwarding()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
@@ -40,9 +42,4 @@ public static class StartupExtensions
             Type t when t.IsAssignableFrom(typeof(V1.ISbWebApiClient)) => V1.ISbWebApiClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
-
-    private static Action<IHttpClientBuilder, IExternalServiceConfiguration> _addAdditionalHttpHandlers = (builder, configuration)
-        => builder
-            .AddExternalServicesCorrelationIdForwarding()
-            .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
 }

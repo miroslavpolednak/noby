@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.ServiceDiscovery;
+
+option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
+
+message ClearCacheRequest {
+}

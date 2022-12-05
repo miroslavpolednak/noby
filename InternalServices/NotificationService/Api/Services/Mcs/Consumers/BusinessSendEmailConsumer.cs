@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Attributes;
+﻿using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Handlers.Email.Requests;
 using Confluent.Kafka;
 using MediatR;

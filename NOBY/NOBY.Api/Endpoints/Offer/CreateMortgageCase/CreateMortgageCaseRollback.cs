@@ -5,7 +5,7 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.AsImplementedInterfacesService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesService]
 internal class CreateMortgageCaseRollback
     : IRollbackAction<CreateMortgageCaseRequest>
 {

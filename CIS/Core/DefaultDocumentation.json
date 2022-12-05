@@ -1,4 +1,7 @@
 {
+  "LogLevel": "Warn",
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Core.dll",
+  "ProjectDirectoryPath": "./",
   "OutputDirectoryPath": "../../Docs/CIS.Core/",
   "GeneratedPages": "Namespaces,Classes,Interfaces",
   "GeneratedAccessModifiers": "Public"

@@ -1,5 +1,7 @@
 ﻿using DomainServices.CaseService.Contracts;
+using ExternalServices.SbWebApi.V1;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using NOBY.Api.Endpoints.Test.Rollback;
 using Serilog;
 
@@ -31,6 +33,14 @@ public class TestController : ControllerBase
             Mandant = CIS.Foms.Enums.Mandants.Kb,
             RiskBusinessCaseId = "xxxx"
         });
+    }
+
+    [HttpGet("opt")]
+    public async Task<string> OptionsTest()
+    {
+        var config = _context.HttpContext.RequestServices.GetRequiredService<IOptions<CIS.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration<ISbWebApiClient>>>();
+        config.Value.ServiceUrl = "test";
+        return config.Value.ServiceUrl;
     }
 
     private readonly IHttpContextAccessor _context;

@@ -15,9 +15,15 @@
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="ClearCache.proto" />
+	  <None Remove="DiscoverableService.proto" />
+	  <None Remove="GetService.proto" />
+	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.21.9" />
+		<PackageReference Include="Google.Protobuf" Version="3.21.10" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.50.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.50.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -27,6 +33,9 @@
 	
 	<ItemGroup>
 		<Protobuf Include="ServiceDiscovery.v1.proto" GrpcServices="Both" />
-		<Protobuf Include="Types.proto" GrpcServices="None" />
+		<Protobuf Include="GetService.proto" GrpcServices="None" />
+		<Protobuf Include="DiscoverableService.proto" GrpcServices="None" />
+		<Protobuf Include="ClearCache.proto" GrpcServices="None" />
+		<Protobuf Include="GetServices.proto" GrpcServices="None" />
 	</ItemGroup>
 </Project>

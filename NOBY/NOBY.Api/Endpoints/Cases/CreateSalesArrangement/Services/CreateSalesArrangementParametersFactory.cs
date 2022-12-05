@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CreateSalesArrangementParametersFactory
 {
     private readonly ILogger<CreateSalesArrangementParametersFactory> _logger;

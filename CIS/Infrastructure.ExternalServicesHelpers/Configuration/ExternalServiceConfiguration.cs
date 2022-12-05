@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using System.Text.Json.Serialization;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 
@@ -41,4 +42,29 @@ public class ExternalServiceConfiguration<TClient>
     /// Type of http client implementation - can be mock or real client or something else.
     /// </summary>
     public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
+
+    /// <summary>
+    /// Typ pouzite autentizace na sluzbu treti strany
+    /// </summary>
+    public ExternalServicesAuthenticationTypes Authentication { get; set; } = ExternalServicesAuthenticationTypes.None;
+
+    /// <summary>
+    /// Autentizace - Username
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
+    /// Autentizace - Heslo
+    /// </summary>
+    public string? Password { get; set; }
+
+    /// <summary>
+    /// Nazev sluzby v ServiceDiscovery
+    /// </summary>
+    public string ServiceName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Pro sluzby tretich stran vzdy 3
+    /// </summary>
+    public int ServiceType { get; } = 3;
 }

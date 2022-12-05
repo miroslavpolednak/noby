@@ -137,14 +137,20 @@ internal class SalesArrangementService : ISalesArrangementServiceClients
         return new SuccessfulServiceCallResult();
     }
 
-    private readonly ILogger<SalesArrangementService> _logger;
+    public async Task UpdateIsOfferDocumentArchived(int salesArrangementId, bool isOfferDocumentArchived, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        await _service.UpdateIsOfferDocumentArchivedAsync(
+            new()
+            {
+                SalesArrangementId = salesArrangementId,
+                IsOfferDocumentArchived = isOfferDocumentArchived
+            }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
 
-    public SalesArrangementService(
-        ILogger<SalesArrangementService> logger,
-        Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service)
+    public SalesArrangementService(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service)
     {
         _service = service;
-        _logger = logger;
     }
 }

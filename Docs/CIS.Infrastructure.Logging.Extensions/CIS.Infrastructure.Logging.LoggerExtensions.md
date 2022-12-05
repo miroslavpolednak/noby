@@ -10,30 +10,6 @@ public static class LoggerExtensions
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; LoggerExtensions
 ### Methods
 
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int)'></a>
-
-## LoggerExtensions.FoundItems(this ILogger, int) Method
-
-Nalezeno záznamů / entit / objektů.
-
-```csharp
-public static void FoundItems(this Microsoft.Extensions.Logging.ILogger logger, int count);
-```
-#### Parameters
-
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int).logger'></a>
-
-`logger` [Microsoft.Extensions.Logging.ILogger](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.Logging.ILogger 'Microsoft.Extensions.Logging.ILogger')
-
-<a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int).count'></a>
-
-`count` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
-
-Počet nalezených záznamů.
-
-### Remarks
-Např. entit v databázi nebo položek v keši.
-
 <a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int,string)'></a>
 
 ## LoggerExtensions.FoundItems(this ILogger, int, string) Method
@@ -60,6 +36,30 @@ Počet nalezených záznamů.
 `entityName` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
 Typ nalezené entity
+
+### Remarks
+Např. entit v databázi nebo položek v keši.
+
+<a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int)'></a>
+
+## LoggerExtensions.FoundItems(this ILogger, int) Method
+
+Nalezeno záznamů / entit / objektů.
+
+```csharp
+public static void FoundItems(this Microsoft.Extensions.Logging.ILogger logger, int count);
+```
+#### Parameters
+
+<a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int).logger'></a>
+
+`logger` [Microsoft.Extensions.Logging.ILogger](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.Extensions.Logging.ILogger 'Microsoft.Extensions.Logging.ILogger')
+
+<a name='CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(thisMicrosoft.Extensions.Logging.ILogger,int).count'></a>
+
+`count` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
+Počet nalezených záznamů.
 
 ### Remarks
 Např. entit v databázi nebo položek v keši.

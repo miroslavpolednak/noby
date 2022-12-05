@@ -11,6 +11,12 @@ public sealed class LoggingHttpHandler
 {
     private readonly ILogger _logger;
 
+    public LoggingHttpHandler(HttpMessageHandler innerHandler, ILogger logger)
+        : base(innerHandler)
+    {
+        _logger = logger;
+    }
+
     public LoggingHttpHandler(ILoggerFactory loggerFactory)
     {
         if (loggerFactory == null)

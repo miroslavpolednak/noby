@@ -1,6 +1,6 @@
 ﻿using ceTe.DynamicPDF.Forms;
 using ceTe.DynamicPDF.Merger;
-using CIS.Infrastructure.Attributes;
+using CIS.Core.Attributes;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Pdf = ceTe.DynamicPDF;

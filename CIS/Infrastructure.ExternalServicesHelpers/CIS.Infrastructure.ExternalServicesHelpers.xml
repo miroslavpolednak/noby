@@ -14,21 +14,6 @@
             Implementace konfigurace konzumované služby v appsettings.json.
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration`1">
-            <summary>
-            Výchozí implementace IExternalServiceBasicAuthenticationConfiguration
-            </summary>
-        </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration`1.Username">
-            <summary>
-            Username
-            </summary>
-        </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration`1.Password">
-            <summary>
-            Heslo
-            </summary>
-        </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1">
             <summary>
             Výchozí implementace IExternalServiceConfiguration.
@@ -67,19 +52,44 @@
             Type of http client implementation - can be mock or real client or something else.
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceBasicAuthenticationConfiguration">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.Authentication">
             <summary>
-            Konfigurace pro podporu HTTP Basic Authentication.
+            Typ pouzite autentizace na sluzbu treti strany
             </summary>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceBasicAuthenticationConfiguration.Username">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.Username">
             <summary>
-            Username
+            Autentizace - Username
             </summary>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceBasicAuthenticationConfiguration.Password">
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.Password">
             <summary>
-            Heslo
+            Autentizace - Heslo
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.ServiceName">
+            <summary>
+            Nazev sluzby v ServiceDiscovery
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.ServiceType">
+            <summary>
+            Pro sluzby tretich stran vzdy 3
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes">
+            <summary>
+            Možné typy autentizace na službu třetí strany.
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes.None">
+            <summary>
+            Bez autentizace
+            </summary>
+        </member>
+        <member name="F:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes.Basic">
+            <summary>
+            HTTP Basic Authentication
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration">
@@ -100,17 +110,6 @@
             </summary>
             <remarks>Default is set to 10 seconds</remarks>
         </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ServiceUrl">
-            <summary>
-            Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
-            </summary>
-        </member>
-        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseServiceDiscovery">
-            <summary>
-            If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
-            </summary>
-            <remarks>Default is set to True</remarks>
-        </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.IgnoreServerCertificateErrors">
             <summary>
             Pokud =true, ignoruje HttpClient problem s SSL certifikatem remote serveru.
@@ -119,6 +118,21 @@
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ImplementationType">
             <summary>
             Type of http client implementation - can be mock or real client or something else.
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Authentication">
+            <summary>
+            Typ pouzite autentizace na sluzbu treti strany
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Username">
+            <summary>
+            Autentizace - Username
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Password">
+            <summary>
+            Autentizace - Heslo
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration`1">
@@ -173,12 +187,11 @@
             Prefix for service's Key in ServiceDiscovery database.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfiguration``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfiguration``1(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
             <summary>
             Načtení konfigurace externí služby a její vložení do DI.
             </summary>
             <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
-            <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
             <param name="serviceName">Název konzumované služby třetí strany</param>
             <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
@@ -202,16 +215,15 @@
             </summary>
             <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``3(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration,System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration})">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.StartupRestExtensions.AddExternalServiceRestClient``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             Založení typed HttpClienta pro implementaci ExternalService.
             </summary>
+            <remarks>
+            Některé HttpHandlery jsou vkládané pomocí konfigurace - to je proto, že potřebujeme na úrovni CI/CD řešit, zda budou v pipeline nebo ne.
+            </remarks>
             <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
             <typeparam name="TImplementation">Interní implementace TClient interface</typeparam>
-            <typeparam name="TConfiguration">Typ konfigurace, který bude pro tohoto TClient vložen do Di</typeparam>
-            <param name="builder"></param>
-            <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
-            <param name="additionalHandlersRegistration">Možnost zaregistrovat další HttpHandlery do pipeline.</param>
         </member>
         <member name="T:CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient">
             <summary>

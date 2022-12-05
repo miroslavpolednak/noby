@@ -1,5 +1,5 @@
 ﻿using CIS.Core;
-using CIS.Infrastructure.Attributes;
+using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
