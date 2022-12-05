@@ -26,8 +26,8 @@ public class BusinessResultConsumer
     
     public async Task ConsumeAsync(CancellationToken stoppingToken)
     {
-        _consumer.Subscribe(Topics.McsResultIn);
-        _logger.LogInformation($"Consumer '{nameof(BusinessResultConsumer)}': Topic '{Topics.McsResultIn}' subscribed.");
+        _consumer.Subscribe(Topics.McsResult);
+        _logger.LogInformation($"Consumer '{nameof(BusinessResultConsumer)}': Topic '{Topics.McsResult}' subscribed.");
 
         await Task.Run(async () =>
         {
@@ -41,7 +41,7 @@ public class BusinessResultConsumer
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e,$"Consumer '{nameof(BusinessResultConsumer)}': Consuming topic '{Topics.McsResultIn}' failed.");
+                    _logger.LogError(e,$"Consumer '{nameof(BusinessResultConsumer)}': Consuming topic '{Topics.McsResult}' failed.");
                     throw;
                 }
 

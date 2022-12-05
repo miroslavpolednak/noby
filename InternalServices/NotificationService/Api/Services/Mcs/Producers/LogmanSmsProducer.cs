@@ -32,14 +32,14 @@ public class LogmanSmsProducer
             { "messaging.id", Guid.NewGuid().ToString("N") },
             { "messaging.messageType", "EVENT" },
             { "messaging.kafka.payloadTypeId", sendSms.Schema.Fullname },
-            { "messaging.kafka.replyTopic", Topics.McsResultIn },
+            { "messaging.kafka.replyTopic", Topics.McsResult },
             { "messaging.kafka.replyBrokerUri", _kafkaConfiguration.Nodes.Logman.BootstrapServers },
             { "messaging.timestamp", _dateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd hh:mm:ssZ") },
             { "contentType", "application/*+avro" }
         };
         
         return await _producer.ProduceAsync(
-            Topics.McsSenderIn,
+            Topics.McsSender,
             new Message<string, SendSMS>
             {
                 Key = "",

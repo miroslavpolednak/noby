@@ -2,6 +2,6 @@
 
 public class Topics
 {
-    public const string McsResultIn = "buapp-mcs_result-in";
-    public const string McsSenderIn = "buapp-mcs_sender-in";
+    public const string McsResult = "MCS-result-event-pub";
+    public const string McsSender = "MCS-sender-command-pub";
 }

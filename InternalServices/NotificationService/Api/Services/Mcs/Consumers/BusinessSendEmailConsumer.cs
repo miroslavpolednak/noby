@@ -6,16 +6,16 @@ using MediatR;
 namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
 
 [ScopedService, SelfService]
-public class LogmanSendEmailConsumer
+public class BusinessSendEmailConsumer
 {
     private readonly IMediator _mediator;
     private readonly IConsumer<string, string> _consumer;
-    private readonly ILogger<LogmanSendEmailConsumer> _logger;
+    private readonly ILogger<BusinessSendEmailConsumer> _logger;
 
-    public LogmanSendEmailConsumer(
+    public BusinessSendEmailConsumer(
         IMediator mediator,
         IConsumer<string, string> consumer,
-        ILogger<LogmanSendEmailConsumer> logger)
+        ILogger<BusinessSendEmailConsumer> logger)
     {
         _mediator = mediator;
         _consumer = consumer;
@@ -25,8 +25,8 @@ public class LogmanSendEmailConsumer
     public async Task ConsumeAsync(CancellationToken stoppingToken)
     {
         _consumer.Subscribe("todo");
-        _logger.LogInformation($"Consumer '{nameof(LogmanSendEmailConsumer)}': Topic '{"todo"}' subscribed.");
-
+        _logger.LogInformation($"Consumer '{nameof(BusinessSendEmailConsumer)}': Topic '{"todo"}' subscribed.");
+        
         await Task.Run(async () =>
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -40,14 +40,14 @@ public class LogmanSendEmailConsumer
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e,$"Consumer '{nameof(LogmanSendEmailConsumer)}': Consuming topic '{"todo"}' failed.");
+                    _logger.LogError(e,$"Consumer '{nameof(BusinessSendEmailConsumer)}': Consuming topic '{"todo"}' failed.");
                     throw;
                 }
-
+        
             }
         }, stoppingToken);
-
+        
         _consumer.Close();
-        _logger.LogInformation($"Consumer '{nameof(LogmanSendEmailConsumer)}': closed.");
+        _logger.LogInformation($"Consumer '{nameof(BusinessSendEmailConsumer)}': closed.");
     }
 }

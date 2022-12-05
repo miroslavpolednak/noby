@@ -26,8 +26,8 @@ public class LogmanResultConsumer
     
     public async Task ConsumeAsync(CancellationToken stoppingToken)
     {
-        _consumer.Subscribe(Topics.McsResultIn);
-        _logger.LogInformation($"Consumer '{nameof(LogmanResultConsumer)}': Topic '{Topics.McsResultIn}' subscribed.");
+        _consumer.Subscribe(Topics.McsResult);
+        _logger.LogInformation($"Consumer '{nameof(LogmanResultConsumer)}': Topic '{Topics.McsResult}' subscribed.");
 
         await Task.Run(async () =>
         {
@@ -41,7 +41,7 @@ public class LogmanResultConsumer
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e,$"Consumer '{nameof(LogmanResultConsumer)}': Consuming topic '{Topics.McsResultIn}' failed.");
+                    _logger.LogError(e,$"Consumer '{nameof(LogmanResultConsumer)}': Consuming topic '{Topics.McsResult}' failed.");
                     throw;
                 }
 

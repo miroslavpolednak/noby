@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
             .AddAvroSerializers()
             .AddHostedService<BusinessResultWorker>()
             .AddHostedService<LogmanResultWorker>()
-            .AddHostedService<LogmanSendEmailWorker>()
+            .AddHostedService<BusinessSendEmailWorker>()
             .AddKafkaClient(new Dictionary<string, string>
             {
                 { "group.id", kafkaConfiguration.GroupId },
@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
             .AddKafkaClient<BusinessResultConsumer>(businessConsumerConfig)
             .AddKafkaClient<BusinessEmailProducer>(businessProducerConfig)
             .AddKafkaClient<LogmanResultConsumer>(logmanConsumerConfig)
-            .AddKafkaClient<LogmanSendEmailConsumer>(logmanConsumerConfig)
+            .AddKafkaClient<BusinessSendEmailConsumer>(logmanConsumerConfig)
             .AddKafkaClient<LogmanEmailProducer>(logmanProducerConfig)
             .AddKafkaClient<LogmanSmsProducer>(logmanProducerConfig);
     }

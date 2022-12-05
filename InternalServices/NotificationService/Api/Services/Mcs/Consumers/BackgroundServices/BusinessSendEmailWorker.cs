@@ -1,11 +1,11 @@
 ﻿namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers.BackgroundServices;
 
-public class LogmanSendEmailWorker : BackgroundService
+public class BusinessSendEmailWorker : BackgroundService
 {
     private readonly IServiceProvider _provider;
-    private readonly ILogger<LogmanSendEmailWorker> _logger;
+    private readonly ILogger<BusinessSendEmailWorker> _logger;
 
-    public LogmanSendEmailWorker(IServiceProvider provider, ILogger<LogmanSendEmailWorker> logger)
+    public BusinessSendEmailWorker(IServiceProvider provider, ILogger<BusinessSendEmailWorker> logger)
     {
         _provider = provider;
         _logger = logger;
@@ -18,7 +18,7 @@ public class LogmanSendEmailWorker : BackgroundService
             try
             {
                 using var scope = _provider.CreateScope();
-                var consumer = scope.ServiceProvider.GetRequiredService<LogmanSendEmailConsumer>();
+                var consumer = scope.ServiceProvider.GetRequiredService<BusinessSendEmailConsumer>();
                 await consumer.ConsumeAsync(stoppingToken);
             }
             catch (Exception e)
