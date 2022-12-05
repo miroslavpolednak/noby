@@ -1,6 +1,4 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CodebookService.Clients;
-using DomainServices.RiskIntegrationService.Clients;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.MediatR;

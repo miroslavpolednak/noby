@@ -1,13 +1,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.HouseholdService.Api;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Clients;
-using DomainServices.CustomerService.Clients;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
-using DomainServices.SalesArrangementService.Clients;
 using DomainServices;
 using CIS.InternalServices;
 
@@ -74,6 +68,7 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
+app.UseServiceDiscovery();
 app.UseRouting();
 
 app.UseAuthentication();

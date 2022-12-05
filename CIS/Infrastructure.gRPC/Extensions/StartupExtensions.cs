@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Infrastructure.gRPC;
 
+/// <summary>
+/// Extension metody do startupu aplikace pro registraci gRPC služeb.
+/// </summary>
 public static class StartupExtensions
 {
     public static IHttpClientBuilder AddCisGrpcClientUsingServiceDiscovery<TService>(this IServiceCollection services, in string serviceName, bool validateServiceCertificate = false)
@@ -43,7 +47,7 @@ public static class StartupExtensions
         where TServiceUriSettings : class
     {
         services.TryAddSingleton<GenericClientExceptionInterceptor>();
-        services.TryAddScoped<ContextUserForwardingClientInterceptor>();
+        services.TryAddTransient<ContextUserForwardingClientInterceptor>();
 
         // register service
         var builder = services
@@ -62,5 +66,27 @@ public static class StartupExtensions
             builder.CisConfigureChannelWithoutCertificateValidation();
 
         return builder;
+    }
+
+    /// <summary>
+    /// Zaregistruje do DI:
+    /// - MediatR
+    /// - FluentValidation through MediatR pipelines
+    /// </summary>
+    /// <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
+    public static IServiceCollection AddCisGrpcInfrastructure(this IServiceCollection services, Type assemblyType)
+    {
+        services
+            .AddMediatR(assemblyType.Assembly)
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Validation.GrpcValidationBehaviour<,>));
+
+        // add validators
+        services.Scan(selector => selector
+                .FromAssembliesOf(assemblyType)
+                .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+        return services;
     }
 }

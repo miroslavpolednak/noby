@@ -57,34 +57,34 @@
             Helpery pro vytváření RpcException.
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.gRPC.GrpcStartupExtensions">
-            <summary>
-            Extension metody do startupu aplikace pro registraci gRPC služeb.
-            </summary>
-        </member>
-        <member name="M:CIS.Infrastructure.gRPC.GrpcStartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
-            <summary>
-            Zaregistruje do DI:
-            - MediatR
-            - FluentValidation through MediatR pipelines
-            </summary>
-            <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
-        </member>
-        <member name="T:CIS.Infrastructure.gRPC.GrpcStartupKestrelExtensions">
+        <member name="T:CIS.Infrastructure.gRPC.KestrelExtensions">
             <summary>
             Nastavení Kestrel serveru pro gRPC služby.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.gRPC.GrpcStartupKestrelExtensions.UseKestrelWithCustomConfiguration(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.gRPC.KestrelExtensions.UseKestrelWithCustomConfiguration(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String)">
             <summary>
             Umozni nasatavit kestrel custom konfiguracnim souborem.
             Vychozi nazev pro konfiguracni soubor je "kestrel.json". Soubor musi obsahovat root node "CustomeKestrel", pod kterym je struktura CIS.Core.Configuration.KestrelConfiguration.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.StartupExtensions">
+            <summary>
+            Extension metody do startupu aplikace pro registraci gRPC služeb.
             </summary>
         </member>
         <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcClientInner``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Boolean)">
             <summary>
             Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
             </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+            <summary>
+            Zaregistruje do DI:
+            - MediatR
+            - FluentValidation through MediatR pipelines
+            </summary>
+            <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
         </member>
         <member name="M:CIS.Infrastructure.gRPC.GrpcHelpers.HasBinaryHeaderSuffix(System.String)">
             <summary>

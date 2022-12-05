@@ -8,7 +8,7 @@ namespace CIS.Infrastructure.gRPC;
 /// <summary>
 /// Nastavení Kestrel serveru pro gRPC služby.
 /// </summary>
-public static class GrpcStartupKestrelExtensions
+public static class KestrelExtensions
 {
     /// <summary>
     /// Umozni nasatavit kestrel custom konfiguracnim souborem.
