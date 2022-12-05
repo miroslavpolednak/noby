@@ -17,18 +17,13 @@ public static class StartupExtensions
     public static IServiceCollection AddUserService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-
-        services.AddTransient<IUserServiceClient, __Services.UserService>();
         services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.UserService.UserServiceClient>(ServiceName);
-
-        return services;
+        return services.AddTransient<IUserServiceClient, __Services.UserService>();
     }
 
     public static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
     {
-        services.AddTransient<IUserServiceClient, __Services.UserService>();
         services.AddCisGrpcClientUsingUrl<__Contracts.v1.UserService.UserServiceClient>(serviceUrl);
-        
-        return services;
+        return services.AddTransient<IUserServiceClient, __Services.UserService>();
     }
 }

@@ -15,6 +15,13 @@ public static class StartupExtensions
     /// </summary>
     private static IServiceCollection? _serviceCollection;
 
+    /// <summary>
+    /// Metoda doplňuje do konfigurací v DI URI dotažené ze ServiceDiscovery.
+    /// </summary>
+    /// <remarks>
+    /// Hledá singleton instance v DI, které implementují interface IIsServiceDiscoverable. Pokud takové najde, pokusí se k nim ze SD zjistit URI a doplnit je.
+    /// </remarks>
+    /// <exception cref="CisArgumentNullException">Do not call UseServiceDiscovery() unless AddCisServiceDiscovery() has been called before. nebo Service Discovery can not find service URL.</exception>
     public static WebApplication UseServiceDiscovery(this WebApplication builder)
     {
         if (_serviceCollection is null)
@@ -22,7 +29,7 @@ public static class StartupExtensions
 
         // najit vsechny implementace, ktere maji tento interface
         var foundServices = _serviceCollection!
-            .Where(t => t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable)
+            .Where(t => t.Lifetime == ServiceLifetime.Singleton && t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable)
             .Select(t => t.ImplementationInstance as Core.IIsServiceDiscoverable)
             .Where(t => t is not null && t.UseServiceDiscovery)
             .ToList();
@@ -39,7 +46,7 @@ public static class StartupExtensions
 
                 // nastavit URL ze ServiceDiscovery
                 instance!.ServiceUrl = new Uri(service?.ServiceUrl
-                    ?? throw new ArgumentNullException("url", $"Service Discovery can not find {instance.ServiceName} {(__Contracts.ServiceTypes)instance.ServiceType} service URL"));
+                    ?? throw new CisArgumentNullException(0, $"Service Discovery can not find {instance.ServiceName} {(__Contracts.ServiceTypes)instance.ServiceType} service URL", nameof(instance)));
             });
         }
 

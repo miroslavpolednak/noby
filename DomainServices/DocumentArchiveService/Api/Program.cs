@@ -4,6 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using DomainServices.DocumentArchiveService.Api;
 using CIS.Infrastructure.Security;
 using ProtoBuf.Grpc.Server;
+using CIS.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -59,6 +60,7 @@ var app = builder.Build();
 // zachytavat vyjimky pri WebApi volani a transformovat je do 400 bad request
 app.UseGrpc2WebApiException();
 
+app.UseServiceDiscovery();
 app.UseRouting();
 
 app.UseAuthentication();
