@@ -13,8 +13,5 @@
         <PackageReference Include="MassTransit.Kafka" Version="8.0.9" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Mcs\CIS.InternalServices.NotificationService.Mcs.csproj" />
-    </ItemGroup>
+    
 </Project>
