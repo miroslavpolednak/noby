@@ -31,7 +31,7 @@ public static class ConfigurationExtensions
         // validace konfigurace
         if (configuration == null)
             throw new CisConfigurationNotFound(getSectionName(serviceName, serviceImplementationVersion));
-        if (!configuration.UseServiceDiscovery && string.IsNullOrEmpty(configuration.ServiceUrl))
+        if (!configuration.UseServiceDiscovery && configuration.ServiceUrl == null)
             throw new CisConfigurationException(0, $"{serviceName} Service URL must be defined");
         if (configuration.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
             throw new CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
@@ -43,6 +43,6 @@ public static class ConfigurationExtensions
         return configuration;
     }
 
-    private static string getSectionName(string serviceName, string serviceImplementationVersion)
+    private static string getSectionName(in string serviceName, in string serviceImplementationVersion)
         => $"{Constants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion}";
 }

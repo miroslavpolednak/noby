@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using DomainServices.RiskIntegrationService.Clients;
+using DomainServices;
 using CIS.Infrastructure.Security.ContextUser;
 using CIS.Core.Results;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;

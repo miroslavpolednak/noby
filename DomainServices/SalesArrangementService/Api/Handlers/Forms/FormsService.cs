@@ -36,7 +36,7 @@ internal class FormsService
     private readonly SulmService.ISulmClient _sulmClient;
     private readonly ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IProductServiceClient _productService;
     private readonly IUserServiceClient _userService;
@@ -53,7 +53,7 @@ internal class FormsService
         SulmService.ISulmClient sulmClient,
         ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
-        IOfferServiceClients offerService,
+        IOfferServiceClient offerService,
         ICustomerServiceClient customerService,
         IProductServiceClient productService,
         IUserServiceClient userService,

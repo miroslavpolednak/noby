@@ -62,6 +62,11 @@ if (runAsWinSvc) builder.Host.UseWindowsService();
 
 ## Vložení middleware
 
+Spustit automatický resolving adres z Service Discovery.
+```
+app.UseServiceDiscovery();
+```
+
 Základní .NET middleware
 ```
 app.UseRouting();

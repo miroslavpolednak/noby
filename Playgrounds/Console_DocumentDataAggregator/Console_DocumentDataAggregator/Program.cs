@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Configuration;
 using CIS.Core.Security;
+using CIS.InternalServices;
 using CIS.InternalServices.DocumentDataAggregator;
 using CIS.InternalServices.DocumentDataAggregator.Configuration.Model;
 using CIS.InternalServices.DocumentGeneratorService.Api.Services;

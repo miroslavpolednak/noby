@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.Security.ContextUser;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using DomainServices.UserService.Clients;
+using DomainServices;
 
 namespace CIS.Infrastructure.Security;
 

@@ -3,6 +3,7 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices.CustomerService.Api.Extensions;
+using CIS.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -50,6 +51,7 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
+app.UseServiceDiscovery();
 app.UseRouting();
 
 app.UseAuthentication();

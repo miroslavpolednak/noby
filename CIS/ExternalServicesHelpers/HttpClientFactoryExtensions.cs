@@ -38,7 +38,7 @@ public static class HttpClientFactoryExtensions
             builder.Services.AddSingleton(provider =>
             {
                 string? url = provider
-                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetRequiredService<IDiscoveryServiceClient>()
                     .GetServiceUrlSynchronously(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}"), InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                 configuration.ServiceUrl = url ?? throw new ArgumentNullException("url", $"Service Discovery can not find {Constants.ExternalServicesConfigurationSectionName}:{serviceName}:{serviceImplementationVersion} Proprietary service URL");
                 return configuration;

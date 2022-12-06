@@ -15,16 +15,16 @@ internal sealed class GetGetCaseParametersHandler
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClients _offerService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
 
     public GetGetCaseParametersHandler(
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.OfferService.Clients.IOfferServiceClients offerService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         DomainServices.UserService.Clients.IUserServiceClient userService
         )
     {

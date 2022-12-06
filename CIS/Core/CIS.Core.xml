@@ -909,6 +909,11 @@
             https://stackoverflow.com/questions/35011656/async-await-in-linq-select
             </summary>
         </member>
+        <member name="M:CIS.Core.ServiceCollectionExtensions.AlreadyRegistered``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Zjisteni, zda je dany typ jiz registrovan v DI
+            </summary>
+        </member>
         <member name="T:CIS.Core.IDateTime">
             <summary>
             Interface pro získání instance aktuálního času z DI.
@@ -927,6 +932,14 @@
             Current time
             </summary>
         </member>
+        <member name="T:CIS.Core.IIsServiceDiscoverable">
+            <summary>
+            Rozhraní reprezentující konfigurační objekt, který má možnost pomocí ServiceDiscovery zjistit adresu vlastní služby.
+            </summary>
+            <remarks>
+            Pokud je v projektu přidána reference na ServiceDiscovery (builder.AddCisServiceDiscovery a app.UseServiceDiscovery) a UseServiceDiscovery=true, pokusí se ServiceDiscovery Client načíst URL služby ServiceName.
+            </remarks>
+        </member>
         <member name="P:CIS.Core.IIsServiceDiscoverable.ServiceUrl">
             <summary>
             Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
@@ -941,6 +954,12 @@
         <member name="P:CIS.Core.IIsServiceDiscoverable.ServiceName">
             <summary>
             Nazev sluzby v ServiceDiscovery
+            </summary>
+            <remarks>Je povinné pokud se má dočítat URL služby ze ServiceDiscovery.</remarks>
+        </member>
+        <member name="P:CIS.Core.IIsServiceDiscoverable.ServiceType">
+            <summary>
+            Typ služby: 1=gRPC, 2=REST, 3=proprietary
             </summary>
         </member>
         <member name="T:CIS.Core.Validation.IValidatableRequest">

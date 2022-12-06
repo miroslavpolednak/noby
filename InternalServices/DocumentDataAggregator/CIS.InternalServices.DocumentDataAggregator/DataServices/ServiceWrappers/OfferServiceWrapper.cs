@@ -7,9 +7,9 @@ namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappe
 [TransientService, SelfService]
 internal class OfferServiceWrapper : IServiceWrapper
 {
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
 
-    public OfferServiceWrapper(IOfferServiceClients offerService)
+    public OfferServiceWrapper(IOfferServiceClient offerService)
     {
         _offerService = offerService;
     }

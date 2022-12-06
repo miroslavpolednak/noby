@@ -70,13 +70,13 @@ internal class CreateCustomerHandler
     }
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly UpdateCustomerService _updateService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateCustomerHandler> _logger;
 
     public CreateCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClient sulmClient,
         UpdateCustomerService updateService,
         Database.HouseholdServiceDbContext dbContext,

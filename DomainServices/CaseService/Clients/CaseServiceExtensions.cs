@@ -1,35 +1,31 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices.CaseService.Clients;
+using __Services = DomainServices.CaseService.Clients.Services;
+using __Contracts = DomainServices.CaseService.Contracts;
 
-namespace DomainServices.CaseService.Clients;
+namespace DomainServices;
 
 public static class CaseServiceExtensions
 {
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:CaseService";
+
     public static IServiceCollection AddCaseService(this IServiceCollection services)
-        => services.TryAddGrpcClient<Contracts.v1.CaseService.CaseServiceClient>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.CaseService.CaseServiceClient>("DS:CaseService")
-            .registerServices()
-        );
+    {
+        services.AddCisServiceDiscovery();
+        services.AddTransient<ICaseServiceClient, __Services.CaseService>();
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CaseService.CaseServiceClient>(ServiceName);
+        return services;
+    }
 
     public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<Contracts.v1.CaseService.CaseServiceClient>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.v1.CaseService.CaseServiceClient>(serviceUrl)
-            .registerServices()
-        );
-
-    private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        // register service
-        services.AddTransient<ICaseServiceClient, Services.CaseService>();
-
-        // exception handling
-        services.AddSingleton<ExceptionInterceptor>();
-
-        services
-                .AddGrpcClientFromCisEnvironment<Contracts.v1.CaseService.CaseServiceClient>()
-                .AddInterceptor<ExceptionInterceptor>();
-
+        services.AddTransient<ICaseServiceClient, __Services.CaseService>();
+        services.AddCisGrpcClientUsingUrl<__Contracts.v1.CaseService.CaseServiceClient>(serviceUrl);
         return services;
     }
 }

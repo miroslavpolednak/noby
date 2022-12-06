@@ -17,7 +17,7 @@ public static class StartupExtensions
             builder.Services.AddSingleton(provider =>
             {
                 string? url = provider
-                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetRequiredService<IDiscoveryServiceClient>()
                     .GetServiceUrlSynchronously(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                 configuration.ServiceUrl = url ?? throw new ArgumentNullException("url", $"Service Discovery can not find {Constants.ExternalServicesConfigurationSectionName}:{serviceName} Proprietary service URL");
                 return configuration;
@@ -39,7 +39,7 @@ public static class StartupExtensions
             foreach (var configuration in configurations)
             {
                 string? url = provider
-                    .GetRequiredService<IDiscoveryServiceAbstraction>()
+                    .GetRequiredService<IDiscoveryServiceClient>()
                     .GetServiceUrlSynchronously(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{serviceName}_{configuration.GetVersion()}"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
                 configuration.ServiceUrl = url ?? throw new ArgumentNullException("url", $"Service Discovery can not find {Constants.ExternalServicesConfigurationSectionName}:{serviceName}_{configuration.GetVersion()} Proprietary service URL");
             }

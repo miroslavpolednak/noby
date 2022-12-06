@@ -1,32 +1,38 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices.HouseholdService.Clients;
+using __Services = DomainServices.HouseholdService.Clients.Services;
+using __Contracts = DomainServices.HouseholdService.Contracts;
+using CIS.InternalServices;
 
-namespace DomainServices.HouseholdService.Clients;
+namespace DomainServices;
 
 public static class StartupExtensions
 {
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:HouseholdService";
+
     public static IServiceCollection AddHouseholdService(this IServiceCollection services)
-        => services.TryAddGrpcClient<Contracts.v1.HouseholdService.HouseholdServiceClient>(a =>
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.v1.HouseholdService.HouseholdServiceClient>("DS:HouseholdService")
-            .registerServices()
-        );
+    {
+        services.AddCisServiceDiscovery();
+
+        services.AddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
+        services.AddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
+
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        return services;
+    }
 
     public static IServiceCollection AddHouseholdService(this IServiceCollection services, string serviceUrl)
-        => services.TryAddGrpcClient<Contracts.v1.HouseholdService.HouseholdServiceClient>(a =>
-            a.AddGrpcServiceUriSettings<Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl)
-            .registerServices()
-        );
-
-    private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        // register storage services
-        services.AddScoped<IHouseholdServiceClient, Services.HouseholdService>();
-        services.AddScoped<ICustomerOnSAServiceClient, Services.CustomerOnSAService>();
+        services.AddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
+        services.AddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.HouseholdService.HouseholdServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>();
-        services.AddGrpcClientFromCisEnvironment<Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, Contracts.v1.HouseholdService.HouseholdServiceClient>();
-
+        services.AddCisGrpcClientUsingUrl<__Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
+        services.AddCisGrpcClientUsingUrl<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
         return services;
     }
 }

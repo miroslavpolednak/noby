@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-
-namespace DomainServices.UserService.Clients;
+﻿namespace DomainServices.UserService.Clients;
 
 public interface IUserServiceClient
 {

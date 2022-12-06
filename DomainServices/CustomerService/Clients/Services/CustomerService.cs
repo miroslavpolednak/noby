@@ -2,7 +2,7 @@
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Clients;
+namespace DomainServices.CustomerService.Clients.Services;
 
 internal class CustomerService : ICustomerServiceClient
 {

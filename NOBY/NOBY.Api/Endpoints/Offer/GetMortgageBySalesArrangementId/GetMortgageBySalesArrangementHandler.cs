@@ -18,12 +18,12 @@ internal class GetMortgageBySalesArrangementHandler
         return await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(salesArrangementInstance.OfferId.Value), cancellationToken);
     }
 
-    private readonly Abstraction.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly Abstraction.ISalesArrangementServiceClient _salesArrangementService;
     private readonly IMediator _mediator;
     
     public GetMortgageBySalesArrangementHandler(
         IMediator mediator,
-        Abstraction.ISalesArrangementServiceClients salesArrangementService)
+        Abstraction.ISalesArrangementServiceClient salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
         _mediator = mediator;

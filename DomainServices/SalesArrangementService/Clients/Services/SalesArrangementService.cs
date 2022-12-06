@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Clients.Services;
 
-internal class SalesArrangementService : ISalesArrangementServiceClients
+internal class SalesArrangementService : ISalesArrangementServiceClient
 {
     public async Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {

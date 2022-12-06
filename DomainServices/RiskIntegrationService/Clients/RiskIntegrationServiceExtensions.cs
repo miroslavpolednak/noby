@@ -1,40 +1,48 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.Infrastructure.gRPC.Configuration;
+using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProtoBuf.Grpc.ClientFactory;
-using _Clients = DomainServices.RiskIntegrationService.Clients;
-using _Contracts = DomainServices.RiskIntegrationService.Contracts;
+using __Clients = DomainServices.RiskIntegrationService.Clients;
+using __Contracts = DomainServices.RiskIntegrationService.Contracts;
 
-namespace DomainServices.RiskIntegrationService.Clients;
+namespace DomainServices;
 
 public static class RiskIntegrationServiceExtensions
 {
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:RiskIntegrationService";
+
     public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services)
-        => services
-            .TryAddGrpcClient<_Contracts.CreditWorthiness.V2.ICreditWorthinessService>(a =>
-                a.AddGrpcServiceUriSettingsFromServiceDiscovery<_Contracts.IGrpcSettingsMarker>("DS:RiskIntegrationService")
-            .registerServices()
-        );
+    {
+        services.AddCisServiceDiscovery();
+        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.IGrpcSettingsMarker>>(new GrpcServiceUriSettingsServiceDiscovery<__Contracts.IGrpcSettingsMarker>(ServiceName));
+        services.registerServices();
+        return services;
+    }
 
     public static IServiceCollection AddRiskIntegrationService(this IServiceCollection services, string serviceUrl)
-        => services
-            .TryAddGrpcClient<_Contracts.CreditWorthiness.V2.ICreditWorthinessService>(a =>
-                a.AddGrpcServiceUriSettings<_Contracts.IGrpcSettingsMarker>(serviceUrl)
-            .registerServices()
-        );
+    {
+        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.IGrpcSettingsMarker>>(new GrpcServiceUriSettingsDirect<__Contracts.IGrpcSettingsMarker>(serviceUrl));
+        services.registerServices();
+        return services;
+    }
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
         services.AddSingleton<GenericClientExceptionInterceptor>();
         services.AddScoped<ContextUserForwardingClientInterceptor>();
 
-        services.register<_Contracts.CreditWorthiness.V2.ICreditWorthinessService, _Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient, Services.CreditWorthiness.V2.CreditWorthinessService>();
+        services.register<__Contracts.CreditWorthiness.V2.ICreditWorthinessService, __Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient, __Clients.Services.CreditWorthiness.V2.CreditWorthinessService>();
 
-        services.register<_Contracts.CustomersExposure.V2.ICustomersExposureService, _Clients.CustomersExposure.V2.ICustomersExposureServiceClient, Services.CustomersExposure.V2.CustomersExposureService>();
+        services.register<__Contracts.CustomersExposure.V2.ICustomersExposureService, __Clients.CustomersExposure.V2.ICustomersExposureServiceClient, __Clients.Services.CustomersExposure.V2.CustomersExposureService>();
 
-        services.register<_Contracts.LoanApplication.V2.ILoanApplicationService, _Clients.LoanApplication.V2.ILoanApplicationServiceClient, Services.LoanApplication.V2.LoanApplicationService>();
+        services.register<__Contracts.LoanApplication.V2.ILoanApplicationService, __Clients.LoanApplication.V2.ILoanApplicationServiceClient, __Clients.Services.LoanApplication.V2.LoanApplicationService>();
 
-        services.register<_Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, _Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient, Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
+        services.register<__Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService, __Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient, __Clients.Services.RiskBusinessCase.V2.RiskBusinessCaseService>();
 
         return services;
     }
@@ -48,8 +56,8 @@ public static class RiskIntegrationServiceExtensions
             .AddTransient(typeof(IAbstraction), typeof(TAbstraction))
             .AddCodeFirstGrpcClient<IService>((provider, options) =>
             {
-                var serviceUri = provider.GetRequiredService<GrpcServiceUriSettings<_Contracts.IGrpcSettingsMarker>>();
-                options.Address = serviceUri.Url;
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<__Contracts.IGrpcSettingsMarker>>();
+                options.Address = serviceUri.ServiceUrl;
             })
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()

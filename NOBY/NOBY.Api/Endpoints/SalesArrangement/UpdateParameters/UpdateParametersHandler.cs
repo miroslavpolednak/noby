@@ -47,10 +47,10 @@ internal class UpdateParametersHandler
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public UpdateParametersHandler(
-        ISalesArrangementServiceClients salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
     }

@@ -37,6 +37,36 @@ Task MyEndpoint(MyRequest request) { }
 StartupExtensions.cs        (extension metoda pro registraci `Clients` projektu v aplikaci konzumenta)
 ```
 
+## Implementace gRPC infrastruktury (*StartupExtensions.cs*)
+`Clients` projekt vždy obsahuje dvě extension metody pro registraci při startupu konzumenta. 
+Jedna počítá s automatickým resolvingem URI služby, druhá očekává explicitně zadanou URI.  
+Jmenná konvence těchto metod je `Add{název služby}`, např. pro *UserService* je to:
+```
+static IServiceCollection AddUserService(this IServiceCollection services)
+static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
+```
+Implementace metod je obecně následující:
+```
+public static IServiceCollection AddUserService(this IServiceCollection services)
+{
+    services.AddCisServiceDiscovery();
+    services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.UserService.UserServiceClient>(ServiceName);
+    return services.AddTransient<IUserServiceClient, __Services.UserService>();
+}
+
+public static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
+{
+    services.AddCisGrpcClientUsingUrl<__Contracts.v1.UserService.UserServiceClient>(serviceUrl);
+    return services.AddTransient<IUserServiceClient, __Services.UserService>();
+}
+```
+`__Contracts.v1.UserService.UserServiceClient` je proto kontrakt služby.  
+`IUserServiceClient` je interface *Clients* projektu vystavený pro konzumenty.  
+`__Services.UserService` je implementací tohoto interface.  
+U varianty s automatickým resolvingem adres je navíc nutné zaregistrovat *ServiceDiscovery*.  
+Teoreticky by měli mít tyto extension metody všechny služby stejné / maximálně podobné.  
+Samotná infastruktura registrace gRPC (*AddCisGrpcClientUsing...*) je v projektu `CIS.Infrastructure.gRPC`.
+
 ## Použití v projektu konzumenta
 Registrace v startupu aplikace:
 ```
