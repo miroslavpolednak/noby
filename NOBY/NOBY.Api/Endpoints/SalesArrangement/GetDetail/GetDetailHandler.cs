@@ -15,14 +15,19 @@ internal class GetDetailHandler
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_CA.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
-
-        // get mortgage data
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
-
+        
         var parameters = getParameters(saInstance);
-        var data = await getDataInternal(saInstance, offerInstance, cancellationToken);
-        if (!data.ExpectedDateOfDrawing.HasValue)
-            data.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
+        Dto.MortgageDetailDto? data = null;
+
+        if (saInstance.SalesArrangementTypeId == 1)
+        {
+            // get mortgage data
+            var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
+
+            data = await getDataInternal(saInstance, offerInstance, cancellationToken);
+            if (!data.ExpectedDateOfDrawing.HasValue)
+                data.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
+        }
 
         return new GetDetailResponse()
         {
