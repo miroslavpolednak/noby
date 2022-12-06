@@ -301,7 +301,9 @@ internal static class Extensions
                 ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
                 ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
-                Customers = householdCustomersOnSA.Select(i => MapCustomer(i, isPartner)).ToList(),
+                Customers = householdCustomersOnSA
+                    .Where(i => i.CustomerIdentifiers.Any(x => x.IdentityScheme == cCis.Identity.Types.IdentitySchemes.Kb))
+                    .Select(i => MapCustomer(i, isPartner)).ToList(),
             };
         }
 
