@@ -19,7 +19,7 @@ internal class GetDetailHandler
         var parameters = getParameters(saInstance);
         Dto.MortgageDetailDto? data = null;
 
-        if (saInstance.SalesArrangementTypeId == 1)
+        /*if (saInstance.SalesArrangementTypeId == 1)
         {
             // get mortgage data
             var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
@@ -27,7 +27,7 @@ internal class GetDetailHandler
             data = await getDataInternal(saInstance, offerInstance, cancellationToken);
             if (!data.ExpectedDateOfDrawing.HasValue)
                 data.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
-        }
+        }*/
 
         return new GetDetailResponse()
         {
@@ -39,7 +39,7 @@ internal class GetDetailHandler
             CreatedTime = saInstance.Created.DateTime,
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
-            Data = data,
+            //Data = data,
             Parameters = parameters
         };
     }
