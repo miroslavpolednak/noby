@@ -233,7 +233,7 @@ internal static class Extensions
                 }
 
 
-                var identityKb = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
+                var identityKb = cOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
                 var c = data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode(identityKb)];
 
                 var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);
