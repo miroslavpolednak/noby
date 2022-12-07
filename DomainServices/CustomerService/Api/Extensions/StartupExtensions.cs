@@ -1,8 +1,5 @@
-﻿using CIS.ExternalServicesHelpers;
-using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CodebookService.Clients;
+﻿using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CustomerService.Api.Clients;
-using ExternalServices.MpHome;
 
 namespace DomainServices.CustomerService.Api.Extensions;
 
@@ -16,20 +13,6 @@ internal static class StartupExtensions
 
         // CodebookService
         builder.Services.AddCodebookService();
-
-        return builder;
-    }
-
-    public static WebApplicationBuilder AddExternalServiceMpHome(this WebApplicationBuilder builder)
-    {
-        const string MpHomeName = "MpHome";
-
-        var config = builder.Configuration
-                            .GetRequiredSection(Constants.ExternalServicesConfigurationSectionName)
-                            .GetRequiredSection(MpHomeName)
-                            .Get<MpHomeConfiguration>();
-
-        builder.Services.AddExternalServiceMpHome(config);
 
         return builder;
     }

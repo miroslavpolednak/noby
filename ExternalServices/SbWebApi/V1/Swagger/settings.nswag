@@ -34,7 +34,7 @@
       "typeAccessModifier": "internal",
       "generateContractsOutput": true,
       "contractsNamespace": "ExternalServices.SbWebApi.V1.Contracts",
-      "contractsOutputFilePath": "Contracts.cs",
+      "contractsOutputFilePath": "../Contracts.cs",
       "parameterDateTimeFormat": "s",
       "parameterDateFormat": "yyyy-MM-dd",
       "generateUpdateJsonSerializerSettingsMethod": true,

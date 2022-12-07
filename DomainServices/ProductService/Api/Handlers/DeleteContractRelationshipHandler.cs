@@ -1,6 +1,5 @@
-﻿using ExternalServices.MpHome.V1._1;
-using ExternalServices.MpHome.V1._1.MpHomeWrapper;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
+using ExternalServices.MpHome.V1_1;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -29,7 +28,7 @@ internal class DeleteContractRelationshipHandler
         }
 
         // call endpoint
-        ServiceCallResult.Resolve(await _mpHomeClient.DeletePartnerLoanLink(request.Request.ProductId, request.Request.PartnerId));
+        await _mpHomeClient.DeletePartnerLoanLink(request.Request.ProductId, request.Request.PartnerId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

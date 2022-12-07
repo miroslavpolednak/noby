@@ -1,8 +1,7 @@
 ﻿using DomainServices.ProductService.Contracts;
-using ExternalServices.MpHome.V1._1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-
+using ExternalServices.MpHome.V1_1;
 
 namespace DomainServices.ProductService.Api.Handlers;
 

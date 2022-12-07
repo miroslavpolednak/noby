@@ -4,6 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using DomainServices.CustomerService.Api.Extensions;
 using CIS.InternalServices;
+using ExternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -35,7 +36,7 @@ builder.AddCisServiceAuthentication();
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddCustomerService();
 
-builder.AddExternalServiceMpHome();
+builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
 
 builder.Services.AddGrpc(options =>
 {
