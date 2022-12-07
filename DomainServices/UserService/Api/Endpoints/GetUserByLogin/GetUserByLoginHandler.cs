@@ -1,11 +1,13 @@
-﻿namespace DomainServices.UserService.Api.Handlers;
+﻿using DomainServices.UserService.Contracts;
+
+namespace DomainServices.UserService.Api.Endpoints.GetUserByLogin;
 
 internal class GetUserByLoginHandler
-    : IRequestHandler<Dto.GetUserByLoginMediatrRequest, Contracts.User>
+    : IRequestHandler<GetUserByLoginRequest, User>
 {
-    public async Task<Contracts.User> Handle(Dto.GetUserByLoginMediatrRequest request, CancellationToken cancellation)
+    public async Task<User> Handle(GetUserByLoginRequest request, CancellationToken cancellation)
     {
-        string cacheKey = Contracts.Helpers.GetUserCacheKey(request.Login);
+        string cacheKey = Helpers.GetUserCacheKey(request.Login);
         var cachedUser = await _cache.GetObjectAsync<Dto.V33PmpUser>(cacheKey, SerializationTypes.Protobuf);
 
         // pokud je uzivatel v kesi, vytahni ho

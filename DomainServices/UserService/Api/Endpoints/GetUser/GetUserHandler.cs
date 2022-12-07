@@ -1,11 +1,12 @@
-﻿using System.Diagnostics;
+﻿using DomainServices.UserService.Api.Endpoints.GetUserByLogin;
+using DomainServices.UserService.Contracts;
 
-namespace DomainServices.UserService.Api.Handlers;
+namespace DomainServices.UserService.Api.Endpoints.GetUser;
 
 internal class GetUserHandler
-    : IRequestHandler<Dto.GetUserMediatrRequest, Contracts.User>
+    : IRequestHandler<GetUserRequest, Contracts.User>
 {
-    public async Task<Contracts.User> Handle(Dto.GetUserMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.User> Handle(GetUserRequest request, CancellationToken cancellation)
     {
         // vytahnout info o uzivateli z DB
         var userInstance = await _repository.GetUser(request.UserId);
