@@ -1,16 +1,13 @@
-﻿using _OS = DomainServices.OfferService.Contracts;
+﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Clients;
-
 using Microsoft.EntityFrameworkCore;
-
 using Grpc.Core;
 using CIS.Infrastructure.gRPC;
 
-
-namespace DomainServices.OfferService.Api.Handlers;
+namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 
 internal class GetMortgageOfferFPScheduleHandler
-    : IRequestHandler<Dto.GetMortgageOfferFPScheduleMediatrRequest, _OS.GetMortgageOfferFPScheduleResponse>
+    : IRequestHandler<GetMortgageOfferFPScheduleRequest, GetMortgageOfferFPScheduleResponse>
 {
     #region Construction
 
@@ -28,7 +25,7 @@ internal class GetMortgageOfferFPScheduleHandler
 
     #endregion
 
-    public async Task<_OS.GetMortgageOfferFPScheduleResponse> Handle(Dto.GetMortgageOfferFPScheduleMediatrRequest request, CancellationToken cancellation)
+    public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.Offers
            .AsNoTracking()
@@ -41,25 +38,25 @@ internal class GetMortgageOfferFPScheduleHandler
         // load codebook DrawingType for remaping Id -> StarbildId
         var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
 
-        var basicParameters = _OS.BasicParameters.Parser.ParseFrom(entity.BasicParametersBin);
-        var inputs = _OS.MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin);
+        var basicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin);
+        var inputs = MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin);
 
         // get simulation outputs
         var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingDurationsById, drawingTypeById).ToEasSimulationFullPaymentScheduleRequest();
         var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
 
         var fullPaymentSchedule = easSimulationRes.ToFullPaymentSchedule();
-        
-        var model = new _OS.GetMortgageOfferFPScheduleResponse{};
+
+        var model = new GetMortgageOfferFPScheduleResponse { };
         model.PaymentScheduleFull.Add(fullPaymentSchedule);
 
         return model;
     }
 
-    private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse resolveRunSimulationHT(IServiceCallResult result) =>
+    private static EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse resolveRunSimulationHT(IServiceCallResult result) =>
       result switch
       {
-          SuccessfulServiceCallResult<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
+          SuccessfulServiceCallResult<EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
           ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
           _ => throw new NotImplementedException("RunSimulationHT")
       };

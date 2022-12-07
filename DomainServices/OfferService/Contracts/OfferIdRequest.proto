@@ -1,7 +1,0 @@
-﻿syntax = "proto3";
-package DomainServices.OfferService;
-option csharp_namespace = "DomainServices.OfferService.Contracts";
-
-message OfferIdRequest {
-	int32 OfferId = 1;
-}

@@ -7,7 +7,7 @@ using __Contracts = DomainServices.OfferService.Contracts;
 
 namespace DomainServices;
 
-public static class OfferServiceExtensions
+public static class StartupExtensions
 {
     /// <summary>
     /// Service SD key

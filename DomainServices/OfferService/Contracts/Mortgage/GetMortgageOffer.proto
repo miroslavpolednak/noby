@@ -7,6 +7,10 @@ import "BasicParameters.proto";
 import "Mortgage/MortgageSimulationInputs.proto";
 import "Mortgage/MortgageSimulationResults.proto";
 
+message GetMortgageOfferRequest {
+	int32 OfferId = 1;
+}
+
 message GetMortgageOfferResponse {
 	int32 OfferId = 1;
 	string ResourceProcessId = 2;

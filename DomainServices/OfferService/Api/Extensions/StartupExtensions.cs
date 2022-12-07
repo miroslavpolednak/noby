@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.EasSimulationHT;
-using FluentValidation;
 
 namespace DomainServices.OfferService.Api;
 
