@@ -1,4 +1,5 @@
 ﻿using DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
+using DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
 using DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 using DomainServices.DocumentArchiveService.Contracts;
 using Google.Protobuf.WellKnownTypes;
@@ -21,10 +22,13 @@ public class DocumentArchiveServiceGrpc : Contracts.v1.DocumentArchiveService.Do
 
     public override async Task<Empty> UploadDocument(UploadDocumentRequest request, ServerCallContext context)
     {
-         await _mediator.Send(new UploadDocumentMediatrRequest(request), context.CancellationToken);
+        await _mediator.Send(new UploadDocumentMediatrRequest(request), context.CancellationToken);
         return new Empty();
     }
 
     public override async Task<GetDocumentResponse> GetDocument(GetDocumentRequest request, ServerCallContext context)
      => await _mediator.Send(new GetDocumentMediatrRequest(request), context.CancellationToken);
+
+    public override async Task<GetDocumentListResponse> GetGetDocumentList(GetDocumentListRequest request, ServerCallContext context)
+     => await _mediator.Send(new GetDocumentListMediatrRequest(request),context.CancellationToken);
 }

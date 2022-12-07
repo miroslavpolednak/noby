@@ -58,9 +58,6 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
-// ToDo zachytavat vyjimky pri WebApi volani a transformovat je do 400 bad request toto nefunguje pro grpc json transcoding 
-//app.UseGrpc2WebApiException();
-
 app.UseRouting();
 
 app.UseDocumentArchiveGrpcSwagger();

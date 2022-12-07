@@ -4,7 +4,6 @@ option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
 
 import "google/protobuf/timestamp.proto";
 import "GrpcDate.proto";
-import "GrpcDecimal.proto";
 import "google/protobuf/wrappers.proto";
 
 

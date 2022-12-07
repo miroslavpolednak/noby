@@ -6,7 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup>
+	<AnalysisMode>All</AnalysisMode>
+  </PropertyGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
   </ItemGroup>
 

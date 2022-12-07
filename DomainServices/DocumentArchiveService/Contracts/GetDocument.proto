@@ -9,6 +9,8 @@ message GetDocumentRequest{
 	string documentId = 1;
 	// Vrátit i binární data (default=false)
 	bool withContent = 2;
+
+	string userLogin = 3;
 }
 
 message GetDocumentResponse{

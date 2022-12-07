@@ -1,9 +1,8 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using DomainServices.DocumentArchiveService.Api.Mappers;
 using ExternalServices.Sdf;
 using ExternalServicesTcp;
-using ExternalServicesTcp.Configuration;
 using FluentValidation;
-using System.Configuration;
 
 namespace DomainServices.DocumentArchiveService.Api;
 
@@ -32,6 +31,8 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceSdf(appConfig.Sdf!);
 
         builder.Services.AddExternalServiceTcp(appConfig.Tcp!);
+
+        builder.Services.AddSingleton<IDocumentMapper,DocumentMapper>();
 
         // databases
         builder.Services

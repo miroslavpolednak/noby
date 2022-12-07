@@ -1,4 +1,4 @@
-﻿namespace ExternalServicesTcp.Model;
+﻿namespace ExternalServicesTcp.V1.Model;
 
 public class GetDocumentByExternalIdTcpQuery
 {

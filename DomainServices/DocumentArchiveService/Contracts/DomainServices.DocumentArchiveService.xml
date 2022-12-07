@@ -45,6 +45,14 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient">
             <summary>Client for DocumentArchiveService</summary>
         </member>
@@ -166,6 +174,42 @@
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.CallOptions)">
             <summary>
             Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetGetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -399,6 +443,9 @@
             Vrátit i binární data (default=false)
             </summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.UserLoginFieldNumber">
+            <summary>Field number for the "userLogin" field.</summary>
+        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentResponse.MetadataFieldNumber">
             <summary>Field number for the "Metadata" field.</summary>
         </member>
@@ -424,6 +471,74 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.FileInfo.MineType">
             <summary>
             MIME typ dokumentu
+            </summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.GetDocumentListReflection">
+            <summary>Holder for reflection information generated from GetDocumentList.proto</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListReflection.Descriptor">
+            <summary>File descriptor for GetDocumentList.proto</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.AuthorUserLoginFieldNumber">
+            <summary>Field number for the "AuthorUserLogin" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.AuthorUserLogin">
+            <summary>
+            Login autora dokumentu, kdo dokument uložil
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CreatedOnFieldNumber">
+            <summary>Field number for the "CreatedOn" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CreatedOn">
+            <summary>
+            Datum přijetí dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.PledgeAgreementNumberFieldNumber">
+            <summary>Field number for the "PledgeAgreementNumber" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.PledgeAgreementNumber">
+            <summary>
+            Číslo zástavní smlouvy
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.ContractNumberFieldNumber">
+            <summary>Field number for the "ContractNumber" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.ContractNumber">
+            <summary>
+            Číslo smlouvy
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.OrderIdFieldNumber">
+            <summary>Field number for the "OrderId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FolderDocumentIdFieldNumber">
+            <summary>Field number for the "FolderDocumentId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FolderDocumentId">
+            <summary>
+            Id nařízeného dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.UserLoginFieldNumber">
+            <summary>Field number for the "UserLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListResponse.MetadataFieldNumber">
+            <summary>Field number for the "Metadata" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListResponse.Metadata">
+            <summary>
+            Metadata dokumentu
             </summary>
         </member>
     </members>

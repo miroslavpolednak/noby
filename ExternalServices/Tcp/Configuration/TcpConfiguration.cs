@@ -8,7 +8,5 @@ namespace ExternalServicesTcp.Configuration
 
         [Required]
         public string Connectionstring { get; set; } = null!;
-
-
     }
 }
