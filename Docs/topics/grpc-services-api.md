@@ -7,9 +7,11 @@ Aplikace na pozadí spouští **Kestrel**, který obsluhuje příchozí requesty
 Obsluha příchozích requestů je delegována pomocí [MediatR](https://github.com/jbogard/MediatR) na handlery - každý endpoint má vlastní request a handler.
 Pokud to není z nějakého důvodu nutné, nejsou třídy v projektu vystavovány jako `public`, ale jsou `internal`.
 
+*MediatR* requesty jsou implementovány v `Contracts` projektu pomocí *partial class* - viz. popis [zde](grpc-services-clients.md).
+
 ## Verzování aplikace / kontraktu
 Api projekt většinou obsahuje implementaci pouze jedné verze gRPC kontraktu. 
-Pokud by to však bylo vyžadováno, může adresář Endpoints obsahovat obsluhu více verzí - v tom případě vznikají podadresáře V1, V2...
+Pokud by to však bylo vyžadováno, může adresář **Endpoints** obsahovat obsluhu více verzí - v tom případě vznikají podadresáře **V1**, **V2**...
 
 ## Adresářová struktura projektu
 Adresáře pro konkrétní endpointy obsahují vždy veškeré třídy potřebné pro daný endpoint.
@@ -18,9 +20,8 @@ Nikdy ale nereferencujeme třídy napříč endpointy. Je ale možné z jednoho 
 
 Jmenná konvence pro adresáře s endpointy je následující:
 - adresář: název metody z kontraktu v .proto souboru
-- MediatR handler: `{název metody}Handler.cs`
-- MediatR request: `{název metody}Request.cs`
-- FluentValidation validátor: `{název metody}RequestValidation.cs`
+- *MediatR* handler: `{název metody}Handler.cs`
+- *FluentValidation* validátor: `{název metody}RequestValidation.cs`
 
 ```
 [Configuration]				(adresář pro strongly typed konfigurace - pokud aplikace nemá speciální konfiguraci, adresář neexistuje)
@@ -31,7 +32,7 @@ Jmenná konvence pro adresáře s endpointy je následující:
     ...
   HouseholdServiceDbContext.cs          (EF DbContext, Dapper interface)
 [Dto]                                   (společné DTO)
-  Customer.cs
+  Customer.cs                           (objekt použitý ve více endpointech)
   ...
 [Endpoints]                             (adresář s metodami gRPC služby)
   [GetHousehold]                        (gRPC metoda GetHousehold)
