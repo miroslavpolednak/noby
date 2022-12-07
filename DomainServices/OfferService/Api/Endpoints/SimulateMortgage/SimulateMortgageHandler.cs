@@ -1,7 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.OfferService.Api.Repositories;
+using DomainServices.OfferService.Api.Database;
 using Google.Protobuf;
 
 namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
@@ -53,7 +53,7 @@ internal sealed class SimulateMortgageHandler
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
 
         // save to DB
-        var entity = new Repositories.Entities.Offer
+        var entity = new Database.Entities.Offer
         {
             ResourceProcessId = resourceProcessId,
             BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(basicParameters),
@@ -68,7 +68,7 @@ internal sealed class SimulateMortgageHandler
         _dbContext.Offers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.Offer), entity.OfferId);
+        _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
         // create response
         return new SimulateMortgageResponse

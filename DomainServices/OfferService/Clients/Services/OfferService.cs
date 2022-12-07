@@ -1,4 +1,4 @@
-﻿using CIS.Core.Results;
+﻿using CIS.Core.Exceptions;
 using CIS.Infrastructure.gRPC;
 using DomainServices.OfferService.Contracts;
 using Grpc.Core;
@@ -34,7 +34,7 @@ internal sealed class OfferService
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument) // EAS chyba zadani
         {
-            return new ErrorServiceCallResult(ex.GetErrorMessagesFromRpcExceptionWithIntKeys());
+            throw new CisValidationException(ex.GetErrorMessagesFromRpcExceptionWithIntKeys());
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.FailedPrecondition) // EAS vratilo standardni chybu
         {
@@ -42,14 +42,9 @@ internal sealed class OfferService
 
             return code switch
             {
-                10011 => new SimulationServiceErrorResult(ex.GetValueFromTrailers("eassimerrorcode-bin"), ex.GetValueFromTrailers("eassimerrortext-bin")),
-                _ => new ErrorServiceCallResult(ex.GetErrorMessagesFromRpcExceptionWithIntKeys())
+                10011 => throw new CisValidationException(ex.GetValueFromTrailers("eassimerrortext-bin")),//ex.GetValueFromTrailers("eassimerrorcode-bin"),
+                _ => throw new CisValidationException(ex.GetErrorMessagesFromRpcExceptionWithIntKeys())
             };
-        }
-        catch (Exception err)
-        {
-            var x = err;
-            throw;
         }
     }
 

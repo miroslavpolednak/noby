@@ -87,7 +87,7 @@ internal sealed class GetGetCaseParametersHandler
 
         // load Offer
         var offerId = salesArrangementInstance?.OfferId;
-        var offerInstance = offerId.HasValue ? ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(offerId.Value, cancellation)) : null;
+        var offerInstance = offerId.HasValue ? await _offerService.GetMortgageOfferDetail(offerId.Value, cancellation) : null;
 
         // load User
         var userId = caseInstance.CaseOwner?.UserId;

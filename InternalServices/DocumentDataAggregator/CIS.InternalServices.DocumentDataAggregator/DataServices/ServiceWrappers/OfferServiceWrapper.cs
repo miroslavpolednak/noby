@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.OfferService.Clients;
-using DomainServices.OfferService.Contracts;
+﻿using DomainServices.OfferService.Clients;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 
@@ -19,8 +17,6 @@ internal class OfferServiceWrapper : IServiceWrapper
         if (!input.OfferId.HasValue)
             throw new ArgumentNullException(nameof(InputParameters.OfferId));
 
-        var result = await _offerService.GetMortgageOfferDetail(input.OfferId.Value, cancellationToken);
-
-        data.Offer = ServiceCallResult.ResolveAndThrowIfError<GetMortgageOfferDetailResponse>(result);
+        data.Offer = await _offerService.GetMortgageOfferDetail(input.OfferId.Value, cancellationToken);
     }
 }

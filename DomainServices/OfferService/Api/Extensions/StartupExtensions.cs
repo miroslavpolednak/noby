@@ -20,7 +20,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.OfferServiceDbContext>();
+        builder.AddEntityFramework<Database.OfferServiceDbContext>();
 
         return builder;
     }

@@ -39,7 +39,7 @@ internal class CreateRiskBusinessCaseHandler
         // offer
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, "SA does not have Offer bound to it");
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
+        var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
         // household
         var households = await _householdService.GetHouseholdList(notification.SalesArrangementId, cancellationToken);
         if (!households.Any())

@@ -23,7 +23,7 @@ internal class LinkModelationToSalesArrangementHandler
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}", 18012);
 
         // validace na existenci offer
-        var offerInstance = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(request.OfferId, cancellation))
+        var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation)
             ?? throw new CisNotFoundException(18001, $"Offer ID #{request.OfferId} does not exist.");
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
@@ -33,7 +33,7 @@ internal class LinkModelationToSalesArrangementHandler
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (salesArrangementInstance.OfferId.HasValue)
         {
-            var offerInstanceOld = ServiceCallResult.ResolveToDefault<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation))
+            var offerInstanceOld = await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation)
                 ?? throw new CisNotFoundException(18001, $"Offer ID #{salesArrangementInstance.OfferId} does not exist.");
             if ((DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
                 throw new CisValidationException(18058, $"Old offer GuaranteeDateFrom > than new GuaranteeDateFrom");

@@ -3,20 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOffer;
 
-internal class GetMortgageOfferHandler
+internal sealed class GetMortgageOfferHandler
     : IRequestHandler<GetMortgageOfferRequest, GetMortgageOfferResponse>
 {
-    #region Construction
-
-    private readonly Repositories.OfferServiceDbContext _dbContext;
-
-    public GetMortgageOfferHandler(Repositories.OfferServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-    #endregion
-
     public async Task<GetMortgageOfferResponse> Handle(GetMortgageOfferRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.Offers
@@ -47,4 +36,8 @@ internal class GetMortgageOfferHandler
         return model;
     }
 
+    private readonly Database.OfferServiceDbContext _dbContext;
+
+    public GetMortgageOfferHandler(Database.OfferServiceDbContext dbContext)
+        => _dbContext = dbContext;
 }

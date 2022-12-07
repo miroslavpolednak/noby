@@ -3,20 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetOffer;
 
-internal class GetOfferHandler
+internal sealed class GetOfferHandler
     : IRequestHandler<GetOfferRequest, GetOfferResponse>
 {
-    #region Construction
-
-    private readonly Repositories.OfferServiceDbContext _dbContext;
-
-    public GetOfferHandler(Repositories.OfferServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-    #endregion
-
     public async Task<GetOfferResponse> Handle(GetOfferRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.Offers
@@ -39,4 +28,8 @@ internal class GetOfferHandler
         };
     }
 
+    private readonly Database.OfferServiceDbContext _dbContext;
+
+    public GetOfferHandler(Database.OfferServiceDbContext dbContext)
+        => _dbContext = dbContext;
 }

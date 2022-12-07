@@ -6,25 +6,9 @@ using CIS.Infrastructure.gRPC;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 
-internal class GetMortgageOfferFPScheduleHandler
+internal sealed class GetMortgageOfferFPScheduleHandler
     : IRequestHandler<GetMortgageOfferFPScheduleRequest, GetMortgageOfferFPScheduleResponse>
 {
-    #region Construction
-
-    private readonly Repositories.OfferServiceDbContext _dbContext;
-    private readonly ICodebookServiceClients _codebookService;
-    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
-
-    public GetMortgageOfferFPScheduleHandler(
-        Repositories.OfferServiceDbContext dbContext, ICodebookServiceClients codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
-    {
-        _dbContext = dbContext;
-        _codebookService = codebookService;
-        _easSimulationHTClient = easSimulationHTClient;
-    }
-
-    #endregion
-
     public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.Offers
@@ -61,4 +45,15 @@ internal class GetMortgageOfferFPScheduleHandler
           _ => throw new NotImplementedException("RunSimulationHT")
       };
 
+    private readonly Database.OfferServiceDbContext _dbContext;
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
+
+    public GetMortgageOfferFPScheduleHandler(
+        Database.OfferServiceDbContext dbContext, ICodebookServiceClients codebookService, EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
+    {
+        _dbContext = dbContext;
+        _codebookService = codebookService;
+        _easSimulationHTClient = easSimulationHTClient;
+    }
 }
