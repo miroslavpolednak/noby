@@ -37,7 +37,6 @@ Jmenná konvence pro adresáře s endpointy je následující:
   [GetHousehold]                        (gRPC metoda GetHousehold)
     [Dto]                               (DTO platné pouze pro tento endpoint)
       ...
-    GetHouseholdRequest.cs              (MediatR request - v sobě má jako vlastnost referenci na gRPC request)
     GetHouseholdHandler.cs              (MediatR handler)
     GetHouseholdRequestValidator.cs     (FluentValidation validator pro request)
   [...]

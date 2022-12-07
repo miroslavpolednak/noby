@@ -4,7 +4,7 @@ option csharp_namespace = "DomainServices.HouseholdService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
 import "CreateHousehold.proto";
-import "HouseholdIdRequest.proto";
+import "GetHouseholdRequest.proto";
 import "GetHouseholdList.proto";
 import "Household.proto";
 import "UpdateHousehold.proto";
@@ -16,7 +16,7 @@ service HouseholdService {
     
     rpc DeleteHousehold (DomainServices.HouseholdService.DeleteHouseholdRequest) returns (google.protobuf.Empty);
     
-    rpc GetHousehold (DomainServices.HouseholdService.HouseholdIdRequest) returns (DomainServices.HouseholdService.Household);
+    rpc GetHousehold (DomainServices.HouseholdService.GetHouseholdRequest) returns (DomainServices.HouseholdService.Household);
     
     rpc GetHouseholdList (DomainServices.HouseholdService.GetHouseholdListRequest) returns (DomainServices.HouseholdService.GetHouseholdListResponse);
     

@@ -2,26 +2,26 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
-internal class CreateHouseholdMediatrRequestValidator
-    : AbstractValidator<CreateHouseholdMediatrRequest>
+internal class CreateHouseholdRequestValidator
+    : AbstractValidator<Contracts.CreateHouseholdRequest>
 {
-    public CreateHouseholdMediatrRequestValidator()
+    public CreateHouseholdRequestValidator()
     {
-        RuleFor(t => t.Request.SalesArrangementId)
+        RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
             .WithMessage("SalesArrangementId must be > 0").WithErrorCode("16010");
 
-        RuleFor(t => t.Request.HouseholdTypeId)
+        RuleFor(t => t.HouseholdTypeId)
             .GreaterThan(0)
             .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
 
-        RuleFor(t => t.Request.HouseholdTypeId)
+        RuleFor(t => t.HouseholdTypeId)
             .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
             .WithMessage("HouseholdTypeId must be > 0").WithErrorCode("16027");
 
-        RuleFor(t => t.Request.CustomerOnSAId1)
+        RuleFor(t => t.CustomerOnSAId1)
             .NotNull()
-            .When(t => t.Request.CustomerOnSAId2.HasValue)
+            .When(t => t.CustomerOnSAId2.HasValue)
             .WithMessage("CustomerOnSAId1 is not set although CustomerOnSAId2 is.").WithErrorCode("16056");
     }
 }

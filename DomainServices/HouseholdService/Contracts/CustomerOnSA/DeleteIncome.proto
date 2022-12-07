@@ -2,6 +2,6 @@
 package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
-message CustomerOnSAIdRequest {
-    int32 CustomerOnSAId = 1;
+message DeleteIncomeRequest {
+    int32 IncomeId = 1;
 }

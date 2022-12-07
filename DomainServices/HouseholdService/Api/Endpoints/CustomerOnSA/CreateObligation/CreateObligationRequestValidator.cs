@@ -1,33 +1,34 @@
-﻿using FluentValidation;
+﻿using DomainServices.HouseholdService.Contracts;
+using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
 
-internal class CreateObligationMediatrRequestValidator
-    : AbstractValidator<CreateObligationMediatrRequest>
+internal class CreateObligationRequestValidator
+    : AbstractValidator<CreateObligationRequest>
 {
-    public CreateObligationMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
-        RuleFor(t => t.Request.CustomerOnSAId)
+        RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
             .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
 
-        RuleFor(t => t.Request.ObligationTypeId)
+        RuleFor(t => t.ObligationTypeId)
             .MustAsync(async (t, token) => !t.HasValue || (await codebookService.ObligationTypes(token)).Any(x => x.Id == t.Value))
             .WithMessage("ObligationTypeId is not valid").WithErrorCode("16048");
 
-        RuleFor(t => t.Request.CreditCardLimit)
-            .Must((r, t) => t is null || t == 0M || r.Request.ObligationTypeId.GetValueOrDefault() != 1 && r.Request.ObligationTypeId.GetValueOrDefault() != 2)
+        RuleFor(t => t.CreditCardLimit)
+            .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 1 && r.ObligationTypeId.GetValueOrDefault() != 2)
             .WithMessage("CreditCardLimit not allowed for current ObligationTypeId").WithErrorCode("16049");
 
-        RuleFor(t => t.Request.LoanPrincipalAmount)
-            .Must((r, t) => t is null || t == 0M || r.Request.ObligationTypeId.GetValueOrDefault() != 3 && r.Request.ObligationTypeId.GetValueOrDefault() != 4)
+        RuleFor(t => t.LoanPrincipalAmount)
+            .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
             .WithMessage("LoanPrincipalAmount not allowed for current ObligationTypeId").WithErrorCode("16050");
 
-        RuleFor(t => t.Request.InstallmentAmount)
-            .Must((r, t) => t is null || t == 0M || r.Request.ObligationTypeId.GetValueOrDefault() != 3 && r.Request.ObligationTypeId.GetValueOrDefault() != 4)
+        RuleFor(t => t.InstallmentAmount)
+            .Must((r, t) => t is null || t == 0M || r.ObligationTypeId.GetValueOrDefault() != 3 && r.ObligationTypeId.GetValueOrDefault() != 4)
             .WithMessage("InstallmentAmount not allowed for current ObligationTypeId").WithErrorCode("16051");
 
-        RuleFor(t => t.Request.Creditor)
+        RuleFor(t => t.Creditor)
             .ChildRules(v =>
             {
                 v.RuleFor(t => t.CreditorId)

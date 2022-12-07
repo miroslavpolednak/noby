@@ -1,9 +1,11 @@
-﻿namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteIncome;
+﻿using DomainServices.HouseholdService.Contracts;
+
+namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteIncome;
 
 internal class DeleteIncomeHandler
-    : IRequestHandler<DeleteIncomeMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<DeleteIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeMediatrRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)

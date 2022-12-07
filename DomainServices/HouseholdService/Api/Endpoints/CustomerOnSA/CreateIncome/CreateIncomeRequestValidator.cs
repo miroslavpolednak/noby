@@ -1,31 +1,32 @@
-﻿using FluentValidation;
+﻿using DomainServices.HouseholdService.Contracts;
+using FluentValidation;
 
-namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncome;
+namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
 
-internal class UpdateIncomeMediatrRequestValidator
-    : AbstractValidator<UpdateIncomeMediatrRequest>
+internal class CreateIncomeRequestValidator
+    : AbstractValidator<CreateIncomeRequest>
 {
-    public UpdateIncomeMediatrRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
+    public CreateIncomeRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)
     {
-        RuleFor(t => t.Request.IncomeId)
+        RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
-            .WithMessage("IncomeId must be > 0").WithErrorCode("16055");
+            .WithMessage("CustomerOnSAId must be > 0").WithErrorCode("16024");
 
-        RuleFor(t => t.Request.IncomeTypeId)
+        RuleFor(t => t.IncomeTypeId)
             .GreaterThan(0)
             .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
 
-        RuleFor(t => t.Request.IncomeTypeId)
+        RuleFor(t => t.IncomeTypeId)
             .Must(t => (CIS.Foms.Enums.HouseholdTypes)t != CIS.Foms.Enums.HouseholdTypes.Unknown)
             .WithMessage("IncomeTypeId must be > 0").WithErrorCode("16028");
 
-        RuleFor(t => t.Request.BaseData)
+        RuleFor(t => t.BaseData)
             .SetInheritanceValidator(v =>
             {
                 v.Add(new Validators.IncomeBaseDataValidator(codebookService));
             });
 
-        RuleFor(t => t.Request.Employement)
+        RuleFor(t => t.Employement)
             .Must(t =>
             {
                 if (t?.Employer is null)

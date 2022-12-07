@@ -1,9 +1,11 @@
-﻿namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteObligation;
+﻿using DomainServices.HouseholdService.Contracts;
+
+namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteObligation;
 
 internal class DeleteObligationHandler
-    : IRequestHandler<DeleteObligationMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<DeleteObligationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationMediatrRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.CustomersObligations
             .Where(t => t.CustomerOnSAObligationId == request.ObligationId)

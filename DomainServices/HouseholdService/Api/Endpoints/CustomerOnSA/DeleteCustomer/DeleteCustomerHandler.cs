@@ -1,11 +1,12 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
+using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteCustomer;
 
 internal class DeleteCustomerHandler
-    : IRequestHandler<DeleteCustomerMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<DeleteCustomerRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCustomerMediatrRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCustomerRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.Customers
             .Include(t => t.Identities)

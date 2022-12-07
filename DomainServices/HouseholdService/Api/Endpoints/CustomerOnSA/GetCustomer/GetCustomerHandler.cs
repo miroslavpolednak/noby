@@ -1,12 +1,13 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomer;
 
 internal sealed class GetCustomerHandler
-    : IRequestHandler<GetCustomerMediatrRequest, Contracts.CustomerOnSA>
+    : IRequestHandler<GetCustomerRequest, Contracts.CustomerOnSA>
 {
-    public async Task<Contracts.CustomerOnSA> Handle(GetCustomerMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.CustomerOnSA> Handle(GetCustomerRequest request, CancellationToken cancellation)
     {
         var customerInstance = await _dbContext.Customers
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)

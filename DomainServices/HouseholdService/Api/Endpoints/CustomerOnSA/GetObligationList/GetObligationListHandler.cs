@@ -1,12 +1,13 @@
 ﻿using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
 using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetObligationList;
 
 internal sealed class GetObligationListHandler
-    : IRequestHandler<GetObligationListMediatrRequest, Contracts.GetObligationListResponse>
+    : IRequestHandler<GetObligationListRequest, GetObligationListResponse>
 {
-    public async Task<Contracts.GetObligationListResponse> Handle(GetObligationListMediatrRequest request, CancellationToken cancellation)
+    public async Task<GetObligationListResponse> Handle(GetObligationListRequest request, CancellationToken cancellation)
     {
         var list = await _dbContext.CustomersObligations
             .AsNoTracking()
@@ -16,7 +17,7 @@ internal sealed class GetObligationListHandler
 
         _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 
-        var response = new Contracts.GetObligationListResponse();
+        var response = new GetObligationListResponse();
         response.Obligations.AddRange(list);
         return response;
     }

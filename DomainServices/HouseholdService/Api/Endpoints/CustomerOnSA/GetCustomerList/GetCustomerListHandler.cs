@@ -1,12 +1,13 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomerList;
 
 internal sealed class GetCustomerListHandler
-    : IRequestHandler<GetCustomerListMediatrRequest, Contracts.GetCustomerListResponse>
+    : IRequestHandler<GetCustomerListRequest, GetCustomerListResponse>
 {
-    public async Task<Contracts.GetCustomerListResponse> Handle(GetCustomerListMediatrRequest request, CancellationToken cancellation)
+    public async Task<GetCustomerListResponse> Handle(GetCustomerListRequest request, CancellationToken cancellation)
     {
         var customers = await _dbContext.Customers
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
@@ -29,7 +30,7 @@ internal sealed class GetCustomerListHandler
             );
         });
 
-        var model = new Contracts.GetCustomerListResponse();
+        var model = new GetCustomerListResponse();
         model.Customers.AddRange(customers);
 
         _logger.FoundItems(model.Customers.Count);

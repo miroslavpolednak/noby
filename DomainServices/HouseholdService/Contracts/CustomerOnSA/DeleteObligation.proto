@@ -2,6 +2,6 @@
 package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
-message ObligationIdRequest {
+message DeleteObligationRequest {
     int32 ObligationId = 1;
 }

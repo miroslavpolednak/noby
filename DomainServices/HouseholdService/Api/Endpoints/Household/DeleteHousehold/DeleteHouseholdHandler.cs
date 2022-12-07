@@ -1,9 +1,11 @@
-﻿namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
+﻿using DomainServices.HouseholdService.Contracts;
+
+namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
 
 internal sealed class DeleteHouseholdHandler
-    : IRequestHandler<DeleteHouseholdMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<DeleteHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdMediatrRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellation)
     {
         var householdInstance = await _dbContext.Households
             .Where(t => t.HouseholdId == request.HouseholdId)
@@ -21,9 +23,18 @@ internal sealed class DeleteHouseholdHandler
 
         // smazat customerOnSA
         if (householdInstance.CustomerOnSAId1.HasValue)
-            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId1.Value, request.HardDelete), cancellation);
+            await _mediator.Send(new DeleteCustomerRequest
+            {
+                CustomerOnSAId = householdInstance.CustomerOnSAId1.Value,
+                HardDelete = request.HardDelete
+            }, cancellation);
+
         if (householdInstance.CustomerOnSAId2.HasValue)
-            await _mediator.Send(new CustomerOnSA.DeleteCustomer.DeleteCustomerMediatrRequest(householdInstance.CustomerOnSAId2.Value, request.HardDelete), cancellation);
+            await _mediator.Send(new DeleteCustomerRequest
+            {
+                CustomerOnSAId = householdInstance.CustomerOnSAId2.Value,
+                HardDelete = request.HardDelete
+            }, cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
