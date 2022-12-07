@@ -1,15 +1,13 @@
-﻿using _OS = DomainServices.OfferService.Contracts;
+﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Clients;
-using Grpc.Core;
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.OfferService.Api.Repositories;
+using DomainServices.OfferService.Api.Database;
 using Google.Protobuf;
 
-namespace DomainServices.OfferService.Api.Handlers;
+namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 
-internal class SimulateMortgageHandler
-    : IRequestHandler<Dto.SimulateMortgageMediatrRequest, _OS.SimulateMortgageResponse>
+internal sealed class SimulateMortgageHandler
+    : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
 {
     #region Construction
 
@@ -34,13 +32,13 @@ internal class SimulateMortgageHandler
 
     #endregion
 
-    public async Task<_OS.SimulateMortgageResponse> Handle(Dto.SimulateMortgageMediatrRequest request, CancellationToken cancellation)
+    public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellation)
     {
-        var resourceProcessId = Guid.Parse(request.Request.ResourceProcessId);
+        var resourceProcessId = Guid.Parse(request.ResourceProcessId);
 
         // setup input default values
-        var basicParameters = setUpDefaults(request.Request.BasicParameters, request.Request.SimulationInputs.GuaranteeDateFrom);
-        var inputs = await setUpDefaults(request.Request.SimulationInputs, cancellation);
+        var basicParameters = setUpDefaults(request.BasicParameters, request.SimulationInputs.GuaranteeDateFrom);
+        var inputs = await setUpDefaults(request.SimulationInputs, cancellation);
 
         // load codebook DrawingDuration for remaping Id -> DrawingDuration
         var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
@@ -55,7 +53,7 @@ internal class SimulateMortgageHandler
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
 
         // save to DB
-        var entity = new Repositories.Entities.Offer
+        var entity = new Database.Entities.Offer
         {
             ResourceProcessId = resourceProcessId,
             BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(basicParameters),
@@ -70,10 +68,10 @@ internal class SimulateMortgageHandler
         _dbContext.Offers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.Offer), entity.OfferId);
+        _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
         // create response
-        return new _OS.SimulateMortgageResponse
+        return new SimulateMortgageResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
@@ -86,15 +84,15 @@ internal class SimulateMortgageHandler
 
     }
 
-    private _OS.BasicParameters setUpDefaults(_OS.BasicParameters parameters, DateTime guaranteeDateFrom)
+    private BasicParameters setUpDefaults(BasicParameters parameters, DateTime guaranteeDateFrom)
     {
-        parameters = parameters ?? new _OS.BasicParameters();
+        parameters = parameters ?? new BasicParameters();
         parameters.GuaranteeDateTo = guaranteeDateFrom.AddDays(AppDefaults.MaxGuaranteeInDays);
         parameters.StatementTypeId = parameters.StatementTypeId ?? 1;   // Default: 1
         return parameters;
     }
 
-    private async Task<_OS.MortgageSimulationInputs> setUpDefaults(_OS.MortgageSimulationInputs input, CancellationToken cancellation)
+    private async Task<MortgageSimulationInputs> setUpDefaults(MortgageSimulationInputs input, CancellationToken cancellation)
     {
         input.ExpectedDateOfDrawing = input.ExpectedDateOfDrawing ?? DateTime.Now.AddDays(1); //currentDate + 1D
 
@@ -122,14 +120,14 @@ internal class SimulateMortgageHandler
         //Default: False
         input.IsEmployeeBonusRequested = input.IsEmployeeBonusRequested ?? false;
 
-        var defaultFeeSettings = new _OS.FeeSettings() { FeeTariffPurpose = 0, IsStatementCharged = true };
+        var defaultFeeSettings = new FeeSettings() { FeeTariffPurpose = 0, IsStatementCharged = true };
 
         input.FeeSettings = input.FeeSettings ?? defaultFeeSettings;
 
         // Určuje za jakým účelem se generuje seznam poplatků.
         // Default: 0 - za účelem nabídky
         input.FeeSettings.FeeTariffPurpose = input.FeeSettings.FeeTariffPurpose.HasValue ? input.FeeSettings.FeeTariffPurpose.Value : defaultFeeSettings.FeeTariffPurpose;
-        
+
         // Rizikové životní pojištění
         if (input.RiskLifeInsurance != null)
         {
@@ -145,10 +143,10 @@ internal class SimulateMortgageHandler
         return input;
     }
 
-    private static ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse resolveRunSimulationHT(IServiceCallResult result) =>
+    private static EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse resolveRunSimulationHT(IServiceCallResult result) =>
        result switch
        {
-           SuccessfulServiceCallResult<ExternalServices.EasSimulationHT.V6.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
+           SuccessfulServiceCallResult<EasSimulationHT.EasSimulationHTWrapper.SimulationHTResponse> r => r.Model,
            _ => throw new NotImplementedException("RunSimulationHT")
        };
 }

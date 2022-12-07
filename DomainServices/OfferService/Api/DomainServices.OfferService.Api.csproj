@@ -12,13 +12,6 @@
 	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Dto\Models\**" />
-    <Content Remove="Dto\Models\**" />
-    <EmbeddedResource Remove="Dto\Models\**" />
-    <None Remove="Dto\Models\**" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<InternalsVisibleTo Include="DomainServices.OfferService.Tests" />
 	</ItemGroup>

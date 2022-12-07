@@ -109,7 +109,7 @@ internal class FormsService
 
         var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);
 
-        var offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))
+        var offer = await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation)
                      ?? throw new CisNotFoundException(18001, $"Offer ID #{arrangement.OfferId} does not exist.");
 
         var user = await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation)

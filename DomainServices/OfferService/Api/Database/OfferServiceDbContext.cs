@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CIS.Infrastructure.Data;
 
-namespace DomainServices.OfferService.Api.Repositories;
+namespace DomainServices.OfferService.Api.Database;
 
 internal sealed class OfferServiceDbContext 
     : BaseDbContext<OfferServiceDbContext>

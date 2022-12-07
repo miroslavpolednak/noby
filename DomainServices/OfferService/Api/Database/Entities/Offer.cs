@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DomainServices.OfferService.Api.Repositories.Entities;
+namespace DomainServices.OfferService.Api.Database.Entities;
 
 [Table("Offer", Schema = "dbo")]
-internal class Offer : CIS.Core.Data.BaseCreated
+internal sealed class Offer 
+    : CIS.Core.Data.BaseCreated
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int OfferId { get; set; }
@@ -26,5 +27,4 @@ internal class Offer : CIS.Core.Data.BaseCreated
     public byte[] SimulationResultsBin { get; set; } = default!;
 
     public byte[] AdditionalSimulationResultsBin { get; set; } = default!;
-
 }
