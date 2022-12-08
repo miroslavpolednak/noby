@@ -17,9 +17,9 @@ internal class GetDetailHandler
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_CA.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
         
         var parameters = getParameters(saInstance);
-        Dto.MortgageDetailDto? data = null;
 
-        /*if (saInstance.SalesArrangementTypeId == 1)
+        /*Dto.MortgageDetailDto? data = null;
+        if (saInstance.SalesArrangementTypeId == 1)
         {
             // get mortgage data
             var offerInstance = ServiceCallResult.ResolveAndThrowIfError<_Offer.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken));
