@@ -1,12 +1,10 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CaseService.Api;
-using DomainServices.CodebookService.Clients;
-using DomainServices.UserService.Clients;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using DomainServices;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
-using DomainServices.SalesArrangementService.Clients;
+using CIS.Infrastructure.Security;
+using CIS.InternalServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -45,15 +43,16 @@ builder.Services.AddAttributedServices(typeof(Program));
 // authentication
 builder.AddCisServiceAuthentication();
 
-// add this service
-builder.AddCaseService(appConfiguration);
-
 // add BE services
 builder.Services
     .AddSalesArrangementService()
     .AddCodebookService()
     .AddUserService()
     .AddCisServiceDiscovery();
+
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+// add this service
+builder.AddCaseService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
 {
@@ -69,6 +68,7 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
+app.UseServiceDiscovery();
 app.UseRouting();
 
 app.UseAuthentication();
@@ -76,14 +76,11 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.CaseService.Api.Services.CaseService>();
+app.MapGrpcService<DomainServices.CaseService.Api.Services.CaseService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

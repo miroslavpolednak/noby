@@ -34,8 +34,7 @@ internal sealed class CreateObligationHandler
                 LoanPrincipalAmountCorrection = request.Correction.LoanPrincipalAmountCorrection
             };
 
-        int obligationId = ServiceCallResult.ResolveAndThrowIfError<int>(await _customerService.CreateObligation(model, cancellationToken));
-        return obligationId;
+        return await _customerService.CreateObligation(model, cancellationToken);
     }
 
     private readonly ICustomerOnSAServiceClient _customerService;

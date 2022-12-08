@@ -1,6 +1,7 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -22,9 +23,6 @@ builder.Services.AddAttributedServices(typeof(Program));
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
-// helper pro ziskani aktualniho uzivatele
-builder.Services.AddScoped<CIS.Core.Security.ICurrentUserAccessor, CIS.InternalServices.ServiceDiscovery.Api.ServiceDiscoveryContextUserAccessor>();
-
 // health checks
 builder.AddCisHealthChecks();
 // logging, tracing
@@ -33,7 +31,7 @@ builder
     .AddCisTracing();
 
 // add general Dapper repository
-builder.Services.AddDapper(builder.Configuration.GetConnectionString("default"));
+builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
 
 builder.Services.AddGrpc(options =>
 {
@@ -52,14 +50,9 @@ var app = builder.Build();
 app.UseRouting();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
-
-    endpoints.MapGrpcService<CIS.InternalServices.ServiceDiscovery.Api.Services.DiscoveryService>();
-
-    endpoints.MapGrpcReflectionService();
-});
+app.MapCisHealthChecks();
+app.MapGrpcService<DiscoveryService>();
+app.MapGrpcReflectionService();
 
 try
 {

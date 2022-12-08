@@ -17,17 +17,6 @@ internal static class StartupExtensions
 
     public static WebApplicationBuilder AddOfferService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        builder.Services
-            .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
-
-        // add validators
-        builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(Program))
-                .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-
         // EAS EasSimulationHT svc
         builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);
 

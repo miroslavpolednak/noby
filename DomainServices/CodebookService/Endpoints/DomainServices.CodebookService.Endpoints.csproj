@@ -9,12 +9,12 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="FastEnum" Version="1.8.0" />
-    <PackageReference Include="MediatR" Version="11.0.0" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
   </ItemGroup>

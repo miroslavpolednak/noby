@@ -1,42 +1,41 @@
 ﻿using CIS.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 
-namespace ExternalServicesTcp.V1.Clients
+namespace ExternalServicesTcp.V1.Clients;
+
+public class TcpClient : ITcpClient
 {
-    public class TcpClient : ITcpClient
+    private readonly HttpClient _httpClient;
+    private readonly ILogger<TcpClient> _logger;
+
+    public TcpClient(
+        HttpClient httpClient,
+        ILogger<TcpClient> logger)
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger<TcpClient> _logger;
+        _httpClient = httpClient;
+        _logger = logger;
+    }
 
-        public TcpClient(
-            HttpClient httpClient,
-            ILogger<TcpClient> logger)
+    public async Task<byte[]> DownloadFile(string url, CancellationToken cancellationToken)
+    {
+        using var response = await _httpClient.GetAsync(url, cancellationToken);
+        
+        if (response.IsSuccessStatusCode)
         {
-            _httpClient = httpClient;
-            _logger = logger;
+            return await response.Content.ReadAsByteArrayAsync();
         }
-
-        public async Task<byte[]> DownloadFile(string url, CancellationToken cancellationToken)
+        else
         {
-            using var response = await _httpClient.GetAsync(url, cancellationToken);
-            
-            if (response.IsSuccessStatusCode)
+            var result = await response.Content.ReadAsStringAsync();
+            _logger.LogError("Error when downloading file, {@result}", result);
+
+            if (result.Contains("item not found"))
             {
-                return await response.Content.ReadAsByteArrayAsync();
+                throw new CisNotFoundException(14002, "No document exist on specified url");
             }
             else
             {
-                var result = await response.Content.ReadAsStringAsync();
-                _logger.LogError("Error when downloading file, {@result}", result);
-
-                if (result.Contains("item not found"))
-                {
-                    throw new CisNotFoundException(14002, "No document exist on specified url");
-                }
-                else
-                {
-                    throw new CisServiceServerErrorException("eArchive(TCP)", nameof(DownloadFile), result);
-                }
+                throw new CisServiceServerErrorException("eArchive(TCP)", nameof(DownloadFile), result);
             }
         }
     }

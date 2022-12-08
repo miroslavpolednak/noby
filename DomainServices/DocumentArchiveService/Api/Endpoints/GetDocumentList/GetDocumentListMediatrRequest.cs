@@ -1,14 +1,13 @@
 ﻿using DomainServices.DocumentArchiveService.Contracts;
 
-namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList
-{
-    public class GetDocumentListMediatrRequest : IRequest<GetDocumentListResponse>, CIS.Core.Validation.IValidatableRequest
-    {
-        public GetDocumentListMediatrRequest(GetDocumentListRequest request)
-        {
-            Request = request;
-        }
+namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
 
-        public GetDocumentListRequest Request { get; }
+public class GetDocumentListMediatrRequest : IRequest<GetDocumentListResponse>, CIS.Core.Validation.IValidatableRequest
+{
+    public GetDocumentListMediatrRequest(GetDocumentListRequest request)
+    {
+        Request = request;
     }
+
+    public GetDocumentListRequest Request { get; }
 }

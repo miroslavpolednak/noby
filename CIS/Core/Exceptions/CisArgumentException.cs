@@ -1,23 +1,16 @@
-﻿using System.Runtime.Serialization;
+﻿namespace CIS.Core.Exceptions;
 
-namespace CIS.Core.Exceptions;
-
+/// <summary>
+/// Stejná chyba jako <see cref="System.ArgumentException"/>, ale obsahuje navíc CIS error kód
+/// </summary>
 [Serializable]
-public sealed class CisArgumentException : ArgumentException
+public sealed class CisArgumentException
+    : BaseCisArgumentException
 {
-    public int ExceptionCode { get; init; }
-
-    private CisArgumentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
-    public CisArgumentException(int exceptionCode, string? message, string? paramName)
-        : base(message, paramName)
-    {
-        this.ExceptionCode = exceptionCode;
-    }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        base.GetObjectData(info, context);
-        info.AddValue(nameof(ExceptionCode), ExceptionCode, typeof(int));
-    }
+    /// <param name="exceptionCode">CIS error kód</param>
+    /// <param name="message">Chybová zpráva</param>
+    /// <param name="paramName">Název parametru, který chybu vyvolal</param>
+    public CisArgumentException(int exceptionCode, string message, string paramName)
+        : base(exceptionCode, message, paramName)
+    { }
 }

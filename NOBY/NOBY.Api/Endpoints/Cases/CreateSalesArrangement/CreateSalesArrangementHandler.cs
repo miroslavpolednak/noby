@@ -25,13 +25,13 @@ internal sealed class CreateSalesArrangementHandler
     }
 
     private readonly Services.CreateSalesArrangementParametersFactory _createService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
 
     public CreateSalesArrangementHandler(
         Services.CreateSalesArrangementParametersFactory createService,
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService, 
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _createService = createService;
         _codebookService = codebookService;

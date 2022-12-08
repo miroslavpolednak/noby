@@ -29,19 +29,7 @@ public class EaCodesMainHandler
 
     public async Task<List<EaCodeMainItem>> Handle(EaCodesMainRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<EaCodeMainItem>(nameof(EaCodesMainHandler), async () =>
-            {
-                // load codebook items
-                return await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<EaCodeMainItem>(_sql, cancellationToken);
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<EaCodeMainItem>(nameof(EaCodesMainHandler), async () => { return await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<EaCodeMainItem>(_sql, cancellationToken); });
     }
 }
 

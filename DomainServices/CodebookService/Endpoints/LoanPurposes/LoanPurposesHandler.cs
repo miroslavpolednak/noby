@@ -7,30 +7,22 @@ public class LoanPurposesHandler
 {
     public async Task<List<LoanPurposesItem>> Handle(LoanPurposesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<LoanPurposesItem>(nameof(LoanPurposesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<LoanPurposesItem>(nameof(LoanPurposesHandler), async () =>
+            var items = await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItemExt>(_sqlQuery, cancellationToken);
+
+            return items.Select(i => new LoanPurposesItem
             {
-                var items = await _connectionProvider.ExecuteDapperRawSqlToList<LoanPurposesItemExt>(_sqlQuery, cancellationToken);
+                Id = i.Id,
+                Name = i.Name,
+                MandantId = i.MandantId,
+                ProductTypeIds = i.ProductTypeId?.ParseIDs(),
+                Order = i.Order,
+                C4mId = i.C4mId,
+                IsValid = i.IsValid,
 
-                return items.Select(i => new LoanPurposesItem
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    MandantId = i.MandantId,
-                    ProductTypeIds = i.ProductTypeId?.ParseIDs(),
-                    Order = i.Order,
-                    C4mId = i.C4mId,
-                    IsValid = i.IsValid,
-
-                }).ToList();
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+            }).ToList();
+        });
     }
 
     private class LoanPurposesItemExt : LoanPurposesItem

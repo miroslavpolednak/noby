@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Attributes;
+﻿using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;

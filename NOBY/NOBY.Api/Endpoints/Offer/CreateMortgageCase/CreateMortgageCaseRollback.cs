@@ -5,7 +5,7 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.AsImplementedInterfacesService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesService]
 internal class CreateMortgageCaseRollback
     : IRollbackAction<CreateMortgageCaseRequest>
 {
@@ -17,7 +17,7 @@ internal class CreateMortgageCaseRollback
 
         // smazat SA
         if (_bag.ContainsKey(BagKeySalesArrangementId))
-            await _salesArrangementService.DeleteSalesArrangement((int)_bag[BagKeySalesArrangementId]!, cancellationToken);
+            await _salesArrangementService.DeleteSalesArrangement((int)_bag[BagKeySalesArrangementId]!, true, cancellationToken);
 
         // smazat case
         if (_bag.ContainsKey(BagKeyCaseId))
@@ -33,7 +33,7 @@ internal class CreateMortgageCaseRollback
     private readonly IRollbackBag _bag;
     private readonly ILogger<CreateMortgageCaseRollback> _logger;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
 
@@ -41,7 +41,7 @@ internal class CreateMortgageCaseRollback
         IRollbackBag bag,
         ILogger<CreateMortgageCaseRollback> logger,
         ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService)
     {

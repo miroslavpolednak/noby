@@ -1,6 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using CIS.Infrastructure.Attributes;
+using CIS.Core.Attributes;
 
 namespace CIS.InternalServices.NotificationService.Api.S3;
 

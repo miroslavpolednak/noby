@@ -6,8 +6,8 @@ using DomainServices.CustomerService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices;
 
 namespace CIS.InternalServices.DocumentDataAggregator;
 

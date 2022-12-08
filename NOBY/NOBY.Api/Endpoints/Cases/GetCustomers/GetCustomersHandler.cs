@@ -38,9 +38,7 @@ internal class GetCustomersHandler
             var saDetail = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(saId, cancellationToken));
             
             // vsichni customeri z CustomerOnSA
-            var customers = ServiceCallResult.ResolveAndThrowIfError<List<_HO.CustomerOnSA>>(
-                await _customerOnSAService.GetCustomerList(saId, cancellationToken)
-            );
+            var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers
@@ -91,10 +89,10 @@ internal class GetCustomersHandler
                     LastName = t.CustomerOnSA.Name,
                     DateOfBirth = t.CustomerOnSA.DateOfBirthNaturalPerson
                 }
-            } : customerDetails.First(t => t.Identity.IdentityId == t.Identity.IdentityId);
-            var permanentAddress = customer.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
-            var mailingAddress = customer.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
-            var country = countries.FirstOrDefault(t => t.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
+            } : customerDetails.First(x => x.Identity.IdentityId == t.Identity.IdentityId && x.Identity.IdentityScheme == t.Identity.IdentityScheme);
+            var permanentAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
+            var mailingAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
+            var country = countries.FirstOrDefault(x => x.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
 
             return new GetCustomersResponseCustomer
             {
@@ -123,7 +121,7 @@ internal class GetCustomersHandler
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
@@ -133,7 +131,7 @@ internal class GetCustomersHandler
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _productService = productService;
         _customerService = customerService;

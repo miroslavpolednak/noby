@@ -1,5 +1,5 @@
 using System.IO.Compression;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
@@ -15,6 +15,8 @@ using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
+using DomainServices;
+using CIS.InternalServices;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -75,7 +77,7 @@ builder.Services.AddS3Client(builder.GetS3Configuration());
 builder.Services.AddSmtpClient(builder.GetSmtpConfiguration());
 
 // database
-builder.AddEntityFramework<NotificationDbContext>("nobyDb");
+builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");
 
 // swagger
 builder.AddCustomSwagger();
@@ -93,6 +95,7 @@ if (winSvc)
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseServiceDiscovery();
 
 app
     .UseCustomSwagger()

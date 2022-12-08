@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Logging;
+﻿using CIS.Core.Exceptions.ExternalServices;
 
 namespace DomainServices.RiskIntegrationService.Api.Clients;
 

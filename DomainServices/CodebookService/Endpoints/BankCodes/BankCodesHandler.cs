@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts.Endpoints.BankCodes;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.BankCodes;
 
 namespace DomainServices.CodebookService.Endpoints.BankCodes
 {
@@ -9,17 +8,9 @@ namespace DomainServices.CodebookService.Endpoints.BankCodes
 
         public async Task<List<BankCodeItem>> Handle(BankCodesRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<BankCodeItem>(nameof(BankCodesHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<BankCodeItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.GeneralException(ex);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<BankCodeItem>(nameof(BankCodesHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<BankCodeItem>(_sqlQuery, cancellationToken)
+            );
         }
 
         const string _sqlQuery = @"SELECT KOD_BANKY 'BankCode', NAZOV_BANKY 'Name', SKRAT_NAZOV_BANKY 'ShortName', SKRATKA_STATU_PRE_IBAN 'State', CASE WHEN SYSDATETIME() <= ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

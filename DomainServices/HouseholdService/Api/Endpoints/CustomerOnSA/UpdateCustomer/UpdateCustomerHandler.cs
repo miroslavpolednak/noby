@@ -1,4 +1,5 @@
-﻿using _SA = DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Services;
+using _SA = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomer;
 
@@ -17,7 +18,7 @@ internal class UpdateCustomerHandler
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.Request.CustomerOnSAId} does not exist.");
 
         // helper aby se nemuselo porad null checkovat
-        entity.Identities ??= new List<Repositories.Entities.CustomerOnSAIdentity>();
+        entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
 
         // customerOnSA byl jiz updatovan z KB CM
         bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
@@ -28,7 +29,7 @@ internal class UpdateCustomerHandler
             var existingSchemas = entity.Identities.Select(t => (int)t.IdentityScheme).ToList();
             var newSchemasToAdd = request.Request.Customer.CustomerIdentifiers.Where(t => !existingSchemas.Contains((int)t.IdentityScheme)).ToList();
 
-            entity.Identities.AddRange(newSchemasToAdd.Select(t => new Repositories.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
+            entity.Identities.AddRange(newSchemasToAdd.Select(t => new Database.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
         }
 
         // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
@@ -73,13 +74,13 @@ internal class UpdateCustomerHandler
     }
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly Shared.UpdateCustomerService _updateService;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly UpdateCustomerService _updateService;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public UpdateCustomerHandler(
         SulmService.ISulmClient sulmClient,
-        Shared.UpdateCustomerService updateService,
-        Repositories.HouseholdServiceDbContext dbContext)
+        UpdateCustomerService updateService,
+        Database.HouseholdServiceDbContext dbContext)
     {
         _sulmClient = sulmClient;
         _updateService = updateService;

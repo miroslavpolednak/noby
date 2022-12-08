@@ -1,8 +1,8 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using FluentValidation;
 using DomainServices.CodebookService.Clients;
 using ExternalServices.Eas;
 using ExternalServices.MpHome;
+
 namespace DomainServices.ProductService.Api;
 
 internal static class StartupExtensions
@@ -22,24 +22,13 @@ internal static class StartupExtensions
 
     public static WebApplicationBuilder AddProductService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
-        builder.Services
-            .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
-
-        // add validators
-        builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(Program))
-                .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
         builder.Services.AddExternalServiceMpHome(appConfiguration.MpHome);
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.ProductServiceDbContext>("konsDb");
+        builder.AddEntityFramework<Repositories.ProductServiceDbContext>(connectionStringKey: "konsDb");
 
         // repos
         builder.Services.AddScoped<Repositories.LoanRepository>();

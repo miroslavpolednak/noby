@@ -32,28 +32,20 @@ public class PropertySettlementsHandler
 
     public async Task<List<PropertySettlementItem>> Handle(PropertySettlementsRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<PropertySettlementItem>(nameof(PropertySettlementsHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<PropertySettlementItem>(nameof(PropertySettlementsHandler), async () =>
+            var items = await _connectionProvider.ExecuteDapperRawSqlToList<PropertySettlementItemExt>(_sqlQuery, cancellationToken);
+
+            return items.Select(i => new PropertySettlementItem
             {
-                var items = await _connectionProvider.ExecuteDapperRawSqlToList<PropertySettlementItemExt>(_sqlQuery, cancellationToken);
+                Id = i.Id,
+                Name = i.Name,
+                NameEnglish = i.NameEnglish,
+                MaritalStateIds = i.MaritalStateId?.ParseIDs(),
+                Order = i.Order,
+                IsValid = i.IsValid,
 
-                return items.Select(i => new PropertySettlementItem
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    NameEnglish = i.NameEnglish,
-                    MaritalStateIds = i.MaritalStateId?.ParseIDs(),
-                    Order = i.Order,
-                    IsValid = i.IsValid,
-
-                }).ToList();
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+            }).ToList();
+        });
     }
 }

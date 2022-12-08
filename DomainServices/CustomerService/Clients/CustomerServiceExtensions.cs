@@ -1,29 +1,31 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
+using DomainServices.CustomerService.Clients;
+using __Services = DomainServices.CustomerService.Clients.Services;
+using __Contracts = DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Clients;
+namespace DomainServices;
 
 public static class CustomerServiceExtensions
 {
-    public static IServiceCollection AddCustomerService(this IServiceCollection services) =>
-        services.TryAddGrpcClient<Contracts.V1.CustomerService.CustomerServiceClient>(a =>
-        {
-            a.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.V1.CustomerService.CustomerServiceClient>("DS:CustomerService");
-        }).RegisterServices();
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:CustomerService";
 
-    public static IServiceCollection AddCustomerService(this IServiceCollection services, string serviceUrl) =>
-        services.TryAddGrpcClient<Contracts.V1.CustomerService.CustomerServiceClient>(a =>
-        {
-            a.AddGrpcServiceUriSettings<Contracts.V1.CustomerService.CustomerServiceClient>(serviceUrl);
-        }).RegisterServices();
-
-    private static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static IServiceCollection AddCustomerService(this IServiceCollection services)
     {
-        services.AddTransient<ICustomerServiceClient, CustomerService>();
+        services.AddCisServiceDiscovery();
+        services.AddTransient<ICustomerServiceClient, __Services.CustomerService>();
+        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.V1.CustomerService.CustomerServiceClient>(ServiceName);
+        return services;
+    }
 
-        services.AddGrpcClientFromCisEnvironment<Contracts.V1.CustomerService.CustomerServiceClient>();
-
+    public static IServiceCollection AddCustomerService(this IServiceCollection services, string serviceUrl)
+    {
+        services.AddTransient<ICustomerServiceClient, __Services.CustomerService>();
+        services.AddCisGrpcClientUsingUrl<__Contracts.V1.CustomerService.CustomerServiceClient>(serviceUrl);
         return services;
     }
 }

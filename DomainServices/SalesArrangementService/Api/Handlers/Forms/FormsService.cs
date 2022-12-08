@@ -25,7 +25,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class FormsService
 {
 
@@ -36,7 +36,7 @@ internal class FormsService
     private readonly SulmService.ISulmClient _sulmClient;
     private readonly ICodebookServiceClients _codebookService;
     private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IProductServiceClient _productService;
     private readonly IUserServiceClient _userService;
@@ -53,7 +53,7 @@ internal class FormsService
         SulmService.ISulmClient sulmClient,
         ICodebookServiceClients codebookService,
         ICaseServiceClient caseService,
-        IOfferServiceClients offerService,
+        IOfferServiceClient offerService,
         ICustomerServiceClient customerService,
         IProductServiceClient productService,
         IUserServiceClient userService,
@@ -100,7 +100,7 @@ internal class FormsService
     {
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
 
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<Household>>(await _householdService.GetHouseholdList(arrangement.SalesArrangementId, cancellation));
+        var households = await _householdService.GetHouseholdList(arrangement.SalesArrangementId, cancellation);
 
         var incomes = await GetIncomes(customersOnSA, cancellation);
 
@@ -112,7 +112,7 @@ internal class FormsService
         var offer = ServiceCallResult.ResolveToDefault<GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation))
                      ?? throw new CisNotFoundException(18001, $"Offer ID #{arrangement.OfferId} does not exist.");
 
-        var user = ServiceCallResult.ResolveToDefault<User>(await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation))
+        var user = await _userService.GetUser(arrangement.Created.UserId ?? 0, cancellation)
             ?? throw new CisNotFoundException(18077, $"User ID #{arrangement.Created.UserId} does not exist.");
 
         var customers = await GetCustomers(customersOnSA, cancellation);
@@ -434,13 +434,13 @@ internal class FormsService
 
     private async Task<List<CustomerOnSA>> GetCustomersOnSA(int salesArrangementId, CancellationToken cancellation)
     {
-        var customersOnSa = ServiceCallResult.ResolveAndThrowIfError<List<CustomerOnSA>>(await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation));
+        var customersOnSa = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellation);
 
         var customerOnSAIds = customersOnSa.Select(i => i.CustomerOnSAId).ToArray();
         var customers = new List<CustomerOnSA>();
         for (int i = 0; i < customerOnSAIds.Length; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<CustomerOnSA>(await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation));
+            var customer = await _customerOnSAService.GetCustomer(customerOnSAIds[i], cancellation);
             customers.Add(customer);
         }
         return customers;
@@ -465,7 +465,7 @@ internal class FormsService
         var incomes = new List<Income>();
         for (int i = 0; i < incomeIds.Length; i++)
         {
-            var income = ServiceCallResult.ResolveAndThrowIfError<Income>(await _customerOnSAService.GetIncome(incomeIds[i], cancellation));
+            var income = await _customerOnSAService.GetIncome(incomeIds[i], cancellation);
             incomes.Add(income);
         }
         return incomes;

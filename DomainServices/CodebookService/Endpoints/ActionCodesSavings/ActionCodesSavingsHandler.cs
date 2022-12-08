@@ -8,17 +8,9 @@ public class ActionCodesSavingsLoanHandler
 {
     public async Task<List<GenericCodebookItem>> Handle(ActionCodesSavingsLoanRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ActionCodesSavingsLoanHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ActionCodesSavingsLoanHandler), async () =>
+            await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
+        );
     }
 
     private const string _sqlQuery =

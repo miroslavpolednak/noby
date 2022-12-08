@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Console_ClientS3": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53923;http://localhost:53924"
+    }
+  }
+}

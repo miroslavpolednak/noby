@@ -4,167 +4,132 @@ namespace DomainServices.HouseholdService.Clients.Services;
 
 internal class CustomerOnSAService : ICustomerOnSAServiceClient
 {
-    public async Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateCustomer), request.SalesArrangementId);
-        var result = await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
+        return await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteCustomer), customerOnSAId);
-        var result = await _service.DeleteCustomerAsync(
+        await _service.DeleteCustomerAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId,
                 HardDelete = hardDelete
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCustomer), customerOnSAId);
-        var result = await _service.GetCustomerAsync(
+        return await _service.GetCustomerAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<CustomerOnSA>(result);
     }
 
-    public async Task<IServiceCallResult> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetCustomerList), salesArrangementId);
         var result = await _service.GetCustomerListAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<List<CustomerOnSA>>(result.Customers.ToList());
+        return result.Customers.ToList();
     }
 
-    public async Task<IServiceCallResult> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateCustomer), request.CustomerOnSAId);
-        var result = await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<UpdateCustomerResponse>(result);
+        return await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
     #region Income
-    public async Task<IServiceCallResult> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateIncome(CreateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateIncome), request.CustomerOnSAId);
         var result = await _service.CreateIncomeAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<int>(result.IncomeId);
+        return result.IncomeId;
     }
 
-    public async Task<IServiceCallResult> DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteIncome), incomeId);
-        var result = await _service.DeleteIncomeAsync(
+        await _service.DeleteIncomeAsync(
             new()
             {
                 IncomeId = incomeId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Income> GetIncome(int incomeId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncome), incomeId);
-        var result = await _service.GetIncomeAsync(
+        return await _service.GetIncomeAsync(
             new()
             {
                 IncomeId = incomeId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<Income>(result);
     }
 
-    public async Task<IServiceCallResult> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<IncomeInList>> GetIncomeList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetIncomeList), customerOnSAId);
         var result = await _service.GetIncomeListAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<List<IncomeInList>>(result.Incomes.ToList());
+        return result.Incomes.ToList();
     }
 
-    public async Task<IServiceCallResult> UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncome), request.IncomeId);
-        var result = await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
+        await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateIncomeBaseData), request.IncomeId);
-        var result = await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
+        await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
     }
     #endregion Income
 
     #region Obligation
-    public async Task<IServiceCallResult> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateObligation(CreateObligationRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(CreateObligation), request.CustomerOnSAId);
         var result = await _service.CreateObligationAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<int>(result.ObligationId);
+        return result.ObligationId;
     }
 
-    public async Task<IServiceCallResult> DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(DeleteObligation), ObligationId);
-        var result = await _service.DeleteObligationAsync(
+        await _service.DeleteObligationAsync(
             new()
             {
                 ObligationId = ObligationId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Obligation> GetObligation(int ObligationId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetObligation), ObligationId);
-        var result = await _service.GetObligationAsync(
+        return await _service.GetObligationAsync(
             new()
             {
                 ObligationId = ObligationId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<Obligation>(result);
     }
 
-    public async Task<IServiceCallResult> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<Obligation>> GetObligationList(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetObligationList), customerOnSAId);
         var result = await _service.GetObligationListAsync(
             new()
             {
                 CustomerOnSAId = customerOnSAId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<List<Obligation>>(result.Obligations.ToList());
+        return result.Obligations.ToList();
     }
 
-    public async Task<IServiceCallResult> UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(UpdateObligation), request.ObligationId);
-        var result = await _service.UpdateObligationAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
+        await _service.UpdateObligationAsync(request, cancellationToken: cancellationToken);
     }
     #endregion Obligation
 
-    private readonly ILogger<CustomerOnSAService> _logger;
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;
-
-    public CustomerOnSAService(
-        ILogger<CustomerOnSAService> logger,
-        Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient service)
-    {
-        _service = service;
-        _logger = logger;
-    }
+    public CustomerOnSAService(Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient service) => _service = service;
 }

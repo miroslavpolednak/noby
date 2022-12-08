@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.WebApi.AssemblyDoc">
+            <summary>
+            Loggování a telemetrie
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.WebApi.NamespaceDoc">
+            <summary>
+            Loggování a telemetrie
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware">
+            <summary>
+            Pro HTTP metodu OPTIONS vrací 204 + patřičné hlavičky dle RFC 7231
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.WebApi.Types.PaginationRequest.RecordOffset">
+            <summary>
+            Offset (index, start=0) zaznamu, od ktereho se ma zacit s nacitanim
+            </summary>
+            <example>0</example>
+        </member>
+        <member name="P:CIS.Infrastructure.WebApi.Types.PaginationRequest.PageSize">
+            <summary>
+            Pocet zaznamu na jedne strance
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:CIS.Infrastructure.WebApi.Types.PaginationRequest.Sorting">
+            <summary>
+            [optional] Nastaveni razeni
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.WebApi.Types.PaginationRequest.TypeOfSortingField">
+            <summary>
+            Pro interoperabilitu s gRPC typem PaginationRequest
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.WebApi.Types.PaginationRequest.GetSorting">
+            <summary>
+            Pro interoperabilitu s gRPC typem PaginationRequest
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator" -->
+        <member name="M:CIS.Infrastructure.StartupExtensions.CisWebApiCors.AddCisWebApiCors(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <param name="builder"></param>
+            <returns>True if CORS is enabled an</returns>
+        </member>
+    </members>
+</doc>

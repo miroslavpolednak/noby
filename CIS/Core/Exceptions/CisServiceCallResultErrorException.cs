@@ -2,10 +2,14 @@
 
 namespace CIS.Core.Exceptions;
 
+/// <summary>
+/// nevim? asi zrusit spolu s ServiceCallResult
+/// </summary>
 public sealed class CisServiceCallResultErrorException 
     : BaseCisException
 {
     public IImmutableList<(int Key, string Message)> Errors => _result.Errors;
+    
     public bool IsMultiError => _result.IsMultiError;
 
     private readonly Results.ErrorServiceCallResult _result;

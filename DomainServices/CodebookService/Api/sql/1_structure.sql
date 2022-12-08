@@ -205,6 +205,27 @@ BEGIN
 END
 
 
+-- table 'IdentificationDocumentTypeExtension'
+DROP TABLE IF EXISTS [dbo].[IdentificationDocumentTypeExtension];
+CREATE TABLE [dbo].[IdentificationDocumentTypeExtension](
+	[IdentificationDocumentTypeId] [int] NOT NULL,
+	[MpDigiApiCode] [varchar](20) NULL,
+ CONSTRAINT [PK_IdentificationDocumentTypeExtension] PRIMARY KEY CLUSTERED 
+(
+	[IdentificationDocumentTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+
+	INSERT INTO [dbo].[IdentificationDocumentTypeExtension]([IdentificationDocumentTypeId],[MpDigiApiCode])
+    VALUES
+    (0, 'Undefined'),
+	(1, 'IDCard'),
+	(2, 'Passport'),
+	(3, 'ResidencePermit'),
+	(4, 'Undefined');
+GO
+
+
 /*
 TRUNCATE TABLE [dbo].[RelationshipCustomerProductTypeExtension];
 GO

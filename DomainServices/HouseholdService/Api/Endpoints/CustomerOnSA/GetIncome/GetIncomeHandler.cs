@@ -47,9 +47,9 @@ internal sealed class GetIncomeHandler
         return model;
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public GetIncomeHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public GetIncomeHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

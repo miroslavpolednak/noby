@@ -1,5 +1,4 @@
-﻿using Dapper;
-using DomainServices.CodebookService.Contracts;
+﻿using DomainServices.CodebookService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ActionCodesSavings;
 
 namespace DomainServices.CodebookService.Endpoints.ActionCodesSavings
@@ -9,17 +8,9 @@ namespace DomainServices.CodebookService.Endpoints.ActionCodesSavings
     {
         public async Task<List<GenericCodebookItem>> Handle(ActionCodesSavingsRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ActionCodesSavingsHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.GeneralException(ex);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<GenericCodebookItem>(nameof(ActionCodesSavingsHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItem>(_sqlQuery, cancellationToken)
+            );
         }
 
         private const string _sqlQuery =

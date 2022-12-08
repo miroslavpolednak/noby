@@ -8,17 +8,7 @@ public class EmploymentTypesHandler
 {
     public async Task<List<GenericCodebookItemWithCode>> Handle(EmploymentTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(EmploymentTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(EmploymentTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken));
     }
 
     private const string _sqlQuery =

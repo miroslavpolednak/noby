@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Cases;
 
-[CIS.Infrastructure.Attributes.TransientService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal class CasesModelConverter
 {
     public async Task<Dto.CaseModel> FromContract(DomainServices.CaseService.Contracts.Case model)

@@ -7,17 +7,7 @@ public class DevelopersHandler
 {
     public async Task<List<DeveloperItem>> Handle(DevelopersRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<DeveloperItem>(nameof(DevelopersHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<DeveloperItem>(nameof(DevelopersHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT DEVELOPER_ID 'Id', NAZEV 'Name', ICO_RC 'Cin', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 

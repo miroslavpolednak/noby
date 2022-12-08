@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Api.Repositories.Entities;
+﻿using DomainServices.HouseholdService.Api.Database.Entities;
+using DomainServices.HouseholdService.Api.Services;
 using _SA = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
@@ -13,7 +14,7 @@ internal class CreateCustomerHandler
         // check existing SalesArrangementId
         await _salesArrangementService.GetSalesArrangement(request.Request.SalesArrangementId, cancellation);
 
-        var entity = new Repositories.Entities.CustomerOnSA
+        var entity = new Database.Entities.CustomerOnSA
         {
             FirstNameNaturalPerson = request.Request.Customer.FirstNameNaturalPerson ?? "",
             Name = request.Request.Customer.Name ?? "",
@@ -56,7 +57,7 @@ internal class CreateCustomerHandler
         await _dbContext.SaveChangesAsync(cancellation);
         model.CustomerOnSAId = entity.CustomerOnSAId;
 
-        _logger.EntityCreated(nameof(Repositories.Entities.CustomerOnSA), entity.CustomerOnSAId);
+        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
 
         if (entity.Identities is not null)
             model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
@@ -69,16 +70,16 @@ internal class CreateCustomerHandler
     }
 
     private readonly SulmService.ISulmClient _sulmClient;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
-    private readonly Shared.UpdateCustomerService _updateService;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly UpdateCustomerService _updateService;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateCustomerHandler> _logger;
 
     public CreateCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClient sulmClient,
-        Shared.UpdateCustomerService updateService,
-        Repositories.HouseholdServiceDbContext dbContext,
+        UpdateCustomerService updateService,
+        Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
         _salesArrangementService = salesArrangementService;

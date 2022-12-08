@@ -1,7 +1,5 @@
-﻿using CIS.Core.Types;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
 
 namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
@@ -10,22 +8,20 @@ internal sealed class ServicesMemoryCache
     private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
 
-    public static DiscoverableService? GetServiceFromCache(ApplicationEnvironmentName environmentName, ServiceName serviceName, Contracts.ServiceTypes serviceType)
+    public static DiscoverableService? GetServiceFromCache(ApplicationEnvironmentName environmentName, ApplicationKey serviceName, Contracts.ServiceTypes serviceType)
     {
-        if (_cache.TryGetValue(environmentName, out ImmutableList<DiscoverableService> cacheEntry))
+        if (_cache.TryGetValue(environmentName, out ImmutableList<DiscoverableService>? cacheEntry))
         {
-            return cacheEntry.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType);
+            return cacheEntry?.FirstOrDefault(t => t.ServiceName == serviceName && t.ServiceType == serviceType);
         }
         return null;
     }
 
     public async Task<ImmutableList<DiscoverableService>> GetServices(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
-        ImmutableList<DiscoverableService> cacheEntry;
+        ImmutableList<DiscoverableService>? cacheEntry;
         if (!_cache.TryGetValue(environmentName, out cacheEntry))
         {
-            _logger.ServicesNotFoundInCache(environmentName);
-
             SemaphoreSlim mylock = _locks.GetOrAdd(environmentName, k => new SemaphoreSlim(1, 1));
 
             await mylock.WaitAsync(cancellationToken);
@@ -43,10 +39,8 @@ internal sealed class ServicesMemoryCache
                 mylock.Release();
             }
         }
-        else
-            _logger.ServicesFoundInCache(environmentName);
 
-        return cacheEntry;
+        return cacheEntry!;
     }
 
     private async Task<ImmutableList<DiscoverableService>> getServicesFromRemote(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
@@ -63,14 +57,10 @@ internal sealed class ServicesMemoryCache
             .ToImmutableList();
     }
 
-    private readonly ILogger<ServicesMemoryCache> _logger;
     private readonly Contracts.v1.DiscoveryService.DiscoveryServiceClient _service;
 
-    public ServicesMemoryCache(
-        Contracts.v1.DiscoveryService.DiscoveryServiceClient service,
-        ILogger<ServicesMemoryCache> logger)
+    public ServicesMemoryCache(Contracts.v1.DiscoveryService.DiscoveryServiceClient service)
     {
-        _logger = logger;
         _service = service;
     }
 }

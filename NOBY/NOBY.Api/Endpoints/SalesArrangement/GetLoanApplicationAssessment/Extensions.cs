@@ -233,7 +233,7 @@ internal static class Extensions
                 }
 
 
-                var identityKb = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
+                var identityKb = cOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
                 var c = data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode(identityKb)];
 
                 var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);
@@ -301,7 +301,9 @@ internal static class Extensions
                 ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,
                 ChildrenOverTenYearsCount = childrenOverTenYearsCount.HasValue ? childrenOverTenYearsCount.Value : 0,
                 Expenses = expenses,
-                Customers = householdCustomersOnSA.Select(i => MapCustomer(i, isPartner)).ToList(),
+                Customers = householdCustomersOnSA
+                    .Where(i => i.CustomerIdentifiers.Any(x => x.IdentityScheme == cCis.Identity.Types.IdentitySchemes.Kb))
+                    .Select(i => MapCustomer(i, isPartner)).ToList(),
             };
         }
 

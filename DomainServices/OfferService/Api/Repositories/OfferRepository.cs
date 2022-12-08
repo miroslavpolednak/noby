@@ -3,7 +3,7 @@ using Google.Protobuf;
 
 namespace DomainServices.OfferService.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class OfferRepository
 {
     private readonly OfferServiceDbContext _dbContext;

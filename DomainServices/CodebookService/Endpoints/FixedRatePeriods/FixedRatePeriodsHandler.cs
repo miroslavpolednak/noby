@@ -7,17 +7,9 @@ public class FixedRatePeriodsHandler
 {
     public async Task<List<FixedRatePeriodsItem>> Handle(FixedRatePeriodsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<FixedRatePeriodsItem>(nameof(FixedRatePeriodsHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<FixedRatePeriodsItem>(_sqlQuery, cancellationToken)
-                );
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<FixedRatePeriodsItem>(nameof(FixedRatePeriodsHandler), async () =>
+                await _connectionProvider.ExecuteDapperRawSqlToList<FixedRatePeriodsItem>(_sqlQuery, cancellationToken)
+            );
     }
 
     const string _sqlQuery = @"SELECT KOD_PRODUKTU 'ProductTypeId', PERIODA_FIXACE 'FixedRatePeriod', NULLIF(MANDANT, 0) 'MandantId', NOVY_PRODUKT 'IsNewProduct', ALGORITMUS_SAZBY 'InterestRateAlgorithm', 

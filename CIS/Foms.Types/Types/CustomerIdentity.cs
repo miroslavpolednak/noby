@@ -3,6 +3,9 @@ using CIS.Foms.Enums;
 
 namespace CIS.Foms.Types;
 
+/// <summary>
+/// Identita klienta
+/// </summary>
 public sealed class CustomerIdentity
 {
     /// <summary>

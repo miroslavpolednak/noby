@@ -48,16 +48,16 @@ internal class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
         // create customer on SA
-        var createCustomerResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken));
+        var createCustomerResult = await _customerOnSAService.CreateCustomer(request.ToDomainServiceRequest(salesArrangementId), cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCustomerOnSAId, createCustomerResult.CustomerOnSAId);
         
         // create household
-        int householdId = ServiceCallResult.ResolveAndThrowIfError<int>(await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
+        int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
             HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
-        }, cancellationToken));
+        }, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyHouseholdId, householdId);
         _logger.EntityCreated(nameof(Household), householdId);
 
@@ -78,10 +78,10 @@ internal class CreateMortgageCaseHandler
     private readonly IRollbackBag _bag;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
     private readonly IMediator _mediator;
@@ -91,11 +91,11 @@ internal class CreateMortgageCaseHandler
         IMediator mediator,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         IHouseholdServiceClient householdService,
         ICaseServiceClient caseService,
         ICodebookServiceClients codebookService, 
-        IOfferServiceClients offerService, 
+        IOfferServiceClient offerService, 
         ILogger<CreateMortgageCaseHandler> logger)
     {
         _bag = bag;

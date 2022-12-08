@@ -1,8 +1,9 @@
 using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices;
 using DomainServices.DocumentArchiveService.Api;
-using CIS.DomainServicesSecurity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
@@ -37,6 +38,8 @@ builder
 // health checks
 builder.AddCisHealthChecks();
 
+builder.Services.AddAttributedServices(typeof(Program));
+
 // authentication
 builder.AddCisServiceAuthentication();
 
@@ -44,6 +47,7 @@ builder.AddCisServiceAuthentication();
 builder.AddDocumentArchiveService(builder.Configuration);
 
 // add grpc
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddDocumentArchiveGrpc();
 
 // add grpc swagger 
@@ -66,8 +70,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
 
-
 app.UseCisLogging();
+
+app.UseServiceDiscovery();
 
 app.UseEndpoints(endpoints =>
 {
@@ -77,11 +82,6 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGrpcReflectionService();
 });
-
-// print gRPC PROTO file
-//var schemaGenerator = new ProtoBuf.Grpc.Reflection.SchemaGenerator();
-//var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.ICreditWorthinessService>();
-//File.WriteAllText("d:\\proto1.proto", proto1);
 
 try
 {

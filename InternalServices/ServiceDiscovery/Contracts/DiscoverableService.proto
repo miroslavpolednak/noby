@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.ServiceDiscovery;
+
+option csharp_namespace = "CIS.InternalServices.ServiceDiscovery.Contracts";
+
+message DiscoverableService {
+   string ServiceName = 1;
+   string ServiceUrl = 2;
+   ServiceTypes ServiceType = 3;
+}
+
+enum ServiceTypes {
+   Unknown = 0;
+   Grpc = 1;
+   Rest = 2;
+   Proprietary = 3;
+}

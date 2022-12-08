@@ -7,7 +7,7 @@ using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;
 using ProtoBuf.Grpc;
 using System.Net.Http;
-using DomainServices.OfferService.Contracts;
+using DomainServices;
 
 Console.WriteLine("run!");
 
@@ -81,7 +81,7 @@ var serviceProvider = new ServiceCollection()
     .AddOfferService("https://localhost:5010")
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<DomainServices.OfferService.Clients.IOfferServiceClients>();
+var service = serviceProvider.GetService<DomainServices.OfferService.Clients.IOfferServiceClient>();
 
 /*var inputData = new SimulateMortgageRequest
 {

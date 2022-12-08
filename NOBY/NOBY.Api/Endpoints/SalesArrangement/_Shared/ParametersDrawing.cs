@@ -58,6 +58,8 @@ public sealed class ParametersDrawingAgent
 
 public sealed class ParametersDrawingPayout
 {
+    public int? ProductObligationId { get; set; }
+
     /// <summary>
     /// Pořadové číslo výplaty v kolekci
     /// </summary>

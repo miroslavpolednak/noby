@@ -1,0 +1,8 @@
+{
+	"LogLevel": "Warn",
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.ExternalServicesHelpers.dll",
+  "ProjectDirectoryPath": "./",
+  "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.ExternalServicesHelpers/",
+  "GeneratedPages": "Namespaces,Classes,Interfaces",
+  "GeneratedAccessModifiers": "Public"
+}

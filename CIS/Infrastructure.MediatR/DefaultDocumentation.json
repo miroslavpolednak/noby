@@ -1,0 +1,8 @@
+{
+	"LogLevel": "Warn",
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Infrastructure.MediatR.dll",
+  "ProjectDirectoryPath": "./",
+  "OutputDirectoryPath": "../../Docs/CIS.Infrastructure.MediatR/",
+  "GeneratedPages": "Namespaces,Classes,Interfaces",
+  "GeneratedAccessModifiers": "Public"
+}

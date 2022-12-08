@@ -10,7 +10,7 @@ internal class GetHouseholdsHandler
     public async Task<List<Dto.HouseholdInList>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
     {
         // vsechny households
-        var households = ServiceCallResult.ResolveAndThrowIfError<List<contracts.Household>>(await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken));
+        var households = await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken);
         _logger.FoundItems(households.Count, nameof(Household));
 
         var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);

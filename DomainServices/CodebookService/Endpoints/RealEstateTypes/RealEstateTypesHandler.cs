@@ -7,17 +7,7 @@ public class RealEstateTypesHandler
 {
     public async Task<List<RealEstateTypeItem>> Handle(RealEstateTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<RealEstateTypeItem>(nameof(RealEstateTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<RealEstateTypeItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<RealEstateTypeItem>(nameof(RealEstateTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<RealEstateTypeItem>(_sqlQuery, cancellationToken));
     }
 
     private const string _sqlQuery =

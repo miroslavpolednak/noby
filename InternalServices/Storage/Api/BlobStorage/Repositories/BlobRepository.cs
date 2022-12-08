@@ -5,7 +5,7 @@ using CIS.Core.Data;
 
 namespace CIS.InternalServices.Storage.Api.BlobStorage;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class BlobRepository : DapperBaseRepository<BlobRepository>
 {
     private readonly IDateTime _time;

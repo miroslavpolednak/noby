@@ -1,6 +1,7 @@
 ﻿using _SA = DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
 using CIS.Foms.Enums;
+using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.Shared;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncome;
 
@@ -67,9 +68,9 @@ internal sealed class UpdateIncomeHandler
         };
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public UpdateIncomeHandler(Repositories.HouseholdServiceDbContext dbContext, CodebookService.Clients.ICodebookServiceClients codebookService)
+    public UpdateIncomeHandler(Database.HouseholdServiceDbContext dbContext, CodebookService.Clients.ICodebookServiceClients codebookService)
     {
         _dbContext = dbContext;
         _codebookService = codebookService;

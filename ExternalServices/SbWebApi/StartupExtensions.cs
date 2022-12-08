@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using CIS.ExternalServicesHelpers;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+﻿using Microsoft.AspNetCore.Builder;
+using CIS.Infrastructure.ExternalServicesHelpers;
+using Microsoft.Extensions.DependencyInjection;
+using CIS.Foms.Enums;
 
 namespace ExternalServices.SbWebApi;
 
@@ -9,37 +9,37 @@ public static class StartupExtensions
 {
     internal const string ServiceName = "SbWebApi";
 
-    public static WebApplicationBuilder AddExternalServiceSbWebApi(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, IExternalServiceClient
     {
-        var configuration = builder.CreateAndCheckExternalServiceConfiguration<Configuration.SbWebApiConfiguration>(ServiceName);
+        // ziskat konfigurace pro danou verzi sluzby
+        string version = getVersion<TClient>();
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
-        switch (configuration.Version)
+        switch (version, configuration.ImplementationType)
         {
-            case Versions.V1:
-                if (configuration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                    builder.Services.AddScoped<V1.ISbWebApiClient, V1.MockSbWebApiClient>();
-                else
-                    builder.Services.AddHttpClient<V1.ISbWebApiClient, V1.RealSbWebApiClient>((services, client) =>
-                    {
-                        // service url
-                        if (configuration.UseServiceDiscovery)
-                        {
-                            string url = services
-                                .GetRequiredService<IDiscoveryServiceAbstraction>()
-                                .GetServiceUrlSynchronously(new($"{Constants.ExternalServicesServiceDiscoveryKeyPrefix}{ServiceName}"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
-                            client.BaseAddress = new Uri(url!);
-                        }
-                        else
-                            client.BaseAddress = new Uri(configuration.ServiceUrl);
-                    });
+            case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<V1.ISbWebApiClient, V1.MockSbWebApiClient>();
+                break;
+
+            case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
+                builder
+                    .AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient>()
+                    .AddExternalServicesCorrelationIdForwarding()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
-                throw new NotImplementedException($"{ServiceName} version {configuration.Version} client not implemented");
+                throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
         }
 
         return builder;
     }
 
-    
+    static string getVersion<TClient>()
+        => typeof(TClient) switch
+        {
+            Type t when t.IsAssignableFrom(typeof(V1.ISbWebApiClient)) => V1.ISbWebApiClient.Version,
+            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+        };
 }

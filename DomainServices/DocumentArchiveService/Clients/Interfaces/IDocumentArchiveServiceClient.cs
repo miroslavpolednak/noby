@@ -1,4 +1,6 @@
-﻿namespace DomainServices.DocumentArchiveService.Clients;
+﻿using DomainServices.DocumentArchiveService.Contracts;
+
+namespace DomainServices.DocumentArchiveService.Clients;
 
 public interface IDocumentArchiveServiceClient
 {
@@ -9,5 +11,5 @@ public interface IDocumentArchiveServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 14009; EnvironmentName hodnota není z enum (DEV, FAT, SIT, UAT, PREPROD, EDU, PROD)</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 14010; EnvironmentIndex není jednociferné číslo</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Service unavailable</exception>
-    Task<IServiceCallResult> GenerateDocumentId(Contracts.EnvironmentNames environmentName, int? environmentIndex = 0, CancellationToken cancellationToken = default(CancellationToken));
+    Task<string> GenerateDocumentId(GenerateDocumentIdRequest request, CancellationToken cancellationToken = default(CancellationToken));
 }

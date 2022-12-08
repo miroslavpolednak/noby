@@ -5,9 +5,9 @@ using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 
-namespace DomainServices.OfferService.Clients;
+namespace DomainServices.OfferService.Clients.Services;
 
-internal class OfferService : IOfferServiceClients
+internal class OfferService : IOfferServiceClient
 {
 
     #region Construction
@@ -27,8 +27,6 @@ internal class OfferService : IOfferServiceClients
 
     public async Task<IServiceCallResult> GetOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetOffer), offerId);
-
         var result = await _service.GetOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetOfferResponse>(result);
@@ -36,8 +34,6 @@ internal class OfferService : IOfferServiceClients
 
     public async Task<IServiceCallResult> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetMortgageOffer), offerId);
-
         var result = await _service.GetMortgageOfferAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetMortgageOfferResponse>(result);
@@ -45,8 +41,6 @@ internal class OfferService : IOfferServiceClients
 
     public async Task<IServiceCallResult> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetMortgageOfferDetail), offerId);
-
         var result = await _service.GetMortgageOfferDetailAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetMortgageOfferDetailResponse>(result);
@@ -54,8 +48,6 @@ internal class OfferService : IOfferServiceClients
 
     public async Task<IServiceCallResult> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStarted(nameof(SimulateMortgage));
-
         try
         {
             var result = await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
@@ -92,8 +84,6 @@ internal class OfferService : IOfferServiceClients
 
     public async Task<IServiceCallResult> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RequestHandlerStartedWithId(nameof(GetMortgageOfferFPSchedule), offerId);
-
         var result = await _service.GetMortgageOfferFPScheduleAsync(new OfferIdRequest() { OfferId = offerId }, cancellationToken: cancellationToken);
 
         return new SuccessfulServiceCallResult<GetMortgageOfferFPScheduleResponse>(result);

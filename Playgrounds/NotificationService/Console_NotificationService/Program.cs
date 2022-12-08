@@ -3,7 +3,7 @@
 using CIS.Core.Configuration;
 using CIS.Core.Results;
 using CIS.Core.Security;
-using CIS.DomainServicesSecurity.ContextUser;
+using CIS.Infrastructure.Security.ContextUser;
 using CIS.InternalServices.NotificationService.Clients;
 using CIS.InternalServices.NotificationService.Clients.Interfaces;
 using CIS.InternalServices.NotificationService.Contracts.Result;

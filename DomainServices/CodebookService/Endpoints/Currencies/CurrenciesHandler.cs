@@ -7,17 +7,7 @@ public class CurrenciesHandler
 {
     public async Task<List<CurrenciesItem>> Handle(CurrenciesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<CurrenciesItem>(nameof(CurrenciesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<CurrenciesItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<CurrenciesItem>(nameof(CurrenciesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<CurrenciesItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = "SELECT DISTINCT MENA 'Code', POVOLENO_PRO_MENU_PRIJMU 'AllowedForIncomeCurrency', POVOLENO_PRO_MENU_BYDLISTE 'AllowedForResidencyCurrency', DEF 'IsDefault' FROM [SBR].[CIS_STATY] ORDER BY MENA ASC";

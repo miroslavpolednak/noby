@@ -32,20 +32,20 @@ internal class GetListHandler
 
         model.ForEach(t =>
         {
-            var saType = saTypeList.First(x => x.Id == t.SalesArrangementTypeId);
-            t.ProductName = productTypes.First(t => t.Id == saType.ProductTypeId).Name;
-            t.SalesArrangementTypeText = saType.Name;
+            var saType = saTypeList.FirstOrDefault(x => x.Id == t.SalesArrangementTypeId);
+            t.ProductName = productTypes.FirstOrDefault(t => t.Id == saType?.ProductTypeId)?.Name;
+            t.SalesArrangementTypeText = saType?.Name;
         });
 
         return model;
     }
 
     private readonly ICodebookServiceClients _codebookService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ILogger<GetListHandler> _logger;
 
     public GetListHandler(
-        ISalesArrangementServiceClients salesArrangementService, 
+        ISalesArrangementServiceClient salesArrangementService, 
         ICodebookServiceClients codebookService, 
         ILogger<GetListHandler> logger)
     {

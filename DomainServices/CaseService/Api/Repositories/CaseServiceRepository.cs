@@ -3,7 +3,7 @@ using CIS.Infrastructure.Data;
 
 namespace DomainServices.CaseService.Api.Repositories;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class CaseServiceRepository
 {
     public async Task<List<(int State, int Count)>> GetCounts(int userId, CancellationToken cancellation)

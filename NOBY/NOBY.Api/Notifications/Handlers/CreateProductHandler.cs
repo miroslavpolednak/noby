@@ -25,7 +25,7 @@ internal sealed class CreateProductHandler
 
         try
         {
-            // proc to tady bylo?
+            // je to tady proto, ze produkt uz muze byt zalozeny, ale ja na instanci CustomerOnSA to nemam jak zjistit
             await _productService.GetMortgage(notification.CaseId, cancellationToken);
             _logger.LogInformation($"Product already exist for CaseId #{notification.CaseId}");
             return;
@@ -92,6 +92,7 @@ internal sealed class CreateProductHandler
             CaseId = notification.CaseId,
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
         };
+
         var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result.ProductId);
         //TODO rollbackovat i vytvoreni klienta?
@@ -101,16 +102,16 @@ internal sealed class CreateProductHandler
 
     private readonly IRollbackBag _bag;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-    private readonly IOfferServiceClients _offerService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IProductServiceClient _productService;
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
         IRollbackBag bag,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
-        IOfferServiceClients offerService,
-        ISalesArrangementServiceClients salesArrangementService,
+        IOfferServiceClient offerService,
+        ISalesArrangementServiceClient salesArrangementService,
         IProductServiceClient productService,
         ILogger<CreateProductHandler> logger)
     {

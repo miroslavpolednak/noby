@@ -8,27 +8,19 @@ namespace DomainServices.CodebookService.Endpoints.PostCodes
     {
         public async Task<List<PostCodeItem>> Handle(PostCodesRequest request, CancellationToken cancellationToken)
         {
-            try
+            // nebudeme kesovat, stejne je to potemkin
+            _logger.LogDebug("Reading PostCodes from database");
+
+            await using (var connection = _connectionProvider.Create())
             {
-                // nebudeme kesovat, stejne je to potemkin
-                _logger.LogDebug("Reading PostCodes from database");
+                await connection.OpenAsync();
+                var result = (await connection.QueryAsync<PostCodeItem>("SELECT TOP 20 PSC 'PostCode', NAZEV 'Name', KOD_KRAJA 'Disctrict', KOD_OBCE 'Municipality' FROM [SBR].[CIS_PSC] ORDER BY PSC ASC")).ToList();
 
-                await using (var connection = _connectionProvider.Create())
-                {
-                    await connection.OpenAsync();
-                    var result = (await connection.QueryAsync<PostCodeItem>("SELECT TOP 20 PSC 'PostCode', NAZEV 'Name', KOD_KRAJA 'Disctrict', KOD_OBCE 'Municipality' FROM [SBR].[CIS_PSC] ORDER BY PSC ASC")).ToList();
+                result.ForEach(i => {
+                    i.Name = i.Name.Trim();
+                });
 
-                    result.ForEach(i => {
-                        i.Name = i.Name.Trim();
-                    });
-
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
+                return result;
             }
         }
 

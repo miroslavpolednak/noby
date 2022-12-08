@@ -16,17 +16,17 @@ internal static class LoggerExtensions
             "No services exists for environment '{EnvironmentName}'");
 
         _foundServices = LoggerMessage.Define<int, string>(
-            LogLevel.Debug,
+            LogLevel.Trace,
             new EventId(157, nameof(FoundServices)),
             "Database: found {Count} services in {EnvironmentName}");
 
         _servicesFoundInCache = LoggerMessage.Define<string>(
-            LogLevel.Debug,
+            LogLevel.Trace,
             new EventId(154, nameof(ServicesFoundInCache)),
             "Services for {EnvironmentName} FOUND in cache");
 
         _servicesNotFoundInCache = LoggerMessage.Define<string>(
-            LogLevel.Debug,
+            LogLevel.Trace,
             new EventId(152, nameof(ServicesNotFoundInCache)),
             "Services for {EnvironmentName} NOT found in cache");
 

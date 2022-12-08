@@ -10,7 +10,7 @@ internal class UpdateCustomersHandler
     public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
     {
         // detail domacnosti
-        var householdInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.Household>(await _householdService.GetHousehold(request.HouseholdId, cancellationToken));
+        var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
         
         var c1 = await crudCustomer(request.Customer1, householdInstance.CustomerOnSAId1, householdInstance, CustomerRoles.Debtor, cancellationToken);
         var c2 = await crudCustomer(request.Customer2, householdInstance.CustomerOnSAId2, householdInstance, CustomerRoles.Codebtor, cancellationToken);
@@ -56,9 +56,9 @@ internal class UpdateCustomersHandler
             {
                 try
                 {
-                    var currentCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken));
+                    var currentCustomerInstance = await _customerOnSAService.GetCustomer(customer.CustomerOnSAId!.Value, cancellationToken);
 
-                    var identities = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(new _HO.UpdateCustomerRequest
+                    var identities = (await _customerOnSAService.UpdateCustomer(new _HO.UpdateCustomerRequest
                         {
                             CustomerOnSAId = customer.CustomerOnSAId!.Value,
                             Customer = customer.ToDomainServiceRequest(currentCustomerInstance.LockedIncomeDateTime)
@@ -75,12 +75,12 @@ internal class UpdateCustomersHandler
             }
             else // vytvoreni noveho
             {
-                var createResult = ServiceCallResult.ResolveAndThrowIfError<_HO.CreateCustomerResponse>(await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
+                var createResult = await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
                 {
                     SalesArrangementId = householdInstance.SalesArrangementId,
                     CustomerRoleId = (int)customerRole,
                     Customer = customer.ToDomainServiceRequest()
-                }, cancellationToken));
+                }, cancellationToken);
 
                 return (createResult.CustomerOnSAId, createResult.CustomerIdentifiers);
             }

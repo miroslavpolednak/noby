@@ -7,17 +7,7 @@ namespace DomainServices.CodebookService.Endpoints.JobTypes
     {
         public async Task<List<JobTypeItem>> Handle(JobTypesRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await FastMemoryCache.GetOrCreate<JobTypeItem>(nameof(JobTypesHandler), async () =>
-                    await _connectionProvider.ExecuteDapperRawSqlToList<JobTypeItem>(_sqlQuery, cancellationToken)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
+            return await FastMemoryCache.GetOrCreate<JobTypeItem>(nameof(JobTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<JobTypeItem>(_sqlQuery, cancellationToken));
         }
 
         private const string _sqlQuery =

@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.HouseholdService.Api.Repositories;
+using DomainServices.HouseholdService.Api.Database;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomer;
 

@@ -31,10 +31,10 @@ internal class GetFullPaymentScheduleByOfferIdHandler
         };
     }
 
-    private readonly IOfferServiceClients _offerService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ILogger<GetFullPaymentScheduleByOfferIdHandler> _logger;
 
-    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClients offerService, ILogger<GetFullPaymentScheduleByOfferIdHandler> logger)
+    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClient offerService, ILogger<GetFullPaymentScheduleByOfferIdHandler> logger)
     {
         _logger = logger;
         _offerService = offerService;

@@ -7,18 +7,10 @@ public class PaymentDaysHandler
 {
     public async Task<List<PaymentDayItem>> Handle(PaymentDaysRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<PaymentDayItem>(nameof(PaymentDaysHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<PaymentDayItem>(nameof(PaymentDaysHandler), async () =>
-            {
-                return await _connectionProvider.ExecuteDapperRawSqlToList<PaymentDayItem>(_sqlQuery, cancellationToken);
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+            return await _connectionProvider.ExecuteDapperRawSqlToList<PaymentDayItem>(_sqlQuery, cancellationToken);
+        });
     }
 
     const string _sqlQuery = @"SELECT DEN_SPLACENI 'PaymentDay', DEN_ZAPOCTENI_SPLATKY 'PaymentAccountDay', NULLIF(MANDANT, 0) 'MandantId', DEF 'IsDefault', NABIZET_PORTAL 'ShowOnPortal'

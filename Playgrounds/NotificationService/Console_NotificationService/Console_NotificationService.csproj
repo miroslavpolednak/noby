@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\CIS\DomainServicesSecurity\CIS.DomainServicesSecurity.csproj" />
+      <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
       <ProjectReference Include="..\..\..\InternalServices\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
       <ProjectReference Include="..\..\..\InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Grpc.Net.Client" Version="2.49.0" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.50.0" />
       <PackageReference Include="protobuf-net.Grpc" Version="1.0.179" />
     </ItemGroup>
 

@@ -48,14 +48,14 @@ internal class SimulateMortgageHandler
         catch (CisArgumentException ex)
         {
             // rethrow to be catched by validation middleware
-            throw new CisValidationException(ex);
+            throw new CisValidationException(ex.ExceptionCode, ex.Message);
         }
     }
 
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
     
-    public SimulateMortgageHandler(IOfferServiceClients offerService, ISalesArrangementServiceClients salesArrangementService)
+    public SimulateMortgageHandler(IOfferServiceClient offerService, ISalesArrangementServiceClient salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;

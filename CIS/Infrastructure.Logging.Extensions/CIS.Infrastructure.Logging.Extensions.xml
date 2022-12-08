@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.Logging.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.Logging.Extensions.AssemblyDoc">
+            <summary>
+            ILogger extension methods
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Logging.NamespaceDoc">
+            <summary>
+            Extension metody pro logování.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Logging.EventIdCodes">
+            <summary>
+            Kódy událostí v logu
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Logging.CacheLoggerExtensions">
+            <summary>
+            Extension metody pro ILogger v oblasti kešování.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.CacheLoggerExtensions.ItemFoundInCache(Microsoft.Extensions.Logging.ILogger,System.String)">
+            <summary>
+            Objekt byl nalezen v cache
+            </summary>
+            <param name="key">Klíč objektu v cache</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.CacheLoggerExtensions.TryAddItemToCache(Microsoft.Extensions.Logging.ILogger,System.String)">
+            <summary>
+            Přidání položky do cache
+            </summary>
+            <param name="key">Klíč objektu v cache</param>
+        </member>
+        <member name="T:CIS.Infrastructure.Logging.EntityLoggerExtensions">
+            <summary>
+            Extension metody pro ILogger pro události týkající se entit.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityAlreadyExist(Microsoft.Extensions.Logging.ILogger,System.String,System.Int64,System.Exception)">
+            <summary>
+            Entita již existuje (např. v databázi).
+            </summary>
+            <param name="entityName">Název typu entity</param>
+            <param name="entityId">ID entity</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityAlreadyExist(Microsoft.Extensions.Logging.ILogger,CIS.Core.Exceptions.CisAlreadyExistsException)">
+            <summary>
+            Entita již existuje (např. v databázi).
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityNotFound(Microsoft.Extensions.Logging.ILogger,System.String,System.Int64,System.Exception)">
+            <summary>
+            Entita nebyla nalezena (např. ID neexistuje v databázi)
+            </summary>
+            <param name="entityName">Název typu entity</param>
+            <param name="entityId">ID entity</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityNotFound(Microsoft.Extensions.Logging.ILogger,CIS.Core.Exceptions.CisNotFoundException)">
+            <summary>
+            Entita nebyla nalezena (např. ID neexistuje v databázi)
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityCreated(Microsoft.Extensions.Logging.ILogger,System.String,System.Int64)">
+            <summary>
+            Entita byla právě vytvořena.
+            </summary>
+            <param name="entityName">Název typu entity</param>
+            <param name="entityId">ID nové entity</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(Microsoft.Extensions.Logging.ILogger,System.Int32)">
+            <summary>
+            Nalezeno záznamů / entit / objektů.
+            </summary>
+            <remarks>
+            Např. entit v databázi nebo položek v keši.
+            </remarks>
+            <param name="count">Počet nalezených záznamů.</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.LoggerExtensions.FoundItems(Microsoft.Extensions.Logging.ILogger,System.Int32,System.String)">
+            <summary>
+            Nalezeno záznamů / entit / objektů.
+            </summary>
+            <remarks>
+            Např. entit v databázi nebo položek v keši.
+            </remarks>
+            <param name="count">Počet nalezených záznamů.</param>
+            <param name="entityName">Typ nalezené entity</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.LoggerExtensions.LogSerializedObject(Microsoft.Extensions.Logging.ILogger,System.String,System.Object,Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            TODO: odstranit? Logovat do log contextu?
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Logging.RequestResponseLoggerExtensions">
+            <summary>
+            Extension metody pro ILogger pro logování HTTP requestů a responsů.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Logging.ServiceLoggerExtensions">
+            <summary>
+            Extension metody pro ILogger v týkající se handlingu webových služeb třetích stran.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.ServiceLoggerExtensions.ExtServiceAuthenticationFailed(Microsoft.Extensions.Logging.ILogger,System.Exception)">
+            <summary>
+            Nepodařilo se autentizovat do služby.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.ServiceLoggerExtensions.ServiceUnavailable(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)">
+            <summary>
+            Doménová služba není dostupná.
+            </summary>
+            <param name="serviceName">Název služby</param>
+        </member>
+        <member name="M:CIS.Infrastructure.Logging.ServiceLoggerExtensions.ExtServiceUnavailable(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)">
+            <summary>
+            Služba třetí strany není dostupná.
+            </summary>
+            <param name="parentServiceName">Název doménové služby, ze které je služba třetí strany volaná.</param>
+        </member>
+    </members>
+</doc>

@@ -11,7 +11,7 @@ internal class UpdateCustomerOnCaseHandler
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
         // detail customera
-        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken));
+        var customerInstance = await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken);
 
         if (customerInstance.CustomerRoleId == (int)CIS.Foms.Enums.CustomerRoles.Debtor)
         {

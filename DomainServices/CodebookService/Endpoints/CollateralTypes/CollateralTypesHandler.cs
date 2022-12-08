@@ -7,17 +7,7 @@ public class CollateralTypesHandler
 {
     public async Task<List<CollateralTypeItem>> Handle(CollateralTypesRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<CollateralTypeItem>(nameof(CollateralTypesHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<CollateralTypeItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<CollateralTypeItem>(nameof(CollateralTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<CollateralTypeItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT TYP_ZABEZPECENIA 'CollateralType', NULLIF(MANDANT, 0) 'MandantId', KOD_BGM 'CodeBgm', TEXT_BGM 'TextBgm', TEXT_K_TYPU 'NameType'

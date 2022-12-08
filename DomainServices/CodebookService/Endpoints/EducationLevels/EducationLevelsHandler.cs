@@ -7,57 +7,27 @@ public class EducationLevelsHandler
 {
     public async Task<List<EducationLevelItem>> Handle(EducationLevelsRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<EducationLevelItem>(nameof(EducationLevelsHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<EducationLevelItem>(nameof(EducationLevelsHandler), async () =>
-            {
-                var extMapper = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ExtensionMapper>(_sqlQueryExtension, cancellationToken);
-
-                var result = await _connectionProvider.ExecuteDapperRawSqlToList<EducationLevelItem>(_sqlQuery, cancellationToken);
-
-                result.ForEach(t =>
-                {
-                    t.RdmCode = extMapper.FirstOrDefault(s => s.EducationLevelId == t.Id)?.RDMCode;
-                });
-
-                return result;
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            throw;
-        }
-    }
-
-    private class ExtensionMapper
-    {
-        public int EducationLevelId { get; set; }
-        public string? RDMCode { get; set; }
+            var result = await _connectionProvider.ExecuteDapperRawSqlToList<EducationLevelItem>(_sqlQuery, cancellationToken);
+            return result;
+        });
     }
 
     private const string _sqlQuery =
-        "SELECT ID_VZDELANI 'Id', NAZEV_VZDELANI 'Name', KOD_SCORING 'ScoringCode' FROM [SBR].[CIS_VZDELANI] ORDER BY ID_VZDELANI ASC";
-    const string _sqlQueryExtension = "Select * From EducationLevelExtension";
+        "SELECT KOD 'Id', TEXT 'Name', CODE_NAME 'ShortName', CODE 'RdmCode',  KOD_SCORING 'ScoringCode', " +
+        "CASE WHEN PLATNY_PRE_ES = 1 AND SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' " +
+        "FROM [SBR].[CIS_VZDELANIE] WHERE MANDANT IN (0, 2) ORDER BY KOD ASC";
 
     private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
     private readonly ILogger<EducationLevelsHandler> _logger;
-    private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
 
     public EducationLevelsHandler(
 
         CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> connectionProvider, 
-        ILogger<EducationLevelsHandler> logger,
-        CIS.Core.Data.IConnectionProvider connectionProviderCodebooks)
+        ILogger<EducationLevelsHandler> logger)
     {
         _logger = logger;
         _connectionProvider = connectionProvider;
-        _connectionProviderCodebooks = connectionProviderCodebooks;
     }
 }
-
-
-//Id = ID_VZDELANI
-//Name = NAZEV_VZDELANI
-//RdmCode = mapping na KB RDM číselník pro zpracování kódů z KB CM(codebook extension) (není v FE API)
-//ScoringCode = KOD_SCORING(není v FE API)

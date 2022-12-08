@@ -30,9 +30,9 @@ internal sealed class UpdateObligationHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public UpdateObligationHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public UpdateObligationHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

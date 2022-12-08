@@ -1,10 +1,10 @@
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.OfferService.Api;
-using DomainServices.CodebookService.Clients;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
-using CIS.DomainServicesSecurity;
+using CIS.Infrastructure.Security;
+using CIS.InternalServices;
+using DomainServices;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -47,6 +47,7 @@ builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 builder.Services.AddCodebookService();
 
 // add my services
+builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddOfferService(appConfiguration);
 
 builder.Services.AddGrpc(options =>
@@ -67,6 +68,7 @@ if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 
 var app = builder.Build();
 
+app.UseServiceDiscovery();
 app.UseRouting();
 
 app.UseAuthentication();
@@ -74,14 +76,11 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 app.UseCisLogging();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapCisHealthChecks();
+app.MapCisHealthChecks();
 
-    endpoints.MapGrpcService<DomainServices.OfferService.Api.Services.OfferService>();
+app.MapGrpcService<DomainServices.OfferService.Api.Services.OfferService>();
 
-    endpoints.MapGrpcReflectionService();
-});
+app.MapGrpcReflectionService();
 
 try
 {

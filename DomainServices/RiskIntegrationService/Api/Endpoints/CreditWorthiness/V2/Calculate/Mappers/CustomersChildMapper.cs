@@ -3,7 +3,7 @@ using _C4M = DomainServices.RiskIntegrationService.Api.Clients.CreditWorthiness.
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
-[CIS.Infrastructure.Attributes.ScopedService, CIS.Infrastructure.Attributes.SelfService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CustomersChildMapper
 {
     public async Task<List<_C4M.LoanApplicationCounterParty>> MapCustomers(List<_V2.CreditWorthinessCustomer> customers, int? mandantId, CancellationToken cancellation)
@@ -33,13 +33,7 @@ internal sealed class CustomersChildMapper
             // Id, IsPartner
             return new _C4M.LoanApplicationCounterParty
             {
-                Id = string.IsNullOrEmpty(t.PrimaryCustomerId) ? null : new _C4M.ResourceIdentifier
-                {
-                    Id = t.PrimaryCustomerId,
-                    Instance = !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS",
-                    Domain = "CM",
-                    Resource = "Customer"
-                },
+                Id = string.IsNullOrEmpty(t.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateResourceCounterParty(t.PrimaryCustomerId, !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS"),
                 IsPartner = t.HasPartner ? 1 : 0,
                 MaritalStatus = maritalStatus,
                 LoanApplicationIncome = incomes,

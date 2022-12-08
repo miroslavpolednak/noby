@@ -1,4 +1,4 @@
-﻿      namespace ExternalServices.Sdf.V1.Model;
+﻿namespace ExternalServices.Sdf.V1.Model;
 
 public class GetDocumentByExternalIdSdfQuery
 {

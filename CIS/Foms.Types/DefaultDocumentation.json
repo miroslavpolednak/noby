@@ -1,0 +1,8 @@
+{
+	"LogLevel": "Warn",
+  "AssemblyFilePath": "./bin/Debug/net7.0/CIS.Foms.Types.dll",
+  "ProjectDirectoryPath": "./",
+  "OutputDirectoryPath": "../../Docs/CIS.Foms.Types/",
+  "GeneratedPages": "Namespaces,Classes,Interfaces",
+  "GeneratedAccessModifiers": "Public"
+}

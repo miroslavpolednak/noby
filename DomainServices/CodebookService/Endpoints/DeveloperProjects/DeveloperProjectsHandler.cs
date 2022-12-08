@@ -7,17 +7,7 @@ public class DeveloperProjectsHandler
 {
     public async Task<List<DeveloperProjectItem>> Handle(DeveloperProjectsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return await FastMemoryCache.GetOrCreate<DeveloperProjectItem>(nameof(DeveloperProjectsHandler), async () =>
-                await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperProjectItem>(_sqlQuery, cancellationToken)
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+        return await FastMemoryCache.GetOrCreate<DeveloperProjectItem>(nameof(DeveloperProjectsHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<DeveloperProjectItem>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT DEVELOPER_PROJEKT_ID 'Id', DEVELOPER_ID 'DeveloperId', PROJEKT 'Name', UPOZORNENI_PRO_KB 'WarningForKb', UPOZORNENI_PRO_MPSS 'WarningForMp', STRANKY_PROJEKTU 'Web', LOKALITA 'Place', HROMADNE_OCENENI 'MassValuation', DOPORUCENI 'Recommandation'

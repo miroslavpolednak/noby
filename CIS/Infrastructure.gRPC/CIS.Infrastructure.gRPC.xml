@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.gRPC</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.gRPC.AssemblyDoc">
+            <summary>
+            Podpora pro vytváření gRPC služeb v systému NOBY.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsDirect`1">
+            <summary>
+            Implementace bez napojení na ServiceDiscovery.
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsDirect`1.ServiceUrl">
+            <summary>
+            Adresa služby.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsServiceDiscovery`1">
+            <summary>
+            Implementace podporující ServiceDiscovery.
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsServiceDiscovery`1.ServiceType">
+            <summary>
+            Always gRPC (=1)
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.Configuration.GrpcServiceUriSettingsServiceDiscovery`1.ServiceUrl">
+            <summary>
+            Adresa služby.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.Configuration.IGrpcServiceUriSettings`1">
+            <summary>
+            Reprezentuje konfiguraci připojení na doménovou službu.
+            </summary>
+            <remarks>
+            Jedná se o třídu s generickým parametrem, protože mohu mít v projektu napojených více gRPC služeb. Pak je TService typem klienta pro každou službu.
+            </remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.gRPC.Configuration.IGrpcServiceUriSettings`1.ServiceUrl">
+            <summary>
+            Adresa služby.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.GrpcErrorCollection">
+            <summary>
+            Kolekce chyb uložená v Trailers grpc response (ve chvíli, kdy se vrací RpcException)
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.GrpcExceptionHelpers">
+            <summary>
+            Helpery pro vytváření RpcException.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.KestrelExtensions">
+            <summary>
+            Nastavení Kestrel serveru pro gRPC služby.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.KestrelExtensions.UseKestrelWithCustomConfiguration(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String)">
+            <summary>
+            Umozni nasatavit kestrel custom konfiguracnim souborem.
+            Vychozi nazev pro konfiguracni soubor je "kestrel.json". Soubor musi obsahovat root node "CustomeKestrel", pod kterym je struktura CIS.Core.Configuration.KestrelConfiguration.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.StartupExtensions">
+            <summary>
+            Extension metody do startupu aplikace pro registraci gRPC služeb.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcClientInner``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Boolean)">
+            <summary>
+            Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcInfrastructure(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+            <summary>
+            Zaregistruje do DI:
+            - MediatR
+            - FluentValidation through MediatR pipelines
+            </summary>
+            <param name="assemblyType">Typ, který je v hlavním projektu - typicky Program.cs</param>
+        </member>
+        <member name="M:CIS.Infrastructure.gRPC.GrpcHelpers.HasBinaryHeaderSuffix(System.String)">
+            <summary>
+            Returns <c>true</c> if the key has "-bin" binary header suffix.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.ContextUserForwardingClientInterceptor">
+            <summary>
+            Client Interceptor který automaticky přidává hlavičku "mp-user-id" (tj. ID kontextového uživatele) do každého requestu na doménovou službu.
+            </summary>
+            <remarks>
+            TODO toto neni uplne pekna implementace, ale neprisel jsem na jiny zpusob jak v grpc pipeline vyklepat scoped instanci ICurrentUserAccessor a vrazit ji do headeru
+            </remarks>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.GenericClientExceptionInterceptor">
+            <summary>
+            Client Interceptor pro konverzi RpcException na CIS vyjímky.
+            </summary>
+            <remarks>
+            Používáme, abychom chyby z doménových služeb přetavili z generické RpcException na konkrétní vyjímky, které vyhodila daná doménová služba.
+            </remarks>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.GenericServerExceptionInterceptor">
+            <summary>
+            Server Interceptor který odchytává vyjímky v doménové službě a vytváří z nich RpcException, které dokáže Clients projekt zase přetavit na původní CIS exception.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.Middleware.Grpc2WebApiExceptionMiddleware">
+            <summary>
+            middleware pro zachytávání vyjímek v grpc code first službách.
+            po přechodu na grpc transcoding ostraníme
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour`2">
+            <summary>
+            MediatR pipeline, která přidává do flow requestu FluentValidation.
+            </summary>
+            <remarks>
+            Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
+            </remarks>
+        </member>
+    </members>
+</doc>

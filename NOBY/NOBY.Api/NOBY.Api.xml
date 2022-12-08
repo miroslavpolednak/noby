@@ -1420,12 +1420,12 @@
             Vytvori novy Case, Sales Arrangement, Household, CustomerOnSA.<br/>
             V pripade identifikovaneho klienta navic vytvorit Product, RiskBusinessCaseId.<br/>
             Pokud je identifikovan klient, v request modelu musi byt naplnena vlastnost customer.<br/>
-            Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/>
+            Pokud se jedna o anonymni pripad, musi byt vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br/><br/>
             <i>DS:</i> OfferService/GetMortgageData<br/>
-            <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId
+            <i>DS:</i> SalesArrangement/GetSalesArrangementByOfferId<br/>
             <i>DS:</i> CaseService/CreateCase<br/>
             <i>DS:</i> SalesArrangement/CreateSalesArrangement<br/>
-            <i>DS:</i> ProductService/CreateProduct<br/>
+            <i>DS:</i> ProductService/CreateMortgage (pokud MpHome API na vytvoření produktu spadne na fatální chybu, tak tuto chybu ignorujeme a pokračujeme ve vytvoření Case)<br/>
             <i>DS:</i> SalesArrangement/CreateHousehold<br/>
             <i>DS:</i> SalesArrangement/CreateCustomerOnSA
             </remarks>
@@ -1905,7 +1905,8 @@
             Validace dat SalesArrangementu - checkform.
             </summary>
             <remarks>
-            Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />
+            Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br />
+            Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br />
             <i>DS:</i> SalesArrangementService/validateSalesArrangement
             </remarks>
         </member>
@@ -1983,20 +1984,16 @@
             <i>DS:</i> SalesArrangementService/UpdateSalesArrangementParameters
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32)">
+        <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.SendToCmp(System.Int32,System.Boolean)">
             <summary>
-            Odeslani SA do SB
+            Validace SalesArrangementu a odeslání do StarBuildu
             </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.SendToCmp.SendToCmpResponse.Errors">
-            <summary>
-            Chyby bránící odeslání žádosti.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.SendToCmp.SendToCmpResponse.Warnings">
-            <summary>
-            Varování.
-            </summary>
+            <remarks>
+            Dojde ke zvalidování obsahu žádosti stejně, jako při operaci validace a předání datových vět na rozhraní Starbuildu.<br /><br />
+            Pokud žádost obsahuje chyby, které nejsou/nemohou být ignorovány, vrací se chyba.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.UpdateParametersRequest.Parameters">
             <summary>
@@ -2008,16 +2005,6 @@
             NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing
             )
             </remarks>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Validate.ValidateResponse.Errors">
-            <summary>
-            Chyby bránící odeslání žádosti.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Validate.ValidateResponse.Warnings">
-            <summary>
-            Varování.
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
             <example>1</example>
@@ -2163,6 +2150,35 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.AgentConsentWithElCom">
             <summary>
             Souhlas zmocněnce s elektronickou komunikací
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateCategory.CategoryName">
+            <summary>
+            Jméno kategorie
+            </summary>
+            <example>Klient</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateMessage.Parameter">
+            <summary>
+            Název parametru
+            </summary>
+            <example>Frantisek Novak, Doklad 1, chyba v poli Datum vydání</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateMessage.Message">
+            <summary>
+            Textace chyby
+            </summary>
+            <example>09.08.2022 Staré datum platnost od '01.09.2022' do '31.12.9999</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateMessage.Severity">
+            <summary>
+            Severita chyby
+            </summary>
+            <example>Error</example>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.SalesArrangement.Dto.MessageSeverity">
+            <summary>
+            Severita chyby
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">

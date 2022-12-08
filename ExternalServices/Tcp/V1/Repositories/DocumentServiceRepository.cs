@@ -5,12 +5,12 @@ using ExternalServicesTcp.Data;
 using ExternalServicesTcp.V1.Model;
 using System.Text;
 
-namespace ExternalServicesTcp.V1.Repositories
+namespace ExternalServicesTcp.V1.Repositories;
+
+public class DocumentServiceRepository : IDocumentServiceRepository
 {
-    public class DocumentServiceRepository : IDocumentServiceRepository
-    {
-        private const string DocumentMainSql =
-         """
+    private const string DocumentMainSql =
+     """
  SELECT 
  ds.CASE_ID AS CaseId,
  ds.DOKUMENT_ID AS DocumentId,
@@ -41,123 +41,122 @@ namespace ExternalServicesTcp.V1.Repositories
  FROM "PDMS_SDILENI"."DOKUMENTY_DOCSERVICE" ds
  INNER JOIN pdms_sdileni.dokumenty_komp2 fc ON fc.DOKUMENT_ID = ds.NULADOKUMENT_ID
  """;
-        private const string GetDocumentByExternalIdWhereSql = "WHERE ds.NULADOKUMENT_ID IN (:ExternalDocumentId)";
+    private const string GetDocumentByExternalIdWhereSql = "WHERE ds.NULADOKUMENT_ID IN (:ExternalDocumentId)";
 
-        private const string FindDocumentsBaseCondition = "WHERE 1=1";
+    private const string FindDocumentsBaseCondition = "WHERE 1=1";
 
-        private const string CaseIdCondition = " AND ds.NULACASE_ID = :CaseId";
+    private const string CaseIdCondition = " AND ds.NULACASE_ID = :CaseId";
 
-        private const string AuthorUserLoginCondition = " AND ds.NULAREFERENT = :AuthorUserLogin";
+    private const string AuthorUserLoginCondition = " AND ds.NULAREFERENT = :AuthorUserLogin";
 
-        private const string CreatedOnCondition = " AND ds.DATUM_PRIJETI = :CreatedOn";
+    private const string CreatedOnCondition = " AND ds.DATUM_PRIJETI = :CreatedOn";
 
-        private const string PledgeAgreementNumberCondition = " AND ds.NULACISLO_ZASTAVNI_SMLOUVY = :PledgeAgreementNumber";
+    private const string PledgeAgreementNumberCondition = " AND ds.NULACISLO_ZASTAVNI_SMLOUVY = :PledgeAgreementNumber";
 
-        private const string ContractNumberCondition = " AND ds.NULACISLO_SMLOUVY = :ContractNumber";
+    private const string ContractNumberCondition = " AND ds.NULACISLO_SMLOUVY = :ContractNumber";
 
-        private const string OrderIdCondition = " AND ds.NULAOCENENI_ID = :OrderId";
+    private const string OrderIdCondition = " AND ds.NULAOCENENI_ID = :OrderId";
 
-        private const string FolderDocumentIdCondition = " AND ds.NULAOCENENI_ID = :FolderDocumentId";
+    private const string FolderDocumentIdCondition = " AND ds.NULAOCENENI_ID = :FolderDocumentId";
 
-        private static int MaxReceivedRowsCount = 5000;
+    private static int MaxReceivedRowsCount = 5000;
 
-        private static string MaxReceivedRows = $"FETCH NEXT {MaxReceivedRowsCount} ROWS ONLY";
+    private static string MaxReceivedRows = $"FETCH NEXT {MaxReceivedRowsCount} ROWS ONLY";
 
-        private readonly IConnectionProvider<ITcpDapperConnectionProvider> _connectionProvider;
+    private readonly IConnectionProvider<ITcpDapperConnectionProvider> _connectionProvider;
 
-        public DocumentServiceRepository(IConnectionProvider<ITcpDapperConnectionProvider> connectionProvider)
+    public DocumentServiceRepository(IConnectionProvider<ITcpDapperConnectionProvider> connectionProvider)
+    {
+        _connectionProvider = connectionProvider;
+    }
+
+    public async Task<IReadOnlyCollection<DocumentServiceQueryResult>> FindTcpDocument(FindTcpDocumentQuery query, CancellationToken cancellationToken)
+    {
+        var result = await _connectionProvider.ExecuteDapperRawSqlToList<DocumentServiceQueryResult>(
+                                       ComposeSqlWithFilter(query),
+                                       new
+                                       {
+                                           CaseId = $"{"0"}{query.CaseId}",
+                                           AuthorUserLogin = $"{"0"}{query.AuthorUserLogin}",
+                                           CreatedOn = query.CreatedOn,
+                                           PledgeAgreementNumber = $"{"0"}{query.PledgeAgreementNumber}",
+                                           ContractNumber = $"{"0"}{query.ContractNumber}",
+                                           OrderId = $"{"0"}{query.OrderId}",
+                                           FolderDocumentId = $"{"0"}{query.FolderDocumentId}"
+                                       },
+                                       cancellationToken);
+
+        if (result.Count >= 5000)
         {
-            _connectionProvider = connectionProvider;
+            throw new CisValidationException(9701, "To many results returned from external service, please specify filter more accurately.");
         }
 
-        public async Task<IReadOnlyCollection<DocumentServiceQueryResult>> FindTcpDocument(FindTcpDocumentQuery query, CancellationToken cancellationToken)
+        return result;
+    }
+
+    public async Task<DocumentServiceQueryResult> GetDocumentByExternalId(GetDocumentByExternalIdTcpQuery query, CancellationToken cancellationToken)
+    {
+        var result = await _connectionProvider
+            .ExecuteDapperRawSqlFirstOrDefault<DocumentServiceQueryResult>(
+            $"{DocumentMainSql} {GetDocumentByExternalIdWhereSql}",
+            new { ExternalDocumentId = $"{"0"}{query.DocumentId}" },
+            cancellationToken);
+
+        if (result == null)
         {
-            var result = await _connectionProvider.ExecuteDapperRawSqlToList<DocumentServiceQueryResult>(
-                                           ComposeSqlWithFilter(query),
-                                           new
-                                           {
-                                               CaseId = $"{"0"}{query.CaseId}",
-                                               AuthorUserLogin = $"{"0"}{query.AuthorUserLogin}",
-                                               CreatedOn = query.CreatedOn,
-                                               PledgeAgreementNumber = $"{"0"}{query.PledgeAgreementNumber}",
-                                               ContractNumber = $"{"0"}{query.ContractNumber}",
-                                               OrderId = $"{"0"}{query.OrderId}",
-                                               FolderDocumentId = $"{"0"}{query.FolderDocumentId}"
-                                           },
-                                           cancellationToken);
-
-            if (result.Count >= 5000)
-            {
-                throw new CisValidationException(9701, "To many results returned from external service, please specify filter more accurately.");
-            }
-
-            return result;
+            throw new CisNotFoundException(14003, "Document with ExternalId not found");
         }
 
-        public async Task<DocumentServiceQueryResult> GetDocumentByExternalId(GetDocumentByExternalIdTcpQuery query, CancellationToken cancellationToken)
+        return result;
+    }
+
+    private string ComposeSqlWithFilter(FindTcpDocumentQuery query)
+    {
+        var sb = new StringBuilder(DocumentMainSql);
+
+        sb.Append(Environment.NewLine);
+        sb.Append(FindDocumentsBaseCondition);
+
+        if (query.CaseId is not null)
         {
-            var result = await _connectionProvider
-                .ExecuteDapperRawSqlFirstOrDefault<DocumentServiceQueryResult>(
-                $"{DocumentMainSql} {GetDocumentByExternalIdWhereSql}",
-                new { ExternalDocumentId = $"{"0"}{query.DocumentId}" },
-                cancellationToken);
-
-            if (result == null)
-            {
-                throw new CisNotFoundException(14003, "Document with ExternalId not found");
-            }
-
-            return result;
+            sb.Append(CaseIdCondition);
         }
 
-        private string ComposeSqlWithFilter(FindTcpDocumentQuery query)
+        if (!string.IsNullOrWhiteSpace(query.AuthorUserLogin))
         {
-            var sb = new StringBuilder(DocumentMainSql);
-
-            sb.Append(Environment.NewLine);
-            sb.Append(FindDocumentsBaseCondition);
-
-            if (query.CaseId is not null)
-            {
-                sb.Append(CaseIdCondition);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.AuthorUserLogin))
-            {
-                sb.Append(AuthorUserLoginCondition);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.PledgeAgreementNumber))
-            {
-                sb.Append(PledgeAgreementNumberCondition);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.ContractNumber))
-            {
-                sb.Append(ContractNumberCondition);
-            }
-
-            if (query.OrderId is not null)
-            {
-                sb.Append(OrderIdCondition);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.FolderDocumentId))
-            {
-                sb.Append(FolderDocumentIdCondition);
-            }
-
-            if (query.CreatedOn is not null)
-            {
-                sb.Append(CreatedOnCondition);
-            }
-
-            sb.Append(Environment.NewLine);
-            sb.Append(MaxReceivedRows);
-
-            var finalSql = sb.ToString();
-
-            return finalSql;
+            sb.Append(AuthorUserLoginCondition);
         }
+
+        if (!string.IsNullOrWhiteSpace(query.PledgeAgreementNumber))
+        {
+            sb.Append(PledgeAgreementNumberCondition);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.ContractNumber))
+        {
+            sb.Append(ContractNumberCondition);
+        }
+
+        if (query.OrderId is not null)
+        {
+            sb.Append(OrderIdCondition);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.FolderDocumentId))
+        {
+            sb.Append(FolderDocumentIdCondition);
+        }
+
+        if (query.CreatedOn is not null)
+        {
+            sb.Append(CreatedOnCondition);
+        }
+
+        sb.Append(Environment.NewLine);
+        sb.Append(MaxReceivedRows);
+
+        var finalSql = sb.ToString();
+
+        return finalSql;
     }
 }

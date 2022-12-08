@@ -35,9 +35,9 @@ internal class UpdateHouseholdHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public UpdateHouseholdHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public UpdateHouseholdHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

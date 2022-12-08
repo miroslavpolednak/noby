@@ -54,7 +54,7 @@ internal sealed class CreateIncomeHandler
             }
         }
 
-        int incomeId = ServiceCallResult.ResolveAndThrowIfError<int>(await _customerService.CreateIncome(model, cancellationToken));
+        int incomeId = await _customerService.CreateIncome(model, cancellationToken);
         return incomeId;
     }
 

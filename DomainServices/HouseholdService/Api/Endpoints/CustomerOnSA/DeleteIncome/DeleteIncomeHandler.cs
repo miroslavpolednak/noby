@@ -16,9 +16,9 @@ internal class DeleteIncomeHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     
-    public DeleteIncomeHandler(Repositories.HouseholdServiceDbContext dbContext)
+    public DeleteIncomeHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

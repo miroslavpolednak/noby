@@ -48,7 +48,7 @@ internal class GetTaskListHandler
         await _repository.EnsureExistingCase(caseId, cancellation);
 
         // load user
-        var user = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellation));
+        var user = await _userService.GetUser(_userAccessor.User!.Id, cancellation);
 
         // load codebooks
         var taskTypes = await _codebookService.WorkflowTaskTypes(cancellation);

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExternalServices.Sdf.Configuration
+namespace ExternalServices.Sdf.Configuration;
+
+public enum Versions
 {
-    public enum Versions
-    {
-        Unknown,
-        V1
-    }
+    Unknown,
+    V1
 }

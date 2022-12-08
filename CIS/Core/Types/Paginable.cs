@@ -1,6 +1,10 @@
 ﻿namespace CIS.Core.Types;
 
-public sealed class Paginable : IPaginableRequest
+/// <summary>
+/// Implementace <see cref="IPaginableRequest"/>
+/// </summary>
+public sealed class Paginable 
+    : IPaginableRequest
 {
     public int RecordOffset { get; init; }
     public int PageSize { get; init; }
@@ -10,6 +14,9 @@ public sealed class Paginable : IPaginableRequest
     public Type TypeOfSortingField => typeof(SortField);
     public IEnumerable<IPaginableSortingField>? GetSorting() => Sorting;
 
+    /// <summary>
+    /// Safe guard - nastavení max. množství vrácených záznamů
+    /// </summary>
     private const int _maxPageSize = 1000;
 
     public override string ToString()
@@ -28,6 +35,12 @@ public sealed class Paginable : IPaginableRequest
             Sorting = sorting.Select(t => new SortField(t)).ToList();
     }
 
+    /// <summary>
+    /// Vytvori request s podporou strankovani z jiného IPaginableRequest.
+    /// </summary>
+    /// <remarks>
+    /// Používá se pro konverzi s FE requestu na gRPC request, což jsou dvě různé implementace.
+    /// </remarks>
     public static Paginable FromRequest(IPaginableRequest? request, int defaultPageSize = 10, int defaultRecordOffset = 0)
     {
         if (request is null)
@@ -39,6 +52,7 @@ public sealed class Paginable : IPaginableRequest
     /// <summary>
     /// Premapuje Field names na hodnoty v databazi. Zaroven kontroluje, ze v mapperu jsou vsechna Field names z puvodni kolekce.
     /// </summary>
+    /// <exception cref="Exceptions.CisArgumentException">Sort Field not allowed</exception>
     public Paginable EnsureAndTranslateSortFields(IEnumerable<MapperField> mapper)
     {
         if (HasSorting)
@@ -56,6 +70,9 @@ public sealed class Paginable : IPaginableRequest
         return this;
     }
 
+    /// <summary>
+    /// Nastaví requestu výchozí řazení - pouze pokud již není řazení nastaveno.
+    /// </summary>
     public Paginable SetDefaultSort(string field, bool descending)
     {
         if (!HasSorting)
@@ -68,7 +85,8 @@ public sealed class Paginable : IPaginableRequest
 
     public record MapperField(string Name, string TranslateTo);
 
-    public class SortField : IPaginableSortingField
+    public class SortField 
+        : IPaginableSortingField
     {
         public string Field { get; internal set; }
         public bool Descending { get; init; }

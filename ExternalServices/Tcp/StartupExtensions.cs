@@ -4,20 +4,19 @@ using ExternalServicesTcp.V1.Clients;
 using ExternalServicesTcp.V1.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ExternalServicesTcp
+namespace ExternalServicesTcp;
+
+public static class StartupExtensions
 {
-    public static class StartupExtensions
+    public static IServiceCollection AddExternalServiceTcp(this IServiceCollection services, TcpConfiguration sdfConfiguration)
     {
-        public static IServiceCollection AddExternalServiceTcp(this IServiceCollection services, TcpConfiguration sdfConfiguration)
-        {
-            services
-            .AddDapperOracle<Data.ITcpDapperConnectionProvider>(sdfConfiguration.Connectionstring);
+        services
+        .AddDapperOracle<Data.ITcpDapperConnectionProvider>(sdfConfiguration.Connectionstring);
 
-            services.AddScoped<IDocumentServiceRepository, DocumentServiceRepository>();
+        services.AddScoped<IDocumentServiceRepository, DocumentServiceRepository>();
 
-            services.AddHttpClient<ITcpClient, TcpClient>();
+        services.AddHttpClient<ITcpClient, TcpClient>();
 
-            return services;
-        }
+        return services;
     }
 }

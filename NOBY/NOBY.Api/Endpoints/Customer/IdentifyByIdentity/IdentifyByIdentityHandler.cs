@@ -16,7 +16,7 @@ internal sealed class IdentifyByIdentityHandler
         // crm customer
         var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_CS.CustomerDetailResponse>(await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken));
         // customer On SA
-        var customerOnSaInstance = ServiceCallResult.ResolveAndThrowIfError<_HO.CustomerOnSA>(await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken));
+        var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
         // SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(customerOnSaInstance.SalesArrangementId, cancellationToken));
 
@@ -37,7 +37,7 @@ internal sealed class IdentifyByIdentityHandler
         };
         modelToUpdate.Customer.CustomerIdentifiers.Add(request.CustomerIdentity!);
 
-        var updateResult = ServiceCallResult.ResolveAndThrowIfError<_HO.UpdateCustomerResponse>(await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken));
+        var updateResult = await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken);
         
         // hlavni klient
         if (customerOnSaInstance.CustomerRoleId == 1)
@@ -51,11 +51,11 @@ internal sealed class IdentifyByIdentityHandler
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public IdentifyByIdentityHandler(
         IMediator mediator,
-        ISalesArrangementServiceClients salesArrangementService,
+        ISalesArrangementServiceClient salesArrangementService,
         ICaseServiceClient caseService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService)

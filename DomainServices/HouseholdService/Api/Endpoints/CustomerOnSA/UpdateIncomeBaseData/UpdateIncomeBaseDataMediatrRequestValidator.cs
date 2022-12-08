@@ -1,5 +1,4 @@
-﻿using DomainServices.HouseholdService.Api.Validators;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncomeBaseData;
 
@@ -15,7 +14,7 @@ internal class UpdateIncomeBaseDataMediatrRequestValidator
         RuleFor(t => t.Request.BaseData)
             .SetInheritanceValidator(v =>
             {
-                v.Add(new IncomeBaseDataValidator(codebookService));
+                v.Add(new Validators.IncomeBaseDataValidator(codebookService));
             });
     }
 }

@@ -1,16 +1,11 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.OfferService.Clients;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
-using DomainServices.ProductService.Clients;
-using DomainServices.CaseService.Clients;
-using DomainServices.UserService.Clients;
-using DomainServices.SalesArrangementService.Clients;
-using DomainServices.RiskIntegrationService.Clients;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using DomainServices.HouseholdService.Clients;
 using CIS.Infrastructure.MediatR;
+using ExternalServices.SbWebApi;
+using ExternalServices.SbWebApi.V1;
+using DomainServices;
+using CIS.InternalServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,13 +27,13 @@ builder
 
 // add domain services
 builder.Services
+    .AddUserService()
     .AddHouseholdService()
     .AddOfferService()
     .AddRiskIntegrationService()
     .AddCodebookService()
     .AddCustomerService()
     .AddProductService()
-    .AddUserService()
     .AddCaseService()
     .AddSalesArrangementService()
     .AddRiskIntegrationService();
@@ -47,8 +42,10 @@ builder.Services
 builder
     .AddNobyServices()
     .AddNobyDatabase();
+
 // authentication
 builder.AddFomsAuthentication(appConfiguration);
+
 // swagger
 if (appConfiguration.EnableSwaggerUi)
     builder.AddFomsSwagger();
@@ -59,12 +56,17 @@ builder.Services.AddSpaStaticFiles(configuration =>
     configuration.RootPath = "wwwroot";
 });
 
+//TODO !!! odstranit, pouze pro test
+builder.AddExternalService<ISbWebApiClient>();
+
 // pridat moznost rollbacku mediatr handleru
 builder.Services.AddCisMediatrRollbackCapability();
 #endregion register services
 
 // BUILD APP
 var app = builder.Build();
+
+app.UseServiceDiscovery();
 
 app.UseCisWebRequestLocalization();
 

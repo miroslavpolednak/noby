@@ -19,10 +19,10 @@ internal class DeleteCaseHandler
     }
 
     private readonly Repositories.CaseServiceRepository _repository;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
 
     public DeleteCaseHandler(
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         Repositories.CaseServiceRepository repository)
     {
         _repository = repository;

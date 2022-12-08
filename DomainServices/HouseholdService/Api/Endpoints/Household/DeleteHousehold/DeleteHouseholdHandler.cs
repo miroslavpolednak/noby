@@ -29,9 +29,9 @@ internal sealed class DeleteHouseholdHandler
     }
 
     private readonly IMediator _mediator;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public DeleteHouseholdHandler(Repositories.HouseholdServiceDbContext dbContext, IMediator mediator)
+    public DeleteHouseholdHandler(Database.HouseholdServiceDbContext dbContext, IMediator mediator)
     {
         _dbContext = dbContext;
         _mediator = mediator;

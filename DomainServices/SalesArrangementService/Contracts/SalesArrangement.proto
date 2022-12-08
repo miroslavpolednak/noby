@@ -50,6 +50,8 @@ message SalesArrangement {
 
 	google.protobuf.Int32Value SalesArrangementSignatureTypeId = 17;
 
+	bool IsOfferDocumentArchived = 18;
+
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 30;
 		DomainServices.SalesArrangementService.SalesArrangementParametersDrawing Drawing = 31;

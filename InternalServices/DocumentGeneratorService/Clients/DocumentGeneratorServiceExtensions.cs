@@ -1,28 +1,51 @@
 ﻿using CIS.Infrastructure.gRPC;
-using CIS.InternalServices.ServiceDiscovery.Clients;
+using CIS.Infrastructure.gRPC.Configuration;
+using CIS.InternalServices.DocumentGeneratorService.Clients;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using __Contracts = CIS.InternalServices.DocumentGeneratorService.Contracts;
 
-namespace CIS.InternalServices.DocumentGeneratorService.Clients;
+namespace CIS.InternalServices;
 
 public static class DocumentGeneratorServiceExtensions
 {
-    public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services) =>
-        services.TryAddGrpcClient<Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(x =>
-        {
-            x.AddGrpcServiceUriSettingsFromServiceDiscovery<Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>("CIS:DocumentGeneratorService");
-        }).RegisterServices();
+    /// <summary>
+    /// Service SD key
+    /// </summary>
+    public const string ServiceName = "DS:DocumentGeneratorService";
 
-    public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services, string serviceUrl) => services
-        .TryAddGrpcClient<Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(x =>
-        {
-            x.AddGrpcServiceUriSettings<Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(serviceUrl);
-        }).RegisterServices();
+    public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services)
+    {
+        services.AddCisServiceDiscovery();
+        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>>(new GrpcServiceUriSettingsServiceDiscovery<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(ServiceName));
+        services.registerServices();
+        return services;
+    }
 
-    private static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services, string serviceUrl)
+    {
+        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>>(new GrpcServiceUriSettingsDirect<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(serviceUrl));
+        services.registerServices();
+        return services;
+    }
+
+    private static IServiceCollection registerServices(this IServiceCollection services)
     {
         services.AddTransient<IDocumentGeneratorServiceClient, DocumentGeneratorServiceClient>();
 
-        services.AddGrpcClientFromCisEnvironment<Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
+        services.TryAddTransient<ContextUserForwardingClientInterceptor>();
+
+        var builder = services
+            .AddGrpcClient<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>((provider, options) =>
+            {
+                var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>>();
+                options.Address = serviceUri.ServiceUrl;
+            })
+            .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
+            .AddInterceptor<GenericClientExceptionInterceptor>()
+            .AddInterceptor<ContextUserForwardingClientInterceptor>()
+            .AddCisCallCredentials();
 
         return services;
     }

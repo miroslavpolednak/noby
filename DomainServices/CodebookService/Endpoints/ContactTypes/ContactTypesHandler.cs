@@ -44,32 +44,24 @@ public class ContactTypesHandler
 
     public async Task<List<ContactTypeItem>> Handle(ContactTypesRequest request, CancellationToken cancellationToken)
     {
-        try
+        return await FastMemoryCache.GetOrCreate<ContactTypeItem>(nameof(ContactTypesHandler), async () =>
         {
-            return await FastMemoryCache.GetOrCreate<ContactTypeItem>(nameof(ContactTypesHandler), async () =>
+            // load codebook items
+            var items = await _connectionProvider.ExecuteDapperRawSqlToList<ContactTypeItem>(_sql, cancellationToken);
+
+            // load extensions
+            var extensions = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ContactTypeExtension>(_sqlExtension, cancellationToken);
+            var dictExtensions = extensions.ToDictionary(i => i.ContactTypeId);
+
+            // assign MpHome mapping to items
+            items.ForEach(item =>
             {
-                // load codebook items
-                var items = await _connectionProvider.ExecuteDapperRawSqlToList<ContactTypeItem>(_sql, cancellationToken);
-
-                // load extensions
-                var extensions = await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<ContactTypeExtension>(_sqlExtension, cancellationToken);
-                var dictExtensions = extensions.ToDictionary(i => i.ContactTypeId);
-
-                // assign MpHome mapping to items
-                items.ForEach(item =>
-                {
-                    var itemExt = dictExtensions.ContainsKey(item.Id) ? dictExtensions[item.Id] : null;
-                    item.MpDigiApiCode = itemExt?.MpDigiApiCode;
-                });
-
-                return items;
+                var itemExt = dictExtensions.ContainsKey(item.Id) ? dictExtensions[item.Id] : null;
+                item.MpDigiApiCode = itemExt?.MpDigiApiCode;
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.GeneralException(ex);
-            throw;
-        }
+
+            return items;
+        });
     }
 }
 

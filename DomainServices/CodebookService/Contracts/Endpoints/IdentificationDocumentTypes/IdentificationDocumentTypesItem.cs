@@ -22,7 +22,6 @@ namespace DomainServices.CodebookService.Contracts.Endpoints.IdentificationDocum
         public bool IsDefault { get; set; }
 
         [DataMember(Order = 6)]
-        [JsonIgnore]
         public string MpDigiApiCode { get; set; }
     }
 }

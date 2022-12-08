@@ -24,7 +24,7 @@ internal sealed class CreateHouseholdHandler
         //TODO check propertySettlement?
 
         // ulozit customera do databaze
-        var entity = new Repositories.Entities.Household
+        var entity = new Database.Entities.Household
         {
             SalesArrangementId = request.Request.SalesArrangementId,
             CaseId = saInstance.CaseId,
@@ -44,7 +44,7 @@ internal sealed class CreateHouseholdHandler
         _dbContext.Households.Add(entity);
         await _dbContext.SaveChangesAsync(cancellation);
 
-        _logger.EntityCreated(nameof(Repositories.Entities.Household), entity.HouseholdId);
+        _logger.EntityCreated(nameof(Database.Entities.Household), entity.HouseholdId);
 
         return new CreateHouseholdResponse()
         {
@@ -52,15 +52,15 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
-    private readonly Repositories.HouseholdServiceDbContext _dbContext;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateHouseholdHandler> _logger;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
 
     public CreateHouseholdHandler(
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Repositories.HouseholdServiceDbContext dbContext,
+        Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateHouseholdHandler> logger)
     {
         _salesArrangementService = salesArrangementService;

@@ -13,15 +13,15 @@ internal class GetLoanApplicationAssessmentHandler
     #region Construction
 
     private readonly LoanApplicationDataService _loanApplicationDataService;
-    private readonly ISalesArrangementServiceClients _salesArrangementService;
-    private readonly IOfferServiceClients _offerService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
     private readonly ILoanApplicationServiceClient _loanApplicationService;
     private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
 
     public GetLoanApplicationAssessmentHandler(
         LoanApplicationDataService loanApplicationDataService,
-        ISalesArrangementServiceClients salesArrangementService,
-        IOfferServiceClients offerService,
+        ISalesArrangementServiceClient salesArrangementService,
+        IOfferServiceClient offerService,
         ILoanApplicationServiceClient loanApplicationService,
         IRiskBusinessCaseServiceClient riskBusinessCaseService
         )

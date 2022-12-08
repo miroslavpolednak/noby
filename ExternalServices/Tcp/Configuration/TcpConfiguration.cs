@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExternalServicesTcp.Configuration
-{
-    public class TcpConfiguration
-    {
-        public const string SectionName = "Tcp";
+namespace ExternalServicesTcp.Configuration;
 
-        [Required]
-        public string Connectionstring { get; set; } = null!;
-    }
+public class TcpConfiguration
+{
+    public const string SectionName = "Tcp";
+
+    [Required]
+    public string Connectionstring { get; set; } = null!;
 }

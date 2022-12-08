@@ -11,10 +11,10 @@ internal class CaseStateChangedHandler
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(t => t.Id == notification.CaseStateId);
 
         // get current user's login
-        var userInstance = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(_userAccessor.User!.Id, cancellationToken));
+        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
         // get case owner
-        var ownerInstance = ServiceCallResult.ResolveAndThrowIfError<UserService.Contracts.User>(await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken));
+        var ownerInstance = await _userService.GetUser(notification.CaseOwnerUserId, cancellationToken);
 
         // vytahnout povolena SATypeId pro tento ProductTypeId
         var allowedSaTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken))
@@ -27,25 +27,26 @@ internal class CaseStateChangedHandler
         string? rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
 
         //TODO login
-        var request = new ExternalServices.SbWebApi.Shared.CaseStateChangedModel(
-            userInstance.UserIdentifiers.First().Identity,
-            notification.CaseId,
-            notification.ContractNumber, 
-            notification.ClientName ?? "", 
-            caseState.Name, 
-            notification.ProductTypeId,
-            ownerInstance.CPM,
-            ownerInstance.ICP,
-            (CIS.Foms.Enums.Mandants)productType.MandantId,
-            rbcId);
-
+        var request = new ExternalServices.SbWebApi.Dto.CaseStateChangedRequest
+        {
+            Login = userInstance.UserIdentifiers.First().Identity,
+            CaseId = notification.CaseId,
+            ContractNumber = notification.ContractNumber,
+            ClientFullName = notification.ClientName ?? "",
+            CaseStateName = caseState.Name,
+            ProductTypeId = notification.ProductTypeId,
+            OwnerUserCpm = ownerInstance.CPM,
+            OwnerUserIcp = ownerInstance.ICP,
+            Mandant = (CIS.Foms.Enums.Mandants)productType.MandantId,
+            RiskBusinessCaseId = rbcId
+        };
         await _sbWebApiClient.CaseStateChanged(request, cancellationToken);
     }
 
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
     private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClients _salesArrangementService;
+    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public CaseStateChangedHandler(
@@ -53,7 +54,7 @@ internal class CaseStateChangedHandler
         CodebookService.Clients.ICodebookServiceClients codebookService, 
         UserService.Clients.IUserServiceClient userService,
         ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
-        SalesArrangementService.Clients.ISalesArrangementServiceClients salesArrangementService)
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _userAccessor = userAccessor;
         _codebookService = codebookService;
