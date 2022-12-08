@@ -10,7 +10,7 @@ internal sealed class RealMpHomeClient
     public async Task UpdateLoan(long loanId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}", mortgageRequest, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}", mortgageRequest, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
@@ -19,7 +19,7 @@ internal sealed class RealMpHomeClient
     public async Task UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}/link/{partnerId}", loanLinkRequest, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}/link/{partnerId}", loanLinkRequest, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
@@ -35,7 +35,7 @@ internal sealed class RealMpHomeClient
     public async Task UpdatePartner(long partnerId, PartnerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", request, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", request, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
