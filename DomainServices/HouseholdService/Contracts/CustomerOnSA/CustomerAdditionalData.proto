@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+message CustomerAdditionalData {
+    bool IsAddressWhispererUsed = 1;
+    bool HasRelationshipWithKB = 2;
+    bool HasRelationshipWithKBEmployee = 3;
+    bool HasRelationshipWithCorporate = 4;
+    bool IsPoliticallyExposed = 5;
+    bool IsUSPerson = 6;
+}

@@ -23,6 +23,9 @@ internal class CustomerOnSAService
     public override async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateCustomerDetail(UpdateCustomerDetailRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     // obligations -----------------------------------------------------
     public override async Task<CreateObligationResponse> CreateObligation(CreateObligationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);

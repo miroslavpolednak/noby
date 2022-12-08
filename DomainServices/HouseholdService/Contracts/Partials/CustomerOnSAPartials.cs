@@ -63,3 +63,7 @@ public partial class UpdateIncomeBaseDataRequest
 public partial class Obligation
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class UpdateCustomerDetailRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

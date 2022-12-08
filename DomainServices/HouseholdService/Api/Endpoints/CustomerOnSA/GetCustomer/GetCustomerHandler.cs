@@ -9,12 +9,31 @@ internal sealed class GetCustomerHandler
 {
     public async Task<Contracts.CustomerOnSA> Handle(GetCustomerRequest request, CancellationToken cancellation)
     {
-        var customerInstance = await _dbContext.Customers
-            .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
+        var entity = await _dbContext.Customers
             .AsNoTracking()
-            .Select(CustomerOnSAServiceExpressions.CustomerDetail())
+            .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
 
+        var customerInstance = new Contracts.CustomerOnSA
+        {
+            CustomerOnSAId = entity.CustomerOnSAId,
+            Name = entity.Name,
+            FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
+            DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
+            SalesArrangementId = entity.SalesArrangementId,
+            CustomerRoleId = (int)entity.CustomerRoleId,
+            LockedIncomeDateTime = entity.LockedIncomeDateTime,
+            MaritalStatusId = entity.MaritalStatusId
+        };
+
+        if (entity.AdditionalDataBin != null)
+            customerInstance.CustomerAdditionalData = CustomerAdditionalData.Parser.ParseFrom(entity.AdditionalDataBin);
+        if (entity.ChangeDataBin != null)
+        {
+            var arr = CustomerChangeDataItemWrapper.Parser.ParseFrom(entity.ChangeDataBin).ChangeData;
+            customerInstance.CustomerChangeData.AddRange(arr);
+        }
+        
         // identity
         var identities = await _dbContext.CustomersIdentities
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
