@@ -54,7 +54,9 @@ internal class CustomerManagementHttpHandler<TService> : DelegatingHandler
         if (error is not null)
             _errorMap.ResolveValidationError(error.Code);
 
-        throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "Incorrect inputs to CustomerManagement", 11003);
+        var text = content.ReadAsStringAsync();
+
+        throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {text}", 11003);
     }
 
     private Task<HttpResponseMessage> SendRequest(HttpRequestMessage request, CancellationToken cancellationToken)

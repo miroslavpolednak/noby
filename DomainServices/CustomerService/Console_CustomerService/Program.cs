@@ -26,13 +26,14 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>()
     .AddSingleton<CIS.Core.Configuration.ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration
     {
-        EnvironmentName = "uat",
+        EnvironmentName = "dev",
         DefaultApplicationKey = "console",
         ServiceDiscoveryUrl = "https://localhost:5005",
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
-    .AddCustomerService("https://localhost:5100")
+    .AddCustomerService()
+    //.AddCustomerService("https://localhost:5100")
     .BuildServiceProvider();
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
@@ -67,8 +68,8 @@ var create = await service.CreateCustomer(new CreateCustomerRequest
     Identity = new Identity(default, IdentitySchemes.Kb),
     NaturalPerson = new NaturalPerson
     {
-        FirstName = "Qvratek",
-        LastName = "Qliteks",
+        FirstName = "Qvratek1",
+        LastName = "Qlitek3",
         BirthCountryId = 16,
         BirthNumber = "8105144322",
         BirthName = "Prouza",
@@ -83,16 +84,16 @@ var create = await service.CreateCustomer(new CreateCustomerRequest
             AddressTypeId = 1,
             City = "Praha",
             Postcode = "19017",
-            CountryId = 1,
+            CountryId = 16,
             Street = "Masarykova",
-            HouseNumber = "458",
-            StreetNumber = "9A",
+            StreetNumber = "458",
+            HouseNumber = "9A",
             CityDistrict = "Vinoř",
             PragueDistrict = "Praha 9",
             DeliveryDetails = "Marketing Department",
             AddressPointId = "465465465",
             PrimaryAddressFrom = DateTime.Now.AddYears(-5)
-        }
+        },
     },
     IdentificationDocument = new IdentificationDocument
     {
