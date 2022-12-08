@@ -54,7 +54,7 @@ internal class CustomerManagementHttpHandler<TService> : DelegatingHandler
         if (error is not null)
             _errorMap.ResolveValidationError(error.Code);
 
-        var text = content.ReadAsStringAsync();
+        var text = await content.ReadAsStringAsync();
 
         throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Incorrect inputs to CustomerManagement: {text}", 11003);
     }
