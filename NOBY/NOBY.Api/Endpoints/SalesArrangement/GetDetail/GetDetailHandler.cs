@@ -17,7 +17,6 @@ internal class GetDetailHandler
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_CA.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
         
         var parameters = getParameters(saInstance);
-
         /*Dto.MortgageDetailDto? data = null;
         if (saInstance.SalesArrangementTypeId == 1)
         {
@@ -85,15 +84,15 @@ internal class GetDetailHandler
         };
 
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ISalesArrangementServiceClients _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClients _codebookService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
+    private readonly DomainServices.OfferService.Clients.IOfferServiceClients _offerService;
     
     public GetDetailHandler(
         ICaseServiceClient caseService,
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
-        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
-        ISalesArrangementServiceClient salesArrangementService)
+        DomainServices.OfferService.Clients.IOfferServiceClients offerService,
+        ISalesArrangementServiceClients salesArrangementService)
     {
         _codebookService = codebookService;
         _offerService = offerService;
