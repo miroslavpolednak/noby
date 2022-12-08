@@ -1,63 +1,45 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using CIS.InternalServices.ServiceDiscovery.Clients;
-using System.Text;
+using Microsoft.AspNetCore.Builder;
+using CIS.Infrastructure.ExternalServicesHelpers;
+using CIS.Foms.Enums;
 
-namespace ExternalServices.MpHome;
+namespace ExternalServices;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddExternalServiceMpHome(this IServiceCollection services, MpHomeConfiguration? mpHomeConfiguration)
+    internal const string ServiceName = "MpHome";
+
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, IExternalServiceClient
     {
-        if (mpHomeConfiguration == null)
-            throw new ArgumentNullException(nameof(mpHomeConfiguration), "MpHome configuration not set");
-        if (!mpHomeConfiguration.UseServiceDiscovery && string.IsNullOrEmpty(mpHomeConfiguration.ServiceUrl))
-            throw new ArgumentNullException("ServiceUrl", "MpHome Service URL must be defined");
-        if (mpHomeConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
-            throw new ArgumentException("ImplementationType", "MpHome Service client Implementation type is not set");
+        // ziskat konfigurace pro danou verzi sluzby
+        string version = getVersion<TClient>();
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
-        services.AddSingleton(provider =>
+        switch (version, configuration.ImplementationType)
         {
-            // pokud se ma hledat URL v service discovery
-            if (mpHomeConfiguration.UseServiceDiscovery)
-            {
-                string? url = provider
-                    .GetRequiredService<IDiscoveryServiceClient>()
-                    .GetServiceUrlSynchronously(new("ES:MpHome"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
-                mpHomeConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:MpHome Proprietary service URL");
-            }
-            return mpHomeConfiguration;
-        });
-
-        switch (mpHomeConfiguration.Version)
-        {
-            case Versions.V1:
-                if (mpHomeConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                    services.AddScoped<V1.IMpHomeClient, V1.MockMpHomeClient>();
-                else
-                    services.AddHttpClient<V1.IMpHomeClient, V1.RealMpHomeClient>(c =>
-                    {
-                        c.BaseAddress = new Uri(mpHomeConfiguration.ServiceUrl);
-                        var byteArray = Encoding.ASCII.GetBytes($"{mpHomeConfiguration.Username}:{mpHomeConfiguration.Password}");
-                        c.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                    });
+            case (MpHome.V1_1.IMpHomeClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<MpHome.V1_1.IMpHomeClient, MpHome.V1_1.MockMpHomeClient>();
                 break;
 
-            case Versions.V1_1:
-                if (mpHomeConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                    services.AddScoped<V1._1.IMpHomeClient, V1._1.MockMpHomeClient>();
-                else
-                    services.AddHttpClient<V1._1.IMpHomeClient, V1._1.RealMpHomeClient>(c =>
-                    {
-                        c.BaseAddress = new Uri(mpHomeConfiguration.ServiceUrl);
-                        var byteArray = Encoding.ASCII.GetBytes($"{mpHomeConfiguration.Username}:{mpHomeConfiguration.Password}");
-                        c.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                    });
+            case (MpHome.V1_1.IMpHomeClient.Version, ServiceImplementationTypes.Real):
+                builder
+                    .AddExternalServiceRestClient<MpHome.V1_1.IMpHomeClient, MpHome.V1_1.RealMpHomeClient>()
+                    .AddExternalServicesCorrelationIdForwarding()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
-                throw new NotImplementedException($"MpHome version {mpHomeConfiguration.Version} client not implemented");
+                throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
         }
 
-        return services;
+        return builder;
     }
+
+    static string getVersion<TClient>()
+        => typeof(TClient) switch
+        {
+            Type t when t.IsAssignableFrom(typeof(MpHome.V1_1.IMpHomeClient)) => MpHome.V1_1.IMpHomeClient.Version,
+            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+        };
 }

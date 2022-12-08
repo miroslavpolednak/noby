@@ -2,8 +2,7 @@ using CIS.Infrastructure.StartupExtensions;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.MediatR;
-using ExternalServices.SbWebApi;
-using ExternalServices.SbWebApi.V1;
+using ExternalServices;
 using DomainServices;
 using CIS.InternalServices;
 
@@ -55,9 +54,6 @@ builder.Services.AddSpaStaticFiles(configuration =>
 {
     configuration.RootPath = "wwwroot";
 });
-
-//TODO !!! odstranit, pouze pro test
-builder.AddExternalService<ISbWebApiClient>();
 
 // pridat moznost rollbacku mediatr handleru
 builder.Services.AddCisMediatrRollbackCapability();

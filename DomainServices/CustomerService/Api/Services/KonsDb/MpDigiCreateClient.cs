@@ -6,11 +6,11 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Clients;
-using ExternalServices.MpHome.V1._1;
-using ExternalServices.MpHome.V1._1.MpHomeWrapper;
+using ExternalServices.MpHome.V1_1;
+using ExternalServices.MpHome.V1_1.Contracts;
 using FastEnumUtility;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
-using IdentificationDocument = ExternalServices.MpHome.V1._1.MpHomeWrapper.IdentificationDocument;
+using IdentificationDocument = ExternalServices.MpHome.V1_1.Contracts.IdentificationDocument;
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
 
@@ -51,10 +51,7 @@ public class MpDigiCreateClient
 
         var partnerRequest = MapToPartnerRequest(request);
 
-        var result = await _mpHomeClient.UpdatePartner(request.Identity.IdentityId, partnerRequest);
-
-        if (result is ErrorServiceCallResult error)
-            throw new CisServiceCallResultErrorException(error);
+        await _mpHomeClient.UpdatePartner(request.Identity.IdentityId, partnerRequest);
 
         return new Identity(request.Identity.IdentityId, IdentitySchemes.Mp);
     }

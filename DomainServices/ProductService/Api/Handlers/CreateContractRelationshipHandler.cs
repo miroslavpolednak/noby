@@ -1,8 +1,7 @@
-﻿using ExternalServices.MpHome.V1._1;
-using ExternalServices.MpHome.V1._1.MpHomeWrapper;
-using DomainServices.CodebookService.Clients;
-
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.RelationshipCustomerProductTypes;
+using ExternalServices.MpHome.V1_1;
+using ExternalServices.MpHome.V1_1.Contracts;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -58,7 +57,7 @@ internal class CreateContractRelationshipHandler
         };
 
         // call endpoint
-        ServiceCallResult.Resolve(await _mpHomeClient.UpdateLoanPartnerLink(request.Request.ProductId, request.Request.Relationship.PartnerId, loanLinkRequest));
+        await _mpHomeClient.UpdateLoanPartnerLink(request.Request.ProductId, request.Request.Relationship.PartnerId, loanLinkRequest);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
