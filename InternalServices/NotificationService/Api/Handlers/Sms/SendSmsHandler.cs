@@ -10,16 +10,16 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 
 public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
-    private readonly LogmanSmsProducer _logmanSmsProducer;
+    private readonly McsSmsProducer _mcsSmsProducer;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
-        LogmanSmsProducer logmanSmsProducer,
+        McsSmsProducer mcsSmsProducer,
         NotificationRepository repository,
         ILogger<SendSmsHandler> logger)
     {
-        _logmanSmsProducer = logmanSmsProducer;
+        _mcsSmsProducer = mcsSmsProducer;
         _repository = repository;
         _logger = logger;
     }
@@ -41,7 +41,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
         
         _logger.LogInformation("Sending sms: {sendSms}", JsonSerializer.Serialize(sendSms));
 
-        var sendResult = await _logmanSmsProducer.SendSms(sendSms, cancellationToken);
+        await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
         
         var updateResult = await _repository.UpdateResult(
             notificationId,

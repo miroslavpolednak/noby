@@ -1,6 +1,6 @@
 ﻿using Polly;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers.BackgroundServices;
+namespace CIS.InternalServices.NotificationService.Api;
 
 public static class RetryPolicies
 {

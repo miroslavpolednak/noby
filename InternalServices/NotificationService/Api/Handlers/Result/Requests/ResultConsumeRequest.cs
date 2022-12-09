@@ -6,5 +6,5 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
 
 public class ResultConsumeRequest : IRequest<ResultConsumeResponse>
 {
-    public Message<string, NotificationReport> Message { get; set; } = null!;
+    public NotificationReport NotificationReport { get; set; } = null!;
 }

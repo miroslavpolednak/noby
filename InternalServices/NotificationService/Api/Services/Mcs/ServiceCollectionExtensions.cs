@@ -1,10 +1,13 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers.BackgroundServices;
-using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
-using CIS.InternalServices.NotificationService.Mcs.AvroSerializers;
+using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
-using Confluent.Kafka.DependencyInjection;
+using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
+using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
+using cz.kb.osbs.mcs.sender.sendapi.v4.email;
+using KB.Speed.MassTransit.Kafka;
+using KB.Speed.Messaging.Kafka.DependencyInjection;
+using MassTransit;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Mcs;
 
@@ -14,55 +17,60 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         KafkaConfiguration kafkaConfiguration)
     {
-
-        var businessConsumerConfig = CreateConsumerConfig(kafkaConfiguration.Nodes.Business);
-        var businessProducerConfig = CreateProducerConfig(kafkaConfiguration.Nodes.Business);
+        services.AddAvroSerializerConfiguration();
+        services.AddAvroDeserializerConfiguration();
+        services.AddApicurioSchemaRegistry();
         
-        var logmanConsumerConfig = CreateConsumerConfig(kafkaConfiguration.Nodes.Logman);
-        var logmanProducerConfig = CreateProducerConfig(kafkaConfiguration.Nodes.Logman);
-
-        return services
-            .AddAvroSerializers()
-            .AddHostedService<BusinessResultWorker>()
-            .AddHostedService<LogmanResultWorker>()
-            .AddHostedService<BusinessSendEmailWorker>()
-            .AddKafkaClient(new Dictionary<string, string>
+        services.AddMassTransit(configurator =>
+        {
+            configurator.UsingInMemory((context, config) =>
             {
-                { "group.id", kafkaConfiguration.GroupId },
-                { "ssl.keystore.location", logmanConsumerConfig.SslKeystoreLocation },
-                { "ssl.keystore.password", logmanConsumerConfig.SslKeystorePassword },
-                { "security.protocol", logmanConsumerConfig.SecurityProtocol?.ToString() ?? "" },
-                { "ssl.ca.location", logmanConsumerConfig.SslCaLocation },
-                { "ssl.certificate.location", logmanConsumerConfig.SslCertificateLocation },
-                { "enable.idempotence", "true" },
-                { "enable.ssl.certificate.verification", "false" },
-                { "debug", kafkaConfiguration.Debug },
-            })
-            .AddKafkaClient<BusinessResultConsumer>(businessConsumerConfig)
-            .AddKafkaClient<BusinessEmailProducer>(businessProducerConfig)
-            .AddKafkaClient<LogmanResultConsumer>(logmanConsumerConfig)
-            .AddKafkaClient<BusinessSendEmailConsumer>(logmanConsumerConfig)
-            .AddKafkaClient<LogmanEmailProducer>(logmanProducerConfig)
-            .AddKafkaClient<LogmanSmsProducer>(logmanProducerConfig);
+                config.ConfigureEndpoints(context);
+            });
+            
+            configurator.AddRider(rider =>
+            {
+                var businessNode = kafkaConfiguration.Nodes.Business;
+                
+                // add consumers
+                rider.AddConsumer<ResultConsumer>();
+                
+                // add producers
+                rider.AddProducerAvro<SendEmail>(Topics.McsSender);
+                rider.AddProducerAvro<SendSMS>(Topics.McsSender);
+                // todo: Add Mpss SendEmail, Push, MsgBox...
+                
+                rider.UsingKafka((context, k) =>
+                {
+                    k.SecurityProtocol = SecurityProtocol.Ssl;
+                    k.Host(businessNode.BootstrapServers, c =>
+                    {
+                        if (businessNode.SecurityProtocol == SecurityProtocol.Ssl)
+                        {
+                            c.UseSsl(sslConfig =>
+                            {
+                                sslConfig.EnableCertificateVerification = true;
+                                sslConfig.SslCaLocation = businessNode.SslCaLocation;
+                                sslConfig.SslCertificateLocation = businessNode.SslCertificateLocation;
+                                sslConfig.KeyLocation = businessNode.SslKeyLocation;
+                                sslConfig.KeyPassword = businessNode.SslKeyPassword;
+                                sslConfig.SslCaCertificateStores = businessNode.SslCaCertificateStores;
+                            });   
+                        }
+                    });
+                    
+                    // configure topic mapping
+                    k.TopicEndpointAvro<NotificationReport, ResultConsumer>(
+                        context,
+                        Topics.McsResult,
+                        kafkaConfiguration.GroupId,
+                        e =>
+                        {
+                        });
+                });
+            });
+        });
+        
+        return services;
     }
-    
-    private static ConsumerConfig CreateConsumerConfig(Node node) => new ()
-    {
-        BootstrapServers = node.BootstrapServers,
-        SslKeystoreLocation  = node.SslKeystoreLocation,
-        SslKeystorePassword  = node.SslKeystorePassword,
-        SecurityProtocol  = node.SecurityProtocol,
-        SslCaLocation = node.SslCaLocation,
-        SslCertificateLocation = node.SslCertificateLocation
-    };
-   
-    private static ProducerConfig CreateProducerConfig(Node node) => new ()
-    {
-        BootstrapServers = node.BootstrapServers,
-        SslKeystoreLocation  = node.SslKeystoreLocation,
-        SslKeystorePassword  = node.SslKeystorePassword,
-        SecurityProtocol  = node.SecurityProtocol,
-        SslCaLocation = node.SslCaLocation,
-        SslCertificateLocation = node.SslCertificateLocation
-    };
 }

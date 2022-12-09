@@ -20,11 +20,15 @@ public class Worker : BackgroundService
         using var scope = _provider.CreateScope();
         var producer = scope.ServiceProvider.GetRequiredService<ITopicProducer<SendEmail>>();
         
-        await Task.Delay(10000, stoppingToken);
+        await Task.Delay(4000, stoppingToken);
+
+        var id = Guid.NewGuid().ToString();
+        
+        _logger.LogInformation("Sending Email with id = {0}", id);
         
         await producer.Produce(new SendEmail()
         {
-            id = Guid.NewGuid().ToString(),
+            id = id,
             sender = new EmailAddress
             {
                 value = "notification-service@kb.cz",
@@ -35,7 +39,13 @@ public class Worker : BackgroundService
                 charset = "UTF-8",
                 text = "Testovací email přes MCS"
             },
-            subject = "MCS Testovací email"
+            subject = "MCS Testovací email",
+            notificationConsumer = new NotificationConsumer
+            { 
+                consumerId = Guid.NewGuid().ToString()
+            }
         }, cancellationToken: stoppingToken);
+        
+        _logger.LogInformation("Email with id = {0} sent", id);
     }
 }

@@ -9,19 +9,19 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
 public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSendRequest, EmailFromTemplateSendResponse>
 {
-    private readonly BusinessEmailProducer _businessEmailProducer;
-    private readonly LogmanEmailProducer _logmanEmailProducer;
+    private readonly MpssEmailProducer _mpssEmailProducer;
+    private readonly McsEmailProducer _mcsEmailProducer;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendEmailFromTemplateHandler> _logger;
 
     public SendEmailFromTemplateHandler(
-        BusinessEmailProducer businessEmailProducer,
-        LogmanEmailProducer logmanEmailProducer,
+        MpssEmailProducer mpssEmailProducer,
+        McsEmailProducer mcsEmailProducer,
         NotificationRepository repository,
         ILogger<SendEmailFromTemplateHandler> logger)
     {
-        _businessEmailProducer = businessEmailProducer;
-        _logmanEmailProducer = logmanEmailProducer;
+        _mpssEmailProducer = mpssEmailProducer;
+        _mcsEmailProducer = mcsEmailProducer;
         _repository = repository;
         _logger = logger;
     }
@@ -44,7 +44,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
         _logger.LogInformation("Sending email from template: {sendEmail}", JsonSerializer.Serialize(sendEmail));
 
         // todo: decide Logman or Business
-        var sendResult = await _logmanEmailProducer.SendEmail(sendEmail, cancellationToken);
+        await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
         
         var updateResult = await _repository.UpdateResult(
             notificationId,

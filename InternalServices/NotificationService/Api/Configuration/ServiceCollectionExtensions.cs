@@ -29,12 +29,8 @@ public static class ServiceCollectionExtensions
             .Bind(builder.Configuration.GetSection(nameof(KafkaConfiguration)))
             .Validate(config => !string.IsNullOrEmpty(config.GroupId),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.SchemaRegistryUrl),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SchemaRegistryUrl)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Business?.BootstrapServers),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Business)}.{nameof(KafkaConfiguration.Nodes.Business.BootstrapServers)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Logman?.BootstrapServers),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Logman)}.{nameof(KafkaConfiguration.Nodes.Logman.BootstrapServers)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.Debug),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Debug)}")
             .ValidateOnStart();

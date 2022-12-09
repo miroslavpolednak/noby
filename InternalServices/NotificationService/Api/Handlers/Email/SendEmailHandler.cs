@@ -12,21 +12,21 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
 public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendResponse>
 {
-    private readonly BusinessEmailProducer _businessEmailProducer;
-    private readonly LogmanEmailProducer _logmanEmailProducer;
+    private readonly MpssEmailProducer _mpssEmailProducer;
+    private readonly McsEmailProducer _mcsEmailProducer;
     private readonly NotificationRepository _repository;
     private readonly S3AdapterService _s3Service;
     private readonly ILogger<SendEmailHandler> _logger;
 
     public SendEmailHandler(
-        BusinessEmailProducer businessEmailProducer,
-        LogmanEmailProducer logmanEmailProducer,
+        MpssEmailProducer mpssEmailProducer,
+        McsEmailProducer mcsEmailProducer,
         NotificationRepository repository,
         S3AdapterService s3Service,
         ILogger<SendEmailHandler> logger)
     {
-        _businessEmailProducer = businessEmailProducer;
-        _logmanEmailProducer = logmanEmailProducer;
+        _mpssEmailProducer = mpssEmailProducer;
+        _mcsEmailProducer = mcsEmailProducer;
         _repository = repository;
         _s3Service = s3Service;
         _logger = logger;
@@ -79,7 +79,7 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
         _logger.LogInformation("Sending email: {sendEmail}", JsonSerializer.Serialize(sendEmail));
 
         // todo: decide Logman or Business
-        var sendResult = await _logmanEmailProducer.SendEmail(sendEmail, cancellationToken);
+        await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
         
         var updateResult = await _repository.UpdateResult(
             notificationId,

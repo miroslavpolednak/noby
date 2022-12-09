@@ -22,14 +22,15 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
     
     public async Task<ResultConsumeResponse> Handle(ResultConsumeRequest request, CancellationToken cancellationToken)
     {
-        var notificationReport = request.Message.Value;
+        var notificationReport = request.NotificationReport;
         if (!Guid.TryParse(notificationReport.id, out var notificationId))
         {
-            _logger.LogError("Could not parse notificationId: {id}", notificationReport.id);
+            _logger.LogInformation("Skipped for notificationId: {id}", notificationReport.id);
         }
 
         try
         {
+            // todo: consume state and errors from request
             var notificationResult = await _repository.UpdateResult(
                 notificationId,
                 NotificationState.Delivered,

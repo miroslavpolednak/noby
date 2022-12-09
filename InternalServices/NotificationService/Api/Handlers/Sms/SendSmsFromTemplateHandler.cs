@@ -10,16 +10,16 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 
 public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendRequest, SmsFromTemplateSendResponse>
 {
-    private readonly LogmanSmsProducer _logmanSmsProducer;
+    private readonly McsSmsProducer _mcsSmsProducer;
     private readonly NotificationRepository _repository;
     private readonly ILogger<SendSmsFromTemplateHandler> _logger;
     
     public SendSmsFromTemplateHandler(
-        LogmanSmsProducer logmanSmsProducer,
+        McsSmsProducer mcsSmsProducer,
         NotificationRepository repository,
         ILogger<SendSmsFromTemplateHandler> logger)
     {
-        _logmanSmsProducer = logmanSmsProducer;
+        _mcsSmsProducer = mcsSmsProducer;
         _repository = repository;
         _logger = logger;
     }
@@ -43,7 +43,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
         
         _logger.LogInformation("Sending sms from template: {sendSms}", JsonSerializer.Serialize(sendSms));
 
-        await _logmanSmsProducer.SendSms(sendSms, cancellationToken);
+        await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
         
         await _repository.UpdateResult(
             notificationId,

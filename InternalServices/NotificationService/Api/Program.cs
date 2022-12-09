@@ -17,6 +17,10 @@ using MediatR;
 using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
+using KB.Speed.MassTransit.DependencyInjection;
+using KB.Speed.Tracing.Extensions;
+using KB.Speed.Tracing.Instrumentations.AspNetCore;
+using KB.Speed.Tracing.Instrumentations.HttpClient;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -68,6 +72,15 @@ builder.Services
 builder.Services.AddCodebookService();
 
 // messaging - kafka consumers and producers
+builder.Services.AddSpeedTracing(builder.Configuration, providerBuilder =>
+{
+    providerBuilder.SetDefaultResourceBuilder()
+        .AddDefaultExporter()
+        .AddSpeedAspNetInstrumentation()
+        .AddSpeedHttpClientInstrumentation()
+        .AddMassTransitInstrumentation();
+});
+
 builder.Services.AddMessaging(builder.GetKafkaConfiguration());
 
 // s3 client
