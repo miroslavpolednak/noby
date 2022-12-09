@@ -3,7 +3,7 @@ using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using CIS.Foms.Enums;
 
-namespace ExternalServices.SbWebApi;
+namespace ExternalServices;
 
 public static class StartupExtensions
 {
@@ -18,13 +18,13 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<V1.ISbWebApiClient, V1.MockSbWebApiClient>();
+            case (SbWebApi.V1.ISbWebApiClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<SbWebApi.V1.ISbWebApiClient, SbWebApi.V1.MockSbWebApiClient>();
                 break;
 
-            case (V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
+            case (SbWebApi.V1.ISbWebApiClient.Version, ServiceImplementationTypes.Real):
                 builder
-                    .AddExternalServiceRestClient<V1.ISbWebApiClient, V1.RealSbWebApiClient>()
+                    .AddExternalServiceRestClient<SbWebApi.V1.ISbWebApiClient, SbWebApi.V1.RealSbWebApiClient>()
                     .AddExternalServicesCorrelationIdForwarding()
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
@@ -39,7 +39,7 @@ public static class StartupExtensions
     static string getVersion<TClient>()
         => typeof(TClient) switch
         {
-            Type t when t.IsAssignableFrom(typeof(V1.ISbWebApiClient)) => V1.ISbWebApiClient.Version,
+            Type t when t.IsAssignableFrom(typeof(SbWebApi.V1.ISbWebApiClient)) => SbWebApi.V1.ISbWebApiClient.Version,
             _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
         };
 }

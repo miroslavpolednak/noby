@@ -32,6 +32,10 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<Protobuf Include="ServiceDiscovery.v1.proto" GrpcServices="Both" />
 		<Protobuf Include="GetService.proto" GrpcServices="None" />
 		<Protobuf Include="DiscoverableService.proto" GrpcServices="None" />

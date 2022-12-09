@@ -4,6 +4,10 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "ModificationStamp.proto";
 
+message GetOfferRequest {
+	int32 OfferId = 1;
+}
+
 message GetOfferResponse {
 	int32 OfferId = 1;
 	string ResourceProcessId = 2;

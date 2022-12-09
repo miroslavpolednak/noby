@@ -1,38 +1,37 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 using Google.Protobuf;
 using CIS.Foms.Enums;
-using DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.Shared;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
 
 internal class CreateIncomeHandler
-    : IRequestHandler<CreateIncomeMediatrRequest, CreateIncomeResponse>
+    : IRequestHandler<CreateIncomeRequest, CreateIncomeResponse>
 {
-    public async Task<CreateIncomeResponse> Handle(CreateIncomeMediatrRequest request, CancellationToken cancellation)
+    public async Task<CreateIncomeResponse> Handle(CreateIncomeRequest request, CancellationToken cancellation)
     {
-        CustomerIncomeTypes incomeType = (CustomerIncomeTypes)request.Request.IncomeTypeId;
+        CustomerIncomeTypes incomeType = (CustomerIncomeTypes)request.IncomeTypeId;
 
         // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
-            throw new CisNotFoundException(16020, "CustomerOnSA", request.Request.CustomerOnSAId);
+        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellation))
+            throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
 
         // kontrola poctu prijmu
         int totalIncomesOfType = await _dbContext.CustomersIncomes
-            .CountAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellation);
+            .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellation);
         if (IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType))
             throw new CisValidationException(16047, "Max incomes of the type has been reached");
 
         var entity = new Database.Entities.CustomerOnSAIncome
         {
-            CustomerOnSAId = request.Request.CustomerOnSAId,
-            Sum = request.Request.BaseData?.Sum,
-            CurrencyCode = request.Request.BaseData?.CurrencyCode,
-            IncomeSource = await getIncomeSource(request.Request, cancellation),
-            HasProofOfIncome = getProofOfIncomeToggle(request.Request),
+            CustomerOnSAId = request.CustomerOnSAId,
+            Sum = request.BaseData?.Sum,
+            CurrencyCode = request.BaseData?.CurrencyCode,
+            IncomeSource = await getIncomeSource(request, cancellation),
+            HasProofOfIncome = getProofOfIncomeToggle(request),
             IncomeTypeId = incomeType
         };
 
-        var dataObject = getDataObject(request.Request);
+        var dataObject = getDataObject(request);
         if (dataObject != null)
         {
             entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);

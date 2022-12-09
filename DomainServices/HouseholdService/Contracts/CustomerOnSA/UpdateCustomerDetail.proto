@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "CustomerChangeDataItem.proto";
+import "CustomerAdditionalData.proto";
+
+message UpdateCustomerDetailRequest {
+    int32 CustomerOnSAId = 1;
+
+    CustomerAdditionalData CustomerAdditionalData = 2;
+
+    repeated CustomerChangeDataItem CustomerChangeData = 3;
+}
+

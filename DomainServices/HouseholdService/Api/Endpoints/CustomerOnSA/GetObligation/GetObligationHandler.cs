@@ -3,9 +3,9 @@
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetObligation;
 
 internal sealed class GetObligationHandler
-    : IRequestHandler<GetObligationMediatrRequest, Obligation>
+    : IRequestHandler<GetObligationRequest, Obligation>
 {
-    public async Task<Obligation> Handle(GetObligationMediatrRequest request, CancellationToken cancellation)
+    public async Task<Obligation> Handle(GetObligationRequest request, CancellationToken cancellation)
     {
         var model = await _dbContext.CustomersObligations
             .Where(t => t.CustomerOnSAObligationId == request.ObligationId)

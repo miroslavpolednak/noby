@@ -59,7 +59,6 @@
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
-    <ProjectReference Include="..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
   </ItemGroup>
 

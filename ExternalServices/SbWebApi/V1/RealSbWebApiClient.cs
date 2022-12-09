@@ -52,9 +52,6 @@ internal sealed class RealSbWebApiClient
     }
 
     private readonly HttpClient _httpClient;
-
     public RealSbWebApiClient(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
+        => _httpClient = httpClient;
 }

@@ -1,9 +1,11 @@
-﻿namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHousehold;
+﻿using DomainServices.HouseholdService.Contracts;
+
+namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHousehold;
 
 internal sealed class GetHouseholdHandler
-    : IRequestHandler<GetHouseholdMediatrRequest, Contracts.Household>
+    : IRequestHandler<GetHouseholdRequest, Contracts.Household>
 {
-    public async Task<Contracts.Household> Handle(GetHouseholdMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.Household> Handle(GetHouseholdRequest request, CancellationToken cancellation)
     {
         var model = await _dbContext.Households
             .Where(t => t.HouseholdId == request.HouseholdId)

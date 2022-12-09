@@ -1,5 +1,5 @@
 ﻿using DomainServices.ProductService.Contracts;
-using ExternalServices.MpHome.V1._1.MpHomeWrapper;
+using ExternalServices.MpHome.V1_1.Contracts;
 
 namespace DomainServices.ProductService.Api;
 

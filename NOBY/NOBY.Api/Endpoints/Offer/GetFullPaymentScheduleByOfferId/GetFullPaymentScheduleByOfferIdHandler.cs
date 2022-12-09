@@ -9,7 +9,7 @@ internal class GetFullPaymentScheduleByOfferIdHandler
 {
     public async Task<Dto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageOfferFPScheduleResponse>(await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken));
+        var result = await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken);
 
         _logger.RequestHandlerFinished(nameof(GetFullPaymentScheduleByOfferIdHandler));
 

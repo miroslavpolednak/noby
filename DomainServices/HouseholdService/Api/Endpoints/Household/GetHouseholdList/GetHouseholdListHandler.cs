@@ -3,9 +3,9 @@
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHouseholdList;
 
 internal class GetHouseholdListHandler
-    : IRequestHandler<GetHouseholdListMediatrRequest, GetHouseholdListResponse>
+    : IRequestHandler<GetHouseholdListRequest, GetHouseholdListResponse>
 {
-    public async Task<GetHouseholdListResponse> Handle(GetHouseholdListMediatrRequest request, CancellationToken cancellation)
+    public async Task<GetHouseholdListResponse> Handle(GetHouseholdListRequest request, CancellationToken cancellation)
     {
         var model = await _dbContext.Households
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)

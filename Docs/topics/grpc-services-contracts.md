@@ -1,6 +1,6 @@
 ﻿# Contracts projekt v gRPC službách
 Projekt slouží jako samostatná definice a) gRPC služby, b) kontraktů / messages gRPC služby.
-Může obsahovat pouze *.proto soubory. 
+Obsahuje *.proto soubory kontraktů a C# partial třídy pro zjednodušení napojení *MediatR* pipeline na gRPC request.
 
 Pro každou službu a verzi musí existovat právě jeden soubor s gRPC definicí služby. 
 Konvence pro pojmenování souboru je: `{název služby}.{verze služby}.proto`
@@ -19,9 +19,26 @@ Např. *CreateHousehold.proto*
 - pokud se jedná o definici samostatného objektu, je soubor pojmenován podle daného objektu.  
 Např. *Household.proto*
 
+## Podpora pro použití proto kontraktu v MediatR pipeline
+Abychom nemuseli pro každý MediatR handler / gRPC endpoint vytvářet umělou `IRequest` třídu, můžeme využít toho, že **ProtoC** generuje všechny *proto* kontrakty jako `partial` class.
+To nám umožňuje přidat do definice kontraktu další interface a použít ho jako request pro *MediatR*.
+Partial class se vytváří pro každou request message v *proto* kontraktu a má následující tvar:
+
+```
+public partial class CreateHouseholdRequest
+    : MediatR.IRequest<CreateHouseholdResponse>
+```
+V případě, že má request podporovat *FluentValidation*, přidáme ještě interface `IValidatableRequest`:
+```
+public partial class CreateHouseholdRequest
+    : MediatR.IRequest<CreateHouseholdResponse>, CIS.Core.Validation.IValidatableRequest
+```
+
 ## Adresářová struktura
 Pokud projekt obsahuje pouze jednu službu, jsou všechny .proto soubory v rootu projektu.
 Pokud obsahuje více služeb, je každá služba (definice a kontrakty) ve vlastním adresáři.
+
+Každá služba má vlastní adresář **Partials**, který obsahuje partial třídu s implementací *MediatR*.
 
 ## Nastavení *.csproj
 Pro správnou funkčnost ProtoC toolu pro generování C# tříd z proto souborů je nutné mít správně nastavený .NET projekt.

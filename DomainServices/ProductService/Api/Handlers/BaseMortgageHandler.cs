@@ -3,9 +3,9 @@ using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.ProductService.Contracts;
 using DomainServices.ProductService.Api.Repositories;
 using DomainServices.ProductService.Api.Repositories.Entities;
-using ExternalServices.MpHome.V1._1;
 using CIS.Infrastructure.gRPC;
 using Grpc.Core;
+using ExternalServices.MpHome.V1_1;
 
 namespace DomainServices.ProductService.Api.Handlers;
 
@@ -55,7 +55,7 @@ internal class BaseMortgageHandler
         var mortgageRequest = mortgage.ToMortgageRequest();
 
         // call endpoint
-        CheckMpHomeResult(await _mpHomeClient.UpdateLoan(loanId, mortgageRequest));       
+        await _mpHomeClient.UpdateLoan(loanId, mortgageRequest);
     }
 
     /// <summary>
@@ -68,14 +68,4 @@ internal class BaseMortgageHandler
         return list.Where(i => i.KonsDbLoanType.HasValue).ToDictionary(i => i.KonsDbLoanType.Value, i => i.Id);
 #pragma warning restore CS8629 // Nullable value type may be null.
     }
-
-    private void CheckMpHomeResult(IServiceCallResult result)
-    {
-        switch (result)
-        {
-            case ErrorServiceCallResult err:
-                throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors.First().Message, err.Errors.First().Key);
-        }
-    }
-
 }

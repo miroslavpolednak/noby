@@ -1,11 +1,12 @@
 ﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeList;
 
 internal sealed class GetIncomeListHandler
-    : IRequestHandler<GetIncomeListMediatrRequest, Contracts.GetIncomeListResponse>
+    : IRequestHandler<GetIncomeListRequest, Contracts.GetIncomeListResponse>
 {
-    public async Task<Contracts.GetIncomeListResponse> Handle(GetIncomeListMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.GetIncomeListResponse> Handle(GetIncomeListRequest request, CancellationToken cancellation)
     {
         var list = await _dbContext.CustomersIncomes
             .AsNoTracking()

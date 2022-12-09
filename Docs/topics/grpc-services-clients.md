@@ -37,6 +37,11 @@ Task MyEndpoint(MyRequest request) { }
 StartupExtensions.cs        (extension metoda pro registraci `Clients` projektu v aplikaci konzumenta)
 ```
 
+## Namespaces
+**Interfaces** - např. `IHouseholdService.cs` - *DomainServices.{service}.Clients*  
+**Services** - např. `HouseholdService.cs` - *DomainServices.{service}.Clients.Services*  
+**Registrace** - např. služby `StartupExtensions.cs` - *DomainServices*
+
 ## Implementace gRPC infrastruktury (*StartupExtensions.cs*)
 `Clients` projekt vždy obsahuje dvě extension metody pro registraci při startupu konzumenta. 
 Jedna počítá s automatickým resolvingem URI služby, druhá očekává explicitně zadanou URI.  
@@ -70,6 +75,7 @@ Samotná infastruktura registrace gRPC (*AddCisGrpcClientUsing...*) je v projekt
 ## Použití v projektu konzumenta
 Registrace v startupu aplikace:
 ```
+using DomainServices;
 builder.Services.AddHouseholdService();
 ```
 
@@ -78,9 +84,7 @@ Použití v endpoint handleru:
 private readonly IHouseholdServiceClient _householdService;
 
 public GetHouseholdHandler(IHouseholdServiceClient householdService)
-{
-    _householdService = householdService;
-}
+    => _householdService = householdService;
 
 public async Task Handle(T request, CancellationToken cancellationToken)
 {

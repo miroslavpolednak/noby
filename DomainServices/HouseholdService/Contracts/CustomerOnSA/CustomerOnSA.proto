@@ -8,6 +8,8 @@ import "NullableGrpcDate.proto";
 import "NullableGrpcDateTime.proto";
 import "Obligation.proto";
 import "IncomeInList.proto";
+import "CustomerChangeDataItem.proto";
+import "CustomerAdditionalData.proto";
 
 message CustomerOnSA {
     int32 CustomerOnSAId = 1;
@@ -31,4 +33,8 @@ message CustomerOnSA {
     cis.types.NullableGrpcDateTime LockedIncomeDateTime = 11;
 
     google.protobuf.Int32Value MaritalStatusId = 12;
+
+    CustomerAdditionalData CustomerAdditionalData = 13;
+
+    repeated CustomerChangeDataItem CustomerChangeData = 14;
 }

@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.EasSimulationHT;
-using FluentValidation;
 
 namespace DomainServices.OfferService.Api;
 
@@ -21,7 +20,7 @@ internal static class StartupExtensions
         builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.OfferServiceDbContext>();
+        builder.AddEntityFramework<Database.OfferServiceDbContext>();
 
         return builder;
     }

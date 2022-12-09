@@ -5,58 +5,63 @@ option csharp_namespace = "DomainServices.HouseholdService.Contracts.v1";
 import "google/protobuf/empty.proto";
 import "CustomerOnSA.proto";
 import "CreateCustomer.proto";
-import "CustomerOnSAIdRequest.proto";
+import "GetCustomer.proto";
 import "GetCustomerList.proto";
 import "UpdateCustomer.proto";
 import "CreateIncome.proto";
-import "IncomeIdRequest.proto";
+import "GetIncome.proto";
 import "GetIncomeList.proto";
 import "Income.proto";
 import "UpdateIncome.proto";
 import "UpdateIncomeBaseData.proto";
-import "ObligationIdRequest.proto";
 import "Obligation.proto";
 import "CreateObligation.proto";
 import "GetObligationList.proto";
 import "DeleteCustomer.proto";
+import "DeleteObligation.proto";
+import "GetObligation.proto";
+import "DeleteIncome.proto";
+import "UpdateCustomerDetail.proto";
 
 service CustomerOnSAService {
     // zalozeni noveho customera
-	rpc CreateCustomer (DomainServices.HouseholdService.CreateCustomerRequest) returns (DomainServices.HouseholdService.CreateCustomerResponse);
+	rpc CreateCustomer (CreateCustomerRequest) returns (CreateCustomerResponse);
 	
 	// smazat
-	rpc DeleteCustomer (DomainServices.HouseholdService.DeleteCustomerRequest) returns (google.protobuf.Empty);
+	rpc DeleteCustomer (DeleteCustomerRequest) returns (google.protobuf.Empty);
 	
 	// get single
-	rpc GetCustomer (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (DomainServices.HouseholdService.CustomerOnSA);
+	rpc GetCustomer (GetCustomerRequest) returns (CustomerOnSA);
 	
 	// get list
-	rpc GetCustomerList (DomainServices.HouseholdService.GetCustomerListRequest) returns (DomainServices.HouseholdService.GetCustomerListResponse);
+	rpc GetCustomerList (GetCustomerListRequest) returns (GetCustomerListResponse);
 	
 	// update
-	rpc UpdateCustomer (DomainServices.HouseholdService.UpdateCustomerRequest) returns (DomainServices.HouseholdService.UpdateCustomerResponse);
+	rpc UpdateCustomer (UpdateCustomerRequest) returns (UpdateCustomerResponse);
+
+	rpc UpdateCustomerDetail (UpdateCustomerDetailRequest) returns (google.protobuf.Empty);
 
 	// income part -------------------------------------------------------
-    rpc CreateIncome (DomainServices.HouseholdService.CreateIncomeRequest) returns (DomainServices.HouseholdService.CreateIncomeResponse);
+    rpc CreateIncome (CreateIncomeRequest) returns (CreateIncomeResponse);
 
-    rpc UpdateIncome (DomainServices.HouseholdService.UpdateIncomeRequest) returns (google.protobuf.Empty);
+    rpc UpdateIncome (UpdateIncomeRequest) returns (google.protobuf.Empty);
 
-    rpc UpdateIncomeBaseData (DomainServices.HouseholdService.UpdateIncomeBaseDataRequest) returns (google.protobuf.Empty);
+    rpc UpdateIncomeBaseData (UpdateIncomeBaseDataRequest) returns (google.protobuf.Empty);
 
-    rpc DeleteIncome (DomainServices.HouseholdService.IncomeIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteIncome (DeleteIncomeRequest) returns (google.protobuf.Empty);
 
-    rpc GetIncomeList (DomainServices.HouseholdService.GetIncomeListRequest) returns (DomainServices.HouseholdService.GetIncomeListResponse);
+    rpc GetIncomeList (GetIncomeListRequest) returns (GetIncomeListResponse);
 
-    rpc GetIncome (DomainServices.HouseholdService.IncomeIdRequest) returns (DomainServices.HouseholdService.Income);
+    rpc GetIncome (GetIncomeRequest) returns (Income);
 
 	// obligations part
-	rpc CreateObligation (DomainServices.HouseholdService.CreateObligationRequest) returns (DomainServices.HouseholdService.CreateObligationResponse);
+	rpc CreateObligation (CreateObligationRequest) returns (CreateObligationResponse);
 
-    rpc UpdateObligation (DomainServices.HouseholdService.Obligation) returns (google.protobuf.Empty);
+    rpc UpdateObligation (Obligation) returns (google.protobuf.Empty);
 
-    rpc DeleteObligation (DomainServices.HouseholdService.ObligationIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteObligation (DeleteObligationRequest) returns (google.protobuf.Empty);
 
-    rpc GetObligationList (DomainServices.HouseholdService.CustomerOnSAIdRequest) returns (DomainServices.HouseholdService.GetObligationListResponse);
+    rpc GetObligationList (GetObligationListRequest) returns (GetObligationListResponse);
 
-    rpc GetObligation (DomainServices.HouseholdService.ObligationIdRequest) returns (DomainServices.HouseholdService.Obligation);
+    rpc GetObligation (GetObligationRequest) returns (Obligation);
 }

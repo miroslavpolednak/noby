@@ -5,6 +5,7 @@ using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
 using CIS.InternalServices;
+using DomainServices.UserService.Api.Endpoints;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
 
@@ -63,7 +64,7 @@ app.UseCisLogging();
 
 app.MapCisHealthChecks();
 
-app.MapGrpcService<DomainServices.UserService.Api.Services.UserService>();
+app.MapGrpcService<UserService>();
 
 app.MapGrpcReflectionService();
 

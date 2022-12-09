@@ -10,7 +10,8 @@
         grpcurl -insecure -d "{\"SalesArrangementId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/GetCustomerList
         grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"Obligations\":[{\"ObligationTypeId\":1,\"LoanPaymentAmount\":5000,\"CreditCardLimit\":6000}]}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/UpdateObligations
         grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncome
-		
+		grpcurl -insecure -d "{\"CustomerOnSAId\":3,\"CustomerChangeData\":[{\"Key\":\"xxx\",\"Value\":\"honza\"}]}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/UpdateCustomerDetail
+
 		grpcurl -insecure -d "{\"SalesArrangementId\":1,\"HouseholdTypeId\":1,\"CustomerOnSAId1\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.HouseholdService/CreateHousehold
         grpcurl -insecure -d "{\"SalesArrangementId\":1,\"HouseholdTypeId\":1,\"CustomerOnSAId1\":1,\"Data\":{\"ChildrenUpToTenYearsCount\":2,\"PropertySettlementId\":1},\"Expenses\":{\"SavingExpenseAmount\":20000,\"OtherExpenseAmount\":5000}}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.HouseholdService/CreateHousehold
         grpcurl -insecure -d "{\"HouseholdId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.HouseholdService/GetHousehold

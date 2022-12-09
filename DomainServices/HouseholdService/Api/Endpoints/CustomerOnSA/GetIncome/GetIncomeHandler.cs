@@ -3,9 +3,9 @@
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncome;
 
 internal sealed class GetIncomeHandler
-    : IRequestHandler<GetIncomeMediatrRequest, Income>
+    : IRequestHandler<GetIncomeRequest, Income>
 {
-    public async Task<Income> Handle(GetIncomeMediatrRequest request, CancellationToken cancellation)
+    public async Task<Income> Handle(GetIncomeRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)

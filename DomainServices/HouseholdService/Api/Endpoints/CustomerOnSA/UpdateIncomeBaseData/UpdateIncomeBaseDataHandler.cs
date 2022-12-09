@@ -1,17 +1,19 @@
-﻿namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncomeBaseData;
+﻿using DomainServices.HouseholdService.Contracts;
+
+namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncomeBaseData;
 
 internal class UpdateIncomeBaseDataHandler
-    : IRequestHandler<UpdateIncomeBaseDataMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<UpdateIncomeBaseDataRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeBaseDataMediatrRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeBaseDataRequest request, CancellationToken cancellation)
     {
         var entity = await _dbContext.CustomersIncomes
-            .Where(t => t.CustomerOnSAIncomeId == request.Request.IncomeId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.Request.IncomeId} does not exist.");
+            .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
+            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
 
         // base data
-        entity.Sum = request.Request.BaseData?.Sum;
-        entity.CurrencyCode = request.Request.BaseData?.CurrencyCode;
+        entity.Sum = request.BaseData?.Sum;
+        entity.CurrencyCode = request.BaseData?.CurrencyCode;
 
         await _dbContext.SaveChangesAsync(cancellation);
 

@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CodebookService.Clients;
 using ExternalServices.Eas;
-using ExternalServices.MpHome;
+using ExternalServices;
 
 namespace DomainServices.ProductService.Api;
 
@@ -16,8 +15,6 @@ internal static class StartupExtensions
             throw new ArgumentNullException("AppConfiguration");
         if (configuration.EAS == null)
             throw new ArgumentNullException("AppConfiguration.EAS");
-        if (configuration.MpHome == null)
-            throw new ArgumentNullException("AppConfiguration.MPHome");
     }
 
     public static WebApplicationBuilder AddProductService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
@@ -25,7 +22,7 @@ internal static class StartupExtensions
         // EAS svc
         builder.Services.AddExternalServiceEas(appConfiguration.EAS);
         // MpHome svc
-        builder.Services.AddExternalServiceMpHome(appConfiguration.MpHome);
+        builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
 
         // dbcontext
         builder.AddEntityFramework<Repositories.ProductServiceDbContext>(connectionStringKey: "konsDb");

@@ -233,11 +233,11 @@ internal static class Extensions
                 }
 
 
-                var identityKb = cOnSA.CustomerIdentifiers.Single(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
+                var identityKb = cOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
                 var c = data.CustomersByIdentityCode[LoanApplicationDataService.IdentityToCode(identityKb)];
 
-                var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 1 && i.IsPrimary);
-                var contactEmail = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 5 && i.IsPrimary);
+                var contactMobilePhone = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 13 && i.IsPrimary);
+                var contactEmail = c.Contacts.FirstOrDefault(i => i.ContactTypeId == 14 && i.IsPrimary);
 
                 var addressPermanent = c.Addresses.FirstOrDefault(i => i.AddressTypeId == 1);  // Pouze trvalá adresa, WHERE podmínka:Customer.Addresses.AddressTypeId = PERMANENT
                 var kbRelationshipCodeUpper = c.NaturalPerson?.KbRelationshipCode?.ToUpperInvariant();

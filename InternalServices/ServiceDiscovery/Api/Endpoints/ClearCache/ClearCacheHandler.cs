@@ -1,4 +1,5 @@
 ﻿using CIS.InternalServices.ServiceDiscovery.Api.Common;
+using CIS.InternalServices.ServiceDiscovery.Contracts;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints.ClearCache;
 

@@ -1,7 +1,0 @@
-﻿syntax = "proto3";
-package DomainServices.HouseholdService;
-option csharp_namespace = "DomainServices.HouseholdService.Contracts";
-
-message HouseholdIdRequest {
-    int32 HouseholdId = 1;
-}

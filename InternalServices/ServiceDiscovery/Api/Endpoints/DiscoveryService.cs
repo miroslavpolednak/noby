@@ -12,7 +12,7 @@ internal sealed class DiscoveryService
     /// <exception cref="Core.Exceptions.CisInvalidEnvironmentNameException"></exception>
     /// <exception cref="RpcException">102</exception>
     public override async Task<GetServicesResponse> GetServices(GetServicesRequest request, ServerCallContext context)
-        => await _mediator.Send(new GetServices.GetServicesRequest(new(request.Environment), request.ServiceType), context.CancellationToken);
+        => await _mediator.Send(request, context.CancellationToken);
 
     /// <summary>
     /// Nastaveni konkretni sluzby pro dane prostredi
@@ -20,13 +20,12 @@ internal sealed class DiscoveryService
     /// <exception cref="Core.Exceptions.CisInvalidEnvironmentNameException"></exception>
     /// <exception cref="RpcException">101, 102, 103</exception>
     public override async Task<GetServiceResponse> GetService(GetServiceRequest request, ServerCallContext context)
-        => await _mediator.Send(new GetService.GetServiceRequest(new(request.Environment), new(request.ServiceName), request.ServiceType), context.CancellationToken);
+        => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> ClearCache(ClearCacheRequest request, ServerCallContext context)
-        => await _mediator.Send(new ClearCache.ClearCacheRequest(), context.CancellationToken);
+        => await _mediator.Send(request, context.CancellationToken);
 
     private readonly IMediator _mediator;
-
     public DiscoveryService(IMediator mediator)
         => _mediator = mediator;
 }
