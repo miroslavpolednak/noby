@@ -46,6 +46,7 @@ steps:
       Write-Host $(Build.BuildId)
       Write-Host "Final version - " -NoNewline
       Write-Host $finalVersion
+  continueOnError: true
 
 - task: DotNetCoreCLI@2
   inputs:
