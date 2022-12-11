@@ -12,7 +12,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
-  projectFile: 'InternalServices\DocumentGeneratorService\Api\CIS.InternalServices.DocumentGeneratorService.Api.csproj'
+  projectFile: 'InternalServices/DocumentGeneratorService/Api/CIS.InternalServices.DocumentGeneratorService.Api.csproj'
 
 # custom BuildNumber
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
