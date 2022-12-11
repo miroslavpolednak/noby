@@ -1,0 +1,92 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  name: MPSS Common
+
+variables:
+  buildConfiguration: 'Release'
+  buildPlatform: 'Any CPU'
+  projectFile: 'InternalServices\DocumentGeneratorService\Api\CIS.InternalServices.DocumentGeneratorService.Api.csproj'
+
+# custom BuildNumber
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
+
+steps:
+#- task: UseDotNet@2
+#  inputs:
+#    packageType: 'sdk'
+#    version: '6.0.x'
+#    includePreviewVersions: true
+
+- task: InlinePowershell@1
+  inputs:
+    Script: |
+      $file = '$(Build.SourcesDirectory)\$(projectFile)'
+      $regex = '(?<=<Version>)[^<]*'
+      
+      $buildVersion='$(Build.BuildId)'
+      
+      $versionFromFile = Select-String -Path $file $regex
+      $versionFromFile = $versionFromFile.Matches[0].Value
+      $versionFromFile = $versionFromFile.Substring(0, $versionFromFile.lastIndexOf('.'))
+      
+      $finalVersion = $versionFromFile + "." + $buildVersion
+     
+      (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
+ 
+      Write-Host "Build.BuildNumber - " -NoNewline
+      Write-Host $(Build.BuildNumber)
+      Write-Host "Build.BuildId - " -NoNewline
+      Write-Host $(Build.BuildId)
+      Write-Host "Final version - " -NoNewline
+      Write-Host $finalVersion
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(projectFile)'
+    feedsToUse: 'config'
+    nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
+    noCache: true
+
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'NOBY - SonarQube'
+    scannerMode: 'MSBuild'
+    projectKey: 'NOBY.DS.DocumentGeneratorService'
+    projectName: 'NOBY.DS.DocumentGeneratorService'
+    projectVersion: '1.0.0.$(Build.BuildId)'
+    extraProperties: 'sonar.verbose=true'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(projectFile)'
+    arguments: '--output $(Build.BinariesDirectory)'
+
+- task: SonarQubeAnalyze@5
+
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'FilePath'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\'
