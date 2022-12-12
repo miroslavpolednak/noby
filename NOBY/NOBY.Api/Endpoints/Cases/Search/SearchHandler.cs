@@ -15,11 +15,8 @@ internal class SearchHandler
             .FromRequest(request.Pagination)
             .EnsureAndTranslateSortFields(sortingMapper);
 
-        _logger.SearchPaginableSettings(paginable);
-        
         // zavolat BE sluzbu
         var result = ServiceCallResult.ResolveAndThrowIfError<_CS.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
-        _logger.FoundItems(result.Pagination.RecordsTotalSize, nameof(_CS.Case));
         
         // transform
         return new SearchResponse
@@ -45,20 +42,17 @@ internal class SearchHandler
         new ("customerName", "Name")
     };
 
-    private readonly ILogger<SearchHandler> _logger;
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly CasesModelConverter _converter;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public SearchHandler(
         ICurrentUserAccessor userAccessor,
-        ILogger<SearchHandler> logger,
         CasesModelConverter converter,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService)
     {
         _converter = converter;
         _userAccessor = userAccessor;
-        _logger = logger;
         _caseService = caseService;
     }
 }

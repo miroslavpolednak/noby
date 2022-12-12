@@ -13,15 +13,12 @@ internal class SendToCmpHandler
 
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ILogger<SendToCmpHandler> _logger;
 
     public SendToCmpHandler(
         ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ILogger<SendToCmpHandler> logger)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _caseService = caseService;
-        _logger = logger;
         _salesArrangementService = salesArrangementService;
     }
 

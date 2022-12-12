@@ -11,7 +11,6 @@ internal class GetHouseholdsHandler
     {
         // vsechny households
         var households = await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken);
-        _logger.FoundItems(households.Count, nameof(Household));
 
         var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
 
@@ -28,14 +27,11 @@ internal class GetHouseholdsHandler
 
     private readonly ICodebookServiceClients _codebookService;
     private readonly IHouseholdServiceClient _householdService;
-    private readonly ILogger<GetHouseholdsHandler> _logger;
     
     public GetHouseholdsHandler(
         IHouseholdServiceClient householdService,
-        ICodebookServiceClients codebookService,
-        ILogger<GetHouseholdsHandler> logger)
+        ICodebookServiceClients codebookService)
     {
-        _logger = logger;
         _codebookService = codebookService;
         _householdService = householdService;
     }

@@ -64,6 +64,16 @@
             Praha obvod
             </summary>
         </member>
+        <member name="P:CIS.Foms.Types.Address.CountrySubdivision">
+            <summary>
+            Název územního celku
+            </summary>
+        </member>
+        <member name="P:CIS.Foms.Types.Address.AddressPointId">
+            <summary>
+            Id adresního bodu
+            </summary>
+        </member>
         <member name="T:CIS.Foms.Types.CustomerIdentity">
             <summary>
             Identita klienta

@@ -106,6 +106,20 @@ public class CustomerController : ControllerBase
     public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
         => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme), cancellationToken);
 
+    /// <summary>
+    /// Získání dat klienta (s lokálními změnami)
+    /// </summary>
+    /// <remarks>
+    /// Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("customer-on-sa/{customerOnSAId:int}")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [ProducesResponseType(typeof(GetDetailWithChanges.GetDetailWithChangesResponse), StatusCodes.Status200OK)]
+    public async Task<GetDetailWithChanges.GetDetailWithChangesResponse> GetDetailWithChanges(int customerOnSAId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDetailWithChanges.GetDetailWithChangesRequest(customerOnSAId), cancellationToken);
+
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;
 }

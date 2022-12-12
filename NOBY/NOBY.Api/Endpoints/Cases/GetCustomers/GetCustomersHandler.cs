@@ -4,7 +4,6 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
 using CIS.Core;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
