@@ -41,7 +41,7 @@ public static class KestrelExtensions
                             break;
 
                         // ulozen v certstore
-                        case Core.Configuration.KestrelConfiguration.CertificateInfo.LocationTypes.CertStore:
+                        default:
                             using (var store = new X509Store(kestrelConfiguration.Certificate.CertStoreName, kestrelConfiguration.Certificate.CertStoreLocation, OpenFlags.ReadOnly))
                             {
                                 var cert = store.Certificates

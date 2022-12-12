@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NOBY.Infrastructure.Security;
 
-public sealed class FomsCurrentUserAccessor 
+public sealed class NobyCurrentUserAccessor 
     : ICurrentUserAccessor
 {
     private readonly IHttpContextAccessor _httpContext;
@@ -14,7 +14,7 @@ public sealed class FomsCurrentUserAccessor
     private CIS.Foms.Types.Interfaces.IFomsCurrentUserDetails? _userDetails;
     private bool _userDetailsFetched;
 
-    public FomsCurrentUserAccessor(IHttpContextAccessor httpContext)
+    public NobyCurrentUserAccessor(IHttpContextAccessor httpContext)
     {
         _httpContext = httpContext;
     }
@@ -46,7 +46,7 @@ public sealed class FomsCurrentUserAccessor
 
         var userService = _httpContext.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
         var userInstance = await userService.GetUser(_user!.Id, cancellationToken);
-        _userDetails = new FomsCurrentUserDetails
+        _userDetails = new NobyCurrentUserDetails
         {
             DisplayName = userInstance.FullName,
             CPM = userInstance.CPM,
@@ -56,7 +56,7 @@ public sealed class FomsCurrentUserAccessor
         return _userDetails;
     }
 
-    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken)
+    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken))
         where TDetails : ICurrentUserDetails
     {
         if (typeof(TDetails) is not CIS.Foms.Types.Interfaces.IFomsCurrentUserDetails)

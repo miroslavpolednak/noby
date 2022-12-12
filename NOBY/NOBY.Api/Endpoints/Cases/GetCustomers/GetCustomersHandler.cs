@@ -21,7 +21,7 @@ internal class GetCustomersHandler
 
         List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, bool Agent)> customerIdentities;
 
-        if (caseInstance.State == 1)
+        if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
             // get allowed SA types
             if (_allowedSalesArrangementTypes is null)

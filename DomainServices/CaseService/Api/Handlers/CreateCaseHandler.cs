@@ -14,14 +14,11 @@ internal class CreateCaseHandler
         var userInstance = await _userService.GetUser(request.Request.CaseOwnerUserId, cancellation);
         //TODO zkontrolovat existenci klienta?
 
-        // pro jakou spolecnost
-        var mandant = CIS.Foms.Enums.IdentitySchemes.Kb;
-
         // get default case state
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ziskat caseId
-        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(mandant, request.Request.Data.ProductTypeId));
+        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Request.Data.ProductTypeId));
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
