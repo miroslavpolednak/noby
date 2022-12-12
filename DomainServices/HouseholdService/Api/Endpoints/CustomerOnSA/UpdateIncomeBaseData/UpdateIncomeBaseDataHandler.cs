@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncomeBaseData;
 
-internal class UpdateIncomeBaseDataHandler
+internal sealed class UpdateIncomeBaseDataHandler
     : IRequestHandler<UpdateIncomeBaseDataRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken)
@@ -21,13 +21,9 @@ internal class UpdateIncomeBaseDataHandler
     }
 
     private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly ILogger<UpdateIncomeBaseDataHandler> _logger;
 
-    public UpdateIncomeBaseDataHandler(
-        Database.HouseholdServiceDbContext dbContext,
-        ILogger<UpdateIncomeBaseDataHandler> logger)
+    public UpdateIncomeBaseDataHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-        _logger = logger;
     }
 }

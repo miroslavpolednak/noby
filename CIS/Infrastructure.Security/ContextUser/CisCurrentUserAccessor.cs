@@ -57,7 +57,7 @@ public sealed class CisCurrentContextUserAccessor
         return _userDetails;
     }
 
-    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken) 
+    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken)) 
         where TDetails : ICurrentUserDetails
     {
         if (typeof(TDetails) is not Foms.Types.Interfaces.IFomsCurrentUserDetails)

@@ -34,7 +34,8 @@ internal class SendToCmpHandler
 
         // provolat validaci SA
         var validationResult = await callSaValidation(request.SalesArrangementId, cancellationToken);
-        if (validationResult?.ValidationMessages?.Any() ?? false && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
+        if (validationResult?.ValidationMessages?.Any() ?? false 
+            && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
         {
             return new SendToCmpResponse
             {

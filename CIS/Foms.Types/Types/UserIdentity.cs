@@ -29,8 +29,8 @@ public sealed class UserIdentity
     /// <exception cref="CisArgumentException">ID není zadáno</exception>
     public UserIdentity(string identity, UserIdentitySchemes scheme)
     {
-        if (string.IsNullOrEmpty(identity))
-            throw new CisArgumentException(1, "UserIdentity identity is empty", nameof(identity));
+        ArgumentNullException.ThrowIfNullOrEmpty(identity);
+
         Identity = identity;
         Scheme = scheme;
     }
@@ -44,11 +44,11 @@ public sealed class UserIdentity
     /// <exception cref="CisArgumentException">ID nebo schéma není zadáno</exception>
     public UserIdentity(string? identity, string? scheme)
     {
-        if (string.IsNullOrEmpty(identity))
-            throw new CisArgumentException(1, "UserIdentity identity is empty", nameof(identity));
-        Identity = identity;
+        ArgumentNullException.ThrowIfNullOrEmpty(identity);
         if (!Enum.TryParse(scheme, out UserIdentitySchemes parsedScheme))
             throw new CisArgumentException(1, "UserIdentity scheme is not in valid format", nameof(scheme));
+
+        Identity = identity;
         Scheme = parsedScheme;
     }
 }

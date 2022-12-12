@@ -49,7 +49,6 @@ public static class KestrelExtensions
                                     ?? throw new Core.Exceptions.CisConfigurationException(0, $"Kestrel certificate '{kestrelConfiguration.Certificate.Thumbprint}' not found in '{kestrelConfiguration.Certificate.CertStoreName}' / 'kestrelConfiguration.Certificate.CertStoreLocation'");
                                 opts.UseHttps(cert);
                             }
-
                             break;
                     }
                 }
