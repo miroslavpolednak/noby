@@ -6,13 +6,13 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncomeLi
 internal sealed class GetIncomeListHandler
     : IRequestHandler<GetIncomeListRequest, Contracts.GetIncomeListResponse>
 {
-    public async Task<Contracts.GetIncomeListResponse> Handle(GetIncomeListRequest request, CancellationToken cancellation)
+    public async Task<Contracts.GetIncomeListResponse> Handle(GetIncomeListRequest request, CancellationToken cancellationToken)
     {
         var list = await _dbContext.CustomersIncomes
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .Select(CustomerOnSAServiceExpressions.Income())
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
 
         _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 

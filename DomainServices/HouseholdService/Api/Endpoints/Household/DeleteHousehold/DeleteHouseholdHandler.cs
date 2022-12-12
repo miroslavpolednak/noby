@@ -5,11 +5,11 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehol
 internal sealed class DeleteHouseholdHandler
     : IRequestHandler<DeleteHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
         var householdInstance = await _dbContext.Households
             .Where(t => t.HouseholdId == request.HouseholdId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
 
         if (householdInstance.HouseholdTypeId == CIS.Foms.Enums.HouseholdTypes.Main && !request.HardDelete)
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
@@ -19,7 +19,7 @@ internal sealed class DeleteHouseholdHandler
         // smazat domacnost
         _dbContext.Households.Remove(householdInstance);
 
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         // smazat customerOnSA
         if (householdInstance.CustomerOnSAId1.HasValue)
@@ -27,14 +27,14 @@ internal sealed class DeleteHouseholdHandler
             {
                 CustomerOnSAId = householdInstance.CustomerOnSAId1.Value,
                 HardDelete = request.HardDelete
-            }, cancellation);
+            }, cancellationToken);
 
         if (householdInstance.CustomerOnSAId2.HasValue)
             await _mediator.Send(new DeleteCustomerRequest
             {
                 CustomerOnSAId = householdInstance.CustomerOnSAId2.Value,
                 HardDelete = request.HardDelete
-            }, cancellation);
+            }, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

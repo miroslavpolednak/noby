@@ -6,7 +6,7 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCusto
 internal class UpdateCustomerHandler
     : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
 {
-    public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellation)
+    public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         // response instance
         var model = new UpdateCustomerResponse();
@@ -15,7 +15,7 @@ internal class UpdateCustomerHandler
         var entity = await _dbContext.Customers
             .Include(t => t.Identities)
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
 
         // helper aby se nemuselo porad null checkovat
         entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
@@ -36,14 +36,14 @@ internal class UpdateCustomerHandler
         var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Kb);
         if (kbIdentity is not null)
         {
-            await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellation);
-            await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellation);
+            await _sulmClient.StopUse(kbIdentity.IdentityId, "MPAP", cancellationToken);
+            await _sulmClient.StartUse(kbIdentity.IdentityId, "MPAP", cancellationToken);
         }
 
         // uz ma KB identitu, ale jeste nema MP identitu
         if (!entity.Identities.Any(t => t.IdentityScheme == CIS.Foms.Enums.IdentitySchemes.Mp) && kbIdentity is not null)
         {
-            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, kbIdentity.IdentityScheme, cancellation);
+            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, kbIdentity.IdentityScheme, cancellationToken);
 
             // zavolat EAS
             await _updateService.TryCreateMpIdentity(entity);
@@ -51,7 +51,7 @@ internal class UpdateCustomerHandler
         // nove byl customer identifikovan KB identitou
         else if (!alreadyKbUpdatedCustomer && kbIdentity is not null)
         {
-            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellation);
+            await _updateService.GetCustomerAndUpdateEntity(entity, kbIdentity.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb, cancellationToken);
         }
         // customer zije zatim jen v NOBY, mohu updatovat maritalState
         else if (!alreadyKbUpdatedCustomer)
@@ -62,7 +62,7 @@ internal class UpdateCustomerHandler
         // update CustomerOnSA
         entity.LockedIncomeDateTime = request.Customer.LockedIncomeDateTime;
 
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
         {

@@ -6,7 +6,7 @@ namespace DomainServices.OfferService.Api.Endpoints.GetOffer;
 internal sealed class GetOfferHandler
     : IRequestHandler<GetOfferRequest, GetOfferResponse>
 {
-    public async Task<GetOfferResponse> Handle(GetOfferRequest request, CancellationToken cancellation)
+    public async Task<GetOfferResponse> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Offers
            .AsNoTracking()
@@ -18,7 +18,7 @@ internal sealed class GetOfferHandler
                t.CreatedUserName,
                t.CreatedTime
            })
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
         return new GetOfferResponse
         {

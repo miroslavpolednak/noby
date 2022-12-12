@@ -5,13 +5,13 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHouseholdLi
 internal class GetHouseholdListHandler
     : IRequestHandler<GetHouseholdListRequest, GetHouseholdListResponse>
 {
-    public async Task<GetHouseholdListResponse> Handle(GetHouseholdListRequest request, CancellationToken cancellation)
+    public async Task<GetHouseholdListResponse> Handle(GetHouseholdListRequest request, CancellationToken cancellationToken)
     {
         var model = await _dbContext.Households
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
             .AsNoTracking()
             .Select(Database.HouseholdExpressions.HouseholdDetail())
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
 
         var response = new GetHouseholdListResponse();
         response.Households.AddRange(model);

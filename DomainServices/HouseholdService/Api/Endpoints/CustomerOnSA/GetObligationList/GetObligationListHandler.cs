@@ -7,13 +7,13 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetObligati
 internal sealed class GetObligationListHandler
     : IRequestHandler<GetObligationListRequest, GetObligationListResponse>
 {
-    public async Task<GetObligationListResponse> Handle(GetObligationListRequest request, CancellationToken cancellation)
+    public async Task<GetObligationListResponse> Handle(GetObligationListRequest request, CancellationToken cancellationToken)
     {
         var list = await _dbContext.CustomersObligations
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .Select(CustomerOnSAServiceExpressions.Obligation())
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
 
         _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
 

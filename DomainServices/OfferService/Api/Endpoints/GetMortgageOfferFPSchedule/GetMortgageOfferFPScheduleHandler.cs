@@ -9,18 +9,18 @@ namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferFPSchedule;
 internal sealed class GetMortgageOfferFPScheduleHandler
     : IRequestHandler<GetMortgageOfferFPScheduleRequest, GetMortgageOfferFPScheduleResponse>
 {
-    public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellation)
+    public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Offers
            .AsNoTracking()
            .Where(t => t.OfferId == request.OfferId)
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
         // load codebook DrawingDuration for remaping Id -> DrawingDuration
-        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
+        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellationToken)).ToDictionary(i => i.Id);
 
         // load codebook DrawingType for remaping Id -> StarbildId
-        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
+        var drawingTypeById = (await _codebookService.DrawingTypes(cancellationToken)).ToDictionary(i => i.Id);
 
         var basicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin);
         var inputs = MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin);

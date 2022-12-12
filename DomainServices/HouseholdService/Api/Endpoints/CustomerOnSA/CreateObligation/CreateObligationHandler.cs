@@ -5,10 +5,10 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateOblig
 internal class CreateObligationHandler
     : IRequestHandler<CreateObligationRequest, CreateObligationResponse>
 {
-    public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellation)
+    public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
         // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellation))
+        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellationToken))
             throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
 
         var entity = new Database.Entities.CustomerOnSAObligation
@@ -30,7 +30,7 @@ internal class CreateObligationHandler
         };
 
         _dbContext.CustomersObligations.Add(entity);
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAObligation), entity.CustomerOnSAObligationId);
 

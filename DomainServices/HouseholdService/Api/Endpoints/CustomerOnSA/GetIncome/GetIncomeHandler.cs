@@ -5,11 +5,11 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetIncome;
 internal sealed class GetIncomeHandler
     : IRequestHandler<GetIncomeRequest, Income>
 {
-    public async Task<Income> Handle(GetIncomeRequest request, CancellationToken cancellation)
+    public async Task<Income> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
 
         var model = new Income
         {
