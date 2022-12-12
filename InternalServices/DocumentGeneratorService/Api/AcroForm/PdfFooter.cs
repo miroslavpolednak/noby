@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
+using ceTe.DynamicPDF.Merger.Forms;
+using ceTe.DynamicPDF.PageElements;
+using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateTypes;
 
@@ -9,6 +11,8 @@ namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 public class PdfFooter
 {
     private const string FooterIdentifiersFieldName = "ZapatiIdentifikatory";
+    private const string FooterPageNumberFieldName = "ZapatiCisloStranky";
+    private const string PageNumberFormat = "%%CP%%/%%TP%%";
 
     private readonly ICodebookServiceClients _codebookService;
     private readonly CultureInfo _cultureInfo;
@@ -23,13 +27,64 @@ public class PdfFooter
         _cultureInfo.NumberFormat.NumberGroupSeparator = string.Empty;
     }
 
-    public async Task FillFooter(Pdf.Document document, DocumentFooter footerData)
+    public async Task FillFooter(FinalDocument finalDocument, DocumentFooter footerData)
     {
-        var identifiersField = document.Form.Fields[FooterIdentifiersFieldName];
-
         _templateTypes = await _codebookService.DocumentTemplateTypes();
 
-        identifiersField.Value = GetIdentifiersText(footerData);
+        FillFooterIdentifiers(finalDocument.Document.Form.Fields, footerData);
+        FillFooterPageNumber(finalDocument);
+    }
+
+    private void FillFooterIdentifiers(FormFieldList fields, DocumentFooter footerData)
+    {
+        var identifierFields = GetAllFields(fields, FooterIdentifiersFieldName);
+
+        var identifiersText = GetIdentifiersText(footerData);
+
+        foreach (var field in identifierFields)
+            field.Value = identifiersText;
+    }
+
+    private void FillFooterPageNumber(FinalDocument finalDocument)
+    {
+        var pageNumberFields = GetAllFields(finalDocument.Document.Form.Fields, FooterPageNumberFieldName).ToList();
+
+        var originalField = finalDocument.PdfDocumentParts
+                                         .SelectMany(original => GetOriginalFields(pageNumberFields, original))
+                                         .FirstOrDefault(original => original is not null);
+
+
+        if (originalField is null)
+            return;
+
+        var page = finalDocument.Document.Pages[1];
+
+        var pageNumberingLabel = new PageNumberingLabel(PageNumberFormat,
+                                                        originalField.GetX(page),
+                                                        originalField.GetY(page),
+                                                        originalField.Width - 2,
+                                                        originalField.Height,
+                                                        originalField.Font,
+                                                        originalField.FontSize,
+                                                        TextAlign.Right);
+
+        finalDocument.Document.Template = new Template { Elements = { pageNumberingLabel } }; ;
+
+        pageNumberFields.ForEach(field => field.Output = FormFieldOutput.Remove);
+    }
+
+    private IEnumerable<FormField> GetAllFields(FormFieldList fields, string fieldName) =>
+        fields.Cast<FormField>()
+              .Concat(fields.Cast<FormField>().SelectMany(f => f.ChildFields.Cast<FormField>()))
+              .Where(f => f.Name.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase));
+
+    private IEnumerable<PdfFormField?> GetOriginalFields(IEnumerable<FormField> fields, PdfDocument originalDocument)
+    {
+        return fields.Select(SelectOriginalField);
+
+        PdfFormField? SelectOriginalField(FormField field) => field.Parent.HasChildFields
+            ? originalDocument.Form.Fields[field.Parent.Name].ChildFields[field.Name]
+            : originalDocument.Form.Fields[field.Name];
     }
 
     private string GetIdentifiersText(DocumentFooter footerData)

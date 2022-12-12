@@ -23,6 +23,8 @@ internal class ConfigurationContext : DbContext
 
     public DbSet<DocumentSpecialDataField> DocumentSpecialDataFields => Set<DocumentSpecialDataField>();
 
+    public DbSet<DocumentTable> DocumentTables => Set<DocumentTable>();
+
     public DbSet<DynamicStringFormat> DynamicStringFormats => Set<DynamicStringFormat>();
 
     public DbSet<EasFormDataField> EasFormDataFields => Set<EasFormDataField>();

@@ -1,5 +1,4 @@
-﻿using ceTe.DynamicPDF.Merger;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 
@@ -15,9 +14,11 @@ public class TemplateFileStorage : IDisposable
         _configuration = configurationOptions.Value;
     }
 
-    public Pdf.Document LoadTemplateFile(string templateName, string templateVersion)
+    public PdfDocument LoadTemplateFile(string templateName, string templateVersion, string? modifier)
     {
-        var filePath = Path.Combine(_configuration.StoragePath, templateName, $"{templateName}_{templateVersion}.pdf");
+        modifier = string.IsNullOrWhiteSpace(modifier) ? null : $"_{modifier}";
+
+        var filePath = Path.Combine(_configuration.StoragePath, templateName, $"{templateName}_{templateVersion}{modifier}.pdf");
 
         return LoadPdfDocument(filePath);
     }
@@ -27,10 +28,10 @@ public class TemplateFileStorage : IDisposable
         _fileStream?.Dispose();
     }
 
-    private Pdf.Document LoadPdfDocument(string filePath)
+    private PdfDocument LoadPdfDocument(string filePath)
     {
         _fileStream = File.OpenRead(filePath);
 
-        return new MergeDocument(new PdfDocument(_fileStream));
+        return new PdfDocument(_fileStream);
     }
 }

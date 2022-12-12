@@ -1,4 +1,6 @@
-﻿namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
+﻿using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat.Formatters;
+
+namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
 
 internal static class AcroFieldFormatterFactory
 {

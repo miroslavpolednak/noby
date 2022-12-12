@@ -3,10 +3,35 @@
 package CIS.InternalServices.DocumentGeneratorService;
 option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+import "GrpcDecimal.proto";
+
 message GenericTable {
-	repeated GenericTableRow Rows = 1;
+	repeated GenericTableColumn Columns = 1;
+
+	repeated GenericTableRow Rows = 2;
+
+	google.protobuf.StringValue ConcludingParagraph = 3;
+}
+
+message GenericTableColumn {
+	string Header = 1;
+
+	cis.types.GrpcDecimal WidthPercentage = 2;
+
+	google.protobuf.StringValue StringFormat = 3;
 }
 
 message GenericTableRow {
-	repeated string Values = 1;
+	repeated GenericTableRowValue Values = 1;
+}
+
+message GenericTableRowValue {
+	oneof Value {
+		string Text = 1;
+		cis.types.GrpcDate Date = 2;
+		int32 Number = 3;
+		cis.types.GrpcDecimal DecimalNumber = 4;
+	}
 }

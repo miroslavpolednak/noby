@@ -89,6 +89,30 @@ internal class ConfigurationRepository
         return data.ToLookup(x => x.SourceFieldId);
     }
 
+    public Task<List<DocumentTable>> LoadDocumentTables(int documentId, string documentVersion)
+    {
+        return _dbContext.DocumentTables
+                         .AsNoTracking()
+                         .Where(x => x.DocumentId == documentId && x.DocumentVersion == documentVersion)
+                         .Include(x => x.DocumentTableColumns)
+                         .AsSplitQuery()
+                         .Select(x => new DocumentTable
+                         {
+                             AcroFieldPlaceholder = x.AcroFieldPlaceholderName,
+                             DataSource = (DataSource)x.DataField.DataServiceId,
+                             CollectionSourcePath = x.DataField.FieldPath,
+                             Columns = x.DocumentTableColumns.OrderBy(c => c.Order).Select(c => new DocumentTable.Column
+                             {
+                                 CollectionFieldPath = c.FieldPath,
+                                 Header = c.Header,
+                                 WidthPercentage = c.WidthPercentage,
+                                 StringFormat = c.StringFormat
+                             }).ToList(),
+                             ConcludingParagraph = x.ConcludingParagraph
+                         })
+                         .ToListAsync();
+    }
+
     public Task<List<EasFormSourceField>> LoadEasFormSourceFields(int requestTypeId)
     {
         return GetSourceFields().Concat(GetSpecialSourceFields()).ToListAsync();

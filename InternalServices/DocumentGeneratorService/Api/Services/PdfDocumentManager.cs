@@ -1,7 +1,7 @@
 ﻿using ceTe.DynamicPDF.Xmp;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
+using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Google.Protobuf;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
@@ -9,24 +9,24 @@ namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 [TransientService, SelfService]
 internal class PdfDocumentManager
 {
+    private readonly PdfAcroFormWriterFactory _pdfAcroFormWriterFactory;
     private readonly TemplateManager _templateManager;
-    private readonly PdfAcroForm _pdfAcroForm;
     private readonly PdfFooter _pdfFooter;
 
-    public PdfDocumentManager(TemplateManager templateManager, PdfAcroForm pdfAcroForm, PdfFooter pdfFooter)
+    public PdfDocumentManager(PdfAcroFormWriterFactory pdfAcroFormWriterFactory, TemplateManager templateManager, PdfFooter pdfFooter)
     {
+        _pdfAcroFormWriterFactory = pdfAcroFormWriterFactory;
         _templateManager = templateManager;
-        _pdfAcroForm = pdfAcroForm;
         _pdfFooter = pdfFooter;
     }
 
-    public async Task<Document> GenerateDocument(GenerateDocumentRequest request)
+    public async Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request)
     {
         await ProcessParts(request.Parts);
 
         var finalPdf = await PrepareFinalPdf(request.OutputType, request.DocumentFooter);
 
-        return new Document
+        return new Contracts.Document
         {
             Data = await ConvertPdfToByteString(finalPdf)
         };
@@ -36,27 +36,29 @@ internal class PdfDocumentManager
     {
         foreach (var documentPart in parts)
         {
-            var template = await _templateManager.LoadTemplate(documentPart.TemplateTypeId, documentPart.TemplateVersion);
+            var acroFormWriter = _pdfAcroFormWriterFactory.Create(documentPart.Data);
 
-            _pdfAcroForm.Fill(template, documentPart.Data);
+            var templateLoader = await _templateManager.CreateLoader(documentPart.TemplateTypeId, documentPart.TemplateVersion);
 
+            var template = acroFormWriter.Write(templateLoader);
+            
             _templateManager.DrawTemplate(template);
         }
     }
 
-    private async Task<Pdf.Document> PrepareFinalPdf(OutputFileType outputFileType, DocumentFooter footer)
+    private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, DocumentFooter footer)
     {
-        var finalPdf = _templateManager.CreateFinalDocument();
+        var finalDocument = await _templateManager.CreateFinalDocument(footer.TemplateTypeId, footer.TemplateVersion);
 
-        await _pdfFooter.FillFooter(finalPdf, footer);
+        await _pdfFooter.FillFooter(finalDocument, footer);
 
         if (outputFileType is OutputFileType.Pdfa or OutputFileType.Unknown)
-            ArchiveDocument(finalPdf);
+            ArchiveDocument(finalDocument.Document);
 
-        return finalPdf;
+        return finalDocument.Document;
     }
 
-    private static void ArchiveDocument(Pdf.Document document)
+    private static void ArchiveDocument(Document document)
     {
         var xmp = new XmpMetadata();
 
@@ -68,16 +70,16 @@ internal class PdfDocumentManager
 
         document.XmpMetadata = xmp;
 
-        var iccProfile = new Pdf.IccProfile("D:\\Users\\992589l\\Downloads\\AdobeICCProfilesCS4Win_end-user\\Adobe ICC Profiles (end-user)\\CMYK\\CoatedFOGRA27.icc");
-        var outputIntents = new Pdf.OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile)
+        var iccProfile = new IccProfile("D:\\Users\\992589l\\Downloads\\AdobeICCProfilesCS4Win_end-user\\Adobe ICC Profiles (end-user)\\CMYK\\CoatedFOGRA27.icc");
+        var outputIntents = new OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile)
         {
-            Version = Pdf.OutputIntentVersion.PDF_A
+            Version = OutputIntentVersion.PDF_A
         };
 
         document.OutputIntents.Add(outputIntents);
     }
 
-    private static Task<ByteString> ConvertPdfToByteString(Pdf.Document document)
+    private static Task<ByteString> ConvertPdfToByteString(Document document)
     {
         var memoryStream = new MemoryStream();
 

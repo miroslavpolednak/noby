@@ -1,22 +1,26 @@
-﻿using System.ComponentModel;
-using CIS.Core.Exceptions;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
+﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
+using System.ComponentModel;
+using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
 
-namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
+namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 
-[ScopedService, SelfService]
-public class PdfAcroForm
+public class BasicAcroFormWriter : IAcroFormWriter
 {
     private readonly AcroFieldFormatProvider _fieldFormatProvider;
+    private readonly IEnumerable<GenerateDocumentPartData> _values;
 
-    public PdfAcroForm(AcroFieldFormatProvider fieldFormatProvider)
+    public BasicAcroFormWriter(AcroFieldFormatProvider fieldFormatProvider, IEnumerable<GenerateDocumentPartData> values)
     {
         _fieldFormatProvider = fieldFormatProvider;
+        _values = values;
     }
 
-    public void Fill(Pdf.Document document, IEnumerable<GenerateDocumentPartData> values)
+    public MergeDocument Write(TemplateLoader templateLoader, string? templateNameModifier = default)
     {
-        foreach (var value in values)
+        var document = new MergeDocument(templateLoader.Load(templateNameModifier));
+
+        foreach (var value in _values)
         {
             var field = document.Form.Fields[value.Key];
 
@@ -25,13 +29,15 @@ public class PdfAcroForm
 
             field.Value = GetFieldValue(value);
         }
+
+        return document;
     }
 
     private string GetFieldValue(GenerateDocumentPartData value)
     {
         return value.ValueCase switch
         {
-            GenerateDocumentPartData.ValueOneofCase.None => GetFormattedString(string.Empty, value.StringFormat),
+            GenerateDocumentPartData.ValueOneofCase.None => value.StringFormat ?? string.Empty,
             GenerateDocumentPartData.ValueOneofCase.Text => GetFormattedString(value.Text, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Date => GetFormattedString<DateTime>(value.Date, value.StringFormat),
             GenerateDocumentPartData.ValueOneofCase.Number => GetFormattedString(value.Number, value.StringFormat),

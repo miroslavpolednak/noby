@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
 
-namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
+namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
 
 [SingletonService, SelfService]
 public class AcroFieldFormatProvider : IFormatProvider, ICustomFormatter

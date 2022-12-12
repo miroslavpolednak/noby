@@ -30,7 +30,9 @@ internal class DataAggregator : IDataAggregator
 
         var dynamicStringFormats = documentMapper.GetDynamicStringFormats(config.DynamicStringFormats);
 
-        return documentMapper.GetDocumentFields(config.SourceFields, dynamicStringFormats).ToList();
+        return documentMapper.GetDocumentFields(config.SourceFields, dynamicStringFormats)
+                             .Union(documentMapper.GetDocumentTables(config.Tables))
+                             .ToList();
     }
 
     public async Task<IEasForm<TData>> GetEasForm<TData>(int salesArrangementId) where TData : IEasFormData

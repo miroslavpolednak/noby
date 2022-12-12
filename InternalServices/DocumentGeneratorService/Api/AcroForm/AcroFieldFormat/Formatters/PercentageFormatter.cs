@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormatters;
+﻿namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat.Formatters;
 
 internal class PercentageFormatter : IAcroFieldFormatter
 {

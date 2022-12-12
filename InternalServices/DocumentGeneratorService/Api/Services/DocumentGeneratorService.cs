@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DocumentGeneratorService.Contracts;
-using Grpc.Core;
+﻿using Grpc.Core;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -12,7 +11,7 @@ internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.
         _documentManager = documentManager;
     }
 
-    public override Task<Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
+    public override Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
     {
         return _documentManager.GenerateDocument(request);
     }

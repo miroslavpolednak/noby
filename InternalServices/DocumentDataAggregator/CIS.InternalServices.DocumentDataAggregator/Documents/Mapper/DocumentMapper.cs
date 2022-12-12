@@ -1,5 +1,8 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
+﻿using System.Collections;
+using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
 using CIS.InternalServices.DocumentDataAggregator.DataServices;
+using CIS.InternalServices.DocumentDataAggregator.Documents.Table;
+using DocumentTable = CIS.InternalServices.DocumentDataAggregator.Documents.Table.DocumentTable;
 
 namespace CIS.InternalServices.DocumentDataAggregator.Documents.Mapper;
 
@@ -41,6 +44,41 @@ internal class DocumentMapper
                 FieldName = fieldData.AcroFieldName,
                 Value = fieldData.Value!,
                 StringFormat = stringFormat
+            };
+        }
+    }
+
+    public IEnumerable<DocumentFieldData> GetDocumentTables(IEnumerable<Configuration.Document.DocumentTable> documentTables)
+    {
+        foreach (var table in documentTables)
+        {
+            var collectionSource = MapperHelper.GetValue(_aggregatedData, table.CollectionSourcePath.Replace(ConfigurationConstants.CollectionMarker, ""));
+            
+            if (collectionSource is null)
+                continue;
+
+            if (collectionSource is not IEnumerable collection)
+                throw new InvalidOperationException();
+
+            var test = collection.Cast<object>().Select(obj =>
+            {
+                return (ICollection<object?>)table.Columns.Select(c => MapperHelper.GetValue(obj, c.CollectionFieldPath)).ToList();
+            }).ToList();
+
+            yield return new DocumentFieldData
+            {
+                FieldName = table.AcroFieldPlaceholder,
+                Value = new DocumentTable
+                {
+                    Columns = table.Columns.Select(c => new DocumentTableColumn
+                    {
+                        Header = c.Header,
+                        WidthPercentage = c.WidthPercentage,
+                        StringFormat = c.StringFormat
+                    }).ToList(),
+                    RowsValues = test,
+                    ConcludingParagraph = table.ConcludingParagraph
+                }
             };
         }
     }

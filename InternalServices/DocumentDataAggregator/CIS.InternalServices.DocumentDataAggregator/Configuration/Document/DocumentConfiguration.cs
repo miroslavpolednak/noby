@@ -7,4 +7,6 @@ internal class DocumentConfiguration
     public required IReadOnlyCollection<DocumentSourceField> SourceFields { get; init; }
 
     public required ILookup<int, DocumentDynamicStringFormat> DynamicStringFormats { get; init; }
+
+    public required IReadOnlyCollection<DocumentTable> Tables { get; init; }
 }

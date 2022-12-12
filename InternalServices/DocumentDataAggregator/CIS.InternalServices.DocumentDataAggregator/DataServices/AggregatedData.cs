@@ -23,6 +23,8 @@ internal class AggregatedData
 
     public GetMortgageOfferDetailResponse Offer { get; set; }
 
+    public GetMortgageOfferFPScheduleResponse OfferPaymentSchedule { get; set; }
+
     public User User { get; set; }
 
     public CustomerDetailResponse Customer { get; set; }

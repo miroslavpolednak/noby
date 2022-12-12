@@ -42,7 +42,7 @@ internal class SalesArrangementServiceWrapper : IServiceWrapper
                 {
                     PrefixAccount = "01",
                     AccountNumber = "123456789",
-                    DrawingAmount = 123456,
+                    DrawingAmount = 123456m,
                     BankCode = "1111",
                     VariableSymbol = "V123456789",
                     ConstantSymbol = "C123456789",
@@ -52,7 +52,7 @@ internal class SalesArrangementServiceWrapper : IServiceWrapper
                 {
                     PrefixAccount = "02",
                     AccountNumber = "223456789",
-                    DrawingAmount = 223456,
+                    DrawingAmount = 223456m,
                     BankCode = "2222",
                     VariableSymbol = "V2123456789",
                     ConstantSymbol = "C2123456789",

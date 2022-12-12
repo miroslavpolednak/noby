@@ -17,17 +17,22 @@ internal class ConfigurationManager
     public async Task<DocumentConfiguration> LoadDocumentConfiguration(int documentId, string documentVersion)
     {
         var fields = await _repository.LoadDocumentSourceFields(documentId, documentVersion);
+        var tables = await _repository.LoadDocumentTables(documentId, documentVersion);
 
         return new DocumentConfiguration
         {
             InputConfig = new InputConfig
             {
-                DataSources = GetDataSources(fields.Select(f => f.DataSource)),
+                DataSources = GetDataSources(UnionFieldAndTableSources()),
                 DynamicInputParameters = await _repository.LoadDocumentDynamicInputFields(documentId, documentVersion)
             },
             SourceFields = fields,
-            DynamicStringFormats = await _repository.LoadDocumentDynamicStringFormats(documentId, documentVersion)
+            DynamicStringFormats = await _repository.LoadDocumentDynamicStringFormats(documentId, documentVersion),
+            Tables = tables
         };
+
+        IEnumerable<DataSource> UnionFieldAndTableSources() => 
+            fields.Select(f => f.DataSource).Union(tables.Select(t => t.DataSource));
     }
 
     public async Task<EasFormConfiguration> LoadEasFormConfiguration(int easFormRequestType)

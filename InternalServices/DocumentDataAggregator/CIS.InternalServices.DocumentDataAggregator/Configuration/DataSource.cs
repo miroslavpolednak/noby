@@ -8,5 +8,6 @@ internal enum DataSource
     OfferService,
     UserService,
     CustomerService,
-    ProductService
+    ProductService,
+    OfferPaymentScheduleService
 }

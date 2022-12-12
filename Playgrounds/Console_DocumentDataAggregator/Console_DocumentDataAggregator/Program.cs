@@ -3,6 +3,7 @@ using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DocumentDataAggregator;
 using CIS.InternalServices.DocumentDataAggregator.Configuration;
+using CIS.InternalServices.DocumentDataAggregator.Documents;
 using CIS.InternalServices.DocumentDataAggregator.EasForms;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
@@ -30,15 +31,16 @@ Console.ReadKey();
 
 static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGeneratorServiceClient documentGeneratorService)
 {
-    //var input = new InputParameters { OfferId = 554, UserId = 3048 };
-    var input = new InputParameters { SalesArrangementId = 97 };
+    var input = new InputParameters { OfferId = 1160, UserId = 3048 };
+    //var input = new InputParameters { SalesArrangementId = 97 };
 
-    var documentType = DocumentTemplateType.NABIDKA;
+    var documentType = DocumentTemplateType.SPLKALHU;
 
     var data = await dataAggregator.GetDocumentData(documentType, "001A", input);
 
     var request = new GenerateDocumentRequest
     {
+        OutputType = OutputFileType.OpenForm,
         Parts =
         {
             new GenerateDocumentPart
@@ -58,17 +60,7 @@ static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGene
         }
     };
 
-    foreach (var documentData in data)
-    {
-        request.Parts
-               .First()
-               .Data
-               .Add(new GenerateDocumentPartData
-               {
-                   Key = documentData.FieldName,
-                   StringFormat = documentData.StringFormat
-               }.SetDocumentPartDataValue(documentData.Value));
-    }
+    request.Parts.First().FillDocumentPart(data);
 
     var result = await documentGeneratorService.GenerateDocument(request);
 

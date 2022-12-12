@@ -1,6 +1,4 @@
-﻿using ceTe.DynamicPDF.Forms;
-using ceTe.DynamicPDF.Merger;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
 using DomainServices.CodebookService.Clients;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Storage;
@@ -13,26 +11,24 @@ public class TemplateManager : IDisposable
 
     private readonly List<Stream> _documentStreams = new();
 
-    private string _templateTypeName = null!;
-    private string _templateVersion = null!;
-
     public TemplateManager(TemplateFileStorage fileStorage, ICodebookServiceClients codebookService)
     {
         _fileStorage = fileStorage;
         _codebookService = codebookService;
     }
 
-    public async Task<Pdf.Document> LoadTemplate(int templateTypeId, string templateVersion)
+    public async Task<TemplateLoader> CreateLoader(int templateTypeId, string templateVersion)
     {
         await CheckTemplateVersion(templateTypeId, templateVersion);
 
-        _templateTypeName = await LoadTemplateTypeName(templateTypeId);
-        _templateVersion = templateVersion;
-
-        return _fileStorage.LoadTemplateFile(_templateTypeName, _templateVersion);
+        return new TemplateLoader(_fileStorage)
+        {
+            TemplateTypeName = await LoadTemplateTypeName(templateTypeId),
+            TemplateVersion = templateVersion
+        };
     }
 
-    public void DrawTemplate(Pdf.Document template)
+    public void DrawTemplate(Document template)
     {
         var memoryStream = new MemoryStream();
 
@@ -41,21 +37,21 @@ public class TemplateManager : IDisposable
         _documentStreams.Add(memoryStream);
     }
 
-    public Pdf.Document CreateFinalDocument()
+    public async Task<FinalDocument> CreateFinalDocument(int templateTypeId, string templateVersion)
     {
-        var document = new MergeDocument
-        {
-            Title = $"{_templateTypeName}_{_templateVersion}",
-            Author = nameof(DocumentGeneratorService),
-            Form = { Output = FormOutput.Flatten }
-        };
+        var document = await PrepareFinalDocument(templateTypeId, templateVersion);
+
+        var finalDocument = new FinalDocument(document);
 
         _documentStreams.ForEach(stream =>
         {
-            document.Append(new PdfDocument(stream));
+            var pdfDocument = new PdfDocument(stream);
+
+            document.Append(pdfDocument);
+            finalDocument.PdfDocumentParts.Add(pdfDocument);
         });
 
-        return document;
+        return finalDocument;
     }
 
     public void Dispose()
@@ -82,5 +78,19 @@ public class TemplateManager : IDisposable
 
         if (!templateExists)
             throw new CisArgumentException(402, $"Unsupported template (id: {templateTypeId}) version {templateVersion}", nameof(templateVersion));
+    }
+
+    private async Task<MergeDocument> PrepareFinalDocument(int templateTypeId, string templateVersion)
+    {
+        await CheckTemplateVersion(templateTypeId, templateVersion);
+
+        var templateTypeName = await LoadTemplateTypeName(templateTypeId);
+
+        return new MergeDocument
+        {
+            Title = $"{templateTypeName}_{templateVersion}",
+            Author = nameof(DocumentGeneratorService),
+            Form = { Output = FormOutput.Flatten }
+        };
     }
 }
