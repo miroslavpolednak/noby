@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class PaginationRequest 
+public partial class PaginationRequest 
     : Core.Types.IPaginableRequest
 {
     public bool HasSorting => Sorting is not null && Sorting.Any();

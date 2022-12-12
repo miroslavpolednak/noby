@@ -47,7 +47,7 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // Validators
 builder.Services
-    .AddTransient(typeof(IPipelineBehavior<,>), typeof(GrpcValidationBehaviour<,>));
+    .AddTransient(typeof(IPipelineBehavior<,>), typeof(GrpcValidationBehavior<,>));
 
 builder.Services.Scan(selector => selector
     .FromAssembliesOf(typeof(Program))

@@ -19,7 +19,7 @@ internal static class StartupExtensions
     {
         builder.Services
             .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehavior<,>));
 
         // add validators
         builder.Services.Scan(selector => selector
