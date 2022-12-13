@@ -55,16 +55,15 @@ public static class EmailMappers
             text = emailContent.Text
         };
     }
-
-    // todo:
-    public static SendApi.v4.Attachment Map(this EmailAttachment emailAttachment)
+    
+    public static SendApi.v4.Attachment Map(string filename, string objectKey)
     {
         return new SendApi.v4.Attachment
         {
             s3Content = new SendApi.v4.S3Content
             {
-                filename = "",
-                objectKey = ""
+                filename = filename,
+                objectKey = objectKey
             }
         };
     }

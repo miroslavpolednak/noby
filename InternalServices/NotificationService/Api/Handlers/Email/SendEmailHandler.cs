@@ -34,27 +34,19 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
     
     public async Task<EmailSendResponse> Handle(EmailSendRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
         var notificationResult = await _repository.CreateResult(NotificationChannel.Email, cancellationToken);
         var notificationId = notificationResult.Id;
         
         var attachments = new List<Attachment>();
-
+        var host = request.From.Value.ToLowerInvariant().Split('@').Last();
+        var bucketName = host == "kb.cz" ? Buckets.Mcs : Buckets.Mpss;
+        
         try
         {
             foreach (var attachment in request.Attachments)
             {
-                // todo: Buckets.Mcs or Buckets.Mpss
-                var bucketName = Buckets.Mcs;
                 var objectKey = await _s3Service.UploadFile(attachment.Binary, bucketName);
-                attachments.Add(new Attachment
-                {
-                    s3Content = new S3Content
-                    {
-                        filename = attachment.Filename,
-                        objectKey = objectKey
-                    }
-                });
+                attachments.Add( EmailMappers.Map(attachment.Filename, objectKey));
             }
         }
         catch (Exception e)

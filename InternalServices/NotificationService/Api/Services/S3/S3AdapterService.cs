@@ -28,4 +28,19 @@ public class S3AdapterService
         
         return key;
     }
+
+    public async Task<byte[]> GetFile(string key, string bucketName)
+    {
+        var getRequest = new GetObjectRequest
+        {
+            Key = key,
+            BucketName = bucketName
+        };
+        
+        var response = await _s3Client.GetObjectAsync(getRequest);
+        
+        using var memoryStream = new MemoryStream();
+        await response.ResponseStream.CopyToAsync(memoryStream);
+        return memoryStream.ToArray();
+    }
 }

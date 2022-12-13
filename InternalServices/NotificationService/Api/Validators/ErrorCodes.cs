@@ -73,5 +73,27 @@ public static class ErrorCodes
         public const string NationalNumberRequired = "334";
         public const string NationalNumberInvalid = "335";
     }
+
+    public static class SendSms
+    {
+        public const string PhoneRequired = "336";
+        public const string PhoneInvalid = "337";
+        public const string ProcessPriorityInvalid = "338";
+        public const string TypeInvalid = "339";
+        public const string TextRequired = "340";
+        public const string TextLengthLimitExceeded = "341";
+    }
+
+    public static class SendSmsFromTemplate
+    {
+        public const string PhoneRequired = "342";
+        public const string PhoneInvalid = "343";
+        public const string ProcessPriorityInvalid = "344";
+        public const string TypeInvalid = "345";
+        public const string TextRequired = "346";
+        public const string TextLengthLimitExceeded = "347";
+        public const string PlaceholdersRequired = "348";
+        public const string PlaceholdersInvalid = "349";
+    }
     
 }

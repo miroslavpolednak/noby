@@ -9,28 +9,28 @@ public class SendSmsRequestValidator : AbstractValidator<SmsSendRequest>
     {
         RuleFor(request => request.Phone)
             .NotNull()
-                .WithErrorCode("todo")
-                .WithMessage("todo")
+                .WithErrorCode(ErrorCodes.SendSms.PhoneRequired)
+                .WithMessage($"{nameof(SmsSendRequest.Phone)} required.")
             .SetValidator(new PhoneValidator())
-                .WithErrorCode(nameof(SmsSendRequest.Phone))
-                .WithMessage("todo");
+                .WithErrorCode(ErrorCodes.SendSms.PhoneInvalid)
+                .WithMessage(nameof(SmsSendRequest.Phone));
 
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(nameof(SmsSendRequest.ProcessingPriority))
-                .WithMessage("todo");
-        
+                .WithErrorCode(ErrorCodes.SendSms.ProcessPriorityInvalid)
+                .WithMessage(nameof(SmsSendRequest.ProcessingPriority));
+
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(nameof(SmsSendRequest.Type))
-                .WithMessage("todo");
-        
+                .WithErrorCode(ErrorCodes.SendSms.TypeInvalid)
+                .WithMessage($"Invalid {nameof(SmsSendRequest.Type)}.");
+
         RuleFor(request => request.Text)
             .NotEmpty()
-                .WithErrorCode("todo")
-                .WithMessage("todo")
+                .WithErrorCode(ErrorCodes.SendSms.TextRequired)
+                .WithMessage($"{nameof(SmsSendRequest.Text)} required.")
             .MaximumLength(480)
-                .WithErrorCode(nameof(SmsSendRequest.Text))
-                .WithMessage("todo");
+                .WithErrorCode(ErrorCodes.SendSms.TextLengthLimitExceeded)
+                .WithMessage($"Maximum length of {nameof(SmsSendRequest.Text)} is 480.");
     }    
 }

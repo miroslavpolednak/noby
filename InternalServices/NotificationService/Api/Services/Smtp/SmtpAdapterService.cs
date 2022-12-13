@@ -19,7 +19,7 @@ public class SmtpAdapterService
     public async Task SendEmail(
         string from, string replyTo, string subject, string content,
         IEnumerable<string> to, IEnumerable<string> cc, IEnumerable<string> bcc,
-        IEnumerable<KeyValuePair<string, byte[]>> attachments)
+        IEnumerable<SmtpAttachment> attachments)
     {
         using var client = new SmtpClient();
         await client.ConnectAsync(_smtpConfiguration.Host, _smtpConfiguration.Port, _smtpConfiguration.SecureSocket);
@@ -49,7 +49,7 @@ public class SmtpAdapterService
 
         foreach (var attachment in attachments)
         {
-            bodyBuilder.Attachments.Add(attachment.Key, attachment.Value);
+            bodyBuilder.Attachments.Add(attachment.Filename, attachment.Binary);
         }
 
         message.Body = bodyBuilder.ToMessageBody();
