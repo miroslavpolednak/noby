@@ -1,4 +1,5 @@
-﻿using _HO = DomainServices.HouseholdService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.GetDetail;
 
@@ -6,7 +7,7 @@ namespace NOBY.Api.Endpoints.Customer.Create;
 
 internal static class CreateExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, CIS.Infrastructure.gRPC.CisTypes.Identity identity)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
@@ -26,7 +27,7 @@ internal static class CreateExtensions
                 Number = request.IdentificationDocument.Number ?? "",
                 IssuingCountryId = request.IdentificationDocument.IssuingCountryId
             },
-            Identity = identity,
+            Identities = { identities },
             HardCreate = request.HardCreate
         };
 
@@ -59,7 +60,7 @@ internal static class CreateExtensions
         };
         if (customerOnSA.CustomerIdentifiers is not null)
             model.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
-        model.Customer.CustomerIdentifiers.Add(customerKb.Identity);
+        model.Customer.CustomerIdentifiers.Add(customerKb.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
 
         return model;
     }
@@ -90,10 +91,7 @@ internal static class CreateExtensions
                 LegallyIncapableUntil = customer.NaturalPerson?.LegallyIncapableUntil
             },
             IdentificationDocument = customer.IdentificationDocument,
-            Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity
-            {
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
-            }
+            Identities = { new Identity { IdentityScheme = Identity.Types.IdentitySchemes.Kb } }
         };
         if (customer.NaturalPerson?.CitizenshipCountriesId is not null)
             model.NaturalPerson!.CitizenshipCountriesId.AddRange(customer.NaturalPerson!.CitizenshipCountriesId);

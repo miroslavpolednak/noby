@@ -9,7 +9,7 @@ import "GrpcAddress.proto";
 import "Contact.proto";
 
 message CreateCustomerRequest {
-	cis.types.Identity Identity = 1;
+	repeated cis.types.Identity Identities = 1;
 
 	bool HardCreate = 2;
 

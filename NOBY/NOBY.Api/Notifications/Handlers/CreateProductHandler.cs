@@ -46,7 +46,11 @@ internal sealed class CreateProductHandler
         // zalozit noveho klienta
         var createCustomerRequest = new _Cu.CreateCustomerRequest
         {
-            Identity = mpIdentity,
+            Identities = 
+            { 
+                mpIdentity, 
+                notification.CustomerIdentifiers!.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+            },
             HardCreate = true,
             NaturalPerson = customerDetail.NaturalPerson
         };

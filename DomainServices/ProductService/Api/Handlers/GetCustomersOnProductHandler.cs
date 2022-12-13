@@ -19,11 +19,11 @@ internal class GetCustomersOnProductHandler
         var customers = await _dbContext.Relationships
             .AsNoTracking()
             .Where(t => t.UverId == request.ProductId)
-            .Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBPartyId })
+            .Select(t => new { Vztah = t.VztahId, MpId = t.PartnerId, KbId = t.Partner.KBId })
             .ToListAsync(cancellation);
         if (!customers.Any())
             throw new CisValidationException(12020, "Customers not found for product.");
-        if (customers.Any(t => string.IsNullOrEmpty(t.KbId)))
+        if (customers.Any(t => !t.KbId.HasValue))
             throw new CisValidationException(12021, "Not all customers does have KB ID");
 
         var model = new GetCustomersOnProductResponse();
@@ -34,7 +34,7 @@ internal class GetCustomersOnProductHandler
                 RelationshipCustomerProductTypeId = customer.Vztah
             };
             item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.MpId, CIS.Foms.Enums.IdentitySchemes.Mp));
-            item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(long.Parse(customer.KbId!, System.Globalization.CultureInfo.InvariantCulture), CIS.Foms.Enums.IdentitySchemes.Kb));
+            item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId!.Value, CIS.Foms.Enums.IdentitySchemes.Kb));
 
             model.Customers.Add(item);
         }

@@ -45,18 +45,20 @@ public class MpDigiCreateClient
 
     public async Task<Identity> CreatePartner(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
-        await CheckIfPartnerExists(request.Identity.IdentityId, cancellationToken);
+        var mpIdentity = request.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+
+        await CheckIfPartnerExists(mpIdentity.IdentityId, cancellationToken);
 
         await InitializeCodebooks(cancellationToken);
 
         var partnerRequest = MapToPartnerRequest(request);
 
-        var result = await _mpHomeClient.UpdatePartner(request.Identity.IdentityId, partnerRequest);
+        var result = await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest);
 
         if (result is ErrorServiceCallResult error)
             throw new CisServiceCallResultErrorException(error);
 
-        return new Identity(request.Identity.IdentityId, IdentitySchemes.Mp);
+        return new Identity(mpIdentity.IdentityId, IdentitySchemes.Mp);
     }
 
     private async Task CheckIfPartnerExists(long partnerId, CancellationToken cancellationToken)
@@ -102,7 +104,8 @@ public class MpDigiCreateClient
                 Type = FastEnum.Parse<ContactType>(_contactTypes.First(x => x.Id == c.ContactTypeId).MpDigiApiCode),
                 Primary = true,
                 Value = c.Value
-            }).ToList()
+            }).ToList(),
+            KbId = request.Identities.Where(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb).Select(i => (long?)i.IdentityId).FirstOrDefault()
         };
 
         CreateIdentificationDocument(partnerRequest, request.IdentificationDocument);

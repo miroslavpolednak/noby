@@ -1,4 +1,6 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 
@@ -14,9 +16,9 @@ internal sealed class CreateHandler
         bool createOk = false;
         try
         {
-            var createResult = ServiceCallResult.ResolveAndThrowIfError<_Cust.CreateCustomerResponse>(await _customerService.CreateCustomer(request.ToDomainService(new CIS.Infrastructure.gRPC.CisTypes.Identity
+            var createResult = ServiceCallResult.ResolveAndThrowIfError<_Cust.CreateCustomerResponse>(await _customerService.CreateCustomer(request.ToDomainService(new Identity
             {
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
+                IdentityScheme = Identity.Types.IdentitySchemes.Kb
             }), cancellationToken));
             kbId = createResult.CreatedCustomerIdentity.IdentityId;
             createOk = true;
@@ -51,10 +53,10 @@ internal sealed class CreateHandler
         }
 
         // KB customer
-        var customerKb = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerDetailResponse>(await _customerService.GetCustomerDetail(new CIS.Infrastructure.gRPC.CisTypes.Identity
+        var customerKb = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerDetailResponse>(await _customerService.GetCustomerDetail(new Identity
         {
             IdentityId = kbId,
-            IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
+            IdentityScheme = Identity.Types.IdentitySchemes.Kb
         }, cancellationToken));
 
         // nas customer
@@ -72,11 +74,7 @@ internal sealed class CreateHandler
         // pokud je vse OK, zalozit customera v konsDb
         try
         {
-            await _customerService.CreateCustomer(request.ToDomainService(new CIS.Infrastructure.gRPC.CisTypes.Identity
-            {
-                IdentityId = updateResponse.PartnerId!.Value,
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp
-            }), cancellationToken);
+            await _customerService.CreateCustomer(request.ToDomainService(new Identity(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new Identity(kbId, IdentitySchemes.Kb)), cancellationToken);
         }
         catch (Exception ex)
         {

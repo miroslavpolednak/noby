@@ -7,23 +7,47 @@ internal class CreateCustomerMediatrRequestValidator : AbstractValidator<CreateC
 {
     public CreateCustomerMediatrRequestValidator()
     {
-        RuleFor(m => m.Request.Identity.IdentityScheme)
-            .IsInEnum()
-            .NotEqual(Identity.Types.IdentitySchemes.Unknown)
-            .WithMessage("IdentityScheme must be specified")
-            .WithErrorCode("11006");
+        When(m => m.Request.Identities.Count == 2,
+             () =>
+             {
+                 RuleForEach(m => m.Request.Identities).ChildRules(identity =>
+                 {
+                     SetIdentitySchemeValidator(identity);
+                     SetIdentityCombinationValidator(identity, Identity.Types.IdentitySchemes.Kb, validator => validator.NotEmpty().GreaterThan(0));
+                     SetIdentityCombinationValidator(identity, Identity.Types.IdentitySchemes.Mp, validator => validator.NotEmpty().GreaterThan(0));
+                 });
+             });
 
-        When(m => m.Request.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb,
-             () => RuleFor(m => m.Request.Identity.IdentityId)
-                   .Empty()
-                   .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
-                   .WithErrorCode("11016"));
+        When(m => m.Request.Identities.Count != 2,
+             () =>
+             {
+                 RuleForEach(m => m.Request.Identities).ChildRules(identity =>
+                 {
+                     SetIdentitySchemeValidator(identity);
 
-        When(m => m.Request.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp,
-             () => RuleFor(m => m.Request.Identity.IdentityId)
-                   .NotEmpty()
-                   .GreaterThan(0)
-                   .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
-                   .WithErrorCode("11016"));
+                     SetIdentityCombinationValidator(identity, Identity.Types.IdentitySchemes.Kb, validator => validator.Empty());
+                     SetIdentityCombinationValidator(identity, Identity.Types.IdentitySchemes.Mp, validator => validator.NotEmpty().GreaterThan(0));
+                 });
+             });
+    }
+
+    private static void SetIdentitySchemeValidator(AbstractValidator<Identity> validator)
+    {
+        validator.RuleFor(i => i.IdentityScheme)
+                 .IsInEnum()
+                 .NotEqual(Identity.Types.IdentitySchemes.Unknown)
+                 .WithMessage("IdentityScheme must be specified")
+                 .WithErrorCode("11006");
+    }
+
+    private static void SetIdentityCombinationValidator(
+        AbstractValidator<Identity> validator,
+        Identity.Types.IdentitySchemes scheme,
+        Func<IRuleBuilder<Identity, long>, IRuleBuilderOptions<Identity, long>> configureValidator)
+    {
+        validator.When(i => i.IdentityScheme == scheme,
+                       () => configureValidator(validator.RuleFor(i => i.IdentityId))
+                             .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
+                             .WithErrorCode("11016"));
     }
 }
