@@ -36,7 +36,7 @@ message SalesArrangementParametersDrawing {
 	}
 
 	message SalesArrangementParametersDrawingPayoutList {
-		google.protobuf.Int32Value ReferenceId = 1;
+		google.protobuf.Int32Value ProductObligationId = 1;
 		int32 Order = 2;
 		cis.types.GrpcDecimal DrawingAmount = 3;
 		string PrefixAccount = 4;

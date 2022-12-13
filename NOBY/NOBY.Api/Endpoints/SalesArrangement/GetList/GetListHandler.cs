@@ -32,9 +32,9 @@ internal class GetListHandler
 
         model.ForEach(t =>
         {
-            var saType = saTypeList.First(x => x.Id == t.SalesArrangementTypeId);
-            t.ProductName = productTypes.First(t => t.Id == saType.ProductTypeId).Name;
-            t.SalesArrangementTypeText = saType.Name;
+            var saType = saTypeList.FirstOrDefault(x => x.Id == t.SalesArrangementTypeId);
+            t.ProductName = productTypes.FirstOrDefault(t => t.Id == saType?.ProductTypeId)?.Name;
+            t.SalesArrangementTypeText = saType?.Name;
         });
 
         return model;
