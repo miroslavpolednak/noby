@@ -20,7 +20,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Modelace Hypoteky" })]
+    [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request, CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ public class OfferController : ControllerBase
     /// <returns>Vstupy a vystupy ulozene simulace.</returns>
     [HttpGet("mortgage/{offerId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Modelace Hypoteky" })]
+    [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetMortgageResponse> GetMortgageByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(offerId), cancellationToken);
@@ -51,7 +51,7 @@ public class OfferController : ControllerBase
     /// <returns>Vstupy a vystupy ulozene simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Modelace Hypoteky" })]
+    [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangementId([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
@@ -77,7 +77,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage/create-case")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Modelace Hypoteky" })]
+    [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
@@ -92,7 +92,7 @@ public class OfferController : ControllerBase
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/link")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Modelace Hypoteky" })]
+    [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request)
         => await _mediator.Send(request);
@@ -107,7 +107,7 @@ public class OfferController : ControllerBase
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Získání plného splátkového kalendáře", "UC: Modelace Hypoteky" })]
+    [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
