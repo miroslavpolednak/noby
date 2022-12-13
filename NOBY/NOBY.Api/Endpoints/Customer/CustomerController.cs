@@ -19,7 +19,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(Create.CreateResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -40,7 +40,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer/search")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Identifikace klienta", "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
     public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest resquest, CancellationToken cancellationToken)
         => await _mediator.Send(resquest, cancellationToken);
@@ -55,7 +55,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer/get")]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Identifikace klienta", "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(request.Id, request.Scheme), cancellationToken);
@@ -70,7 +70,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Modelace Hypoteky", "Klient", "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
@@ -85,7 +85,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer/identify")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(Search.Dto.CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status409Conflict)]
@@ -101,7 +101,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer/profile-check")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Identifikace klienta", "UC: Modelace Hypoteky", "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
     public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request, CancellationToken cancellationToken)
         => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme), cancellationToken);

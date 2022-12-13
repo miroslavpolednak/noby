@@ -21,7 +21,7 @@ public class ProductController : ControllerBase
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
     public async Task<List<GetCustomersOnProduct.GetCustomersOnProductCustomer>> GetCustomersOnProduct([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomersOnProduct.GetCustomersOnProductRequest(caseId), cancellationToken);
@@ -35,7 +35,7 @@ public class ProductController : ControllerBase
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
     public async Task<List<ProductObligation>> GetProductObligations([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
