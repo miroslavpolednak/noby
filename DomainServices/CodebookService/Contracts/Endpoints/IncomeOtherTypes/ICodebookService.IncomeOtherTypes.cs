@@ -1,10 +1,10 @@
-﻿using ProtoBuf.Grpc;
+﻿using DomainServices.CodebookService.Contracts.Endpoints.IncomeOtherTypes;
+using ProtoBuf.Grpc;
 
-namespace DomainServices.CodebookService.Contracts
+namespace DomainServices.CodebookService.Contracts;
+
+public partial interface ICodebookService
 {
-    public partial interface ICodebookService
-    {
-        [OperationContract]
-        Task<List<GenericCodebookItemWithCode>> IncomeOtherTypes(Endpoints.IncomeOtherTypes.IncomeOtherTypesRequest request, CallContext context = default);
-    }
+    [OperationContract]
+    Task<List<IncomeOtherTypeItem>> IncomeOtherTypes(IncomeOtherTypesRequest request, CallContext context = default);
 }
