@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Documents.Table;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using CIS.InternalServices.DocumentDataAggregator.Documents.Table;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 
@@ -48,7 +49,7 @@ public static class DocumentGeneratorExtensions
                 {
                     Header = c.Header,
                     StringFormat = c.StringFormat,
-                    WidthPercentage = c.WidthPercentage
+                    WidthPercentage = (GrpcDecimal)c.WidthPercentage
                 })
             },
             Rows =

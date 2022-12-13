@@ -28,7 +28,7 @@ public sealed partial class GrpcDecimal
         return new GrpcDecimal(units, nanos);
     }
 
-    public static implicit operator GrpcDecimal(float value)
+    public static explicit operator GrpcDecimal(float value)
     {
 
         var units = (long)value;
