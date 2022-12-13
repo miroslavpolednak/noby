@@ -13,7 +13,7 @@ internal static class NobyServices
         builder.Services.AddMediatR(typeof(IApiAssembly).Assembly);
         
         // user accessor
-        builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, FomsCurrentUserAccessor>();
+        builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, NobyCurrentUserAccessor>();
 
         // controllers and validation
         builder.Services

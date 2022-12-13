@@ -14,8 +14,6 @@ internal class GetCustomersHandler
         // najit existujici customeryOnSA
         var customersOnSA = await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken);
 
-        _logger.FoundItems(customersOnSA.Count, nameof(CustomerOnSA));
-
         List<Dto.CustomerListItem> model = new();
         
         //TODO idealne natahnout z customerService vsechny najednou?
@@ -91,17 +89,14 @@ internal class GetCustomersHandler
         return model;
     }
 
-    private readonly ILogger<GetCustomersHandler> _logger;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
     private readonly ICustomerServiceClient _customerService;
 
     public GetCustomersHandler(
-        ILogger<GetCustomersHandler> logger,
         ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
     {
         _customerService = customerService;
         _customerOnSaService = customerOnSaService;
-        _logger = logger;
     }
 }

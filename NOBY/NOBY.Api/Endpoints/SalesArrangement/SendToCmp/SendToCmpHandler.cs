@@ -13,15 +13,12 @@ internal class SendToCmpHandler
 
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ILogger<SendToCmpHandler> _logger;
 
     public SendToCmpHandler(
         ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ILogger<SendToCmpHandler> logger)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _caseService = caseService;
-        _logger = logger;
         _salesArrangementService = salesArrangementService;
     }
 
@@ -32,19 +29,10 @@ internal class SendToCmpHandler
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
-        // odeslat do SB
-        await _salesArrangementService.SendToCmp(request.SalesArrangementId, cancellationToken);
-
-        // update case state
-        await _caseService.UpdateCaseState(saInstance.CaseId, 2, cancellationToken);
-
-        // TODO: relevant for Drop1-3: SendToCmp & UpdateCaseState call only when validation result is OK (validationResult.Errors.Count() == 0)
-        // Dočasně je validace volána až po odeslání (aby odeslání nebylo závislé na případných fatalních chybách při volání validace ... ošetření pro Drop1-2)
-        // Update: Plati i pro Drop1-4
-        // -------------------------------------------------------------------------------------------------------------------------------------
         // provolat validaci SA
         var validationResult = await callSaValidation(request.SalesArrangementId, cancellationToken);
-        if (validationResult?.ValidationMessages?.Any() ?? false && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
+        if (validationResult?.ValidationMessages?.Any() ?? false 
+            && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
         {
             return new SendToCmpResponse
             {
@@ -62,6 +50,12 @@ internal class SendToCmpHandler
                     }).ToList()
             };
         }
+
+        // odeslat do SB
+        await _salesArrangementService.SendToCmp(request.SalesArrangementId, cancellationToken);
+
+        // update case state
+        await _caseService.UpdateCaseState(saInstance.CaseId, 2, cancellationToken);
 
         return new SendToCmpResponse();
     }

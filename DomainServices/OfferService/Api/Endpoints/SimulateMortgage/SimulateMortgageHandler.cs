@@ -9,16 +9,16 @@ namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 internal sealed class SimulateMortgageHandler
     : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
 {
-    public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellation)
+    public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
         // setup input default values
-        await setUpDefaults(request, cancellation);
+        await setUpDefaults(request, cancellationToken);
 
         // load codebook DrawingDuration for remaping Id -> DrawingDuration
-        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellation)).ToDictionary(i => i.Id);
+        var drawingDurationsById = (await _codebookService.DrawingDurations(cancellationToken)).ToDictionary(i => i.Id);
 
         // load codebook DrawingType for remaping Id -> StarbildId
-        var drawingTypeById = (await _codebookService.DrawingTypes(cancellation)).ToDictionary(i => i.Id);
+        var drawingTypeById = (await _codebookService.DrawingTypes(cancellationToken)).ToDictionary(i => i.Id);
 
         // get simulation outputs
         var easSimulationReq = request.SimulationInputs.ToEasSimulationRequest(request.BasicParameters, drawingDurationsById, drawingTypeById);
@@ -42,7 +42,7 @@ internal sealed class SimulateMortgageHandler
         };
         _dbContext.Offers.Add(entity);
 
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
         // create response

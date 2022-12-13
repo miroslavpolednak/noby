@@ -9,13 +9,13 @@ namespace CIS.Infrastructure.gRPC.Validation;
 /// <remarks>
 /// Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
 /// </remarks>
-public sealed class GrpcValidationBehaviour<TRequest, TResponse>
+public sealed class GrpcValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>, Core.Validation.IValidatableRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public GrpcValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
+    public GrpcValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
@@ -31,7 +31,7 @@ public sealed class GrpcValidationBehaviour<TRequest, TResponse>
         if (validationFailures.Any())
         {
             string message = string.Join("; ", validationFailures.Select(t => t.ErrorMessage));
-            throw new CIS.Core.Exceptions.CisValidationException(validationFailures.Select(t => (Key: t.ErrorCode, Message: t.ErrorMessage)), message);
+            throw new Core.Exceptions.CisValidationException(validationFailures.Select(t => (Key: t.ErrorCode, Message: t.ErrorMessage)), message);
         }
         
         return next();

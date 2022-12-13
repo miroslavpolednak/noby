@@ -10,8 +10,6 @@ internal class GetMortgageByOfferIdHandler
     {
         var result = await _offerService.GetMortgageOfferDetail(request.OfferId, cancellationToken);
 
-        _logger.RequestHandlerFinished(nameof(GetMortgageByOfferIdHandler));
-
         // predelat z DS na FE Dto
         return new()
         {
@@ -23,11 +21,9 @@ internal class GetMortgageByOfferIdHandler
     }
 
     private readonly IOfferServiceClient _offerService;
-    private readonly ILogger<GetMortgageByOfferIdHandler> _logger;
-
-    public GetMortgageByOfferIdHandler(IOfferServiceClient offerService, ILogger<GetMortgageByOfferIdHandler> logger)
+    
+    public GetMortgageByOfferIdHandler(IOfferServiceClient offerService)
     {
-        _logger = logger;
         _offerService = offerService;
     }
 }

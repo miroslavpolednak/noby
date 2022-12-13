@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Infrastructure.Security;
 
-public sealed class FomsCurrentUserDetails
+public sealed class NobyCurrentUserDetails
 : CIS.Core.Security.CisUserDetails, CIS.Foms.Types.Interfaces.IFomsCurrentUserDetails
 {
     public string? CPM { get; set; }

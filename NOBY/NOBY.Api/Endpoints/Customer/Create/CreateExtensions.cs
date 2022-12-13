@@ -127,7 +127,7 @@ internal static class CreateExtensions
         if (
             !stringCompare(originalRequest.Mobile, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value)
             || !stringCompare(originalRequest.Email, response.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value)
-            || originalRequest.BirthDate != originalRequest.BirthDate
+            || originalRequest.BirthDate != response.NaturalPerson?.DateOfBirth
             || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)
             || !stringCompare(originalRequest.BirthPlace, response.NaturalPerson?.PlaceOfBirth)
             || originalRequest.CitizenshipCountryId != (response.NaturalPerson?.CitizenshipCountriesId?.FirstOrDefault() ?? 0)

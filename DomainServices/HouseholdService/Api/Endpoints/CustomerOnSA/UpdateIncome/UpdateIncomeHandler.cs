@@ -7,18 +7,18 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateIncom
 internal sealed class UpdateIncomeHandler
     : IRequestHandler<UpdateIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
         // entita existujiciho prijmu
         var entity = await _dbContext.CustomersIncomes
             .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16029, $"Income ID {request.IncomeId} does not exist.");
 
         var incomeTypeId = (CustomerIncomeTypes)request.IncomeTypeId;
 
         // kontrola poctu prijmu
         int totalIncomesOfType = await _dbContext.CustomersIncomes
-            .CountAsync(t => t.CustomerOnSAIncomeId != request.IncomeId && t.CustomerOnSAId == entity.CustomerOnSAId && t.IncomeTypeId == incomeTypeId, cancellation);
+            .CountAsync(t => t.CustomerOnSAIncomeId != request.IncomeId && t.CustomerOnSAId == entity.CustomerOnSAId && t.IncomeTypeId == incomeTypeId, cancellationToken);
         if (IncomeHelpers.AlreadyHasMaxIncomes(incomeTypeId, totalIncomesOfType))
             throw new CisValidationException(16047, "Max incomes of the type has been reached");
 
@@ -26,12 +26,12 @@ internal sealed class UpdateIncomeHandler
         entity.IncomeTypeId = incomeTypeId;
         entity.Sum = request.BaseData?.Sum;
         entity.CurrencyCode = request.BaseData?.CurrencyCode;
-        entity.IncomeSource = await getIncomeSource(request, incomeTypeId, cancellation);
+        entity.IncomeSource = await getIncomeSource(request, incomeTypeId, cancellationToken);
         entity.HasProofOfIncome = getProofOfIncomeToggle(request, incomeTypeId);
         entity.Data = Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
         entity.DataBin = dataObject?.ToByteArray();
 
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

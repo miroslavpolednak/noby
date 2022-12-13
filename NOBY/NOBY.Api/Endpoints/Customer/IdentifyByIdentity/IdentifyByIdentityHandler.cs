@@ -48,7 +48,6 @@ internal sealed class IdentifyByIdentityHandler
     }
 
     private readonly IMediator _mediator;
-    private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -56,13 +55,11 @@ internal sealed class IdentifyByIdentityHandler
     public IdentifyByIdentityHandler(
         IMediator mediator,
         ISalesArrangementServiceClient salesArrangementService,
-        ICaseServiceClient caseService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService)
     {
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
         _customerService = customerService;
         _customerOnSAService = customerOnSAService;
     }

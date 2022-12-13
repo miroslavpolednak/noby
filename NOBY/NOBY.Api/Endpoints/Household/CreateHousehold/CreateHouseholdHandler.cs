@@ -47,15 +47,12 @@ internal class CreateHouseholdHandler
     private readonly ICodebookServiceClients _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ILogger<CreateHouseholdHandler> _logger;
 
     public CreateHouseholdHandler(
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
-        ICodebookServiceClients codebookService,
-        ILogger<CreateHouseholdHandler> logger)
+        ICodebookServiceClients codebookService)
     {
-        _logger = logger;
         _codebookService = codebookService;
         _householdService = householdService;
         _customerOnSAService = customerOnSAService;

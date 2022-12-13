@@ -5,8 +5,6 @@ internal class GetCurrentUserHandler
 {
     public async Task<GetCurrentUserResponse> Handle(GetCurrentUserRequest request, CancellationToken cancellationToken)
     {
-        _logger.UserGetCurrentUserInfo(_userAccessor.User!.Id);
-
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
         return new GetCurrentUserResponse
@@ -18,17 +16,14 @@ internal class GetCurrentUserHandler
         };
     }
 
-    private readonly ILogger<GetCurrentUserHandler> _logger;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
     public GetCurrentUserHandler(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        ILogger<GetCurrentUserHandler> logger, 
         DomainServices.UserService.Clients.IUserServiceClient userService)
     {
         _userAccessor = userAccessor;
-        _logger = logger;
         _userService = userService;
     }
 }

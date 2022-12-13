@@ -18,6 +18,8 @@ internal class LoggerBootstraper
     private readonly LogBehaviourTypes _logType;
     private readonly IServiceProvider _serviceProvider;
 
+    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
+
     public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LogBehaviourTypes logType)
     {
 #pragma warning disable CS8602 // Dereference of a possibly null reference. 
@@ -93,11 +95,10 @@ internal class LoggerBootstraper
         if (configuration.File is not null)
         {
             var path = Path.Combine(configuration.File.Path, configuration.File.Filename);
-            var template = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] {Level:u} - [{TraceId}] [] [{Assembly}] [{Version}] [{MachineName}] [{CisUserId}] [{RequestPath}] - {Message}{NewLine}";
-
+            
             loggerConfiguration
                 .WriteTo
-                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: template), bufferSize: 1000);
+                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
         }
 
         // logovani do databaze

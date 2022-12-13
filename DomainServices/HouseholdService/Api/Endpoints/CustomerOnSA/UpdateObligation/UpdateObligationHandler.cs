@@ -5,11 +5,11 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateOblig
 internal sealed class UpdateObligationHandler
     : IRequestHandler<Obligation, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Obligation request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Obligation request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.CustomersObligations
             .Where(t => t.CustomerOnSAObligationId == request.ObligationId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16042, $"Obligation ID {request.ObligationId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16042, $"Obligation ID {request.ObligationId} does not exist.");
 
         entity.ObligationState = request.ObligationState;
         entity.ObligationTypeId = request.ObligationTypeId!.Value;
@@ -25,7 +25,7 @@ internal sealed class UpdateObligationHandler
         entity.InstallmentAmountCorrection = request.Correction?.InstallmentAmountCorrection;
         entity.LoanPrincipalAmountCorrection = request.Correction?.LoanPrincipalAmountCorrection;
 
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

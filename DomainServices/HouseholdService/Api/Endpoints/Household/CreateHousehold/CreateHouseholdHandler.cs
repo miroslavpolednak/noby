@@ -6,10 +6,10 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehol
 internal sealed class CreateHouseholdHandler
     : IRequestHandler<CreateHouseholdRequest, CreateHouseholdResponse>
 {
-    public async Task<CreateHouseholdResponse> Handle(CreateHouseholdRequest request, CancellationToken cancellation)
+    public async Task<CreateHouseholdResponse> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         // check existing SalesArrangementId
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<__SA.SalesArrangement>(await __SAlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellation));
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<__SA.SalesArrangement>(await __SAlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
 #pragma warning disable CA2208
         // Debtor domacnost muze byt jen jedna
@@ -17,7 +17,7 @@ internal sealed class CreateHouseholdHandler
             throw new CisArgumentException(16031, "Only one Debtor household allowed", "HouseholdTypeId");
 
         // check household role
-        if (!(await _codebookService.HouseholdTypes(cancellation)).Any(t => t.Id == request.HouseholdTypeId))
+        if (!(await _codebookService.HouseholdTypes(cancellationToken)).Any(t => t.Id == request.HouseholdTypeId))
             throw new CisNotFoundException(16023, $"HouseholdTypeId {request.HouseholdTypeId} does not exist.");
 #pragma warning restore CA2208
 
@@ -42,7 +42,7 @@ internal sealed class CreateHouseholdHandler
         };
 
         _dbContext.Households.Add(entity);
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.Household), entity.HouseholdId);
 

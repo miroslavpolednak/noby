@@ -59,13 +59,17 @@ public class Address
     /// </summary>
     public string? PragueDistrict { get; set; }
 
-    [JsonIgnore]
+    /// <summary>
+    /// Název územního celku
+    /// </summary>
     public string? CountrySubdivision { get; set; }
 
     [JsonIgnore]
     public DateTime? PrimaryAddressFrom { get; set; }
 
-    [JsonIgnore]
+    /// <summary>
+    /// Id adresního bodu
+    /// </summary>
     public string? AddressPointId { get; set; }
 
     public override bool Equals(object? obj)

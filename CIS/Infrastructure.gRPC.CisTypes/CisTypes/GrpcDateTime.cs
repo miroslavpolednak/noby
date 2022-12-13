@@ -1,7 +1,7 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
 //TODO budeme si hrat na UTC, resp. timezones?
-public sealed partial class GrpcDateTime
+public partial class GrpcDateTime
 {
     public GrpcDateTime(int year, int month, int day, int hours, int minutes, int seconds, int nanos)
     {
@@ -24,7 +24,7 @@ public sealed partial class GrpcDateTime
         {
             // tady nevim jestli vyhazovat vyjimku nebo radsi vratit null nebo default()?
             // chyba by tady nemela nikdy nastat - jedine pri testovani pres nejaky Postman atd.
-            throw new ArgumentException("GrpcDateTime can not be converted to regular datetime");
+            throw new ArgumentException("GrpcDateTime can not be converted to regular datetime", "time");
         }
     }
 

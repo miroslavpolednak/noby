@@ -7,17 +7,17 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncom
 internal class CreateIncomeHandler
     : IRequestHandler<CreateIncomeRequest, CreateIncomeResponse>
 {
-    public async Task<CreateIncomeResponse> Handle(CreateIncomeRequest request, CancellationToken cancellation)
+    public async Task<CreateIncomeResponse> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)
     {
         CustomerIncomeTypes incomeType = (CustomerIncomeTypes)request.IncomeTypeId;
 
         // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellation))
+        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellationToken))
             throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
 
         // kontrola poctu prijmu
         int totalIncomesOfType = await _dbContext.CustomersIncomes
-            .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellation);
+            .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellationToken);
         if (IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType))
             throw new CisValidationException(16047, "Max incomes of the type has been reached");
 
@@ -26,7 +26,7 @@ internal class CreateIncomeHandler
             CustomerOnSAId = request.CustomerOnSAId,
             Sum = request.BaseData?.Sum,
             CurrencyCode = request.BaseData?.CurrencyCode,
-            IncomeSource = await getIncomeSource(request, cancellation),
+            IncomeSource = await getIncomeSource(request, cancellationToken),
             HasProofOfIncome = getProofOfIncomeToggle(request),
             IncomeTypeId = incomeType
         };
@@ -39,7 +39,7 @@ internal class CreateIncomeHandler
         }
 
         _dbContext.CustomersIncomes.Add(entity);
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAIncome), entity.CustomerOnSAIncomeId);
 

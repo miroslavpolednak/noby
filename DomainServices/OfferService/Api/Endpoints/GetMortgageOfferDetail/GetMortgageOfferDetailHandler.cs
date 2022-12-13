@@ -6,12 +6,12 @@ namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOfferDetail;
 internal sealed class GetMortgageOfferDetailHandler
     : IRequestHandler<GetMortgageOfferDetailRequest, GetMortgageOfferDetailResponse>
 {
-    public async Task<GetMortgageOfferDetailResponse> Handle(GetMortgageOfferDetailRequest request, CancellationToken cancellation)
+    public async Task<GetMortgageOfferDetailResponse> Handle(GetMortgageOfferDetailRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Offers
            .AsNoTracking()
            .Where(t => t.OfferId == request.OfferId)
-           .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
+           .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(10000, $"Offer #{request.OfferId} not found");
 
         var model = new GetMortgageOfferDetailResponse
         {

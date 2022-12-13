@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class UserIdentity
+public partial class UserIdentity
 {
     public UserIdentity(Foms.Types.UserIdentity identity)
     {
@@ -17,13 +17,14 @@ public sealed partial class UserIdentity
     public static implicit operator Foms.Types.UserIdentity?(UserIdentity? identity)
     {
         if (identity is null) return null;
-        //if (identity is null) throw new ArgumentNullException(nameof(identity), "CustomerIdentity is null");
+        
         return new Foms.Types.UserIdentity(identity.Identity, identity.IdentityScheme.ToString());
     }
 
     public static implicit operator UserIdentity(Foms.Types.UserIdentity identity)
     {
-        if (identity is null) throw new ArgumentNullException(nameof(identity), "UserIdentity is null");
+        ArgumentNullException.ThrowIfNull(identity);
+        
         return new UserIdentity()
         {
             Identity = identity.Identity,

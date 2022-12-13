@@ -58,6 +58,7 @@ internal class UpdateSalesArrangementParametersHandler
         => request.DataCase switch
         {
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => request.Drawing,
             _ => null
         };
 

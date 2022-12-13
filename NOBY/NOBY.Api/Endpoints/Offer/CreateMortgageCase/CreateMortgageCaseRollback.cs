@@ -9,7 +9,7 @@ namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 internal class CreateMortgageCaseRollback
     : IRollbackAction<CreateMortgageCaseRequest>
 {
-    public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken)
+    public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         // smazat domacnost a customery
         if (_bag.ContainsKey(BagKeyHouseholdId))

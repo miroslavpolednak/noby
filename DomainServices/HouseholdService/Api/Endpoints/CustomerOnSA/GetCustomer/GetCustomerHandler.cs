@@ -7,12 +7,12 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomer
 internal sealed class GetCustomerHandler
     : IRequestHandler<GetCustomerRequest, Contracts.CustomerOnSA>
 {
-    public async Task<Contracts.CustomerOnSA> Handle(GetCustomerRequest request, CancellationToken cancellation)
+    public async Task<Contracts.CustomerOnSA> Handle(GetCustomerRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Customers
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16020, $"CustomerOnSA ID {request.CustomerOnSAId} does not exist.");
 
         var customerInstance = new Contracts.CustomerOnSA
         {
@@ -38,7 +38,7 @@ internal sealed class GetCustomerHandler
         var identities = await _dbContext.CustomersIdentities
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .AsNoTracking()
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
         customerInstance.CustomerIdentifiers.AddRange(identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
 
         // obligations
@@ -46,7 +46,7 @@ internal sealed class GetCustomerHandler
             .AsNoTracking()
             .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
             .Select(CustomerOnSAServiceExpressions.Obligation())
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
         customerInstance.Obligations.AddRange(obligations);
 
         // incomes
@@ -54,7 +54,7 @@ internal sealed class GetCustomerHandler
            .AsNoTracking()
            .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
            .Select(CustomerOnSAServiceExpressions.Income())
-           .ToListAsync(cancellation);
+           .ToListAsync(cancellationToken);
         customerInstance.Incomes.AddRange(list);
 
         return customerInstance;

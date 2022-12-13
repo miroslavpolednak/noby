@@ -1,12 +1,10 @@
 ﻿using DomainServices.ProductService.Contracts;
-using System.Threading;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using cCodebookService = DomainServices.CodebookService.Contracts;
-using dto = NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
-internal sealed class GetGetCaseParametersHandler
+internal sealed class GetCaseParametersHandler
     : IRequestHandler<GetCaseParametersRequest, GetCaseParametersResponse>
 {
 
@@ -19,7 +17,7 @@ internal sealed class GetGetCaseParametersHandler
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
 
-    public GetGetCaseParametersHandler(
+    public GetCaseParametersHandler(
         DomainServices.CodebookService.Clients.ICodebookServiceClients codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,

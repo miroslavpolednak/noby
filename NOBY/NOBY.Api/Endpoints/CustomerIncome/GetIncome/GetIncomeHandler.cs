@@ -29,13 +29,9 @@ internal class GetIncomeHandler
         };
 
     private readonly ICustomerOnSAServiceClient _customerService;
-    private readonly ILogger<GetIncomeHandler> _logger;
-
-    public GetIncomeHandler(
-        ICustomerOnSAServiceClient customerService,
-        ILogger<GetIncomeHandler> logger)
+    
+    public GetIncomeHandler(ICustomerOnSAServiceClient customerService)
     {
-        _logger = logger;
         _customerService = customerService;
     }
 }

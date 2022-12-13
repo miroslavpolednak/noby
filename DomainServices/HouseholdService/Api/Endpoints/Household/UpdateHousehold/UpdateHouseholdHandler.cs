@@ -5,18 +5,18 @@ namespace DomainServices.HouseholdService.Api.Endpoints.Household.UpdateHousehol
 internal class UpdateHouseholdHandler
     : IRequestHandler<UpdateHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
         var household = await _dbContext.Households
             .Where(t => t.HouseholdId == request.HouseholdId)
-            .FirstOrDefaultAsync(cancellation) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new CisNotFoundException(16022, $"Household ID {request.HouseholdId} does not exist.");
 
         //TODO nejake kontroly?
         if (request.CustomerOnSAId1.HasValue
-            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId1 && t.SalesArrangementId == household.SalesArrangementId, cancellation)))
+            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId1 && t.SalesArrangementId == household.SalesArrangementId, cancellationToken)))
             throw new CisNotFoundException(16020, $"CustomerOnSA #1 ID {request.CustomerOnSAId1} does not exist in this SA {household.SalesArrangementId}.");
         if (request.CustomerOnSAId2.HasValue
-            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId2 && t.SalesArrangementId == household.SalesArrangementId, cancellation)))
+            && !(await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId2 && t.SalesArrangementId == household.SalesArrangementId, cancellationToken)))
             throw new CisNotFoundException(16020, $"CustomerOnSA #2 ID {request.CustomerOnSAId2} does not exist in this SA {household.SalesArrangementId}.");
 
         household.CustomerOnSAId1 = request.CustomerOnSAId1;
@@ -32,7 +32,7 @@ internal class UpdateHouseholdHandler
         household.HousingExpenseAmount = request.Expenses?.HousingExpenseAmount;
         household.OtherExpenseAmount = request.Expenses?.OtherExpenseAmount;
 
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

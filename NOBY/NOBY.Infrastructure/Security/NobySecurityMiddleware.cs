@@ -28,7 +28,7 @@ public class AppSecurityMiddleware
             var result = await userService.GetUserByLogin(login);
 
             // vlozit FOMS uzivatele do contextu
-            context.User = new FomsUser(context.User.Identity, result);
+            context.User = new NobyUser(context.User.Identity, result);
         }
 
         await _next.Invoke(context);

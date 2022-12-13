@@ -7,19 +7,19 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomer
 internal sealed class GetCustomerListHandler
     : IRequestHandler<GetCustomerListRequest, GetCustomerListResponse>
 {
-    public async Task<GetCustomerListResponse> Handle(GetCustomerListRequest request, CancellationToken cancellation)
+    public async Task<GetCustomerListResponse> Handle(GetCustomerListRequest request, CancellationToken cancellationToken)
     {
         var customers = await _dbContext.Customers
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
             .AsNoTracking()
             .Select(CustomerOnSAServiceExpressions.CustomerDetail())
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
         var ids = customers.Select(t => t.CustomerOnSAId).ToList();
 
         var identities = await _dbContext.CustomersIdentities
             .Where(t => ids.Contains(t.CustomerOnSAId))
             .AsNoTracking()
-            .ToListAsync(cancellation);
+            .ToListAsync(cancellationToken);
 
         customers.ForEach(t =>
         {
