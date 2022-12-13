@@ -1,18 +1,56 @@
-﻿namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
+﻿using __SA = DomainServices.SalesArrangementService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
+using DomainServices.HouseholdService.Clients;
+using DomainServices.CodebookService.Clients;
+using DomainServices.CustomerService.Clients;
+using CIS.Infrastructure.gRPC.CisTypes;
+
+namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
 
 internal sealed class GetDetailWithChangesHandler
     : IRequestHandler<GetDetailWithChangesRequest, GetDetailWithChangesResponse>
 {
     public async Task<GetDetailWithChangesResponse> Handle(GetDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
+        // customer instance
+        var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
+
+        // kontrola identity KB
+        var kbIdentity = customerOnSA.CustomerIdentifiers
+            .FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+            ?? throw new CisValidationException("Customer is missing KB identity");
+
+        // SA instance
+        var salesArrangement = ServiceCallResult.ResolveAndThrowIfError<__SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken));
+
+        // kontrola mandanta
+        var productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == salesArrangement.SalesArrangementTypeId).ProductTypeId;
+        // mandant produktu
+        var productMandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == productTypeId).MandantId;
+        if (productMandant != 2) // muze byt jen KB
+            throw new CisValidationException("Product type mandant is not KB");
+
+        // instance customer z KB CM
+        var customer = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(kbIdentity, cancellationToken));
+
+
         return new GetDetailWithChangesResponse();
     }
 
-    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly ICodebookServiceClients _codebookService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly ICustomerServiceClient _customerService;
 
     public GetDetailWithChangesHandler(
-        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService)
+        ICustomerServiceClient customerService,
+        ICodebookServiceClients codebookService,
+        ISalesArrangementServiceClient salesArrangementService,
+        ICustomerOnSAServiceClient customerOnSAService)
     {
+        _customerService = customerService;
+        _codebookService = codebookService;
+        _salesArrangementService = salesArrangementService;
         _customerOnSAService = customerOnSAService;
     }
 }
