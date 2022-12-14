@@ -20,6 +20,8 @@ Nikdy ale nereferencujeme třídy napříč endpointy. Je ale možné z jednoho 
 
 Jmenná konvence pro adresáře s endpointy je následující:
 - adresář: název metody z kontraktu v .proto souboru
+- request model: {název metody}Request
+- response model: {název metody}Response
 - *MediatR* handler: `{název metody}Handler.cs`
 - *FluentValidation* validátor: `{název metody}RequestValidation.cs`
 
@@ -31,13 +33,14 @@ Jmenná konvence pro adresáře s endpointy je následující:
     Household.cs                        (EF entita)
     ...
   HouseholdServiceDbContext.cs          (EF DbContext, Dapper interface)
-[SharedDto]                                   (společné DTO)
+[SharedDto]                             (společné DTO)
   Customer.cs                           (objekt použitý ve více endpointech)
   ...
 [Endpoints]                             (adresář s metodami gRPC služby)
   [GetHousehold]                        (gRPC metoda GetHousehold)
     [Dto]                               (DTO platné pouze pro tento endpoint)
       ...
+    GetHouseholdResponse.cs             (response model)
     GetHouseholdHandler.cs              (MediatR handler)
     GetHouseholdRequestValidator.cs     (FluentValidation validator pro request)
   [...]
