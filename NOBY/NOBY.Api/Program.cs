@@ -2,7 +2,6 @@ using CIS.Infrastructure.StartupExtensions;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.MediatR;
-using ExternalServices;
 using DomainServices;
 using CIS.InternalServices;
 

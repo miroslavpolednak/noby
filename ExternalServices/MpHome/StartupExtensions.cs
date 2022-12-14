@@ -10,6 +10,10 @@ public static class StartupExtensions
     internal const string ServiceName = "MpHome";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, MpHome.V1_1.IMpHomeClient
+        => builder.AddMpHome<TClient>();
+
+    static WebApplicationBuilder AddMpHome<TClient>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
     {
         // ziskat konfigurace pro danou verzi sluzby

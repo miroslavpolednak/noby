@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Configuration;
+using CIS.Infrastructure.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Infrastructure.StartupExtensions;
@@ -11,6 +12,9 @@ public static class CisEnvironmentConfiguration
         builder.Configuration.GetSection(JsonConfigurationKey).Bind(cisConfiguration);
 
         CheckAndRegisterConfiguration(builder, cisConfiguration);
+
+        // get env variables
+        builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
         // distributed cache
         registerDistributedCache(builder);
@@ -26,6 +30,9 @@ public static class CisEnvironmentConfiguration
         options.Invoke(cisConfiguration);
 
         CheckAndRegisterConfiguration(builder, cisConfiguration);
+
+        // get env variables
+        builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
         // distributed cache
         registerDistributedCache(builder);
@@ -47,7 +54,7 @@ public static class CisEnvironmentConfiguration
 
     private static void registerDistributedCache(WebApplicationBuilder builder)
     {
-        var cacheConfiguration = new Configuration.CisEnvironmentDistributedCacheConfiguration();
+        var cacheConfiguration = new CisEnvironmentDistributedCacheConfiguration();
         builder.Configuration.GetSection(JsonConfigurationKey).GetSection(JsonCacheConfigurationKey).Bind(cacheConfiguration);
 
         builder.Services.TryAddSingleton<ICisEnvironmentDistributedCacheConfiguration>(cacheConfiguration);
