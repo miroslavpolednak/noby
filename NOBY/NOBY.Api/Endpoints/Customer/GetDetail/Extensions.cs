@@ -1,6 +1,7 @@
 ﻿using DomainServices.CustomerService.Contracts;
 using Google.Protobuf.Collections;
 using NOBY.Api.Endpoints.Customer.GetDetail.Dto;
+using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.GetDetail;
 
@@ -23,26 +24,6 @@ internal static class Extensions
             CitizenshipCountriesId = person.CitizenshipCountriesId?.Select(t => t).ToList(),
             IsBrSubscribed = person.IsBrSubscribed
         };
-
-    public static SharedDto.IdentificationDocumentFull ToResponseDto(this IdentificationDocument document)
-        => new()
-        {
-            IssuingCountryId = document.IssuingCountryId,
-            IdentificationDocumentTypeId = document.IdentificationDocumentTypeId,
-            IssuedBy = document.IssuedBy,
-            IssuedOn = document.IssuedOn,
-            RegisterPlace = document.RegisterPlace,
-            ValidTo = document.ValidTo,
-            Number = document.Number
-        };
-
-    public static List<ContactModel>? ToResponseDto(this RepeatedField<Contact>? contacts)
-        => contacts is null ? null : contacts.Select(t => new ContactModel()
-        {
-            ContactTypeId = t.ContactTypeId,
-            Value = t.Value,
-            IsPrimary = t.IsPrimary
-        }).ToList();
 
     public static GetDetailResponse ToResponseDto(this CustomerDetailResponse customer)
         => new GetDetailResponse

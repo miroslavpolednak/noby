@@ -18,5 +18,5 @@ public class NaturalPerson
 
     public LegalCapacityItem? LegalCapacity { get; set; }
 
-    public List<TaxResidenceItem>? TaxResidences { get; set; }
+    public TaxResidenceItem? TaxResidences { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.GetDetail;
+using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
@@ -19,13 +20,7 @@ internal static class CreateExtensions
                 PlaceOfBirth = request.BirthPlace ?? "",
                 GenderId = request.GenderId
             },
-            IdentificationDocument = request.IdentificationDocument is null ? null : new()
-            {
-                IdentificationDocumentTypeId = request.IdentificationDocument.IdentificationDocumentTypeId,
-                IssuedBy = request.IdentificationDocument.IssuedBy ?? "",
-                Number = request.IdentificationDocument.Number ?? "",
-                IssuingCountryId = request.IdentificationDocument.IssuingCountryId
-            },
+            IdentificationDocument = request.IdentificationDocument?.ToDomainService(),
             Identity = identity,
             HardCreate = request.HardCreate
         };

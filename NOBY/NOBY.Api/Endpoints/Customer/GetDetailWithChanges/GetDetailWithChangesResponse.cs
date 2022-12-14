@@ -10,7 +10,7 @@ public sealed class GetDetailWithChangesResponse
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public List<GetDetail.Dto.ContactModel>? Contacts { get; set; }
+    public List<SharedDto.CustomerContact>? Contacts { get; set; }
 
     /// <summary>
     /// Přihlášen k aktualizaci dat ze základních registrů

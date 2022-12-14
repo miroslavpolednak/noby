@@ -25,7 +25,7 @@ public sealed class CreateResponse
 
     public List<CIS.Foms.Types.Address>? Addresses { get; set; }
 
-    public List<ContactModel>? Contacts { get; set; }
+    public List<SharedDto.CustomerContact>? Contacts { get; set; }
 
     public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

@@ -31,7 +31,7 @@ Jmenná konvence pro adresáře s endpointy je následující:
     Household.cs                        (EF entita)
     ...
   HouseholdServiceDbContext.cs          (EF DbContext, Dapper interface)
-[Dto]                                   (společné DTO)
+[SharedDto]                                   (společné DTO)
   Customer.cs                           (objekt použitý ve více endpointech)
   ...
 [Endpoints]                             (adresář s metodami gRPC služby)
