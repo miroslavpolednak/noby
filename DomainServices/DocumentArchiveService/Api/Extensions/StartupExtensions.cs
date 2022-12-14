@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.StartupExtensions;
+﻿using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.StartupExtensions;
 using DomainServices.DocumentArchiveService.Api.Mappers;
 using ExternalServices.Sdf;
 using ExternalServices.Sdf.V1.Clients;
@@ -25,17 +26,8 @@ internal static class StartupExtensions
         {
             throw new ArgumentNullException(nameof(builder));
         }
-        
-        builder.Services
-            .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehaviour<,>));
 
-        // add validators
-        builder.Services.Scan(selector => selector
-                .FromAssembliesOf(typeof(Program))
-                .AddClasses(x => x.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
+        builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 
         var appConfig = configuration.GetSection(AppConfiguration.SectionName).Get<AppConfiguration>();
 
@@ -43,7 +35,7 @@ internal static class StartupExtensions
 
         builder.AddExternalService<IDocumentServiceRepository>();
 
-        builder.Services.AddSingleton<IDocumentMapper,DocumentMapper>();
+        builder.Services.AddSingleton<IDocumentMapper, DocumentMapper>();
 
         // databases
         builder.Services
