@@ -17,7 +17,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID prijmu ke smazani</param>
     [HttpDelete("{customerOnSAId:int}/income/{incomeId:int}")]
-    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int incomeId)
         => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId));
@@ -37,7 +37,7 @@ public class CustomerIncomeController : ControllerBase
     /// </returns>
     [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(typeof(GetIncome.GetIncomeResponse), StatusCodes.Status200OK)]
     public async Task<GetIncome.GetIncomeResponse> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int incomeId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetIncome.GetIncomeRequest(customerOnSAId, incomeId), cancellationToken);
@@ -54,7 +54,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="incomeId">ID prijmu</param>
     [HttpPut("{customerOnSAId:int}/income/{incomeId:int}")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] UpdateIncome.UpdateIncomeRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
@@ -69,7 +69,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/income")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Prijem" })]
+    [SwaggerOperation(Tags = new[] { "Klient - příjem" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateIncome.CreateIncomeRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));

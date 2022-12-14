@@ -16,7 +16,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/validate")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(Validate.ValidateResponse), StatusCodes.Status200OK)]
     public async Task<Validate.ValidateResponse> Validate([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new Validate.ValidateRequest(salesArrangementId), cancellationToken);
@@ -31,7 +31,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -51,7 +51,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [Produces("application/json")]
-    //[SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
     public async Task<GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessment([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
         => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
@@ -67,7 +67,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Vysledek vypoctu</returns>
     [HttpGet("{salesArrangementId:int}/credit-worthiness")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
     public async Task<GetCreditWorthiness.GetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCreditWorthiness.GetCreditWorthinessRequest(salesArrangementId), cancellationToken);
@@ -82,7 +82,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladnich informaci o vsech Sales Arrangements pro dany Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     public async Task<List<Dto.SalesArrangementListItem>> GetList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetList.GetListRequest(caseId), cancellationToken);
@@ -98,7 +98,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.CustomerListItem"/> Seznam klientu vc. vsech jejich dat dotazenych z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.CustomerListItem>), StatusCodes.Status200OK)]
     public async Task<List<Dto.CustomerListItem>> GetCustomers([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(salesArrangementId), cancellationToken);
@@ -113,7 +113,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Case Detail", "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetDetail.GetDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetDetail.GetDetailResponse> GetDetail([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetail.GetDetailRequest(salesArrangementId), cancellationToken);
@@ -126,7 +126,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Ostatni parametry", "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
         => await _mediator.Send(request.InfuseId(salesArrangementId));
@@ -142,7 +142,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: SalesArrangement", "UC: SendToCmp" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
         => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));

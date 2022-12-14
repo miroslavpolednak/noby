@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CIS.Foms.Enums;
 
 [DataContract]
-public enum LegalCapacities : byte
+public enum LegalCapacityRestrictions : byte
 {
     [Display(Name = "unknown", ShortName = "")]
     [EnumMember]

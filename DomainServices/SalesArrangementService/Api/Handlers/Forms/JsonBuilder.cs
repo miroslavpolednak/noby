@@ -509,7 +509,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
 
                 //string? isLegallyIncapable = c.NaturalPerson?.IsLegallyIncapable;
                 //int? pravniOmezeniTyp = (string.IsNullOrWhiteSpace(isLegallyIncapable)) ? (int?)null : 
-                //    data.LegalCapacitiesByCode.ContainsKey(isLegallyIncapable) ? data.LegalCapacitiesByCode[isLegallyIncapable].Id : null;
+                //    data.LegalCapacityRestrictionTypesByCode.ContainsKey(isLegallyIncapable) ? data.LegalCapacityRestrictionTypesByCode[isLegallyIncapable].Id : null;
  
                 var household = householdsByCustomerOnSAId![i.CustomerOnSAId].First();
 

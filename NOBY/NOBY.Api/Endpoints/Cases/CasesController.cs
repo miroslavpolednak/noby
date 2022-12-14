@@ -21,7 +21,7 @@ public class CasesController : ControllerBase
     [HttpPost("{caseId:long}/sales-arrangement")]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Case Detail", "UC: SalesArrangement" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public class CasesController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/customers")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]
     public async Task<List<GetCustomers.GetCustomersResponseCustomer>> GetCustomers([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(caseId), cancellationToken);
@@ -56,7 +56,7 @@ public class CasesController : ControllerBase
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
     public async Task<Dto.CaseModel> GetById([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetById.GetByIdRequest(caseId), cancellationToken);
@@ -71,7 +71,7 @@ public class CasesController : ControllerBase
     /// <returns>Kolekce ID stavu s poctem Cases.</returns>
     [HttpGet("dashboard-filters")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Dashboard" })]
+    [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
     public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
         => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
@@ -93,7 +93,7 @@ public class CasesController : ControllerBase
     [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Dashboard" })]
+    [SwaggerOperation(Tags = new [] { "Case" })]
     [ProducesResponseType(typeof(Search.SearchResponse), StatusCodes.Status200OK)]
     public async Task<Search.SearchResponse> Search([FromBody] Search.SearchRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
@@ -107,7 +107,7 @@ public class CasesController : ControllerBase
     /// <returns>Seznam wf tasks z SB.</returns>
     [HttpGet("{caseId:long}/tasks")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
     public async Task<GetTaskList.GetTaskListResponse> GetTaskList([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetTaskList.GetTaskListRequest(caseId), cancellationToken);
@@ -121,7 +121,7 @@ public class CasesController : ControllerBase
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Case Detail" })]
+    [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]
     public async Task<GetCaseParameters.GetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseParameters.GetCaseParametersRequest(caseId), cancellationToken);

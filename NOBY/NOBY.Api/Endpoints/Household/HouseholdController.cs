@@ -22,7 +22,7 @@ public class HouseholdController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
     [HttpGet("list/{salesArrangementId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new [] { "Domácnost" })]
     [ProducesResponseType(typeof(List<Dto.HouseholdInList>), StatusCodes.Status200OK)]
     public async Task<List<Dto.HouseholdInList>> GetList([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHouseholds.GetHouseholdsRequest(salesArrangementId), cancellationToken);
@@ -38,7 +38,7 @@ public class HouseholdController : ControllerBase
     /// <returns><see cref="GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
     [HttpGet("{householdId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(GetHousehold.GetHouseholdResponse), StatusCodes.Status200OK)]
     public async Task<GetHousehold.GetHouseholdResponse> GetHousehold([FromRoute] int householdId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHousehold.GetHouseholdRequest(householdId), cancellationToken);
@@ -53,7 +53,7 @@ public class HouseholdController : ControllerBase
     /// <returns>ID smazane domacnosti</returns>
     [HttpDelete("{householdId:int}")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     public async Task<int> Delete([FromRoute] int householdId)
         => await _mediator.Send(new DeleteHousehold.DeleteHouseholdRequest(householdId));
@@ -68,7 +68,7 @@ public class HouseholdController : ControllerBase
     /// <returns>Nove HouseholdId, typ domacnosti a nazev typu domacnosti</returns>
     [HttpPost("")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
     public async Task<Dto.HouseholdInList> Create([FromBody] CreateHousehold.CreateHouseholdRequest? request)
         => await _mediator.Send(request ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
@@ -82,7 +82,7 @@ public class HouseholdController : ControllerBase
     /// <param name="householdId">ID domacnosti</param>
     [HttpPut("{householdId:int}")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
@@ -104,7 +104,7 @@ public class HouseholdController : ControllerBase
     /// <returns>CustomerOnSAId nalinkovanych customeru</returns>
     [HttpPut("{householdId:int}/customers")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Domacnost" })]
+    [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
     public async Task<UpdateCustomers.UpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] UpdateCustomers.UpdateCustomersRequest? request)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));

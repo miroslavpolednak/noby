@@ -15,7 +15,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku ke smazani</param>
     [HttpDelete("{customerOnSAId:int}/obligation/{obligationId:int}")]
-    [SwaggerOperation(Tags = new[] { "UC: Závazek" })]
+    [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Delete([FromRoute] int customerOnSAId, [FromRoute] int obligationId)
         => await _mediator.Send(new DeleteObligation.DeleteObligationRequest(customerOnSAId, obligationId));
@@ -33,7 +33,7 @@ public class CustomerObligationController : ControllerBase
     /// </returns>
     [HttpGet("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Závazek" })]
+    [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(Dto.ObligationFullDto), StatusCodes.Status200OK)]
     public async Task<Dto.ObligationFullDto> GetDetail([FromRoute] int customerOnSAId, [FromRoute] int obligationId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetObligation.GetObligationRequest(customerOnSAId, obligationId), cancellationToken);
@@ -48,7 +48,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="obligationId">ID závazku</param>
     [HttpPut("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Závazek" })]
+    [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int obligationId, [FromBody] UpdateObligation.UpdateObligationRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
@@ -62,7 +62,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/obligation")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Závazek" })]
+    [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateObligation.CreateObligationRequest? request)
         => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
