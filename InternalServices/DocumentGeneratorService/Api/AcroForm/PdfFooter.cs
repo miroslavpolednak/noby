@@ -27,19 +27,19 @@ public class PdfFooter
         _cultureInfo.NumberFormat.NumberGroupSeparator = string.Empty;
     }
 
-    public async Task FillFooter(FinalDocument finalDocument, DocumentFooter footerData)
+    public async Task FillFooter(FinalDocument finalDocument, GenerateDocumentRequest request)
     {
         _templateTypes = await _codebookService.DocumentTemplateTypes();
 
-        FillFooterIdentifiers(finalDocument.Document.Form.Fields, footerData);
+        FillFooterIdentifiers(finalDocument.Document.Form.Fields, request);
         FillFooterPageNumber(finalDocument);
     }
 
-    private void FillFooterIdentifiers(FormFieldList fields, DocumentFooter footerData)
+    private void FillFooterIdentifiers(FormFieldList fields, GenerateDocumentRequest request)
     {
         var identifierFields = GetAllFields(fields, FooterIdentifiersFieldName);
 
-        var identifiersText = GetIdentifiersText(footerData);
+        var identifiersText = GetIdentifiersText(request);
 
         foreach (var field in identifierFields)
             field.Value = identifiersText;
@@ -87,14 +87,16 @@ public class PdfFooter
             : originalDocument.Form.Fields[field.Name];
     }
 
-    private string GetIdentifiersText(DocumentFooter footerData)
+    private string GetIdentifiersText(GenerateDocumentRequest request)
     {
+        var footer = request.DocumentFooter;
+
         var identifiers = new[]
         {
-            GetCaseIdIdentifier(footerData.CaseId),
-            GetOfferIdIdentifier(footerData.OfferId),
-            GetArchiveIdIdentifier(footerData.DocumentId),
-            GetDocumentNameIdentifier(footerData.TemplateTypeId, footerData.TemplateVersion),
+            GetCaseIdIdentifier(footer.CaseId),
+            GetOfferIdIdentifier(footer.OfferId),
+            GetArchiveIdIdentifier(footer.DocumentId),
+            GetDocumentNameIdentifier(request.TemplateTypeId, request.TemplateVersion),
             GetDocumentDate()
         };
 

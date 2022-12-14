@@ -24,7 +24,7 @@ internal class PdfDocumentManager
     {
         await ProcessParts(request.Parts);
 
-        var finalPdf = await PrepareFinalPdf(request.OutputType, request.DocumentFooter);
+        var finalPdf = await PrepareFinalPdf(request.OutputType, request);
 
         return new Contracts.Document
         {
@@ -46,11 +46,11 @@ internal class PdfDocumentManager
         }
     }
 
-    private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, DocumentFooter footer)
+    private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, GenerateDocumentRequest request)
     {
-        var finalDocument = await _templateManager.CreateFinalDocument(footer.TemplateTypeId, footer.TemplateVersion);
+        var finalDocument = await _templateManager.CreateFinalDocument(request.TemplateTypeId, request.TemplateVersion);
 
-        await _pdfFooter.FillFooter(finalDocument, footer);
+        await _pdfFooter.FillFooter(finalDocument, request);
 
         if (outputFileType is OutputFileType.Pdfa or OutputFileType.Unknown)
             ArchiveDocument(finalDocument.Document);

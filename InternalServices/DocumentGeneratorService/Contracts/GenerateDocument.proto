@@ -17,21 +17,23 @@ enum OutputFileType {
 }
 
 message GenerateDocumentRequest {
-	string DocumentId = 1;
+	int32 TemplateTypeId = 1;
 
-	OutputFileType OutputType = 2;
+	google.protobuf.StringValue TemplateVersion = 2;
 
-	repeated GenerateDocumentPart Parts = 3;
+	OutputFileType OutputType = 3;
 
-	repeated Signature CustomerSignatures = 4;
+	repeated GenerateDocumentPart Parts = 4;
 
-	DocumentFooter DocumentFooter = 5;
+	repeated Signature CustomerSignatures = 5;
+
+	DocumentFooter DocumentFooter = 6;
 }
 
 message GenerateDocumentPart {
 	int32 TemplateTypeId = 1;
 
-	string TemplateVersion = 2;
+	google.protobuf.StringValue TemplateVersion = 2;
 
 	google.protobuf.Int32Value Order = 3;
 

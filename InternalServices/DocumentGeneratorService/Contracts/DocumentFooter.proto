@@ -6,15 +6,11 @@ option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contrac
 import "google/protobuf/wrappers.proto";
 
 message DocumentFooter {
-	int32 TemplateTypeId = 1;
+	google.protobuf.Int64Value CaseId = 1;
 
-	string TemplateVersion = 2;
+	google.protobuf.Int32Value OfferId = 2;
 
-	google.protobuf.Int64Value CaseId = 3;
+	google.protobuf.Int32Value SalesArrangementId = 3;
 
-	google.protobuf.Int32Value OfferId = 4;
-
-	google.protobuf.Int32Value SalesArrangementId = 5;
-
-	google.protobuf.Int32Value DocumentId = 6;
+	google.protobuf.Int32Value DocumentId = 4;
 }
