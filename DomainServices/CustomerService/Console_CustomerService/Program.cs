@@ -11,6 +11,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 Console.WriteLine("run!");
 
@@ -48,12 +49,12 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
 //    }
 //});
 
-var test = await service.GetCustomerList(new Identity[]
-{
-    new(951011020, IdentitySchemes.Kb),
-    new(123, IdentitySchemes.Kb),
-    new(134, IdentitySchemes.Mp)
-});
+//var test = await service.GetCustomerList(new Identity[]
+//{
+//    new(951011020, IdentitySchemes.Kb),
+//    new(123, IdentitySchemes.Kb),
+//    new(134, IdentitySchemes.Mp)
+//});
 
 //var test = await service.ProfileCheck(new ProfileCheckRequest
 //{
@@ -61,10 +62,11 @@ var test = await service.GetCustomerList(new Identity[]
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-//var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+var detail = await service.GetCustomerDetail(new Identity(134, IdentitySchemes.Mp));
 
 //var create = await service.CreateCustomer(new CreateCustomerRequest
 //{
+//    Mandant = Mandants.Mp,
 //    Identities = { new Identity(134, IdentitySchemes.Mp), new Identity(123, IdentitySchemes.Kb) },
 //    NaturalPerson = new NaturalPerson
 //    {

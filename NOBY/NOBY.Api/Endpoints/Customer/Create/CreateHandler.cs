@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
+using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
@@ -16,10 +17,7 @@ internal sealed class CreateHandler
         bool createOk = false;
         try
         {
-            var createResult = ServiceCallResult.ResolveAndThrowIfError<_Cust.CreateCustomerResponse>(await _customerService.CreateCustomer(request.ToDomainService(new Identity
-            {
-                IdentityScheme = Identity.Types.IdentitySchemes.Kb
-            }), cancellationToken));
+            var createResult = ServiceCallResult.ResolveAndThrowIfError<_Cust.CreateCustomerResponse>(await _customerService.CreateCustomer(request.ToDomainService(Mandants.Kb), cancellationToken));
             kbId = createResult.CreatedCustomerIdentity.IdentityId;
             createOk = true;
         }
@@ -74,7 +72,7 @@ internal sealed class CreateHandler
         // pokud je vse OK, zalozit customera v konsDb
         try
         {
-            await _customerService.CreateCustomer(request.ToDomainService(new Identity(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new Identity(kbId, IdentitySchemes.Kb)), cancellationToken);
+            await _customerService.CreateCustomer(request.ToDomainService(Mandants.Mp, new Identity(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new Identity(kbId, IdentitySchemes.Kb)), cancellationToken);
         }
         catch (Exception ex)
         {

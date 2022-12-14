@@ -52,7 +52,8 @@ internal sealed class CreateProductHandler
                 notification.CustomerIdentifiers!.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
             },
             HardCreate = true,
-            NaturalPerson = customerDetail.NaturalPerson
+            NaturalPerson = customerDetail.NaturalPerson,
+            Mandant = Mandants.Mp
         };
         if (customerDetail.IdentificationDocument is not null)
             createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument

@@ -22,21 +22,14 @@ internal class CreateCustomerHandler : IRequestHandler<CreateCustomerMediatrRequ
     {
         _logger.LogInformation("Create customer by request: {request}", request.Request);
 
-        var identities = request.Request.Identities;
-
         return new CreateCustomerResponse
         {
-            CreatedCustomerIdentity = identities.Count switch
+            CreatedCustomerIdentity = request.Request.Mandant switch
             {
-                1 when IsKbRequest(identities.First()) => await _createIdentifiedSubject.CreateSubject(request.Request, cancellationToken),
-                1 or 2 when IsMpRequest(identities) => await _mpDigiClient.CreatePartner(request.Request, cancellationToken),
+                Mandants.Kb => await _createIdentifiedSubject.CreateSubject(request.Request, cancellationToken),
+                Mandants.Mp => await _mpDigiClient.CreatePartner(request.Request, cancellationToken),
                 _ => throw new InvalidEnumArgumentException()
             }
         };
     }
-
-    private static bool IsKbRequest(Identity identity) => identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb;
-
-    private static bool IsMpRequest(IEnumerable<Identity> identities) =>
-        identities.Any(i => i.IdentityId != default && i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
 }

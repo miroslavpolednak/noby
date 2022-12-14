@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.Customer.Create;
 
 internal static class CreateExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, params Identity[] identities)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, Mandants createIn, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
@@ -28,7 +28,8 @@ internal static class CreateExtensions
                 IssuingCountryId = request.IdentificationDocument.IssuingCountryId
             },
             Identities = { identities },
-            HardCreate = request.HardCreate
+            HardCreate = request.HardCreate,
+            Mandant = createIn
         };
 
         // adresa
