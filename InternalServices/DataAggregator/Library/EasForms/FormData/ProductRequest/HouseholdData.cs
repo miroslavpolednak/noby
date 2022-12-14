@@ -106,7 +106,9 @@ internal class HouseholdData : IHouseholdData
 
         var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)));
 
-        return ServiceCallResult.ResolveAndThrowIfError<CustomerListResponse>(result).Customers.ToDictionary(c => c.Identity.IdentityId, c => c);
+        return ServiceCallResult.ResolveAndThrowIfError<CustomerListResponse>(result)
+                                .Customers
+                                .ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
     }
 
     private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa)
