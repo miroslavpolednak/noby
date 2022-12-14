@@ -11,7 +11,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 
 [Authorize]
 [ApiController]
-[Route("v2/notification")]
+[Route("v1/notification")]
 public class NotificationController : ControllerBase
 {
     private readonly IMediator _mediator;

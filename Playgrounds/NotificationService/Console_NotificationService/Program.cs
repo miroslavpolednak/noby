@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CIS.Core.Configuration;
-using CIS.Core.Results;
 using CIS.Core.Security;
 using CIS.Infrastructure.Security.ContextUser;
 using CIS.InternalServices.NotificationService.Clients;
@@ -50,7 +49,7 @@ var smsSendRequest = new SmsSendRequest
     Text = text,
 };
 
-var smsSendResponse =  ServiceCallResult.ResolveAndThrowIfError<SmsSendResponse>(await client.SendSms(smsSendRequest, token));
+var smsSendResponse =  await client.SendSms(smsSendRequest, token);
 Console.WriteLine($"Sms send response: {smsSendResponse.NotificationId}");
 
 var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
@@ -64,12 +63,12 @@ var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
     },
 };
 
-var smsFromTemplateSendResponse = ServiceCallResult.ResolveAndThrowIfError<SmsFromTemplateSendResponse>(await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token));
+var smsFromTemplateSendResponse = await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token);
 Console.WriteLine($"Sms from template send response: {smsFromTemplateSendResponse.NotificationId}");
 
 var resultRequest = new ResultGetRequest { NotificationId = smsFromTemplateSendResponse.NotificationId };
 
-var resultResponse = ServiceCallResult.ResolveAndThrowIfError<ResultGetResponse>(await client.GetResult(resultRequest, CancellationToken.None));
+var resultResponse = await client.GetResult(resultRequest, CancellationToken.None);
 Console.WriteLine($"Result response: {resultResponse.NotificationId}");
 
 Console.WriteLine("Press any key to exit...");
