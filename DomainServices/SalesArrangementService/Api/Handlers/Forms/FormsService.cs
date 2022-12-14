@@ -20,7 +20,7 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
+using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms;
@@ -128,7 +128,7 @@ internal class FormsService
         var countries = await _codebookService.Countries(cancellation);
         var obligationTypes = await _codebookService.ObligationTypes(cancellation);
         var householdTypes = await _codebookService.HouseholdTypes(cancellation);
-        var legalCapacities = await _codebookService.LegalCapacities(cancellation);
+        var legalCapacityRestrictionTypes = await _codebookService.LegalCapacityRestrictionTypes(cancellation);
 
         return new ProductFormData(
             arrangement,
@@ -149,7 +149,7 @@ internal class FormsService
             drawingType,
             countries,
             obligationTypes,
-            legalCapacities
+            legalCapacityRestrictionTypes
             );
     }
 

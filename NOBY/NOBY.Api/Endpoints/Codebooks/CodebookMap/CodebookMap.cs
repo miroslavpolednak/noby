@@ -60,7 +60,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.IncomeForeignTypes);
         AddCodebook(s => s.IncomeOtherTypes);
         AddCodebook(s => s.JobTypes);
-        AddCodebook(s => s.LegalCapacities);
+        AddCodebook(s => s.LegalCapacityRestrictionTypes);
         AddCodebook(s => s.LoanPurposes, c => c.Cast<Codebook.LoanPurposes.LoanPurposesItem>().Where(t => t.IsValid));
         AddCodebook(s => s.LoanKinds, c => c.Cast<Codebook.LoanKinds.LoanKindsItem>().Where(t => t.IsValid));
         AddCodebook(s => s.LoanInterestRateAnnouncedTypes);
