@@ -29,7 +29,7 @@ Aby se proměnné prostředí načetly, musí být v systému uloženy v **Syste
 Dále fungují stejně jako při použití `AddEnvironmentVariables()`.  
 Cílově by měli proměnné prostředí nastavovat CI/CD pipelines.
 
-Příklad nastavení proměnné:
+Příklad nastavení proměnné z terminalu:
 ```
 setx DEV_ExternalServices__SbWebApi__V1__Username passw0rd /M
 ```
@@ -38,7 +38,7 @@ Nahradí tento klíč z *appsettings.json*:
 "ExternalServices": {
   "SbWebApi": {
     "V1": {
-      "Username": ""
+      "Username": "" --> nahradí prázdný string za "passw0rd"
     }
   }
 }
