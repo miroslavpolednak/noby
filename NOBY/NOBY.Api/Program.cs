@@ -36,7 +36,8 @@ builder.Services
     .AddProductService()
     .AddCaseService()
     .AddSalesArrangementService()
-    .AddRiskIntegrationService();
+    .AddRiskIntegrationService()
+    .AddDocumentArchiveService();
 
 // FOMS services
 builder
@@ -57,7 +58,7 @@ builder.Services.AddSpaStaticFiles(configuration =>
 });
 
 //TODO !!! odstranit, pouze pro test
-builder.AddExternalService<ISbWebApiClient>();
+//builder.AddExternalService<ISbWebApiClient>();
 
 // pridat moznost rollbacku mediatr handleru
 builder.Services.AddCisMediatrRollbackCapability();

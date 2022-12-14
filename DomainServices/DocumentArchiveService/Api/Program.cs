@@ -4,9 +4,6 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices;
 using DomainServices.DocumentArchiveService.Api;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -18,12 +15,16 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-builder.Services.AddOptions<AppConfiguration>()
-    .Bind(builder.Configuration.GetSection(AppConfiguration.SectionName))
-    .ValidateDataAnnotations()
-    .ValidateOnStart();
+#region strongly typed configuration
+AppConfiguration appConfiguration = new();
+builder.Configuration.GetSection(AppConfiguration.SectionName).Bind(appConfiguration);
+appConfiguration.CheckAppConfiguration();
+#endregion strongly typed configuration
 
 #region register builder
+
+// strongly-typed konfigurace aplikace
+builder.Services.AddSingleton(appConfiguration);
 
 // globalni nastaveni prostredi
 builder
@@ -71,7 +72,7 @@ app.UseAuthorization();
 app.UseCisServiceUserContext();
 
 app.UseCisLogging();
-
+//Dont know correct connection
 app.UseServiceDiscovery();
 
 app.UseEndpoints(endpoints =>

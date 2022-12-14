@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
   </ItemGroup>
 

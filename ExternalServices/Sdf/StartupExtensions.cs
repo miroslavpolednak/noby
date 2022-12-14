@@ -1,23 +1,42 @@
-﻿using ExternalServices.Sdf.Configuration;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 using ExternalServices.Sdf.V1.Clients;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ExternalServices.Sdf
+namespace ExternalServices.Sdf;
+
+public static class StartupExtensions
 {
-    public static class StartupExtensions
+    internal const string ServiceName = "Sdf";
+
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+       where TClient : class, ISdfClient
     {
-        public static IServiceCollection AddExternalServiceSdf(this IServiceCollection services, SdfConfiguration sdfConfiguration)
+        string version = getVersion<TClient>();
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+
+        switch (version, configuration.ImplementationType)
         {
-            if (sdfConfiguration is null)
-            {
-                throw new ArgumentNullException(nameof(sdfConfiguration));
-            }
+            case (V1.Clients.ISdfClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(SdfClientMock), ServiceLifetime.Scoped));
+                break;
 
-            services.AddSingleton(sdfConfiguration);
-            
-            services.AddScoped<ISdfClient, SdfClient>();
+            case (V1.Clients.ISdfClient.Version, ServiceImplementationTypes.Real):
+                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(SdfClient), ServiceLifetime.Scoped));
+                break;
 
-            return services;
+            default:
+                throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
         }
+
+        return builder;
     }
+
+    static string getVersion<TClient>()
+          => typeof(TClient) switch
+          {
+              Type t when t.IsAssignableFrom(typeof(V1.Clients.ISdfClient)) => V1.Clients.ISdfClient.Version,
+              _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+          };
 }

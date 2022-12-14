@@ -1,42 +1,32 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Core.Extensions;
-using CIS.Infrastructure.Logging.Extensions;
-using ExternalServices.Sdf.Configuration;
+using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using ExternalServices.Sdf.V1.Model;
 using Ixtent.ContentServer.ExtendedServices.Model;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
-using System.Globalization;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace ExternalServices.Sdf.V1.Clients;
 
-public class SdfClient : ISdfClient, IDisposable
+public class SdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
 {
     private const int MaxRetries = 3;
 
-    private readonly ExtendedServicesClient _client;
-    private readonly SdfConfiguration _sdfConfiguration;
     private AsyncRetryPolicy _retryPolicy;
     private ILogger<SdfClient> _logger;
+
     public SdfClient(
-        ILogger<SdfClient> logger,
-        SdfConfiguration sdfConfiguration
-        )
+            ILogger<SdfClient> logger,
+            IExternalServiceConfiguration<ISdfClient> configuration)
+            : base(configuration, logger)
     {
-        _sdfConfiguration = sdfConfiguration;
         _logger = logger;
         _retryPolicy = CreatePolicy();
-
-        var binding = CreateBinding();
-        var remoteAddress = new EndpointAddress(sdfConfiguration.ServiceUrl);
-        _client = new ExtendedServicesClient(binding, remoteAddress);
-        if (sdfConfiguration.EnableSoapMessageLogging)
-        {
-            _client.Endpoint.SetTraceLogging(logger, SdfConfiguration.SectionName);
-        }
     }
 
     public async Task<GetDocumentByExternalIdOutput> GetDocumentByExternalId(GetDocumentByExternalIdSdfQuery query, CancellationToken cancellation)
@@ -48,7 +38,7 @@ public class SdfClient : ISdfClient, IDisposable
         // external service return exception (invalid username or password) sometimes.
         // Retry logic policy eliminate this problem
         var result = await _retryPolicy.ExecuteAsync(async () =>
-                                   await _client.GetDocumentByExternalIdAsync(user, query.DocumentId, options)
+                                   await Client.GetDocumentByExternalIdAsync(user, query.DocumentId, options)
                                   .WithCancellation(cancellation));
 
         return result;
@@ -70,38 +60,27 @@ public class SdfClient : ISdfClient, IDisposable
         SearchQueryOptions searchQuery = CreateQueryParameters(query);
 
         var result = await _retryPolicy.ExecuteAsync(async () =>
-                                 await _client.FindDocumentsAsync(user, searchQuery, options)
+                                 await Client.FindDocumentsAsync(user, searchQuery, options)
                                 .WithCancellation(cancellationToken));
 
         return result;
 
     }
-    public void Dispose()
-    {
-        if (_client.State == CommunicationState.Faulted)
-        {
-            _client.Abort();
-        }
-        else
-        {
-            _client.Close();
-        }
-    }
 
-    private BasicHttpBinding CreateBinding()
+    protected override Binding CreateBinding()
     {
         var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
         binding.MessageEncoding = WSMessageEncoding.Mtom;
         binding.MaxBufferSize = 2147483647;
         binding.MaxReceivedMessageSize = 2147483647;
-        binding.SendTimeout = TimeSpan.Parse(_sdfConfiguration.Timeout, CultureInfo.InvariantCulture);
-        binding.ReceiveTimeout = TimeSpan.Parse(_sdfConfiguration.Timeout, CultureInfo.InvariantCulture);
+        binding.SendTimeout = TimeSpan.FromSeconds(Configuration.RequestTimeout.Value!);
+        binding.ReceiveTimeout = TimeSpan.FromSeconds(Configuration.RequestTimeout.Value!);
         return binding;
     }
 
     private User CreateUser()
     {
-        return new User { Username = _sdfConfiguration.Username, Password = _sdfConfiguration.Password };
+        return new User { Username = Configuration.Username, Password = Configuration.Password };
     }
 
     private GetDocumentByExternalIdOptions CreateOptionsDocByExternalId(bool withContent, string userLogin)
@@ -124,7 +103,7 @@ public class SdfClient : ISdfClient, IDisposable
         {
             if (exp.Message.Contains("DocumentNotFound"))
             {
-                throw new CisNotFoundException(14003, "Document with ExternalId not found");
+                throw new CisNotFoundException(14003, "Unable to get/find document(s) from eArchive (SCP/SDF)");
             }
             else if (exp.Message.Contains("Invalid username/password specified"))
             {
@@ -212,4 +191,6 @@ public class SdfClient : ISdfClient, IDisposable
         searchQuery.Parameters = queryParameters.ToArray();
         return searchQuery;
     }
+
+
 }

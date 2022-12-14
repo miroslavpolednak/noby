@@ -67,7 +67,7 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
         {
             response.Content.BinaryData = ByteString.CopyFrom(await _tcpClient.DownloadFile(tcpResult.Url, cancellationToken));
         }
-        response.Content.MineType = tcpResult.MimeType;
+        response.Content.MineType = tcpResult.MimeType ?? string.Empty;
         return response;
     }
 

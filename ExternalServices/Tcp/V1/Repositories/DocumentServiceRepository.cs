@@ -102,9 +102,9 @@ public class DocumentServiceRepository : IDocumentServiceRepository
             new { ExternalDocumentId = $"{"0"}{query.DocumentId}" },
             cancellationToken);
 
-        if (result == null)
+        if (result is null)
         {
-            throw new CisNotFoundException(14003, "Document with ExternalId not found");
+            throw new CisNotFoundException(14002, "Unable to get/find document from eArchive (TCP)");
         }
 
         return result;

@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CIS.Foms.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ExternalServicesTcp.Configuration;
 
 public class TcpConfiguration
 {
-    public const string SectionName = "Tcp";
-
     [Required]
     public string Connectionstring { get; set; } = null!;
+
+    public ServiceImplementationTypes ImplementationType { get; set; } = ServiceImplementationTypes.Unknown;
 }

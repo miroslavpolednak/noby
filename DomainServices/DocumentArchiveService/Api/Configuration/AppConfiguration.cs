@@ -15,9 +15,4 @@ internal sealed class AppConfiguration
     [Required]
     public Dictionary<string, string>? ServiceUser2LoginBinding { get; set; }
 
-    [Required]
-    public SdfConfiguration Sdf { get; set; } = null!;
-
-    [Required]
-    public TcpConfiguration Tcp { get; set; } = null!;
 }
