@@ -266,3 +266,25 @@ GO
 	(0, '0'),
     (1, '3, 4, 7, 8, 9, 1, 2, 5, 6, 10, 12');
 GO
+
+
+-- table 'NetMonthEarningsExtension'
+DROP TABLE IF EXISTS [dbo].[NetMonthEarningsExtension];
+CREATE TABLE [dbo].[NetMonthEarningsExtension](
+	[NetMonthEarningId] [int] NOT NULL,
+	[RdmCode] [varchar](50) NULL,
+CONSTRAINT [PK_NetMonthEarningsExtension] PRIMARY KEY CLUSTERED 
+(
+	[NetMonthEarningId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY];
+GO
+
+	INSERT INTO [dbo].[NetMonthEarningsExtension]([NetMonthEarningId],[RdmCode])
+    VALUES
+	(1, 'A'),
+	(2, 'B'),
+	(3, 'C'),
+	(4, 'D'),
+	(5, 'E');
+GO

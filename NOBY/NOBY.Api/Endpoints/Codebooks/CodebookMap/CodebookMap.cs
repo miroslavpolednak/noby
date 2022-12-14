@@ -66,6 +66,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.LoanInterestRateAnnouncedTypes);
         AddCodebook(s => s.Mandants);
         AddCodebook(s => s.MaritalStatuses);
+        AddCodebook(s => s.NetMonthEarnings);
         AddCodebook(s => s.ObligationCorrectionTypes);
         AddCodebook(s => s.ObligationTypes);
         AddCodebook(s => s.FormTypes, c => c.Cast<Codebook.FormTypes.FormTypeItem>().Where(t => t.IsValid));
