@@ -78,7 +78,7 @@ internal class GetLoanApplicationAssessmentHandler
         };
         var getAssesmentResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.Shared.V1.LoanApplicationAssessmentResponse>(await _riskBusinessCaseService.GetAssessment(getAssesmentRequest, cancellationToken));
 
-        var offer = saInstance.OfferId.HasValue ? ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken)) : null;
+        var offer = saInstance.OfferId.HasValue ? await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken) : null;
 
         // convert to ApiResponse
         return getAssesmentResponse.ToApiResponse(offer);

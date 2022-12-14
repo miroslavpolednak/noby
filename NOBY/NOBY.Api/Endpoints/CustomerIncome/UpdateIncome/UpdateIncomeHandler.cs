@@ -64,13 +64,9 @@ internal class UpdateIncomeHandler
     };
 
     private readonly ICustomerOnSAServiceClient _customerService;
-    private readonly ILogger<UpdateIncomeHandler> _logger;
 
-    public UpdateIncomeHandler(
-        ICustomerOnSAServiceClient customerService,
-        ILogger<UpdateIncomeHandler> logger)
+    public UpdateIncomeHandler(ICustomerOnSAServiceClient customerService)
     {
-        _logger = logger;
         _customerService = customerService;
     }
 }

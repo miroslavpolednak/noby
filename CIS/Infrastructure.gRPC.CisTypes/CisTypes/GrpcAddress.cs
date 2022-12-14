@@ -1,10 +1,11 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class GrpcAddress
+public partial class GrpcAddress
 {
     public static implicit operator Foms.Types.Address?(GrpcAddress? address)
     {
         if (address is null) return null;
+
         return new Foms.Types.Address
         {
             IsPrimary = address.IsPrimary,
@@ -28,6 +29,7 @@ public sealed partial class GrpcAddress
     public static implicit operator GrpcAddress?(Foms.Types.Address? address)
     {
         if (address is null) return null;
+
         return new GrpcAddress
         {
             IsPrimary = address.IsPrimary,

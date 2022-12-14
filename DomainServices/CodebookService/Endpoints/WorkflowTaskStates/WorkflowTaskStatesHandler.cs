@@ -17,7 +17,7 @@ public class WorkflowTaskStatesHandler
 
             result.ForEach(i =>
             {
-                i.Flag = flags.ContainsKey(i.Id) ? flags[i.Id] : EWorkflowTaskStateFlag.Undefined;
+                i.Flag = flags.ContainsKey(i.Id) ? flags[i.Id] : EWorkflowTaskStateFlag.None;
             });
 
             return result;

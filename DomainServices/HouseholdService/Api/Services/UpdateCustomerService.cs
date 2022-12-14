@@ -79,19 +79,16 @@ internal sealed class UpdateCustomerService
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerServiceClient _customerService;
     private readonly Eas.IEasClient _easClient;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
 
     public UpdateCustomerService(
         Eas.IEasClient easClient,
         ISalesArrangementServiceClient salesArrangementService,
         ICaseServiceClient caseService,
-        ICustomerServiceClient customerService,
-        Database.HouseholdServiceDbContext dbContext)
+        ICustomerServiceClient customerService)
     {
         _salesArrangementService = salesArrangementService;
         _easClient = easClient;
         _caseService = caseService;
         _customerService = customerService;
-        _dbContext = dbContext;
     }
 }

@@ -21,6 +21,6 @@ public class WorkflowTaskStateItem
 [System.Flags]
 public enum EWorkflowTaskStateFlag : short
 {
-    Undefined = 0,
+    None = 0,
     Inactive = 1,
 }

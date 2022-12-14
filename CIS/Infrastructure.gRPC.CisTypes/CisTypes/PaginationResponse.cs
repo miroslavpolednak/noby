@@ -2,7 +2,7 @@
 
 namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class PaginationResponse
+public partial class PaginationResponse
     : IPaginableResponse
 {
     public PaginationResponse(IPaginableRequest request, int recordsTotalSize)

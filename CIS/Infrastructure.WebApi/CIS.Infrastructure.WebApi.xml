@@ -46,7 +46,15 @@
             Pro interoperabilitu s gRPC typem PaginationRequest
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator" -->
+        <member name="T:CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator">
+            <summary>
+            Validator ModelState-u, ktery ignoruje vychozi attribute-based modelState validace.
+            Pouzivam ho, kdyz mam FluentValidation a chci uplne ignorovat vychozi MVC chovani.
+            </summary>
+            <remarks>
+            builder.Services.AddSingleton&lt;IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator&gt;();
+            </remarks>
+        </member>
         <member name="M:CIS.Infrastructure.StartupExtensions.CisWebApiCors.AddCisWebApiCors(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <param name="builder"></param>
             <returns>True if CORS is enabled an</returns>

@@ -1,8 +1,9 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class NullableGrpcDecimal
+public partial class NullableGrpcDecimal
 {
     private const decimal NanoFactor = 1_000_000_000;
+
     public NullableGrpcDecimal(long units, int nanos)
     {
         Units = units;
@@ -12,12 +13,14 @@ public sealed partial class NullableGrpcDecimal
     public static implicit operator double?(NullableGrpcDecimal? grpcDecimal)
     {
         if (grpcDecimal == null) return default(double?);
+
         return Convert.ToDouble(grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor);
     }
 
     public static implicit operator decimal?(NullableGrpcDecimal? grpcDecimal)
     {
         if (grpcDecimal == null) return default(decimal?);
+
         return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
     }
 

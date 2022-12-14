@@ -1,37 +1,36 @@
 ﻿using DomainServices.HouseholdService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
 
 internal class CreateObligationHandler
-    : IRequestHandler<CreateObligationMediatrRequest, CreateObligationResponse>
+    : IRequestHandler<CreateObligationRequest, CreateObligationResponse>
 {
-    public async Task<CreateObligationResponse> Handle(CreateObligationMediatrRequest request, CancellationToken cancellation)
+    public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
         // check customer existence
-        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.Request.CustomerOnSAId, cancellation))
-            throw new CisNotFoundException(16020, "CustomerOnSA", request.Request.CustomerOnSAId);
+        if (!await _dbContext.Customers.AnyAsync(t => t.CustomerOnSAId == request.CustomerOnSAId, cancellationToken))
+            throw new CisNotFoundException(16020, "CustomerOnSA", request.CustomerOnSAId);
 
         var entity = new Database.Entities.CustomerOnSAObligation
         {
-            CustomerOnSAId = request.Request.CustomerOnSAId,
-            ObligationState = request.Request.ObligationState,
-            ObligationTypeId = request.Request.ObligationTypeId!.Value,
-            InstallmentAmount = request.Request.InstallmentAmount,
-            LoanPrincipalAmount = request.Request.LoanPrincipalAmount,
-            CreditCardLimit = request.Request.CreditCardLimit,
-            AmountConsolidated = request.Request.AmountConsolidated,
-            CreditorId = request.Request.Creditor?.CreditorId ?? "",
-            CreditorName = request.Request.Creditor?.Name ?? "",
-            CreditorIsExternal = request.Request.Creditor?.IsExternal,
-            CorrectionTypeId = request.Request.Correction?.CorrectionTypeId,
-            CreditCardLimitCorrection = request.Request.Correction?.CreditCardLimitCorrection,
-            InstallmentAmountCorrection = request.Request.Correction?.InstallmentAmountCorrection,
-            LoanPrincipalAmountCorrection = request.Request.Correction?.LoanPrincipalAmountCorrection
+            CustomerOnSAId = request.CustomerOnSAId,
+            ObligationState = request.ObligationState,
+            ObligationTypeId = request.ObligationTypeId!.Value,
+            InstallmentAmount = request.InstallmentAmount,
+            LoanPrincipalAmount = request.LoanPrincipalAmount,
+            CreditCardLimit = request.CreditCardLimit,
+            AmountConsolidated = request.AmountConsolidated,
+            CreditorId = request.Creditor?.CreditorId ?? "",
+            CreditorName = request.Creditor?.Name ?? "",
+            CreditorIsExternal = request.Creditor?.IsExternal,
+            CorrectionTypeId = request.Correction?.CorrectionTypeId,
+            CreditCardLimitCorrection = request.Correction?.CreditCardLimitCorrection,
+            InstallmentAmountCorrection = request.Correction?.InstallmentAmountCorrection,
+            LoanPrincipalAmountCorrection = request.Correction?.LoanPrincipalAmountCorrection
         };
 
         _dbContext.CustomersObligations.Add(entity);
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAObligation), entity.CustomerOnSAObligationId);
 

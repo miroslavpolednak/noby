@@ -123,7 +123,7 @@ internal class LoanApplicationDataService
     public async Task<LoanApplicationData> LoadData(int salesArrangementId, CancellationToken cancellation)
     {
         var arrangement = ServiceCallResult.ResolveAndThrowIfError<cSA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation));
-        var offer = ServiceCallResult.ResolveAndThrowIfError<cOffer.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation));
+        var offer = await _offerService.GetMortgageOfferDetail(arrangement.OfferId!.Value, cancellation);
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
         var households = await GetHouseholds(arrangement.SalesArrangementId, cancellation);
         var incomesById = await GetIncomesById(customersOnSA, cancellation);

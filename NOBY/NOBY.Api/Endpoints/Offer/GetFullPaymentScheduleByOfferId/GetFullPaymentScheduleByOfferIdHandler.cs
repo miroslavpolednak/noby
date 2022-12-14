@@ -1,6 +1,5 @@
 ﻿using DomainServices.OfferService.Clients;
 using NOBY.Api.Endpoints.Offer.Dto;
-using DSContracts = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
@@ -9,9 +8,7 @@ internal class GetFullPaymentScheduleByOfferIdHandler
 {
     public async Task<Dto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageOfferFPScheduleResponse>(await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken));
-
-        _logger.RequestHandlerFinished(nameof(GetFullPaymentScheduleByOfferIdHandler));
+        var result = await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken);
 
         var items = result.PaymentScheduleFull.Select(i =>
             new PaymentScheduleFullItem
@@ -32,11 +29,9 @@ internal class GetFullPaymentScheduleByOfferIdHandler
     }
 
     private readonly IOfferServiceClient _offerService;
-    private readonly ILogger<GetFullPaymentScheduleByOfferIdHandler> _logger;
 
-    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClient offerService, ILogger<GetFullPaymentScheduleByOfferIdHandler> logger)
+    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClient offerService)
     {
-        _logger = logger;
         _offerService = offerService;
     }
 }

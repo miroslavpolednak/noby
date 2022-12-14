@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class ModificationStamp
+public partial class ModificationStamp
 {
     public ModificationStamp(Core.Data.ICreated entity)
     {

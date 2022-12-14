@@ -1,8 +1,9 @@
 ﻿namespace CIS.Infrastructure.gRPC.CisTypes;
 
-public sealed partial class GrpcDecimal
+public partial class GrpcDecimal
 {
     private const decimal NanoFactor = 1_000_000_000;
+
     public GrpcDecimal(long units, int nanos)
     {
         Units = units;

@@ -19,7 +19,7 @@ public class AddressController : ControllerBase
     [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Klient" })]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(AddressSearch.AddressSearchResponse), StatusCodes.Status200OK)]
     public async Task<AddressSearch.AddressSearchResponse> AddressSearch([FromBody] AddressSearch.AddressSearchRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
@@ -33,7 +33,7 @@ public class AddressController : ControllerBase
     /// </remarks>
     [HttpPost("detail")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "UC: Klient" })]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(GetAddressDetail.GetAddressDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetAddressDetail.GetAddressDetailResponse> GetAddressDetail([FromBody] GetAddressDetail.GetAddressDetailRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);

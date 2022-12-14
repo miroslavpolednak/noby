@@ -1,24 +1,24 @@
 ﻿using DomainServices.HouseholdService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
 internal sealed class CreateHouseholdHandler
-    : IRequestHandler<CreateHouseholdMediatrRequest, CreateHouseholdResponse>
+    : IRequestHandler<CreateHouseholdRequest, CreateHouseholdResponse>
 {
-    public async Task<CreateHouseholdResponse> Handle(CreateHouseholdMediatrRequest request, CancellationToken cancellation)
+    public async Task<CreateHouseholdResponse> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         // check existing SalesArrangementId
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.Request.SalesArrangementId, cancellation));
+        var saInstance = ServiceCallResult.ResolveAndThrowIfError<__SA.SalesArrangement>(await __SAlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
 #pragma warning disable CA2208
         // Debtor domacnost muze byt jen jedna
-        if (request.Request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main && _dbContext.Households.Any(t => t.SalesArrangementId == request.Request.SalesArrangementId))
+        if (request.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main && _dbContext.Households.Any(t => t.SalesArrangementId == request.SalesArrangementId))
             throw new CisArgumentException(16031, "Only one Debtor household allowed", "HouseholdTypeId");
 
         // check household role
-        if (!(await _codebookService.HouseholdTypes(cancellation)).Any(t => t.Id == request.Request.HouseholdTypeId))
-            throw new CisNotFoundException(16023, $"HouseholdTypeId {request.Request.HouseholdTypeId} does not exist.");
+        if (!(await _codebookService.HouseholdTypes(cancellationToken)).Any(t => t.Id == request.HouseholdTypeId))
+            throw new CisNotFoundException(16023, $"HouseholdTypeId {request.HouseholdTypeId} does not exist.");
 #pragma warning restore CA2208
 
         //TODO check propertySettlement?
@@ -26,23 +26,23 @@ internal sealed class CreateHouseholdHandler
         // ulozit customera do databaze
         var entity = new Database.Entities.Household
         {
-            SalesArrangementId = request.Request.SalesArrangementId,
+            SalesArrangementId = request.SalesArrangementId,
             CaseId = saInstance.CaseId,
-            HouseholdTypeId = (CIS.Foms.Enums.HouseholdTypes)request.Request.HouseholdTypeId,
-            CustomerOnSAId1 = request.Request.CustomerOnSAId1,
-            CustomerOnSAId2 = request.Request.CustomerOnSAId2,
-            ChildrenOverTenYearsCount = request.Request.Data?.ChildrenOverTenYearsCount,
-            ChildrenUpToTenYearsCount = request.Request.Data?.ChildrenUpToTenYearsCount,
-            PropertySettlementId = request.Request.Data?.PropertySettlementId,
-            AreBothPartnersDeptors = request.Request.Data?.AreBothPartnersDeptors,
-            HousingExpenseAmount = request.Request.Expenses?.HousingExpenseAmount,
-            SavingExpenseAmount = request.Request.Expenses?.SavingExpenseAmount,
-            InsuranceExpenseAmount = request.Request.Expenses?.InsuranceExpenseAmount,
-            OtherExpenseAmount = request.Request.Expenses?.OtherExpenseAmount
+            HouseholdTypeId = (CIS.Foms.Enums.HouseholdTypes)request.HouseholdTypeId,
+            CustomerOnSAId1 = request.CustomerOnSAId1,
+            CustomerOnSAId2 = request.CustomerOnSAId2,
+            ChildrenOverTenYearsCount = request.Data?.ChildrenOverTenYearsCount,
+            ChildrenUpToTenYearsCount = request.Data?.ChildrenUpToTenYearsCount,
+            PropertySettlementId = request.Data?.PropertySettlementId,
+            AreBothPartnersDeptors = request.Data?.AreBothPartnersDeptors,
+            HousingExpenseAmount = request.Expenses?.HousingExpenseAmount,
+            SavingExpenseAmount = request.Expenses?.SavingExpenseAmount,
+            InsuranceExpenseAmount = request.Expenses?.InsuranceExpenseAmount,
+            OtherExpenseAmount = request.Expenses?.OtherExpenseAmount
         };
 
         _dbContext.Households.Add(entity);
-        await _dbContext.SaveChangesAsync(cancellation);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.Household), entity.HouseholdId);
 
@@ -52,7 +52,7 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient __SAlesArrangementService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly ILogger<CreateHouseholdHandler> _logger;
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
@@ -63,7 +63,7 @@ internal sealed class CreateHouseholdHandler
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateHouseholdHandler> logger)
     {
-        _salesArrangementService = salesArrangementService;
+        __SAlesArrangementService = salesArrangementService;
         _codebookService = codebookService;
         _dbContext = dbContext;
         _logger = logger;

@@ -24,6 +24,14 @@ internal class CustomerOnSA
 
     public int? MaritalStatusId { get; set; }
 
+    public byte[]? AdditionalDataBin { get; set; }
+
+    public byte[]? ChangeDataBin { get; set; }
+
+    public string? AdditionalData { get; set; }
+    
+    public string? ChangeData { get; set; }
+
     // kdyby me to nekdy v budoucnu napadlo - EF neumoznuje link na jinou entitu pro temporal tables
     public virtual List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
 }

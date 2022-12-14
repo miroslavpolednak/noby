@@ -8,9 +8,7 @@ internal class GetMortgageByOfferIdHandler
 {
     public async Task<Dto.GetMortgageResponse> Handle(GetMortgageByOfferIdRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetMortgageOfferDetailResponse>(await _offerService.GetMortgageOfferDetail(request.OfferId, cancellationToken));
-
-        _logger.RequestHandlerFinished(nameof(GetMortgageByOfferIdHandler));
+        var result = await _offerService.GetMortgageOfferDetail(request.OfferId, cancellationToken);
 
         // predelat z DS na FE Dto
         return new()
@@ -23,11 +21,9 @@ internal class GetMortgageByOfferIdHandler
     }
 
     private readonly IOfferServiceClient _offerService;
-    private readonly ILogger<GetMortgageByOfferIdHandler> _logger;
-
-    public GetMortgageByOfferIdHandler(IOfferServiceClient offerService, ILogger<GetMortgageByOfferIdHandler> logger)
+    
+    public GetMortgageByOfferIdHandler(IOfferServiceClient offerService)
     {
-        _logger = logger;
         _offerService = offerService;
     }
 }

@@ -23,11 +23,11 @@ public interface ICurrentUserAccessor
     /// <summary>
     /// Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
     /// </summary>
-    Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken);
+    Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
     /// </summary>
-    Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken) 
+    Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken)) 
         where TDetails : ICurrentUserDetails;
 }

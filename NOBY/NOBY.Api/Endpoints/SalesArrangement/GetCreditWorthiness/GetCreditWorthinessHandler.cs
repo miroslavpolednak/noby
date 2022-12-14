@@ -18,7 +18,7 @@ internal class GetCreditWorthinessHandler
         // case instance
         var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
         // offer instance
-        var offerInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.OfferService.Contracts.GetMortgageOfferResponse>(await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken));
+        var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
         // user instance
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 

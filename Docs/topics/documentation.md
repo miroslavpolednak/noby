@@ -20,8 +20,19 @@ index.md				Homepage dokumentace
 Podkladem pro automaticky generovanou dokumentaci jsou [standardní XML komentáře](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags) v *.cs souborech. 
 Je tedy dobré/nutné veřejně dostupné objekty, metody a třídy kvalitně popisovat již v kódu.  
 
-Dokumentace je generována pomocí projektu [DefaultDocumentation](https://github.com/Doraku/DefaultDocumentation) dotnet toolem. Generování dokumentace se pustí souborem **generate_docs.bat** v rootu solution.
+Dokumentace je generována pomocí projektu [DefaultDocumentation](https://github.com/Doraku/DefaultDocumentation) dotnet toolem. 
+Generování dokumentace se pustí souborem **generate_docs.bat** v rootu solution.
 Nepoužíváme pro generování *BuildTask*, který je také k dispozici, protože potom padá CI/CD v Devops.
+Dotnet tool je nutné mít nainstalovaný na PC:
+```
+dotnet tool install DefaultDocumentation.Console -g
+```
+
+**generate_docs.bat** generuje .md soubory pro všechny projekty zapojené v dokumentaci.
+Pokud je potřeba přegenerovat pouze konkrétní projekt, stačí spustit dotnet tool pro tento projekt:
+```
+defaultdocumentation -j "./CIS/Core/DefaultDocumentation.json"
+```
 
 Aby generování dokumentace fungovalo správně, je potřeba:
 - přidat do projektu soubor `DefaultDocumentation.json`

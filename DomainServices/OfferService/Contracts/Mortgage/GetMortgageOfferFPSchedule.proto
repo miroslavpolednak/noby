@@ -12,6 +12,10 @@ message PaymentScheduleFull {
     string RemainingPrincipal = 7;
 }
 
+message GetMortgageOfferFPScheduleRequest {
+    int32 OfferId = 1;
+}
+
 message GetMortgageOfferFPScheduleResponse {
 	repeated PaymentScheduleFull PaymentScheduleFull = 1;
 }

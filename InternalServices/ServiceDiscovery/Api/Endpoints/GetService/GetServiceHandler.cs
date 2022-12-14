@@ -1,21 +1,22 @@
 ﻿using CIS.InternalServices.ServiceDiscovery.Api.Common;
+using CIS.InternalServices.ServiceDiscovery.Contracts;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints.GetService;
 
 internal sealed class GetServiceHandler
-    : IRequestHandler<GetServiceRequest, Contracts.GetServiceResponse>
+    : IRequestHandler<GetServiceRequest, GetServiceResponse>
 {
-    public async Task<Contracts.GetServiceResponse> Handle(GetServiceRequest request, CancellationToken cancellation)
+    public async Task<GetServiceResponse> Handle(GetServiceRequest request, CancellationToken cancellation)
     {
         // query from cache
-        var foundServices = await _cache.GetServices(request.Environment, cancellation);
+        var foundServices = await _cache.GetServices(new(request.Environment), cancellation);
         var service = foundServices.FirstOrDefault(t => t.ServiceType == request.ServiceType && t.ServiceName == request.ServiceName)
-            ?? throw new Core.Exceptions.CisNotFoundException(0, nameof(Contracts.DiscoverableService));
+            ?? throw new CisNotFoundException(0, nameof(DiscoverableService));
 
-        return new Contracts.GetServiceResponse
+        return new GetServiceResponse
         {
             EnvironmentName = request.Environment,
-            Service = new Contracts.DiscoverableService
+            Service = new DiscoverableService
             {
                 ServiceType = request.ServiceType,
                 ServiceName = request.ServiceName,

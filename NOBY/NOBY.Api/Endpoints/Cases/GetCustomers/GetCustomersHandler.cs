@@ -4,7 +4,6 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
 using CIS.Core;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
@@ -21,7 +20,7 @@ internal class GetCustomersHandler
 
         List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, bool Agent)> customerIdentities;
 
-        if (caseInstance.State == 1)
+        if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
             // get allowed SA types
             if (_allowedSalesArrangementTypes is null)

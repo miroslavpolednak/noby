@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using ExternalServices;
 using ExternalServices.Eas;
-using ExternalServices.SbWebApi;
 using ExternalServices.SbWebApi.V1;
 using ExternalServices.Sulm;
 

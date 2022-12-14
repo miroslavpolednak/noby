@@ -489,7 +489,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216289">JobTypes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424118208">LegalCapacities</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424118208">LegalCapacityRestrictionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurposes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413108848">LoanKinds</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413108848">LoanInterestRateAnnouncedTypes</a>
@@ -889,39 +889,53 @@
             Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.BirthNumber">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetDetailWithChanges(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Rodné číslo CZ
+            Získání dat klienta (s lokálními změnami)
+            </summary>
+            <remarks>
+            Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.Dto.NaturalPerson.EducationLevelId">
+            <summary>
+            Stupeň vzdělání
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.FirstName">
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.IsBrSubscribed">
             <summary>
-            Jméno
+            Přihlášen k aktualizaci dat ze základních registrů
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.LastName">
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.IsAddressWhispererUsed">
             <summary>
-            Příjmení
+            Příznak podle kterého zobrazujeme na FE výsledek z našeptávače
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.DateOfBirth">
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.HasRelationshipWithKB">
             <summary>
-            Datum narození
+            Zvláštní vztah ke Komerční bance
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.PlaceOfBirth">
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.HasRelationshipWithKBEmployee">
             <summary>
-            Místo narození
+            Osoba blízká zaměstnanci KB
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.Gender">
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.HasRelationshipWithCorporate">
             <summary>
-            Pohlaví
+            Propojení s obchodní korporací
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.CitizenshipCountriesId">
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.IsPoliticallyExposed">
             <summary>
-            Státní příslušnost/občanství
+            Politicky exponovaná osoba
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.GetDetailWithChanges.GetDetailWithChangesResponse.IsUSPerson">
+            <summary>
+            Americký občan (FATCA)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Customer.GetDetail.Dto.NaturalPersonModel.IsBrSubscribed">
@@ -2268,6 +2282,46 @@
         <member name="P:NOBY.Api.SharedDto.BankAccount.BankCode">
             <summary>
             Kód banky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.BirthNumber">
+            <summary>
+            Rodné číslo CZ
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.FirstName">
+            <summary>
+            Jméno
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.LastName">
+            <summary>
+            Příjmení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.PlaceOfBirth">
+            <summary>
+            Místo narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.BirthCountryId">
+            <summary>
+            Stát narození
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.Gender">
+            <summary>
+            Pohlaví
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.SharedDto.BaseNaturalPerson.CitizenshipCountriesId">
+            <summary>
+            Státní příslušnost/občanství
             </summary>
         </member>
         <member name="P:NOBY.Api.SharedDto.IdentificationDocumentBase.IdentificationDocumentTypeId">

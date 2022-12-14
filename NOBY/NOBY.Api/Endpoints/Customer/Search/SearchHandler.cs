@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
 using DomainServices.CustomerService.Clients;
-using contracts = DomainServices.CustomerService.Contracts;
+using __Customer = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.Search;
 
@@ -16,9 +16,8 @@ internal class SearchHandler
             .EnsureAndTranslateSortFields(sortingMapper)
             .SetDefaultSort("LastName", true);
 
-        var dsRequest = request.SearchData?.ToDomainServiceRequest() ?? new contracts.SearchCustomersRequest();
-        _logger.LogSerializedObject(nameof(dsRequest), dsRequest);
-
+        var dsRequest = request.SearchData?.ToDomainServiceRequest() ?? new __Customer.SearchCustomersRequest();
+        
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
         var rawResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
         if (rawResult is EmptyServiceCallResult)
@@ -30,9 +29,8 @@ internal class SearchHandler
         }
         else
         {
-            var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(rawResult);
-            _logger.FoundItems(result.Customers.Count, nameof(contracts.SearchCustomersItem));
-
+            var result = ServiceCallResult.ResolveAndThrowIfError<__Customer.SearchCustomersResponse>(rawResult);
+            
             // transform
             return new SearchResponse
             {
@@ -47,14 +45,10 @@ internal class SearchHandler
         new ("lastName", "LastName")
     };
 
-    private readonly ILogger<SearchHandler> _logger;
     private readonly ICustomerServiceClient _customerService;
 
-    public SearchHandler(
-        ICustomerServiceClient customerService,
-        ILogger<SearchHandler> logger)
+    public SearchHandler(ICustomerServiceClient customerService)
     {
         _customerService = customerService;
-        _logger = logger;
     }
 }

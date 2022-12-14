@@ -13,8 +13,6 @@ internal class GetListHandler
     {
         var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
 
-        _logger.FoundItems(result.SalesArrangements.Count);
-
         // seznam typu k doplneni nazvu SA
         var saTypeList = await _codebookService.SalesArrangementTypes(cancellationToken);
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
@@ -42,14 +40,11 @@ internal class GetListHandler
 
     private readonly ICodebookServiceClients _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ILogger<GetListHandler> _logger;
 
     public GetListHandler(
         ISalesArrangementServiceClient salesArrangementService, 
-        ICodebookServiceClients codebookService, 
-        ILogger<GetListHandler> logger)
+        ICodebookServiceClients codebookService)
     {
-        _logger = logger;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
     }
