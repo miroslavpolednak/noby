@@ -34,6 +34,10 @@ public class TableAcroFormWriter : IAcroFormWriter
         var document = _acroFormWriter.Write(templateLoader, TemplateFirstPageSuffix);
 
         var placeholderField = template.Form.Fields[_tablePlaceholderKey];
+
+        if (placeholderField is null)
+            throw new InvalidOperationException($"Placeholder field {_tablePlaceholderKey} was not found.");
+
         var page = document.Pages[placeholderField.GetOriginalPageNumber() - 1];
 
         _table.DrawTable(page, placeholderField);

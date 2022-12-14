@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using System.Data;
+using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DocumentDataAggregator.Documents.Table;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -26,15 +27,8 @@ public static class DocumentGeneratorExtensions
         if (partData.TrySetCommonData(value))
             return partData;
 
-        switch (value)
-        {
-            case DocumentTable table:
-                partData.Table = CreateTable(table);
-                break;
-
-            default:
-                throw new NotImplementedException();
-        }
+        if (value is DocumentTable table) 
+            partData.Table = CreateTable(table);
 
         return partData;
     }

@@ -19,7 +19,8 @@ var services = new ServiceCollection();
 services.AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>();
 services.AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration());
 services.AddDataAggregator();
-services.AddDocumentGeneratorService("https://localhost:5009");
+//services.AddDocumentGeneratorService("https://localhost:5009");
+services.AddDocumentGeneratorService();
 services.AddCisServiceDiscovery("https://localhost:5005");
 
 var serviceProvider = services.BuildServiceProvider();
@@ -34,12 +35,14 @@ static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGene
     var input = new InputParameters { OfferId = 1160, UserId = 3048 };
     //var input = new InputParameters { SalesArrangementId = 97 };
 
-    var documentType = DocumentTemplateType.SPLKALHU;
+    var documentType = DocumentTemplateType.KALKULHU;
 
     var data = await dataAggregator.GetDocumentData(documentType, "001A", input);
 
     var request = new GenerateDocumentRequest
     {
+        TemplateTypeId = (int)documentType,
+        TemplateVersion = "001A",
         OutputType = OutputFileType.OpenForm,
         Parts =
         {
@@ -52,8 +55,6 @@ static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGene
         },
         DocumentFooter = new DocumentFooter
         {
-            TemplateTypeId = (int)documentType,
-            TemplateVersion = "001A",
             CaseId = input.CaseId,
             OfferId = input.OfferId,
             //ArchiveId = 123456789
