@@ -7,23 +7,27 @@ internal class CreateCustomerMediatrRequestValidator : AbstractValidator<CreateC
 {
     public CreateCustomerMediatrRequestValidator()
     {
-        RuleFor(m => m.Request.Identity.IdentityScheme)
-            .IsInEnum()
-            .NotEqual(Identity.Types.IdentitySchemes.Unknown)
-            .WithMessage("IdentityScheme must be specified")
-            .WithErrorCode("11006");
+        RuleFor(m => m.Request.Mandant).IsInEnum().NotEqual(Mandants.Unknown).WithMessage("Mandant must be not empty").WithErrorCode("11008");
 
-        When(m => m.Request.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb,
-             () => RuleFor(m => m.Request.Identity.IdentityId)
-                   .Empty()
-                   .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
-                   .WithErrorCode("11016"));
-
-        When(m => m.Request.Identity.IdentityScheme == Identity.Types.IdentitySchemes.Mp,
-             () => RuleFor(m => m.Request.Identity.IdentityId)
-                   .NotEmpty()
-                   .GreaterThan(0)
-                   .WithMessage("Unsupported combination of identifiers (identity schemas and identities).")
-                   .WithErrorCode("11016"));
+        When(m => m.Request.Mandant == Mandants.Mp,
+             () =>
+             {
+                 RuleForEach(m => m.Request.Identities).ChildRules(identity =>
+                 {
+                     identity.When(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp,
+                                   () =>
+                                   {
+                                       identity.RuleFor(i => i.IdentityId)
+                                               .NotEmpty()
+                                               .GreaterThan(0)
+                                               .WithMessage("Unable to create customer in KonsDb without PartnerId.")
+                                               .WithErrorCode("11016");
+                                   })
+                             .Otherwise(() =>
+                             {
+                                 identity.RuleFor(i => i).SetValidator(new IdentityValidator());
+                             });
+                 });
+             });
     }
 }

@@ -1,4 +1,5 @@
-﻿using _Cust = DomainServices.CustomerService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using _Cust = DomainServices.CustomerService.Contracts;
 using _Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetCustomersOnProduct;
@@ -23,7 +24,7 @@ internal sealed class GetCustomersOnProductHandler
 
         return customers.Customers.Select(t =>
         {
-            var c = customerDetails.FirstOrDefault(x => x.Identity.IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId);
+            var c = customerDetails.FirstOrDefault(x => x.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId);
 
             return new GetCustomersOnProductCustomer
             {

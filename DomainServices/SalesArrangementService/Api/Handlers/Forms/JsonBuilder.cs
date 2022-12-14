@@ -752,7 +752,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 // Budem je mít vypálené přímo na žádost o čerpání pod Applicant(tam bude modré ID) a pak přes KonsDB přímým přístupem zjistíme z PartnerId KBID, které je v tabulce dbo.partner a parametru KBPartyId
                 // Případně se dá s modrým ID zavolat getDetail customer service který v detailu customera vrátí KBID... obě cesty si dovedu představit(smile) ta druhá je asi trochu čístší
                 // drawing.Applicant.IdentityId
-                kb_id = data.DrawingApplicantCustomer?.Identity?.IdentityId.ToJsonString(),     // KonsDb
+                kb_id = data.DrawingApplicantCustomer?.Identities.First().IdentityId.ToJsonString(),     // KonsDb
                 mp_id = drawing?.Applicant?.IdentityId.ToJsonString(),                         // Mortgage.PartnerId
 
                 rodne_cislo_ico = data.DrawingApplicantCustomer?.NaturalPerson?.BirthNumber,
