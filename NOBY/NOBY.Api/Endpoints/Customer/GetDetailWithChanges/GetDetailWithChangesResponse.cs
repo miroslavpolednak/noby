@@ -2,7 +2,7 @@
 
 public sealed class GetDetailWithChangesResponse
 {
-    public GetDetail.Dto.NaturalPersonModel? NaturalPerson { get; set; }
+    public Dto.NaturalPerson? NaturalPerson { get; set; }
 
     public GetDetail.Dto.JuridicalPersonModel? JuridicalPerson { get; set; }
 

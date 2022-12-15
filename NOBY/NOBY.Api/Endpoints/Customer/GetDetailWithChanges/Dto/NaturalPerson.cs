@@ -6,7 +6,7 @@ public class NaturalPerson
     /// <summary>
     /// Stupeň vzdělání
     /// </summary>
-    public int EducationLevelId { get; set; }
+    public int? EducationLevelId { get; set; }
 
     public int? ProfessionCategoryId { get; set; }
 

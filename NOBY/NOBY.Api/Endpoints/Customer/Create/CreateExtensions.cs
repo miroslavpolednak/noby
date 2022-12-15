@@ -101,16 +101,22 @@ internal static class CreateExtensions
     }
 
     public static CreateResponse ToResponseDto(this _Cust.CustomerDetailResponse customer)
-        => new CreateResponse
+    {
+        GetDetail.Dto.NaturalPersonModel person = new();
+        customer.NaturalPerson?.FillResponseDto(person);
+        person.IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed;
+
+        return new CreateResponse
         {
-            NaturalPerson = customer.NaturalPerson?.ToResponseDto(),
+            NaturalPerson = person,
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
             IsInputDataDifferent = true
         };
-
+    }
+    
     public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
     {
         response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";

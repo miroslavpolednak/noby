@@ -1,22 +1,20 @@
-﻿namespace NOBY.Api.SharedDto.Extensions;
+﻿namespace NOBY.Api.SharedDto;
 
-/*internal static class NaturalPersonExtensions
+internal static class NaturalPersonExtensions
 {
-    public static BaseNaturalPerson ToResponseDto(this DomainServices.CustomerService.Contracts.NaturalPerson person)
-        => new NaturalPersonModel()
-        {
-            FirstName = person.FirstName,
-            LastName = person.LastName,
-            DateOfBirth = person.DateOfBirth,
-            DegreeAfterId = person.DegreeAfterId,
-            DegreeBeforeId = person.DegreeBeforeId,
-            MaritalStatusId = person.MaritalStatusStateId,
-            BirthName = person.BirthName,
-            BirthNumber = person.BirthNumber,
-            PlaceOfBirth = person.PlaceOfBirth,
-            Gender = (CIS.Foms.Enums.Genders)person.GenderId,
-            BirthCountryId = person.BirthCountryId,
-            CitizenshipCountriesId = person.CitizenshipCountriesId?.Select(t => t).ToList(),
-            IsBrSubscribed = person.IsBrSubscribed
-        };
-}*/
+    public static void FillResponseDto(this DomainServices.CustomerService.Contracts.NaturalPerson person, BaseNaturalPerson transformedModel)
+    {
+        transformedModel.FirstName = person.FirstName;
+        transformedModel.LastName = person.LastName;
+        transformedModel.DateOfBirth = person.DateOfBirth;
+        transformedModel.DegreeAfterId = person.DegreeAfterId;
+        transformedModel.DegreeBeforeId = person.DegreeBeforeId;
+        transformedModel.MaritalStatusId = person.MaritalStatusStateId;
+        transformedModel.BirthName = person.BirthName;
+        transformedModel.BirthNumber = person.BirthNumber;
+        transformedModel.PlaceOfBirth = person.PlaceOfBirth;
+        transformedModel.Gender = (CIS.Foms.Enums.Genders)person.GenderId;
+        transformedModel.BirthCountryId = person.BirthCountryId;
+        transformedModel.CitizenshipCountriesId = person.CitizenshipCountriesId?.Select(t => t).ToList();
+    }
+}
