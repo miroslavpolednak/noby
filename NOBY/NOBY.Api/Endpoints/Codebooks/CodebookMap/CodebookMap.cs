@@ -40,6 +40,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.ClassificationOfEconomicActivities);
         AddCodebook(s => s.ContactTypes);
         AddCodebook(s => s.Countries, c => c.Cast<Codebook.Countries.CountriesItem>().OrderByDescending(t => t.IsDefault));
+        AddCodebook(s => s.CountryCodePhoneIdc);
         AddCodebook(s => s.Currencies);
         AddCodebook(s => s.CustomerProfiles);
         AddCodebook(s => s.CustomerRoles);
@@ -66,12 +67,15 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.LoanInterestRateAnnouncedTypes);
         AddCodebook(s => s.Mandants);
         AddCodebook(s => s.MaritalStatuses);
+        AddCodebook(s => s.NetMonthEarnings);
         AddCodebook(s => s.ObligationCorrectionTypes);
         AddCodebook(s => s.ObligationTypes);
         AddCodebook(s => s.FormTypes, c => c.Cast<Codebook.FormTypes.FormTypeItem>().Where(t => t.IsValid));
         AddCodebook(s => s.PaymentDays, c => c.Cast<Codebook.PaymentDays.PaymentDayItem>().Where(t => t.ShowOnPortal));
         AddCodebook(s => s.PayoutTypes);
         AddCodebook(s => s.PostCodes);
+        AddCodebook(s => s.ProfessionCategories);
+        AddCodebook(s => s.ProfessionTypes);
         AddCodebook(s => s.PropertySettlements);
         AddCodebook(s => s.SalesArrangementStates, c => c.Cast<Codebook.SalesArrangementStates.SalesArrangementStateItem>().Where(t => t.Id > 0));
         AddCodebook(s => s.SalesArrangementTypes);
