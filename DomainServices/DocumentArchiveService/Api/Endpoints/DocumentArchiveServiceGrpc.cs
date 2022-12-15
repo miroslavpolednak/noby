@@ -1,7 +1,4 @@
-﻿using DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
-using DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
-using DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
-using DomainServices.DocumentArchiveService.Contracts;
+﻿using DomainServices.DocumentArchiveService.Contracts;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
