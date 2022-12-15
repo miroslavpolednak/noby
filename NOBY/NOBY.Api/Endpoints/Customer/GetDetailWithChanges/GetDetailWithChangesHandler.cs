@@ -4,7 +4,8 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
-using NOBY.Api.SharedDto;
+using NOBY.Api.Endpoints.Customer.Shared;
+using Newtonsoft.Json.Linq;
 
 namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
 
@@ -34,22 +35,20 @@ internal sealed class GetDetailWithChangesHandler
         // instance customer z KB CM
         var customer = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(kbIdentity, cancellationToken));
 
-        Dto.NaturalPerson person = new();
-        customer.NaturalPerson?.FillResponseDto(person);
-        person.EducationLevelId = customer.NaturalPerson?.EducationLevelId;
-        //person.ProfessionCategoryId = customer.NaturalPerson?
-        //person.ProfessionId = customer.NaturalPerson ?;
-        //person.NetMonthEarningAmountId = customer.NaturalPerson
-        //person.NetMonthEarningTypeId = customer.NaturalPerson ?;
+        // convert DS contract to FE model
+        var model = customer.FillResponseDto(new GetDetailWithChangesResponse());
 
-        return new GetDetailWithChangesResponse
+        // provide saved changes to original model
+        var original = JObject.FromObject(model);
+        var delta = JObject.FromObject(model);
+
+        original.Merge(delta, new JsonMergeSettings
         {
-            NaturalPerson = person,
-            JuridicalPerson = null,
-            IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
-            Contacts = customer.Contacts?.ToResponseDto(),
-            Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList()
-        };
+            MergeArrayHandling = MergeArrayHandling.Replace,
+            MergeNullValueHandling = MergeNullValueHandling.Merge
+        });
+        
+        return original.ToObject<GetDetailWithChangesResponse>()!;
     }
 
     private readonly ICodebookServiceClients _codebookService;

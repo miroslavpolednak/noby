@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
 public sealed class UpdateDetailWithChangesRequest
-    : IRequest
+    : Shared.BaseCustomerDetail, IRequest
 {
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }

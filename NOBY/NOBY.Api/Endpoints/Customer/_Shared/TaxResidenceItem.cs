@@ -1,13 +1,13 @@
-﻿namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges.Dto;
+﻿namespace NOBY.Api.Endpoints.Customer.Shared;
 
-public class TaxResidenceItem
+public sealed class TaxResidenceItem
 {
     public DateTime? validFrom { get; set; }
 
     public List<TaxResidenceCountryItem>? ResidenceCountries { get; set; }
 }
 
-public class TaxResidenceCountryItem
+public sealed class TaxResidenceCountryItem
 {
     public int? CountryId { get; set; }
 

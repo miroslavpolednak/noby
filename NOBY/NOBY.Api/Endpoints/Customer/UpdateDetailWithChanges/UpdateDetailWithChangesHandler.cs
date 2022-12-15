@@ -3,6 +3,8 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using Newtonsoft.Json;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateDetailWithChanges;
 
@@ -21,8 +23,23 @@ internal sealed class UpdateDetailWithChangesHandler
 
         // instance customer z KB CM
         var customer = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(kbIdentity, cancellationToken));
+        // convert DS contract to FE model
+        var originalModel = customer.FillResponseDto(new UpdateDetailWithChangesRequest());
 
+        // compare objects
+        dynamic delta = new System.Dynamic.ExpandoObject();
 
+        ModelComparers.CompareRoot( request, originalModel,delta);
+        ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
+        ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
+        ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
+        ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
+
+        string finalJson;
+        if (((IDictionary<string, Object>)delta).Count > 0)
+        {
+            finalJson = JsonConvert.SerializeObject(delta);
+        }
     }
 
     private readonly ICodebookServiceClients _codebookService;

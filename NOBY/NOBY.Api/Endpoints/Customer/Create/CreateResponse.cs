@@ -15,7 +15,7 @@ public sealed class CreateResponse
 
     public NaturalPersonModel? NaturalPerson { get; set; }
 
-    public JuridicalPersonModel? JuridicalPerson { get; set; }
+    public Shared.JuridicalPerson? JuridicalPerson { get; set; }
 
     public bool Updatable { get; set; }
 

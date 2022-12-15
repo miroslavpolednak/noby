@@ -113,7 +113,7 @@ public class CustomerController : ControllerBase
     /// Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer-on-sa/{customerOnSAId:int}")]
+    [HttpGet("customer-on-sa/{customerOnSAId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(GetDetailWithChanges.GetDetailWithChangesResponse), StatusCodes.Status200OK)]

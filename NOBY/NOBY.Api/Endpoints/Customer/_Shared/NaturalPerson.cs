@@ -1,6 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges.Dto;
+﻿namespace NOBY.Api.Endpoints.Customer.Shared;
 
-public class NaturalPerson
+public sealed class NaturalPerson
     : SharedDto.BaseNaturalPerson
 {
     /// <summary>

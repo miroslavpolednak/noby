@@ -1,6 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges.Dto;
+﻿namespace NOBY.Api.Endpoints.Customer.Shared;
 
-public class LegalCapacityItem
+public sealed class LegalCapacityItem
 {
     public int? RestrictionTypeId { get; set; }
 
