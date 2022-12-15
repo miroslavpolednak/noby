@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
@@ -23,4 +24,6 @@ public class Result
         get => JsonSerializer.Deserialize<HashSet<string>>(Errors)!;
         set => Errors = JsonSerializer.Serialize(value);
     }
+    
+    public virtual ITrackingData? TrackingData { get; set; }
 }

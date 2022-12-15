@@ -19,4 +19,13 @@ public class SmsSendRequest : IRequest<SmsSendResponse>, IValidatableRequest
     
     [ProtoMember(4)]
     public string Text { get; set; } = string.Empty;
+
+    [ProtoMember(5)]
+    public string ClientId { get; set; } = string.Empty;
+    
+    [ProtoMember(6)]
+    public string CustomId { get; set; } = string.Empty;
+    
+    [ProtoMember(7)]
+    public string DocumentId { get; set; } = string.Empty;
 }

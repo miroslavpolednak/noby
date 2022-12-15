@@ -7,6 +7,7 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 public class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
     public DbSet<Result> Results { get; set; } = null!;
+    public DbSet<SmsTrackingData> SmsTrackingData { get; set; } = null!;
 
     public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
     {

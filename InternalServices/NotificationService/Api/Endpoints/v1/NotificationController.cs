@@ -85,4 +85,40 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(typeof(ResultGetResponse), StatusCodes.Status200OK)]
     public async Task<ResultGetResponse> GetResult([Required] Guid id, CancellationToken token)
         => await _mediator.Send(new ResultGetRequest { NotificationId = id }, token);
+
+    /// <summary>
+    /// Získat výsledek o notifikaci podle Client Id
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    /// </remarks>
+    [HttpGet("client/{clientId}/result")]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    [ProducesResponseType(typeof(ResultsGetByResponse), StatusCodes.Status200OK)]
+    public async Task<ResultsGetByResponse> GetResultsByClientId([Required] string clientId, CancellationToken token)
+        => await _mediator.Send(new ResultsGetByRequest { ClientId = clientId }, token);
+    
+    /// <summary>
+    /// Získat výsledek o notifikaci podle Custom Id
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    /// </remarks>
+    [HttpGet("custom/{customId}/result")]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    [ProducesResponseType(typeof(ResultsGetByResponse), StatusCodes.Status200OK)]
+    public async Task<ResultsGetByResponse> GetResultsByCustomId([Required] string customId, CancellationToken token)
+        => await _mediator.Send(new ResultsGetByRequest { CustomId = customId }, token);
+
+    /// <summary>
+    /// Získat výsledek o notifikaci podle Document Id
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    /// </remarks>
+    [HttpGet("document/{documentId}/result")]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    [ProducesResponseType(typeof(ResultsGetByResponse), StatusCodes.Status200OK)]
+    public async Task<ResultsGetByResponse> GetResultsByDocumentId([Required] string documentId, CancellationToken token)
+        => await _mediator.Send(new ResultsGetByRequest { DocumentId = documentId }, token);
 }

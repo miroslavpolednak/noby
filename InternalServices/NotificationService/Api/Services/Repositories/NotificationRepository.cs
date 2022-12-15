@@ -3,6 +3,7 @@ using CIS.Core.Attributes;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 
@@ -37,8 +38,18 @@ public class NotificationRepository
     public async Task<Result> GetResult(Guid notificationId, CancellationToken token = default)
     {
         // todo: Cis Exception code 300-399
-        return await _dbContext.Results.FindAsync(new object?[]{ notificationId }, token) ??
-            throw new CisNotFoundException(300, $"Results #{notificationId} not found");
+        return await _dbContext.Results.FindAsync(new object?[] { notificationId }, token) ??
+               throw new CisNotFoundException(300, $"Results #{notificationId} not found");
+    }
+
+    public async Task<IEnumerable<Result>> GetResultsBy(string clientId, string customerId, string documentId)
+    {
+        return await _dbContext.Results.Include(r => r.TrackingData)
+            .Where(r => r.TrackingData != null)
+            .Where(r => string.IsNullOrEmpty(clientId) || r.TrackingData!.ClientId == clientId)
+            .Where(r => string.IsNullOrEmpty(customerId) || r.TrackingData!.CustomId == customerId)
+            .Where(r => string.IsNullOrEmpty(documentId) || r.TrackingData!.DocumentId == documentId)
+            .ToListAsync();
     }
     
     public async Task<Result> UpdateResult(
