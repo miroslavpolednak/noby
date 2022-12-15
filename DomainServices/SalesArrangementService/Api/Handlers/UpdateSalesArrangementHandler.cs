@@ -41,7 +41,7 @@ internal class UpdateSalesArrangementHandler
         if (riskBusinessCaseIdChanged)
         {
             // case
-            var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(entity.CaseId, cancellation));
+            var caseInstance = await _caseService.GetCaseDetail(entity.CaseId, cancellation);
 
             // get current user's login
             string? userLogin = null;

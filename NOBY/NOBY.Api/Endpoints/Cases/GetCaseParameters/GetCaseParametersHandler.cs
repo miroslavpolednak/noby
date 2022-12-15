@@ -38,7 +38,7 @@ internal sealed class GetCaseParametersHandler
 
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)
     {
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
         var caseStates = await _codebookService.CaseStates(cancellationToken);
         var productTypesById = (await _codebookService.ProductTypes(cancellationToken)).ToDictionary(i => i.Id);

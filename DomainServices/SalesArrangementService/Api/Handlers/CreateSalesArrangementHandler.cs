@@ -13,9 +13,8 @@ internal class CreateSalesArrangementHandler
 
         // validace na existenci case
         //TODO je nejaka spojitost mezi ProductTypeId a SalesArrangementTypeId, ktera by se dala zkontrolovat?
-        _ = ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.GetCaseDetail(request.Request.CaseId, cancellation))
-            ?? throw new CisNotFoundException(18002, $"Case ID #{request.Request.CaseId} does not exist.");
-
+        await _caseService.GetCaseDetail(request.Request.CaseId, cancellation);
+        
         // vytvorit entitu
         var saEntity = new Repositories.Entities.SalesArrangement
         {

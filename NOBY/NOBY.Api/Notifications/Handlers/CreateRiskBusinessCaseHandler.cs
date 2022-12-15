@@ -35,7 +35,7 @@ internal class CreateRiskBusinessCaseHandler
         }
 
         // case
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(notification.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(notification.CaseId, cancellationToken);
         // offer
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, "SA does not have Offer bound to it");

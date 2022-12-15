@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.CaseService.Clients;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Clients;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 
@@ -19,8 +17,6 @@ internal class CaseServiceWrapper : IServiceWrapper
         if (!input.CaseId.HasValue)
             throw new ArgumentNullException(nameof(InputParameters.CaseId));
 
-        var result = await _caseService.GetCaseDetail(input.CaseId.Value, cancellationToken);
-
-        data.Case = ServiceCallResult.ResolveAndThrowIfError<Case>(result);
+        data.Case = await _caseService.GetCaseDetail(input.CaseId.Value, cancellationToken);
     }
 }

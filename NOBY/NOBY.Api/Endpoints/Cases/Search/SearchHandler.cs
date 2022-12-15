@@ -16,7 +16,7 @@ internal class SearchHandler
             .EnsureAndTranslateSortFields(sortingMapper);
 
         // zavolat BE sluzbu
-        var result = ServiceCallResult.ResolveAndThrowIfError<_CS.SearchCasesResponse>(await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken));
+        var result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken);
         
         // transform
         return new SearchResponse
