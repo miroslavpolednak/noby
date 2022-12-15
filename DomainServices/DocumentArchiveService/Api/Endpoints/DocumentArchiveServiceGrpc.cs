@@ -18,17 +18,17 @@ public class DocumentArchiveServiceGrpc : Contracts.v1.DocumentArchiveService.Do
     }
 
     public override async Task<GenerateDocumentIdResponse> GenerateDocumentId(GenerateDocumentIdRequest request, ServerCallContext context)
-        => await _mediator.Send(new GenerateDocumentId.GenerateDocumentIdMediatrRequest(request), context.CancellationToken);
+        => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Empty> UploadDocument(UploadDocumentRequest request, ServerCallContext context)
     {
-        await _mediator.Send(new UploadDocumentMediatrRequest(request), context.CancellationToken);
+        await _mediator.Send(request, context.CancellationToken);
         return new Empty();
     }
 
     public override async Task<GetDocumentResponse> GetDocument(GetDocumentRequest request, ServerCallContext context)
-     => await _mediator.Send(new GetDocumentMediatrRequest(request), context.CancellationToken);
+     => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetDocumentListResponse> GetGetDocumentList(GetDocumentListRequest request, ServerCallContext context)
-     => await _mediator.Send(new GetDocumentListMediatrRequest(request),context.CancellationToken);
+     => await _mediator.Send(request, context.CancellationToken);
 }

@@ -45,7 +45,7 @@ builder.Services.AddAttributedServices(typeof(Program));
 builder.AddCisServiceAuthentication();
 
 // add this service
-builder.AddDocumentArchiveService(builder.Configuration);
+builder.AddDocumentArchiveService();
 
 // add grpc
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));

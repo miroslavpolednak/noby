@@ -13,15 +13,15 @@ using System.ServiceModel.Channels;
 
 namespace ExternalServices.Sdf.V1.Clients;
 
-public class SdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
+public class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
 {
     private const int MaxRetries = 3;
 
     private AsyncRetryPolicy _retryPolicy;
-    private ILogger<SdfClient> _logger;
+    private ILogger<RealSdfClient> _logger;
 
-    public SdfClient(
-            ILogger<SdfClient> logger,
+    public RealSdfClient(
+            ILogger<RealSdfClient> logger,
             IExternalServiceConfiguration<ISdfClient> configuration)
             : base(configuration, logger)
     {
@@ -191,6 +191,4 @@ public class SdfClient : SoapClientBase<ExtendedServicesClient, IExtendedService
         searchQuery.Parameters = queryParameters.ToArray();
         return searchQuery;
     }
-
-
 }

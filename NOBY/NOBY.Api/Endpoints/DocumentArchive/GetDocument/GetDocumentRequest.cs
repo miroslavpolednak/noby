@@ -2,9 +2,9 @@
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
-public class GetDocumentMediatrRequest : IRequest<GetDocumentResponse>
+public class GetDocumentRequest : IRequest<GetDocumentResponse>
 {
-	public GetDocumentMediatrRequest(string documentId)
+	public GetDocumentRequest(string documentId)
 	{
         DocumentId = documentId;
     }

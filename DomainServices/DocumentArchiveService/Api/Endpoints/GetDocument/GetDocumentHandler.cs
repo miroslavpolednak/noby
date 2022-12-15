@@ -10,7 +10,7 @@ using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
 
-public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMediatrRequest, GetDocumentResponse>
+public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
 {
     private const string DocumentPrefix = "KBH";
     private readonly ISdfClient _sdfClient;
@@ -18,7 +18,7 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
     private readonly ITcpClient _tcpClient;
     private readonly IDocumentMapper _documentMapper;
 
-    public GetDocumentMediatrRequestHandler(
+    public GetDocumentHandler(
         ISdfClient sdfClient,
         IDocumentServiceRepository documentServiceRepository,
         ITcpClient tcpClient,
@@ -30,9 +30,9 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
         _documentMapper = documentMapper;
     }
 
-    public async Task<GetDocumentResponse> Handle(GetDocumentMediatrRequest request, CancellationToken cancellationToken)
+    public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
     {
-        if (request.Request.DocumentId.StartsWith(DocumentPrefix))
+        if (request.DocumentId.StartsWith(DocumentPrefix))
         {
             var cspResponse = await LoadFromCspArchive(request, cancellationToken);
             return MapCspResponse(cspResponse);
@@ -40,7 +40,7 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
         else
         {
             var tcpResult = await LoadFromTcpArchive(request, cancellationToken);
-            return await MapTcpResponse(tcpResult, request.Request, cancellationToken);
+            return await MapTcpResponse(tcpResult, request, cancellationToken);
         }
 
     }
@@ -92,7 +92,7 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
         return response;
     }
 
-    private async Task<DocumentServiceQueryResult> LoadFromTcpArchive(GetDocumentMediatrRequest request, CancellationToken cancellationToken)
+    private async Task<DocumentServiceQueryResult> LoadFromTcpArchive(GetDocumentRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -101,13 +101,13 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
 
         return await _documentServiceRepository.GetDocumentByExternalId(new GetDocumentByExternalIdTcpQuery
         {
-            DocumentId = request.Request.DocumentId,
-            WithContent = request.Request.WithContent
+            DocumentId = request.DocumentId,
+            WithContent = request.WithContent
         },
         cancellationToken);
     }
 
-    private async Task<GetDocumentByExternalIdOutput> LoadFromCspArchive(GetDocumentMediatrRequest request, CancellationToken cancellationToken)
+    private async Task<GetDocumentByExternalIdOutput> LoadFromCspArchive(GetDocumentRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -117,9 +117,9 @@ public class GetDocumentMediatrRequestHandler : IRequestHandler<GetDocumentMedia
         return await _sdfClient
        .GetDocumentByExternalId(new GetDocumentByExternalIdSdfQuery
        {
-           DocumentId = request.Request.DocumentId,
-           WithContent = request.Request.WithContent,
-           UserLogin = request.Request.UserLogin
+           DocumentId = request.DocumentId,
+           WithContent = request.WithContent,
+           UserLogin = request.UserLogin
        },
        cancellationToken);
     }

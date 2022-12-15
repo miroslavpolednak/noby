@@ -1,12 +1,11 @@
 ﻿using CIS.Infrastructure.Data;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
-using Microsoft.Extensions.Options;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
 internal sealed class GenerateDocumentIdHandler
-    : IRequestHandler<GenerateDocumentIdMediatrRequest, Contracts.GenerateDocumentIdResponse>
+    : IRequestHandler<GenerateDocumentIdRequest, Contracts.GenerateDocumentIdResponse>
 {
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _connectionProvider;
@@ -15,20 +14,20 @@ internal sealed class GenerateDocumentIdHandler
     public GenerateDocumentIdHandler(
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> connectionProvider,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        IOptions<AppConfiguration> configuration)
+        AppConfiguration configuration)
     {
         _connectionProvider = connectionProvider;
         _serviceUserAccessor = serviceUserAccessor;
-        _configuration = configuration?.Value ?? throw new ArgumentNullException();
+        _configuration = configuration;
     }
 
-    public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdMediatrRequest request, CancellationToken cancellation)
+    public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
     {
         long seq = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
 
         return new Contracts.GenerateDocumentIdResponse
         {
-            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(request.Request.EnvironmentName)}{seq:D23}"
+            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(request.EnvironmentName)}{seq:D23}"
         };
     }
 

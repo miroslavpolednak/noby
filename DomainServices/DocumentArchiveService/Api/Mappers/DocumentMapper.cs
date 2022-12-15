@@ -17,7 +17,7 @@ public class DocumentMapper : IDocumentMapper
         metadata.Filename = values.FirstOrDefault(r => r.AttributeName == "DOK_Nazev_souboru")?.Value ?? string.Empty;
         metadata.Description = values.FirstOrDefault(r => r.AttributeName == "DOK_Popis")?.Value ?? string.Empty;
         metadata.OrderId = int.TryParse(values.FirstOrDefault(r => r.AttributeName == "DOK_ID_oceneni")?.Value, out var outOrderId) ? outOrderId : null;
-        metadata.CreatedOn = DateTime.Parse(values.First(r => r.AttributeName == "DOK_Datum_prijeti").Value);
+        metadata.CreatedOn = DateTime.TryParse(values.FirstOrDefault(r => r.AttributeName == "DOK_Datum_prijeti")?.Value, out var outCreatedOn) ? outCreatedOn : default;
         metadata.AuthorUserLogin = values.FirstOrDefault(r => r.AttributeName == "DOK_Autor")?.Value ?? string.Empty;
         metadata.Priority = values.FirstOrDefault(r => r.AttributeName == "DOK_Priorita")?.Value ?? string.Empty;
         metadata.Status = values.FirstOrDefault(r => r.AttributeName == "DOK_Status")?.Value ?? string.Empty;

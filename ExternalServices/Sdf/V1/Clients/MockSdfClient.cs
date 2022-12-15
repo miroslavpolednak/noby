@@ -2,7 +2,7 @@
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 
 namespace ExternalServices.Sdf.V1.Clients;
-public class SdfClientMock : ISdfClient
+public class MockSdfClient : ISdfClient
 {
 
     List<MetadataValue> mockValues = new List<MetadataValue> {

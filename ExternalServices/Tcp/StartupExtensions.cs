@@ -31,12 +31,12 @@ public static class StartupExtensions
 
         if (version == V1.Repositories.IDocumentServiceRepository.Version && configuration.ImplementationType == ServiceImplementationTypes.Mock)
         {
-            builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(V1.Repositories.DocumentServiceRepositoryMock), ServiceLifetime.Scoped));
+            builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(V1.Repositories.MockDocumentServiceRepository), ServiceLifetime.Scoped));
             builder.Services.AddHttpClient<V1.Clients.ITcpClient, V1.Clients.TcpClientMock>();
         }
         else if (version == V1.Repositories.IDocumentServiceRepository.Version && configuration.ImplementationType == ServiceImplementationTypes.Real)
         {
-            builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(V1.Repositories.DocumentServiceRepository), ServiceLifetime.Scoped));
+            builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(V1.Repositories.RealDocumentServiceRepository), ServiceLifetime.Scoped));
             builder.Services.AddHttpClient<V1.Clients.ITcpClient, V1.Clients.TcpClient>();
         }
         else

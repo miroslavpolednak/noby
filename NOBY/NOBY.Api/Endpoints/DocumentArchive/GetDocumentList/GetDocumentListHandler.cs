@@ -1,25 +1,25 @@
-﻿using DomainServices.DocumentArchiveService.Clients;
-using NOBY.Infrastructure.Security;
+﻿using CIS.Core.Security;
+using DomainServices.DocumentArchiveService.Clients;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
-public class GetDocumentListHandler : IRequestHandler<GetDocumentListMediatrRequest, GetDocumentListResponse>
+public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, GetDocumentListResponse>
 {
     private readonly IDocumentArchiveServiceClient _client;
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public GetDocumentListHandler(
         IDocumentArchiveServiceClient client,
-        IHttpContextAccessor httpContext)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _client = client;
-        _httpContext = httpContext;
+        _currentUserAccessor = currentUserAccessor;
     }
 
-    public async Task<GetDocumentListResponse> Handle(GetDocumentListMediatrRequest request, CancellationToken cancellationToken)
+    public async Task<GetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
     {
-        var user = _httpContext.HttpContext?.User as FomsUser;
+        var user = _currentUserAccessor.User;
 
         var result = await _client.GetDocumentList(new()
         {

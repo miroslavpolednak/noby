@@ -4,6 +4,111 @@
         <name>DomainServices.DocumentArchiveService.Contracts</name>
     </assembly>
     <members>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CaseId">
+            <summary>
+            Unikátní Id obchodního případu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.AuthorUserLoginFieldNumber">
+            <summary>Field number for the "AuthorUserLogin" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.AuthorUserLogin">
+            <summary>
+            Login autora dokumentu, kdo dokument uložil
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CreatedOnFieldNumber">
+            <summary>Field number for the "CreatedOn" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CreatedOn">
+            <summary>
+            Datum přijetí dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.PledgeAgreementNumberFieldNumber">
+            <summary>Field number for the "PledgeAgreementNumber" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.PledgeAgreementNumber">
+            <summary>
+            Číslo zástavní smlouvy
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.ContractNumberFieldNumber">
+            <summary>Field number for the "ContractNumber" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.ContractNumber">
+            <summary>
+            Číslo smlouvy
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.OrderIdFieldNumber">
+            <summary>Field number for the "OrderId" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FolderDocumentIdFieldNumber">
+            <summary>Field number for the "FolderDocumentId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FolderDocumentId">
+            <summary>
+            Id nařízeného dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.UserLoginFieldNumber">
+            <summary>Field number for the "UserLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentIdFieldNumber">
+            <summary>Field number for the "documentId" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentId">
+            <summary>
+            ID dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.WithContentFieldNumber">
+            <summary>Field number for the "withContent" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.WithContent">
+            <summary>
+            Vrátit i binární data (default=false)
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.UserLoginFieldNumber">
+            <summary>Field number for the "userLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentNameFieldNumber">
+            <summary>Field number for the "EnvironmentName" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentName">
+            <summary>
+            kód volajícího prostředí systému
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndexFieldNumber">
+            <summary>Field number for the "EnvironmentIndex" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndex">
+            <summary>
+            index prostředí (default 0) - jednociferné číslo
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.MetadataFieldNumber">
+            <summary>Field number for the "Metadata" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Metadata">
+            <summary>
+            Metadata dokumentu
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryDataFieldNumber">
+            <summary>Field number for the "BinaryData" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryData">
+            <summary>
+            Soubour (pole bajtů) ve formě base64string 
+            </summary>
+        </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection">
             <summary>Holder for reflection information generated from DocumentArchiveService.v1.proto</summary>
         </member>
@@ -234,22 +339,6 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdReflection.Descriptor">
             <summary>File descriptor for GenerateDocumentId.proto</summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentNameFieldNumber">
-            <summary>Field number for the "EnvironmentName" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentName">
-            <summary>
-            kód volajícího prostředí systému
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndexFieldNumber">
-            <summary>Field number for the "EnvironmentIndex" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndex">
-            <summary>
-            index prostředí (default 0) - jednociferné číslo
-            </summary>
-        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdResponse.DocumentIdFieldNumber">
             <summary>Field number for the "DocumentId" field.</summary>
         </member>
@@ -258,22 +347,6 @@
         </member>
         <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentReflection.Descriptor">
             <summary>File descriptor for UploadDocument.proto</summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.MetadataFieldNumber">
-            <summary>Field number for the "Metadata" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Metadata">
-            <summary>
-            Metadata dokumentu
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryDataFieldNumber">
-            <summary>Field number for the "BinaryData" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryData">
-            <summary>
-            Soubour (pole bajtů) ve formě base64string 
-            </summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.DocumentMetadataReflection">
             <summary>Holder for reflection information generated from DocumentMetadata.proto</summary>
@@ -427,25 +500,6 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentReflection.Descriptor">
             <summary>File descriptor for GetDocument.proto</summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentIdFieldNumber">
-            <summary>Field number for the "documentId" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentId">
-            <summary>
-            ID dokumentu
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.WithContentFieldNumber">
-            <summary>Field number for the "withContent" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.WithContent">
-            <summary>
-            Vrátit i binární data (default=false)
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.UserLoginFieldNumber">
-            <summary>Field number for the "userLogin" field.</summary>
-        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentResponse.MetadataFieldNumber">
             <summary>Field number for the "Metadata" field.</summary>
         </member>
@@ -478,60 +532,6 @@
         </member>
         <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListReflection.Descriptor">
             <summary>File descriptor for GetDocumentList.proto</summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CaseId">
-            <summary>
-            Unikátní Id obchodního případu
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.AuthorUserLoginFieldNumber">
-            <summary>Field number for the "AuthorUserLogin" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.AuthorUserLogin">
-            <summary>
-            Login autora dokumentu, kdo dokument uložil
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CreatedOnFieldNumber">
-            <summary>Field number for the "CreatedOn" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.CreatedOn">
-            <summary>
-            Datum přijetí dokumentu
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.PledgeAgreementNumberFieldNumber">
-            <summary>Field number for the "PledgeAgreementNumber" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.PledgeAgreementNumber">
-            <summary>
-            Číslo zástavní smlouvy
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.ContractNumberFieldNumber">
-            <summary>Field number for the "ContractNumber" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.ContractNumber">
-            <summary>
-            Číslo smlouvy
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.OrderIdFieldNumber">
-            <summary>Field number for the "OrderId" field.</summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FolderDocumentIdFieldNumber">
-            <summary>Field number for the "FolderDocumentId" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FolderDocumentId">
-            <summary>
-            Id nařízeného dokumentu
-            </summary>
-        </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.UserLoginFieldNumber">
-            <summary>Field number for the "UserLogin" field.</summary>
         </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListResponse.MetadataFieldNumber">
             <summary>Field number for the "Metadata" field.</summary>

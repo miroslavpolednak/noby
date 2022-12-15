@@ -5,13 +5,13 @@ using ExternalServicesTcp.V1.Repositories;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
 
-public class GetDocumentListMediatrRequestHandler : IRequestHandler<GetDocumentListMediatrRequest, GetDocumentListResponse>
+public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, GetDocumentListResponse>
 {
     private readonly ISdfClient _sdfClient;
     private readonly IDocumentServiceRepository _tcpRepository;
     private readonly IDocumentMapper _documentMapper;
 
-    public GetDocumentListMediatrRequestHandler(
+    public GetDocumentListHandler(
         ISdfClient sdfClient,
         IDocumentServiceRepository tcpRepository,
         IDocumentMapper documentMapper)
@@ -21,9 +21,9 @@ public class GetDocumentListMediatrRequestHandler : IRequestHandler<GetDocumentL
         _documentMapper = documentMapper;
     }
 
-    public async Task<GetDocumentListResponse> Handle(GetDocumentListMediatrRequest request, CancellationToken cancellationToken)
+    public async Task<GetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
     {
-        var sdfResult = await _sdfClient.FindDocuments(_documentMapper.MapSdfFindDocumentQuery(request.Request), cancellationToken);
+        var sdfResult = await _sdfClient.FindDocuments(_documentMapper.MapSdfFindDocumentQuery(request), cancellationToken);
 
         var response = new GetDocumentListResponse();
 
@@ -34,7 +34,7 @@ public class GetDocumentListMediatrRequestHandler : IRequestHandler<GetDocumentL
                        .Select(r => _documentMapper.MapSdfDocumentMetadata(r.Metadata.ToArray())));
         }
 
-        var tcpResult = await _tcpRepository.FindTcpDocument(_documentMapper.MapTcpDocumentQuery(request.Request), cancellationToken);
+        var tcpResult = await _tcpRepository.FindTcpDocument(_documentMapper.MapTcpDocumentQuery(request), cancellationToken);
         response.Metadata.AddRange(tcpResult.Select(_documentMapper.MapTcpDocumentMetadata));
         
         return response;

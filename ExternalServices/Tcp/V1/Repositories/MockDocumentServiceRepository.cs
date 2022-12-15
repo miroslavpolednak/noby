@@ -2,7 +2,7 @@
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ExternalServicesTcp.V1.Repositories;
-internal class DocumentServiceRepositoryMock : IDocumentServiceRepository
+internal class MockDocumentServiceRepository : IDocumentServiceRepository
 {
     public async Task<IReadOnlyCollection<DocumentServiceQueryResult>> FindTcpDocument(FindTcpDocumentQuery query, CancellationToken cancellationToken)
     {

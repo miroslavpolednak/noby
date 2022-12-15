@@ -4,17 +4,17 @@ using FluentValidation;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
 
-public class GetDocumentListMediatrRequestValidator : AbstractValidator<GetDocumentListMediatrRequest>
+public class GetDocumentListValidator : AbstractValidator<GetDocumentListRequest>
 {
-    public GetDocumentListMediatrRequestValidator()
+    public GetDocumentListValidator()
     {
-        RuleFor(t => t.Request).NotEmpty();
+        RuleFor(t => t).NotEmpty();
 
-        RuleFor(e => e.Request.CreatedOn)
+        RuleFor(e => e.CreatedOn)
             .Must(CommonValidators.ValidateNotNullDateOnly)
             .WithMessage($"{nameof(GetDocumentListRequest.CreatedOn)}: invalid date format");
 
-        RuleFor(t => t.Request)
+        RuleFor(t => t)
         .Must(ValidateOneOfMainParameterIsNotEmpty)
         .WithMessage("One of main parameters have to be fill in (CaseId, PledgeAgreementNumber, ContractNumber, OrderId, FolderDocumentId)");
     }

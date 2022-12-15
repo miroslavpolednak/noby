@@ -1,8 +1,8 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
-public class GetDocumentListMediatrRequest:IRequest<GetDocumentListResponse>
+public class GetDocumentListRequest:IRequest<GetDocumentListResponse>
 {
-	public GetDocumentListMediatrRequest(long caseId)
+	public GetDocumentListRequest(long caseId)
 	{
         CaseId = caseId;
     }

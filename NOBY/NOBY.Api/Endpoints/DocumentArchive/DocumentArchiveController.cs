@@ -34,7 +34,7 @@ public class DocumentArchiveController : ControllerBase
         [FromQuery] FileContentDisposition contentDisposition,
         CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetDocumentMediatrRequest(documentId), cancellationToken);
+        var result = await _mediator.Send(new GetDocumentRequest(documentId), cancellationToken);
         if (contentDisposition == FileContentDisposition.inline)
         {
             return File(result.Content.BinaryData.ToArray(), result.Content.MineType);
@@ -58,7 +58,7 @@ public class DocumentArchiveController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "UC: Dokument" })]
     [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetDocumentList([FromRoute] long caseId, CancellationToken cancellationToken)
-        => Ok(await _mediator.Send(new GetDocumentListMediatrRequest(caseId), cancellationToken));
+    public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDocumentListRequest(caseId), cancellationToken);
 
 }

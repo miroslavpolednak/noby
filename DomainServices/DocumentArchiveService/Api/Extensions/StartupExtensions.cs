@@ -20,7 +20,7 @@ internal static class StartupExtensions
             throw new CisConfigurationNotFound("AppConfiguration");
     }
 
-    public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder, IConfiguration configuration)
+    public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder)
     {
         if (builder is null)
         {
@@ -28,8 +28,6 @@ internal static class StartupExtensions
         }
 
         builder.Services.AddCisGrpcInfrastructure(typeof(Program));
-
-        var appConfig = configuration.GetSection(AppConfiguration.SectionName).Get<AppConfiguration>();
 
         builder.AddExternalService<ISdfClient>();
 

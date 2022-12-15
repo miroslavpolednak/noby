@@ -19,11 +19,11 @@ public static class StartupExtensions
         switch (version, configuration.ImplementationType)
         {
             case (V1.Clients.ISdfClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(SdfClientMock), ServiceLifetime.Scoped));
+                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(MockSdfClient), ServiceLifetime.Scoped));
                 break;
 
             case (V1.Clients.ISdfClient.Version, ServiceImplementationTypes.Real):
-                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(SdfClient), ServiceLifetime.Scoped));
+                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(RealSdfClient), ServiceLifetime.Scoped));
                 break;
 
             default:

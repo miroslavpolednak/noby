@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ExternalServicesTcp.V1.Repositories;
 
-public class DocumentServiceRepository : IDocumentServiceRepository
+public class RealDocumentServiceRepository : IDocumentServiceRepository
 {
     private const string DocumentMainSql =
      """
@@ -65,7 +65,7 @@ public class DocumentServiceRepository : IDocumentServiceRepository
 
     private readonly IConnectionProvider<ITcpDapperConnectionProvider> _connectionProvider;
 
-    public DocumentServiceRepository(IConnectionProvider<ITcpDapperConnectionProvider> connectionProvider)
+    public RealDocumentServiceRepository(IConnectionProvider<ITcpDapperConnectionProvider> connectionProvider)
     {
         _connectionProvider = connectionProvider;
     }
@@ -86,7 +86,7 @@ public class DocumentServiceRepository : IDocumentServiceRepository
                                        },
                                        cancellationToken);
 
-        if (result.Count >= 5000)
+        if (result.Count >= MaxReceivedRowsCount)
         {
             throw new CisValidationException(9701, "To many results returned from external service, please specify filter more accurately.");
         }

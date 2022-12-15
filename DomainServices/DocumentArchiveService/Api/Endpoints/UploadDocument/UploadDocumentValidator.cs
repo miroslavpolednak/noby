@@ -6,27 +6,27 @@ using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 
-public sealed class UploadDocumentMediatrRequestValidator : AbstractValidator<UploadDocumentMediatrRequest>
+public sealed class UploadDocumentValidator : AbstractValidator<UploadDocumentRequest>
 {
-    public UploadDocumentMediatrRequestValidator()
+    public UploadDocumentValidator()
     {
-        RuleFor(t => t.Request).NotEmpty();
+        RuleFor(t => t).NotEmpty();
 
-        When(t => t.Request is not null, () =>
+        When(t => t is not null, () =>
         {
-            RuleFor(t => t.Request.BinaryData)
+            RuleFor(t => t.BinaryData)
                 .NotEmpty()
                 .WithMessage("BinaryData cannot be emty");
         });
 
-        When(t => t.Request is not null, () =>
+        When(t => t is not null, () =>
         {
-            RuleFor(t => t.Request.Metadata)
+            RuleFor(t => t.Metadata)
                 .NotNull()
                 .WithMessage("Metadata cannot be empty");
         });
 
-        RuleFor(m => m.Request.Metadata)
+        RuleFor(m => m.Metadata)
             .NotNull()
             .SetValidator(new DocumentMetadataValidator());
     }
