@@ -31,7 +31,7 @@ public class KonsDbDetailProvider
 
         var response = new CustomerDetailResponse
         {
-            Identity = new Identity(partner.PartnerId, IdentitySchemes.Mp),
+            Identities = { GetIdentities(partner.PartnerId, partner.KbId) },
             NaturalPerson = CreateNaturalPerson(partner),
             IdentificationDocument = partner.ToIdentificationDocument(),
         };
@@ -57,7 +57,7 @@ public class KonsDbDetailProvider
         {
             var detail = new CustomerDetailResponse
             {
-                Identity = new Identity(p.PartnerId, IdentitySchemes.Mp),
+                Identities = { GetIdentities(p.PartnerId, p.KbId) },
                 NaturalPerson = CreateNaturalPerson(p),
                 IdentificationDocument = p.ToIdentificationDocument()
             };
@@ -132,6 +132,14 @@ public class KonsDbDetailProvider
                 },
                 splitOn: "contactId");
         }
+    }
+
+    private IEnumerable<Identity> GetIdentities(long partnerId, long? kbId)
+    {
+        yield return new Identity(partnerId, IdentitySchemes.Mp);
+
+        if (kbId.HasValue)
+            yield return new Identity(kbId.Value, IdentitySchemes.Kb);
     }
 
     private NaturalPerson CreateNaturalPerson(Partner partner)

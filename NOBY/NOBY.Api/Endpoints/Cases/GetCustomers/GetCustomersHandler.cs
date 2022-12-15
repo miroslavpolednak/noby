@@ -91,7 +91,8 @@ internal class GetCustomersHandler
                     LastName = t.CustomerOnSA.Name,
                     DateOfBirth = t.CustomerOnSA.DateOfBirthNaturalPerson
                 }
-            } : customerDetails.First(x => x.Identity.IdentityId == t.Identity.IdentityId && x.Identity.IdentityScheme == t.Identity.IdentityScheme);
+            } : customerDetails.First(x => x.Identities.Any(i => i.IdentityId == t.Identity.IdentityId && i.IdentityScheme == t.Identity.IdentityScheme));
+
             var permanentAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
             var mailingAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
             var country = countries.FirstOrDefault(x => x.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
@@ -101,7 +102,7 @@ internal class GetCustomersHandler
                 Agent = t.Agent,
                 Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
                 Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
-                KBID = customer.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 RoleName = ((CIS.Foms.Enums.CustomerRoles)t.Role).GetAttribute<DisplayAttribute>()!.Name,
                 DateOfBirth = customer.NaturalPerson?.DateOfBirth,
                 LastName = customer.NaturalPerson?.LastName,

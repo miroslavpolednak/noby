@@ -133,9 +133,9 @@ namespace DomainServices.CustomerService.Api.Services.KonsDb.Sql {
         ///	PrukazVydalDatum IdentificationDocumentIssuedOn,
         ///	PrukazVydal IdentificationDocumentIssuedBy,
         ///	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
-        ///	PreukazPlatnostDo IdentificationDocumentValidTo
-        ///FROM dbo.PARTNER
-        ///WHERE (@Se [rest of string was truncated]&quot;;.
+        ///	PreukazPlatnostDo IdentificationDocumentValidTo,
+        ///	KBId KbId
+        ///FROM dbo.PARTNE [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SearchCustomers {
             get {

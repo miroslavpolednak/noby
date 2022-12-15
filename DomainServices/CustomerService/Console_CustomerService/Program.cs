@@ -11,6 +11,7 @@ using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 Console.WriteLine("run!");
 
@@ -32,8 +33,8 @@ var serviceProvider = new ServiceCollection()
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
-    .AddCustomerService()
-    //.AddCustomerService("https://localhost:5100")
+    //.AddCustomerService()
+    .AddCustomerService("https://localhost:5100")
     .BuildServiceProvider();
 
 var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
@@ -61,49 +62,50 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-//var detail = await service.GetCustomerDetail(new Identity(926949615, IdentitySchemes.Kb));
+var detail = await service.GetCustomerDetail(new Identity(134, IdentitySchemes.Mp));
 
-var create = await service.CreateCustomer(new CreateCustomerRequest
-{
-    Identity = new Identity(default, IdentitySchemes.Kb),
-    NaturalPerson = new NaturalPerson
-    {
-        FirstName = "Qvratek1",
-        LastName = "Qlitek3",
-        BirthCountryId = 16,
-        BirthNumber = "8105144322",
-        BirthName = "Prouza",
-        DateOfBirth = new NullableGrpcDate(1981, 5, 14),
-        PlaceOfBirth = "Ostrava",
-        GenderId = 1
-    },
-    Addresses =
-    {
-        new GrpcAddress
-        {
-            AddressTypeId = 1,
-            City = "Praha",
-            Postcode = "19017",
-            CountryId = 16,
-            Street = "Masarykova",
-            StreetNumber = "458",
-            HouseNumber = "9A",
-            CityDistrict = "Vinoř",
-            PragueDistrict = "Praha 9",
-            DeliveryDetails = "Marketing Department",
-            AddressPointId = "465465465",
-            PrimaryAddressFrom = DateTime.Now.AddYears(-5)
-        },
-    },
-    IdentificationDocument = new IdentificationDocument
-    {
-        IdentificationDocumentTypeId = 1,
-        Number = "893123457",
-        IssuedBy = "Praha",
-        IssuingCountryId = 16,
-        IssuedOn = DateTime.Now.AddYears(-5),
-        ValidTo = DateTime.Now.AddYears(3)
-    }
-});
+//var create = await service.CreateCustomer(new CreateCustomerRequest
+//{
+//    Mandant = Mandants.Mp,
+//    Identities = { new Identity(134, IdentitySchemes.Mp), new Identity(123, IdentitySchemes.Kb) },
+//    NaturalPerson = new NaturalPerson
+//    {
+//        FirstName = "Qvratek1",
+//        LastName = "Qlitek3",
+//        BirthCountryId = 16,
+//        BirthNumber = "8105144322",
+//        BirthName = "Prouza",
+//        DateOfBirth = new NullableGrpcDate(1981, 5, 14),
+//        PlaceOfBirth = "Ostrava",
+//        GenderId = 1
+//    },
+//    Addresses =
+//    {
+//        new GrpcAddress
+//        {
+//            AddressTypeId = 1,
+//            City = "Praha",
+//            Postcode = "19017",
+//            CountryId = 16,
+//            Street = "Masarykova",
+//            StreetNumber = "458",
+//            HouseNumber = "9A",
+//            CityDistrict = "Vinoř",
+//            PragueDistrict = "Praha 9",
+//            DeliveryDetails = "Marketing Department",
+//            AddressPointId = "465465465",
+//            PrimaryAddressFrom = DateTime.Now.AddYears(-5)
+//        },
+//    },
+//    IdentificationDocument = new IdentificationDocument
+//    {
+//        IdentificationDocumentTypeId = 1,
+//        Number = "893123457",
+//        IssuedBy = "Praha",
+//        IssuingCountryId = 16,
+//        IssuedOn = DateTime.Now.AddYears(-5),
+//        ValidTo = DateTime.Now.AddYears(3)
+//    }
+//});
 
 Console.ReadKey();

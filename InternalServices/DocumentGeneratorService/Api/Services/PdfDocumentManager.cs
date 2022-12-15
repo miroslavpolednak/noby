@@ -1,73 +1,92 @@
-﻿using ceTe.DynamicPDF.Forms;
-using ceTe.DynamicPDF.Merger;
-using CIS.Infrastructure.Attributes;
+﻿using ceTe.DynamicPDF.Xmp;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
-using Pdf = ceTe.DynamicPDF;
+using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
+using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
+using Google.Protobuf;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
-[ScopedService, SelfService]
-public class PdfDocumentManager
+[TransientService, SelfService]
+internal class PdfDocumentManager
 {
-    public PdfDocumentManager()
+    private readonly PdfAcroFormWriterFactory _pdfAcroFormWriterFactory;
+    private readonly TemplateManager _templateManager;
+    private readonly PdfFooter _pdfFooter;
+
+    public PdfDocumentManager(PdfAcroFormWriterFactory pdfAcroFormWriterFactory, TemplateManager templateManager, PdfFooter pdfFooter)
     {
+        _pdfAcroFormWriterFactory = pdfAcroFormWriterFactory;
+        _templateManager = templateManager;
+        _pdfFooter = pdfFooter;
     }
 
-    public Document GenerateDocument(GenerateDocumentRequest request)
+    public async Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request)
     {
-        var pdf = ProcessParts(request.Parts);
+        await ProcessParts(request.Parts);
 
-        //var xmp = new XmpMetadata();
+        var finalPdf = await PrepareFinalPdf(request.OutputType, request);
 
-        //xmp.AddSchema(new PdfASchema(PdfAStandard.PDF_A_1a_2005));
-
-        //pdf.XmpMetadata = xmp;
-
-        //var iccProfile = new Pdf.IccProfile("D:\\Users\\992589l\\Downloads\\AdobeICCProfilesCS4Win_end-user\\Adobe ICC Profiles (end-user)\\CMYK\\CoatedFOGRA27.icc");
-        //var outputIntents = new Pdf.OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile);
-        //outputIntents.Version = Pdf.OutputIntentVersion.PDF_A;
-
-        //pdf.OutputIntents.Add(outputIntents);
-
-        var path = Path.Combine("D:\\MPSS\\TestPdf", "ZADOCERP_121022_result.pdf");
-
-        pdf.Draw(path);
-
-        return new Document();
+        return new Contracts.Document
+        {
+            Data = await ConvertPdfToByteString(finalPdf)
+        };
     }
 
-    private Pdf.Document ProcessParts(IEnumerable<GenerateDocumentPart> parts)
+    private async Task ProcessParts(IEnumerable<GenerateDocumentPart> parts)
     {
-        var documentStreams = new List<Stream>();
-
         foreach (var documentPart in parts)
         {
-            var template = LoadPdfTemplate();
+            var acroFormWriter = _pdfAcroFormWriterFactory.Create(documentPart.Data);
 
-            new PdfAcroForm(new AcroFieldFormatProvider()).Fill(template, documentPart.Data);
+            var templateLoader = await _templateManager.CreateLoader(documentPart.TemplateTypeId, documentPart.TemplateVersion);
 
-            documentStreams.Add(new MemoryStream());
-
-            template.Draw(documentStreams.Last());
+            var template = acroFormWriter.Write(templateLoader);
+            
+            _templateManager.DrawTemplate(template);
         }
-
-        var document = new MergeDocument
-        {
-            Form = { Output = FormOutput.Flatten }
-        };
-
-        documentStreams.ForEach(stream => document.Append(new PdfDocument(stream)));
-
-        return document;
     }
 
-    private Pdf.Document LoadPdfTemplate()
+    private async Task<Document> PrepareFinalPdf(OutputFileType outputFileType, GenerateDocumentRequest request)
     {
-        var path = Path.Combine("D:\\MPSS\\TestPdf", "ZADOCERP_121022.pdf");
+        var finalDocument = await _templateManager.CreateFinalDocument(request.TemplateTypeId, request.TemplateVersion);
 
-        var fileStream = File.OpenRead(path);
+        await _pdfFooter.FillFooter(finalDocument, request);
 
-        return new MergeDocument(new PdfDocument(fileStream));
+        if (outputFileType is OutputFileType.Pdfa or OutputFileType.Unknown)
+            ArchiveDocument(finalDocument.Document);
+
+        return finalDocument.Document;
+    }
+
+    private static void ArchiveDocument(Document document)
+    {
+        var xmp = new XmpMetadata();
+
+        xmp.AddSchema(new PdfASchema(PdfAStandard.PDF_A_1a_2005));
+
+        xmp.DublinCore.Title.DefaultText = document.Title;
+        xmp.DublinCore.Creators.Add(document.Author);
+        xmp.DublinCore.Title.AddLang("cs-cz", "PDF/A1 Dokument");
+
+        document.XmpMetadata = xmp;
+
+        var iccProfile = new IccProfile("D:\\Users\\992589l\\Downloads\\AdobeICCProfilesCS4Win_end-user\\Adobe ICC Profiles (end-user)\\CMYK\\CoatedFOGRA27.icc");
+        var outputIntents = new OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile)
+        {
+            Version = OutputIntentVersion.PDF_A
+        };
+
+        document.OutputIntents.Add(outputIntents);
+    }
+
+    private static Task<ByteString> ConvertPdfToByteString(Document document)
+    {
+        var memoryStream = new MemoryStream();
+
+        document.Draw(memoryStream);
+
+        memoryStream.Position = 0;
+
+        return ByteString.FromStreamAsync(memoryStream);
     }
 }
