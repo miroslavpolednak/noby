@@ -7,7 +7,7 @@ using __Contracts = DomainServices.CaseService.Contracts;
 
 namespace DomainServices;
 
-public static class CaseServiceExtensions
+public static class StartupExtensions
 {
     /// <summary>
     /// Service SD key
