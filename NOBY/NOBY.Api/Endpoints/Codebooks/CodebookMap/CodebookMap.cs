@@ -40,6 +40,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.ClassificationOfEconomicActivities);
         AddCodebook(s => s.ContactTypes);
         AddCodebook(s => s.Countries, c => c.Cast<Codebook.Countries.CountriesItem>().OrderByDescending(t => t.IsDefault));
+        AddCodebook(s => s.CountryCodePhoneIdc);
         AddCodebook(s => s.Currencies);
         AddCodebook(s => s.CustomerProfiles);
         AddCodebook(s => s.CustomerRoles);
