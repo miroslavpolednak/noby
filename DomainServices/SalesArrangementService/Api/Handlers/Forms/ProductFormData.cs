@@ -14,7 +14,7 @@ using DomainServices.CodebookService.Contracts.Endpoints.DrawingTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
 using DomainServices.CodebookService.Contracts.Endpoints.ObligationTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacities;
+using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
@@ -27,7 +27,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
         private Dictionary<int, HouseholdTypeItem>? householdTypesById;
         private Dictionary<string, CustomerDetailResponse>? customersByIdentityCode;
         private Dictionary<int, Income>? incomesById;
-        private Dictionary<string, LegalCapacityItem>? legalCapacitiesByCode;
+        private Dictionary<string, LegalCapacityRestrictionTypeItem>? legalCapacityRestrictionTypesByCode;
 
         public Contracts.SalesArrangement Arrangement { get; init; }
 
@@ -79,12 +79,12 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
         public Dictionary<int, CountriesItem> CountriesById { get; init; }
         public Dictionary<string, List<int>> ObligationTypeIdsByObligationProperty { get; init; }
 
-        public List<LegalCapacityItem> LegalCapacities { get; init; }
-        public Dictionary<string, LegalCapacityItem> LegalCapacitiesByCode
+        public List<LegalCapacityRestrictionTypeItem> LegalCapacityRestrictionTypes { get; init; }
+        public Dictionary<string, LegalCapacityRestrictionTypeItem> LegalCapacityRestrictionTypesByCode
         {
             get
             {
-                return legalCapacitiesByCode ?? LegalCapacities.ToDictionary(i => i.Code.ToString());
+                return legalCapacityRestrictionTypesByCode ?? LegalCapacityRestrictionTypes.ToDictionary(i => i.Code.ToString());
             }
         }
 
@@ -112,7 +112,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             List<DrawingTypeItem> drawingTypes,
             List<CountriesItem> countries,
             List<ObligationTypesItem> obligationTypes,
-            List<LegalCapacityItem> legalCapacities)
+            List<LegalCapacityRestrictionTypeItem> legalCapacityRestrictionTypes)
         {
             Arrangement = arrangement;
             ProductType = productType;
@@ -132,7 +132,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             DrawingTypeById = drawingTypes.ToDictionary(i => i.Id);
             CountriesById = countries.ToDictionary(i => i.Id);
             ObligationTypeIdsByObligationProperty = obligationTypes.GroupBy(i => i.ObligationProperty).ToDictionary(i => i.Key, l => l.Select(i => i.Id).ToList());
-            LegalCapacities = legalCapacities;
+            LegalCapacityRestrictionTypes = legalCapacityRestrictionTypes;
         }
 
         #endregion
