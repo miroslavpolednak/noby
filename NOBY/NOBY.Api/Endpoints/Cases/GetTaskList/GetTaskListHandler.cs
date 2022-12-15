@@ -5,13 +5,13 @@ internal sealed class GetTaskListHandler
 {
     public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.GetTaskListResponse>(await _caseService.GetTaskList(request.CaseId, cancellationToken));
+        var result = await _caseService.GetTaskList(request.CaseId, cancellationToken);
 
         var taskTypes = await _codebookService.WorkflowTaskTypes(cancellationToken);
 
         return new GetTaskListResponse
         {
-            Tasks = result.Tasks?.Select(t => new Dto.WorkflowTask
+            Tasks = result?.Select(t => new Dto.WorkflowTask
             {
                 StateId = t.StateId,
                 CreatedOn = t.CreatedOn,

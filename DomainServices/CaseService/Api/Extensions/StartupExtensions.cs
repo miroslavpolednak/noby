@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
+using DomainServices.CaseService.Api.Database;
 using ExternalServices;
 using ExternalServices.Eas;
 using ExternalServices.EasSimulationHT;
@@ -28,7 +29,7 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.CaseServiceDbContext>();
+        builder.AddEntityFramework<CaseServiceDbContext>();
 
         return builder;
     }

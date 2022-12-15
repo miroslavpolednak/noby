@@ -6,16 +6,16 @@ internal class GetDashboardFiltersHandler
     public async Task<List<GetDashboardFiltersResponse>> Handle(GetDashboardFiltersRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu
-        var result = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.GetCaseCountsResponse>(await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken));
+        var result = await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken);
 
         // rucne vytvorena kolekce podle Motalika
         return new List<GetDashboardFiltersResponse>
         {
-            new GetDashboardFiltersResponse(1, "Žádosti o úvěr", result.CaseCounts.Where(t => t.State == 1 || t.State == 2).Select(t => t.Count).Sum()),
-            new GetDashboardFiltersResponse(2, "Podepisování smluv", result.CaseCounts.Where(t => t.State == 3).Select(t => t.Count).Sum()),
-            new GetDashboardFiltersResponse(3, "Čerpání", result.CaseCounts.Where(t => t.State == 4).Select(t => t.Count).Sum()),
-            new GetDashboardFiltersResponse(4, "Správa", result.CaseCounts.Where(t => t.State == 5).Select(t => t.Count).Sum()),
-            new GetDashboardFiltersResponse(5, "Vše", result.CaseCounts.Select(t => t.Count).Sum())
+            new GetDashboardFiltersResponse(1, "Žádosti o úvěr", result.Where(t => t.State == 1 || t.State == 2).Select(t => t.Count).Sum()),
+            new GetDashboardFiltersResponse(2, "Podepisování smluv", result.Where(t => t.State == 3).Select(t => t.Count).Sum()),
+            new GetDashboardFiltersResponse(3, "Čerpání", result.Where(t => t.State == 4).Select(t => t.Count).Sum()),
+            new GetDashboardFiltersResponse(4, "Správa", result.Where(t => t.State == 5).Select(t => t.Count).Sum()),
+            new GetDashboardFiltersResponse(5, "Vše", result.Select(t => t.Count).Sum())
         };
     }
 

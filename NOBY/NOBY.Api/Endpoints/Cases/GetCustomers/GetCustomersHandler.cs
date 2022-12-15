@@ -14,7 +14,7 @@ internal class GetCustomersHandler
     public async Task<List<GetCustomersResponseCustomer>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
     {
         // data o CASE-u
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(request.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         // seznam zemi
         var countries = (await _codebookService.Countries(cancellationToken));
 

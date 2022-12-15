@@ -30,7 +30,7 @@ internal class CreateMortgageCaseHandler
 
         // vytvorit case
         _logger.SharedCreateCaseStarted(offerInstance.OfferId);
-        long caseId = ServiceCallResult.ResolveAndThrowIfError<long>(await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.SimulationInputs), cancellationToken));
+        long caseId = await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.SimulationInputs), cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCaseId, caseId);
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 

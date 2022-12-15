@@ -1,40 +1,37 @@
-﻿using CIS.Core.Results;
-using CIS.Core.Types;
+﻿using CIS.Core.Types;
 using DomainServices.CaseService.Contracts;
-using Microsoft.Extensions.Logging;
-using CIS.Infrastructure.Logging;
 
 namespace DomainServices.CaseService.Clients.Services;
 
-internal class CaseService : ICaseServiceClient
+internal sealed class CaseService 
+    : ICaseServiceClient
 {
-    public async Task<IServiceCallResult> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateCaseAsync(model, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<long>(result.CaseId);
+        return result.CaseId;
     }
 
-    public async Task<IServiceCallResult> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetCaseCountsAsync(
             new()
             {
                 CaseOwnerUserId = caseOwnerUserId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<GetCaseCountsResponse>(result);
+        return result.CaseCounts.ToList();
     }
 
-    public async Task<IServiceCallResult> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.GetCaseDetailAsync(
+        return await _service.GetCaseDetailAsync(
             new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<Case>(result);
     }
 
-    public async Task<IServiceCallResult> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         var request = new SearchCasesRequest
         {
@@ -44,93 +41,79 @@ internal class CaseService : ICaseServiceClient
         };
         if (states is not null)
             request.State.AddRange(states);
-        var result = await _service.SearchCasesAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<SearchCasesResponse>(result);
+        return await _service.SearchCasesAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task LinkOwnerToCase(long caseId, int ownerUserId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.LinkOwnerToCaseAsync(
+        await _service.LinkOwnerToCaseAsync(
             new()
             {
                 CaseId = caseId,
                 CaseOwnerUserId = ownerUserId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateCaseCustomer(long caseId, CustomerData customer, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateCaseCustomerAsync(
+        await _service.UpdateCaseCustomerAsync(
             new()
             {
                 CaseId = caseId,
                 Customer = customer
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateCaseData(long caseId, CaseData data, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateCaseDataAsync(
+        await _service.UpdateCaseDataAsync(
             new()
             {
                 CaseId = caseId,
                 Data = data
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateCaseState(long caseId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateCaseStateAsync(
+        await _service.UpdateCaseStateAsync(
             new()
             {
                 CaseId = caseId,
                 State = state
             },  cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> DeleteCase(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteCase(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.DeleteCaseAsync(
+        await _service.DeleteCaseAsync(
             new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<List<WorkflowTask>> GetTaskList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetTaskListAsync(
             new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<GetTaskListResponse>(result);
+        return result.Tasks.ToList();
     }
 
-    public async Task<IServiceCallResult> UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateOfferContacts(long caseId, OfferContacts contacts, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.UpdateOfferContactsAsync(
+        await _service.UpdateOfferContactsAsync(
             new()
             {
                 CaseId = caseId,
                 OfferContacts = contacts
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    private readonly ILogger<CaseService> _logger;
     private readonly Contracts.v1.CaseService.CaseServiceClient _service;
-
-    public CaseService(
-        ILogger<CaseService> logger,
-        Contracts.v1.CaseService.CaseServiceClient service)
-    {
-        _service = service;
-        _logger = logger;
-    }
+    public CaseService(Contracts.v1.CaseService.CaseServiceClient service)
+        => _service = service;
 }

@@ -12,7 +12,7 @@ internal class LinkModelationHandler
         // get SA data
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
         // get case instance
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Ca.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
 
         // nalinkovat novou simulaci
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);

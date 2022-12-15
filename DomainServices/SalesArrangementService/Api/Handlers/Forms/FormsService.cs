@@ -104,8 +104,7 @@ internal class FormsService
 
         var incomes = await GetIncomes(customersOnSA, cancellation);
 
-        var caseData = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-            ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
+        var caseData = await _caseService.GetCaseDetail(arrangement.CaseId, cancellation);
 
         var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);
 
@@ -192,7 +191,7 @@ internal class FormsService
     {
         var data = new CaseData(entity.Data);
         data.ContractNumber = contractNumber;
-        ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.UpdateCaseData(entity.CaseId, data, cancellation));
+        await _caseService.UpdateCaseData(entity.CaseId, data, cancellation);
         entity.Data.ContractNumber = contractNumber;
     }
 
@@ -238,8 +237,7 @@ internal class FormsService
 
     public async Task<ServiceFormData> LoadServiceFormData(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
     {
-        var caseData = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-            ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
+        var caseData = await _caseService.GetCaseDetail(arrangement.CaseId, cancellation);
 
         GetMortgageResponse? _productMortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(await _productService.GetMortgage(arrangement.CaseId, cancellation)) ?? throw new CisNotFoundException(18002, $"Product ID #{arrangement.CaseId} does not exist.");
 

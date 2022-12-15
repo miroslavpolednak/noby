@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+﻿using CIS.Infrastructure.Configuration;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 

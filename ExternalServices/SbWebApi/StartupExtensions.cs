@@ -10,6 +10,10 @@ public static class StartupExtensions
     internal const string ServiceName = "SbWebApi";
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, SbWebApi.V1.ISbWebApiClient
+        => builder.AddSbWebApi<TClient>();
+
+    static WebApplicationBuilder AddSbWebApi<TClient>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
     {
         // ziskat konfigurace pro danou verzi sluzby

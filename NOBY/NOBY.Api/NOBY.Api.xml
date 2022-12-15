@@ -468,6 +468,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216251">ClassificationOfEconomicActivities</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405522415">Countries</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=483360846">CountryCodePhoneIdc</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
              - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
@@ -496,13 +497,16 @@
              - <a href="https://wiki.kb.cz/display/HT/Mandant">Mandants</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MaritalStatuses</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417279748">MarketingActions</a>  - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967710">NetMonthEarnings</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426150084">ObligationTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=409432393">FormTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046178">PaymentDays</a>
              - <a href="https://wiki.kb.cz/display/HT/PayoutType">PayoutTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421389753">PostCodes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392883923">ProductTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392883923">ProductTypes</a> 
+             - <a href="https://wiki.kb.cz/display/HT/ProfessionCategory+%28CB_Prof_Cat1%29+-+MOCK">ProfessionCategories</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967580">ProfessionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413648025">PropertySettlements</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
