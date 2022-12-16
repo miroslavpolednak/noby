@@ -1,7 +1,8 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
-using CIS.InternalServices.DocumentDataAggregator.DataServices;
+﻿using CIS.InternalServices.DataAggregator.Configuration.Document;
+using CIS.InternalServices.DataAggregator.DataServices;
+using CIS.InternalServices.DataAggregator.Helpers;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Documents.Mapper;
+namespace CIS.InternalServices.DataAggregator.Documents.Mapper;
 
 internal class SingleValueFieldParser : ISourceFieldParser
 {

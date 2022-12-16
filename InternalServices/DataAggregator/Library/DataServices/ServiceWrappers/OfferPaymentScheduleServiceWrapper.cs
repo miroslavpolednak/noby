@@ -1,6 +1,7 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using CIS.InternalServices.DataAggregator.Configuration;
+using DomainServices.OfferService.Clients;
 
-namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
+namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 
 [TransientService, SelfService]
 internal class OfferPaymentScheduleServiceWrapper : IServiceWrapper

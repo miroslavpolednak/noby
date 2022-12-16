@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregator.Helpers;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.Json;
+namespace CIS.InternalServices.DataAggregator.EasForms.Json;
 
 internal class EasFormJsonCollection : EasFormJsonObjectImpl
 {

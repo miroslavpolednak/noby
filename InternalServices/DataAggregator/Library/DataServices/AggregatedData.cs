@@ -6,7 +6,7 @@ using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.DataServices;
+namespace CIS.InternalServices.DataAggregator.DataServices;
 
 internal class AggregatedData
 {

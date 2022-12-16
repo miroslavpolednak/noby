@@ -1,9 +1,9 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DocumentDataAggregator.Documents.Table;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
+using CIS.InternalServices.DataAggregator.Documents.Table;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
+using CIS.InternalServices.DocumentGeneratorService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Documents;
+namespace CIS.InternalServices.DataAggregator.Documents;
 
 public static class DocumentGeneratorExtensions
 {

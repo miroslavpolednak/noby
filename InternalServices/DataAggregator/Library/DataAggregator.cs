@@ -1,13 +1,14 @@
 ﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
-using CIS.InternalServices.DocumentDataAggregator.DataServices;
-using CIS.InternalServices.DocumentDataAggregator.Documents;
-using CIS.InternalServices.DocumentDataAggregator.Documents.Mapper;
-using CIS.InternalServices.DocumentDataAggregator.EasForms;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
+using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregator.Configuration.Document;
+using CIS.InternalServices.DataAggregator.DataServices;
+using CIS.InternalServices.DataAggregator.Documents;
+using CIS.InternalServices.DataAggregator.Documents.Mapper;
+using CIS.InternalServices.DataAggregator.EasForms;
+using CIS.InternalServices.DataAggregator.EasForms.FormData;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CIS.InternalServices.DocumentDataAggregator;
+namespace CIS.InternalServices.DataAggregator;
 
 internal class DataAggregator : IDataAggregator
 {

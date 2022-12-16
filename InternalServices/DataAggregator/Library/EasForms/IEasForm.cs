@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.EasForms;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms;
 
 public interface IEasForm<out TData>
 {

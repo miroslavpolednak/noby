@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest;
 
 internal class Obligation
 {

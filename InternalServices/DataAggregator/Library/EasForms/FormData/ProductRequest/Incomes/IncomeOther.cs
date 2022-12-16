@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest.Incomes;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest.Incomes;
 
 internal class IncomeOther : IncomeBase
 {

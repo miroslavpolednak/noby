@@ -1,8 +1,8 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
+﻿using CIS.InternalServices.DataAggregator.Configuration.Document;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
 using Microsoft.EntityFrameworkCore;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+namespace CIS.InternalServices.DataAggregator.Configuration.Data;
 
 [TransientService, SelfService]
 internal class ConfigurationRepository

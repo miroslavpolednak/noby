@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DocumentDataAggregator.DataServices;
+using CIS.InternalServices.DataAggregator.DataServices;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.Endpoints.Countries;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
+namespace CIS.InternalServices.DataAggregator.Documents.TemplateData;
 
 internal class LoanApplicationTemplateData : AggregatedData
 {

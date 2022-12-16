@@ -1,6 +1,6 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
+﻿using CIS.InternalServices.DataAggregator.Configuration.EasForm;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData;
 
 internal class DefaultValues
 {

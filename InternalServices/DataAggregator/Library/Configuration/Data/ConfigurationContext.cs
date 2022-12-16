@@ -1,7 +1,7 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities;
+﻿using CIS.InternalServices.DataAggregator.Configuration.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
+namespace CIS.InternalServices.DataAggregator.Configuration.Data;
 
 internal class ConfigurationContext : DbContext
 {

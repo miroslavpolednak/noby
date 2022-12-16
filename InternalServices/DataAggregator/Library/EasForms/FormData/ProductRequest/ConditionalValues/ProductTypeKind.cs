@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest.ConditionalValues;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest.ConditionalValues;
 
 [Flags]
 internal enum ProductTypeKind

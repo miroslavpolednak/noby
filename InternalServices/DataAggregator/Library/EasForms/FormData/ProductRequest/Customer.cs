@@ -1,10 +1,10 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest.Incomes;
+using CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest.Incomes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest;
 
 internal class Customer
 {

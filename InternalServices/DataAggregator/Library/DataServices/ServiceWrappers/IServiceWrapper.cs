@@ -1,4 +1,6 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
+﻿using CIS.InternalServices.DataAggregator.Configuration;
+
+namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 
 internal interface IServiceWrapper
 {

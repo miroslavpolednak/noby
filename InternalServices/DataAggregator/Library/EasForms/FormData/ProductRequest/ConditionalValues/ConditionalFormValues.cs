@@ -1,7 +1,7 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices;
+﻿using CIS.InternalServices.DataAggregator.DataServices;
 using DomainServices.OfferService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest.ConditionalValues;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest.ConditionalValues;
 
 internal class ConditionalFormValues
 {

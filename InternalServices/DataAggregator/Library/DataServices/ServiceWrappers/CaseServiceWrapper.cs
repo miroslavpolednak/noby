@@ -1,6 +1,7 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.InternalServices.DataAggregator.Configuration;
+using DomainServices.CaseService.Clients;
 
-namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
+namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 
 [TransientService, SelfService]
 internal class CaseServiceWrapper : IServiceWrapper

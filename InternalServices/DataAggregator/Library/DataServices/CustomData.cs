@@ -1,6 +1,6 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices.Dto;
+﻿using CIS.InternalServices.DataAggregator.DataServices.Dto;
 
-namespace CIS.InternalServices.DocumentDataAggregator.DataServices;
+namespace CIS.InternalServices.DataAggregator.DataServices;
 
 internal class CustomData
 {

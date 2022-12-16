@@ -1,8 +1,8 @@
 ﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
+using CIS.InternalServices.DataAggregator.EasForms.FormData;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms;
+namespace CIS.InternalServices.DataAggregator.EasForms;
 
 internal class ProductEasForm : EasForm<ProductFormData>
 {

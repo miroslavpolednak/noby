@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration;
+﻿namespace CIS.InternalServices.DataAggregator.Configuration;
 
 internal class InputConfig
 {

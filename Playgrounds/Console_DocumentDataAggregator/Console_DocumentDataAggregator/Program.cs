@@ -2,10 +2,12 @@
 using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices;
+using CIS.InternalServices.DataAggregator;
+using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregator.Documents;
+using CIS.InternalServices.DataAggregator.EasForms;
 using CIS.InternalServices.DocumentDataAggregator;
 using CIS.InternalServices.DocumentDataAggregator.Configuration;
-using CIS.InternalServices.DocumentDataAggregator.Documents;
-using CIS.InternalServices.DocumentDataAggregator.EasForms;
 using CIS.InternalServices.DocumentGeneratorService.Clients.Interfaces;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Console_CustomerService;

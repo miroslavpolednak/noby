@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest;
 
 internal class Address
 {

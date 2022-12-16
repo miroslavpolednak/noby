@@ -1,8 +1,8 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
+﻿using CIS.InternalServices.DataAggregator.Configuration.EasForm;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData;
 
 internal class ServiceFormData : DataServices.AggregatedData, IServiceFormData
 {

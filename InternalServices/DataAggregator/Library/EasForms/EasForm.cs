@@ -1,10 +1,10 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.Json;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
+using CIS.InternalServices.DataAggregator.EasForms.Json;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms;
+namespace CIS.InternalServices.DataAggregator.EasForms;
 
 internal class EasForm<TData> : IEasForm<TData> where TData : IEasFormData
 {

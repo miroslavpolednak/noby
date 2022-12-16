@@ -6,7 +6,7 @@ using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest;
 
 [TransientService, SelfService]
 internal class HouseholdData : IHouseholdData

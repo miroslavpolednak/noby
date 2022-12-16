@@ -1,8 +1,9 @@
 ﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DocumentDataAggregator.Documents;
-using CIS.InternalServices.DocumentDataAggregator.EasForms;
+using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregator.Documents;
+using CIS.InternalServices.DataAggregator.EasForms;
 
-namespace CIS.InternalServices.DocumentDataAggregator;
+namespace CIS.InternalServices.DataAggregator;
 
 public interface IDataAggregator
 {

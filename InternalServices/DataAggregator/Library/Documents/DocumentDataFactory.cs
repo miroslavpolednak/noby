@@ -1,8 +1,8 @@
 ﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DocumentDataAggregator.DataServices;
-using CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
+using CIS.InternalServices.DataAggregator.DataServices;
+using CIS.InternalServices.DataAggregator.Documents.TemplateData;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Documents;
+namespace CIS.InternalServices.DataAggregator.Documents;
 
 internal static class DocumentDataFactory
 {

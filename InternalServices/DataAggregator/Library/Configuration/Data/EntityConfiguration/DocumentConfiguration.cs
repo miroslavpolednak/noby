@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.EntityConfiguration;
+namespace CIS.InternalServices.DataAggregator.Configuration.Data.EntityConfiguration;
 
 internal class DocumentConfiguration : IEntityTypeConfiguration<Entities.Document>
 {

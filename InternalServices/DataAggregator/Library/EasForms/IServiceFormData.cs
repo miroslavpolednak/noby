@@ -1,6 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms;
+namespace CIS.InternalServices.DataAggregator.EasForms;
 
 public interface IServiceFormData : IEasFormData
 {

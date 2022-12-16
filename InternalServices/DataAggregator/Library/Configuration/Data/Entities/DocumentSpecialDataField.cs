@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities;
+﻿namespace CIS.InternalServices.DataAggregator.Configuration.Data.Entities;
 
 internal class DocumentSpecialDataField
 {

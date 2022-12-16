@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration;
+namespace CIS.InternalServices.DataAggregator.Configuration;
 
 public class InputParameters
 {

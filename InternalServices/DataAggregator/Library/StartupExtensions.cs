@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
-using CIS.InternalServices.DocumentDataAggregator.EasForms;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
-using Microsoft.Extensions.DependencyInjection;
+using CIS.InternalServices.DataAggregator.Configuration.Data;
+using CIS.InternalServices.DataAggregator.EasForms;
+using CIS.InternalServices.DataAggregator.EasForms.FormData;
 using DomainServices;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace CIS.InternalServices.DocumentDataAggregator;
+namespace CIS.InternalServices.DataAggregator;
 
 public static class StartupExtensions
 {

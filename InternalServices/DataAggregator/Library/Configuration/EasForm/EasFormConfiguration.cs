@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
+﻿namespace CIS.InternalServices.DataAggregator.Configuration.EasForm;
 
 internal class EasFormConfiguration
 {

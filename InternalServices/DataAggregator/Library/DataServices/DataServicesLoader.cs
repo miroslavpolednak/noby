@@ -1,8 +1,10 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
+﻿using CIS.InternalServices.DataAggregator.Configuration;
+using CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
+using CIS.InternalServices.DataAggregator.Helpers;
 using DomainServices.CodebookService.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CIS.InternalServices.DocumentDataAggregator.DataServices;
+namespace CIS.InternalServices.DataAggregator.DataServices;
 
 [TransientService, SelfService]
 internal class DataServicesLoader

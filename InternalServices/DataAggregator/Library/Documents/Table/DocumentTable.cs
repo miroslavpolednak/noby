@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Documents.Table;
+﻿namespace CIS.InternalServices.DataAggregator.Documents.Table;
 
 public class DocumentTable
 {

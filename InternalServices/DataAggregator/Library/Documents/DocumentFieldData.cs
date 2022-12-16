@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.Documents;
+﻿namespace CIS.InternalServices.DataAggregator.Documents;
 
 public class DocumentFieldData
 {

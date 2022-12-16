@@ -1,8 +1,8 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Data;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.Document;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
+﻿using CIS.InternalServices.DataAggregator.Configuration.Data;
+using CIS.InternalServices.DataAggregator.Configuration.Document;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration;
+namespace CIS.InternalServices.DataAggregator.Configuration;
 
 [TransientService, SelfService]
 internal class ConfigurationManager

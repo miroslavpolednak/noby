@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DocumentDataAggregator.Configuration.EasForm;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
-using CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest.ConditionalValues;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
+using CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest;
+using CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest.ConditionalValues;
 using DomainServices.CodebookService.Clients;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData;
 
 internal class ProductFormData : DataServices.AggregatedData, IProductFormData
 {

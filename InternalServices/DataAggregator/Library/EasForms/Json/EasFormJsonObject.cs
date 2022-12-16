@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.EasForms.Json;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms.Json;
 
 internal abstract class EasFormJsonObject
 {

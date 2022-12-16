@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
-using CIS.InternalServices.DocumentDataAggregator.DataServices;
+using CIS.InternalServices.DataAggregator.DataServices;
 using DomainServices.CodebookService.Clients;
 using Codebook = DomainServices.CodebookService.Contracts.Endpoints;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Documents.TemplateData;
+namespace CIS.InternalServices.DataAggregator.Documents.TemplateData;
 
 internal class OfferTemplateData : AggregatedData
 {

@@ -1,6 +1,6 @@
 ﻿using CIS.Foms.Enums;
 
-namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData.ProductRequest;
+namespace CIS.InternalServices.DataAggregator.EasForms.FormData.ProductRequest;
 
 public class Household
 {

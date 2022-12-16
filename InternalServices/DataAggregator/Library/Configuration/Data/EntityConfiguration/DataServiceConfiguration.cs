@@ -1,8 +1,8 @@
-﻿using CIS.InternalServices.DocumentDataAggregator.Configuration.Data.Entities;
+﻿using CIS.InternalServices.DataAggregator.Configuration.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CIS.InternalServices.DocumentDataAggregator.Configuration.Data.EntityConfiguration;
+namespace CIS.InternalServices.DataAggregator.Configuration.Data.EntityConfiguration;
 
 internal class DataServiceConfiguration : IEntityTypeConfiguration<DataService>
 {

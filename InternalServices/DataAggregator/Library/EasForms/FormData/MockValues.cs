@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.DocumentDataAggregator.EasForms.FormData;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms.FormData;
 
 internal class MockValues
 {

@@ -1,8 +1,9 @@
 ﻿using CIS.Core.Results;
+using CIS.InternalServices.DataAggregator.Configuration;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 
-namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
+namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 
 [TransientService, SelfService]
 internal class ProductServiceWrapper : IServiceWrapper
