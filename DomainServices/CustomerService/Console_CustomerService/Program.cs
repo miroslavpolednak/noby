@@ -1,6 +1,5 @@
 ﻿using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
-using DomainServices.CustomerService.Abstraction;
 using System;
 using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;
@@ -10,6 +9,7 @@ using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
+using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
@@ -27,16 +27,17 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>()
     .AddSingleton<CIS.Core.Configuration.ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration
     {
-        EnvironmentName = "uat",
+        EnvironmentName = "dev",
         DefaultApplicationKey = "console",
         ServiceDiscoveryUrl = "https://localhost:5005",
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
+    //.AddCustomerService()
     .AddCustomerService("https://localhost:5100")
     .BuildServiceProvider();
 
-var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
+var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
 
 //var search = await service.SearchCustomers(new SearchCustomersRequest
 //{
@@ -61,22 +62,22 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceAbstraction>();
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
+var detail = await service.GetCustomerDetail(new Identity(134, IdentitySchemes.Mp));
 
 //var create = await service.CreateCustomer(new CreateCustomerRequest
 //{
-//    Identity = new Identity(70054098, IdentitySchemes.Mp),
+//    Mandant = Mandants.Mp,
+//    Identities = { new Identity(134, IdentitySchemes.Mp), new Identity(123, IdentitySchemes.Kb) },
 //    NaturalPerson = new NaturalPerson
 //    {
-//        FirstName = "Qvratek",
-//        LastName = "Qliteks",
+//        FirstName = "Qvratek1",
+//        LastName = "Qlitek3",
 //        BirthCountryId = 16,
 //        BirthNumber = "8105144322",
 //        BirthName = "Prouza",
 //        DateOfBirth = new NullableGrpcDate(1981, 5, 14),
 //        PlaceOfBirth = "Ostrava",
-//        GenderId = 1,
-//        CitizenshipCountriesId = { 16 }
+//        GenderId = 1
 //    },
 //    Addresses =
 //    {
@@ -85,16 +86,16 @@ var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.K
 //            AddressTypeId = 1,
 //            City = "Praha",
 //            Postcode = "19017",
-//            CountryId = 1,
+//            CountryId = 16,
 //            Street = "Masarykova",
-//            BuildingIdentificationNumber = "458",
-//            LandRegistryNumber = "9A",
+//            StreetNumber = "458",
+//            HouseNumber = "9A",
 //            CityDistrict = "Vinoř",
 //            PragueDistrict = "Praha 9",
 //            DeliveryDetails = "Marketing Department",
 //            AddressPointId = "465465465",
 //            PrimaryAddressFrom = DateTime.Now.AddYears(-5)
-//        }
+//        },
 //    },
 //    IdentificationDocument = new IdentificationDocument
 //    {

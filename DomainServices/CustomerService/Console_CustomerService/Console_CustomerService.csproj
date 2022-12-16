@@ -1,25 +1,38 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.21.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="protobuf-net.Grpc" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.177" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.179" />
+    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.179" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\Abstraction\DomainServices.CustomerService.Abstraction.csproj" />
+    <ProjectReference Include="..\Clients\DomainServices.CustomerService.Clients.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CIS.Core">
+      <HintPath>..\Clients\bin\Debug\net7.0\CIS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CIS.Foms.Types">
+      <HintPath>..\Clients\bin\Debug\net7.0\CIS.Foms.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="CIS.Infrastructure">
+      <HintPath>..\Clients\bin\Debug\net7.0\CIS.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="CIS.Infrastructure.gRPC.CisTypes">
+      <HintPath>..\Clients\bin\Debug\net7.0\CIS.Infrastructure.gRPC.CisTypes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   
 </Project>

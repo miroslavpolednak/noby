@@ -1,9 +1,8 @@
-﻿using CIS.Core.Results;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
+﻿using CIS.InternalServices.DocumentGeneratorService.Contracts;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Clients;
 
-public interface      IDocumentGeneratorServiceClient
+public interface IDocumentGeneratorServiceClient
 {
-    Task<IServiceCallResult> GenerateDocument(GenerateDocumentRequest request, CancellationToken cancellationToken = default);
+    Task<Document> GenerateDocument(GenerateDocumentRequest request, CancellationToken cancellationToken = default);
 }

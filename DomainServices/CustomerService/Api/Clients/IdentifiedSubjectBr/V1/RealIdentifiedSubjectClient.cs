@@ -31,5 +31,6 @@ internal class RealIdentifiedSubjectClient : BaseClient<IdentifiedSubjectBrWrapp
         }
     }
 
-    protected override IdentifiedSubjectBrWrapper CreateClient() => new(_httpClient) { BaseUrl = $"{_httpClient.BaseAddress}/public" };
+    //TODO: move to config
+    protected override IdentifiedSubjectBrWrapper CreateClient() => new(_httpClient) { BaseUrl = $"https://cm-identified-subject-br-v1.dev.custmng.kbcloud/api/public" };
 }

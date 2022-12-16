@@ -29,6 +29,15 @@ public partial class GrpcDecimal
         return new GrpcDecimal(units, nanos);
     }
 
+    public static explicit operator GrpcDecimal(float value)
+    {
+
+        var units = (long)value;
+        var nanos = (int)(value - units) * (int)NanoFactor;
+
+        return new GrpcDecimal(units, nanos);
+    }
+
     public static implicit operator NullableGrpcDecimal(GrpcDecimal grpcDecimal)
         => new NullableGrpcDecimal(grpcDecimal.Units, grpcDecimal.Nanos);
 

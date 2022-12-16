@@ -115,7 +115,7 @@ internal class LoanApplicationDataService
             var customer = ServiceCallResult.ResolveAndThrowIfError<cCustomer.CustomerDetailResponse>(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
             results.Add(customer!);
         }
-        return results.ToDictionary(i => IdentityToCode(i.Identity));
+        return results.ToDictionary(i => IdentityToCode(i.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)));
     }
 
     #endregion
