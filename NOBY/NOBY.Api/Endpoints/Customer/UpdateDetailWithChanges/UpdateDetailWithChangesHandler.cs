@@ -29,17 +29,25 @@ internal sealed class UpdateDetailWithChangesHandler
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
 
-        ModelComparers.CompareRoot( request, originalModel,delta);
+        ModelComparers.CompareRoot(request, originalModel,delta);
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel.IdentificationDocument, "IdentificationDocument", delta);
         ModelComparers.CompareObjects(request.Addresses, originalModel.Addresses, "Addresses", delta);
         ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
 
-        string finalJson;
+        string? finalJson = null;
         if (((IDictionary<string, Object>)delta).Count > 0)
         {
             finalJson = JsonConvert.SerializeObject(delta);
         }
+
+        var updateRequest = new DomainServices.HouseholdService.Contracts.UpdateCustomerDetailRequest
+        {
+            CustomerOnSAId = customerOnSA.CustomerOnSAId,
+            CustomerChangeData = finalJson,
+            CustomerAdditionalData = customerOnSA.CustomerAdditionalData
+        };
+        await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
     }
 
     private readonly ICodebookServiceClients _codebookService;

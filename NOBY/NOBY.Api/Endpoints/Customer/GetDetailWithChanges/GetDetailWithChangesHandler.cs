@@ -38,17 +38,25 @@ internal sealed class GetDetailWithChangesHandler
         // convert DS contract to FE model
         var model = customer.FillResponseDto(new GetDetailWithChangesResponse());
 
-        // provide saved changes to original model
-        var original = JObject.FromObject(model);
-        var delta = JObject.FromObject(model);
-
-        original.Merge(delta, new JsonMergeSettings
+        // changed data already exist in database
+        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
-            MergeArrayHandling = MergeArrayHandling.Replace,
-            MergeNullValueHandling = MergeNullValueHandling.Merge
-        });
-        
-        return original.ToObject<GetDetailWithChangesResponse>()!;
+            // provide saved changes to original model
+            var original = JObject.FromObject(model);
+            var delta = JObject.FromObject(customerOnSA.CustomerChangeData);
+
+            original.Merge(delta, new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Replace,
+                MergeNullValueHandling = MergeNullValueHandling.Merge
+            });
+
+            return original.ToObject<GetDetailWithChangesResponse>()!;
+        }
+        else
+        {
+            return model;
+        }
     }
 
     private readonly ICodebookServiceClients _codebookService;
