@@ -18,7 +18,6 @@
 
 	<ItemGroup>
 	  <None Remove="CustomerOnSA\CustomerAdditionalData.proto" />
-	  <None Remove="CustomerOnSA\CustomerChangeDataItem.proto" />
 	  <None Remove="CustomerOnSA\DeleteCustomer.proto" />
 	  <None Remove="CustomerOnSA\DeleteIncome.proto" />
 	  <None Remove="CustomerOnSA\DeleteObligation.proto" />
@@ -48,7 +47,6 @@
 		<Protobuf Include="CustomerOnSA/CustomerOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/CustomerOnSA.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/CreateCustomer.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="CustomerOnSA\CustomerChangeDataItem.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA\CustomerAdditionalData.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA\GetCustomer.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/GetCustomerList.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

@@ -2,7 +2,7 @@
 package DomainServices.HouseholdService;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts";
 
-import "CustomerChangeDataItem.proto";
+import "google/protobuf/wrappers.proto";
 import "CustomerAdditionalData.proto";
 
 message UpdateCustomerDetailRequest {
@@ -10,6 +10,6 @@ message UpdateCustomerDetailRequest {
 
     CustomerAdditionalData CustomerAdditionalData = 2;
 
-    repeated CustomerChangeDataItem CustomerChangeData = 3;
+    google.protobuf.StringValue CustomerChangeData = 3;
 }
 
