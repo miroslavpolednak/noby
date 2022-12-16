@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Clients.Services;
@@ -13,44 +12,31 @@ internal class CustomerService : ICustomerServiceClient
         _service = service;
     }
 
-    public async Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default)
+    public Task<ProfileCheckResponse> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.ProfileCheckAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<ProfileCheckResponse>(result);
+        return _service.ProfileCheckAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
-    public async Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default)
+    public Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<CreateCustomerResponse>(result);
+        return _service.CreateCustomerAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
-    public async Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
+    public Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<CustomerDetailResponse>(result);
+        return _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken).ResponseAsync;
     }
 
-    public async Task<IServiceCallResult> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)
+    public Task<CustomerListResponse> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)
     {
         var request = new CustomerListRequest();
         request.Identities.AddRange(identities);
 
-        var result = await _service.GetCustomerListAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<CustomerListResponse>(result);
+        return _service.GetCustomerListAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
-    public async Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
+    public Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.SearchCustomersAsync(request, cancellationToken: cancellationToken);
-
-        if (result.Customers.Any())
-            return new SuccessfulServiceCallResult<SearchCustomersResponse>(result);
-
-        return new EmptyServiceCallResult();
+        return _service.SearchCustomersAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 }

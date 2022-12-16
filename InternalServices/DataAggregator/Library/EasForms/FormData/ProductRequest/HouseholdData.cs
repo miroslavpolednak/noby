@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
@@ -106,9 +105,7 @@ internal class HouseholdData : IHouseholdData
 
         var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)));
 
-        return ServiceCallResult.ResolveAndThrowIfError<CustomerListResponse>(result)
-                                .Customers
-                                .ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
+        return result.Customers.ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
     }
 
     private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa)

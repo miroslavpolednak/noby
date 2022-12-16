@@ -31,7 +31,7 @@ internal sealed class GetDetailWithChangesHandler
             throw new CisValidationException("Product type mandant is not KB");
 
         // instance customer z KB CM
-        var customer = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(kbIdentity, cancellationToken));
+        var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
 
         return new GetDetailWithChangesResponse();

@@ -1,6 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
+﻿using DomainServices.CustomerService.Clients;
 
 namespace CIS.InternalServices.DocumentDataAggregator.DataServices.ServiceWrappers;
 
@@ -19,8 +17,6 @@ internal class CustomerServiceWrapper : IServiceWrapper
         if (input.CustomerIdentity is null)
             throw new ArgumentNullException(nameof(InputParameters.CustomerIdentity));
 
-        var result = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
-
-        data.Customer = ServiceCallResult.ResolveAndThrowIfError<CustomerDetailResponse>(result);
+        data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
     }
 }

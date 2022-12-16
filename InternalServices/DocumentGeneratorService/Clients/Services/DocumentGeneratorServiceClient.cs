@@ -1,6 +1,6 @@
 ﻿using CIS.InternalServices.DocumentGeneratorService.Contracts;
 
-namespace CIS.InternalServices.DocumentGeneratorService.Clients;
+namespace CIS.InternalServices.DocumentGeneratorService.Clients.Services;
 
 internal class DocumentGeneratorServiceClient : IDocumentGeneratorServiceClient
 {

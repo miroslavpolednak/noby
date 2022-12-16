@@ -1,5 +1,4 @@
-﻿using _Case = DomainServices.CaseService.Contracts;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
@@ -73,9 +72,7 @@ internal class GetCustomersHandler
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
         if (identifiedCustomers.Any())
         {
-            customerDetails = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerListResponse>(
-                await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.Identity!), cancellationToken)
-            ).Customers.ToList();
+            customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.Identity!), cancellationToken)).Customers.ToList();
         }
 
         return customerIdentities.Select(t =>

@@ -6,7 +6,7 @@ using CIS.InternalServices.DocumentDataAggregator;
 using CIS.InternalServices.DocumentDataAggregator.Configuration;
 using CIS.InternalServices.DocumentDataAggregator.Documents;
 using CIS.InternalServices.DocumentDataAggregator.EasForms;
-using CIS.InternalServices.DocumentGeneratorService.Clients;
+using CIS.InternalServices.DocumentGeneratorService.Clients.Interfaces;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Console_CustomerService;
 using Console_DocumentDataAggregator;
