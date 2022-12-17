@@ -258,6 +258,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiTest", "Playgrounds\WebApiTest\WebApiTest\WebApiTest.csproj", "{50AFD0B2-577D-45C0-9844-A8E318AB48A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{410032D1-BFF6-48E0-8581-A343CA3A6EAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -962,6 +964,14 @@ Global
 		{50AFD0B2-577D-45C0-9844-A8E318AB48A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{50AFD0B2-577D-45C0-9844-A8E318AB48A5}.Release|x64.ActiveCfg = Release|Any CPU
 		{50AFD0B2-577D-45C0-9844-A8E318AB48A5}.Release|x64.Build.0 = Release|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Debug|x64.Build.0 = Debug|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Release|x64.ActiveCfg = Release|Any CPU
+		{410032D1-BFF6-48E0-8581-A343CA3A6EAE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
