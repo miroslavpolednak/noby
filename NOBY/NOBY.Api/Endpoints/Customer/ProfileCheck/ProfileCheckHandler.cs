@@ -17,7 +17,7 @@ internal sealed class ProfileCheckHandler
             CustomerProfileCode = ProfileCode
         };
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<Contracts.ProfileCheckResponse>(await _customerService.ProfileCheck(serviceRequest, cancellationToken));
+        var result = await _customerService.ProfileCheck(serviceRequest, cancellationToken);
 
         return new ProfileCheckResponse
         {

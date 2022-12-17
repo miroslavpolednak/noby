@@ -50,7 +50,7 @@ internal class CustomerManagementDetailProvider
     {
         var response = new CustomerDetailResponse
         {
-            Identity = new Identity(customer.CustomerId, IdentitySchemes.Kb),
+            Identities = { new Identity(customer.CustomerId, IdentitySchemes.Kb) },
             NaturalPerson = CreateNaturalPerson(customer),
             IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument)
         };

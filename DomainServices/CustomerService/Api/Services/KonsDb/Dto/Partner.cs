@@ -82,5 +82,8 @@ public record Partner
     [Column("VypisyMisto")]
     public string? MailingCity { get; init; }
 
+    [Column("KBId")]
+    public long? KbId { get; init; }
+
     public ICollection<PartnerContact> Contacts { get; set; } = new List<PartnerContact>();
 }

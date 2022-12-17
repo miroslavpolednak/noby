@@ -12,7 +12,8 @@
 	PrukazVydalDatum IdentificationDocumentIssuedOn,
 	PrukazVydal IdentificationDocumentIssuedBy,
 	PrukazStatVydaniId IdentificationDocumentIssuingCountryId,
-	PreukazPlatnostDo IdentificationDocumentValidTo
+	PreukazPlatnostDo IdentificationDocumentValidTo,
+	KBId KbId
 FROM dbo.PARTNER
 WHERE (@SearchByIds = 0 OR Id IN @partnerIds)
     AND (@firstName IS NULL OR Jmeno = @firstName)

@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
-using contracts = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.GetDetail;
 
@@ -10,7 +9,7 @@ internal class GetDetailHandler
     public async Task<GetDetailResponse> Handle(GetDetailRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = ServiceCallResult.ResolveAndThrowIfError<contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(new Identity(request.Id, request.Schema), cancellationToken));
+        var result = await _customerService.GetCustomerDetail(new Identity(request.Id, request.Schema), cancellationToken);
 
         // transform
         return result.ToResponseDto();

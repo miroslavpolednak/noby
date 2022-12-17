@@ -13,7 +13,7 @@ message CustomerDetailRequest {
 }
 
 message CustomerDetailResponse {
-	cis.types.Identity Identity = 1;
+	repeated cis.types.Identity Identities = 1;
 
 	NaturalPerson NaturalPerson = 2;
 

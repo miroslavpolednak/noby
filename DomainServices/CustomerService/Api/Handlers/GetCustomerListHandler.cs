@@ -57,8 +57,9 @@ internal class GetCustomerListHandler : IRequestHandler<GetCustomerListMediatrRe
         if (customers.Count == identities.Count)
             return;
 
-        var missingCustomers = identities.Except(customers.Join(identities,
-                                                                x => new { x.Identity.IdentityId, x.Identity.IdentityScheme },
+        var missingCustomers = identities.Except(customers.SelectMany(c => c.Identities)
+                                                          .Join(identities,
+                                                                x => new { x.IdentityId, x.IdentityScheme },
                                                                 y => new { y.IdentityId, y.IdentityScheme },
                                                                 (_, x) => x)).ToList();
 

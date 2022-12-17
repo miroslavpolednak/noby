@@ -15,7 +15,7 @@ internal sealed class UpdateCustomerService
 
         var kbIdentity = new CIS.Infrastructure.gRPC.CisTypes.Identity(identityId, scheme);
 
-        _cachedCustomerInstance = ServiceCallResult.ResolveAndThrowIfError<_Customer.CustomerDetailResponse>(await _customerService.GetCustomerDetail(kbIdentity, cancellation));
+        _cachedCustomerInstance = await _customerService.GetCustomerDetail(kbIdentity, cancellation);
 
         // propsat udaje do customerOnSA
         entity.DateOfBirthNaturalPerson = _cachedCustomerInstance.NaturalPerson?.DateOfBirth;

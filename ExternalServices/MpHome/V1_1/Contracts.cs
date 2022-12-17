@@ -478,6 +478,21 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"NotFound")]
         NotFound = 3,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"PartnerNotFound")]
+        PartnerNotFound = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Partner1NotFound")]
+        Partner1NotFound = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Partner2NotFound")]
+        Partner2NotFound = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SavingNotFound")]
+        SavingNotFound = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LoanNotFound")]
+        LoanNotFound = 8,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1210,7 +1225,7 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         public string Name { get; set; } = default!;
 
         /// <summary>
-        /// Příjmění
+        /// Příjmení
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("lastname")]
@@ -1304,6 +1319,15 @@ namespace ExternalServices.MpHome.V1_1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public bool Ecommunication { get; set; } = default!;
+
+        /// <summary>
+        /// KB party ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kbId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long? KbId { get; set; } = default!;
 
     }
 
@@ -1367,7 +1391,7 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         public string Name { get; set; } = default!;
 
         /// <summary>
-        /// Příjmění
+        /// Příjmení
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("lastname")]
@@ -1461,6 +1485,15 @@ namespace ExternalServices.MpHome.V1_1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public bool Ecommunication { get; set; } = default!;
+
+        /// <summary>
+        /// KB party ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kbId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long? KbId { get; set; } = default!;
 
         /// <summary>
         /// Seznam dokladů
@@ -1540,7 +1573,7 @@ namespace ExternalServices.MpHome.V1_1.Contracts
         public string Name { get; set; } = default!;
 
         /// <summary>
-        /// Příjmění
+        /// Příjmení
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("lastname")]
@@ -1634,6 +1667,15 @@ namespace ExternalServices.MpHome.V1_1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public bool Ecommunication { get; set; } = default!;
+
+        /// <summary>
+        /// KB party ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kbId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long? KbId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("dataSource")]
 
