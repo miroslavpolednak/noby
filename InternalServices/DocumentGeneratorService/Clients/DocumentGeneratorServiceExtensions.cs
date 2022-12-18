@@ -11,7 +11,7 @@ public static class DocumentGeneratorServiceExtensions
     /// <summary>
     /// Service SD key
     /// </summary>
-    public const string ServiceName = "DS:DocumentGeneratorService";
+    public const string ServiceName = "CIS:DocumentGeneratorService";
 
     public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services)
     {
@@ -25,7 +25,7 @@ public static class DocumentGeneratorServiceExtensions
     public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services, string serviceUrl)
     {
         services.AddTransient<IDocumentGeneratorServiceClient, DocumentGeneratorServiceClient>();
-        services.AddCisGrpcClientUsingUrl<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(ServiceName);
+        services.AddCisGrpcClientUsingUrl<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(serviceUrl);
 
         return services;
     }
