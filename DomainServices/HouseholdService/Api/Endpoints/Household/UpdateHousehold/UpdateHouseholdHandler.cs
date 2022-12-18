@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.UpdateHousehold;
 
-internal class UpdateHouseholdHandler
+internal sealed class UpdateHouseholdHandler
     : IRequestHandler<UpdateHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)

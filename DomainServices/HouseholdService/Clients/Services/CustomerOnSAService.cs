@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
-internal class CustomerOnSAService : ICustomerOnSAServiceClient
+internal sealed class CustomerOnSAService : ICustomerOnSAServiceClient
 {
     public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {

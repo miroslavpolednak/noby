@@ -22,7 +22,7 @@ public abstract class BaseCisValidationException
     {
         Errors = new List<(string Key, string Message)>
         {
-            (Key: exceptionCode.ToString(), Message: message)
+            (Key: exceptionCode.ToString(System.Globalization.CultureInfo.InvariantCulture), Message: message)
         }.ToImmutableList();
     }
 

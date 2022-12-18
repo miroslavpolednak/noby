@@ -3,7 +3,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteCustomer;
 
-internal class DeleteCustomerHandler
+internal sealed class DeleteCustomerHandler
     : IRequestHandler<DeleteCustomerRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCustomerRequest request, CancellationToken cancellationToken)

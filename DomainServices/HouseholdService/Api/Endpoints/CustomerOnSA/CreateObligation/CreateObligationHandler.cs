@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
 
-internal class CreateObligationHandler
+internal sealed class CreateObligationHandler
     : IRequestHandler<CreateObligationRequest, CreateObligationResponse>
 {
     public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)

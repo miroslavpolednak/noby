@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHouseholdList;
 
-internal class GetHouseholdListHandler
+internal sealed class GetHouseholdListHandler
     : IRequestHandler<GetHouseholdListRequest, GetHouseholdListResponse>
 {
     public async Task<GetHouseholdListResponse> Handle(GetHouseholdListRequest request, CancellationToken cancellationToken)

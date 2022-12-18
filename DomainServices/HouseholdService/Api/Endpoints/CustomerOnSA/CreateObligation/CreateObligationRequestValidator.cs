@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateObligation;
 
-internal class CreateObligationRequestValidator
+internal sealed class CreateObligationRequestValidator
     : AbstractValidator<CreateObligationRequest>
 {
     public CreateObligationRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)

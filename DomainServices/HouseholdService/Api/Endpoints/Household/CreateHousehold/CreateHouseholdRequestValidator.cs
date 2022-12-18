@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
-internal class CreateHouseholdRequestValidator
+internal sealed class CreateHouseholdRequestValidator
     : AbstractValidator<Contracts.CreateHouseholdRequest>
 {
     public CreateHouseholdRequestValidator()

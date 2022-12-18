@@ -61,7 +61,7 @@ public class ExternalServiceConfiguration<TClient>
     /// <summary>
     /// Nazev sluzby v ServiceDiscovery
     /// </summary>
-    public string? ServiceName { get; set; } = null;
+    public string? ServiceName { get; set; }
 
     /// <summary>
     /// Pro sluzby tretich stran vzdy 3

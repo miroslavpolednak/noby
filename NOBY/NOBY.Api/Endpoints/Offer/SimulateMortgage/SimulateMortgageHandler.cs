@@ -24,26 +24,18 @@ internal class SimulateMortgageHandler
 
         // predelat na DS request
         var model = request.ToDomainServiceRequest(guaranteeDateFrom);
-        
+
         // zavolat DS
-        var result = await callOfferService(model, cancellationToken);
-        
-        // predelat z DS na FE Dto
-        SimulateMortgageResponse responseModel = new()
-        {
-            OfferId = result.OfferId,
-            ResourceProcessId = result.ResourceProcessId,
-            SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults)
-        };
-
-        return responseModel;
-    }
-
-    private async Task<DSContract.SimulateMortgageResponse> callOfferService(DSContract.SimulateMortgageRequest model, CancellationToken cancellationToken)
-    {
         try
         {
-            return await _offerService.SimulateMortgage(model, cancellationToken);
+            var result = await _offerService.SimulateMortgage(model, cancellationToken);
+
+            return new()
+            {
+                OfferId = result.OfferId,
+                ResourceProcessId = result.ResourceProcessId,
+                SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults)
+            };
         }
         catch (CisArgumentException ex)
         {
@@ -51,7 +43,6 @@ internal class SimulateMortgageHandler
             throw new CisValidationException(ex.ExceptionCode, ex.Message);
         }
     }
-
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     

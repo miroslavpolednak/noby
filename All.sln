@@ -230,6 +230,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 	ProjectSection(SolutionItems) = preProject
 		Docs\topics\authentication.md = Docs\topics\authentication.md
 		Docs\topics\configuration.md = Docs\topics\configuration.md
+		Docs\topics\database-migrations.md = Docs\topics\database-migrations.md
+		Docs\topics\database.md = Docs\topics\database.md
 		Docs\topics\documentation.md = Docs\topics\documentation.md
 		Docs\topics\external-services.md = Docs\topics\external-services.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
@@ -252,7 +254,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiTest", "Playgrounds\WebApiTest\WebApiTest\WebApiTest.csproj", "{50AFD0B2-577D-45C0-9844-A8E318AB48A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{410032D1-BFF6-48E0-8581-A343CA3A6EAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{410032D1-BFF6-48E0-8581-A343CA3A6EAE}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregator", "InternalServices\DataAggregator\Library\CIS.InternalServices.DataAggregator.csproj", "{0F0DCA21-17D4-448F-9A37-C1A161908D29}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAggregator", "DataAggregator", "{E597E63D-8F9F-424C-A37F-0DD956747728}"

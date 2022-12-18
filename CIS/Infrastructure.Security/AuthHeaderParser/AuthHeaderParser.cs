@@ -6,7 +6,7 @@ namespace CIS.Infrastructure.Security;
 /// <summary>
 /// Parsovat login a heslo z Authorization headeru
 /// </summary>
-internal class AuthHeaderParser : IAuthHeaderParser
+internal sealed class AuthHeaderParser : IAuthHeaderParser
 {
     private readonly ILogger<IAuthHeaderParser> _logger;
 
@@ -42,10 +42,9 @@ internal class AuthHeaderParser : IAuthHeaderParser
                 }
                 else
                 {
-                    string login = usernamePwd.Substring(0, separatorIndex);
-
+                    var login = usernamePwd[0..separatorIndex];
                     _logger.AuthParsedLogin(login);
-                    return new ParseResult(login, usernamePwd.Substring(separatorIndex + 1));
+                    return new ParseResult(login, usernamePwd[(separatorIndex + 1)..]);
                 }
             }
         }

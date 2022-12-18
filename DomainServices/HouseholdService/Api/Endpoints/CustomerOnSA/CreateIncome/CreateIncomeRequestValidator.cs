@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
 
-internal class CreateIncomeRequestValidator
+internal sealed class CreateIncomeRequestValidator
     : AbstractValidator<CreateIncomeRequest>
 {
     public CreateIncomeRequestValidator(CodebookService.Clients.ICodebookServiceClients codebookService)

@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.Security;
 
-internal class StaticLoginValidator : ILoginValidator
+internal sealed class StaticLoginValidator : ILoginValidator
 {
     private static readonly Dictionary<string, string> _logins = new()
     {

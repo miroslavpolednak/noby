@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.HouseholdService.Api.Database.Entities;
 
 [Table("CustomerOnSA", Schema = "dbo")]
-internal class CustomerOnSA 
+internal sealed class CustomerOnSA 
     : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -33,5 +33,5 @@ internal class CustomerOnSA
     public string? ChangeData { get; set; }
 
     // kdyby me to nekdy v budoucnu napadlo - EF neumoznuje link na jinou entitu pro temporal tables
-    public virtual List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
+    public List<CustomerOnSAIdentity>? Identities { get; set; } = null!;
 }

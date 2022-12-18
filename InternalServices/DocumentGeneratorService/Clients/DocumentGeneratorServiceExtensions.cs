@@ -17,7 +17,7 @@ public static class DocumentGeneratorServiceExtensions
     {
         services.AddCisServiceDiscovery();
         services.AddTransient<IDocumentGeneratorServiceClient, DocumentGeneratorServiceClient>();
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(ServiceName);
         
         return services;
     }
@@ -25,7 +25,7 @@ public static class DocumentGeneratorServiceExtensions
     public static IServiceCollection AddDocumentGeneratorService(this IServiceCollection services, string serviceUrl)
     {
         services.AddTransient<IDocumentGeneratorServiceClient, DocumentGeneratorServiceClient>();
-        services.AddCisGrpcClientUsingUrl<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.V1.DocumentGeneratorService.DocumentGeneratorServiceClient>(ServiceName);
 
         return services;
     }

@@ -3,7 +3,7 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomer;
 
-internal class UpdateCustomerHandler
+internal sealed class UpdateCustomerHandler
     : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
 {
     public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
