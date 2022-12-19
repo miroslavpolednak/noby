@@ -27,7 +27,7 @@ internal class DataServicesLoader
     {
         var status = new DataLoaderStatus
         {
-            RemainingDataSources = inputConfig.DataSources.ToList(),
+            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource)).ToList(),
             RelatedInputParameters = inputConfig.DynamicInputParameters.ToList()
         };
 

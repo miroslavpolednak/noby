@@ -4,6 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.MediatR;
 using DomainServices;
 using CIS.InternalServices;
+using CIS.InternalServices.DataAggregator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,11 @@ builder.Services
     .AddCaseService()
     .AddSalesArrangementService()
     .AddRiskIntegrationService();
+
+// add internal services
+builder.Services
+       .AddDocumentGeneratorService()
+       .AddDataAggregator();
 
 // FOMS services
 builder

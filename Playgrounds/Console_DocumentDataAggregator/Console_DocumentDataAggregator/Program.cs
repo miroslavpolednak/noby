@@ -8,10 +8,11 @@ using CIS.InternalServices.DataAggregator.Documents;
 using CIS.InternalServices.DataAggregator.EasForms;
 using CIS.InternalServices.DocumentDataAggregator;
 using CIS.InternalServices.DocumentDataAggregator.Configuration;
-using CIS.InternalServices.DocumentGeneratorService.Clients.Interfaces;
+using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Console_CustomerService;
 using Console_DocumentDataAggregator;
+using DomainServices.CodebookService.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("Hello, World!");
@@ -26,6 +27,7 @@ services.AddDocumentGeneratorService();
 services.AddCisServiceDiscovery("https://localhost:5005");
 
 var serviceProvider = services.BuildServiceProvider();
+
 var dataAggregator = serviceProvider.GetRequiredService<IDataAggregator>();
 
 await GenerateDocument(dataAggregator, serviceProvider.GetRequiredService<IDocumentGeneratorServiceClient>());

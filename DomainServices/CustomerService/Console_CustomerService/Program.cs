@@ -9,6 +9,7 @@ using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using Console_CustomerService;
+using DomainServices;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
@@ -62,7 +63,7 @@ var service = serviceProvider.GetRequiredService<ICustomerServiceClient>();
 //    CustomerProfileCode = "KYC_SUBJECT"
 //});
 
-var detail = await service.GetCustomerDetail(new Identity(134, IdentitySchemes.Mp));
+var detail = await service.GetCustomerDetail(new Identity(123, IdentitySchemes.Kb));
 
 //var create = await service.CreateCustomer(new CreateCustomerRequest
 //{

@@ -19,6 +19,7 @@ public static class CustomerServiceExtensions
         services.AddCisServiceDiscovery();
         services.AddTransient<ICustomerServiceClient, __Services.CustomerService>();
         services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.V1.CustomerService.CustomerServiceClient>(ServiceName);
+
         return services;
     }
 
@@ -26,6 +27,7 @@ public static class CustomerServiceExtensions
     {
         services.AddTransient<ICustomerServiceClient, __Services.CustomerService>();
         services.AddCisGrpcClientUsingUrl<__Contracts.V1.CustomerService.CustomerServiceClient>(serviceUrl);
+
         return services;
     }
 }
