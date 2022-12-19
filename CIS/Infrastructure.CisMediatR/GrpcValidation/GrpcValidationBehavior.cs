@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using MediatR;
 
-namespace CIS.Infrastructure.gRPC.Validation;
+namespace CIS.Infrastructure.CisMediatR;
 
 /// <summary>
 /// MediatR pipeline, která přidává do flow requestu FluentValidation.
@@ -11,7 +10,7 @@ namespace CIS.Infrastructure.gRPC.Validation;
 /// </remarks>
 public sealed class GrpcValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>, Core.Validation.IValidatableRequest
+    where TRequest : IRequest<TResponse>, CIS.Core.Validation.IValidatableRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 

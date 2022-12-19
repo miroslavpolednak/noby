@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using Microsoft.Extensions.Logging;
 
-namespace CIS.Infrastructure.MediatR.Rollback;
+namespace CIS.Infrastructure.CisMediatR;
 
 internal sealed class RollbackBehavior<TRequest, TResponse> 
     : IPipelineBehavior<TRequest, TResponse>

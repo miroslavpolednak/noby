@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using NOBY.Api.Endpoints.Customer.GetDetail;
 using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
@@ -12,6 +11,7 @@ internal static class CreateExtensions
     {
         var model = new _Cust.CreateCustomerRequest
         {
+            Mandant = Mandants.Kb,
             NaturalPerson = new()
             {
                 FirstName = request.FirstName ?? "",

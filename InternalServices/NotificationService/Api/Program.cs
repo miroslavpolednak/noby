@@ -1,7 +1,6 @@
 using System.IO.Compression;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
-using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Configuration;
@@ -47,7 +46,7 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // Validators
 builder.Services
-    .AddTransient(typeof(IPipelineBehavior<,>), typeof(GrpcValidationBehavior<,>));
+    .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.CisMediatR.GrpcValidationBehavior<,>));
 
 builder.Services.Scan(selector => selector
     .FromAssembliesOf(typeof(Program))

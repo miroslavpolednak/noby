@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace CIS.Infrastructure.MediatR;
+namespace CIS.Infrastructure.CisMediatR;
 
 internal static class LoggerExtensions
 {

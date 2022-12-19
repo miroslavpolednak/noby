@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
-using MediatR;
 using Newtonsoft.Json;
+using CIS.Infrastructure.Logging;
 
-namespace CIS.Infrastructure.Telemetry.Mediatr;
+namespace CIS.Infrastructure.CisMediatR;
 
-internal class LoggingBehavior<TRequest, TResponse>
+public sealed class PayloadLoggerBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
+    private readonly ILogger<PayloadLoggerBehavior<TRequest, TResponse>> _logger;
     
-    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
+    public PayloadLoggerBehavior(ILogger<PayloadLoggerBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }
@@ -29,7 +29,7 @@ internal class LoggingBehavior<TRequest, TResponse>
         
         var response = await next();
 
-        if (response is null || response is MediatR.Unit)
+        if (response is null || response is Unit)
             _logger.RequestHandlerFinishedWithEmptyResult(requestName);
         else
         {

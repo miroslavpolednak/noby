@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.MediatR.Rollback;
+﻿namespace CIS.Infrastructure.CisMediatR.Rollback;
 
 /// <summary>
 /// Deklarace kontraktu pro tridu s kodem pro provedeni rollbacku Mediatr handleru.

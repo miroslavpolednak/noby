@@ -5,7 +5,7 @@ using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
-using CIS.Infrastructure.MediatR.Rollback;
+using CIS.Infrastructure.CisMediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 namespace NOBY.Api.Notifications.Handlers;

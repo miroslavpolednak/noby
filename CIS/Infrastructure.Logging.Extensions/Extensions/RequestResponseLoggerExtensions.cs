@@ -9,11 +9,11 @@ public static class RequestResponseLoggerExtensions
 {
     private static readonly Action<ILogger, string, Exception> _requestHandlerStarted;
     private static readonly Action<ILogger, string, string, Exception> _httpRequestStarted;
-    private static readonly Action<ILogger, string, object?, Exception> _requestHandlerStartedWithRequest;
     private static readonly Action<ILogger, string, long, Exception> _requestHandlerStartedWithId;
     private static readonly Action<ILogger, string, Exception> _requestHandlerFinished;
     private static readonly Action<ILogger, string, string, Exception> _httpRequestPayload;
     private static readonly Action<ILogger, string, string, int, Exception> _httpResponsePayload;
+    private static readonly Action<ILogger, string, Exception> _requestHandlerFinishedWithEmptyResult;
 
     static RequestResponseLoggerExtensions()
     {
@@ -42,16 +42,19 @@ public static class RequestResponseLoggerExtensions
             new EventId(EventIdCodes.RequestHandlerStartedWithId, nameof(RequestHandlerStartedWithId)),
             "Request in {HandlerName} started with ID {Id}");
 
-        _requestHandlerStartedWithRequest = LoggerMessage.Define<string, object?>(
-            LogLevel.Debug,
-            new EventId(EventIdCodes.RequestHandlerStartedWithRequest, nameof(RequestHandlerStartedWithId)),
-            "Request in {HandlerName} started with {@Request}");
-
         _requestHandlerFinished = LoggerMessage.Define<string>(
             LogLevel.Debug,
             new EventId(EventIdCodes.RequestHandlerFinished, nameof(RequestHandlerFinished)),
             "Request in {HandlerName} finished");
+
+        _requestHandlerFinishedWithEmptyResult = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            new EventId(592, nameof(RequestHandlerFinishedWithEmptyResult)),
+            "Request in {HandlerName} finished with empty result");
     }
+
+    public static void RequestHandlerFinishedWithEmptyResult(this ILogger logger, string handlerName)
+        => _requestHandlerFinishedWithEmptyResult(logger, handlerName, null!);
 
     public static void HttpRequestPayload(this ILogger logger, string httpMethod, string url)
         => _httpRequestPayload(logger, httpMethod, url, null!);
@@ -70,9 +73,6 @@ public static class RequestResponseLoggerExtensions
 
     public static void RequestHandlerStarted(this ILogger logger, string handlerName)
         => _requestHandlerStarted(logger, handlerName, null!);
-
-    public static void RequestHandlerStarted(this ILogger logger, string handlerName, object? request)
-        => _requestHandlerStartedWithRequest(logger, handlerName, request, null!);
 
     public static void RequestHandlerStartedWithId(this ILogger logger, string handlerName, long id)
         => _requestHandlerStartedWithId(logger, handlerName, id, null!);

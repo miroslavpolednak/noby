@@ -1,7 +1,7 @@
-﻿using CIS.Infrastructure.MediatR.Rollback;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CIS.Infrastructure.MediatR;
+namespace CIS.Infrastructure.CisMediatR;
 
 /// <summary>
 /// Extension metody do startupu aplikace pro registraci behaviors.

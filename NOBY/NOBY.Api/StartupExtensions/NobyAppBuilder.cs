@@ -3,6 +3,7 @@ using CIS.Infrastructure.Telemetry;
 using System.Diagnostics;
 using System.Reflection;
 using NOBY.Infrastructure.Security;
+using Serilog;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -44,6 +45,8 @@ internal static class NobyAppBuilder
                 context.Response.Headers.Add("foms-ver", _appVersion);
                 await next();
             });
+
+            appBuilder.UseHttpLogging();
 
             // error middlewares
             /*if (app.Environment.IsProduction())

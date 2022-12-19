@@ -217,7 +217,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ClientS3", "Playgrounds\NotificationService\Console_ClientS3\Console_ClientS3.csproj", "{700E8F2D-66FC-491F-8544-9127FC93D410}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.MediatR", "CIS\Infrastructure.MediatR\CIS.Infrastructure.MediatR.csproj", "{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.CisMediatR", "CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj", "{BF7F10B0-C7EC-4A56-B2C8-B50DC73857BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_ClientSMTP", "Playgrounds\NotificationService\Console_ClientSMTP\Console_ClientSMTP.csproj", "{E58E8D6A-FC29-4B4B-BC90-82FEEE5155DF}"
 EndProject

@@ -2,6 +2,8 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
+using Microsoft.AspNetCore.HttpLogging;
+using System.Reflection.PortableExecutable;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -19,6 +21,12 @@ builder
     .AddCisEnvironmentConfiguration()
     .AddCisCoreFeatures();
 builder.Services.AddAttributedServices(typeof(Program));
+
+// add .NET logging
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+});
 
 // add mediatr
 builder.Services.AddMediatR(typeof(Program).Assembly);
@@ -49,6 +57,7 @@ var app = builder.Build();
 
 app.UseRouting();
 app.UseCisLogging();
+app.UseHttpLogging();
 
 app.MapCisHealthChecks();
 app.MapGrpcService<DiscoveryService>();

@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.MediatR
+﻿namespace CIS.Infrastructure.CisMediatR
 {
     /// <summary>
     /// MediatR custom behaviors

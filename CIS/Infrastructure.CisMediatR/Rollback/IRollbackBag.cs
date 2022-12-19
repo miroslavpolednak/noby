@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.MediatR.Rollback;
+﻿namespace CIS.Infrastructure.CisMediatR.Rollback;
 
 /// <summary>
 /// Uloziste umoznujici prenos vybranych dat z Meditr handleru do rollback handleru.

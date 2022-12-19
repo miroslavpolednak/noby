@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.MediatR.Rollback;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CaseService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;

@@ -1,4 +1,4 @@
-﻿namespace CIS.Infrastructure.MediatR.Rollback;
+﻿namespace CIS.Infrastructure.CisMediatR.Rollback;
 
 /// <summary>
 /// Vychozi implementace rollback uloziste
