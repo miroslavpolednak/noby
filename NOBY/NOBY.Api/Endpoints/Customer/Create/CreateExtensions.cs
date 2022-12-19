@@ -2,6 +2,7 @@
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.GetDetail;
+using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
@@ -20,17 +21,10 @@ internal static class CreateExtensions
                 PlaceOfBirth = request.BirthPlace ?? "",
                 GenderId = request.GenderId
             },
-            IdentificationDocument = request.IdentificationDocument is null ? null : new()
-            {
-                IdentificationDocumentTypeId = request.IdentificationDocument.IdentificationDocumentTypeId,
-                IssuedBy = request.IdentificationDocument.IssuedBy ?? "",
-                Number = request.IdentificationDocument.Number ?? "",
-                IssuingCountryId = request.IdentificationDocument.IssuingCountryId
-            },
-            Identities = { identities },
-            HardCreate = request.HardCreate,
-            Mandant = createIn
+            IdentificationDocument = request.IdentificationDocument?.ToDomainService(),
+            HardCreate = request.HardCreate
         };
+        model.Identities.Add(identities);
 
         // adresa
         if (request.PrimaryAddress is not null)
@@ -105,16 +99,22 @@ internal static class CreateExtensions
     }
 
     public static CreateResponse ToResponseDto(this _Cust.CustomerDetailResponse customer)
-        => new CreateResponse
+    {
+        GetDetail.Dto.NaturalPersonModel person = new();
+        customer.NaturalPerson?.FillResponseDto(person);
+        person.IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed;
+
+        return new CreateResponse
         {
-            NaturalPerson = customer.NaturalPerson?.ToResponseDto(),
+            NaturalPerson = person,
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
             IsInputDataDifferent = true
         };
-
+    }
+    
     public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
     {
         response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";

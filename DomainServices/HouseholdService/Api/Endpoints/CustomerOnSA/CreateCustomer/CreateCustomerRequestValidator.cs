@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
-internal class CreateCustomerRequestValidator
+internal sealed class CreateCustomerRequestValidator
     : AbstractValidator<CreateCustomerRequest>
 {
     static DateTime _dateOfBirthMin = new DateTime(1900, 1, 1);

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.HouseholdService.Api.Database.Entities;
 
 [Table("Household", Schema = "dbo")]
-internal class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId
+internal sealed class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int HouseholdId { get; set; }

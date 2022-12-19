@@ -4,6 +4,8 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
+using NOBY.Api.Endpoints.Customer.Shared;
+using Newtonsoft.Json.Linq;
 
 namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges;
 
@@ -33,8 +35,28 @@ internal sealed class GetDetailWithChangesHandler
         // instance customer z KB CM
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
+        // convert DS contract to FE model
+        var model = customer.FillResponseDto(new GetDetailWithChangesResponse());
 
-        return new GetDetailWithChangesResponse();
+        // changed data already exist in database
+        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
+        {
+            // provide saved changes to original model
+            var original = JObject.FromObject(model);
+            var delta = JObject.FromObject(customerOnSA.CustomerChangeData);
+
+            original.Merge(delta, new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Replace,
+                MergeNullValueHandling = MergeNullValueHandling.Merge
+            });
+
+            return original.ToObject<GetDetailWithChangesResponse>()!;
+        }
+        else
+        {
+            return model;
+        }
     }
 
     private readonly ICodebookServiceClients _codebookService;

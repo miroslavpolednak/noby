@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomerDetail;
 
-internal class UpdateCustomerDetailRequestValidator
+internal sealed class UpdateCustomerDetailRequestValidator
     : AbstractValidator<UpdateCustomerDetailRequest>
 {
     public UpdateCustomerDetailRequestValidator()

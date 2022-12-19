@@ -24,7 +24,7 @@ public partial class GrpcDateTime
         {
             // tady nevim jestli vyhazovat vyjimku nebo radsi vratit null nebo default()?
             // chyba by tady nemela nikdy nastat - jedine pri testovani pres nejaky Postman atd.
-            throw new ArgumentException("GrpcDateTime can not be converted to regular datetime", "time");
+            throw new ArgumentException("GrpcDateTime can not be converted to regular datetime", nameof(time));
         }
     }
 

@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using __Client = CIS.InternalServices.ServiceDiscovery.Clients;
 using __Contracts = CIS.InternalServices.ServiceDiscovery.Contracts;
 
@@ -25,9 +26,11 @@ public static class StartupExtensions
     public static WebApplication UseServiceDiscovery(this WebApplication builder)
     {
         if (_serviceCollection is null)
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new CisArgumentNullException(0, "Do not call UseServiceDiscovery() unless AddCisServiceDiscovery() has been called before.", nameof(_serviceCollection));
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
 
-        // najit vsechny implementace, ktere maji tento interface
+            // najit vsechny implementace, ktere maji tento interface
         var foundServices = _serviceCollection!
             .Where(t => t.Lifetime == ServiceLifetime.Singleton && t.ImplementationInstance is not null && t.ImplementationInstance is Core.IIsServiceDiscoverable)
             .Select(t => t.ImplementationInstance as Core.IIsServiceDiscoverable)
@@ -55,40 +58,34 @@ public static class StartupExtensions
 
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, bool validateServiceCertificate = false)
     {
-        if (services.AlreadyRegistered<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>())
-            return services;
-
-        return services
-            .AddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(provider =>
+        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(provider =>
             {
                 string url = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>()?.ServiceDiscoveryUrl ?? "";
                 return new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(url);
-            })
-            .registerServices(validateServiceCertificate);
+            });
+        services.registerServices(validateServiceCertificate);
+        return services;
     }
 
     public static IServiceCollection AddCisServiceDiscovery(this IServiceCollection services, string serviceUrl, bool validateServiceCertificate = false)
     {
-        if (services.AlreadyRegistered<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>())
-            return services;
-
-        return services
-            .AddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(serviceUrl))
-            .registerServices(validateServiceCertificate);
+        services.TryAddSingleton<IGrpcServiceUriSettings<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>>(new GrpcServiceUriSettingsDirect<__Contracts.v1.DiscoveryService.DiscoveryServiceClient>(serviceUrl));
+        services.registerServices(validateServiceCertificate);
+        return services;
     }
     
     private static IServiceCollection registerServices(this IServiceCollection services, bool validateServiceCertificate)
     {
-        _serviceCollection = services;
+        _serviceCollection ??= services;
 
         // cache
-        services.AddTransient<__Client.ServicesMemoryCache>();
+        services.TryAddTransient<__Client.ServicesMemoryCache>();
         
         // abstraction svc
-        services.AddTransient<__Client.IDiscoveryServiceClient, __Client.DiscoveryServiceClient>();
+        services.TryAddTransient<__Client.IDiscoveryServiceClient, __Client.DiscoveryServiceClient>();
 
         // def environment name
-        services.AddSingleton(provider =>
+        services.TryAddSingleton(provider =>
         {
             var configuration = provider.GetService<Core.Configuration.ICisEnvironmentConfiguration>();
             return new __Client.EnvironmentNameProvider(configuration?.EnvironmentName);

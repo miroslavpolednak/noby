@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DomainServices.SalesArrangementService.Clients;
 using __Services = DomainServices.SalesArrangementService.Clients.Services;
 using __Contracts = DomainServices.SalesArrangementService.Contracts;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices;
 
@@ -17,15 +18,15 @@ public static class SalesArrangementServiceExtensions
     public static IServiceCollection AddSalesArrangementService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.AddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
+        services.TryAddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
         return services;
     }
 
     public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, string serviceUrl)
     {
-        services.AddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
-        services.AddCisGrpcClientUsingUrl<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl);
+        services.TryAddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl);
         return services;
     }
 }

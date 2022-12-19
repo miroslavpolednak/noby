@@ -26,7 +26,7 @@ public static class GrpcExtensions
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{configuration.InternalServicesLogin}:{configuration.InternalServicePassword}");
 
             // add authentication header
-            metadata.Add("authorization", $"Basic {Convert.ToBase64String(plainTextBytes)}");
+            metadata.Add("Authorization", $"Basic {Convert.ToBase64String(plainTextBytes)}");
 
             return Task.CompletedTask;
         };

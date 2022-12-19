@@ -55,10 +55,10 @@ public record Partner
     [Column("Ulice")]
     public string? Street { get; init; }
 
-    [Column("CisloDomu2")]
+    [Column("CisloDomu1")]
     public string? HouseNumber { get; init; }
 
-    [Column("CisloDomu1")]
+    [Column("CisloDomu2")]
     public string? StreetNumber { get; init; }
 
     [Column("Psc")]

@@ -4,6 +4,7 @@ using DomainServices.UserService.Clients;
 using __Services = DomainServices.UserService.Clients.Services;
 using __Contracts = DomainServices.UserService.Contracts;
 using CIS.InternalServices;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices;
 
@@ -17,13 +18,15 @@ public static class StartupExtensions
     public static IServiceCollection AddUserService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.UserService.UserServiceClient>(ServiceName);
-        return services.AddTransient<IUserServiceClient, __Services.UserService>();
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.UserService.UserServiceClient>(ServiceName);
+        services.TryAddTransient<IUserServiceClient, __Services.UserService>();
+        return services;
     }
 
     public static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
     {
-        services.AddCisGrpcClientUsingUrl<__Contracts.v1.UserService.UserServiceClient>(serviceUrl);
-        return services.AddTransient<IUserServiceClient, __Services.UserService>();
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.UserService.UserServiceClient>(serviceUrl);
+        services.TryAddTransient<IUserServiceClient, __Services.UserService>();
+        return services;
     }
 }

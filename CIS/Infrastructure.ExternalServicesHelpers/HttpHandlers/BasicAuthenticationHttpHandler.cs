@@ -27,7 +27,7 @@ public sealed class BasicAuthenticationHttpHandler
     public static AuthenticationHeaderValue PrepareAuthorizationHeaderValue(IExternalServiceConfiguration configuration)
     {
         if (string.IsNullOrEmpty(configuration.Username) || string.IsNullOrEmpty(configuration.Password))
-            throw new ArgumentNullException("Username or Password for Basic Authentication has not been set");
+            throw new CisConfigurationException(0, "Username or Password for Basic Authentication has not been set");
 
         var bytes = Encoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}");
         return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(bytes));

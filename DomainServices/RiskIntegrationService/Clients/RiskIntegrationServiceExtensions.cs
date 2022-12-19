@@ -1,9 +1,11 @@
-﻿using CIS.Infrastructure.gRPC;
+﻿using CIS.Core;
+using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.gRPC.Configuration;
 using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProtoBuf.Grpc.ClientFactory;
+using System.Configuration;
 using __Clients = DomainServices.RiskIntegrationService.Clients;
 using __Contracts = DomainServices.RiskIntegrationService.Contracts;
 
@@ -33,8 +35,8 @@ public static class RiskIntegrationServiceExtensions
 
     private static IServiceCollection registerServices(this IServiceCollection services)
     {
-        services.AddSingleton<GenericClientExceptionInterceptor>();
-        services.AddScoped<ContextUserForwardingClientInterceptor>();
+        services.TryAddSingleton<GenericClientExceptionInterceptor>();
+        services.TryAddScoped<ContextUserForwardingClientInterceptor>();
 
         services.register<__Contracts.CreditWorthiness.V2.ICreditWorthinessService, __Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient, __Clients.Services.CreditWorthiness.V2.CreditWorthinessService>();
 
@@ -47,13 +49,16 @@ public static class RiskIntegrationServiceExtensions
         return services;
     }
 
-    static void register<IService, IAbstraction, TAbstraction>(this IServiceCollection services, bool validateServiceCertificate = false)
+    static void register<IService, IClient, TClient>(this IServiceCollection services, bool validateServiceCertificate = false)
         where IService : class
-        where IAbstraction : class
-        where TAbstraction : class
+        where IClient : class
+        where TClient : class
     {
+        if (services.AlreadyRegistered<IClient>())
+            return;
+
         var builder = services
-            .AddTransient(typeof(IAbstraction), typeof(TAbstraction))
+            .AddTransient(typeof(IClient), typeof(TClient))
             .AddCodeFirstGrpcClient<IService>((provider, options) =>
             {
                 var serviceUri = provider.GetRequiredService<IGrpcServiceUriSettings<__Contracts.IGrpcSettingsMarker>>();

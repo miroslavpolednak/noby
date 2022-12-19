@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.Configuration.Providers;
 
-internal class CisEnvironmentVariablesConfigurationSource 
+internal sealed class CisEnvironmentVariablesConfigurationSource 
     : IConfigurationSource
 {
     /// <summary>

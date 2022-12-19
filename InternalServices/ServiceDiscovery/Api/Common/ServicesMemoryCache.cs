@@ -51,7 +51,7 @@ internal sealed class ServicesMemoryCache
     private async Task<ImmutableList<Contracts.DiscoverableService>> getServicesFromDb(ApplicationEnvironmentName environmentName, CancellationToken cancellationToken)
     {
         var list = await _connectionProvider
-            .ExecuteDapperRawSqlToList<Dto.ServiceModel>(_sqlQuery, new { name = environmentName.ToString() });
+            .ExecuteDapperRawSqlToList<Dto.ServiceModel>(_sqlQuery, new { name = environmentName.ToString() }, cancellationToken);
 
         if (!list.Any())
         {
