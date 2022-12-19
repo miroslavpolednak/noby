@@ -4,6 +4,7 @@ using DomainServices.HouseholdService.Clients;
 using __Services = DomainServices.HouseholdService.Clients.Services;
 using __Contracts = DomainServices.HouseholdService.Contracts;
 using CIS.InternalServices;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices;
 
@@ -18,21 +19,21 @@ public static class StartupExtensions
     {
         services.AddCisServiceDiscovery();
 
-        services.AddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
-        services.AddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
+        services.TryAddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
+        services.TryAddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(ServiceName);
         return services;
     }
 
     public static IServiceCollection AddHouseholdService(this IServiceCollection services, string serviceUrl)
     {
-        services.AddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
-        services.AddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
+        services.TryAddTransient<IHouseholdServiceClient, __Services.HouseholdService>();
+        services.TryAddTransient<ICustomerOnSAServiceClient, __Services.CustomerOnSAService>();
 
-        services.AddCisGrpcClientUsingUrl<__Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
-        services.AddCisGrpcClientUsingUrl<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient, __Contracts.v1.HouseholdService.HouseholdServiceClient>(serviceUrl);
         return services;
     }
 }

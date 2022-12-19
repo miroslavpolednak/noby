@@ -19,25 +19,21 @@ internal class SearchHandler
         var dsRequest = request.SearchData?.ToDomainServiceRequest() ?? new __Customer.SearchCustomersRequest();
         
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var rawResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
-        if (rawResult is EmptyServiceCallResult)
+        var searchResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
+
+        if (searchResult.Customers.Any())
         {
             return new SearchResponse
             {
-                Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, 0)
+                Rows = searchResult.Customers.ToApiResponse(),
+                Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, searchResult.Customers.Count)
             };
         }
-        else
+
+        return new SearchResponse()
         {
-            var result = ServiceCallResult.ResolveAndThrowIfError<__Customer.SearchCustomersResponse>(rawResult);
-            
-            // transform
-            return new SearchResponse
-            {
-                Rows = result.Customers.ToApiResponse(),
-                Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Customers.Count)
-            };
-        }
+            Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, 0)
+        };
     }
 
     private static List<Paginable.MapperField> sortingMapper = new()

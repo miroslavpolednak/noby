@@ -1,12 +1,14 @@
-﻿using _HO = DomainServices.HouseholdService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.GetDetail;
+using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
 
 internal static class CreateExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, CIS.Infrastructure.gRPC.CisTypes.Identity identity)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateRequest request, Mandants createIn, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
@@ -19,16 +21,10 @@ internal static class CreateExtensions
                 PlaceOfBirth = request.BirthPlace ?? "",
                 GenderId = request.GenderId
             },
-            IdentificationDocument = request.IdentificationDocument is null ? null : new()
-            {
-                IdentificationDocumentTypeId = request.IdentificationDocument.IdentificationDocumentTypeId,
-                IssuedBy = request.IdentificationDocument.IssuedBy ?? "",
-                Number = request.IdentificationDocument.Number ?? "",
-                IssuingCountryId = request.IdentificationDocument.IssuingCountryId
-            },
-            Identity = identity,
+            IdentificationDocument = request.IdentificationDocument?.ToDomainService(),
             HardCreate = request.HardCreate
         };
+        model.Identities.Add(identities);
 
         // adresa
         if (request.PrimaryAddress is not null)
@@ -59,7 +55,7 @@ internal static class CreateExtensions
         };
         if (customerOnSA.CustomerIdentifiers is not null)
             model.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
-        model.Customer.CustomerIdentifiers.Add(customerKb.Identity);
+        model.Customer.CustomerIdentifiers.Add(customerKb.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
 
         return model;
     }
@@ -90,10 +86,7 @@ internal static class CreateExtensions
                 LegallyIncapableUntil = customer.NaturalPerson?.LegallyIncapableUntil
             },
             IdentificationDocument = customer.IdentificationDocument,
-            Identity = new CIS.Infrastructure.gRPC.CisTypes.Identity
-            {
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb
-            }
+            Identities = { new Identity { IdentityScheme = Identity.Types.IdentitySchemes.Kb } }
         };
         if (customer.NaturalPerson?.CitizenshipCountriesId is not null)
             model.NaturalPerson!.CitizenshipCountriesId.AddRange(customer.NaturalPerson!.CitizenshipCountriesId);
@@ -106,16 +99,22 @@ internal static class CreateExtensions
     }
 
     public static CreateResponse ToResponseDto(this _Cust.CustomerDetailResponse customer)
-        => new CreateResponse
+    {
+        GetDetail.Dto.NaturalPersonModel person = new();
+        customer.NaturalPerson?.FillResponseDto(person);
+        person.IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed;
+
+        return new CreateResponse
         {
-            NaturalPerson = customer.NaturalPerson?.ToResponseDto(),
+            NaturalPerson = person,
             JuridicalPerson = null,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Contacts = customer.Contacts?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
             IsInputDataDifferent = true
         };
-
+    }
+    
     public static CreateResponse SetResponseCode(this CreateResponse response, bool createOk)
     {
         response.ResponseCode = createOk ? "KBCM_CREATED" : "KBCM_IDENTIFIED";

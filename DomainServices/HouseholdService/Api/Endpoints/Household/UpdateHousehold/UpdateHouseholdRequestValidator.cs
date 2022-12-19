@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.UpdateHousehold;
 
-internal class UpdateHouseholdRequestValidator
+internal sealed class UpdateHouseholdRequestValidator
     : AbstractValidator<UpdateHouseholdRequest>
 {
     public UpdateHouseholdRequestValidator()

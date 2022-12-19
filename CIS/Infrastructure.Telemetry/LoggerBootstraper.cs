@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace CIS.Infrastructure.Telemetry;
 
-internal class LoggerBootstraper
+internal sealed class LoggerBootstraper
 {
     private readonly AssemblyName? _assemblyName;
     private readonly ICisEnvironmentConfiguration? _cisConfiguration;
@@ -95,10 +95,12 @@ internal class LoggerBootstraper
         if (configuration.File is not null)
         {
             var path = Path.Combine(configuration.File.Path, configuration.File.Filename);
-            
+
+#pragma warning disable CA1305 // Specify IFormatProvider
             loggerConfiguration
                 .WriteTo
                 .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
+#pragma warning restore CA1305 // Specify IFormatProvider
         }
 
         // logovani do databaze
@@ -113,6 +115,7 @@ internal class LoggerBootstraper
             };
             ColumnOptions sqlColumns = new();
 
+#pragma warning disable CA1305 // Specify IFormatProvider
             loggerConfiguration
                 .WriteTo
                 .MSSqlServer(
@@ -120,14 +123,17 @@ internal class LoggerBootstraper
                     sinkOptions: sqlOptions,
                     columnOptions: sqlColumns
                 );
+#pragma warning restore CA1305 // Specify IFormatProvider
         }
         
         // console output
         if (configuration.UseConsole)
         {
+#pragma warning disable CA1305 // Specify IFormatProvider
             loggerConfiguration
                 .WriteTo
                 .Console();
+#pragma warning restore CA1305 // Specify IFormatProvider
         }
     }
 }

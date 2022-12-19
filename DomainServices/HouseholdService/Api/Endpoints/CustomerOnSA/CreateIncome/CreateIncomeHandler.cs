@@ -4,7 +4,7 @@ using CIS.Foms.Enums;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateIncome;
 
-internal class CreateIncomeHandler
+internal sealed class CreateIncomeHandler
     : IRequestHandler<CreateIncomeRequest, CreateIncomeResponse>
 {
     public async Task<CreateIncomeResponse> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)

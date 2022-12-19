@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "MPDigi API",
-    "description": "<a href='https://tfs.cleverlance.com/tfs/TFS2015_Collection/MPDigi/_git/MPDigi.Backend?path=%2F.ReadMe%2FAuthentication.md&version=GBmaster&_a=contents'>Autentifikácia</a>&nbsp;<a href='/logout' class='btn btn-default'>Logout</a>",
+    "description": "<a href='https://tfs.cleverlance.com/tfs/TFS2015_Collection/MPDigi/_git/MPDigi.Backend?path=%2F.ReadMe%2FAuthentication.md&version=GBmaster&_a=contents'>Autentifikácia</a>",
     "version": "1.1 FOMS"
   },
   "paths": {
@@ -2378,7 +2378,12 @@
           "Update",
           "Create",
           "Delete",
-          "NotFound"
+          "NotFound",
+          "PartnerNotFound",
+          "Partner1NotFound",
+          "Partner2NotFound",
+          "SavingNotFound",
+          "LoanNotFound"
         ],
         "type": "string"
       },
@@ -2942,7 +2947,7 @@
           },
           "lastname": {
             "type": "string",
-            "description": "Příjmění"
+            "description": "Příjmení"
           },
           "dateOfBirth": {
             "type": "string",
@@ -2989,6 +2994,12 @@
           "ecommunication": {
             "type": "boolean",
             "description": "Povolena e-komunikace"
+          },
+          "kbId": {
+            "type": "integer",
+            "description": "KB party ID",
+            "format": "int64",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3052,7 +3063,7 @@
           },
           "lastname": {
             "type": "string",
-            "description": "Příjmění"
+            "description": "Příjmení"
           },
           "dateOfBirth": {
             "type": "string",
@@ -3099,6 +3110,12 @@
           "ecommunication": {
             "type": "boolean",
             "description": "Povolena e-komunikace"
+          },
+          "kbId": {
+            "type": "integer",
+            "description": "KB party ID",
+            "format": "int64",
+            "nullable": true
           },
           "identificationDocuments": {
             "type": "array",
@@ -3169,7 +3186,7 @@
           },
           "lastname": {
             "type": "string",
-            "description": "Příjmění"
+            "description": "Příjmení"
           },
           "dateOfBirth": {
             "type": "string",
@@ -3216,6 +3233,12 @@
           "ecommunication": {
             "type": "boolean",
             "description": "Povolena e-komunikace"
+          },
+          "kbId": {
+            "type": "integer",
+            "description": "KB party ID",
+            "format": "int64",
+            "nullable": true
           },
           "dataSource": {
             "$ref": "#/components/schemas/EtlDataSourceType"

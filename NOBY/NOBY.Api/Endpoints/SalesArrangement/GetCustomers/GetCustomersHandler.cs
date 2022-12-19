@@ -1,7 +1,4 @@
 ﻿using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Contracts;
-using ProtoBuf.Serializers;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
@@ -41,7 +38,7 @@ internal class GetCustomersHandler
                     IdentityId = t.CustomerIdentifiers[0].IdentityId,
                     IdentityScheme = t.CustomerIdentifiers[0].IdentityScheme
                 };
-                var customerDetail = ServiceCallResult.ResolveAndThrowIfError<CustomerDetailResponse>(await _customerService.GetCustomerDetail(identity, cancellationToken));
+                var customerDetail = await _customerService.GetCustomerDetail(identity, cancellationToken);
 
                 // doplnit detail customera
                 c.BirthNumber = customerDetail.NaturalPerson.BirthNumber;

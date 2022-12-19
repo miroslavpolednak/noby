@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
-internal class HouseholdService : IHouseholdServiceClient
+internal sealed class HouseholdService : IHouseholdServiceClient
 {
     public async Task<int> CreateHousehold(CreateHouseholdRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {

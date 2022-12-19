@@ -10,7 +10,7 @@ internal sealed class RollbackBag
 
     public bool ContainsKey(string key) => _traceValues.ContainsKey(key);
 
-    public object? this[string key] => _traceValues.ContainsKey(key) ? _traceValues[key] : null;
+    public object? this[string key] => _traceValues.TryGetValue(key, out object? value) ? value : null;
 
     public int Count => _traceValues.Count;
 

@@ -42,15 +42,22 @@ public sealed class ContextUserForwardingClientInterceptor
 
                 return base.AsyncUnaryCall(request, newContext, continuation);
             }
+            else if (userAccessor is null)
+            {
+                serviceScope.ServiceProvider
+                    .GetRequiredService<ILoggerFactory>()
+                    .CreateLogger<ContextUserForwardingClientInterceptor>()
+                    .UserAccessorNotFound();
+            }
             else
             {
                 serviceScope.ServiceProvider
                     .GetRequiredService<ILoggerFactory>()
                     .CreateLogger<ContextUserForwardingClientInterceptor>()
-                    .LogInformation("Can not obtain current user accessor");
-
-                return base.AsyncUnaryCall(request, context, continuation);
+                    .UserAccessorAnonymous();
             }
+
+            return base.AsyncUnaryCall(request, context, continuation);
         }
     }
 }

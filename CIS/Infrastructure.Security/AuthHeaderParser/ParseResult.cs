@@ -1,12 +1,12 @@
 ﻿namespace CIS.Infrastructure.Security;
 
-internal sealed class ParseResult
+internal struct ParseResult
 {
     public bool Success { get; init; }
-    public string ErrorMessage { get; init; } = "";
-    public string Login { get; init; } = "";
-    public string Password { get; init; } = "";
-    public int ErrorCode { get; init; }
+    public string? ErrorMessage { get; init; }
+    public string? Login { get; init; }
+    public string? Password { get; init; }
+    public int? ErrorCode { get; init; }
 
     internal ParseResult(int errorCode, string errorMessage)
     {

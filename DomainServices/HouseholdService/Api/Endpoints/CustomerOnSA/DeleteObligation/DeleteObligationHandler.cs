@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteObligation;
 
-internal class DeleteObligationHandler
+internal sealed class DeleteObligationHandler
     : IRequestHandler<DeleteObligationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationRequest request, CancellationToken cancellationToken)

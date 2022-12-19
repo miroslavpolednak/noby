@@ -7,7 +7,7 @@ namespace CIS.Infrastructure.Security;
 /// <summary>
 /// Validace login/pwd proti AD
 /// </summary>
-internal class AdLoginValidator : ILoginValidator
+internal sealed class AdLoginValidator : ILoginValidator
 {
     private readonly ILogger<ILoginValidator> _logger;
     private IOptionsMonitor<CisServiceAuthenticationOptions> _options;

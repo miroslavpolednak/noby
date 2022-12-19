@@ -4,7 +4,7 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
-internal class CreateCustomerHandler
+internal sealed class CreateCustomerHandler
     : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)

@@ -55,6 +55,10 @@ Složka pro projekty "na hraní". Pokud je potřeba vytvoření testovací konzo
 ## Témata
 [Psaní technické dokumentace](./topics/documentation.md)
 
+[Databáze - čtení, zápis dat](./topics/database.md)
+
+[Databáze - migrace](./topics/database-migrations.md)
+
 [Konfigurace služeb / aplikací](./topics/configuration.md)
 
 [Validace requestu a byznys logiky](./topics/validation.md)

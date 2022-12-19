@@ -1,16 +1,27 @@
-﻿using CIS.Infrastructure.Logging;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.gRPC;
 
 internal static class LoggerExtensions
 {
+    private static readonly Action<ILogger, Exception> _userAccessorAnonymous;
+    private static readonly Action<ILogger, Exception> _userAccessorNotFound;
     private static readonly Action<ILogger, string, string, Exception> _clientUncoughtRpcException;
     private static readonly Action<ILogger, string, Exception> _serverUncoughtRpcException;
     private static readonly Action<ILogger, int, string, string, Exception> _clientInvalidArgument;
 
     static LoggerExtensions()
     {
+        _userAccessorAnonymous = LoggerMessage.Define(
+            LogLevel.Debug,
+            new EventId(707, nameof(ClientUncoughtRpcException)),
+            "ICurrentUserAccessor does not contain authenticated user");
+
+        _userAccessorNotFound = LoggerMessage.Define(
+            LogLevel.Debug,
+            new EventId(708, nameof(ClientUncoughtRpcException)),
+            "ICurrentUserAccessor does not exist in Service Collection");
+
         _clientInvalidArgument = LoggerMessage.Define<int, string, string>(
             LogLevel.Debug,
             new EventId(706, nameof(ClientInvalidArgument)),
@@ -26,6 +37,12 @@ internal static class LoggerExtensions
             new EventId(705, nameof(ServerUncoughtRpcException)),
             "Uncought server exception: {Message}");
     }
+
+    public static void UserAccessorAnonymous(this ILogger logger)
+        => _userAccessorAnonymous(logger, null!);
+
+    public static void UserAccessorNotFound(this ILogger logger)
+        => _userAccessorNotFound(logger, null!);
 
     public static void ClientInvalidArgument(this ILogger logger, int code, string argumentName, Exception ex)
         => _clientInvalidArgument(logger, code, argumentName, ex.Message, ex);

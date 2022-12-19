@@ -8,7 +8,6 @@ import "NullableGrpcDate.proto";
 import "NullableGrpcDateTime.proto";
 import "Obligation.proto";
 import "IncomeInList.proto";
-import "CustomerChangeDataItem.proto";
 import "CustomerAdditionalData.proto";
 
 message CustomerOnSA {
@@ -36,5 +35,5 @@ message CustomerOnSA {
 
     CustomerAdditionalData CustomerAdditionalData = 13;
 
-    repeated CustomerChangeDataItem CustomerChangeData = 14;
+    google.protobuf.StringValue CustomerChangeData = 14;
 }

@@ -15,7 +15,7 @@ public enum DocumentTemplateType : byte
     NABIDKA = 1,
         
     [EnumMember]
-    [Display(Name = "Hypoteční úvěr - kalkulace", ShortName = "KUALKULH")]
+    [Display(Name = "Hypoteční úvěr - kalkulace", ShortName = "KALKULHU")]
     KALKULHU = 2,
         
     [EnumMember]

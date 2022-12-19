@@ -41,14 +41,19 @@ internal sealed class CreateProductHandler
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
         // pokud neexistuje customer v konsDb, tak ho vytvor
-        var customerDetail = ServiceCallResult.ResolveAndThrowIfError<_Cu.CustomerDetailResponse>(await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken));
+        var customerDetail = await _customerService.GetCustomerDetail(notification.CustomerIdentifiers!.First(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
 
         // zalozit noveho klienta
         var createCustomerRequest = new _Cu.CreateCustomerRequest
         {
-            Identity = mpIdentity,
+            Identities = 
+            { 
+                mpIdentity, 
+                notification.CustomerIdentifiers!.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+            },
             HardCreate = true,
-            NaturalPerson = customerDetail.NaturalPerson
+            NaturalPerson = customerDetail.NaturalPerson,
+            Mandant = Mandants.Mp
         };
         if (customerDetail.IdentificationDocument is not null)
             createCustomerRequest.IdentificationDocument = new _Cu.IdentificationDocument

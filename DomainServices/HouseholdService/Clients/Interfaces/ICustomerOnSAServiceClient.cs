@@ -4,10 +4,11 @@ namespace DomainServices.HouseholdService.Clients;
 
 public interface ICustomerOnSAServiceClient
 {
+    Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default(CancellationToken));
+
     /// <summary>
     /// Vytvoreni noveho klienta
     /// </summary>
-    /// <returns><see cref="CreateCustomerResponse"/></returns>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16021; CustomerRoleId does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>

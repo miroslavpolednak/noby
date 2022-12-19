@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+
+package CIS.InternalServices.DocumentGeneratorService;
+option csharp_namespace = "CIS.InternalServices.DocumentGeneratorService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message DocumentFooter {
+	google.protobuf.Int64Value CaseId = 1;
+
+	google.protobuf.Int32Value OfferId = 2;
+
+	google.protobuf.Int32Value SalesArrangementId = 3;
+
+	google.protobuf.Int32Value DocumentId = 4;
+}

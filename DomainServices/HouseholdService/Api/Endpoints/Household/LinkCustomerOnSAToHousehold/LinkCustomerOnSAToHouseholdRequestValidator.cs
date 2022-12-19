@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.LinkCustomerOnSAToHousehold;
 
-internal class LinkCustomerOnSAToHouseholdRequestValidator
+internal sealed class LinkCustomerOnSAToHouseholdRequestValidator
     : AbstractValidator<LinkCustomerOnSAToHouseholdRequest>
 {
     public LinkCustomerOnSAToHouseholdRequestValidator()

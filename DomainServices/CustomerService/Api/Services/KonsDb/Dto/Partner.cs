@@ -55,10 +55,10 @@ public record Partner
     [Column("Ulice")]
     public string? Street { get; init; }
 
-    [Column("CisloDomu2")]
+    [Column("CisloDomu1")]
     public string? HouseNumber { get; init; }
 
-    [Column("CisloDomu1")]
+    [Column("CisloDomu2")]
     public string? StreetNumber { get; init; }
 
     [Column("Psc")]
@@ -81,6 +81,9 @@ public record Partner
 
     [Column("VypisyMisto")]
     public string? MailingCity { get; init; }
+
+    [Column("KBId")]
+    public long? KbId { get; init; }
 
     public ICollection<PartnerContact> Contacts { get; set; } = new List<PartnerContact>();
 }

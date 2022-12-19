@@ -3,7 +3,6 @@ using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.Search;
 using NOBY.Api.Endpoints.Customer.Search.Dto;
-using contracts = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
@@ -12,9 +11,9 @@ internal sealed class IdentifyHandler
 {
     public async Task<CustomerInList> Handle(IdentifyRequest request, CancellationToken cancellationToken)
     {
-        var dsRequest = new contracts.SearchCustomersRequest
+        var dsRequest = new SearchCustomersRequest
         {
-            NaturalPerson = new contracts.NaturalPersonSearch
+            NaturalPerson = new NaturalPersonSearch
             {
                 FirstName = request.FirstName ?? "",
                 LastName = request.LastName ?? "",
@@ -37,25 +36,20 @@ internal sealed class IdentifyHandler
         }
 
         // zavolat sluzbu
-        var rawResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
+        var searchResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
 
-        if (rawResult is EmptyServiceCallResult)
-            return null;
-        else
+        if (searchResult.Customers.Count == 1)
         {
-            var result = ServiceCallResult.ResolveAndThrowIfError<contracts.SearchCustomersResponse>(rawResult);
+            var customer = searchResult.Customers.First();
 
-            if (result.Customers.Count > 1)
-            {
-                _logger.LogInformation("More than 1 client found");
-                throw new CisConflictException($"More than 1 client found: {string.Join(", ", result.Customers.Select(t => t.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}");
-            }
-
-            var customer = result.Customers.First();
-            return (new CustomerInList())
-                .FillBaseData(customer)
-                .FillIdentification(customer.Identity);
+            return new CustomerInList().FillBaseData(customer).FillIdentification(customer.Identity);
         }
+
+        if (!searchResult.Customers.Any())
+            return null;
+
+        _logger.LogInformation("More than 1 client found");
+        throw new CisConflictException($"More than 1 client found: {string.Join(", ", searchResult.Customers.Select(t => t.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}");
     }
 
     private readonly ILogger<IdentifyHandler> _logger;

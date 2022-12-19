@@ -22,7 +22,6 @@ CREATE TABLE [dbo].[CustomerOnSA](
      [MaritalStatusId] [int] NULL,
      AdditionalDataBin varbinary(max),
      AdditionalData nvarchar(max),
-     ChangeDataBin varbinary(max),
      ChangeData nvarchar(max),
      [CreatedUserName] [nvarchar](100) NULL,
      [CreatedUserId] [int] NULL,

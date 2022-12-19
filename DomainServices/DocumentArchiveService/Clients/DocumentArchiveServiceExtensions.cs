@@ -20,7 +20,7 @@ public static class DocumentArchiveServiceExtensions
 
         services.AddTransient<IDocumentArchiveServiceClient, __Services.DocumentArchiveService>();
 
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient>(ServiceName);
         return services;
     }
 
@@ -28,7 +28,7 @@ public static class DocumentArchiveServiceExtensions
     {
         services.AddTransient<IDocumentArchiveServiceClient, __Services.DocumentArchiveService>();
 
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient>(serviceUrl);
         return services;
     }
 }
