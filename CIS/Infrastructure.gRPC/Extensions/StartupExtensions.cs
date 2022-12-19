@@ -1,4 +1,4 @@
-﻿using CIS.Core;
+using CIS.Core;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -13,9 +13,6 @@ public static class StartupExtensions
     public static void TryAddCisGrpcClientUsingServiceDiscovery<TService>(this IServiceCollection services, in string serviceName, bool validateServiceCertificate = false)
         where TService : class
     {
-        if (services.AlreadyRegistered<Configuration.IGrpcServiceUriSettings<TService>>())
-            return;
-
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TService>>(new Configuration.GrpcServiceUriSettingsServiceDiscovery<TService>(serviceName));
         services.AddCisGrpcClientInner<TService, TService>(validateServiceCertificate, true);
     }
@@ -23,9 +20,6 @@ public static class StartupExtensions
     public static void TryAddCisGrpcClientUsingUrl<TService>(this IServiceCollection services, in string serviceUrl, bool validateServiceCertificate = false)
         where TService : class
     {
-        if (services.AlreadyRegistered<Configuration.IGrpcServiceUriSettings<TService>>())
-            return;
-
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TService>>(new Configuration.GrpcServiceUriSettingsDirect<TService>(serviceUrl));
         services.AddCisGrpcClientInner<TService, TService>(validateServiceCertificate, true);
     }
@@ -34,9 +28,6 @@ public static class StartupExtensions
         where TService : class
         where TServiceUriSettings : class
     {
-        if (services.AlreadyRegistered<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>())
-            return;
-
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>(new Configuration.GrpcServiceUriSettingsServiceDiscovery<TServiceUriSettings>(serviceName));
         services.AddCisGrpcClientInner<TService, TServiceUriSettings>(validateServiceCertificate, true);
     }
@@ -45,9 +36,6 @@ public static class StartupExtensions
         where TService : class
         where TServiceUriSettings : class
     {
-        if (services.AlreadyRegistered<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>())
-            return;
-
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>(new Configuration.GrpcServiceUriSettingsDirect<TServiceUriSettings>(serviceUrl));
         services.AddCisGrpcClientInner<TService, TServiceUriSettings>(validateServiceCertificate, true);
     }
@@ -55,12 +43,15 @@ public static class StartupExtensions
     /// <summary>
     /// Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
     /// </summary>
-    public static IHttpClientBuilder AddCisGrpcClientInner<TService, TServiceUriSettings>(this IServiceCollection services, bool validateServiceCertificate, bool forwardClientHeaders)
+    public static IHttpClientBuilder? AddCisGrpcClientInner<TService, TServiceUriSettings>(this IServiceCollection services, bool validateServiceCertificate, bool forwardClientHeaders)
         where TService : class
         where TServiceUriSettings : class
     {
-        services.TryAddSingleton<GenericClientExceptionInterceptor>();
-        services.TryAddTransient<ContextUserForwardingClientInterceptor>();
+        if (services.AlreadyRegistered<TService>())
+            return null;
+
+        services.AddSingleton<GenericClientExceptionInterceptor>();
+        services.AddTransient<ContextUserForwardingClientInterceptor>();
 
         // register service
         var builder = services
@@ -71,7 +62,7 @@ public static class StartupExtensions
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddCisCallCredentials();
-
+        
         if (forwardClientHeaders)
             builder.AddInterceptor<ContextUserForwardingClientInterceptor>();
 

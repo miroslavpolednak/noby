@@ -26,8 +26,6 @@ internal sealed class CustomerOnSA
 
     public byte[]? AdditionalDataBin { get; set; }
 
-    public byte[]? ChangeDataBin { get; set; }
-
     public string? AdditionalData { get; set; }
     
     public string? ChangeData { get; set; }

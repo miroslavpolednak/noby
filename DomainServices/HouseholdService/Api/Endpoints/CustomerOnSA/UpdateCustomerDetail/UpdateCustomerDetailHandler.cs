@@ -16,22 +16,8 @@ internal sealed class UpdateCustomerDetailHandler
         // additional data
         entity.AdditionalData = request.CustomerAdditionalData == null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(request.CustomerAdditionalData);
         entity.AdditionalDataBin = request.CustomerAdditionalData == null ? null : request.CustomerAdditionalData.ToByteArray();
-
         // change data
-        if (request.CustomerChangeData == null)
-        {
-            entity.ChangeDataBin = null;
-            entity.ChangeData = null;
-        }
-        else
-        {
-            entity.ChangeData = Newtonsoft.Json.JsonConvert.SerializeObject(request.CustomerChangeData);
-
-            // musi to byt takto ob ruku, protoze RepeatedField se neda rovnou serializovat
-            var list = new CustomerChangeDataItemWrapper();
-            list.ChangeData.AddRange(request.CustomerChangeData);
-            entity.ChangeDataBin = list.ToByteArray();
-        }
+        entity.ChangeData = request.CustomerChangeData;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

@@ -2,7 +2,8 @@
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
-internal sealed class CustomerOnSAService : ICustomerOnSAServiceClient
+internal sealed class CustomerOnSAService 
+    : ICustomerOnSAServiceClient
 {
     public async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -41,6 +42,11 @@ internal sealed class CustomerOnSAService : ICustomerOnSAServiceClient
     public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        await _service.UpdateCustomerDetailAsync(request, cancellationToken: cancellationToken);
     }
 
     #region Income

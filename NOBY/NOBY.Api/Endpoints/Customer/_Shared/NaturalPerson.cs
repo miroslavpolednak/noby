@@ -1,12 +1,12 @@
-﻿namespace NOBY.Api.Endpoints.Customer.GetDetailWithChanges.Dto;
+﻿namespace NOBY.Api.Endpoints.Customer.Shared;
 
-public class NaturalPerson
+public sealed class NaturalPerson
     : SharedDto.BaseNaturalPerson
 {
     /// <summary>
     /// Stupeň vzdělání
     /// </summary>
-    public int EducationLevelId { get; set; }
+    public int? EducationLevelId { get; set; }
 
     public int? ProfessionCategoryId { get; set; }
 
@@ -18,5 +18,5 @@ public class NaturalPerson
 
     public LegalCapacityItem? LegalCapacity { get; set; }
 
-    public List<TaxResidenceItem>? TaxResidences { get; set; }
+    public TaxResidenceItem? TaxResidences { get; set; }
 }
