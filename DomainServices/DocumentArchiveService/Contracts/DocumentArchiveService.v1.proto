@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService.v1;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts.v1";
+
+import "GenerateDocumentId.proto";
+import "UploadDocument.proto";
+import "GetDocument.proto";
+import "GetDocumentList.proto";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+//Document archive service
+service DocumentArchiveService{
+   // Vygeneruje Id dokumentu. EnvironmentName je nutné zadat jako číslo např (EnvironmentName:1) Dev:1, Fat:2, Sit:3, Uat:4, Preprod:5, Edu:6, Prod:7  
+   rpc GenerateDocumentId (DomainServices.DocumentArchiveService.GenerateDocumentIdRequest) returns (DomainServices.DocumentArchiveService.GenerateDocumentIdResponse) {
+		option (google.api.http) = {
+		 post: "/api/v1/document-id",
+		 body: "*"
+	  };
+	};
+	// Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+	rpc UploadDocument(DomainServices.DocumentArchiveService.UploadDocumentRequest) returns (google.protobuf.Empty) {
+		 option (google.api.http) = {
+		 post: "/api/v1/document",
+		 body: "*"
+	  };
+	};
+	// Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+	rpc GetDocument(DomainServices.DocumentArchiveService.GetDocument.GetDocumentRequest) returns (DomainServices.DocumentArchiveService.GetDocument.GetDocumentResponse){
+		 option (google.api.http) = {
+		 get: "/api/v1/document/{documentId}"
+		};
+	};
+	// Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+	rpc GetGetDocumentList(DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListRequest) returns (DomainServices.DocumentArchiveService.GetDocumentList.GetDocumentListResponse){
+		 option (google.api.http) = {
+		 post: "/api/v1/documents/search",
+		 body: "*"
+		};
+	};
+}

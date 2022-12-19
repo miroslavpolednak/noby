@@ -1,25 +1,39 @@
-﻿using CIS.Infrastructure.StartupExtensions;
+﻿using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.StartupExtensions;
+using DomainServices.DocumentArchiveService.Api.Mappers;
+using ExternalServices.Sdf;
+using ExternalServices.Sdf.V1.Clients;
+using ExternalServicesTcp;
+using ExternalServicesTcp.V1.Repositories;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace DomainServices.DocumentArchiveService.Api;
 
 internal static class StartupExtensions
 {
+    /// <summary>
+    /// Kontrola zda je vse v konfiguracnim souboru korektne
+    /// </summary>
+    public static void CheckAppConfiguration(this AppConfiguration configuration)
+    {
+        if (configuration?.ServiceUser2LoginBinding is null)
+            throw new CisConfigurationNotFound("AppConfiguration");
+    }
+
     public static WebApplicationBuilder AddDocumentArchiveService(this WebApplicationBuilder builder)
     {
-        // disable default model state validations
-        builder.Services.AddSingleton<IObjectModelValidator, CIS.Infrastructure.WebApi.Validation.NullObjectModelValidator>();
-
-        // json
-        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+        if (builder is null)
         {
-            options.SerializerOptions.PropertyNameCaseInsensitive = true;
-            options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
-        });
+            throw new ArgumentNullException(nameof(builder));
+        }
 
-        // MVC
-        builder.Services.AddControllers();
+        builder.Services.AddCisGrpcInfrastructure(typeof(Program));
+
+        builder.AddExternalService<ISdfClient>();
+
+        builder.AddExternalService<IDocumentServiceRepository>();
+
+        builder.Services.AddSingleton<IDocumentMapper, DocumentMapper>();
 
         // databases
         builder.Services

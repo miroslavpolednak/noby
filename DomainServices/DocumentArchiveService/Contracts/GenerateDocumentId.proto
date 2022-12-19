@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
+
+message GenerateDocumentIdRequest{
+	// kód volajícího prostředí systému
+    EnvironmentNames EnvironmentName = 1;
+	// index prostředí (default 0) - jednociferné číslo
+	int32 EnvironmentIndex = 2;
+}
+
+message GenerateDocumentIdResponse{
+	string DocumentId = 1;
+}
+
+enum EnvironmentNames {
+  Unknown = 0;
+  Dev = 1;
+  Fat = 2;
+  Sit = 3;
+  Uat = 4;
+  Preprod = 5;
+  Edu = 6;
+  Prod = 7;
+}

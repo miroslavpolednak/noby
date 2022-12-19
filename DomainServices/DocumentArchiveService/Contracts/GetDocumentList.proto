@@ -1,0 +1,37 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService.GetDocumentList;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
+
+import "DocumentMetadata.proto";
+import "GrpcDate.proto";
+import "google/protobuf/wrappers.proto";
+
+message GetDocumentListRequest {
+
+	// Unikátní Id obchodního případu
+    google.protobuf.Int64Value CaseId = 1;
+
+	 // Login autora dokumentu, kdo dokument uložil
+    string AuthorUserLogin = 2;
+
+	// Datum přijetí dokumentu
+    cis.types.GrpcDate CreatedOn = 3;
+
+	// Číslo zástavní smlouvy
+    string PledgeAgreementNumber = 4;
+
+	// Číslo smlouvy
+    string ContractNumber = 5;
+
+	google.protobuf.Int32Value OrderId = 6;
+
+	// Id nařízeného dokumentu
+    string FolderDocumentId = 7;
+
+	string UserLogin = 8;
+}
+
+message GetDocumentListResponse{
+	// Metadata dokumentu
+	repeated DocumentMetadata Metadata = 1;
+}

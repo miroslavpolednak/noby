@@ -1,10 +1,9 @@
 using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using DomainServices.DocumentArchiveService.Api;
-using CIS.Infrastructure.Security;
-using ProtoBuf.Grpc.Server;
 using CIS.InternalServices;
+using DomainServices.DocumentArchiveService.Api;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -16,10 +15,14 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
+#region strongly typed configuration
 AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+builder.Configuration.GetSection(AppConfiguration.SectionName).Bind(appConfiguration);
+appConfiguration.CheckAppConfiguration();
+#endregion strongly typed configuration
 
 #region register builder
+
 // strongly-typed konfigurace aplikace
 builder.Services.AddSingleton(appConfiguration);
 
@@ -36,18 +39,21 @@ builder
 // health checks
 builder.AddCisHealthChecks();
 
+builder.Services.AddAttributedServices(typeof(Program));
+
 // authentication
 builder.AddCisServiceAuthentication();
 
 // add this service
 builder.AddDocumentArchiveService();
 
-// swagger
-builder.AddDocumentArchiveSwagger();
-
 // add grpc
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
 builder.AddDocumentArchiveGrpc();
+
+// add grpc swagger 
+builder.AddDocumentArchiveGrpcSwagger();
+
 #endregion register builder
 
 // kestrel configuration
@@ -57,16 +63,17 @@ builder.UseKestrelWithCustomConfiguration();
 if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
 var app = builder.Build();
 
-// zachytavat vyjimky pri WebApi volani a transformovat je do 400 bad request
-app.UseGrpc2WebApiException();
-
-app.UseServiceDiscovery();
 app.UseRouting();
+
+app.UseDocumentArchiveGrpcSwagger();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCisServiceUserContext();
+
 app.UseCisLogging();
+//Dont know correct connection
+app.UseServiceDiscovery();
 
 app.UseEndpoints(endpoints =>
 {
@@ -74,18 +81,8 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
 
-    endpoints.MapCodeFirstGrpcReflectionService();
-
-    endpoints.MapControllers();
+    endpoints.MapGrpcReflectionService();
 });
-
-// swagger
-app.UseDocumentArchiveSwagger();
-
-// print gRPC PROTO file
-//var schemaGenerator = new ProtoBuf.Grpc.Reflection.SchemaGenerator();
-//var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.ICreditWorthinessService>();
-//File.WriteAllText("d:\\proto1.proto", proto1);
 
 try
 {
@@ -95,6 +92,7 @@ finally
 {
     LoggingExtensions.CloseAndFlush();
 }
+
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
