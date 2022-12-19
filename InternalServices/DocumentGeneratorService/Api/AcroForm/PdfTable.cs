@@ -24,8 +24,8 @@ public class PdfTable
 
     public void DrawTable(Page page, PdfFormField tablePlaceholder)
     {
-        var position = GetTablePosition(tablePlaceholder, page);
-        var size = GetTableSize(tablePlaceholder);
+        var position = GetPosition(tablePlaceholder, page);
+        var size = GetSize(tablePlaceholder);
 
         _table = new Table2(position.X, position.Y, size.Width, size.Height);
 
@@ -39,12 +39,10 @@ public class PdfTable
         if (_table is null)
             throw new InvalidOperationException("Table is not initialized.");
 
-        var position = GetTablePosition(tablePlaceholder, page);
-        var size = GetTableSize(tablePlaceholder);
+        var position = GetPosition(tablePlaceholder, page);
+        var size = GetSize(tablePlaceholder);
 
         _table = _table.GetOverflowRows();
-
-        Test(_table, page);
 
         _table.X = position.X;
         _table.Y = position.Y;
@@ -54,30 +52,37 @@ public class PdfTable
         page.Elements.Add(_table);
     }
 
-    private void Test(Table2 table, Page page)
+    public void DrawConcludingParagraph(Page page, PdfFormField placeholderField, Func<Page> pageFactory)
     {
-        const float textTopMargin = 5f;
+        if (_table is null)
+            throw new InvalidOperationException("Table is not initialized.");
 
         if (string.IsNullOrWhiteSpace(_tableData.ConcludingParagraph) || HasOverflowRows)
             return;
 
-        var remainingHeight = table.Height - table.GetVisibleHeight();
-
-        var textArea = new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + table.GetVisibleHeight() + textTopMargin, table.Width, remainingHeight - textTopMargin)
-        {
-            Font = Font.LoadSystemFont(new System.Drawing.Font("Arial", 10)),
-            FontSize = 10,
-            Align = TextAlign.Justify
-        };
-
-        var test = textArea.HasOverflowText();
+        var textArea = CreateTextArea(_table);
 
         page.Elements.Add(textArea);
+
+        while ((textArea = textArea.GetOverflowTextArea()) != null)
+        {
+            page = pageFactory();
+
+            var position = GetPosition(placeholderField, page);
+            var size = GetSize(placeholderField);
+
+            textArea.X = position.X;
+            textArea.Y = position.Y;
+            textArea.Width = size.Width;
+            textArea.Height = size.Height;
+
+            page.Elements.Add(textArea);
+        }
     }
 
-    private static PointF GetTablePosition(PdfFormField pdfFormField, Page page) => new(pdfFormField.GetX(page), pdfFormField.GetY(page));
+    private static PointF GetPosition(PdfFormField pdfFormField, Page page) => new(pdfFormField.GetX(page), pdfFormField.GetY(page));
 
-    private static SizeF GetTableSize(PdfFormField pdfFormField) => new(pdfFormField.Width, pdfFormField.Height);
+    private static SizeF GetSize(PdfFormField pdfFormField) => new(pdfFormField.Width, pdfFormField.Height);
 
     private void PrepareTable(Table2 table)
     {
@@ -91,14 +96,14 @@ public class PdfTable
         table.Border.Width = 0f;
         table.CellDefault.Align = TextAlign.Center;
         table.CellDefault.VAlign = VAlign.Center;
-        table.CellDefault.Font = Pdf.Font.Helvetica;
+        table.CellDefault.Font = Font.LoadSystemFont(new System.Drawing.Font("Arial", 10));
         table.CellDefault.FontSize = 10;
         table.CellDefault.Border.Width = 0.5f;
     }
 
     private void CreateColumns(Table2 table)
     {
-        var row = table.Rows.Add(20, Pdf.Font.HelveticaBold, table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
+        var row = table.Rows.Add(20, Font.LoadSystemFont(new System.Drawing.Font("Arial", 10, FontStyle.Bold)), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
         
         foreach (var column in _tableData.Columns)
         {
@@ -138,5 +143,20 @@ public class PdfTable
         };
 
         string GetFormattedString<TValue>(TValue valueToFormat) where TValue : notnull => _fieldFormatProvider.Format(valueToFormat, format);
+    }
+
+    private TextArea CreateTextArea(Table2 table)
+    {
+        const float textTopMargin = 5f;
+
+        var visibleHeight = table.GetVisibleHeight();
+        var remainingHeight = table.Height - visibleHeight;
+
+        return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + textTopMargin, table.Width, remainingHeight - textTopMargin)
+        {
+            Font = Font.LoadSystemFont(new System.Drawing.Font("Arial", 10)),
+            FontSize = 10,
+            Align = TextAlign.Justify
+        };
     }
 }

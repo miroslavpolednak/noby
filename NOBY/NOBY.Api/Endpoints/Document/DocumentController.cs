@@ -68,7 +68,7 @@ public class DocumentController : ControllerBase
     {
         var dateTimeText = DateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture);
 
-        return $"{await GetTemplateShortName()}_{caseId}_{dateTimeText}";
+        return $"{await GetTemplateShortName()}_{caseId}_{dateTimeText}.pdf";
 
         async Task<string> GetTemplateShortName()
         {
