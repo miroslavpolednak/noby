@@ -33,8 +33,8 @@ internal static class CreateExtensions
             model.Addresses.Add(request.PrimaryAddress);
         }
         // narodnost
-        if (request.CitizenshipCountryId > 0)
-            model.NaturalPerson.CitizenshipCountriesId.Add(request.CitizenshipCountryId);
+        if (request.CitizenshipCountryId.GetValueOrDefault() > 0)
+            model.NaturalPerson.CitizenshipCountriesId.Add(request.CitizenshipCountryId!.Value);
 
         return model;
     }

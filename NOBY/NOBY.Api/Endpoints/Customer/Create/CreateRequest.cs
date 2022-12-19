@@ -41,7 +41,7 @@ public class CreateRequest
     /// <summary>
     /// Státní příslušnost/občanství
     /// </summary>
-    public int CitizenshipCountryId { get; set; }
+    public int? CitizenshipCountryId { get; set; }
 
     /// <summary>
     /// E-mail
