@@ -5,7 +5,6 @@ using CIS.InternalServices.DataAggregator.EasForms;
 using CIS.InternalServices.DataAggregator.EasForms.FormData;
 using DomainServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using __DS = DomainServices;
 
@@ -13,13 +12,9 @@ namespace CIS.InternalServices;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddDataAggregator(this IServiceCollection services)
+    public static IServiceCollection AddDataAggregator(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<ConfigurationContext>((provider, opts) =>
-                                                    {
-                                                        var conn = provider.GetRequiredService<IConfiguration>().GetConnectionString("dataAggregator");
-                                                        opts.UseSqlServer(conn);
-                                                    },
+        services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(connectionString),
                                                     ServiceLifetime.Transient);
 
         services.AddTransient<IDataAggregator, DataAggregator.DataAggregator>()

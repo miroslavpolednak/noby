@@ -6,13 +6,10 @@ using CIS.InternalServices.DataAggregator;
 using CIS.InternalServices.DataAggregator.Configuration;
 using CIS.InternalServices.DataAggregator.Documents;
 using CIS.InternalServices.DataAggregator.EasForms;
-using CIS.InternalServices.DocumentDataAggregator;
-using CIS.InternalServices.DocumentDataAggregator.Configuration;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Console_CustomerService;
 using Console_DocumentDataAggregator;
-using DomainServices.CodebookService.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("Hello, World!");
@@ -21,7 +18,7 @@ var services = new ServiceCollection();
 
 services.AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>();
 services.AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration());
-services.AddDataAggregator();
+services.AddDataAggregator("Data Source=localhost;Initial Catalog=DataAggregator;Persist Security Info=True;User ID=SA;Password=Test123456;TrustServerCertificate=True");
 //services.AddDocumentGeneratorService("https://localhost:5009");
 services.AddDocumentGeneratorService();
 services.AddCisServiceDiscovery("https://localhost:5005");

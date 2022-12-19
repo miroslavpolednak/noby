@@ -47,7 +47,7 @@ builder.Services
 // add internal services
 builder.Services
        .AddDocumentGeneratorService()
-       .AddDataAggregator();
+       .AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
 
 // FOMS services
 builder
