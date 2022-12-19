@@ -41,7 +41,8 @@ builder.Services
     .AddProductService()
     .AddCaseService()
     .AddSalesArrangementService()
-    .AddRiskIntegrationService();
+    .AddRiskIntegrationService()
+    .AddDocumentArchiveService();
 
 // FOMS services
 builder

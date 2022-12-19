@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>1.0.0.0</Version>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>InternalServices.DocumentGeneratorService.Api.xml</DocumentationFile>
-	</PropertyGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<Version>1.0.0.0</Version>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<DocumentationFile>InternalServices.DocumentGeneratorService.Api.xml</DocumentationFile>
+  </PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="11.37.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.50.0" />
@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\DomainServices\CodebookService\Contracts\DomainServices.CodebookService.Contracts.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.DocumentGeneratorService.Contracts.csproj" />
   </ItemGroup>
 

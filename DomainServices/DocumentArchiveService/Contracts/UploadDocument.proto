@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
+
+import "DocumentMetadata.proto";
+
+message UploadDocumentRequest{
+	// Metadata dokumentu
+    DocumentMetadata Metadata = 1;
+    // Soubour (pole bajtů) ve formě base64string 
+    bytes BinaryData = 2;
+}
+

@@ -52,6 +52,7 @@
     <ProjectReference Include="..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
@@ -65,6 +66,7 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
+    <Folder Include="Endpoints\DocumentArchive\_Shared\" />
   </ItemGroup>
 
 </Project>
