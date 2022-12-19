@@ -22,7 +22,7 @@ internal sealed class UpdateDetailWithChangesHandler
             ?? throw new CisValidationException("Customer is missing KB identity");
 
         // instance customer z KB CM
-        var customer = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CustomerService.Contracts.CustomerDetailResponse>(await _customerService.GetCustomerDetail(kbIdentity, cancellationToken));
+        var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
         // convert DS contract to FE model
         var originalModel = customer.FillResponseDto(new UpdateDetailWithChangesRequest());
 

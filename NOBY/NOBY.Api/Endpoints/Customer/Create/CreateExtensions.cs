@@ -22,9 +22,9 @@ internal static class CreateExtensions
                 GenderId = request.GenderId
             },
             IdentificationDocument = request.IdentificationDocument?.ToDomainService(),
-            Identity = identity,
             HardCreate = request.HardCreate
         };
+        model.Identities.Add(identities);
 
         // adresa
         if (request.PrimaryAddress is not null)
