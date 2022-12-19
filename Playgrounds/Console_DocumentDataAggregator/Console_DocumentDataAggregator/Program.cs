@@ -18,12 +18,13 @@ var services = new ServiceCollection();
 
 services.AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>();
 services.AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration());
-services.AddDataAggregator();
+services.AddDataAggregator("Data Source=localhost;Initial Catalog=DataAggregator;Persist Security Info=True;User ID=SA;Password=Test123456;TrustServerCertificate=True");
 //services.AddDocumentGeneratorService("https://localhost:5009");
 services.AddDocumentGeneratorService();
 services.AddCisServiceDiscovery("https://localhost:5005");
 
 var serviceProvider = services.BuildServiceProvider();
+
 var dataAggregator = serviceProvider.GetRequiredService<IDataAggregator>();
 
 await GenerateDocument(dataAggregator, serviceProvider.GetRequiredService<IDocumentGeneratorServiceClient>());
