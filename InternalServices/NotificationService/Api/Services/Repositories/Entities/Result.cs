@@ -25,5 +25,5 @@ public class Result
         set => Errors = JsonSerializer.Serialize(value);
     }
     
-    public virtual ITrackingData? TrackingData { get; set; }
+    public virtual TrackingData? TrackingData { get; set; }
 }

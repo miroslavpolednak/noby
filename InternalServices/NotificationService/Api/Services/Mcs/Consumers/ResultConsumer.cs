@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using MassTransit;
-using MassTransit.Mediator;
+using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
 

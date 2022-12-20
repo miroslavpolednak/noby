@@ -7,7 +7,7 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Ent
 
 [Table("SmsTrackingData", Schema = "dbo")]
 [Index(nameof(CustomId), nameof(ClientId), nameof(DocumentId), IsUnique = false)]
-public class SmsTrackingData : ITrackingData
+public class SmsTrackingData : TrackingData
 {
     [Key]
     public long Id { get; set; }
@@ -28,5 +28,5 @@ public class SmsTrackingData : ITrackingData
     public DateTime? McsTimestamp { get; set; }
     
     public DateTime? OperatorTimestamp { get; set; }
-    public virtual Result Result { get; set; } = null!;
+    public Result Result { get; set; } = null!;
 }
