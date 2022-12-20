@@ -288,3 +288,29 @@ GO
 	(4, 'D'),
 	(5, 'E');
 GO
+
+
+-- table 'DocumentTemplateVersion'
+DROP TABLE IF EXISTS [dbo].[DocumentTemplateVersion];
+CREATE TABLE [dbo].[DocumentTemplateVersion](
+	[DocumentTemplateVersionId] [int] NOT NULL,
+	[DocumentTemplateTypeId] [int] NOT NULL,
+	[DocumentVersion] [nvarchar](50) NOT NULL,
+	[ValidFrom] [datetime] NOT NULL,
+	[ValidTo] [datetime] NULL,
+CONSTRAINT [PK_DocumentTemplateVersion] PRIMARY KEY CLUSTERED 
+(
+	[DocumentTemplateVersionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY];
+GO
+
+	INSERT INTO [dbo].[DocumentTemplateVersion]([DocumentTemplateVersionId], [DocumentTemplateTypeId], [DocumentVersion], [ValidFrom])
+    VALUES
+	(1, 1, '001A', '2022-01-01'),
+	(2, 2, '001A', '2022-01-01'),
+	(3, 3, '001A', '2022-01-01'),
+	(4, 4, '001A', '2022-01-01'),
+	(5, 5, '001A', '2022-01-01'),
+	(6, 6, '001A', '2022-01-01');
+GO
