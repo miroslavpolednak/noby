@@ -1,13 +1,14 @@
 import requests
 import pytest
 
+from Tests.backend.pytest.tests.noby_rest.conftest import noby_sit1_url, get_noby_sit1_cookies
 
-@pytest.fixture()
-def get_all_codebooks(webapi_url, get_cookies, codebook_name):
+
+def get_all_codebooks(codebook_name):
     session = requests.session()
     resp = session.get(
-        webapi_url + "/codebooks/get-all?q=" + codebook_name,
-        cookies=get_cookies
+         noby_sit1_url() + "/codebooks/get-all?q=" + codebook_name,
+         cookies=get_noby_sit1_cookies()
     )
     data = resp.json()
     status_code = resp.status_code

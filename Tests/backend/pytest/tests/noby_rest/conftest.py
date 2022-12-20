@@ -11,7 +11,7 @@ Base = declarative_base()
 
 
 def pytest_addoption(parser):
-    parser.addoption("--webapi-url", action="store", default="https://dev.noby.cz/api", help="web api url")
+    parser.addoption("--webapi-url", action="store", default="https://fat.noby.cz/api", help="web api url")
     parser.addoption("--cpm", action="store", default="99917587", help="client id")
 
 

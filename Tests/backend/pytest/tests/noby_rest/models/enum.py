@@ -3,8 +3,7 @@
 class Codebooks:
     ACADEMICDEGREESAFTER = 'AcademicDegreesAfter'
     ACADEMICDEGREESBEFORE = 'AcademicDegreesBefore'
-    ACTIONCODESSAVINGS = 'ActionCodesSavings'
-    ACTIONCODESSAVINGSLOAN = 'ActionCodesSavingsLoan'
+    BANKCODES = 'Bankcodes'
     CASESTATES = 'CaseStates'
     CLASSIFICATIONOFECONOMICACTIVITIES = 'ClassificationOfEconomicActivities'
     CONTACTTYPES = 'ContactTypes'

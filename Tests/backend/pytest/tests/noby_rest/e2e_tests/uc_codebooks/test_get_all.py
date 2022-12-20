@@ -1,7 +1,9 @@
 import pytest
 
-from response.codebook_json import json_resp_academic_degrees_after, json_resp_paymentDays
+from response.codebooks_json import json_resp_academic_degrees_after, json_resp_paymentDays, \
+    json_resp_academic_degrees_before, json_resp_bank_codes, json_resp_case_states
 from Tests.backend.pytest.tests.noby_rest.models.enum import Codebooks
+from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import get_all_codebooks
 
 
 #TODO: dodelat vsechy codebooky ze swaggeru
@@ -13,10 +15,23 @@ from Tests.backend.pytest.tests.noby_rest.models.enum import Codebooks
     (
             Codebooks.ACADEMICDEGREESAFTER,
             json_resp_academic_degrees_after
-    )]
+    ),
+    (
+            Codebooks.ACADEMICDEGREESBEFORE,
+            json_resp_academic_degrees_before
+    ),
+    (
+            Codebooks.BANKCODE,
+            json_resp_bank_codes
+    ),
+(
+            Codebooks.CASESTATES,
+            json_resp_case_states
+    )
+]
 )
-def test_get_paymentdays(get_all_codebooks, codebook_name, get_cookies, webapi_url, expected_resp_json):
-    resp = get_all_codebooks
+def test_get_codebooks(codebook_name, expected_resp_json):
+    resp = get_all_codebooks(codebook_name)
     print(resp)
 
     assert resp[0] == 200

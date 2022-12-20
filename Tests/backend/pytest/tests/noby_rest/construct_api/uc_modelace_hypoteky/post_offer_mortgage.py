@@ -26,6 +26,7 @@ def post_offer_mortgage_basic(webapi_url, get_cookies):
     )
     return resp
 
+
 #for basic create-case
 def post_offer_mortgage_basic_2():
     session = requests.session()
