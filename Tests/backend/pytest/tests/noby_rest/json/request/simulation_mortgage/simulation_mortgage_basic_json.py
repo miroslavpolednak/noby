@@ -1,5 +1,5 @@
 
-from Tests.backend.pytest.tests.noby_rest.conftest import get_guarantee_date_from
+from Tests.backend.pytest.tests.noby_rest.conftest import get_guarantee_date_from, get_expected_date_of_drawing
 
 
 json_req_mortgage_basic_params = {"productTypeId": 20001,
@@ -11,7 +11,7 @@ json_req_mortgage_basic_params = {"productTypeId": 20001,
             "paymentDay": 15,
             "statementTypeId": 1,
             "isEmployeeBonusRequested": False,
-            "expectedDateOfDrawing": "2022-12-15T00:00:00.000",
+            "expectedDateOfDrawing": get_expected_date_of_drawing(),
             "guaranteeDateFrom": get_guarantee_date_from(),
             "financialResourcesOwn": None,
             "financialResourcesOther": None,

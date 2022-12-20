@@ -20,20 +20,19 @@ def webapi_url(request):
     return request.config.getoption("--webapi-url")
 
 
-def noby_url():
-    return "https://dev.noby.cz/api"
+def noby_sit1_url():
+    return "https://sit1.noby.cz/api"
 
 
-def get_noby_cookies():
+def get_noby_sit1_cookies():
     session = requests.session()
     session.post(
-        noby_url() + "/users/signin",
+        noby_sit1_url() + "/users/signin",
         json={
             "Login": "99917587"
         }
     )
     return session.cookies
-
 
 
 @pytest.fixture(scope="session")
@@ -100,8 +99,7 @@ def tomorrow_datetime():
     return tomorrow.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-@pytest.fixture()
-def guaranteeDateTo_datetime():
+def get_guarantee_date_to():
     guarantee_date_from = (datetime.date.today() + datetime.timedelta(days=45))
     return guarantee_date_from.strftime("%Y-%m-%dT%H:%M:%S")
 
@@ -109,3 +107,9 @@ def guaranteeDateTo_datetime():
 def get_guarantee_date_from():
     guarantee_date_from = (datetime.date.today())
     return guarantee_date_from.strftime("%Y-%d-%mT%H:%M:%S")
+
+
+def get_expected_date_of_drawing():
+    date = (datetime.date.today() + datetime.timedelta(days=30))
+    return date.strftime("%Y-%m-%dT%H:%M:%S")
+
