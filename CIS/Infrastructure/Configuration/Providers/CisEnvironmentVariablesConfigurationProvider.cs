@@ -5,7 +5,7 @@ namespace CIS.Infrastructure.Configuration.Providers;
 /// <summary>
 /// Custom configuration provider zalozeny na original EnvironmentVariablesConfigurationProvider, ktery ale nacita env.var. z target=Machine
 /// </summary>
-internal class CisEnvironmentVariablesConfigurationProvider
+internal sealed class CisEnvironmentVariablesConfigurationProvider
     : ConfigurationProvider
 {
     private readonly string _prefix;

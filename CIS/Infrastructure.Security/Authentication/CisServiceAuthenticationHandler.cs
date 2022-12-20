@@ -47,13 +47,13 @@ internal sealed class CisServiceAuthenticationHandler
         var loginResult = _headerParser.Parse(authorizationHeader);
 
         if (!loginResult.Success) // nepodarilo se parsovat login a heslo
-            return AuthenticateResult.Fail(loginResult.ErrorMessage);
-        else if (!await authenticateUser(loginResult.Login, loginResult.Password)) // nepodarila se autentizace proti AD
+            return AuthenticateResult.Fail(loginResult.ErrorMessage!);
+        else if (!await authenticateUser(loginResult.Login!, loginResult.Password!)) // nepodarila se autentizace proti AD
             return AuthenticateResult.Fail("Login or password incorrect");
         else
         {
             // vytvorit identity
-            var claimsIdentity = new ServiceUser.CisServiceIdentity(loginResult.Login);
+            var claimsIdentity = new ServiceUser.CisServiceIdentity(loginResult.Login!);
 
             // vratit autentizacni ticket
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), InternalServicesAuthentication.DefaultSchemeName);

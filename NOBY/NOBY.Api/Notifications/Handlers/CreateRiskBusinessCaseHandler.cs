@@ -35,7 +35,7 @@ internal class CreateRiskBusinessCaseHandler
         }
 
         // case
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(notification.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(notification.CaseId, cancellationToken);
         // offer
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, "SA does not have Offer bound to it");
@@ -64,21 +64,21 @@ internal class CreateRiskBusinessCaseHandler
                 SalesArrangementId = notification.SalesArrangementId,
                 LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
                 Households = new()
-            {
-                new()
                 {
-                    HouseholdId = households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId,
-                    Customers = new()
+                    new()
                     {
-                        new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationCustomer
+                        HouseholdId = households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId,
+                        Customers = new()
                         {
-                            InternalCustomerId = notification.CustomerOnSAId,
-                            PrimaryCustomerId = kbId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                            CustomerRoleId = (int)CustomerRoles.Debtor
+                            new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationCustomer
+                            {
+                                InternalCustomerId = notification.CustomerOnSAId,
+                                PrimaryCustomerId = kbId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                                CustomerRoleId = (int)CustomerRoles.Debtor
+                            }
                         }
-                    }
+                    },
                 },
-            },
                 Product = new()
                 {
                     ProductTypeId = caseInstance.Data.ProductTypeId,

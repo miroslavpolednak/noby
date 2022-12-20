@@ -1,7 +1,6 @@
-﻿using CIS.Core.Results;
-using CIS.InternalServices.DocumentGeneratorService.Contracts;
+﻿using CIS.InternalServices.DocumentGeneratorService.Contracts;
 
-namespace CIS.InternalServices.DocumentGeneratorService.Clients;
+namespace CIS.InternalServices.DocumentGeneratorService.Clients.Services;
 
 internal class DocumentGeneratorServiceClient : IDocumentGeneratorServiceClient
 {
@@ -12,10 +11,8 @@ internal class DocumentGeneratorServiceClient : IDocumentGeneratorServiceClient
         _service = service;
     }
 
-    public async Task<IServiceCallResult> GenerateDocument(GenerateDocumentRequest request, CancellationToken cancellationToken = default)
+    public Task<Document> GenerateDocument(GenerateDocumentRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GenerateDocumentAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<Document>(result);
+        return _service.GenerateDocumentAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 }

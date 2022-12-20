@@ -2,7 +2,7 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteIncome;
 
-internal class DeleteIncomeHandler
+internal sealed class DeleteIncomeHandler
     : IRequestHandler<DeleteIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)

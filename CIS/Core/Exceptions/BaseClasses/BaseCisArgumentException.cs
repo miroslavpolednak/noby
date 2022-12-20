@@ -14,7 +14,7 @@ public abstract class BaseCisArgumentException
     /// </summary>
     public int ExceptionCode { get; protected set; }
 
-    private BaseCisArgumentException(SerializationInfo info, StreamingContext context)
+    protected BaseCisArgumentException(SerializationInfo info, StreamingContext context)
         : base(info, context) { }
 
     /// <param name="exceptionCode">CIS error kód</param>

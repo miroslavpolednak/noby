@@ -14,7 +14,7 @@ internal class GetDetailHandler
         // instance SA
         var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
 
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_CA.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
         
         var parameters = getParameters(saInstance);
         /*Dto.MortgageDetailDto? data = null;

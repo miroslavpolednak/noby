@@ -23,16 +23,12 @@ internal sealed class GetCustomerHandler
             SalesArrangementId = entity.SalesArrangementId,
             CustomerRoleId = (int)entity.CustomerRoleId,
             LockedIncomeDateTime = entity.LockedIncomeDateTime,
-            MaritalStatusId = entity.MaritalStatusId
+            MaritalStatusId = entity.MaritalStatusId,
+            CustomerChangeData = entity.ChangeData
         };
 
         if (entity.AdditionalDataBin != null)
             customerInstance.CustomerAdditionalData = CustomerAdditionalData.Parser.ParseFrom(entity.AdditionalDataBin);
-        if (entity.ChangeDataBin != null)
-        {
-            var arr = CustomerChangeDataItemWrapper.Parser.ParseFrom(entity.ChangeDataBin).ChangeData;
-            customerInstance.CustomerChangeData.AddRange(arr);
-        }
         
         // identity
         var identities = await _dbContext.CustomersIdentities

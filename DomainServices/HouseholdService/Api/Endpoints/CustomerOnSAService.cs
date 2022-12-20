@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.HouseholdService.Api.Endpoints;
 
 [Authorize]
-internal class CustomerOnSAService
+internal sealed class CustomerOnSAService
     : Contracts.v1.CustomerOnSAService.CustomerOnSAServiceBase
 {
     public override async Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, ServerCallContext context)

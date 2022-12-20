@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.HouseholdService.Api.Database.Entities;
 
 [Table("CustomerOnSAObligation", Schema = "dbo")]
-internal class CustomerOnSAObligation
+internal sealed class CustomerOnSAObligation
     : CIS.Core.Data.BaseCreatedWithModifiedUserId
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

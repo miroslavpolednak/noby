@@ -1,8 +1,8 @@
-﻿using CIS.Infrastructure.MediatR.Rollback;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Test.Rollback;
 
-[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesService]
+[CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.AsImplementedInterfacesServiceAttribute]
 internal class RollbackAction
     : IRollbackAction<RollbackRequest>
 {

@@ -1,4 +1,5 @@
-﻿using _Cust = DomainServices.CustomerService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using _Cust = DomainServices.CustomerService.Contracts;
 using _Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetCustomersOnProduct;
@@ -12,18 +13,16 @@ internal sealed class GetCustomersOnProductHandler
         var customers = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetCustomersOnProductResponse>(await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken));
 
         // detail customeru z customerService
-        var identifiedCustomers = customers.Customers.Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)).ToList();
+        var identifiedCustomers = customers.Customers.Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).ToList();
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
         if (identifiedCustomers.Any())
         {
-            customerDetails = ServiceCallResult.ResolveAndThrowIfError<_Cust.CustomerListResponse>(
-                await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.First(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)), cancellationToken)
-            ).Customers.ToList();
+            customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)), cancellationToken)).Customers.ToList();
         }
 
         return customers.Customers.Select(t =>
         {
-            var c = customerDetails.FirstOrDefault(x => x.Identity.IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId);
+            var c = customerDetails.FirstOrDefault(x => x.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId);
 
             return new GetCustomersOnProductCustomer
             {

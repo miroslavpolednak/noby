@@ -12,15 +12,12 @@ using DomainServices.HouseholdService.Clients;
 
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.CaseService.Contracts;
-using DomainServices.OfferService.Contracts;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.ProductService.Contracts;
-using DomainServices.UserService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.CodebookService.Contracts.Endpoints.ProductTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.SalesArrangementTypes;
 using DomainServices.CodebookService.Contracts.Endpoints.HouseholdTypes;
-using DomainServices.CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes;
 
 
 namespace DomainServices.SalesArrangementService.Api.Handlers.Forms;
@@ -104,8 +101,7 @@ internal class FormsService
 
         var incomes = await GetIncomes(customersOnSA, cancellation);
 
-        var caseData = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-            ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
+        var caseData = await _caseService.GetCaseDetail(arrangement.CaseId, cancellation);
 
         var productType = await GetProductType(arrangement.SalesArrangementTypeId, cancellation);
 
@@ -192,7 +188,7 @@ internal class FormsService
     {
         var data = new CaseData(entity.Data);
         data.ContractNumber = contractNumber;
-        ServiceCallResult.ResolveToDefault<CaseService.Contracts.Case>(await _caseService.UpdateCaseData(entity.CaseId, data, cancellation));
+        await _caseService.UpdateCaseData(entity.CaseId, data, cancellation);
         entity.Data.ContractNumber = contractNumber;
     }
 
@@ -238,13 +234,12 @@ internal class FormsService
 
     public async Task<ServiceFormData> LoadServiceFormData(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
     {
-        var caseData = ServiceCallResult.ResolveToDefault<Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation))
-            ?? throw new CisNotFoundException(18002, $"Case ID #{arrangement.CaseId} does not exist.");
+        var caseData = await _caseService.GetCaseDetail(arrangement.CaseId, cancellation);
 
         GetMortgageResponse? _productMortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(await _productService.GetMortgage(arrangement.CaseId, cancellation)) ?? throw new CisNotFoundException(18002, $"Product ID #{arrangement.CaseId} does not exist.");
 
         var applicant = arrangement.Drawing?.Applicant;
-        CustomerDetailResponse? drawingApplicantCustomer = (applicant is null) ? null : ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(new Identity(applicant.IdentityId, (IdentitySchemes)applicant.IdentityScheme), cancellation));
+        CustomerDetailResponse? drawingApplicantCustomer = (applicant is null) ? null : await _customerService.GetCustomerDetail(new Identity(applicant.IdentityId, (IdentitySchemes)applicant.IdentityScheme), cancellation);
 
         var academicDegreesBefore = await _codebookService.AcademicDegreesBefore(cancellation);
 
@@ -453,8 +448,7 @@ internal class FormsService
         var customers = new List<CustomerDetailResponse>();
         for (int i = 0; i < customerIdentities.Count; i++)
         {
-            var customer = ServiceCallResult.ResolveToDefault<CustomerDetailResponse>(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
-            customers.Add(customer!);
+            customers.Add(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
         }
         return customers;
     }

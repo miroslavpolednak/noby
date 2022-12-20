@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DomainServices.OfferService.Clients;
 using __Services = DomainServices.OfferService.Clients.Services;
 using __Contracts = DomainServices.OfferService.Contracts;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices;
 
@@ -17,15 +18,15 @@ public static class StartupExtensions
     public static IServiceCollection AddOfferService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.AddTransient<IOfferServiceClient, __Services.OfferService>();
-        services.AddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.OfferService.OfferServiceClient>(ServiceName);
+        services.TryAddTransient<IOfferServiceClient, __Services.OfferService>();
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.OfferService.OfferServiceClient>(ServiceName);
         return services;
     }
 
     public static IServiceCollection AddOfferService(this IServiceCollection services, string serviceUrl)
     {
-        services.AddTransient<IOfferServiceClient, __Services.OfferService>();
-        services.AddCisGrpcClientUsingUrl<__Contracts.v1.OfferService.OfferServiceClient>(serviceUrl);
+        services.TryAddTransient<IOfferServiceClient, __Services.OfferService>();
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.OfferService.OfferServiceClient>(serviceUrl);
         return services;
     }
 }

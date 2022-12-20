@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.HouseholdService.Api.Database.Entities;
 
 [Table("CustomerOnSAIdentity", Schema = "dbo")]
-internal class CustomerOnSAIdentity
+internal sealed class CustomerOnSAIdentity
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int CustomerOnSAIdentityId { get; set; }
@@ -15,7 +15,7 @@ internal class CustomerOnSAIdentity
     
     public long IdentityId { get; set; }
     
-    public virtual CustomerOnSA Customer { get; set; }
+    public CustomerOnSA Customer { get; set; }
 
 #pragma warning disable CS8618
     public CustomerOnSAIdentity()

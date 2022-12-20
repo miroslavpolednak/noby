@@ -8,27 +8,36 @@ import "GrpcDate.proto";
 import "GrpcDecimal.proto";
 import "GenericTable.proto";
 import "Signature.proto";
+import "DocumentFooter.proto";
+
+enum OutputFileType {
+	Unknown = 0;
+	Pdfa = 1;
+	OpenForm = 2;
+}
 
 message GenerateDocumentRequest {
-	string DocumentId = 1;
+	int32 TemplateTypeId = 1;
 
-	int32 TemplateTypeId = 2;
+	google.protobuf.StringValue TemplateVersion = 2;
 
-	string TemplateVersion = 3;
+	OutputFileType OutputType = 3;
 
-	string OutputType = 4;
+	repeated GenerateDocumentPart Parts = 4;
 
-	repeated GenerateDocumentPart Parts = 5;
+	repeated Signature CustomerSignatures = 5;
 
-	repeated Signature CustomerSignatures = 6;
+	DocumentFooter DocumentFooter = 6;
 }
 
 message GenerateDocumentPart {
-	google.protobuf.Int32Value TemplateTypeId = 1;
+	int32 TemplateTypeId = 1;
 
-	google.protobuf.Int32Value Order = 2;
+	google.protobuf.StringValue TemplateVersion = 2;
 
-	repeated GenerateDocumentPartData Data = 3;
+	google.protobuf.Int32Value Order = 3;
+
+	repeated GenerateDocumentPartData Data = 4;
 }
 
 message GenerateDocumentPartData {

@@ -295,7 +295,7 @@ internal static class Extensions
 
             return new cLA.LoanApplicationHousehold
             {
-                HouseholdId = h.HouseholdTypeId,
+                HouseholdId = h.HouseholdId,
                 HouseholdTypeId = h.HouseholdTypeId,
                 PropertySettlementId = propertySettlementId.HasValue ? propertySettlementId.Value : 0,
                 ChildrenUpToTenYearsCount = childrenUpToTenYearsCount.HasValue ? childrenUpToTenYearsCount.Value : 0,

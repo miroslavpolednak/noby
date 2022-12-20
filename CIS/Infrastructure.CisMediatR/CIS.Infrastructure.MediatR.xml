@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.Infrastructure.CisMediatR</name>
+    </assembly>
+    <members>
+        <member name="T:CIS.Infrastructure.CisMediatR.AssemblyDoc">
+            <summary>
+            MediatR custom behaviors
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions">
+            <summary>
+            Extension metody do startupu aplikace pro registraci behaviors.
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.CisMediatR.CisMediatrStartupExtensions.AddCisMediatrRollbackCapability(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Pridava moznost rollbacku do Mediatr handleru. Rollback se spusti vyhozenim exception kdykoliv v prubehu exekuce handleru. Po ukonceni rollbacku se dana exception propaguje standardne dal do pipeline.
+            </summary>
+            <remarks>
+            Moznost rollbacku se do Mediatr Requestu prida dedenim interface <see cref="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable">IRollbackCapable</see>, napr. class MyRequest : IRequest&lt;T&gt;, IRollbackCapable {}
+            Dale je nutne vytvorit vlastni kod rollbacku. To je trida dedici z <see cref="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction`1">IRollbackAction</see> - vlozeni teto tridy do DI je v gesci volajici aplikace.
+            Pro prenos dat mezi Mediatr handlerem a rollback akci je pouzita scoped instance <see cref="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackBag">IRollbackBag</see>. Do teto instance by mel handler postupne ukladat metadata potrebna pro rollback (napr. vytvorena Id entit).
+            </remarks>
+        </member>
+        <member name="T:CIS.Infrastructure.CisMediatR.GrpcValidationBehavior`2">
+            <summary>
+            MediatR pipeline, která přidává do flow requestu FluentValidation.
+            </summary>
+            <remarks>
+            Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
+            </remarks>
+        </member>
+        <member name="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction`1">
+            <summary>
+            Deklarace kontraktu pro tridu s kodem pro provedeni rollbacku Mediatr handleru.
+            </summary>
+            <typeparam name="TRequest">Mediatr Request type</typeparam>
+        </member>
+        <member name="M:CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction`1.ExecuteRollback(System.Exception,`0,System.Threading.CancellationToken)">
+            <summary>
+            Metoda s implementaci vlastniho rollbacku
+            </summary>
+            <param name="exception">Vyjimka, ktera rollback spustila</param>
+            <param name="request">Puvodni Mediatr request</param>
+            <returns></returns>
+        </member>
+        <member name="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackBag">
+            <summary>
+            Uloziste umoznujici prenos vybranych dat z Meditr handleru do rollback handleru.
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.CisMediatR.Rollback.IRollbackBag.Count">
+            <summary>
+            Pocet polozek vlozenych do bagu
+            </summary>
+        </member>
+        <member name="M:CIS.Infrastructure.CisMediatR.Rollback.IRollbackBag.Add(System.String,System.Object)">
+            <summary>
+            Prida dalsi polozku do bagu. Jednotlive polozky jsou nasledne readonly dostupne jako dictionary.
+            </summary>
+            <param name="key">Unikatni klic polozky</param>
+            <param name="value">Hodnota polozky - napr. int32 (id)</param>
+        </member>
+        <member name="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable">
+            <summary>
+            Marker interface pro Mediatr Request, ktery ma podporovat rollback pipeline.
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.CisMediatR.Rollback.RollbackBag">
+            <summary>
+            Vychozi implementace rollback uloziste
+            </summary>
+        </member>
+    </members>
+</doc>

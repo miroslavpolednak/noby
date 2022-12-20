@@ -1,10 +1,8 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using _CS = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -14,7 +12,7 @@ internal sealed class IdentifyByIdentityHandler
     protected override async Task Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
         // crm customer
-        var customerInstance = ServiceCallResult.ResolveAndThrowIfError<_CS.CustomerDetailResponse>(await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken));
+        var customerInstance = await _customerService.GetCustomerDetail(request.CustomerIdentity!, cancellationToken);
         // customer On SA
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
         // SA

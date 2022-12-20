@@ -1,7 +1,11 @@
 using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
+using CIS.InternalServices;
+using CIS.InternalServices.DocumentGeneratorService.Api;
 using CIS.InternalServices.DocumentGeneratorService.Api.Services;
+using DomainServices;
 
 var runAsWinSvc = args.Any(t => t.Equals("winsvc"));
 
@@ -15,7 +19,14 @@ builder.AddCisEnvironmentConfiguration() // globalni nastaveni prostredi
        .AddCisCoreFeatures()
        .AddCisLogging()
        .AddCisTracing()
-       .AddCisHealthChecks();
+       .AddCisHealthChecks()
+       .AddCisServiceAuthentication();
+
+builder.Services.Configure<GeneratorConfiguration>(builder.Configuration.GetRequiredSection("GeneratorConfiguration"));
+
+builder.Services
+       .AddCisServiceDiscovery()
+       .AddCodebookService();
 
 builder.Services.AddAttributedServices(typeof(Program));
 
@@ -26,7 +37,11 @@ if (runAsWinSvc) builder.Host.UseWindowsService();
 
 var app = builder.UseKestrelWithCustomConfiguration().Build();
 
+app.UseServiceDiscovery();
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCisLogging();
 

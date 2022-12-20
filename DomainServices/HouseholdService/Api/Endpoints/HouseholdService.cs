@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.HouseholdService.Api.Endpoints;
 
 [Authorize]
-internal class HouseholdService 
+internal sealed class HouseholdService 
     : Contracts.v1.HouseholdService.HouseholdServiceBase
 {
     public override async Task<CreateHouseholdResponse> CreateHousehold(CreateHouseholdRequest request, ServerCallContext context)

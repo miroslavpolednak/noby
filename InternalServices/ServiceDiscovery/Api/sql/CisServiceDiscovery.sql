@@ -13,6 +13,7 @@ INSERT INTO @services VALUES
 -- DEV:
 ('DEV','CIS:DocumentArchiveService','https://172.30.35.51:30005',1),
 ('DEV','CIS:DocumentArchiveService','https://172.30.35.51:30017',2),
+('DEV','CIS:DocumentGeneratorService','https://172.30.35.51:30014',1),
 ('DEV','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('DEV','CIS:NotificationService','https://172.30.35.51:30015',1),
 ('DEV','CIS:NotificationService','https://172.30.35.51:30016',2),
@@ -47,6 +48,7 @@ INSERT INTO @services VALUES
 -- FAT:
 ('FAT','CIS:DocumentArchiveService','https://ds-discovery-fat.vsskb.cz:31005',1),
 ('FAT','CIS:DocumentArchiveService','https://ds-discovery-fat.vsskb.cz:31017',2),
+('FAT','CIS:DocumentGeneratorService','https://ds-discovery-fat.vsskb.cz:31014',1),
 ('FAT','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat,password=MpssFatPass,allowAdmin=false,tieBreaker=',3),
 ('FAT','CIS:NotificationService','https://ds-discovery-fat.vsskb.cz:31015',1),
 ('FAT','CIS:NotificationService','https://ds-discovery-fat.vsskb.cz:31016',2),
@@ -81,6 +83,7 @@ INSERT INTO @services VALUES
 -- SIT:
 ('SIT1','CIS:DocumentArchiveService','https://172.30.35.51:32005',1),
 ('SIT1','CIS:DocumentArchiveService','https://172.30.35.51:32017',2),
+('SIT1','CIS:DocumentGeneratorService','https://172.30.35.51:32014',1),
 ('SIT1','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_sit1,password=MpssSit1Pass,allowAdmin=false,tieBreaker=',3),
 ('SIT1','CIS:NotificationService','https://172.30.35.51:32015',1),
 ('SIT1','CIS:NotificationService','https://172.30.35.51:32016',2),
@@ -115,6 +118,7 @@ INSERT INTO @services VALUES
 -- UAT:
 ('UAT','CIS:DocumentArchiveService','https://172.30.35.51:33005',1),
 ('UAT','CIS:DocumentArchiveService','https://172.30.35.51:33017',2),
+('UAT','CIS:DocumentGeneratorService','https://172.30.35.51:33014',1),
 ('UAT','CIS:GlobalCache:Redis','redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_uat1,password=MpssUat1Pass,allowAdmin=false,tieBreaker=',3),
 ('UAT','CIS:NotificationService','https://172.30.35.51:33015',1),
 ('UAT','CIS:NotificationService','https://172.30.35.51:33016',2),

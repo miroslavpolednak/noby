@@ -59,7 +59,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
         public Dictionary<string, CustomerDetailResponse> CustomersByIdentityCode { 
             get
             {
-                return customersByIdentityCode ?? Customers.ToDictionary(i => i.Identity.ToCode());
+                return customersByIdentityCode ?? Customers.ToDictionary(i => i.Identities.First().ToCode());
             }        
         }
 

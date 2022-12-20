@@ -112,10 +112,10 @@ internal class LoanApplicationDataService
         var results = new List<cCustomer.CustomerDetailResponse>();
         for (int i = 0; i < customerIdentities.Count; i++)
         {
-            var customer = ServiceCallResult.ResolveAndThrowIfError<cCustomer.CustomerDetailResponse>(await _customerService.GetCustomerDetail(customerIdentities[i], cancellation));
-            results.Add(customer!);
+            var customer = await _customerService.GetCustomerDetail(customerIdentities[i], cancellation);
+            results.Add(customer);
         }
-        return results.ToDictionary(i => IdentityToCode(i.Identity));
+        return results.ToDictionary(i => IdentityToCode(i.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)));
     }
 
     #endregion
@@ -127,7 +127,7 @@ internal class LoanApplicationDataService
         var customersOnSA = await GetCustomersOnSA(arrangement.SalesArrangementId, cancellation);
         var households = await GetHouseholds(arrangement.SalesArrangementId, cancellation);
         var incomesById = await GetIncomesById(customersOnSA, cancellation);
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<cCase.Case>(await _caseService.GetCaseDetail(arrangement.CaseId, cancellation));
+        var caseInstance = await _caseService.GetCaseDetail(arrangement.CaseId, cancellation);
         var customersByIdentityCode = await GetCustomersByIdentityCode(customersOnSA, cancellation);
         //Dictionary<string, cCustomer.CustomerDetailResponse> customersByIdentityCode = null;
         var user = await _userService.GetUser(_userAccessor.User!.Id, cancellation);

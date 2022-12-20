@@ -16,7 +16,7 @@ internal class LinkModelationToSalesArrangementHandler
             ?? throw new CisNotFoundException(18000, $"Sales arrangement ID {request.SalesArrangementId} does not exist.");
 
         // instance Case
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.CaseService.Contracts.Case>(await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation));
+        var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
 
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)

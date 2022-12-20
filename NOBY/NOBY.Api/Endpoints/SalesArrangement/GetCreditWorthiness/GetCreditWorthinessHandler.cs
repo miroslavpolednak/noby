@@ -16,7 +16,7 @@ internal class GetCreditWorthinessHandler
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, $"Offer instance not found for SA {saInstance.SalesArrangementId}");
         // case instance
-        var caseInstance = ServiceCallResult.ResolveAndThrowIfError<_Case.Case>(await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken));
+        var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
         // offer instance
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
         // user instance

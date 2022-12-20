@@ -71,6 +71,8 @@ internal class CreateIdentifiedSubject
 
     private NaturalPersonAttributes CreateNaturalPersonAttributes(NaturalPerson naturalPerson)
     {
+        var citizenshipCodes = naturalPerson.CitizenshipCountriesId.Select(id => _countries.First(c => c.Id == id).ShortName).ToList();
+
         return new NaturalPersonAttributes
         {
             FirstName = naturalPerson.FirstName,
@@ -79,7 +81,7 @@ internal class CreateIdentifiedSubject
             BirthDate = naturalPerson.DateOfBirth,
             Title = _titles.FirstOrDefault(t => t.Id == naturalPerson.DegreeBeforeId)?.Name,
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
-            CitizenshipCodes = naturalPerson.CitizenshipCountriesId.Select(id => _countries.First(c => c.Id == id).ShortName).ToList(),
+            CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
             MaritalStatusCode = _maritals.First(m => m.Id == naturalPerson.MaritalStatusStateId).RdmMaritalStatusCode,
             BirthPlace = naturalPerson.PlaceOfBirth.ToCMString(),

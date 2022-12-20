@@ -586,8 +586,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 var developer = data.Offer.SimulationInputs.Developer;
                 var developerDescription = (developer == null) ? null : String.Join(",", new List<string> { developer.NewDeveloperName, developer.NewDeveloperCin, developer.NewDeveloperProjectName }.Where(i => !String.IsNullOrWhiteSpace(i))).ToNullIfWhiteSpace();
 
-                var insuranceSumRiskLife = data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
-                var insuranceSumRealEstate = data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RealEstateInsurance.Sum;
+                var insuranceSumRiskLife = data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal?)data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
+                var insuranceSumRealEstate = data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal?)data.Offer.SimulationInputs.RealEstateInsurance.Sum;
 
                 var typCerpani = data.Offer.SimulationInputs.DrawingTypeId.HasValue ? data.DrawingTypeById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingTypeId.Value)?.StarbuildId : null;
                 var lhutaUkonceniCerpani = data.Offer.SimulationInputs.DrawingDurationId.HasValue ? data.DrawingDurationById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingDurationId.Value)?.DrawingDuration : null;
@@ -672,7 +672,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
             object MapF3602(Household household, DynamicValues? dynamicValues)
             {
                 var customersOnSa = data.CustomersOnSa.Where(i => i.CustomerOnSAId == household.CustomerOnSAId1 || i.CustomerOnSAId == household.CustomerOnSAId2).ToList();
-                bool isPartner = data.CustomersOnSa.Count == 2 ? HouseholdService.Clients.Helpers.AreCustomersPartners(data.CustomersOnSa[0].MaritalStatusId, data.CustomersOnSa[1].MaritalStatusId) : false;
+                bool isPartner = customersOnSa.Count == 2 ? HouseholdService.Clients.Helpers.AreCustomersPartners(customersOnSa[0].MaritalStatusId, customersOnSa[1].MaritalStatusId) : false;
                 int cisloDomacnosti = householdNumbersById[household.HouseholdId];
 
                 var jsonData = new
@@ -752,7 +752,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 // Budem je mít vypálené přímo na žádost o čerpání pod Applicant(tam bude modré ID) a pak přes KonsDB přímým přístupem zjistíme z PartnerId KBID, které je v tabulce dbo.partner a parametru KBPartyId
                 // Případně se dá s modrým ID zavolat getDetail customer service který v detailu customera vrátí KBID... obě cesty si dovedu představit(smile) ta druhá je asi trochu čístší
                 // drawing.Applicant.IdentityId
-                kb_id = data.DrawingApplicantCustomer?.Identity?.IdentityId.ToJsonString(),     // KonsDb
+                kb_id = data.DrawingApplicantCustomer?.Identities.First().IdentityId.ToJsonString(),     // KonsDb
                 mp_id = drawing?.Applicant?.IdentityId.ToJsonString(),                         // Mortgage.PartnerId
 
                 rodne_cislo_ico = data.DrawingApplicantCustomer?.NaturalPerson?.BirthNumber,

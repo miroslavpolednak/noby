@@ -15,7 +15,7 @@ public interface ICustomerServiceClient
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
-    Task<IServiceCallResult> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default);
+    Task<ProfileCheckResponse> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoreni klienta v CM nebo MP (podle schematu)
@@ -26,7 +26,7 @@ public interface ICustomerServiceClient
     /// <exception cref="Grpc.Core.RpcException">Customer already exists in KB CM or state registry is unavailable, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
-    Task<IServiceCallResult> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default);
+    Task<CreateCustomerResponse> CreateCustomer(CreateCustomerRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Detail customera podle identity
@@ -36,7 +36,7 @@ public interface ICustomerServiceClient
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
-    Task<IServiceCallResult> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default);
+    Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vyhledaní customeru podle identities
@@ -46,7 +46,7 @@ public interface ICustomerServiceClient
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
-    Task<IServiceCallResult> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default);
+    Task<CustomerListResponse> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vyhledaní customeru
@@ -56,5 +56,5 @@ public interface ICustomerServiceClient
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
-    Task<IServiceCallResult> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default);
+    Task<SearchCustomersResponse> SearchCustomers(SearchCustomersRequest request, CancellationToken cancellationToken = default);
 }

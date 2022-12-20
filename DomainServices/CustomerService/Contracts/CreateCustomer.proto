@@ -7,9 +7,10 @@ import "NaturalPerson.proto";
 import "IdentificationDocument.proto";
 import "GrpcAddress.proto";
 import "Contact.proto";
+import "Mandants.proto";
 
 message CreateCustomerRequest {
-	cis.types.Identity Identity = 1;
+	repeated cis.types.Identity Identities = 1;
 
 	bool HardCreate = 2;
 
@@ -20,6 +21,8 @@ message CreateCustomerRequest {
 	repeated cis.types.GrpcAddress Addresses = 5;
 
 	repeated Contact Contacts = 6;
+
+	cis.types.Mandants Mandant = 7;
 }
 
 message CreateCustomerResponse {

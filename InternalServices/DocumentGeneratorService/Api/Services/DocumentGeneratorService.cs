@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.DocumentGeneratorService.Contracts;
+﻿using CIS.Core.Exceptions;
 using Grpc.Core;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
@@ -12,10 +12,15 @@ internal class DocumentGeneratorService : Contracts.V1.DocumentGeneratorService.
         _documentManager = documentManager;
     }
 
-    public override Task<Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
+    public override async Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request, ServerCallContext context)
     {
-        var document = _documentManager.GenerateDocument(request);
-
-        return Task.FromResult(document);
+        try
+        {
+            return await _documentManager.GenerateDocument(request);
+        }
+        catch (Exception e)
+        {
+            throw new CisException(0, e.StackTrace!);
+        }
     }
 }

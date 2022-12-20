@@ -18,27 +18,27 @@ import "UpdateActiveTasks.proto";
 import "UpdateOfferContacts.proto";
 
 service CaseService {
-   rpc CreateCase (DomainServices.CaseService.CreateCaseRequest) returns (DomainServices.CaseService.CreateCaseResponse);
+   rpc CreateCase (CreateCaseRequest) returns (CreateCaseResponse);
    
-   rpc GetCaseDetail (DomainServices.CaseService.GetCaseDetailRequest) returns (DomainServices.CaseService.Case);
+   rpc GetCaseDetail (GetCaseDetailRequest) returns (Case);
    
-   rpc SearchCases (DomainServices.CaseService.SearchCasesRequest) returns (DomainServices.CaseService.SearchCasesResponse);
+   rpc SearchCases (SearchCasesRequest) returns (SearchCasesResponse);
    
-   rpc LinkOwnerToCase (DomainServices.CaseService.LinkOwnerToCaseRequest) returns (google.protobuf.Empty);
+   rpc LinkOwnerToCase (LinkOwnerToCaseRequest) returns (google.protobuf.Empty);
    
-   rpc UpdateCaseData (DomainServices.CaseService.UpdateCaseDataRequest) returns (google.protobuf.Empty);
+   rpc UpdateCaseData (UpdateCaseDataRequest) returns (google.protobuf.Empty);
    
-   rpc UpdateCaseState (DomainServices.CaseService.UpdateCaseStateRequest) returns (google.protobuf.Empty);
+   rpc UpdateCaseState (UpdateCaseStateRequest) returns (google.protobuf.Empty);
    
-   rpc UpdateCaseCustomer (DomainServices.CaseService.UpdateCaseCustomerRequest) returns (google.protobuf.Empty);
+   rpc UpdateCaseCustomer (UpdateCaseCustomerRequest) returns (google.protobuf.Empty);
 
-   rpc GetCaseCounts (DomainServices.CaseService.GetCaseCountsRequest) returns (GetCaseCountsResponse);
+   rpc GetCaseCounts (GetCaseCountsRequest) returns (GetCaseCountsResponse);
 
-   rpc DeleteCase (DomainServices.CaseService.DeleteCaseRequest) returns (google.protobuf.Empty);
+   rpc DeleteCase (DeleteCaseRequest) returns (google.protobuf.Empty);
 
-   rpc GetTaskList (DomainServices.CaseService.GetTaskListRequest) returns (DomainServices.CaseService.GetTaskListResponse);
+   rpc GetTaskList (GetTaskListRequest) returns (GetTaskListResponse);
 
-   rpc UpdateActiveTasks (DomainServices.CaseService.UpdateActiveTasksRequest) returns (google.protobuf.Empty);
+   rpc UpdateActiveTasks (UpdateActiveTasksRequest) returns (google.protobuf.Empty);
 
-   rpc UpdateOfferContacts (DomainServices.CaseService.UpdateOfferContactsRequest) returns (google.protobuf.Empty);
+   rpc UpdateOfferContacts (UpdateOfferContactsRequest) returns (google.protobuf.Empty);
 }

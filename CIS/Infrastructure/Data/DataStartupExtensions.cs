@@ -20,6 +20,12 @@ public static class DataStartupExtensions
         return services;
     }
 
+    public static IServiceCollection AddDapperOracle<TConnectionProvider>(this IServiceCollection services, string connectionString)
+    {
+        services.AddSingleton<CIS.Core.Data.IConnectionProvider<TConnectionProvider>>(new OracleConnectionProvider<TConnectionProvider>(connectionString));
+
+        return services;
+    }
     /// <summary>
     /// Registrace DbContextu pro EntityFramework
     /// </summary>

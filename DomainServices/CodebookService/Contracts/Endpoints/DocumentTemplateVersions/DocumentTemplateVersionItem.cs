@@ -11,4 +11,7 @@ public class DocumentTemplateVersionItem
 
     [DataMember(Order = 3)]
     public string DocumentVersion { get; set; }
+
+    [DataMember(Order = 4)]
+    public bool IsValid { get; set; }
 }

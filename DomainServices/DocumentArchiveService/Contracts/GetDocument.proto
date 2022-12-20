@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentArchiveService.GetDocument;
+option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
+
+import "DocumentMetadata.proto";
+
+message GetDocumentRequest{
+	// ID dokumentu
+	string documentId = 1;
+	// Vrátit i binární data (default=false)
+	bool withContent = 2;
+
+	string userLogin = 3;
+}
+
+message GetDocumentResponse{
+	// Metadata dokumentu
+	DocumentMetadata Metadata = 1;
+	
+	FileInfo Content = 2;
+}
+
+message FileInfo {
+	// Soubour (pole bajtů) ve formě base64string 
+    bytes BinaryData = 1;
+    // MIME typ dokumentu
+    string MineType = 2;
+}
+

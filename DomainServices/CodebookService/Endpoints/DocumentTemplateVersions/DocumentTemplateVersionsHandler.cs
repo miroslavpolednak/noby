@@ -1,22 +1,28 @@
 ﻿using DomainServices.CodebookService.Contracts.Endpoints.DocumentTemplateVersions;
-using DomainServices.CodebookService.Contracts.Endpoints.RepaymentScheduleTypes;
 
 namespace DomainServices.CodebookService.Endpoints.DocumentTemplateVersions;
 
 internal class DocumentTemplateVersionsHandler
     : IRequestHandler<DocumentTemplateVersionsRequest, List<DocumentTemplateVersionItem>>
 {
-    public Task<List<DocumentTemplateVersionItem>> Handle(DocumentTemplateVersionsRequest request, CancellationToken cancellationToken)
+
+    #region Construction
+
+    const string _sqlQuery = @"SELECT DocumentTemplateVersionId 'Id',  DocumentTemplateTypeId, DocumentVersion, CASE WHEN SYSDATETIME() BETWEEN[ValidFrom] AND ISNULL([ValidTo], '9999-12-31') THEN 1 ELSE 0 END 'IsValid'
+                               FROM[dbo].[DocumentTemplateVersion] ORDER BY DocumentTemplateVersionId ASC";
+
+    private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;
+
+    public DocumentTemplateVersionsHandler(CIS.Core.Data.IConnectionProvider connectionProviderCodebooks)
     {
-        // TODO: Redirect to real data source!
-        var ids = new List<int> { 1, 2, 3, 4, 5, 6 };
-        return Task.FromResult(
-            ids.Select(i => new DocumentTemplateVersionItem
-            {
-                Id = i,
-                DocumentTemplateTypeId = i,
-                DocumentVersion = "001A"
-            }).ToList()
-         );
+        _connectionProviderCodebooks = connectionProviderCodebooks;
     }
+
+    #endregion
+
+    public async Task<List<DocumentTemplateVersionItem>> Handle(DocumentTemplateVersionsRequest request, CancellationToken cancellationToken)
+    {
+        return await FastMemoryCache.GetOrCreate<DocumentTemplateVersionItem>(nameof(DocumentTemplateVersionsHandler), async () => await _connectionProviderCodebooks.ExecuteDapperRawSqlToList<DocumentTemplateVersionItem>(_sqlQuery, cancellationToken));
+    }
+
 }

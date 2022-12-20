@@ -113,12 +113,26 @@ public class CustomerController : ControllerBase
     /// Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer-on-sa/{customerOnSAId:int}")]
+    [HttpGet("customer-on-sa/{customerOnSAId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(GetDetailWithChanges.GetDetailWithChangesResponse), StatusCodes.Status200OK)]
-    public async Task<GetDetailWithChanges.GetDetailWithChangesResponse> GetDetailWithChanges(int customerOnSAId, CancellationToken cancellationToken)
+    public async Task<GetDetailWithChanges.GetDetailWithChangesResponse> GetDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetailWithChanges.GetDetailWithChangesRequest(customerOnSAId), cancellationToken);
+
+    /// <summary>
+    /// Uložení dat klienta (pro uložení změn lokálně)
+    /// </summary>
+    /// <remarks>
+    /// Ukládá data klienta (deltu oproti KB CM pro červené produkty, do budoucna i deltu oproti KonsDB pro modré produkty). <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("customer-on-sa/{customerOnSAId:int}")]
+    [Consumes("application/json")]
+    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task GetDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
+        => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);
 
     private readonly IMediator _mediator;
     public CustomerController(IMediator mediator) =>  _mediator = mediator;

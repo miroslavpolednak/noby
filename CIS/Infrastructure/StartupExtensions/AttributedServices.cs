@@ -9,7 +9,7 @@ public static class AttributedServices
         // register all services
         services.Scan(selector => selector
             .FromAssembliesOf(scannableAssemblies)
-            .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+            .AddClasses(x => x.WithAttribute<ScopedServiceAttribute>().WithAttribute<AsImplementedInterfacesServiceAttribute>())
             .AsImplementedInterfaces()
             .WithScopedLifetime());
 
@@ -21,7 +21,7 @@ public static class AttributedServices
         
         services.Scan(selector => selector
             .FromAssembliesOf(scannableAssemblies)
-            .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+            .AddClasses(x => x.WithAttribute<TransientServiceAttribute>().WithAttribute<AsImplementedInterfacesServiceAttribute>())
             .AsImplementedInterfaces()
             .WithTransientLifetime());
 
@@ -33,7 +33,7 @@ public static class AttributedServices
 
         services.Scan(selector => selector
             .FromAssembliesOf(scannableAssemblies)
-            .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<AsImplementedInterfacesService>())
+            .AddClasses(x => x.WithAttribute<SingletonServiceAttribute>().WithAttribute<AsImplementedInterfacesServiceAttribute>())
             .AsImplementedInterfaces()
             .WithSingletonLifetime());
 
