@@ -28,12 +28,12 @@ internal class GetDocumentStatusHandler : IRequestHandler<GetDocumentStatusMedia
         //    throw new NotSupportedException($"Mandant '{request.Mandant}' is not supported");
         //}
 
-        var response = (await _eSignatures.GetDocumentStatus(request.DocumentId, request.Mandant)).ToESignaturesResult<ESignatures.ESignaturesWrapper.ResponseStatus>();
+        var status = await _eSignatures.GetDocumentStatus(request.DocumentId, request.Mandant);
 
         var model = new GetDocumentStatusResponse
         {
             DocumentId = request.DocumentId,
-            DocumentStatus = response.Status
+            DocumentStatus = status
         };
 
         return model;

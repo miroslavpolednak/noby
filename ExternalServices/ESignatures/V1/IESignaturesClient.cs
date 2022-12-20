@@ -1,19 +1,12 @@
 ﻿using CIS.Foms.Enums;
-using ExternalServices.ESignatures.V1.ESignaturesWrapper;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
-namespace ExternalServices.ESignatures.V1
+namespace ExternalServices.ESignatures.V1;
+
+public interface IESignaturesClient
+    : IExternalServiceClient
 {
-    public interface IESignaturesClient
-    {
-        /// <summary>
-        /// Popis . . . .
-        /// </summary>
-        Task<IServiceCallResult> PrepareDocument(PrepareDocumentRequest request, string org);
+    Task<string?> GetDocumentStatus(string documentId, IdentitySchemes mandant, CancellationToken cancellationToken = default(CancellationToken));
 
-        /// <summary>
-        /// Document status
-        /// </summary>
-        Task<IServiceCallResult> GetDocumentStatus(string documentId, IdentitySchemes mandant);
-
-    }
+    const string Version = "V1";
 }
