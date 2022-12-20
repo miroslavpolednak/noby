@@ -52,13 +52,21 @@ internal class RealAddressWhispererClient
                 response.EnsureSuccessStatusCode();
                 var xml = XElement.Parse(rawResponse);
 
-                var baseNode = xml
+                var nodes = xml
                     .Descendants(_soapenv + "Body")
                     .Descendants(_ns1 + "getAddressDetailsRes")
                     .Descendants(_ns2 + "addressPointPostalRepresentationList")
                     .Descendants(_ns2 + "addressPointPostalRepresentation")
-                    .Where(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation")
-                    .FirstOrDefault();
+                    .ToList();
+                if (nodes is null || nodes.Count == 0)
+                    return null;
+
+                XElement? baseNode;
+
+                if (country == "CZ" || country == "SK")
+                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value.Contains("Ruian") ?? false);
+                else
+                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation");
 
                 if (baseNode is not null)
                 {
@@ -69,7 +77,11 @@ internal class RealAddressWhispererClient
                         Country = baseNode.Element(_ns2 + "country")?.Value,
                         HouseNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
                         Postcode = baseNode.Element(_ns2 + "postcode")?.Value,
-                        Street = baseNode.Element(_ns2 + "street")?.Value
+                        Street = baseNode.Element(_ns2 + "street")?.Value,
+                        StreetNumber = baseNode.Element(_ns2 + "streetNumber")?.Value,
+                        EvidenceNumber = baseNode.Element(_ns2 + "evidenceNumber")?.Value,
+                        DeliveryDetails = baseNode.Element(_ns2 + "deliveryDetails")?.Value,
+                        PragueDistrict = baseNode.Element(_ns2 + "pragueDistrict")?.Value,
                     };
                 }
                 else
