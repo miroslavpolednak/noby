@@ -1,24 +1,24 @@
-﻿using ExternalServices.AddressWhisperer.Shared;
+﻿using ExternalServices.AddressWhisperer.Dto;
 
 namespace ExternalServices.AddressWhisperer.V1;
 
 internal sealed class MockAddressWhispererClient
     : IAddressWhispererClient
 {
-    public Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, string title, string? country, CancellationToken cancellationToken)
+    public Task<AddressDetail?> GetAddressDetail(string sessionId, string addressId, string title, string? country, CancellationToken cancellationToken)
     {
-        return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult<AddressDetail>(new AddressDetail
+        return Task.FromResult<AddressDetail?>(new AddressDetail
         {
             Street = "Moje ulice",
             City = "Praha"
-        }));
+        });
     }
 
-    public Task<IServiceCallResult> GetSuggestions(string sessionId, string text, int pageSize, string country, CancellationToken cancellationToken)
+    public Task<List<Dto.FoundSuggestion>> GetSuggestions(string sessionId, string text, int pageSize, string? country, CancellationToken cancellationToken)
     {
-        return Task.FromResult<IServiceCallResult>(new SuccessfulServiceCallResult<List<FoundSuggestion>>(new List<FoundSuggestion>
+        return Task.FromResult(new List<FoundSuggestion>
         {
             new FoundSuggestion { AddressId = "1", Title = "Moje ulice, Praha" }
-        }));
+        });
     }
 }

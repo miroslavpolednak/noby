@@ -1,4 +1,4 @@
-﻿namespace ExternalServices.AddressWhisperer.Shared;
+﻿namespace ExternalServices.AddressWhisperer.Dto;
 
 public sealed class FoundSuggestion
 {

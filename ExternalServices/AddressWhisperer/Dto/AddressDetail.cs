@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ExternalServices.AddressWhisperer.Shared;
+﻿namespace ExternalServices.AddressWhisperer.Dto;
 
 public class AddressDetail
 {

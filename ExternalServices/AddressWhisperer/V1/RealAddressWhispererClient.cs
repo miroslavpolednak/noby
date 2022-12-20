@@ -8,7 +8,7 @@ namespace ExternalServices.AddressWhisperer.V1;
 internal class RealAddressWhispererClient
     : IAddressWhispererClient
 {
-    public async Task<IServiceCallResult> GetAddressDetail(string sessionId, string addressId, string title, string country, CancellationToken cancellationToken)
+    public async Task<Dto.AddressDetail?> GetAddressDetail(string sessionId, string addressId, string title, string country, CancellationToken cancellationToken)
     {
         string soap = _soapEnvelopeStart + getHeader() + $@"<soapenv:Body>
       <v1:getAddressDetailsReq>
@@ -34,7 +34,7 @@ internal class RealAddressWhispererClient
                 { "Payload", await request.Content!.ReadAsStringAsync(cancellationToken) }
             }))
             {
-                _logger.HttpRequestPayload("getAddressDetails", _configuration.ServiceUrl);
+                _logger.HttpRequestPayload("getAddressDetails", _configuration.ServiceUrl!.ToString());
             }
 
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
@@ -46,7 +46,7 @@ internal class RealAddressWhispererClient
                     { "Payload", rawResponse }
                 }))
                 {
-                    _logger.HttpResponsePayload("getAddressDetails", _configuration.ServiceUrl, (int)response.StatusCode);
+                    _logger.HttpResponsePayload("getAddressDetails", _configuration.ServiceUrl!.ToString(), (int)response.StatusCode);
                 }
 
                 response.EnsureSuccessStatusCode();
@@ -62,7 +62,7 @@ internal class RealAddressWhispererClient
 
                 if (baseNode is not null)
                 {
-                    return new SuccessfulServiceCallResult<Shared.AddressDetail>(new Shared.AddressDetail
+                    return new Dto.AddressDetail
                     {
                         City = baseNode.Element(_ns2 + "city")?.Value,
                         CityDistrict = baseNode.Element(_ns2 + "cityDistrict")?.Value,
@@ -70,15 +70,15 @@ internal class RealAddressWhispererClient
                         HouseNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
                         Postcode = baseNode.Element(_ns2 + "postcode")?.Value,
                         Street = baseNode.Element(_ns2 + "street")?.Value
-                    });
+                    };
                 }
                 else
-                    return new EmptyServiceCallResult();
+                    return null;
             }
         }
     }
 
-    public async Task<IServiceCallResult> GetSuggestions(string sessionId, string text, int pageSize, string? country, CancellationToken cancellationToken)
+    public async Task<List<Dto.FoundSuggestion>> GetSuggestions(string sessionId, string text, int pageSize, string? country, CancellationToken cancellationToken)
     {
         string soap = _soapEnvelopeStart + getHeader() + $@"<soapenv:Body>
       <v1:getSuggestionsReq>
@@ -104,7 +104,7 @@ internal class RealAddressWhispererClient
                 { "Payload", await request.Content!.ReadAsStringAsync(cancellationToken) }
             }))
             {
-                _logger.HttpRequestPayload("getSuggestions", _configuration.ServiceUrl);
+                _logger.HttpRequestPayload("getSuggestions", _configuration.ServiceUrl!.ToString());
             }
 
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
@@ -116,20 +116,20 @@ internal class RealAddressWhispererClient
                     { "Payload", rawResponse }
                 }))
                 {
-                    _logger.HttpResponsePayload("getSuggestions", _configuration.ServiceUrl, (int)response.StatusCode);
+                    _logger.HttpResponsePayload("getSuggestions", _configuration.ServiceUrl!.ToString(), (int)response.StatusCode);
                 }
 
                 response.EnsureSuccessStatusCode();
                 var xml = XElement.Parse(rawResponse);
 
-                var responseModel = new List<Shared.FoundSuggestion>();
+                var responseModel = new List<Dto.FoundSuggestion>();
                 foreach (var itm in xml
                     .Descendants(_soapenv + "Body")
                     .Descendants(_ns1 + "getSuggestionsRes")
                     .Descendants(_ns2 + "suggestedAddressList")
                     .Descendants(_ns2 + "suggestedAddress"))
                 {
-                    responseModel.Add(new Shared.FoundSuggestion
+                    responseModel.Add(new Dto.FoundSuggestion
                     {
                         AddressId = itm.Element(_ns2 + "id")!.Value,
                         Title = itm.Element(_ns2 + "title")!.Value
@@ -137,9 +137,9 @@ internal class RealAddressWhispererClient
                 }
 
                 if (responseModel.Any())
-                    return new SuccessfulServiceCallResult<List<Shared.FoundSuggestion>>(responseModel);
+                    return new List<Dto.FoundSuggestion>(responseModel);
                 else
-                    return new EmptyServiceCallResult();
+                    return new List<Dto.FoundSuggestion>(0);
             }
         }
     }
@@ -178,10 +178,10 @@ internal class RealAddressWhispererClient
    </soapenv:Header>";
 
     private readonly HttpClient _httpClient;
-    private readonly AddressWhispererConfiguration _configuration;
+    private readonly CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IAddressWhispererClient> _configuration;
     private readonly ILogger<RealAddressWhispererClient> _logger;
 
-    public RealAddressWhispererClient(HttpClient httpClient, AddressWhispererConfiguration configuration, ILogger<RealAddressWhispererClient> logger)
+    public RealAddressWhispererClient(HttpClient httpClient, CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IAddressWhispererClient> configuration, ILogger<RealAddressWhispererClient> logger)
     {
         _configuration = configuration;
         _httpClient = httpClient;

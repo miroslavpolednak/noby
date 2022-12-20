@@ -1,5 +1,5 @@
-﻿using CIS.ExternalServicesHelpers;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
@@ -8,17 +8,25 @@ namespace ExternalServices.AddressWhisperer;
 
 public static class StartupExtensions
 {
-    public static WebApplicationBuilder AddExternalServiceAddressWhisperer(this WebApplicationBuilder builder)
-    {
-        var configuration = builder.CreateAndCheckExternalServiceConfiguration<AddressWhispererConfiguration>("AddressWhisperer");
+    internal const string ServiceName = "AddressWhisperer";
 
-        switch (configuration.Version, configuration.ImplementationType)
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, V1.IAddressWhispererClient
+        => builder.AddAddressWhisperer<TClient>();
+
+    private static WebApplicationBuilder AddAddressWhisperer<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, IExternalServiceClient
+    {
+        string version = getVersion<TClient>();
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+
+        switch (version, configuration.ImplementationType)
         {
-            case (Versions.V1, ServiceImplementationTypes.Mock):
+            case (V1.IAddressWhispererClient.Version, ServiceImplementationTypes.Mock):
                 builder.Services.AddScoped<V1.IAddressWhispererClient, V1.MockAddressWhispererClient>();
                 break;
 
-            case (Versions.V1, ServiceImplementationTypes.Real):
+            case (V1.IAddressWhispererClient.Version, ServiceImplementationTypes.Real):
                 builder.Services
                     .AddHttpClient<V1.IAddressWhispererClient, V1.RealAddressWhispererClient>((services, client) =>
                     {
@@ -33,9 +41,16 @@ public static class StartupExtensions
                 break;
 
             default:
-                throw new NotImplementedException($"AddressWhisperer version {configuration.Version} client not implemented");
+                throw new NotImplementedException($"AddressWhisperer version {version} client not implemented");
         }
 
         return builder;
     }
+
+    static string getVersion<TClient>()
+        => typeof(TClient) switch
+        {
+            Type t when t.IsAssignableFrom(typeof(V1.IAddressWhispererClient)) => V1.IAddressWhispererClient.Version,
+            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
+        };
 }
