@@ -5,11 +5,7 @@ namespace CIS.InternalServices.DataAggregator.Configuration.Data;
 
 internal class ConfigurationContext : DbContext
 {
-    public ConfigurationContext()
-    {
-    }
-
-    public ConfigurationContext(DbContextOptions options) : base(options)
+    public ConfigurationContext(DbContextOptions<ConfigurationContext> options) : base(options)
     {
     }
 
