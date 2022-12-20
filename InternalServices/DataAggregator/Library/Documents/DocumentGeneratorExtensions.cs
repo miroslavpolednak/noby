@@ -7,7 +7,7 @@ namespace CIS.InternalServices.DataAggregator.Documents;
 
 public static class DocumentGeneratorExtensions
 {
-    public static void FillDocumentPart(this GenerateDocumentPart documentPart, IEnumerable<DocumentFieldData> values)
+    public static GenerateDocumentPart FillDocumentPart(this GenerateDocumentPart documentPart, IEnumerable<DocumentFieldData> values)
     {
         foreach (var documentValue in values)
         {
@@ -19,6 +19,8 @@ public static class DocumentGeneratorExtensions
 
             documentPart.Data.Add(partData);
         }
+
+        return documentPart;
     }
 
     public static GenerateDocumentPartData SetDocumentPartDataValue(this GenerateDocumentPartData partData, object value)

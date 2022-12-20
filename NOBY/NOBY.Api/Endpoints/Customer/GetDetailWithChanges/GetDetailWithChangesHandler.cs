@@ -43,7 +43,7 @@ internal sealed class GetDetailWithChangesHandler
         {
             // provide saved changes to original model
             var original = JObject.FromObject(model);
-            var delta = JObject.FromObject(customerOnSA.CustomerChangeData);
+            var delta = JObject.Parse(customerOnSA.CustomerChangeData);
 
             original.Merge(delta, new JsonMergeSettings
             {

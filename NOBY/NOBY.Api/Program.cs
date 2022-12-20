@@ -44,6 +44,11 @@ builder.Services
     .AddRiskIntegrationService()
     .AddDocumentArchiveService();
 
+// add internal services
+builder.Services
+       .AddDocumentGeneratorService()
+       .AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
+
 // FOMS services
 builder
     .AddNobyServices()

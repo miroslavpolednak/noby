@@ -33,7 +33,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
 	/// Platnost úrokové sazby do.
 	/// </summary>
-    public DateTime FixedRateValidTo { get; set; }
+    public DateTime? FixedRateValidTo { get; set; }
 
     /// <summary>
 	/// Aktuální zůstatek jistiny.
@@ -48,7 +48,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
 	/// Datum ukončení čerpání.
 	/// </summary>
-    public DateTime DrawingDateTo { get; set; }
+    public DateTime? DrawingDateTo { get; set; }
 
     /// <summary>
 	/// Výše měsíční splátky.
@@ -108,7 +108,7 @@ public sealed class GetCaseParametersResponse
     /// <summary>
     /// Datum splatnosti - předpoklad/skutečnost.
     /// </summary>
-    public DateTime LoanDueDate { get; set; }
+    public DateTime? LoanDueDate { get; set; }
 
     /// <summary>
     /// Den splácení.

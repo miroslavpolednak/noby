@@ -586,8 +586,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 var developer = data.Offer.SimulationInputs.Developer;
                 var developerDescription = (developer == null) ? null : String.Join(",", new List<string> { developer.NewDeveloperName, developer.NewDeveloperCin, developer.NewDeveloperProjectName }.Where(i => !String.IsNullOrWhiteSpace(i))).ToNullIfWhiteSpace();
 
-                var insuranceSumRiskLife = data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
-                var insuranceSumRealEstate = data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal)data.Offer.SimulationInputs.RealEstateInsurance.Sum;
+                var insuranceSumRiskLife = data.Offer.SimulationInputs.RiskLifeInsurance == null ? (decimal?)null : (decimal?)data.Offer.SimulationInputs.RiskLifeInsurance.Sum;
+                var insuranceSumRealEstate = data.Offer.SimulationInputs.RealEstateInsurance == null ? (decimal?)null : (decimal?)data.Offer.SimulationInputs.RealEstateInsurance.Sum;
 
                 var typCerpani = data.Offer.SimulationInputs.DrawingTypeId.HasValue ? data.DrawingTypeById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingTypeId.Value)?.StarbuildId : null;
                 var lhutaUkonceniCerpani = data.Offer.SimulationInputs.DrawingDurationId.HasValue ? data.DrawingDurationById.GetValueOrDefault(data.Offer.SimulationInputs.DrawingDurationId.Value)?.DrawingDuration : null;

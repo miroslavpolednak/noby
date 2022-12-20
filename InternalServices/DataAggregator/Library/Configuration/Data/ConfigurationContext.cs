@@ -42,10 +42,4 @@ internal class ConfigurationContext : DbContext
             entityType.SetTableName(entityType.DisplayName());
         }
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(
-            "Data Source=localhost;Initial Catalog=DataAggregator;Persist Security Info=True;User ID=SA;Password=Test123456;TrustServerCertificate=True");
-    }
 }

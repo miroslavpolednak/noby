@@ -21,52 +21,77 @@ public class TableAcroFormWriter : IAcroFormWriter
 
     public MergeDocument Write(TemplateLoader templateLoader, string? templateNameModifier = default)
     {
-        var document = InitializeDocument(templateLoader);
+        var loadedData = InitializeDocument(templateLoader);
 
-        DrawRemainingRows(templateLoader, document);
+        DrawRemainingRows(templateLoader, loadedData);
 
-        return document;
+        _table.DrawConcludingParagraph(loadedData.MergeDocument.Pages[^1],
+                                       loadedData.PlaceholderField,
+                                       () => AppendPage(loadedData, GetRootFormFieldName(loadedData.MergeDocument)));
+
+        return loadedData.MergeDocument;
     }
 
-    private MergeDocument InitializeDocument(TemplateLoader templateLoader)
+    private LoadedTemplateData InitializeDocument(TemplateLoader templateLoader)
     {
-        var template = templateLoader.Load(TemplateFirstPageSuffix);
-        var document = _acroFormWriter.Write(templateLoader, TemplateFirstPageSuffix);
+        var loadedData = new LoadedTemplateData
+        {
+            Template = templateLoader.Load(TemplateFirstPageSuffix),
+            MergeDocument = _acroFormWriter.Write(templateLoader, TemplateFirstPageSuffix),
+        };
 
-        var placeholderField = template.Form.Fields[_tablePlaceholderKey];
+        loadedData.PlaceholderField = loadedData.Template.Form.Fields[_tablePlaceholderKey];
+
+        var placeholderField = loadedData.Template.Form.Fields[_tablePlaceholderKey];
 
         if (placeholderField is null)
             throw new InvalidOperationException($"Placeholder field {_tablePlaceholderKey} was not found.");
 
-        var page = document.Pages[placeholderField.GetOriginalPageNumber() - 1];
+        var page = loadedData.MergeDocument.Pages[placeholderField.GetOriginalPageNumber() - 1];
 
         _table.DrawTable(page, placeholderField);
 
-        document.Form.Fields[_tablePlaceholderKey].Output = FormFieldOutput.Remove;
+        loadedData.MergeDocument.Form.Fields[_tablePlaceholderKey].Output = FormFieldOutput.Remove;
 
-        return document;
+        return loadedData;
     }
 
-    private void DrawRemainingRows(TemplateLoader templateLoader, MergeDocument document)
+    private void DrawRemainingRows(TemplateLoader templateLoader, LoadedTemplateData loadedData)
     {
         if (!_table.HasOverflowRows)
             return;
 
-        var template = templateLoader.Load(TemplateTablePageSuffix);
-        var placeholderField = template.Form.Fields[_tablePlaceholderKey];
+        loadedData.Template = templateLoader.Load(TemplateTablePageSuffix);
+        loadedData.PlaceholderField = loadedData.Template.Form.Fields[_tablePlaceholderKey];
 
         while (_table.HasOverflowRows)
         {
-            var rootFormFieldName = (document.Pages.Count + 1).ToString();
+            var rootFormFieldName = GetRootFormFieldName(loadedData.MergeDocument);
 
-            var mergeOptions = MergeOptions.Append;
-            mergeOptions.RootFormField = rootFormFieldName;
+            var page = AppendPage(loadedData, rootFormFieldName);
 
-            var page = document.Append(template, 1, 1, mergeOptions).First();
-            
-            _table.DrawOverflowRows(page, placeholderField);
+            _table.DrawOverflowRows(page, loadedData.PlaceholderField);
 
-            document.Form.Fields[rootFormFieldName].ChildFields[_tablePlaceholderKey].Output = FormFieldOutput.Remove;
+            loadedData.MergeDocument.Form.Fields[rootFormFieldName].ChildFields[_tablePlaceholderKey].Output = FormFieldOutput.Remove;
         }
+    }
+
+    private static string GetRootFormFieldName(Document document) => (document.Pages.Count + 1).ToString();
+
+    private static AppendedPage AppendPage(LoadedTemplateData loadedData, string rootFormFieldName)
+    {
+        var mergeOptions = MergeOptions.Append;
+        mergeOptions.RootFormField = rootFormFieldName;
+
+        return loadedData.MergeDocument.Append(loadedData.Template, 1, 1, mergeOptions).First();
+    }
+
+    private class LoadedTemplateData
+    {
+        public required PdfDocument Template { get; set; }
+
+        public required MergeDocument MergeDocument { get; init; }
+
+        public Pdf.Merger.Forms.PdfFormField PlaceholderField { get; set; } = null!;
     }
 }
