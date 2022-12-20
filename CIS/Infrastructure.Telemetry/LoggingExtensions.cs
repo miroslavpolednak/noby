@@ -49,7 +49,9 @@ public static class LoggingExtensions
         builder.Host.AddCisLoggingInternal();
 
         // pridani request behaviour mediatru - loguje request a response objekty
-        builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(CisMediatR.PayloadLoggerBehavior<,>));
+        // logovat pouze u gRPC sluzeb
+        if (configuration.Logging?.LogType != LogBehaviourTypes.WebApi)
+            builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(CisMediatR.PayloadLoggerBehavior<,>));
 
         return builder;
     }
