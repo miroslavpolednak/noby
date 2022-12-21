@@ -1,7 +1,5 @@
-﻿using CIS.Core.Results;
-using CIS.InternalServices.DataAggregator.Configuration;
+﻿using CIS.InternalServices.DataAggregator.Configuration;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 
 namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 
@@ -20,8 +18,6 @@ internal class SalesArrangementServiceWrapper : IServiceWrapper
         if (!input.SalesArrangementId.HasValue)
             throw new ArgumentNullException(nameof(InputParameters.SalesArrangementId));
 
-        var result = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId.Value, cancellationToken);
-        
-        data.SalesArrangement = ServiceCallResult.ResolveAndThrowIfError<SalesArrangement>(result);
+        data.SalesArrangement = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId.Value, cancellationToken);
     }
 }

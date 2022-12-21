@@ -12,7 +12,7 @@ internal class GetCreditWorthinessHandler
     public async Task<GetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)
     {
         // SA instance
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
             throw new CisNotFoundException(0, $"Offer instance not found for SA {saInstance.SalesArrangementId}");
         // case instance

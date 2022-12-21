@@ -33,7 +33,7 @@ internal sealed class CreateProductHandler
         catch { }
 
         // detail SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
             throw new CisValidationException($"SalesArrangement #{notification.SalesArrangementId} is not bound to Offer");
 

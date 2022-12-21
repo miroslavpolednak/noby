@@ -26,7 +26,7 @@ internal sealed class UpdateCustomerService
         // get CaseId
         if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
         {
-            var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation));
+            var saInstance = await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation);
 
             // update case service
             await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData

@@ -18,7 +18,7 @@ internal class SimulateMortgageHandler
             if (!request.SalesArrangementId.HasValue)
                 throw new CisValidationException("withGuarantee=true, but SalesArrangementId is not set");
 
-            var saInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId.Value, cancellationToken));
+            var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId.Value, cancellationToken);
             guaranteeDateFrom = saInstance.OfferGuaranteeDateFrom;
         }
 

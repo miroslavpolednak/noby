@@ -8,7 +8,7 @@ internal class UpdateParametersHandler
 {
     protected override async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
     {
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var updateRequest = new _SA.UpdateSalesArrangementParametersRequest
         {
