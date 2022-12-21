@@ -82,7 +82,7 @@ public class PdfFooter
     {
         return fields.Select(SelectOriginalField);
 
-        PdfFormField? SelectOriginalField(FormField field) => field.Parent.HasChildFields
+        PdfFormField? SelectOriginalField(FormField field) => field.Parent?.HasChildFields ?? false
             ? originalDocument.Form.Fields[field.Parent.Name].ChildFields[field.Name]
             : originalDocument.Form.Fields[field.Name];
     }
