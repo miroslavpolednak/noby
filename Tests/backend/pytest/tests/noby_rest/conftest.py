@@ -113,3 +113,16 @@ def get_expected_date_of_drawing():
     date = (datetime.date.today() + datetime.timedelta(days=30))
     return date.strftime("%Y-%m-%dT%H:%M:%S")
 
+
+# razeni dle urciteho parametru
+def sort_response_id(resps):
+    return sorted(resps, key=lambda resp: resp['id'])
+
+
+def sort_response_productTypeId(resps):
+    return sorted(resps, key=lambda resp: resp['productTypeId'])
+
+
+def sort_response_paymentDay(resps):
+    return sorted(resps, key=lambda resp: resp['paymentDay'])
+
