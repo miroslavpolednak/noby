@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.Logging;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
 using System.Xml.Linq;
 
@@ -24,30 +23,14 @@ internal class RealAddressWhispererClient
    </soapenv:Body>" + _soapEnvelopeEnd;
 
         using (HttpContent content = new StringContent(soap, Encoding.UTF8, "text/xml"))
-        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration.ServiceUrl))
+        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress))
         {
             request.Headers.Add("SOAPAction", "getAddressDetails");
             request.Content = content;
 
-            using (_logger.BeginScope(new Dictionary<string, object>
-            {
-                { "Payload", await request.Content!.ReadAsStringAsync(cancellationToken) }
-            }))
-            {
-                _logger.HttpRequestPayload("getAddressDetails", _configuration.ServiceUrl!.ToString());
-            }
-
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
             {
                 string rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
-
-                using (_logger.BeginScope(new Dictionary<string, object>
-                {
-                    { "Payload", rawResponse }
-                }))
-                {
-                    _logger.HttpResponsePayload("getAddressDetails", _configuration.ServiceUrl!.ToString(), (int)response.StatusCode);
-                }
 
                 response.EnsureSuccessStatusCode();
                 var xml = XElement.Parse(rawResponse);
@@ -106,30 +89,14 @@ internal class RealAddressWhispererClient
    </soapenv:Body>" + _soapEnvelopeEnd;
         
         using (HttpContent content = new StringContent(soap, Encoding.UTF8, "text/xml"))
-        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration.ServiceUrl))
+        using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress))
         {
             request.Headers.Add("SOAPAction", "getSuggestions");
             request.Content = content;
 
-            using (_logger.BeginScope(new Dictionary<string, object>
-            {
-                { "Payload", await request.Content!.ReadAsStringAsync(cancellationToken) }
-            }))
-            {
-                _logger.HttpRequestPayload("getSuggestions", _configuration.ServiceUrl!.ToString());
-            }
-
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
             {
                 string rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
-
-                using (_logger.BeginScope(new Dictionary<string, object>
-                {
-                    { "Payload", rawResponse }
-                }))
-                {
-                    _logger.HttpResponsePayload("getSuggestions", _configuration.ServiceUrl!.ToString(), (int)response.StatusCode);
-                }
 
                 response.EnsureSuccessStatusCode();
                 var xml = XElement.Parse(rawResponse);
@@ -191,12 +158,10 @@ internal class RealAddressWhispererClient
 
     private readonly HttpClient _httpClient;
     private readonly CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IAddressWhispererClient> _configuration;
-    private readonly ILogger<RealAddressWhispererClient> _logger;
 
-    public RealAddressWhispererClient(HttpClient httpClient, CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IAddressWhispererClient> configuration, ILogger<RealAddressWhispererClient> logger)
+    public RealAddressWhispererClient(HttpClient httpClient, CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IAddressWhispererClient> configuration)
     {
         _configuration = configuration;
         _httpClient = httpClient;
-        _logger = logger;
     }
 }

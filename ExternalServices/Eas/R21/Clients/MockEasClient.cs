@@ -2,23 +2,12 @@
 
 namespace ExternalServices.Eas.R21;
 
-internal sealed class MockEasClient : IEasClient
+internal sealed class MockEasClient 
+    : IEasClient
 {
-    public Versions Version { get; } = Versions.R21;
-
-#pragma warning disable CS1998
-    public async Task<IServiceCallResult> GetSavingsLoanId(long caseId)
-#pragma warning restore CS1998
+    public Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input)
     {
-        Random random = new Random();
-        return new SuccessfulServiceCallResult<long>(random.NextInt64(1000, 1999));
-    }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-    {
-        return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(new ESBI_SIMULATION_RESULTS
+        return Task.FromResult<ESBI_SIMULATION_RESULTS>(new ESBI_SIMULATION_RESULTS
         {
             //savings
             SS_doba_sporeni_v_mesicich = 180,
@@ -47,44 +36,29 @@ internal sealed class MockEasClient : IEasClient
         });
     }
 
-#pragma warning disable CS1998
-    public async Task<IServiceCallResult> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId)
-#pragma warning restore CS1998
+    public Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId)
     {
         Random random = new Random();
-        return new SuccessfulServiceCallResult<long>(random.NextInt64(1, 999));
+        return Task.FromResult<long>(random.NextInt64(1, 999));
     }
 
-    public async Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
+    public Task<Dto.CreateNewOrGetExisingClientResponse> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
     {
-        return await Task.FromResult(new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse() { Id = 123 }));
+        return Task.FromResult(new Dto.CreateNewOrGetExisingClientResponse() { Id = 123 });
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> GetContractNumber(long clientId, int caseId)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public Task<string> GetContractNumber(long clientId, int caseId)
     {
-        return new SuccessfulServiceCallResult<string>( $"{clientId}_{caseId}");
+        return Task.FromResult<string>($"{clientId}_{caseId}");
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public Task<CommonResponse?> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
     {
-        return new SuccessfulServiceCallResult();
+        return null;
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> CheckForm(S_FORMULAR formular)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData)
     {
-        return new SuccessfulServiceCallResult();
-    }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> CheckFormV2(CheckFormData formData)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-    {
-        return new SuccessfulServiceCallResult();
+        return null;
     }
 }

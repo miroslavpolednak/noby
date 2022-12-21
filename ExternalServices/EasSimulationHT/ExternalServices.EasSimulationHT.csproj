@@ -9,7 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
     <ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
-    <ProjectReference Include="..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

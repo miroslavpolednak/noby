@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using ExternalServices.EasSimulationHT;
+using ExternalServices;
 
 namespace DomainServices.OfferService.Api;
 
@@ -17,7 +17,7 @@ internal static class StartupExtensions
     public static WebApplicationBuilder AddOfferService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
     {
         // EAS EasSimulationHT svc
-        builder.Services.AddExternalServiceEasSimulationHT(appConfiguration.EasSimulationHT);
+        builder.AddExternalService<ExternalServices.EasSimulationHT.V6.IEasSimulationHTClient>();
 
         // dbcontext
         builder.AddEntityFramework<Database.OfferServiceDbContext>();

@@ -160,24 +160,6 @@ internal class FormsService
         CheckIncomes(formData.IncomesById);
     }
 
-    private static string ResolveGetContractNumber(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<string> r => r.Model,
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
-            _ => throw new NotImplementedException()
-        };
-
-    private static Eas.CommonResponse ResolveAddFirstSignatureDate(IServiceCallResult result) =>
-      result switch
-      {
-          SuccessfulServiceCallResult<Eas.CommonResponse> r when r.Model.CommonValue != 0
-          => throw new CisValidationException(18076, $"Invalid result of AddFirstSignatureDate [{r.Model.CommonValue}: {r.Model.CommonText}]."),
-          SuccessfulServiceCallResult<Eas.CommonResponse> r => r.Model,
-          ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
-          _ => throw new NotImplementedException()
-      };
-
     private async Task UpdateSalesArrangement(Contracts.SalesArrangement entity, string contractNumber, CancellationToken cancellation)
     {
         await _mediator.Send(new Dto.UpdateSalesArrangementMediatrRequest(new UpdateSalesArrangementRequest { SalesArrangementId = entity.SalesArrangementId, ContractNumber = contractNumber, RiskBusinessCaseId = entity.RiskBusinessCaseId, FirstSignedDate = entity.FirstSignedDate, SalesArrangementSignatureTypeId = entity.SalesArrangementSignatureTypeId }), cancellation);
@@ -203,14 +185,14 @@ internal class FormsService
         var mainHousehold = formData.Households.Single(i => householdTypesById[i.HouseholdTypeId].EnumValue == HouseholdTypes.Main);
         var mainCustomerOnSa1 = formData.CustomersOnSa.Single(i => i.CustomerOnSAId == mainHousehold.CustomerOnSAId1!.Value);
         var identityMP = mainCustomerOnSa1.CustomerIdentifiers.Where(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).First();
-        var contractNumber = ResolveGetContractNumber(await _easClient.GetContractNumber(identityMP.IdentityId, (int)formData.Arrangement.CaseId));
+        var contractNumber = await _easClient.GetContractNumber(identityMP.IdentityId, (int)formData.Arrangement.CaseId);
         await UpdateSalesArrangement(formData.Arrangement, contractNumber, cancellation);
         await UpdateCase(formData.CaseData, contractNumber, cancellation);
     }
 
     public async Task AddFirstSignatureDate(ProductFormData formData)
     {
-        ResolveAddFirstSignatureDate(await _easClient.AddFirstSignatureDate((int)formData.Arrangement.CaseId, (int)formData.Arrangement.CaseId, DateTime.Now.Date));
+        await _easClient.AddFirstSignatureDate((int)formData.Arrangement.CaseId, (int)formData.Arrangement.CaseId, DateTime.Now.Date);
     }
 
     public async Task CallSulm(ProductFormData formData, CancellationToken cancellation)

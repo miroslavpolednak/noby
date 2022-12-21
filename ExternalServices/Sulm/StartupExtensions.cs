@@ -1,39 +1,37 @@
-﻿using CIS.ExternalServicesHelpers;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
 
-namespace ExternalServices.Sulm;
+namespace ExternalServices;
 
 public static class StartupExtensions
 {
-    public static WebApplicationBuilder AddExternalServiceSulm(this WebApplicationBuilder builder)
-    {
-        var configuration = builder.CreateAndCheckExternalServiceConfiguration<SulmConfiguration>("Sulm");
+    internal const string ServiceName = "Sulm";
 
-        switch (configuration.Version, configuration.ImplementationType)
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, Sulm.V1.ISulmClient
+        => builder.AddSulm<TClient>(Sulm.V1.ISulmClient.Version);
+
+    private static WebApplicationBuilder AddSulm<TClient>(this WebApplicationBuilder builder, string version)
+        where TClient : class, IExternalServiceClient
+    {
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+
+        switch (version, configuration.ImplementationType)
         {
-            case (Versions.V1, ServiceImplementationTypes.Mock):
-                builder.Services.AddScoped<V1.ISulmClient, V1.MockSulmClient>();
+            case (Sulm.V1.ISulmClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddScoped<Sulm.V1.ISulmClient, Sulm.V1.MockSulmClient>();
                 break;
 
-            case (Versions.V1, ServiceImplementationTypes.Real):
-                builder.Services
-                    .AddHttpClient<V1.ISulmClient, V1.RealSulmClient>((services, client) =>
-                    {
-                        // auth
-                        var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}"));
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-                    })
-                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-                    });
+            case (Sulm.V1.ISulmClient.Version, ServiceImplementationTypes.Real):
+                builder
+                    .AddExternalServiceRestClient<Sulm.V1.ISulmClient, Sulm.V1.RealSulmClient>()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
-                throw new NotImplementedException($"SULM version {configuration.Version} client not implemented");
+                throw new NotImplementedException($"{ServiceName} version {version} client not implemented");
         }
 
         return builder;

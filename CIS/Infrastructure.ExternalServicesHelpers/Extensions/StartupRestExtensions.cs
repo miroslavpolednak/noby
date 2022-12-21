@@ -42,10 +42,10 @@ public static class StartupRestExtensions
                 var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
                 
                 // ignorovat vadny ssl certifikat
-                var clientHandler = configuration.IgnoreServerCertificateErrors ? new HttpClientHandler() : new HttpClientHandler
+                var clientHandler = configuration.IgnoreServerCertificateErrors ? new HttpClientHandler
                     {
                         ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-                    };
+                    } : new HttpClientHandler();
 
                 // logovat payload a hlavicku
                 if (configuration.LogPayloads)
