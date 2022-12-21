@@ -21,11 +21,11 @@ public static class StartupExtensions
         switch (version, configuration.ImplementationType)
         {
             case (Eas.R21.IEasClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddScoped<Eas.R21.IEasClient, Eas.R21.MockEasClient>();
+                builder.Services.AddTransient<Eas.R21.IEasClient, Eas.R21.MockEasClient>();
                 break;
 
             case (Eas.R21.IEasClient.Version, ServiceImplementationTypes.Real):
-                builder.Services.AddScoped<Eas.R21.IEasClient, Eas.R21.RealEasClient>();
+                builder.Services.AddTransient<Eas.R21.IEasClient, Eas.R21.RealEasClient>();
                 break;
 
             default:

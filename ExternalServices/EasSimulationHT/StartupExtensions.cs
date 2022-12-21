@@ -21,11 +21,11 @@ public static class StartupExtensions
         switch (version, configuration.ImplementationType)
         {
             case (EasSimulationHT.V6.IEasSimulationHTClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddScoped<EasSimulationHT.V6.IEasSimulationHTClient, EasSimulationHT.V6.MockEasSimulationHTClient>();
+                builder.Services.AddTransient<EasSimulationHT.V6.IEasSimulationHTClient, EasSimulationHT.V6.MockEasSimulationHTClient>();
                 break;
 
             case (EasSimulationHT.V6.IEasSimulationHTClient.Version, ServiceImplementationTypes.Real):
-                    builder.Services.AddScoped<EasSimulationHT.V6.IEasSimulationHTClient, EasSimulationHT.V6.RealEasSimulationHTClient>();
+                builder.Services.AddTransient<EasSimulationHT.V6.IEasSimulationHTClient, EasSimulationHT.V6.RealEasSimulationHTClient>();
                 break;
 
             default:
