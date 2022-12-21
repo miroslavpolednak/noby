@@ -29,7 +29,7 @@ public class PdfTable
 
         _table = new Table2(position.X, position.Y, size.Width, size.Height);
 
-        PrepareTable(_table);
+        PrepareTable(_table, tablePlaceholder);
 
         page.Elements.Add(_table);
     }
@@ -84,26 +84,26 @@ public class PdfTable
 
     private static SizeF GetSize(PdfFormField pdfFormField) => new(pdfFormField.Width, pdfFormField.Height);
 
-    private void PrepareTable(Table2 table)
+    private void PrepareTable(Table2 table, PdfFormField placeholderField)
     {
-        ApplyTableStyle(table);
+        ApplyTableStyle(table, placeholderField);
         CreateColumns(table);
         CreateRows(table);
     }
 
-    private static void ApplyTableStyle(Table2 table)
+    private static void ApplyTableStyle(Table2 table, PdfFormField placeholderField)
     {
         table.Border.Width = 0f;
         table.CellDefault.Align = TextAlign.Center;
         table.CellDefault.VAlign = VAlign.Center;
-        table.CellDefault.Font = Font.LoadSystemFont(new System.Drawing.Font("Arial", 10));
-        table.CellDefault.FontSize = 10;
+        table.CellDefault.Font = placeholderField.Font;
+        table.CellDefault.FontSize = placeholderField.FontSize;
         table.CellDefault.Border.Width = 0.5f;
     }
 
     private void CreateColumns(Table2 table)
     {
-        var row = table.Rows.Add(20, Font.LoadSystemFont(new System.Drawing.Font("Arial", 10, FontStyle.Bold)), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
+        var row = table.Rows.Add(20, Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9, FontStyle.Bold)), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
         
         foreach (var column in _tableData.Columns)
         {
@@ -154,8 +154,8 @@ public class PdfTable
 
         return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + textTopMargin, table.Width, remainingHeight - textTopMargin)
         {
-            Font = Font.LoadSystemFont(new System.Drawing.Font("Arial", 10)),
-            FontSize = 10,
+            Font = Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9)),
+            FontSize = table.CellDefault.FontSize ?? 10,
             Align = TextAlign.Justify
         };
     }
