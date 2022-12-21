@@ -24,4 +24,12 @@ public interface IDocumentArchiveServiceClient
     /// Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů (např. CaseId, Autor, ...)
     /// </summary>
     Task<GetDocumentListResponse> GetDocumentList(GetDocumentListRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task UploadDocument(UploadDocumentRequest request, CancellationToken cancellationToken = default);
 }

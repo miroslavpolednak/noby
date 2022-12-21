@@ -39,6 +39,9 @@ internal static class StartupExtensions
         builder.Services
             .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("default"));
 
+        // dbcontext
+        builder.AddEntityFramework<Database.DocumentArchiveDbContext>(connectionStringKey: "default");
+
         return builder;
     }
 }

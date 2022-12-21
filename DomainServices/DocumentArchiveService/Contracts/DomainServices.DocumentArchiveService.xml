@@ -85,14 +85,6 @@
             kód volajícího prostředí systému
             </summary>
         </member>
-        <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndexFieldNumber">
-            <summary>Field number for the "EnvironmentIndex" field.</summary>
-        </member>
-        <member name="P:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentIndex">
-            <summary>
-            index prostředí (default 0) - jednociferné číslo
-            </summary>
-        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.MetadataFieldNumber">
             <summary>Field number for the "Metadata" field.</summary>
         </member>
@@ -107,6 +99,14 @@
         <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.BinaryData">
             <summary>
             Soubour (pole bajtů) ve formě base64string 
+            </summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.KdvFieldNumber">
+            <summary>Field number for the "Kdv" field.</summary>
+        </member>
+        <member name="P:DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest.Kdv">
+            <summary>
+            Příznak (1/0 ano/ne), který určuje, zda se při archivaci vytvoří věta na rozhraní kdv, pokud ea kód použitý pro archivaci je pro kdv určen (Default: 0).
             </summary>
         </member>
         <member name="T:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveServiceV1Reflection">

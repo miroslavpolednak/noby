@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.Data;
+﻿using CIS.Core.Configuration;
+using CIS.Infrastructure.Data;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
 
@@ -8,27 +9,46 @@ internal sealed class GenerateDocumentIdHandler
     : IRequestHandler<GenerateDocumentIdRequest, Contracts.GenerateDocumentIdResponse>
 {
     private readonly AppConfiguration _configuration;
+    private readonly ICisEnvironmentConfiguration _cisEnvironment;
     private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _connectionProvider;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public GenerateDocumentIdHandler(
         CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> connectionProvider,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        AppConfiguration configuration)
+        AppConfiguration configuration,
+        ICisEnvironmentConfiguration cisEnvironment)
     {
         _connectionProvider = connectionProvider;
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
+        _cisEnvironment = cisEnvironment;
     }
 
     public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
     {
+        var envName = request.EnvironmentName == EnvironmentNames.Unknown ? FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!))
+                                                                          : request.EnvironmentName;
+
         long seq = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefault<long>("SELECT NEXT VALUE FOR dbo.GenerateDocumentIdSequence", cancellation);
 
         return new Contracts.GenerateDocumentIdResponse
         {
-            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(request.EnvironmentName)}{seq:D23}"
+            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(envName)}{seq:D23}"
         };
+    }
+
+    private static string ConvertToEnvEnumStr(string enumStr)
+    {
+        enumStr =enumStr.ToLower();
+        if (string.IsNullOrEmpty(enumStr) || enumStr.Length < 1)
+        {
+            return string.Empty;
+        }
+        else
+        {
+            return char.ToUpper(enumStr[0]) + enumStr.Substring(1);
+        }
     }
 
     private static string getEnvCode(Contracts.EnvironmentNames environmentNames) => environmentNames switch

@@ -18,6 +18,10 @@
 		<PackageReference Include="MediatR" Version="11.1.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
@@ -37,5 +41,9 @@
 
 	<ItemGroup>
 		<Protobuf Include="./DocumentArchiveService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/gRPC.CisTypes/Protos" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Database\Migrations\" />
 	</ItemGroup>
 </Project>

@@ -5,8 +5,6 @@ option csharp_namespace = "DomainServices.DocumentArchiveService.Contracts";
 message GenerateDocumentIdRequest{
 	// kód volajícího prostředí systému
     EnvironmentNames EnvironmentName = 1;
-	// index prostředí (default 0) - jednociferné číslo
-	int32 EnvironmentIndex = 2;
 }
 
 message GenerateDocumentIdResponse{
