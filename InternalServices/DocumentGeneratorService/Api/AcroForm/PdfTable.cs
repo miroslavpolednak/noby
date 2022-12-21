@@ -154,7 +154,7 @@ public class PdfTable
 
         return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + textTopMargin, table.Width, remainingHeight - textTopMargin)
         {
-            Font = table.CellDefault.Font,
+            Font = Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9)),
             FontSize = table.CellDefault.FontSize ?? 10,
             Align = TextAlign.Justify
         };
