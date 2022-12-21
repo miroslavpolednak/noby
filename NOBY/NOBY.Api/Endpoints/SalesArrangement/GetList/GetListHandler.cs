@@ -11,7 +11,7 @@ internal class GetListHandler
 {
     public async Task<List<Dto.SalesArrangementListItem>> Handle(GetListRequest request, CancellationToken cancellationToken)
     {
-        var result = ServiceCallResult.ResolveAndThrowIfError<DSContracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken));
+        var result = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
 
         // seznam typu k doplneni nazvu SA
         var saTypeList = await _codebookService.SalesArrangementTypes(cancellationToken);

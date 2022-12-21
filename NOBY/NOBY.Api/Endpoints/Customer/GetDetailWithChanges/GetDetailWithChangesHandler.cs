@@ -23,7 +23,7 @@ internal sealed class GetDetailWithChangesHandler
             ?? throw new CisValidationException("Customer is missing KB identity");
 
         // SA instance
-        var salesArrangement = ServiceCallResult.ResolveAndThrowIfError<__SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken));
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
 
         // kontrola mandanta
         var productTypeId = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == salesArrangement.SalesArrangementTypeId).ProductTypeId;

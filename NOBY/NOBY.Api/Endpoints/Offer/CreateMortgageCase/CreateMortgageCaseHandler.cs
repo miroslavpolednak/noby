@@ -20,7 +20,7 @@ internal class CreateMortgageCaseHandler
         var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellationToken);
 
         // chyba pokud simulace je uz nalinkovana na jiny SA
-        if (!ServiceCallResult.IsEmptyResult(await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken)))
+        if (await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken) is not null)
             throw new CisValidationException(ErrorCodes.OfferIdAlreadyLinkedToSalesArrangement, $"OfferId {request.OfferId} has been already linked to another contract");
         
         // get default saTypeId from productTypeId
@@ -43,7 +43,7 @@ internal class CreateMortgageCaseHandler
 
         // vytvorit zadost
         _logger.SharedCreateSalesArrangementStarted(salesArrangementTypeId, caseId, request.OfferId);
-        int salesArrangementId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken));
+        int salesArrangementId = await _salesArrangementService.CreateSalesArrangement(caseId, salesArrangementTypeId, request.OfferId, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeySalesArrangementId, salesArrangementId);
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 

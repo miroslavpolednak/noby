@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Address.GetAddressDetail;
 
 public sealed class GetAddressDetailResponse
-    : ExternalServices.AddressWhisperer.Shared.AddressDetail
+    : ExternalServices.AddressWhisperer.Dto.AddressDetail
 {
     /// <summary>
     /// Stát - AddressWhispererBEService|country
@@ -12,5 +12,5 @@ public sealed class GetAddressDetailResponse
 
     // skryt aby nebyl videt v API
     [JsonIgnore]
-    public new string? Country { get; set; }
+    public new string? Country { get; set; } = null!;
 }

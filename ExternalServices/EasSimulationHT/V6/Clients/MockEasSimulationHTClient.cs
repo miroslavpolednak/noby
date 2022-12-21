@@ -2,21 +2,20 @@
 
 namespace ExternalServices.EasSimulationHT.V6;
 
-internal sealed class MockEasSimulationHTClient : IEasSimulationHTClient
+internal sealed class MockEasSimulationHTClient 
+    : IEasSimulationHTClient
 {
-    public Versions Version => throw new NotImplementedException();
-
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> RunSimulationHT(SimulationHTRequest request)
+    public async Task<SimulationHTResponse> RunSimulationHT(SimulationHTRequest request)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
-        return new SuccessfulServiceCallResult<SimulationHTResponse>(new SimulationHTResponse { });
+        return new SimulationHTResponse { };
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IServiceCallResult> FindTasks(WFS_Header header, WFS_Find_ByCaseId message)
+    public async Task<WFS_FindItem[]> FindTasks(WFS_Header header, WFS_Find_ByCaseId message)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
-        return new SuccessfulServiceCallResult<SimulationHTResponse>(new SimulationHTResponse { });
+        return new WFS_FindItem[0];
     }
 }

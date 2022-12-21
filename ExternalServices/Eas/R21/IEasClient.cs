@@ -1,76 +1,42 @@
-﻿using ExternalServices.Eas.R21.EasWrapper;
+﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using ExternalServices.Eas.R21.EasWrapper;
 
 namespace ExternalServices.Eas.R21;
 
 public interface IEasClient
+    : IExternalServiceClient
 {
-    Versions Version { get; }
-
-    /// <summary>
-    /// Vytvori nove UverId pro dane ID sporeni
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[long] -> nove UverId (ProductId)
-    /// </returns>
-    Task<IServiceCallResult> GetSavingsLoanId(long caseId);
+    const string Version = "R21";
 
     /// <summary>
     /// Pusti simulaci SS/Uv
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[ESBI_SIMULATION_RESULTS]
-    /// </returns>
-    Task<IServiceCallResult> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input);
+    Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input);
 
     /// <summary>
     /// Vytvori nove ID sporeni/hypo - novy CASE
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[long] -> nove SporeniId (CaseId)
-    /// ErrorServiceCallResult(9100, $"EAS Endpoint '{}' unavailable")
-    /// ErrorServiceCallResult(9101, $"EAS Endpoint '{}' not found)
-    /// </returns>
     /// <exception cref="System.Exception">Jakakoliv interni chyba EAS</exception>
-    Task<IServiceCallResult> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId);
+    Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId);
 
     /// <summary>
     /// Vytvori noveho klienta (rezervace partnerId)
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[CreateNewClientResponse]
-    /// </returns>
-    Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData);
+    Task<Dto.CreateNewOrGetExisingClientResponse> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData);
 
     /// <summary>
     /// Vrací číslo smlouvy podle klienta a případu (case)
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[ContractNrResponse]
-    /// </returns>
-    Task<IServiceCallResult> GetContractNumber(long clientId, int caseId);
+    Task<string> GetContractNumber(long clientId, int caseId);
 
     /// <summary>
     /// Přidání data prvního podpisu
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[]
-    /// </returns>
-    Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate);
-
-    /// <summary>
-    /// Kontrola formuláře
-    /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[]
-    /// </returns>
-    Task<IServiceCallResult> CheckForm(S_FORMULAR formular);
+    Task<CommonResponse?> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate);
 
     /// <summary>
     /// Kontrola formuláře V2
     /// </summary>
-    /// <returns>
-    /// SuccessfulServiceCallResult[R21.CheckFormV2.Response]
-    /// </returns>
-    Task<IServiceCallResult> CheckFormV2(CheckFormData formData);
+    Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData);
 
 }

@@ -1,8 +1,13 @@
-﻿namespace ExternalServices.Sulm.V1;
+﻿using CIS.Infrastructure.ExternalServicesHelpers;
+
+namespace ExternalServices.Sulm.V1;
 
 public interface ISulmClient
+    : IExternalServiceClient
 {
-    Task<IServiceCallResult> StopUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken));
+    Task StopUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<IServiceCallResult> StartUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken));
+    Task StartUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken));
+
+    const string Version = "V1";
 }

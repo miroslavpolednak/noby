@@ -1,26 +1,16 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
-using ExternalServices.Eas;
-using ExternalServices.Sulm;
+using ExternalServices;
 
 namespace DomainServices.HouseholdService.Api;
 
 internal static class StartupExtensions
 {
-    /// <summary>
-    /// Kontrola zda je vse v konfiguracnim souboru korektne
-    /// </summary>
-    public static void CheckAppConfiguration(this AppConfiguration configuration)
-    {
-        if (configuration?.EAS is null)
-            throw new CisConfigurationNotFound("AppConfiguration");
-    }
-
-    public static WebApplicationBuilder AddHouseholdService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
+    public static WebApplicationBuilder AddHouseholdService(this WebApplicationBuilder builder)
     {
         // EAS svc
-        builder.Services.AddExternalServiceEas(appConfiguration.EAS);
+        builder.AddExternalService<ExternalServices.Eas.R21.IEasClient>();
         // sulm
-        builder.AddExternalServiceSulm();
+        builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
 
         // dbcontext
         builder.AddEntityFramework<Database.HouseholdServiceDbContext>();

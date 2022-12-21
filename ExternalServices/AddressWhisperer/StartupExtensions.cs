@@ -1,39 +1,37 @@
-﻿using CIS.ExternalServicesHelpers;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
 
 namespace ExternalServices.AddressWhisperer;
 
 public static class StartupExtensions
 {
-    public static WebApplicationBuilder AddExternalServiceAddressWhisperer(this WebApplicationBuilder builder)
-    {
-        var configuration = builder.CreateAndCheckExternalServiceConfiguration<AddressWhispererConfiguration>("AddressWhisperer");
+    internal const string ServiceName = "AddressWhisperer";
 
-        switch (configuration.Version, configuration.ImplementationType)
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, V1.IAddressWhispererClient
+        => builder.AddAddressWhisperer<TClient>(V1.IAddressWhispererClient.Version);
+
+    private static WebApplicationBuilder AddAddressWhisperer<TClient>(this WebApplicationBuilder builder, string version)
+        where TClient : class, IExternalServiceClient
+    {
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+
+        switch (version, configuration.ImplementationType)
         {
-            case (Versions.V1, ServiceImplementationTypes.Mock):
-                builder.Services.AddScoped<V1.IAddressWhispererClient, V1.MockAddressWhispererClient>();
+            case (V1.IAddressWhispererClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<V1.IAddressWhispererClient, V1.MockAddressWhispererClient>();
                 break;
 
-            case (Versions.V1, ServiceImplementationTypes.Real):
-                builder.Services
-                    .AddHttpClient<V1.IAddressWhispererClient, V1.RealAddressWhispererClient>((services, client) =>
-                    {
-                        // auth
-                        var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}"));
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-                    })
-                    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-                    });
+            case (V1.IAddressWhispererClient.Version, ServiceImplementationTypes.Real):
+                builder
+                    .AddExternalServiceRestClient<V1.IAddressWhispererClient, V1.RealAddressWhispererClient>()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
-                throw new NotImplementedException($"AddressWhisperer version {configuration.Version} client not implemented");
+                throw new NotImplementedException($"{ServiceName} version {version} client not implemented");
         }
 
         return builder;
