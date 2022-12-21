@@ -5,9 +5,9 @@ namespace DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr;
 
 public static class IdentifiedSubjectStartupExtensions
 {
-    public static IServiceCollection AddIdentifiedSubjectService(this IServiceCollection services, CustomerManagementConfiguration config)
+    public static IServiceCollection AddIdentifiedSubjectService(this IServiceCollection services, IdentifiedSubjectBrConfiguration config)
     {
-        switch (config.IdentifiedSubjectVersion, config.ImplementationType)
+        switch (config.Version, config.ImplementationType)
         {
             case (Version.V1, ServiceImplementationTypes.Real):
                 services.AddHttpClient<V1.IIdentifiedSubjectClient, V1.RealIdentifiedSubjectClient>((provider, client) =>
@@ -22,7 +22,7 @@ public static class IdentifiedSubjectStartupExtensions
                 break;
 
             default:
-                throw new NotImplementedException($"IdentifiedSubject version {config.IdentifiedSubjectVersion} client is not implemented");
+                throw new NotImplementedException($"IdentifiedSubject version {config.Version} client is not implemented");
         }
 
         return services;
