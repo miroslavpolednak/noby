@@ -15,18 +15,21 @@ public class NotificationService : INotificationService
         _mediator = mediator;
     }
     
-    public async ValueTask<SmsSendResponse> SendSms(SmsSendRequest request, CancellationToken token)
+    public async Task<SmsSendResponse> SendSms(SmsSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
     
-    public async ValueTask<SmsFromTemplateSendResponse> SendSmsFromTemplate(SmsFromTemplateSendRequest request, CancellationToken token)
+    public async Task<SmsFromTemplateSendResponse> SendSmsFromTemplate(SmsFromTemplateSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
-    public async ValueTask<EmailSendResponse> SendEmail(EmailSendRequest request, CancellationToken token)
+    public async Task<EmailSendResponse> SendEmail(EmailSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
-    public async ValueTask<EmailFromTemplateSendResponse> SendEmailFromTemplate(EmailFromTemplateSendRequest request, CancellationToken token)
+    public async Task<EmailFromTemplateSendResponse> SendEmailFromTemplate(EmailFromTemplateSendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
-    public async ValueTask<ResultGetResponse> GetResult(ResultGetRequest request, CancellationToken token)
+    public async Task<ResultGetResponse> GetResult(ResultGetRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+
+    public async Task<ResultsSearchByResponse> SearchResults(ResultsSearchByRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 }

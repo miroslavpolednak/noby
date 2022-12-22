@@ -9,17 +9,20 @@ namespace CIS.InternalServices.NotificationService.Contracts;
 public interface INotificationService
 {
     [OperationContract]
-    ValueTask<SmsSendResponse> SendSms(SmsSendRequest request, CancellationToken token);
+    Task<SmsSendResponse> SendSms(SmsSendRequest request, CancellationToken token);
     
     [OperationContract]
-    ValueTask<SmsFromTemplateSendResponse> SendSmsFromTemplate(SmsFromTemplateSendRequest request, CancellationToken token);
+    Task<SmsFromTemplateSendResponse> SendSmsFromTemplate(SmsFromTemplateSendRequest request, CancellationToken token);
     
     [OperationContract]
-    ValueTask<EmailSendResponse> SendEmail(EmailSendRequest request, CancellationToken token);
+    Task<EmailSendResponse> SendEmail(EmailSendRequest request, CancellationToken token);
 
     [OperationContract]
-    ValueTask<EmailFromTemplateSendResponse> SendEmailFromTemplate(EmailFromTemplateSendRequest request, CancellationToken token);
+    Task<EmailFromTemplateSendResponse> SendEmailFromTemplate(EmailFromTemplateSendRequest request, CancellationToken token);
 
     [OperationContract]
-    ValueTask<ResultGetResponse> GetResult(ResultGetRequest request, CancellationToken token);
+    Task<ResultGetResponse> GetResult(ResultGetRequest request, CancellationToken token);
+
+    [OperationContract]
+    Task<ResultsSearchByResponse> SearchResults(ResultsSearchByRequest request, CancellationToken token);
 }
