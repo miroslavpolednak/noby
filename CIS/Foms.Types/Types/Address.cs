@@ -64,7 +64,7 @@ public class Address
     /// </summary>
     public string? CountrySubdivision { get; set; }
 
-    [JsonIgnore]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public DateTime? PrimaryAddressFrom { get; set; }
 
     /// <summary>

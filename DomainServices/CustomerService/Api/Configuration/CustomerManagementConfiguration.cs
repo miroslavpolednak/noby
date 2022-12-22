@@ -8,7 +8,5 @@ public class CustomerManagementConfiguration : ExternalServiceBasicAuthenticatio
 
     public Clients.CustomerProfile.Version CustomerProfileVersion { get; set; }
 
-    public Clients.IdentifiedSubjectBr.Version IdentifiedSubjectVersion { get; set; }
-
     public override string GetVersion() => throw new NotImplementedException();
 }

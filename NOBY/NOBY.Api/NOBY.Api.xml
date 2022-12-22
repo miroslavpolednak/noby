@@ -2357,12 +2357,12 @@
             Číslo osobního dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentWithIssuedBy.IssuingCountryId">
+        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuingCountryId">
             <summary>
             Stát vydání dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentWithIssuedBy.IssuedBy">
+        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuedBy">
             <summary>
             Doklad vydal
             </summary>
