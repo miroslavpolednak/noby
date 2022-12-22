@@ -37,15 +37,21 @@ message NaturalPerson {
 
    bool IsBrSubscribed = 15;
 
-   string IsLegallyIncapable = 16;
-
-   cis.types.NullableGrpcDate LegallyIncapableUntil = 17;
-
    string KbRelationshipCode = 18;
 
    google.protobuf.Int32Value TaxResidencyCountryId = 19;
 
    string Segment = 20;
+
+   google.protobuf.BoolValue IsUSPerson = 21;
+
+   NaturalPersonLegalCapacity LegalCapacity = 22;
+}
+
+message NaturalPersonLegalCapacity {
+	google.protobuf.Int32Value RestrictionTypeId = 1;
+
+	cis.types.NullableGrpcDate RestrictionUntil = 2;
 }
 
 message NaturalPersonBasicInfo {

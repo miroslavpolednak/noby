@@ -93,12 +93,16 @@ internal class CustomerManagementDetailProvider
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
+            //IsUSPerson = customer.PoliticalExposition?.StatusCode == "true",
             IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false,
-            IsLegallyIncapable = np.LegalCapacityRestriction?.RestrictionType ?? string.Empty,
-            LegallyIncapableUntil = np.LegalCapacityRestriction?.RestrictionUntil,
             TaxResidencyCountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
             KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty,
-            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty
+            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty,
+            LegalCapacity = new NaturalPersonLegalCapacity
+            {
+                RestrictionTypeId = np.LegalCapacityRestriction?.RestrictionType,
+                RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil,
+            }
         };
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
