@@ -93,6 +93,6 @@ public interface ISalesArrangementServiceClient
     /// </summary>
     Task DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task UpdateIsOfferDocumentArchived(int salesArrangementId, bool isOfferDocumentArchived, CancellationToken cancellationToken = default(CancellationToken));
+    Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default(CancellationToken));
 }
 

@@ -15,7 +15,7 @@ import "ValidateSalesArrangement.proto";
 import "UpdateLoanAssessmentParameters.proto";
 import "UpdateSalesArrangementParameters.proto";
 import "DeleteSalesArrangement.proto";
-import "UpdateIsOfferDocumentArchived.proto";
+import "UpdateOfferDocumentId.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA
@@ -51,5 +51,5 @@ service SalesArrangementService {
 
 	rpc DeleteSalesArrangement (DomainServices.SalesArrangementService.DeleteSalesArrangementRequest) returns (google.protobuf.Empty);
 
-	rpc UpdateIsOfferDocumentArchived (DomainServices.SalesArrangementService.UpdateIsOfferDocumentArchivedRequest) returns (google.protobuf.Empty);
+	rpc UpdateOfferDocumentId (UpdateOfferDocumentIdRequest) returns (google.protobuf.Empty);
 }
