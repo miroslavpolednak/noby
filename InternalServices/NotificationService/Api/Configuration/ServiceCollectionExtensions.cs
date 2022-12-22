@@ -12,6 +12,21 @@ public static class ServiceCollectionExtensions
             .Validate(config =>
                     config != null,
                 $"{nameof(AppConfiguration)} required.")
+            .Validate(config =>
+                    config.KafkaTopics != null,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)} required.")
+            .Validate(config =>
+                !string.IsNullOrEmpty(config.KafkaTopics.McsResult),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsResult)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config.KafkaTopics.McsSender),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsSender)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config.KafkaTopics.NobyResult),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobyResult)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config.KafkaTopics.NobySendEmail),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobySendEmail)} required.")
             .ValidateOnStart();
         
         builder.Services
@@ -49,6 +64,11 @@ public static class ServiceCollectionExtensions
         return builder;
     }
 
+    public static AppConfiguration GetAppConfiguration(this WebApplicationBuilder builder)
+    {
+        return builder.GetConfiguration<AppConfiguration>();
+    }
+    
     public static S3Configuration GetS3Configuration(this WebApplicationBuilder builder)
     {
         return builder.GetConfiguration<S3Configuration>();

@@ -6,9 +6,11 @@ namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddS3Client(this IServiceCollection services, S3Configuration s3Configuration)
+    public static WebApplicationBuilder AddS3Client(this WebApplicationBuilder builder)
     {
-        return services
+        var s3Configuration = builder.GetS3Configuration();
+        
+        builder.Services
             .AddScoped<IAmazonS3, AmazonS3Client>(provider =>
             {
                 var config = new AmazonS3Config
@@ -20,5 +22,7 @@ public static class ServiceCollectionExtensions
                 var credentials = new BasicAWSCredentials(s3Configuration.AccessKey, s3Configuration.SecretKey);
                 return new AmazonS3Client(credentials, config);
             });
+
+        return builder;
     }
 }

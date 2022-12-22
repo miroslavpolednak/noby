@@ -10,16 +10,11 @@ using CIS.InternalServices.NotificationService.Api.Services.Mcs;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
-using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
-using KB.Speed.MassTransit.DependencyInjection;
-using KB.Speed.Tracing.Extensions;
-using KB.Speed.Tracing.Instrumentations.AspNetCore;
-using KB.Speed.Tracing.Instrumentations.HttpClient;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -71,22 +66,14 @@ builder.Services
 builder.Services.AddCodebookService();
 
 // messaging - kafka consumers and producers
-builder.Services.AddSpeedTracing(builder.Configuration, providerBuilder =>
-{
-    providerBuilder.SetDefaultResourceBuilder()
-        .AddDefaultExporter()
-        .AddSpeedAspNetInstrumentation()
-        .AddSpeedHttpClientInstrumentation()
-        .AddMassTransitInstrumentation();
-});
 
-builder.Services.AddMessaging(builder.GetKafkaConfiguration());
+builder.AddMessaging();
 
 // s3 client
-builder.Services.AddS3Client(builder.GetS3Configuration());
+builder.AddS3Client();
 
 // smtp
-builder.Services.AddSmtpClient(builder.GetSmtpConfiguration());
+builder.AddSmtpClient();
 
 // database
 builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");

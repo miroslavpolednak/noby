@@ -46,7 +46,7 @@ public class SendEmailConsumeHandler : IRequestHandler<SendEmailConsumeRequest, 
         
         // todo: error handling
         var resultId = request.Id;
-        await _repository.UpdateResult(resultId, NotificationState.Sent, new HashSet<string>(), cancellationToken);
+        await _repository.UpdateResult(resultId, NotificationState.Sent, token: cancellationToken);
         
         return new SendEmailConsumeResponse();
     }

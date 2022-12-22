@@ -26,7 +26,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
     
     public async Task<SmsFromTemplateSendResponse> Handle(SmsFromTemplateSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateResult(NotificationChannel.Sms, cancellationToken);
+        var notificationResult = await _repository.CreateSmsResult(cancellationToken);
         var notificationId = notificationResult.Id;
         
         // todo: call codebook service and get notification type text
@@ -35,7 +35,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
         {
             id = notificationId.ToString(),
             phone = request.Phone.Map(),
-            type = request.Type.ToString(),
+            type = request.Type,
             text = "todo",
             processingPriority = request.ProcessingPriority
         };
@@ -47,8 +47,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
         await _repository.UpdateResult(
             notificationId,
             NotificationState.Sent,
-            new HashSet<string>(),
-            cancellationToken);
+            token: cancellationToken);
         
         return new SmsFromTemplateSendResponse
         {

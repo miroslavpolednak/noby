@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Sms;

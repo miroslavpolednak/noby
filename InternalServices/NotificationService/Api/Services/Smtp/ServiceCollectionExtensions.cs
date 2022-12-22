@@ -4,8 +4,9 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Smtp;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddSmtpClient(this IServiceCollection services, SmtpConfiguration configuration)
+    public static WebApplicationBuilder AddSmtpClient(this WebApplicationBuilder builder)
     {
-        return services;
+        var smtpConfiguration = builder.GetSmtpConfiguration();
+        return builder;
     }
 }

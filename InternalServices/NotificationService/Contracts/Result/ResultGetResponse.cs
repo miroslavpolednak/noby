@@ -16,5 +16,5 @@ public class ResultGetResponse
     public NotificationChannel Channel { get; set; }
     
     [ProtoMember(4)]
-    public List<ResultError> Errors { get; set; } = new();
+    public List<string> Errors { get; set; } = new();
 }

@@ -26,14 +26,14 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
     
     public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateResult(NotificationChannel.Sms, cancellationToken);
+        var notificationResult = await _repository.CreateSmsResult(cancellationToken);
         var notificationId = notificationResult.Id;
 
         var sendSms = new SendApi.v1.sms.SendSMS
         {
             id = notificationId.ToString(),
             phone = request.Phone.Map(),
-            type = request.Type.ToString(),
+            type = request.Type,
             text = request.Text,
             processingPriority = request.ProcessingPriority
         };
@@ -45,8 +45,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
         var updateResult = await _repository.UpdateResult(
             notificationId,
             NotificationState.Sent,
-            new HashSet<string>(),
-            cancellationToken);
+            token: cancellationToken);
         
         return new SmsSendResponse
         {

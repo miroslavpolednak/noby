@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
+﻿using CIS.InternalServices.NotificationService.Contracts.Common;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Mappers;
 

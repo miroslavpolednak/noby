@@ -5,9 +5,9 @@ using CIS.Core.Security;
 using CIS.Infrastructure.Security.ContextUser;
 using CIS.InternalServices.NotificationService.Clients;
 using CIS.InternalServices.NotificationService.Clients.Interfaces;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
-using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
 using Console_NotificationService;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,7 +32,7 @@ var client = serviceProvider.GetRequiredService<INotificationClient>();
 
 var token = CancellationToken.None;
 var text = "Text";
-var type = SmsNotificationType.Unknown;
+var type = "Test type";
 var priority = 5;
 
 var phone = new Phone

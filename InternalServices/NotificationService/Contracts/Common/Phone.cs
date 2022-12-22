@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
+namespace CIS.InternalServices.NotificationService.Contracts.Common;
 
 [ProtoContract]
 public sealed class Phone

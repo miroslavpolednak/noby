@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.Data;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
@@ -9,7 +10,8 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 public class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
     public DbSet<Result> Results { get; set; } = null!;
-    public DbSet<SmsTrackingData> SmsTrackingData { get; set; } = null!;
+    public DbSet<SmsResult> SmsResults { get; set; } = null!;
+    public DbSet<EmailResult> EmailResults { get; set; } = null!;
 
     public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
     {
@@ -17,5 +19,14 @@ public class NotificationDbContext : BaseDbContext<NotificationDbContext>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Result>()
+            .UseTpcMappingStrategy()
+            .ToTable(nameof(Result));
+        
+        modelBuilder.Entity<SmsResult>()
+            .ToTable(nameof(SmsResult));
+        
+        modelBuilder.Entity<EmailResult>()
+            .ToTable(nameof(EmailResult));
     }
 }

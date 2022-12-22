@@ -1,27 +1,40 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
-using CIS.InternalServices.NotificationService.Mcs;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using cz.kb.osbs.mcs.sender.sendapi.v1.sms;
 using cz.kb.osbs.mcs.sender.sendapi.v4.email;
+using KB.Speed.MassTransit.DependencyInjection;
 using KB.Speed.MassTransit.Kafka;
 using KB.Speed.Messaging.Kafka.DependencyInjection;
+using KB.Speed.Tracing.Extensions;
+using KB.Speed.Tracing.Instrumentations.AspNetCore;
+using KB.Speed.Tracing.Instrumentations.HttpClient;
 using MassTransit;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Mcs;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMessaging(
-        this IServiceCollection services,
-        KafkaConfiguration kafkaConfiguration)
+    public static WebApplicationBuilder AddMessaging(this WebApplicationBuilder builder)
     {
-        services.AddAvroSerializerConfiguration();
-        services.AddAvroDeserializerConfiguration();
-        services.AddApicurioSchemaRegistry();
+        builder.Services.AddSpeedTracing(builder.Configuration, providerBuilder =>
+        {
+            providerBuilder.SetDefaultResourceBuilder()
+                .AddDefaultExporter()
+                .AddSpeedAspNetInstrumentation()
+                .AddSpeedHttpClientInstrumentation()
+                .AddMassTransitInstrumentation();
+        }); 
         
-        services.AddMassTransit(configurator =>
+        var kafkaConfiguration = builder.GetKafkaConfiguration();
+        var appConfiguration = builder.GetAppConfiguration();
+        
+        builder.Services.AddAvroSerializerConfiguration();
+        builder.Services.AddAvroDeserializerConfiguration();
+        builder.Services.AddApicurioSchemaRegistry();
+        
+        builder.Services.AddMassTransit(configurator =>
         {
             configurator.UsingInMemory((context, config) =>
             {
@@ -31,13 +44,14 @@ public static class ServiceCollectionExtensions
             configurator.AddRider(rider =>
             {
                 var businessNode = kafkaConfiguration.Nodes.Business;
+                var topics = appConfiguration.KafkaTopics;
                 
                 // add consumers
                 rider.AddConsumer<ResultConsumer>();
                 
                 // add producers
-                rider.AddProducerAvro<SendEmail>(Topics.McsSender);
-                rider.AddProducerAvro<SendSMS>(Topics.McsSender);
+                rider.AddProducerAvro<SendEmail>(topics.McsSender);
+                rider.AddProducerAvro<SendSMS>(topics.McsSender);
                 // todo: Add Mpss SendEmail, Push, MsgBox...
                 
                 rider.UsingKafka((context, k) =>
@@ -62,7 +76,7 @@ public static class ServiceCollectionExtensions
                     // configure topic mapping
                     k.TopicEndpointAvro<NotificationReport, ResultConsumer>(
                         context,
-                        Topics.McsResult,
+                        topics.McsResult,
                         kafkaConfiguration.GroupId,
                         e =>
                         {
@@ -71,6 +85,6 @@ public static class ServiceCollectionExtensions
             });
         });
         
-        return services;
+        return builder;
     }
 }

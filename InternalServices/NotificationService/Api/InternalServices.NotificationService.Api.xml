@@ -44,25 +44,9 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.GetResultsByClientId(System.String,System.Threading.CancellationToken)">
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.SearchResults(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Získat výsledek o notifikaci podle Client Id
-            </summary>
-            <remarks>
-            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
-            </remarks>
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.GetResultsByCustomId(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Získat výsledek o notifikaci podle Custom Id
-            </summary>
-            <remarks>
-            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
-            </remarks>
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.GetResultsByDocumentId(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Získat výsledek o notifikaci podle Document Id
+            Vyhledat výsledky o notifikací podle vyhledávacích kritérií
             </summary>
             <remarks>
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>

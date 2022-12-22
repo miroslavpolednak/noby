@@ -34,8 +34,7 @@ public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, Result
             var notificationResult = await _repository.UpdateResult(
                 notificationId,
                 NotificationState.Delivered,
-                new HashSet<string>(),
-                cancellationToken);
+                token: cancellationToken);
         }
         catch (CisNotFoundException)
         {

@@ -34,7 +34,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
     
     public async Task<EmailFromTemplateSendResponse> Handle(EmailFromTemplateSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateResult(NotificationChannel.Email, cancellationToken);
+        var notificationResult = await _repository.CreateEmailResult(cancellationToken);
         var notificationId = notificationResult.Id;
      
         var attachments = new List<Attachment>();
@@ -71,14 +71,13 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
 
         _logger.LogInformation("Sending email from template: {sendEmail}", JsonSerializer.Serialize(sendEmail));
 
-        // todo: decide Logman or Business
+        // todo: decide KB or MP
         await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
         
         var updateResult = await _repository.UpdateResult(
             notificationId,
             NotificationState.Sent,
-            new HashSet<string>(),
-            cancellationToken);
+            token: cancellationToken);
         
         return new EmailFromTemplateSendResponse
         {
