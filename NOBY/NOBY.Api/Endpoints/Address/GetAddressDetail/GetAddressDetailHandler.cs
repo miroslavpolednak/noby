@@ -22,7 +22,8 @@ internal sealed class GetAddressDetailHandler
             PragueDistrict = result.PragueDistrict,
             Postcode = result.Postcode,
             EvidenceNumber = result.EvidenceNumber,
-            DeliveryDetails = result.DeliveryDetails
+            DeliveryDetails = result.DeliveryDetails,
+            AddressPointId = result.AddressPointId
         };
     }
 

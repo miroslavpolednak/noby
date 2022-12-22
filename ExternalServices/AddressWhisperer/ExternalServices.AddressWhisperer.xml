@@ -54,6 +54,11 @@
             Obvod Prahy - AddressWhispererBEService|city pokud regEx 'Praha ([1-2][0-9]|[1-9])', jinak null
             </summary>
         </member>
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.AddressPointId">
+            <summary>
+            Id RUIAN adresního bodu - AddressWhispererBEService|id
+            </summary>
+        </member>
         <member name="M:ExternalServices.AddressWhisperer.V1.IAddressWhispererClient.GetSuggestions(System.String,System.String,System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Vraci seznam nalezenych adres pro 'text'
