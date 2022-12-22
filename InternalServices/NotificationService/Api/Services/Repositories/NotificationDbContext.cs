@@ -10,8 +10,6 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 public class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
     public DbSet<Result> Results { get; set; } = null!;
-    public DbSet<SmsResult> SmsResults { get; set; } = null!;
-    public DbSet<EmailResult> EmailResults { get; set; } = null!;
 
     public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
     {
@@ -20,8 +18,7 @@ public class NotificationDbContext : BaseDbContext<NotificationDbContext>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Result>()
-            .UseTpcMappingStrategy()
-            .ToTable(nameof(Result));
+            .UseTpcMappingStrategy();
         
         modelBuilder.Entity<SmsResult>()
             .ToTable(nameof(SmsResult));

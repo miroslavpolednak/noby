@@ -52,5 +52,17 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
+        <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
