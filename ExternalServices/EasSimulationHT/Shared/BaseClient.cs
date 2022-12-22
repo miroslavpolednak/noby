@@ -3,14 +3,11 @@
 internal abstract class BaseClient<TClient>
     where TClient : class
 {
-    public Versions Version { get; private init; }
-
     protected readonly ILogger<TClient> _logger;
-    protected readonly EasSimulationHTConfiguration _configuration;
+    protected readonly CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration _configuration;
 
-    public BaseClient(Versions version, EasSimulationHTConfiguration configuration, ILogger<TClient> logger)
+    public BaseClient(CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration configuration, ILogger<TClient> logger)
     {
-        Version = version;
         _logger = logger;
         _configuration = configuration;
     }
@@ -19,8 +16,11 @@ internal abstract class BaseClient<TClient>
     {
         var basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
 
-        basicHttpBinding.SendTimeout = TimeSpan.FromSeconds(_configuration.Timeout);
-        basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(_configuration.Timeout);
+        if (_configuration.RequestTimeout.HasValue)
+        {
+            basicHttpBinding.SendTimeout = TimeSpan.FromSeconds(_configuration.RequestTimeout.Value);
+            basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(_configuration.RequestTimeout.Value);
+        }
         basicHttpBinding.MaxReceivedMessageSize = 1500000;
         basicHttpBinding.ReaderQuotas.MaxArrayLength = 1500000;
 
@@ -28,23 +28,23 @@ internal abstract class BaseClient<TClient>
     }
 
     protected EndpointAddress createEndpoint()
-        => new EndpointAddress(new Uri(_configuration.ServiceUrl));
+        => new EndpointAddress(_configuration.ServiceUrl);
 
-    protected async Task<IServiceCallResult> callMethod(Func<Task<IServiceCallResult>> fce)
+    protected async Task<TResult> callMethod<TResult>(Func<Task<TResult>> fce)
     {
         try
         {
             return await fce();
         }
-        catch (InvalidOperationException e)
+        catch (InvalidOperationException ex)
         {
-            _logger.LogError(e, e.Message);
-            return new ErrorServiceCallResult(9200, $"EAS Endpoint '{_configuration.ServiceUrl}' unavailable");
+            _logger.LogError(ex, ex.Message);
+            throw new CIS.Core.Exceptions.CisServiceUnavailableException(StartupExtensions.ServiceName, nameof(callMethod), ex.Message);
         }
-        catch (EndpointNotFoundException)
+        catch (EndpointNotFoundException ex)
         {
             _logger.LogError("EAS Endpoint '{uri}' not found", _configuration.ServiceUrl);
-            return new ErrorServiceCallResult(9201, $"EAS Endpoint '{_configuration.ServiceUrl}' not found");
+            throw new CIS.Core.Exceptions.CisServiceUnavailableException(StartupExtensions.ServiceName, nameof(callMethod), ex.Message);
         }
         catch (Exception e)
         {

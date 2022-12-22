@@ -26,7 +26,7 @@ internal sealed class UpdateCustomerService
         // get CaseId
         if (entity.CustomerRoleId == CIS.Foms.Enums.CustomerRoles.Debtor)
         {
-            var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation));
+            var saInstance = await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellation);
 
             // update case service
             await _caseService.UpdateCaseCustomer(saInstance.CaseId, new CaseService.Contracts.CustomerData
@@ -41,7 +41,7 @@ internal sealed class UpdateCustomerService
 
     public async Task TryCreateMpIdentity(Database.Entities.CustomerOnSA entity)
     {
-        int? id = resolveCreateEasClient(await _easClient.CreateNewOrGetExisingClient(getEasClientModel()));
+        int? id = (await _easClient.CreateNewOrGetExisingClient(getEasClientModel())).Id;
 
         if (id.HasValue)
         {
@@ -62,15 +62,6 @@ internal sealed class UpdateCustomerService
             FirstName = _cachedCustomerInstance.NaturalPerson.FirstName,
             LastName = _cachedCustomerInstance.NaturalPerson.LastName,
             DateOfBirth = _cachedCustomerInstance.NaturalPerson.DateOfBirth
-        };
-
-    // zalozit noveho klienta v EAS
-    static int? resolveCreateEasClient(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<ExternalServices.Eas.Dto.CreateNewOrGetExisingClientResponse> r => r.Model.Id,
-            ErrorServiceCallResult r => default(int?), //TODO co se ma v tomhle pripade delat?
-            _ => throw new NotImplementedException("resolveCreateEasClient")
         };
 
     private _Customer.CustomerDetailResponse? _cachedCustomerInstance;

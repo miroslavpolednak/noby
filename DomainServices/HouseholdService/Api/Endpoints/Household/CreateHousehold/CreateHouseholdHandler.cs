@@ -9,7 +9,7 @@ internal sealed class CreateHouseholdHandler
     public async Task<CreateHouseholdResponse> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         // check existing SalesArrangementId
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<__SA.SalesArrangement>(await __SAlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await __SAlesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
 #pragma warning disable CA2208
         // Debtor domacnost muze byt jen jedna

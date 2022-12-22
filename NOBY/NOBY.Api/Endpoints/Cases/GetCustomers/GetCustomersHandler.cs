@@ -28,12 +28,10 @@ internal class GetCustomersHandler
                     .ToList();
 
             // get salesArrangementId
-            var saInstances = ServiceCallResult.ResolveAndThrowIfError<_SA.GetSalesArrangementListResponse>(
-                await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken)
-            );
+            var saInstances = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
             var saId = saInstances.SalesArrangements.First(t => _allowedSalesArrangementTypes.Contains(t.SalesArrangementTypeId)).SalesArrangementId;
             // z parameters nacist Agent
-            var saDetail = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(saId, cancellationToken));
+            var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
             
             // vsichni customeri z CustomerOnSA
             var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);

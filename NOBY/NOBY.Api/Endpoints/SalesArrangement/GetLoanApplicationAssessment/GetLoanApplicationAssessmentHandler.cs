@@ -38,7 +38,7 @@ internal class GetLoanApplicationAssessmentHandler
     public async Task<GetLoanApplicationAssessmentResponse> Handle(GetLoanApplicationAssessmentRequest request, CancellationToken cancellationToken)
     {
         // instance SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<DomainServices.SalesArrangementService.Contracts.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         // if LoanApplication wasn't created so far, request without NewAssessmentRequired = true is senceless
         if (!request.NewAssessmentRequired && string.IsNullOrEmpty(saInstance.LoanApplicationAssessmentId))
@@ -67,7 +67,7 @@ internal class GetLoanApplicationAssessmentHandler
             loanApplicationAssessmentId = createAssesmentResponse.LoanApplicationAssessmentId;
 
             // update sales arrangement (loanApplicationAssessmentId, riskSegment)
-            ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(request.SalesArrangementId, loanApplicationAssessmentId, riskSegment, saInstance.CommandId, createAssesmentResponse?.RiskBusinessCaseExpirationDate, cancellationToken));
+            await _salesArrangementService.UpdateLoanAssessmentParameters(request.SalesArrangementId, loanApplicationAssessmentId, riskSegment, saInstance.CommandId, createAssesmentResponse?.RiskBusinessCaseExpirationDate, cancellationToken);
         }
 
         // load assesment by ID

@@ -63,5 +63,5 @@ public class CreateRequest
     /// </summary>
     public CIS.Foms.Types.Address? PrimaryAddress { get; set; }
 
-    public SharedDto.IdentificationDocumentWithIssuedBy? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

@@ -13,9 +13,7 @@ internal sealed class DeleteCaseHandler
             ?? throw new CisNotFoundException(13000, "Case", request.CaseId);
 
         // pocet SA na Case
-        var count = ServiceCallResult
-            .ResolveAndThrowIfError<SalesArrangementService.Contracts.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellation))
-            .SalesArrangements.Count;
+        var count = (await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellation)).SalesArrangements.Count;
 
         if (count > 0)
             throw new CisValidationException(13021, "Unable to delete Case – one or more SalesArrangements exists for this case");

@@ -27,10 +27,10 @@ internal class SendToCmpHandler
     public async Task<SendToCmpResponse> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         // instance SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         // provolat validaci SA
-        var validationResult = await callSaValidation(request.SalesArrangementId, cancellationToken);
+        var validationResult = await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
         if (validationResult?.ValidationMessages?.Any() ?? false 
             && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
         {
@@ -58,18 +58,5 @@ internal class SendToCmpHandler
         await _caseService.UpdateCaseState(saInstance.CaseId, 2, cancellationToken);
 
         return new SendToCmpResponse();
-    }
-
-    private async Task<_SA.ValidateSalesArrangementResponse> callSaValidation(int salesArrangementId, CancellationToken cancellationToken)
-    {
-        try
-        {
-            return ServiceCallResult.ResolveAndThrowIfError<_SA.ValidateSalesArrangementResponse>(await _salesArrangementService.ValidateSalesArrangement(salesArrangementId, cancellationToken));
-        }
-        catch (CisArgumentException ex)
-        {
-            // rethrow to be catched by validation middleware
-            throw new CisValidationException(ex.ExceptionCode, ex.Message);
-        }
     }
 }

@@ -10,7 +10,7 @@ internal class LinkModelationHandler
     protected override async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
         // get SA data
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         // get case instance
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
 

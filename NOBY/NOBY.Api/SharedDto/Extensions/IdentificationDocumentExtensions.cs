@@ -2,13 +2,15 @@
 
 public static class IdentificationDocumentExtensions
 {
-    public static DomainServices.CustomerService.Contracts.IdentificationDocument ToDomainService(this IdentificationDocumentWithIssuedBy document)
+    public static DomainServices.CustomerService.Contracts.IdentificationDocument ToDomainService(this IdentificationDocumentFull document)
        => new()
        {
            IssuingCountryId = document.IssuingCountryId,
            IdentificationDocumentTypeId = document.IdentificationDocumentTypeId,
            IssuedBy = document.IssuedBy,
-           Number = document.Number
+           Number = document.Number,
+           IssuedOn = document.IssuedOn,
+           ValidTo = document.ValidTo
        };
 
     public static IdentificationDocumentFull ToResponseDto(this DomainServices.CustomerService.Contracts.IdentificationDocument document)

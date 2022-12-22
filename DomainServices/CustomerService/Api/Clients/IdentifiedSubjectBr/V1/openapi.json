@@ -3,7 +3,7 @@
   "info": {
     "description": "Identified subject service with verification in basic registry",
     "title": "IdentifiedSubjectBrService.v1",
-    "version": "1.0.4"
+    "version": "1.2.0"
   },
   "servers": [
     {
@@ -123,6 +123,98 @@
               }
             },
             "description": "Unexpected error occured"
+          }
+        }
+      }
+    },
+    "/v1/identified-subject/{customerId}": {
+      "put": {
+        "operationId": "updateIdentifiedSubject",
+        "tags": [
+          "IdentifiedSubjectBrService.v1"
+        ],
+        "summary": "updateIdentifiedSubject",
+        "description": "The operation will update the subject and its entities.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/IdentifiedSubject"
+        },
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "customer ID (KBID - identifier of customer in Customer Management system)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/X-B3-TraceId"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Party-Identity-In-Service"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Orig-System-Identity"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Caller-System-Identity"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful update"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Validation error - mostly invalid data in request is provided provided"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Authentication information is missing or is invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "You are not authorized to run this operation"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unexpected error occurred"
           }
         }
       }
@@ -448,78 +540,91 @@
           "street": {
             "type": "string",
             "description": "Street name without a house number. The field is not mandatory for cities without an street network.",
+            "minLength": 1,
             "maxLength": 100,
             "example": "Masarykova"
           },
           "houseNumber": {
             "type": "string",
             "description": "The house number. Mandatory for all foreign addresses. For Czech addresses, either the houseNumber or the evidenceNumber must be filled in.",
+            "minLength": 1,
             "maxLength": 16,
             "example": 22
           },
           "evidenceNumber": {
             "type": "string",
             "description": "Evidence number. Used only for Czech addresses. The evidence number has objects that are not assigned a house number. These are, for example, chalets. Filled for foreign addresses not desirable will be treated as an error.",
+            "minLength": 1,
             "maxLength": 4,
             "example": 20
           },
           "streetNumber": {
             "type": "string",
             "description": "Used only for Czech addresses. A number that helps locate a house on a given street. Filled for foreign addresses not desirable will be treated as an error.",
+            "minLength": 1,
             "maxLength": 4,
             "example": "9A"
           },
           "cityDistrict": {
             "type": "string",
             "description": "City district, compulsory for Czech addresses. It is not mandatory for foreign ones, but it is desirable to fill the field for large cities, which are divided into smaller administrative units.",
+            "minLength": 1,
             "maxLength": 100,
             "example": "Vinoř"
           },
           "pragueDistrict": {
             "type": "string",
             "description": "Territory of the city district in the capital Prague (Praha 1 - 10 not Praha 1 - 22). If countryCode is CZ and city is Praque, then it is compulsory to fill it in.",
+            "minLength": 1,
             "maxLength": 40,
             "example": "Praha 9"
           },
           "deliveryDetails": {
             "type": "string",
             "description": "A note of delivery specifying to whom delivery is intended.",
+            "minLength": 1,
             "maxLength": 100,
             "example": "Marketing department"
           },
           "postBox": {
             "type": "string",
             "description": "P.O. Box number. For Czech addresses the value is validated to a number.",
+            "minLength": 1,
             "maxLength": 16,
             "example": 756
           },
           "city": {
             "type": "string",
             "description": "The city name. Only the name of the city without its parts is given, i.e. for Prague we only mention Prague and not Prague 6 or Prague Dejvice.",
+            "minLength": 1,
             "maxLength": 100,
             "example": "Praha"
           },
           "postCode": {
             "type": "string",
             "description": "Post code, Postal code, ZIP code.  For czech address must be in the form of a five-digit number between 10000 - 79999",
+            "minLength": 1,
             "maxLength": 16,
             "example": 19017
           },
           "countrySubdivision": {
             "type": "string",
             "description": "It is used only for foreign addresses and mainly for states which are divided into large self-governing entities. E.g. U.S., when we fill in a U.S. state like Texas, Florida. For a Czech address, filling in the field is considered an error.",
+            "minLength": 1,
             "maxLength": 35,
             "example": "Texas"
           },
           "countryCode": {
             "type": "string",
             "description": "Country code - two characters ISO code - CB_Country",
+            "minLength": 2,
             "maxLength": 2,
             "example": "CZ"
           },
           "addressPointId": {
             "type": "string",
             "description": "Address point id. The field is completed for Czech and Slovak addresses. To obtain it, the address needs to be verified in the Register of Territorial Identification of Addresses and Properties in the Czech Republic or its equivalent in the Slovak Republic.",
+            "minLength": 1,
             "maxLength": 100,
             "example": 879784564
           }

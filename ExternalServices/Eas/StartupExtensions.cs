@@ -1,45 +1,37 @@
-﻿using CIS.InternalServices.ServiceDiscovery.Clients;
+﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ExternalServices.Eas;
+namespace ExternalServices;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddExternalServiceEas(this IServiceCollection services, EasConfiguration? easConfiguration)
-    {
-        if (easConfiguration == null)
-            throw new ArgumentNullException(nameof(easConfiguration), "EAS configuration not set");
-        if (!easConfiguration.UseServiceDiscovery && string.IsNullOrEmpty(easConfiguration.ServiceUrl))
-            throw new ArgumentNullException("ServiceUrl", "EAS Service URL must be defined");
-        if (easConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Unknown)
-            throw new ArgumentException("ImplementationType", "Service client Implementation type is not set");
+    internal const string ServiceName = "EAS";
 
-        switch (easConfiguration.Version)
+    public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, Eas.R21.IEasClient
+        => builder.AddEas<TClient>(Eas.R21.IEasClient.Version);
+
+    private static WebApplicationBuilder AddEas<TClient>(this WebApplicationBuilder builder, string version)
+        where TClient : class, IExternalServiceClient
+    {
+        var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+
+        switch (version, configuration.ImplementationType)
         {
-            case Versions.R21:
-                if (easConfiguration.ImplementationType == CIS.Foms.Enums.ServiceImplementationTypes.Mock)
-                    services.AddScoped<R21.IEasClient, R21.MockEasClient>();
-                else
-                    services.AddScoped<R21.IEasClient, R21.RealEasClient>();
+            case (Eas.R21.IEasClient.Version, ServiceImplementationTypes.Mock):
+                builder.Services.AddTransient<Eas.R21.IEasClient, Eas.R21.MockEasClient>();
+                break;
+
+            case (Eas.R21.IEasClient.Version, ServiceImplementationTypes.Real):
+                builder.Services.AddTransient<Eas.R21.IEasClient, Eas.R21.RealEasClient>();
                 break;
 
             default:
-                throw new NotImplementedException($"EAS version {easConfiguration.Version} client not implemented");
+                throw new NotImplementedException($"{ServiceName} version {version} client not implemented");
         }
 
-        services.AddSingleton(provider =>
-        {
-            // pokud se ma hledat URL v service discovery
-            if (easConfiguration.UseServiceDiscovery)
-            {
-                string? url = provider
-                    .GetRequiredService<IDiscoveryServiceClient>()
-                    .GetServiceUrlSynchronously(new("ES:EAS"), CIS.InternalServices.ServiceDiscovery.Contracts.ServiceTypes.Proprietary);
-                easConfiguration.ServiceUrl = url ?? throw new ArgumentNullException("url", "Service Discovery can not find ES:EAS Proprietary service URL");
-            }
-            return easConfiguration;
-        });
-
-        return services;
+        return builder;
     }
 }

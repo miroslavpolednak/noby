@@ -1,29 +1,14 @@
 ﻿using ExternalServices.Eas.R21.EasWrapper;
 using CIS.Infrastructure.Logging;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ExternalServices.Eas.R21;
 
 internal sealed class RealEasClient
     : Shared.BaseClient<RealEasClient>, IEasClient
 {
-    public async Task<IServiceCallResult> GetSavingsLoanId(long caseId)
+    public async Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId)
     {
-        return await callMethod(async () =>
-        {
-            using EAS_WS_SB_ServicesClient client = createClient();
-
-            //TODO az bude metoda, tak zavolat 
-            /*if (result.SIM_error != 0)
-                _logger.LogInformation("Unable to create MktItem instance in Starbuild: {error}: {errorText}", result.SIM_error, result.SIM_error_text);*/
-
-            return new SuccessfulServiceCallResult<long>(caseId);
-        });
-    }
-
-    public async Task<IServiceCallResult> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId)
-    {
-        return await callMethod(async () =>
+        return await callMethod<long>(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
             var request = new CaseIdRequest
@@ -43,16 +28,16 @@ internal sealed class RealEasClient
 
                 _logger.LogInformation(message);
 
-                return new ErrorServiceCallResult(9102, message);
+                throw new CIS.Core.Exceptions.CisValidationException(9102, message);
             }
 
-            return new SuccessfulServiceCallResult<long>(result.caseId);
+            return result.caseId;
         });
     }
 
-    public async Task<IServiceCallResult> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input)
+    public async Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input)
     {
-        return await callMethod(async () =>
+        return await callMethod<ESBI_SIMULATION_RESULTS>(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
@@ -65,16 +50,16 @@ internal sealed class RealEasClient
                 var message = $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]";
                 _logger.LogWarning(message);
 
-                return new ErrorServiceCallResult(9103, message);
+                throw new CIS.Core.Exceptions.CisValidationException(9103, message);
             }
 
-            return new SuccessfulServiceCallResult<ESBI_SIMULATION_RESULTS>(result);
+            return result;
         });
     }
 
-    public async Task<IServiceCallResult> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
+    public async Task<Dto.CreateNewOrGetExisingClientResponse> CreateNewOrGetExisingClient(Dto.ClientDataModel clientData)
     {
-        return await callMethod(async () =>
+        return await callMethod<Dto.CreateNewOrGetExisingClientResponse>(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
@@ -84,7 +69,7 @@ internal sealed class RealEasClient
             var result = await client.GetKlientData_NewKlientAsync(request);
 
             if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
-                return new ErrorServiceCallResult(9104, "EAS GetKlientData_NewKlientResult is empty");
+                throw new CIS.Core.Exceptions.CisValidationException(9104, "EAS GetKlientData_NewKlientResult is empty");
 
             var r = result.GetKlientData_NewKlientResult[0];
             _logger.LogSerializedObject("GetKlientData_NewKlientResponse", r);
@@ -93,7 +78,7 @@ internal sealed class RealEasClient
             {
                 var message = $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}";
                 _logger.LogInformation(message);
-                return new ErrorServiceCallResult(9105, message);
+                throw new CIS.Core.Exceptions.CisValidationException(9105, message);
             }
 
             var differentProps = ModelExtensions.FindDifferentProps(request[0], r);
@@ -104,19 +89,15 @@ internal sealed class RealEasClient
                 _auditLogger.Log(message);
             }
 
-            return new SuccessfulServiceCallResult<Dto.CreateNewOrGetExisingClientResponse>(new Dto.CreateNewOrGetExisingClientResponse
-            {
-                Id = r.klient_id,
-                BirthNumber = r.rodne_cislo_ico
-            });
+            return new Dto.CreateNewOrGetExisingClientResponse { Id = r.klient_id, BirthNumber = r.rodne_cislo_ico };
         });
     }
 
-    public async Task<IServiceCallResult> GetContractNumber(long clientId, int caseId)
+    public async Task<string> GetContractNumber(long clientId, int caseId)
     {
         _logger.LogDebug("Run inputs: {clientId}, {caseId}", clientId, caseId);
 
-        return await callMethod(async () =>
+        return await callMethod<string>(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
@@ -126,44 +107,27 @@ internal sealed class RealEasClient
             var result = await client.Get_ContractNumberAsync(request);
             _logger.LogSerializedObject("ContractNrResponse", result);
 
-            return new SuccessfulServiceCallResult<string>(result.contractNumber);
+            return result.contractNumber;
         });
     }
 
-    public async Task<IServiceCallResult> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
+    public async Task<CommonResponse?> AddFirstSignatureDate(int caseId, int loanId, DateTime firstSignatureDate)
     {
         _logger.LogDebug("AddFirstSignatureDate inputs: CaseId: {caseId}, LoanId: {loanId}, FirstSignatureDate: {firstSignatureDate}", caseId, loanId, firstSignatureDate);
 
-        return await callMethod(async () =>
+        return await callMethod<CommonResponse?>(async () =>
         {
             using EAS_WS_SB_ServicesClient client = createClient();
 
             var response = await client.Add_FirstSignatureDateAsync(caseId, loanId, firstSignatureDate);
             _logger.LogSerializedObject("AddFirstSignatureDate outputs: ", response.commonResult);
 
-            var res = new CommonResponse(response.commonResult);
-            return new SuccessfulServiceCallResult<CommonResponse>(res);
+            return new CommonResponse(response.commonResult);
 
         });
     }
 
-    public async Task<IServiceCallResult> CheckForm(S_FORMULAR formular)
-    {
-        return await callMethod(async () =>
-        {
-            using EAS_WS_SB_ServicesClient client = createClient();
-
-            var request = new CheckFormRequest(formular);
-
-            _logger.LogSerializedObject("CheckFormRequest", request);
-            var response = await client.CheckFormAsync(request);
-            _logger.LogSerializedObject("CheckFormResponse", response);
-
-            return new SuccessfulServiceCallResult<int>(response.CheckFormResult);
-        });
-    }
-
-    public async Task<IServiceCallResult> CheckFormV2(CheckFormData formData)
+    public async Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData)
     {
         return await callMethod(async () =>
         {
@@ -180,28 +144,12 @@ internal sealed class RealEasClient
             //Console.WriteLine("RES");
             //(new System.Xml.Serialization.XmlSerializer(response.GetType())).Serialize(Console.Out, response);
 
-            var res = new R21.CheckFormV2.Response(response.commonResult, response.formularData);
-
-            return new SuccessfulServiceCallResult<R21.CheckFormV2.Response>(res);
+            return new R21.CheckFormV2.Response(response.commonResult, response.formularData);
         });
     }
 
-    private async Task<IServiceCallResult> GetVersion(string mode)
-    {
-        return await callMethod(async () =>
-        {
-            using EAS_WS_SB_ServicesClient client = createClient();
-
-            _logger.LogSerializedObject("GetVersion Mode", mode);
-            var response = await client.GetVersionInfoAsync(mode);
-            _logger.LogSerializedObject("GetVersionResponse", response);
-
-            return new SuccessfulServiceCallResult<string>(response.Version);
-        });
-    }
-
-    public RealEasClient(EasConfiguration configuration, ILogger<RealEasClient> logger, CIS.Infrastructure.Telemetry.IAuditLogger auditLogger)
-        : base(Versions.R21, configuration, logger, auditLogger)
+    public RealEasClient(CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IEasClient> configuration, ILogger<RealEasClient> logger, CIS.Infrastructure.Telemetry.IAuditLogger auditLogger)
+        : base(configuration, logger, auditLogger)
     {
     }
 

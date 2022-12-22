@@ -1,6 +1,4 @@
-﻿using ExternalServices.Sdf.Configuration;
-using ExternalServicesTcp.Configuration;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DomainServices.DocumentArchiveService.Api;
 

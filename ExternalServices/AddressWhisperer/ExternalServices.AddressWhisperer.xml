@@ -4,52 +4,52 @@
         <name>ExternalServices.AddressWhisperer</name>
     </assembly>
     <members>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.DeliveryDetails">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.DeliveryDetails">
             <summary>
             Dodatek ulice, např. Recepce 2. patro
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.Street">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.Street">
             <summary>
             Ulice - AddressWhispererBEService|street
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.StreetNumber">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.StreetNumber">
             <summary>
             Číslo orientační - AddressWhispererBEService|streetNumber
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.HouseNumber">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.HouseNumber">
             <summary>
             Číslo popisné - AddressWhispererBEService|landRegisterNumber
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.EvidenceNumber">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.EvidenceNumber">
             <summary>
             Číslo evidenční - AddressWhispererBEService|evidenceNumber
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.Postcode">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.Postcode">
             <summary>
             PSČ - AddressWhispererBEService|postCode
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.City">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.City">
             <summary>
             Město - AddressWhispererBEService|city. Pokud regEx 'Praha ([1-2][0-9]|[1-9])' tak hodnota 'Praha'
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.Country">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.Country">
             <summary>
             Stát - AddressWhispererBEService|country
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.CityDistrict">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.CityDistrict">
             <summary>
             Název části obce - AddressWhispererBEService|cityDistrict
             </summary>
         </member>
-        <member name="P:ExternalServices.AddressWhisperer.Shared.AddressDetail.PragueDistrict">
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.PragueDistrict">
             <summary>
             Obvod Prahy - AddressWhispererBEService|city pokud regEx 'Praha ([1-2][0-9]|[1-9])', jinak null
             </summary>
@@ -62,10 +62,6 @@
             <param name="text">Hledany retezec</param>
             <param name="pageSize">Pocet vracenych zaznamu</param>
             <param name="country">ISO kod zeme nebo null (bude doplnen CZ)</param>
-            <returns>
-            V pripade nalezenych zaznamu <see cref="T:CIS.Core.Results.SuccessfulServiceCallResult`1">SuccessfulServiceCallResult&lt;List&lt;Shared.FoundSuggestion&gt;&gt;</see>
-            V pripade zadneho nalezeneho vysledku <see cref="T:CIS.Core.Results.EmptyServiceCallResult"></see>
-            </returns>
         </member>
         <member name="M:ExternalServices.AddressWhisperer.V1.IAddressWhispererClient.GetAddressDetail(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
@@ -75,10 +71,6 @@
             <param name="addressId">Id adresy</param>
             <param name="country">Id státu z číselníku Country</param>
             <param name="title">Parametr title našeptávače adres</param>
-            <returns>
-            V pripade nalezeneho zaznamu <see cref="T:CIS.Core.Results.SuccessfulServiceCallResult`1">SuccessfulServiceCallResult&lt;AddressDetail&gt;</see>
-            V pripade zadneho nalezeneho vysledku <see cref="T:CIS.Core.Results.EmptyServiceCallResult"></see>
-            </returns>
         </member>
     </members>
 </doc>

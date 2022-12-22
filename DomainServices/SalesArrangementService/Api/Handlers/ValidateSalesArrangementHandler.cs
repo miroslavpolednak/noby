@@ -117,7 +117,7 @@ internal class ValidateSalesArrangementHandler
                 data = form.JSON,
             };
 
-            var checkFormResult = ResolveCheckForm(await _easClient.CheckFormV2(checkFormData));
+            var checkFormResult = await _easClient.CheckFormV2(checkFormData);
 
             if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
             {
@@ -138,13 +138,5 @@ internal class ValidateSalesArrangementHandler
 
         return response;
     }
-
-    private static Eas.CheckFormV2.Response ResolveCheckForm(IServiceCallResult result) =>
-      result switch
-      {
-          SuccessfulServiceCallResult<Eas.CheckFormV2.Response> r => r.Model,
-          ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
-          _ => throw new NotImplementedException()
-      };
 }
 

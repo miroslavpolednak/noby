@@ -12,7 +12,7 @@ internal class GetDetailHandler
     public async Task<GetDetailResponse> Handle(GetDetailRequest request, CancellationToken cancellationToken)
     {
         // instance SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
         
