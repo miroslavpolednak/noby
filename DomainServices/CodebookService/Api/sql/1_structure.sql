@@ -314,3 +314,17 @@ GO
 	(5, 5, '001A', '2022-01-01'),
 	(6, 6, '001A', '2022-01-01');
 GO
+
+CREATE TABLE [dbo].[SmsNotificationType](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](100) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[SmsText] [nvarchar](max) NULL,
+	[McsCode] [varchar](100) NULL,
+	[IsAuditLogEnabled] [bit] NOT NULL,
+ CONSTRAINT [PK_SmsNotificationType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
