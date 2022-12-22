@@ -19,4 +19,13 @@ public class SmsFromTemplateSendRequest : IRequest<SmsFromTemplateSendResponse>,
     
     [ProtoMember(4)]
     public List<StringKeyValuePair> Placeholders { get; set; } = new();
+    
+    [ProtoMember(5)]
+    public Identifier Identifier { get; set; } = default!;
+    
+    [ProtoMember(6)]
+    public string CustomId { get; set; } = string.Empty;
+    
+    [ProtoMember(7)]
+    public string DocumentId { get; set; } = string.Empty;
 }

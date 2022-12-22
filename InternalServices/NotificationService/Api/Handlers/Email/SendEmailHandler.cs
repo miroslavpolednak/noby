@@ -34,11 +34,19 @@ public class SendEmailHandler : IRequestHandler<EmailSendRequest, EmailSendRespo
     
     public async Task<EmailSendResponse> Handle(EmailSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateEmailResult(cancellationToken);
+        var notificationResult = await _repository.CreateEmailResult(
+            request.Identifier?.Identity,
+            request.Identifier?.IdentityScheme,
+            request.CustomId,
+            request.DocumentId,
+            cancellationToken);
+        
         var notificationId = notificationResult.Id;
         
         var attachments = new List<Attachment>();
         var host = request.From.Value.ToLowerInvariant().Split('@').Last();
+        
+        // todo: Buckets to configuration
         var bucketName = host == "kb.cz" ? Buckets.Mcs : Buckets.Mpss;
         
         try

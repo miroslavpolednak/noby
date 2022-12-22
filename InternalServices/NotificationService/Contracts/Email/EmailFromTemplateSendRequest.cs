@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Validation;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using MediatR;
 using ProtoBuf;
@@ -15,4 +16,13 @@ public class EmailFromTemplateSendRequest : IRequest<EmailFromTemplateSendRespon
     public List<EmailAttachment> Attachments { get; set; } = new();
     
     // todo: rest fields
+    
+    [ProtoMember(3)]
+    public Identifier Identifier { get; set; } = default!;
+    
+    [ProtoMember(4)]
+    public string CustomId { get; set; } = string.Empty;
+    
+    [ProtoMember(5)]
+    public string DocumentId { get; set; } = string.Empty;
 }

@@ -26,17 +26,27 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
     
     public async Task<SmsFromTemplateSendResponse> Handle(SmsFromTemplateSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateSmsResult(cancellationToken);
-        var notificationId = notificationResult.Id;
-        
         // todo: call codebook service and get notification type text
         // todo: placeholders
+        var text = "todo";
+        
+        var notificationResult = await _repository.CreateSmsResult(
+            request.Identifier?.Identity,
+            request.Identifier?.IdentityScheme,
+            request.CustomId,
+            request.DocumentId,
+            text,
+            request.Phone.CountryCode,
+            request.Phone.NationalNumber,
+            cancellationToken);
+        var notificationId = notificationResult.Id;
+        
         var sendSms = new SendApi.v1.sms.SendSMS
         {
             id = notificationId.ToString(),
             phone = request.Phone.Map(),
             type = request.Type,
-            text = "todo",
+            text = text,
             processingPriority = request.ProcessingPriority
         };
         

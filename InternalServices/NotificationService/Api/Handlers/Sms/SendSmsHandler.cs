@@ -26,7 +26,16 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
     
     public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateSmsResult(cancellationToken);
+        var notificationResult = await _repository.CreateSmsResult(
+            request.Identifier?.Identity,
+            request.Identifier?.IdentityScheme,
+            request.CustomId,
+            request.DocumentId,
+            request.Text,
+            request.Phone.CountryCode,
+            request.Phone.NationalNumber,
+            cancellationToken);
+        
         var notificationId = notificationResult.Id;
 
         var sendSms = new SendApi.v1.sms.SendSMS

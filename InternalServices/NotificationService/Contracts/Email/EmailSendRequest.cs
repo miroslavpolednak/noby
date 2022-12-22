@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Validation;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using MediatR;
 using ProtoBuf;
@@ -31,4 +32,13 @@ public class EmailSendRequest : IRequest<EmailSendResponse>, IValidatableRequest
     
     [ProtoMember(8)]
     public List<EmailAttachment> Attachments { get; set; } = new();
+    
+    [ProtoMember(9)]
+    public Identifier Identifier { get; set; } = default!;
+    
+    [ProtoMember(10)]
+    public string CustomId { get; set; } = string.Empty;
+    
+    [ProtoMember(11)]
+    public string DocumentId { get; set; } = string.Empty;
 }

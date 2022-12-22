@@ -34,7 +34,12 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
     
     public async Task<EmailFromTemplateSendResponse> Handle(EmailFromTemplateSendRequest request, CancellationToken cancellationToken)
     {
-        var notificationResult = await _repository.CreateEmailResult(cancellationToken);
+        var notificationResult = await _repository.CreateEmailResult(
+            request.Identifier?.Identity,
+            request.Identifier?.IdentityScheme,
+            request.CustomId,
+            request.DocumentId,
+            cancellationToken);
         var notificationId = notificationResult.Id;
      
         var attachments = new List<Attachment>();

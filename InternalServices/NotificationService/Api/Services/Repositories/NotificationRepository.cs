@@ -19,22 +19,30 @@ public class NotificationRepository
         _dateTime = dateTime;
     }
 
-    public async Task<Entities.SmsResult> CreateSmsResult(CancellationToken token = default)
+    public async Task<Entities.SmsResult> CreateSmsResult(
+        string? identity,
+        string? identityScheme,
+        string? customId,
+        string? documentId,
+        string text,
+        string countryCode,
+        string phoneNumber,
+        CancellationToken token = default)
     {
         var result = new Entities.SmsResult
         {
             Channel = NotificationChannel.Sms, 
             State = NotificationState.InProgress,
-            CustomId = "",
-            Identity = "",
-            IdentityScheme = "",
-            DocumentId  = "",
+            Identity = identity,
+            IdentityScheme = identityScheme,
+            CustomId = customId,
+            DocumentId  = documentId,
             RequestTimestamp = _dateTime.Now,
             HandoverToMcsTimestamp = null,
             ErrorSet = new HashSet<string>(),
-            Text = "",
-            CountryCode = "",
-            PhoneNumber = ""
+            Text = text,
+            CountryCode = countryCode,
+            PhoneNumber = phoneNumber
         };
 
         await _dbContext.AddAsync(result, token);
@@ -42,16 +50,21 @@ public class NotificationRepository
         return result;
     }
 
-    public async Task<Entities.EmailResult> CreateEmailResult(CancellationToken token = default)
+    public async Task<Entities.EmailResult> CreateEmailResult(
+        string? identity,
+        string? identityScheme,
+        string? customId,
+        string? documentId,
+        CancellationToken token = default)
     {
         var result = new Entities.EmailResult
         {
             Channel = NotificationChannel.Email, 
             State = NotificationState.InProgress,
-            CustomId = "",
-            Identity = "",
-            IdentityScheme = "",
-            DocumentId  = "",
+            Identity = identity,
+            IdentityScheme = identityScheme,
+            CustomId = customId,
+            DocumentId  = documentId,
             RequestTimestamp = _dateTime.Now,
             HandoverToMcsTimestamp = null,
             ErrorSet = new HashSet<string>(),
