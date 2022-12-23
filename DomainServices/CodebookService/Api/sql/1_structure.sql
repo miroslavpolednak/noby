@@ -289,6 +289,27 @@ GO
 	(5, 'E');
 GO
 
+DROP TABLE IF EXISTS [dbo].IncomeMainTypesAMLExtension;
+CREATE TABLE [dbo].IncomeMainTypesAMLExtension(
+	Id [int] NOT NULL,
+	[RdmCode] [varchar](50) NULL,
+CONSTRAINT [PK_IncomeMainTypesAMLExtension] PRIMARY KEY CLUSTERED 
+(
+	Id ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY];
+GO
+
+	INSERT INTO [dbo].IncomeMainTypesAMLExtension(Id,[RdmCode])
+    VALUES
+	(1, '1'),
+	(2, '2'),
+	(3, '3'),
+	(4, '4'),
+	(5, '5'),
+	(6, '6');
+GO
+
 
 -- table 'DocumentTemplateVersion'
 DROP TABLE IF EXISTS [dbo].[DocumentTemplateVersion];
