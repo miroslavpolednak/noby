@@ -39,13 +39,29 @@ message NaturalPerson {
 
    string KbRelationshipCode = 18;
 
-   google.protobuf.Int32Value TaxResidencyCountryId = 19;
-
    string Segment = 20;
 
    google.protobuf.BoolValue IsUSPerson = 21;
 
    NaturalPersonLegalCapacity LegalCapacity = 22;
+
+   NaturalPersonTaxResidence TaxResidence = 23;
+
+   google.protobuf.Int32Value ProfessionCategoryId = 24;
+   google.protobuf.Int32Value ProfessionId = 25;
+   google.protobuf.Int32Value NetMonthEarningAmountId = 26;
+   google.protobuf.Int32Value NetMonthEarningTypeId = 27;
+}
+
+message NaturalPersonTaxResidence {
+	cis.types.NullableGrpcDate ValidFrom = 1;
+	repeated NaturalPersonResidenceCountry ResidenceCountries = 2;
+}
+
+message NaturalPersonResidenceCountry {
+	google.protobuf.Int32Value CountryId = 1;
+	google.protobuf.StringValue Tin = 2;
+	google.protobuf.StringValue TinMissingReasonDescription = 3;
 }
 
 message NaturalPersonLegalCapacity {
