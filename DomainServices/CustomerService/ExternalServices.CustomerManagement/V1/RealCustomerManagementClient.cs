@@ -3,6 +3,7 @@ using CIS.Infrastructure.Logging;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.Dto;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Collections.Immutable;
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1;
 
@@ -11,93 +12,71 @@ internal sealed class RealCustomerManagementClient
 {
     public async Task<CustomerBaseInfo> GetDetail(long customerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var query = new Dictionary<string, string?>()
-        {
-            ["showPrimaryAddress"] = "true",
-            ["showPrimaryIdDocument"] = "true",
-            ["showCustomerIdentification"] = "true",
-            ["showContactAddress"] = "true",
-            ["showPrimaryPhone"] = "true",
-            ["showPrimaryEmail"] = "true",
-            ["showSegment"] = "true",
-            ["showPoliticallyExposed"] = "true",
-            ["getAllPrimaryPhones"] = "true",
-            ["showBRSubscription"] = "true",
-            ["showTaxResidence"] = "true",
-            ["showCustomerKbRelationship"] = "true",
-            ["requiredAddressFormats"] = AddressFormat.LINE.ToString(),
-            ["requiredAddressFormats"] = AddressFormat.COMPONENT.ToString()
-        };
-
-        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/{customerId}/base-info", query);
-
+        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/{customerId}/base-info", getUriQuery());
         var response = await _httpClient
             .GetAsync(uri, cancellationToken)
             .ConfigureAwait(false);
 
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<Contracts.WFS_Event_Response>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CaseStateChanged), nameof(Contracts.WFS_Event_Response));
-        }
-        else
-        {
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
-        }
+        return await processResponse(response, async () =>
+            {
+                return await response.Content.ReadFromJsonAsync<CustomerBaseInfo>(cancellationToken: cancellationToken)
+                    ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetDetail), nameof(CustomerBaseInfo));
+            }, cancellationToken);
     }
 
-    public Task<ICollection<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, string traceId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<ImmutableList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.LogSerializedObject("Run inputs: CustomerManagement GetList", customerIds);
+        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/base-info", getUriQuery());
+        var response = await _httpClient
+            .PostAsJsonAsync(uri, customerIds, cancellationToken)
+            .ConfigureAwait(false);
 
-        return CallEndpoint(GetCustomerList);
-
-        async Task<ICollection<CustomerBaseInfo>> GetCustomerList()
-        {
-            var result = await CreateClient().GetCustomersBaseInfoAsync(
-                body: customerIds,
-                showPrimaryAddress: true,
-                showPrimaryIdDocument: true,
-                showCustomerIdentification: true,
-                showContactAddress: true,
-                showPrimaryPhone: true,
-                showPrimaryEmail: true,
-                showSegment: true,
-                showPoliticallyExposed: true,
-                showEsa: null,
-                showNace: null,
-                showInsurability: null,
-                showFirstNameVocative: null,
-                showSurnameVocative: null,
-                includeArchived: null,
-                getAllPrimaryPhones: true,
-                showFatca: null,
-                showFinancialProfile: null,
-                showHousing: null,
-                showTurnovers: null,
-                showEducation: true,
-                showEmployeesNumber: null,
-                showEmployment: null,
-                showTemporaryStay: null,
-                requiredAddressFormats: new List<AddressFormat>() { AddressFormat.LINE, AddressFormat.COMPONENT },
-                showBRSubscription: true,
-                showTaxResidence: true,
-                showCustomerKbRelationship: true,
-                showTaxDomicile: null,
-                showConfirmedContacts: null,
-                showBusinessArea: null,
-                x_B3_TraceId: traceId,
-                x_KB_Caller_System_Identity: "",
-                cancellationToken);
-
-            _logger.LogSerializedObject("CustomerBaseInfo[]", result);
-
-            return result;
-        }
+        return (await processResponse(response, async () =>
+            {
+                return await response.Content.ReadFromJsonAsync<List<CustomerBaseInfo>>(cancellationToken: cancellationToken)
+                    ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(GetList), nameof(List<CustomerBaseInfo>));
+            }, cancellationToken))
+            .ToImmutableList();
     }
 
-    public Task<ICollection<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, string traceId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<ImmutableList<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
+        var query = new Dictionary<string, string?>()
+        {
+            ["numberOfEntries"] = searchRequest.NumberOfEntries,
+            ["customerId"] = searchRequest.CustomerId,
+            ["name"] = searchRequest.Name,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+            [""] = searchRequest,
+        };
+
+        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers", getUriQuery());
+        var response = await _httpClient
+            .GetAsync(uri, cancellationToken)
+            .ConfigureAwait(false);
+
+        return (await processResponse(response, async () =>
+        {
+            return await response.Content.ReadFromJsonAsync<List<CustomerSearchResultRow>>(cancellationToken: cancellationToken)
+                ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(Search), nameof(List<CustomerSearchResultRow>));
+        }, cancellationToken))
+            .ToImmutableList();
+
+
+
+
+
         _logger.LogSerializedObject("Run inputs: CustomerManagement Search", searchRequest);
 
         return CallEndpoint(SearchCustomers);
@@ -132,6 +111,42 @@ internal sealed class RealCustomerManagementClient
             return result.ResultRows;
         }
     }
+
+    private async Task<TResult> processResponse<TResult>(HttpResponseMessage? response, Func<Task<TResult>> successProcessor, CancellationToken cancellationToken)
+        where TResult : class
+    {
+        if (response?.IsSuccessStatusCode ?? false)
+        {
+            return await successProcessor();
+        }
+        else if (response?.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            var error = await response.Content.ReadFromJsonAsync<Error>(cancellationToken: cancellationToken);
+            if (error != null)
+                throw new CisExtServiceValidationException($"{error.Message}: {error.Detail}");
+        }
+
+        throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response?.StatusCode}: {await response?.SafeReadAsStringAsync(cancellationToken)}");
+    }
+
+    private Dictionary<string, string?> getUriQuery()
+        => new Dictionary<string, string?>()
+        {
+            ["showPrimaryAddress"] = "true",
+            ["showPrimaryIdDocument"] = "true",
+            ["showCustomerIdentification"] = "true",
+            ["showContactAddress"] = "true",
+            ["showPrimaryPhone"] = "true",
+            ["showPrimaryEmail"] = "true",
+            ["showSegment"] = "true",
+            ["showPoliticallyExposed"] = "true",
+            ["getAllPrimaryPhones"] = "true",
+            ["showBRSubscription"] = "true",
+            ["showTaxResidence"] = "true",
+            ["showCustomerKbRelationship"] = "true",
+            ["requiredAddressFormats"] = AddressFormat.LINE.ToString(),
+            ["requiredAddressFormats"] = AddressFormat.COMPONENT.ToString()
+        };
 
     private readonly HttpClient _httpClient;
     public RealCustomerManagementClient(HttpClient httpClient)

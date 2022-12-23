@@ -1,11 +1,13 @@
 ﻿using DomainServices.CustomerService.ExternalServices.CustomerManagement.Dto;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
+using System.Collections.Immutable;
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1;
 
-internal sealed class MockCustomerManagementClient : ICustomerManagementClient
+internal sealed class MockCustomerManagementClient 
+    : ICustomerManagementClient
 {
-    public Task<CustomerBaseInfo> GetDetail(long customerId, string traceId, CancellationToken cancellationToken)
+    public Task<CustomerBaseInfo> GetDetail(long customerId, CancellationToken cancellationToken)
     {
         var result = new CustomerBaseInfo()
         {
@@ -23,7 +25,7 @@ internal sealed class MockCustomerManagementClient : ICustomerManagementClient
         return Task.FromResult(result);
     }
 
-    public Task<ICollection<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, string traceId, CancellationToken cancellationToken)
+    public Task<ImmutableList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
     {
         var result = new List<CustomerBaseInfo>() {
             new() {
@@ -38,10 +40,10 @@ internal sealed class MockCustomerManagementClient : ICustomerManagementClient
             }
         };
 
-        return Task.FromResult<ICollection<CustomerBaseInfo>>(result);
+        return Task.FromResult<ImmutableList<CustomerBaseInfo>>(result.ToImmutableList());
     }
 
-    public Task<ICollection<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, string traceId, CancellationToken cancellationToken)
+    public Task<ImmutableList<CustomerSearchResultRow>> Search(CustomerManagementSearchRequest searchRequest, CancellationToken cancellationToken)
     {
         var result = new List<CustomerSearchResultRow>()
         {
@@ -60,6 +62,6 @@ internal sealed class MockCustomerManagementClient : ICustomerManagementClient
             }
         };
 
-        return Task.FromResult<ICollection<CustomerSearchResultRow>>(result);
+        return Task.FromResult<ImmutableList<CustomerSearchResultRow>>(result.ToImmutableList());
     }
 }
