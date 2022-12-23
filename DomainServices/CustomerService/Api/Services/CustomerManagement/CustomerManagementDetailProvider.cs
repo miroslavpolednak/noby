@@ -14,11 +14,9 @@ internal class CustomerManagementDetailProvider
     private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
-    private List<Endpoints.ProfessionTypes.ProfessionTypeItem> _professionTypes = null!;
-    private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
-    private List<Endpoints.NetMonthEarnings.NetMonthEarningItem> _netMonthEarnings = null!;
-    private List<Endpoints.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.ProfessionTypes.ProfessionTypeItem> _professionTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.NetMonthEarnings.NetMonthEarningItem> _netMonthEarnings = null!;
+    private List<CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
     private List<CodebookService.Contracts.GenericCodebookItemWithRdmCode> _incomeMainTypesAML = null!;
     private List<CodebookService.Contracts.Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
