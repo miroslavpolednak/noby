@@ -2,7 +2,7 @@
 
 public class S3Configuration
 {
-    public string ServiceURL { get; set; }
-    public string AccessKey { get; set; }
-    public string SecretKey { get; set; }
+    public string ServiceUrl { get; set; } = null!;
+    public string AccessKey { get; set; } = null!;
+    public string SecretKey { get; set; } = null!;
 }

@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Validation;
-using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using MediatR;
 using ProtoBuf;
 
@@ -15,8 +15,17 @@ public class SmsSendRequest : IRequest<SmsSendResponse>, IValidatableRequest
     public int? ProcessingPriority { get; set; }
 
     [ProtoMember(3)]
-    public SmsNotificationType Type { get; set; }
+    public string Type { get; set; } = string.Empty;
     
     [ProtoMember(4)]
     public string Text { get; set; } = string.Empty;
+
+    [ProtoMember(5)]
+    public Identifier Identifier { get; set; } = default!;
+    
+    [ProtoMember(6)]
+    public string CustomId { get; set; } = string.Empty;
+    
+    [ProtoMember(7)]
+    public string DocumentId { get; set; } = string.Empty;
 }
