@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.gRPC;
-using DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1;
+using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using Grpc.Core;
 
 namespace DomainServices.CustomerService.Api.Clients;
@@ -16,33 +16,33 @@ internal class CustomerManagementErrorMap
         MapErrors();
     }
 
-    public long ResolveAndThrowIfError(CreateIdentifiedSubjectResponse response)
+    public long ResolveAndThrowIfError(__Contracts.CreateIdentifiedSubjectResponse response)
     {
         switch (response.ResponseCode)
         {
-            case CreateIdentifiedSubjectResponseResponseCode.CREATED:
+            case __Contracts.CreateIdentifiedSubjectResponseResponseCode.CREATED:
                 return response.CreatedSubject.CustomerId;
 
-            case CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
+            case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
                 {
                     // nemame jak vratit ID (nevracime Result object), takze do zpravy...
                     throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, response.IdentifiedSubjects.First().CustomerId.ToString(), 11023);
                 }
 
-            case CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
+            case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
                 {
                     var message = $"KB CM: Duplicity already exist. List of customerIds = {string.Join(", ", response.IdentifiedSubjects.Select(x => x.CustomerId))}";
                     throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, message, 11024);
                 }
 
-            case CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
+            case __Contracts.CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
                 throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "KB CM: Unable to identify customer in state registry ", 11025);
 
-            case CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
+            case __Contracts.CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
                 throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Unavailable, "KB CM: State registry is unavailable", 11026);
 
             default:
-                throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)response.ResponseCode, typeof(CreateIdentifiedSubjectResponseResponseCode));
+                throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)response.ResponseCode, typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));
         }
     }
 

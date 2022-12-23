@@ -12,7 +12,7 @@
     "openApiToCSharpClient": {
       "clientBaseClass": null,
       "configurationClass": null,
-      "generateClientClasses": true,
+      "generateClientClasses": false,
       "generateClientInterfaces": false,
       "clientBaseInterface": null,
       "injectHttpClient": true,
@@ -55,7 +55,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr.V1",
+      "namespace": "DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts",
       "requiredPropertiesMustBeDefined": false,
       "dateType": "System.DateTime",
       "jsonConverters": null,
@@ -70,7 +70,7 @@
       "arrayBaseType": "System.Collections.ObjectModel.Collection",
       "dictionaryBaseType": "System.Collections.Generic.Dictionary",
       "classStyle": "Poco",
-      "jsonLibrary": "NewtonsoftJson",
+      "jsonLibrary": "SystemTextJson",
       "generateDefaultValues": true,
       "generateDataAnnotations": true,
       "excludedTypeNames": [],
@@ -92,7 +92,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "IdentifiedSubjectBrWrapper.cs",
+      "output": "../Contracts.cs",
       "newLineBehavior": "Auto"
     }
   }

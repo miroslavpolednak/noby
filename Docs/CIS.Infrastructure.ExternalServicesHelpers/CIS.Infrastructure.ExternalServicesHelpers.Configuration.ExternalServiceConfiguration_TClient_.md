@@ -8,7 +8,8 @@ Výchozí implementace IExternalServiceConfiguration.
 ```csharp
 public class ExternalServiceConfiguration<TClient> :
 CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<TClient>,
-CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration
+CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration,
+CIS.Core.IIsServiceDiscoverable
     where TClient : class, CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient
 ```
 #### Type parameters
@@ -19,11 +20,23 @@ CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfigu
 
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; ExternalServiceConfiguration<TClient>
 
-Derived  
-&#8627; [ExternalServiceBasicAuthenticationConfiguration&lt;TClient&gt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceBasicAuthenticationConfiguration<TClient>')
-
-Implements [CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration&lt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<TClient>')[TClient](CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.TClient 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration<TClient>.TClient')[&gt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<TClient>'), [IExternalServiceConfiguration](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration')
+Implements [CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration&lt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<TClient>')[TClient](CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.TClient 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration<TClient>.TClient')[&gt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<TClient>'), [IExternalServiceConfiguration](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration'), [CIS.Core.IIsServiceDiscoverable](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIsServiceDiscoverable 'CIS.Core.IIsServiceDiscoverable')
 ### Properties
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.Authentication'></a>
+
+## ExternalServiceConfiguration<TClient>.Authentication Property
+
+Typ pouzite autentizace na sluzbu treti strany
+
+```csharp
+public CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes Authentication { get; set; }
+```
+
+Implements [Authentication](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Authentication 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Authentication')
+
+#### Property Value
+[ExternalServicesAuthenticationTypes](CIS.Infrastructure.ExternalServicesHelpers.Configuration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.IgnoreServerCertificateErrors'></a>
 
@@ -73,6 +86,21 @@ Implements [LogPayloads](CIS.Infrastructure.ExternalServicesHelpers.Configuratio
 ### Remarks
 Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.
 
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.Password'></a>
+
+## ExternalServiceConfiguration<TClient>.Password Property
+
+Autentizace - Heslo
+
+```csharp
+public string? Password { get; set; }
+```
+
+Implements [Password](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Password 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Password')
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.RequestTimeout'></a>
 
 ## ExternalServiceConfiguration<TClient>.RequestTimeout Property
@@ -91,6 +119,36 @@ Implements [RequestTimeout](CIS.Infrastructure.ExternalServicesHelpers.Configura
 ### Remarks
 Default is set to 10 seconds
 
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.ServiceName'></a>
+
+## ExternalServiceConfiguration<TClient>.ServiceName Property
+
+Nazev sluzby v ServiceDiscovery
+
+```csharp
+public string? ServiceName { get; set; }
+```
+
+Implements [ServiceName](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIsServiceDiscoverable.ServiceName 'CIS.Core.IIsServiceDiscoverable.ServiceName')
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.ServiceType'></a>
+
+## ExternalServiceConfiguration<TClient>.ServiceType Property
+
+Pro sluzby tretich stran vzdy 3
+
+```csharp
+public int ServiceType { get; }
+```
+
+Implements [ServiceType](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIsServiceDiscoverable.ServiceType 'CIS.Core.IIsServiceDiscoverable.ServiceType')
+
+#### Property Value
+[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
+
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.ServiceUrl'></a>
 
 ## ExternalServiceConfiguration<TClient>.ServiceUrl Property
@@ -98,10 +156,25 @@ Default is set to 10 seconds
 Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
 
 ```csharp
-public string ServiceUrl { get; set; }
+public System.Uri? ServiceUrl { get; set; }
 ```
 
-Implements [ServiceUrl](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ServiceUrl 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ServiceUrl')
+Implements [ServiceUrl](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIsServiceDiscoverable.ServiceUrl 'CIS.Core.IIsServiceDiscoverable.ServiceUrl')
+
+#### Property Value
+[System.Uri](https://docs.microsoft.com/en-us/dotnet/api/System.Uri 'System.Uri')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.Username'></a>
+
+## ExternalServiceConfiguration<TClient>.Username Property
+
+Autentizace - Username
+
+```csharp
+public string? Username { get; set; }
+```
+
+Implements [Username](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Username 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Username')
 
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
@@ -116,7 +189,7 @@ If True, then library will try to obtain all needed service URL's from ServiceDi
 public bool UseServiceDiscovery { get; set; }
 ```
 
-Implements [UseServiceDiscovery](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseServiceDiscovery 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseServiceDiscovery')
+Implements [UseServiceDiscovery](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIsServiceDiscoverable.UseServiceDiscovery 'CIS.Core.IIsServiceDiscoverable.UseServiceDiscovery')
 
 #### Property Value
 [System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')

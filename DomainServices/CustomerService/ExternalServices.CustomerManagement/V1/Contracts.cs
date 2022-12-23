@@ -32,7 +32,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("customerId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long CustomerId { get; set; }
+        public long? CustomerId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("party")]
         [System.ComponentModel.DataAnnotations.Required]
@@ -103,7 +103,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("isPoliticallyExposed")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public bool IsPoliticallyExposed { get; set; }
+        public bool? IsPoliticallyExposed { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("politicalExposition")]
 
@@ -117,7 +117,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("isLegallyIncapable")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public bool IsLegallyIncapable { get; set; }
+        public bool? IsLegallyIncapable { get; set; }
 
         /// <summary>
         /// Flag indicating that customer is insurable
@@ -127,7 +127,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Obsolete]
-        public bool IsInsurable { get; set; }
+        public bool? IsInsurable { get; set; }
 
         /// <summary>
         /// Economic sector code according to ESA2010 as amended by the CNB - RDM codebook CB_ESAInstitutionalSectorCNB
@@ -282,7 +282,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime EstablishedOn { get; set; }
+        public System.DateTime? EstablishedOn { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("legalForm")]
 
@@ -343,7 +343,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime EstablishedOn { get; set; }
+        public System.DateTime? EstablishedOn { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("legalForm")]
 
@@ -404,7 +404,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime BirthDate { get; set; }
+        public System.DateTime? BirthDate { get; set; }
 
         /// <summary>
         /// Birth surname
@@ -453,7 +453,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public NaturalPersonGenderCode GenderCode { get; set; }
+        public NaturalPersonGenderCode? GenderCode { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("legalCapacityRestriction")]
 
@@ -497,7 +497,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime DeathDate { get; set; }
+        public System.DateTime? DeathDate { get; set; }
 
         /// <summary>
         /// Marital status code, RDM codebook CB_MaritalStatus
@@ -571,7 +571,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime RestrictionUntil { get; set; }
+        public System.DateTime? RestrictionUntil { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -667,7 +667,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime IssuedOn { get; set; }
+        public System.DateTime? IssuedOn { get; set; }
 
         /// <summary>
         /// Document is valid until this date
@@ -677,7 +677,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime ValidTo { get; set; }
+        public System.DateTime? ValidTo { get; set; }
 
         /// <summary>
         /// Registration in OR or other register
@@ -877,7 +877,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime PrimaryAddressFrom { get; set; }
+        public System.DateTime? PrimaryAddressFrom { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1313,7 +1313,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public NaturalPersonPersonalDataGenderCode GenderCode { get; set; }
+        public NaturalPersonPersonalDataGenderCode? GenderCode { get; set; }
 
         /// <summary>
         /// First name vocative
@@ -1510,7 +1510,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime EstablishedOn { get; set; }
+        public System.DateTime? EstablishedOn { get; set; }
 
         /// <summary>
         /// Czech identification number
@@ -1566,7 +1566,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime EstablishedOn { get; set; }
+        public System.DateTime? EstablishedOn { get; set; }
 
         /// <summary>
         /// Czech identification number
@@ -1623,7 +1623,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime BirthDate { get; set; }
+        public System.DateTime? BirthDate { get; set; }
 
         /// <summary>
         /// Gender
@@ -1633,7 +1633,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public NaturalPersonSearchResultGenderCode GenderCode { get; set; }
+        public NaturalPersonSearchResultGenderCode? GenderCode { get; set; }
 
         /// <summary>
         /// Czech birth number
@@ -1686,7 +1686,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("identificationDate")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.DateTime IdentificationDate { get; set; }
+        public System.DateTime? IdentificationDate { get; set; }
 
         /// <summary>
         /// Czech identification number of the company that made the subject identification. Value is mandatory only for specific identification method codes. See CB_IdentificationMethodType.
@@ -1730,7 +1730,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime StatusDate { get; set; }
+        public System.DateTime? StatusDate { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1793,7 +1793,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("netMonthEarning")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public double NetMonthEarning { get; set; }
+        public double? NetMonthEarning { get; set; }
 
         /// <summary>
         /// Code of interval net monthly earning - CM Codebook of net month earnings - EP_C_NET_MONTH_EARNING
@@ -1812,7 +1812,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("savingInvestmentPotencial")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public double SavingInvestmentPotencial { get; set; }
+        public double? SavingInvestmentPotencial { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1838,7 +1838,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("categoryCode")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int CategoryCode { get; set; }
+        public int? CategoryCode { get; set; }
 
         /// <summary>
         /// Profession code - codebook CSC PROF_CAT2
@@ -1847,7 +1847,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("professionCode")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int ProfessionCode { get; set; }
+        public int? ProfessionCode { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -1949,7 +1949,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("isInsurable")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public bool IsInsurable { get; set; }
+        public bool? IsInsurable { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("naturalPersonKyc")]
 
@@ -2031,7 +2031,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("numberOfEmployees")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int NumberOfEmployees { get; set; }
+        public int? NumberOfEmployees { get; set; }
 
         /// <summary>
         /// Code of economic activity according to the new classification of economic activities Only for Juridical Person - RDM codebook CB_NACECode
@@ -2128,7 +2128,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime EndDateOfPoliticalActivity { get; set; }
+        public System.DateTime? EndDateOfPoliticalActivity { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -2244,7 +2244,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("legalEntityTypeCode")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int LegalEntityTypeCode { get; set; }
+        public int? LegalEntityTypeCode { get; set; }
 
         /// <summary>
         /// Passive NFE flag
@@ -2253,7 +2253,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
         [System.Text.Json.Serialization.JsonPropertyName("isPassiveNfe")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public bool IsPassiveNfe { get; set; }
+        public bool? IsPassiveNfe { get; set; }
 
         /// <summary>
         /// List of Countries with TIN, where customer is tax resident
@@ -2341,7 +2341,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime ValidTo { get; set; }
+        public System.DateTime? ValidTo { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

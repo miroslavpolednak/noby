@@ -13,6 +13,7 @@ internal static class StartupExtensions
         builder.AddCustomerManagementService();
 
         builder.AddExternalService<ExternalServices.CustomerManagement.V1.ICustomerManagementClient>();
+        builder.AddExternalService<ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient>();
 
         // CodebookService
         builder.Services.AddCodebookService();

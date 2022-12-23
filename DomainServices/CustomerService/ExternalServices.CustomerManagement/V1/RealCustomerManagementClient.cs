@@ -92,7 +92,7 @@ internal sealed class RealCustomerManagementClient
                 throw new CisExtServiceValidationException($"{error.Message}: {error.Detail}");
         }
 
-        throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response?.StatusCode}: {await response?.SafeReadAsStringAsync(cancellationToken)}");
+        throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response?.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
     }
 
     private Dictionary<string, string?> getUriQuery()

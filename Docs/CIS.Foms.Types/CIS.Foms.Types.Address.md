@@ -12,6 +12,19 @@ public class Address
 Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; Address
 ### Properties
 
+<a name='CIS.Foms.Types.Address.AddressPointId'></a>
+
+## Address.AddressPointId Property
+
+Id adresního bodu
+
+```csharp
+public string? AddressPointId { get; set; }
+```
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
 <a name='CIS.Foms.Types.Address.City'></a>
 
 ## Address.City Property
@@ -48,6 +61,19 @@ public System.Nullable<int> CountryId { get; set; }
 
 #### Property Value
 [System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
+<a name='CIS.Foms.Types.Address.CountrySubdivision'></a>
+
+## Address.CountrySubdivision Property
+
+Název územního celku
+
+```csharp
+public string? CountrySubdivision { get; set; }
+```
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
 <a name='CIS.Foms.Types.Address.EvidenceNumber'></a>
 

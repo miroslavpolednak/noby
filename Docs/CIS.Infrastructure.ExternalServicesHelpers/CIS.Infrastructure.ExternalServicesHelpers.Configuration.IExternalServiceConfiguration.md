@@ -6,16 +6,32 @@
 Základní konfigurace externí služby (služby třetí strany).
 
 ```csharp
-public interface IExternalServiceConfiguration
+public interface IExternalServiceConfiguration :
+CIS.Core.IIsServiceDiscoverable
 ```
 
 Derived  
 &#8627; [ExternalServiceConfiguration&lt;TClient&gt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration<TClient>')  
 &#8627; [IExternalServiceConfiguration&lt;TClient&gt;](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration_TClient_.md 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<TClient>')
 
+Implements [CIS.Core.IIsServiceDiscoverable](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIsServiceDiscoverable 'CIS.Core.IIsServiceDiscoverable')
+
 ### Remarks
 Pro registraci HTTP klienta by se vždy měla používat generická verze interface.
 ### Properties
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Authentication'></a>
+
+## IExternalServiceConfiguration.Authentication Property
+
+Typ pouzite autentizace na sluzbu treti strany
+
+```csharp
+CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes Authentication { get; set; }
+```
+
+#### Property Value
+[ExternalServicesAuthenticationTypes](CIS.Infrastructure.ExternalServicesHelpers.Configuration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServicesAuthenticationTypes')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.IgnoreServerCertificateErrors'></a>
 
@@ -59,6 +75,19 @@ bool LogPayloads { get; set; }
 ### Remarks
 Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.
 
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Password'></a>
+
+## IExternalServiceConfiguration.Password Property
+
+Autentizace - Heslo
+
+```csharp
+string? Password { get; set; }
+```
+
+#### Property Value
+[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestTimeout'></a>
 
 ## IExternalServiceConfiguration.RequestTimeout Property
@@ -75,31 +104,15 @@ System.Nullable<int> RequestTimeout { get; set; }
 ### Remarks
 Default is set to 10 seconds
 
-<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ServiceUrl'></a>
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.Username'></a>
 
-## IExternalServiceConfiguration.ServiceUrl Property
+## IExternalServiceConfiguration.Username Property
 
-Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
+Autentizace - Username
 
 ```csharp
-string ServiceUrl { get; set; }
+string? Username { get; set; }
 ```
 
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
-
-<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseServiceDiscovery'></a>
-
-## IExternalServiceConfiguration.UseServiceDiscovery Property
-
-If True, then library will try to obtain all needed service URL's from ServiceDiscovery.
-
-```csharp
-bool UseServiceDiscovery { get; set; }
-```
-
-#### Property Value
-[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
-
-### Remarks
-Default is set to True

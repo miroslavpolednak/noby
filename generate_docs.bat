@@ -4,7 +4,7 @@ defaultdocumentation -j "./CIS/Infrastructure.ExternalServicesHelpers/DefaultDoc
 defaultdocumentation -j "./CIS/Infrastructure.gRPC/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.gRPC.CisTypes/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.Logging.Extensions/DefaultDocumentation.json"
-defaultdocumentation -j "./CIS/Infrastructure.MediatR/DefaultDocumentation.json"
+defaultdocumentation -j "./CIS/Infrastructure.CisMediatR/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.Security/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.Telemetry/DefaultDocumentation.json"
 defaultdocumentation -j "./CIS/Infrastructure.WebApi/DefaultDocumentation.json"
