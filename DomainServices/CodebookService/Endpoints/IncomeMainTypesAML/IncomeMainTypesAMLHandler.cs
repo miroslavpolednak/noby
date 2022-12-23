@@ -25,7 +25,7 @@ public class IncomeMainTypesAMLHandler
         public string RdmCode { get; set; } = string.Empty;
     }
 
-    const string _sqlQuery = @"SELECT A.KOD 'Id', A.NAZEV 'Name', CAST(1 as bit) 'IsValid' FROM [SBR].[CIS_AML_ZDROJ_PRIJMU_HLAVNI] A LEFT JOIN dbo. ORDER BY KOD ASC";
+    const string _sqlQuery = @"SELECT A.KOD 'Id', A.NAZEV 'Name', CAST(1 as bit) 'IsValid' FROM [SBR].[CIS_AML_ZDROJ_PRIJMU_HLAVNI] ORDER BY KOD ASC";
     const string _sqlQueryExtension = "SELECT Id, RdmCode FROM dbo.IncomeMainTypesAMLExtension";
 
     private readonly CIS.Core.Data.IConnectionProvider _connectionProviderCodebooks;

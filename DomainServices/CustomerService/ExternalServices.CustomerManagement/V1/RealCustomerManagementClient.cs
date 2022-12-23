@@ -1,6 +1,7 @@
 ﻿using DomainServices.CustomerService.ExternalServices.Common;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.Dto;
 using DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Immutable;
 
@@ -11,7 +12,7 @@ internal sealed class RealCustomerManagementClient
 {
     public async Task<CustomerBaseInfo> GetDetail(long customerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/{customerId}/base-info", getUriQuery());
+        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/{customerId}/base-info", getQueryBuilder()!);
         var response = await _httpClient
             .GetAsync(uri, cancellationToken)
             .ConfigureAwait(false);
@@ -21,7 +22,7 @@ internal sealed class RealCustomerManagementClient
 
     public async Task<ImmutableList<CustomerBaseInfo>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/base-info", getUriQuery());
+        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress + $"/public/v1/customers/base-info", getQueryBuilder()!);
         var response = await _httpClient
             .PostAsJsonAsync(uri, customerIds, cancellationToken)
             .ConfigureAwait(false);
@@ -63,8 +64,8 @@ internal sealed class RealCustomerManagementClient
             .ResultRows.ToImmutableList();
     }
 
-    private Dictionary<string, string?> getUriQuery()
-        => new Dictionary<string, string?>
+    private QueryBuilder getQueryBuilder()
+        => new QueryBuilder
         {
             { "showPrimaryAddress", "true" },
             { "showPrimaryIdDocument", "true" },
@@ -78,8 +79,7 @@ internal sealed class RealCustomerManagementClient
             { "showBRSubscription", "true" },
             { "showTaxResidence", "true" },
             { "showCustomerKbRelationship", "true" },
-            { "requiredAddressFormats", AddressFormat.LINE.ToString() },
-            { "requiredAddressFormats", AddressFormat.COMPONENT.ToString() }
+            { "requiredAddressFormats", new string[] { AddressFormat.LINE.ToString(), AddressFormat.COMPONENT.ToString() } }
         };
 
     private readonly HttpClient _httpClient;
