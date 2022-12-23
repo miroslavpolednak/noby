@@ -3,7 +3,6 @@ using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
-using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -14,11 +13,11 @@ internal class CreateIdentifiedSubject
     private readonly ICodebookServiceClients _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
 
-    private List<Endpoints.Genders.GenderItem> _genders = null!;
+    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
-    private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
+    private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
+    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
     public CreateIdentifiedSubject(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
     {

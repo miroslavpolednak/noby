@@ -1,45 +1,46 @@
-﻿using DomainServices.CustomerService.Api.Dto;
+﻿using DomainServices.CustomerService.Api.Validators;
 using FluentValidation;
-namespace DomainServices.CustomerService.Api.Validators;
 
-internal class SearchCustomersMediatrRequestValidator : AbstractValidator<SearchCustomersMediatrRequest>
+namespace DomainServices.CustomerService.Api.Endpoints.SearchCustomers;
+
+internal class SearchCustomersRequestValidator : AbstractValidator<SearchCustomersRequest>
 {
-    public SearchCustomersMediatrRequestValidator()
+    public SearchCustomersRequestValidator()
     {
-        RuleFor(t => t.Request.Identity)
+        RuleFor(t => t.Identity)
             .SetValidator(new IdentityValidator())
-            .When(t => t.Request.Identity is not null);
+            .When(t => t.Identity is not null);
 
-        RuleFor(t => t.Request.Mandant)
+        RuleFor(t => t.Mandant)
             .IsInEnum()
             .NotEqual(Mandants.Unknown)
             .WithMessage("Mandant must be not empty").WithErrorCode("11008");
 
-        RuleFor(t => t.Request)
+        RuleFor(t => t)
             .Must(t => t.Identity != null || t.NaturalPerson != null || t.IdentificationDocument != null || !string.IsNullOrEmpty(t.Email) || !string.IsNullOrEmpty(t.PhoneNumber))
             .WithMessage("At least one of search field is required").WithErrorCode("11009");
 
-        RuleFor(t => t.Request.NaturalPerson.LastName)
+        RuleFor(t => t.NaturalPerson.LastName)
             .NotEmpty()
-            .When(t => t.Request.NaturalPerson != null && !string.IsNullOrEmpty(t.Request.NaturalPerson.FirstName))
+            .When(t => t.NaturalPerson != null && !string.IsNullOrEmpty(t.NaturalPerson.FirstName))
             .WithMessage("LastName must be not empty").WithErrorCode("11010");
 
-        RuleFor(t => t.Request.Email)
+        RuleFor(t => t.Email)
             .EmailAddress()
-            .When(t => !string.IsNullOrEmpty(t.Request.Email))
+            .When(t => !string.IsNullOrEmpty(t.Email))
             .WithMessage("Email is not valid").WithErrorCode("11011");
 
-        When(t => t.Request.IdentificationDocument != null, () =>
+        When(t => t.IdentificationDocument != null, () =>
         {
-            RuleFor(t => t.Request.IdentificationDocument.Number)
+            RuleFor(t => t.IdentificationDocument.Number)
                 .NotEmpty()
                 .WithMessage("IdentificationDocument.Number must be not empty").WithErrorCode("11012");
 
-            RuleFor(t => t.Request.IdentificationDocument.IdentificationDocumentTypeId)
+            RuleFor(t => t.IdentificationDocument.IdentificationDocumentTypeId)
                 .GreaterThan(0)
                 .WithMessage("IdentificationDocumentTypeId is not valid").WithErrorCode("11013");
 
-            RuleFor(t => t.Request.IdentificationDocument.IssuingCountryId)
+            RuleFor(t => t.IdentificationDocument.IssuingCountryId)
                 .GreaterThan(0)
                 .WithMessage("IssuingCountryId is not valid").WithErrorCode("11014");
         });

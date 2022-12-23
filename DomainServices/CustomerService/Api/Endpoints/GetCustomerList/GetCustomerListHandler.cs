@@ -1,27 +1,22 @@
 ﻿using CIS.Core.Exceptions;
-using DomainServices.CustomerService.Api.Dto;
 using DomainServices.CustomerService.Api.Services.CustomerManagement;
 using DomainServices.CustomerService.Api.Services.KonsDb;
 
-namespace DomainServices.CustomerService.Api.Handlers;
+namespace DomainServices.CustomerService.Api.Endpoints.GetCustomerList;
 
-internal class GetCustomerListHandler : IRequestHandler<GetCustomerListMediatrRequest, CustomerListResponse>
+internal class GetCustomerListHandler : IRequestHandler<CustomerListRequest, CustomerListResponse>
 {
     private readonly CustomerManagementDetailProvider _cmDetailProvider;
     private readonly KonsDbDetailProvider _konsDbDetailProvider;
-    private readonly ILogger<GetCustomerListHandler> _logger;
 
-    public GetCustomerListHandler(CustomerManagementDetailProvider cmDetailProvider, KonsDbDetailProvider konsDbDetailProvider, ILogger<GetCustomerListHandler> logger)
+    public GetCustomerListHandler(CustomerManagementDetailProvider cmDetailProvider, KonsDbDetailProvider konsDbDetailProvider)
     {
         _cmDetailProvider = cmDetailProvider;
         _konsDbDetailProvider = konsDbDetailProvider;
-        _logger = logger;
     }
 
-    public async Task<CustomerListResponse> Handle(GetCustomerListMediatrRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerListResponse> Handle(CustomerListRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Get list instance Identities #{id}", string.Join(",", request.Identities));
-
         var identitiesLookup = request.Identities.ToLookup(x => x.IdentityScheme, y => y.IdentityId);
 
         var customers = Enumerable.Concat(await GetCMCustomers(identitiesLookup[Identity.Types.IdentitySchemes.Kb], cancellationToken),

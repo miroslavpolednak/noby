@@ -270,7 +270,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr", "DomainServices\CustomerService\ExternalServices.IdentifiedSubjectBr\DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.csproj", "{18DAE40B-0268-4361-8A64-0B418206BCCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CustomerService.ExternalServices.CustomerProfile", "DomainServices\CustomerService\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj", "{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerProfile", "DomainServices\CustomerService\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj", "{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CustomerService.ExternalServices.Common", "DomainServices\CustomerService\DomainServices.CustomerService.ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj", "{0B3BAD08-EB17-4E38-803E-655B0A85347E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1024,6 +1026,14 @@ Global
 		{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}.Release|x64.ActiveCfg = Release|Any CPU
 		{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}.Release|x64.Build.0 = Release|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Debug|x64.Build.0 = Debug|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Release|x64.ActiveCfg = Release|Any CPU
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1139,6 +1149,7 @@ Global
 		{D88FFFB8-826B-4626-892C-5A4DE6EB1095} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{18DAE40B-0268-4361-8A64-0B418206BCCE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{C7BE5EA3-E65A-4652-95AB-F36121AF30BE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
+		{0B3BAD08-EB17-4E38-803E-655B0A85347E} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

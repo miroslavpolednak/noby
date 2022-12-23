@@ -1,18 +1,18 @@
-﻿using DomainServices.CustomerService.Api.Dto;
+﻿using DomainServices.CustomerService.Api.Validators;
 using FluentValidation;
 
-namespace DomainServices.CustomerService.Api.Validators;
+namespace DomainServices.CustomerService.Api.Endpoints.CreateCustomer;
 
-internal class CreateCustomerMediatrRequestValidator : AbstractValidator<CreateCustomerMediatrRequest>
+internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>
 {
-    public CreateCustomerMediatrRequestValidator()
+    public CreateCustomerRequestValidator()
     {
-        RuleFor(m => m.Request.Mandant).IsInEnum().NotEqual(Mandants.Unknown).WithMessage("Mandant must be not empty").WithErrorCode("11008");
+        RuleFor(m => m.Mandant).IsInEnum().NotEqual(Mandants.Unknown).WithMessage("Mandant must be not empty").WithErrorCode("11008");
 
-        When(m => m.Request.Mandant == Mandants.Mp,
+        When(m => m.Mandant == Mandants.Mp,
              () =>
              {
-                 RuleForEach(m => m.Request.Identities).ChildRules(identity =>
+                 RuleForEach(m => m.Identities).ChildRules(identity =>
                  {
                      identity.When(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp,
                                    () =>

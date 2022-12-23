@@ -2,7 +2,6 @@
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
-using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -12,9 +11,9 @@ internal class CustomerManagementSearchProvider
     private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
 
-    private List<Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<Endpoints.Genders.GenderItem> _genders = null!;
-    private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
+    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
+    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
     public CustomerManagementSearchProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
