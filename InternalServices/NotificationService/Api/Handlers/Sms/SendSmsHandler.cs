@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
@@ -12,15 +13,18 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
 {
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly NotificationRepository _repository;
+    private readonly IAuditLogger _auditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
         McsSmsProducer mcsSmsProducer,
         NotificationRepository repository,
+        IAuditLogger auditLogger,
         ILogger<SendSmsHandler> logger)
     {
         _mcsSmsProducer = mcsSmsProducer;
         _repository = repository;
+        _auditLogger = auditLogger;
         _logger = logger;
     }
     
