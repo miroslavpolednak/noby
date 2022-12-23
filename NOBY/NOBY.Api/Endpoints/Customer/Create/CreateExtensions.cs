@@ -60,44 +60,6 @@ internal static class CreateExtensions
         return model;
     }
 
-    public static _Cust.CreateCustomerRequest ToDomainService(this _Cust.CustomerDetailResponse customer)
-    {
-        var model = new _Cust.CreateCustomerRequest
-        {
-            NaturalPerson = new()
-            {
-                FirstName = customer.NaturalPerson?.FirstName ?? "",
-                LastName = customer.NaturalPerson?.LastName ?? "",
-                BirthNumber = customer.NaturalPerson?.BirthNumber ?? "",
-                DateOfBirth = customer.NaturalPerson?.DateOfBirth,
-                PlaceOfBirth = customer.NaturalPerson?.PlaceOfBirth ?? "",
-                GenderId = customer.NaturalPerson?.GenderId ?? 0,
-                IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed ?? false,
-                MaritalStatusStateId = customer.NaturalPerson?.MaritalStatusStateId ?? 0,
-                BirthCountryId = customer.NaturalPerson?.BirthCountryId,
-                BirthName = customer.NaturalPerson?.BirthName ?? "",
-                DegreeBeforeId = customer.NaturalPerson?.DegreeBeforeId ?? 0,
-                DegreeAfterId = customer.NaturalPerson?.DegreeAfterId ?? 0,
-                EducationLevelId = customer.NaturalPerson?.EducationLevelId ?? 0,
-                KbRelationshipCode = customer.NaturalPerson?.KbRelationshipCode,
-                TaxResidencyCountryId = customer.NaturalPerson?.TaxResidencyCountryId,
-                IsLegallyIncapable = customer.NaturalPerson?.IsLegallyIncapable,
-                IsPoliticallyExposed = customer.NaturalPerson?.IsPoliticallyExposed,
-                LegallyIncapableUntil = customer.NaturalPerson?.LegallyIncapableUntil
-            },
-            IdentificationDocument = customer.IdentificationDocument,
-            Identities = { new Identity { IdentityScheme = Identity.Types.IdentitySchemes.Kb } }
-        };
-        if (customer.NaturalPerson?.CitizenshipCountriesId is not null)
-            model.NaturalPerson!.CitizenshipCountriesId.AddRange(customer.NaturalPerson!.CitizenshipCountriesId);
-        if (customer.Contacts is not null)
-            model.Contacts.AddRange(customer.Contacts);
-        if (customer.Addresses is not null)
-            model.Addresses.AddRange(customer.Addresses);
-
-        return model;
-    }
-
     public static CreateResponse ToResponseDto(this _Cust.CustomerDetailResponse customer)
     {
         GetDetail.Dto.NaturalPersonModel person = new();
