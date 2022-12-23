@@ -245,7 +245,7 @@ internal static class Extensions
                 var degreeBeforeId = c.NaturalPerson?.DegreeBeforeId;
                 var academicTitlePrefix = degreeBeforeId.HasValue ? (data.AcademicDegreesBeforeById.ContainsKey(degreeBeforeId.Value) ? data.AcademicDegreesBeforeById[degreeBeforeId.Value].Name : null) : null;
 
-                var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
+                var taxResidencyCountryId = c.NaturalPerson?.TaxResidence?.ResidenceCountries?.FirstOrDefault()?.CountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
                 var cGenderId = c.NaturalPerson?.GenderId;

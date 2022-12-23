@@ -59,7 +59,7 @@ internal class Customer
 
     public int? CitizenshipCountryId => NaturalPerson.CitizenshipCountriesId.Select(id => (int?)id).FirstOrDefault();
 
-    public bool IsResident => NaturalPerson.TaxResidencyCountryId.HasValue && Countries[NaturalPerson.TaxResidencyCountryId.Value] == "CZ";
+    public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries?.Any() ?? false && Countries[NaturalPerson.TaxResidence.ResidenceCountries.First().CountryId.GetValueOrDefault()] == "CZ";
 
     public int DefaultZeroValue => 0;
 

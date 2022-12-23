@@ -17,7 +17,11 @@ internal class CustomerManagementDetailProvider
     private List<Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
     private List<Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
+    private List<Endpoints.ProfessionTypes.ProfessionTypeItem> _professionTypes = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<Endpoints.NetMonthEarnings.NetMonthEarningItem> _netMonthEarnings = null!;
+    private List<Endpoints.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
+    private List<CodebookService.Contracts.GenericCodebookItemWithRdmCode> _incomeMainTypesAML = null!;
 
     public CustomerManagementDetailProvider(ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
@@ -65,7 +69,7 @@ internal class CustomerManagementDetailProvider
 
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
-        return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes());
+        return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes(), ProfessionTypes(), NetMonthEarnings(), IncomeMainTypesAML());
 
         async Task Countries() => _countries = await _codebook.Countries(cancellationToken);
         async Task Genders() => _genders = await _codebook.Genders(cancellationToken);
@@ -73,6 +77,9 @@ internal class CustomerManagementDetailProvider
         async Task Titles() => _titles = await _codebook.AcademicDegreesBefore(cancellationToken);
         async Task Educations() => _educations = await _codebook.EducationLevels(cancellationToken);
         async Task DocTypes() => _docTypes = await _codebook.IdentificationDocumentTypes(cancellationToken);
+        async Task ProfessionTypes() => _professionTypes = await _codebook.ProfessionTypes(cancellationToken);
+        async Task NetMonthEarnings() => _netMonthEarnings = await _codebook.NetMonthEarnings(cancellationToken);
+        async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
     }
 
     private Contracts.NaturalPerson CreateNaturalPerson(CustomerBaseInfo customer)
@@ -93,13 +100,32 @@ internal class CustomerManagementDetailProvider
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
+            IsUSPerson = false, //je vzdy false!
             IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false,
-            IsLegallyIncapable = np.LegalCapacityRestriction?.RestrictionType ?? string.Empty,
-            LegallyIncapableUntil = np.LegalCapacityRestriction?.RestrictionUntil,
-            TaxResidencyCountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
             KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty,
-            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty
+            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty,
+            ProfessionCategoryId = customer.Kyc?.NaturalPersonKyc?.Employment?.CategoryCode,
+            ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode == t.RdmCode)?.Id,
+            NetMonthEarningAmountId = _netMonthEarnings.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.NetMonthEarningCode == t.RdmCode)?.Id,
+            NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString() == t.RdmCode)?.Id,
+            TaxResidence = new NaturalPersonTaxResidence
+            {
+                ValidFrom = customer.TaxResidence.ValidFrom
+            },
+            LegalCapacity = new NaturalPersonLegalCapacity
+            {
+                RestrictionTypeId = _legalCapacityRestrictionTypes.FirstOrDefault(t => t.RdmCode == np.LegalCapacityRestriction?.RestrictionType)?.Id,
+                RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil,
+            }
         };
+
+        // tax residence countries
+        person.TaxResidence.ResidenceCountries.AddRange(customer.TaxResidence.ResidenceCountries.Select(t => new NaturalPersonResidenceCountry
+        {
+            CountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
+            Tin = t.Tin,
+            TinMissingReasonDescription = t.TinMissingReasonDescription
+        }));
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
             person.CitizenshipCountriesId.AddRange(_countries.Where(t => np.CitizenshipCodes.Contains(t.ShortName)).Select(t => t.Id));
@@ -161,7 +187,8 @@ internal class CustomerManagementDetailProvider
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
                 Value = customer.PrimaryPhone.PhoneNumber,
-                IsPrimary = true
+                IsPrimary = true,
+                Confirmed = customer.PrimaryPhone.Confirmed
             });
         }
 
@@ -171,7 +198,8 @@ internal class CustomerManagementDetailProvider
             {
                 ContactTypeId = (int)ContactTypes.Email,
                 Value = customer.PrimaryEmail.EmailAddress,
-                IsPrimary = true
+                IsPrimary = true,
+                Confirmed = customer.PrimaryEmail.Confirmed
             });
         }
     }

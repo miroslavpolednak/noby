@@ -2,6 +2,8 @@
 package DomainServices.CustomerService;
 option csharp_namespace = "DomainServices.CustomerService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message Contact {
    
    int32 ContactTypeId = 1;
@@ -9,4 +11,6 @@ message Contact {
    string Value = 2;
 
    bool IsPrimary = 3;
+
+   google.protobuf.BoolValue Confirmed = 4;
 }
