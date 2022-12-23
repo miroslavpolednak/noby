@@ -14,7 +14,8 @@ internal class LegalCapacityRestrictionTypesHandler
             .Select(t => new LegalCapacityRestrictionTypeItem()
             {
                 Id = (int)t,
-                Code = t,
+                RdmCode = t.ToString(),
+                EnumValue = t,
                 Name = t.GetAttribute<DisplayAttribute>()?.Name ?? String.Empty,
                 Description = t.GetAttribute<DisplayAttribute>()?.ShortName ?? String.Empty,
             })

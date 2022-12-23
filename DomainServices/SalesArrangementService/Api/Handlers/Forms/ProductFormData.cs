@@ -84,7 +84,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
         {
             get
             {
-                return legalCapacityRestrictionTypesByCode ?? LegalCapacityRestrictionTypes.ToDictionary(i => i.Code.ToString());
+                return legalCapacityRestrictionTypesByCode ?? LegalCapacityRestrictionTypes.ToDictionary(i => i.RdmCode);
             }
         }
 

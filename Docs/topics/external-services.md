@@ -73,11 +73,12 @@ Příklad pro proxy projekt **Eas**:
 [Dto]
     GeneralIdRequest.cs     (adresář pro společné Dto objekty)
 [V1]                        (verze implementace proxy klienta)
+    [OpenApi]
+        swagger.json        (REST - Swagger kontrakt služby)
+        service.wsdl        (SOAP - wsdl popis služby)
     IEasClient.cs           (interface reprezentující proxy klienta v DI)
     RealEasClient.cs        (implementace proxy klienta)
     MockEasClient.cs        (mock implementace proxy klienta)
-    swagger.json            (REST - Swagger kontrakt služby)
-    service.wsdl            (SOAP - wsdl popis služby)
     ...                     (další soubory, DTO, nastavení NSwag atd.)
 [V2]                        (další verze klienta)
     ...                     

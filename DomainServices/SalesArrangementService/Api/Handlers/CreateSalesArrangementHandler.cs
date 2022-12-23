@@ -32,16 +32,6 @@ internal class CreateSalesArrangementHandler
         // ulozit do DB
         var salesArrangementId = await _repository.CreateSalesArrangement(saEntity, cancellation);
 
-        // nalinkovani offer
-        if (request.Request.OfferId.HasValue)
-        {
-            await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(new()
-            {
-                SalesArrangementId = salesArrangementId,
-                OfferId = request.Request.OfferId.Value
-            }), cancellation);
-        }
-
         // params
         if (request.Request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
         {
@@ -65,7 +55,17 @@ internal class CreateSalesArrangementHandler
 
             await _mediator.Send(updateMediatrRequest, cancellation);
         }
-        
+
+        // nalinkovani offer
+        if (request.Request.OfferId.HasValue)
+        {
+            await _mediator.Send(new Dto.LinkModelationToSalesArrangementMediatrRequest(new()
+            {
+                SalesArrangementId = salesArrangementId,
+                OfferId = request.Request.OfferId.Value
+            }), cancellation);
+        }
+
         _logger.EntityCreated(nameof(Repositories.Entities.SalesArrangement), salesArrangementId);
 
         return new CreateSalesArrangementResponse { SalesArrangementId = salesArrangementId };
