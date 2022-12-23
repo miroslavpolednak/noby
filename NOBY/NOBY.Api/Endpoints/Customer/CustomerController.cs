@@ -116,6 +116,8 @@ public class CustomerController : ControllerBase
     [HttpGet("customer-on-sa/{customerOnSAId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(GetDetailWithChanges.GetDetailWithChangesResponse), StatusCodes.Status200OK)]
     public async Task<GetDetailWithChanges.GetDetailWithChangesResponse> GetDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDetailWithChanges.GetDetailWithChangesRequest(customerOnSAId), cancellationToken);
@@ -130,6 +132,7 @@ public class CustomerController : ControllerBase
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task GetDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateDetailWithChanges.UpdateDetailWithChangesRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request.InfuseId(customerOnSAId), cancellationToken);

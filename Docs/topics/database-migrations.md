@@ -17,10 +17,11 @@ Konvence pro pojmenování SQL skriptů je `{číslo-pořadí skriptu}-{JIRA tas
 Jedná se pouze o hint pro migrační tool v jakém pořadí skripty případně pouštět.
 
 Jakmile se SQL skript dostane do *master* nebo *release* branch v GITu, bude s prvním spuštěním CI/CD proveden nad databází dané služby.
-Migrace se pouští automaticky v rámci DevOps release pipeline pomocí vlastní konzolové aplikace DatabaseMigrations.
+Migrace se pouští automaticky v rámci DevOps release pipeline pomocí vlastní konzolové aplikace **DatabaseMigrations**.
 
 ## Konzolová aplikace DatabaseMigrations
 Jedná se o samostatný projekt v rámci solution NOBY. Aplikace používá DbUp (https://dbup.readthedocs.io/en/latest/) pro provádění migrací.
+DbUp zajistí, aby se skripty spouštěli pouze pokud je to požadováno - buď proto, že se jedná o nový skript, nebo také v případě rekurentního skriptu.
 
 Příklad spuštění migrací:
 ```
