@@ -1,20 +1,18 @@
-﻿using System.Diagnostics;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
+using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal class CustomerManagementDetailProvider
 {
-    private readonly ICustomerManagementClient _customerManagement;
+    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
 
-    private List<Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<Endpoints.Genders.GenderItem> _genders = null!;
-    private List<Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
+    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
+    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
+    private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
     private List<Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
     private List<Endpoints.ProfessionTypes.ProfessionTypeItem> _professionTypes = null!;
@@ -22,8 +20,10 @@ internal class CustomerManagementDetailProvider
     private List<Endpoints.NetMonthEarnings.NetMonthEarningItem> _netMonthEarnings = null!;
     private List<Endpoints.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
     private List<CodebookService.Contracts.GenericCodebookItemWithRdmCode> _incomeMainTypesAML = null!;
+    private List<CodebookService.Contracts.Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
+    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CustomerManagementDetailProvider(ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementDetailProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -31,7 +31,7 @@ internal class CustomerManagementDetailProvider
 
     public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)
     {
-        var customer = await _customerManagement.GetDetail(customerId, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
+        var customer = await _customerManagement.GetDetail(customerId, cancellationToken);
 
         await InitializeCodebooks(cancellationToken);
 
@@ -40,7 +40,7 @@ internal class CustomerManagementDetailProvider
 
     public async Task<IEnumerable<CustomerDetailResponse>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
     {
-        var customers = await _customerManagement.GetList(customerIds, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
+        var customers = await _customerManagement.GetList(customerIds, cancellationToken);
 
         if (!customers.Any())
             return Enumerable.Empty<CustomerDetailResponse>();
@@ -50,7 +50,7 @@ internal class CustomerManagementDetailProvider
         return customers.Select(CreateDetailResponse);
     }
 
-    private CustomerDetailResponse CreateDetailResponse(CustomerBaseInfo customer)
+    private CustomerDetailResponse CreateDetailResponse(__Contracts.CustomerBaseInfo customer)
     {
         var response = new CustomerDetailResponse
         {
@@ -82,9 +82,9 @@ internal class CustomerManagementDetailProvider
         async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
     }
 
-    private Contracts.NaturalPerson CreateNaturalPerson(CustomerBaseInfo customer)
+    private Contracts.NaturalPerson CreateNaturalPerson(__Contracts.CustomerBaseInfo customer)
     {
-        var np = (Clients.CustomerManagement.V1.NaturalPerson)customer.Party;
+        var np = (ExternalServices.CustomerManagement.V1.Contracts.NaturalPerson)customer.Party;
 
         var person = new Contracts.NaturalPerson
         {
@@ -133,7 +133,7 @@ internal class CustomerManagementDetailProvider
         return person;
     }
 
-    private Contracts.IdentificationDocument? CreateIdentificationDocument(Clients.CustomerManagement.V1.IdentificationDocument? document)
+    private Contracts.IdentificationDocument? CreateIdentificationDocument(__Contracts.IdentificationDocument? document)
     {
         if (document is null)
             return null;
@@ -152,8 +152,8 @@ internal class CustomerManagementDetailProvider
 
     private void AddAddress(AddressTypes addressType,
                             Action<GrpcAddress> onAddAddress,
-                            Address? address,
-                            ComponentAddress? componentAddress,
+                            __Contracts.Address? address,
+                            __Contracts.ComponentAddress? componentAddress,
                             DateTime? primaryAddressFrom)
     {
         if (address is null)
@@ -179,7 +179,7 @@ internal class CustomerManagementDetailProvider
         });
     }
 
-    private static void AddContacts(CustomerBaseInfo customer, Action<Contact> onAddContact)
+    private static void AddContacts(__Contracts.CustomerBaseInfo customer, Action<Contact> onAddContact)
     {
         if (customer.PrimaryPhone is not null)
         {

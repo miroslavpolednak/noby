@@ -57,7 +57,7 @@ CIS.Core.Security.ICurrentUserDetails? UserDetails { get; }
 Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
 
 ```csharp
-System.Threading.Tasks.Task<CIS.Core.Security.ICurrentUserDetails> EnsureDetails(System.Threading.CancellationToken cancellationToken);
+System.Threading.Tasks.Task<CIS.Core.Security.ICurrentUserDetails> EnsureDetails(System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
 ```
 #### Parameters
 
@@ -75,7 +75,7 @@ System.Threading.Tasks.Task<CIS.Core.Security.ICurrentUserDetails> EnsureDetails
 Pokud se tak uz nestalo, naplni profil uzivatele daty z UserService
 
 ```csharp
-System.Threading.Tasks.Task<TDetails> EnsureDetails<TDetails>(System.Threading.CancellationToken cancellationToken)
+System.Threading.Tasks.Task<TDetails> EnsureDetails<TDetails>(System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken))
     where TDetails : CIS.Core.Security.ICurrentUserDetails;
 ```
 #### Type parameters

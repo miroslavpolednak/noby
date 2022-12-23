@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
   </ItemGroup>
