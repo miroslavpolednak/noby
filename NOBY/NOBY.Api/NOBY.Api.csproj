@@ -23,9 +23,13 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+	  <Compile Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <Compile Remove="wwwroot\**" />
+	  <Content Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <Content Remove="wwwroot\**" />
+	  <EmbeddedResource Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
+	  <None Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <None Remove="wwwroot\**" />
 	</ItemGroup>
 	
@@ -67,7 +71,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
     <Folder Include="Endpoints\Document\GetDocument\" />
     <Folder Include="Endpoints\DocumentArchive\_Shared\" />
   </ItemGroup>
