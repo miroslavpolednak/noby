@@ -29,6 +29,7 @@
     <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj" />
+	<ProjectReference Include="..\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj" />
 	<ProjectReference Include="..\ExternalServices.IdentifiedSubjectBr\DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.csproj" />
   </ItemGroup>
 

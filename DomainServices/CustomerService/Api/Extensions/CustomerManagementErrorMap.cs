@@ -4,7 +4,7 @@ using CIS.Infrastructure.gRPC;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using Grpc.Core;
 
-namespace DomainServices.CustomerService.Api.Clients;
+namespace DomainServices.CustomerService.Api.Extensions;
 
 [SingletonService, SelfService]
 internal class CustomerManagementErrorMap

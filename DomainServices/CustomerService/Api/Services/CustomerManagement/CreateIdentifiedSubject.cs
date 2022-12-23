@@ -1,6 +1,5 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Api.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
