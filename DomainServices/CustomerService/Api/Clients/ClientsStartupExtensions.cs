@@ -3,7 +3,6 @@ using CIS.ExternalServicesHelpers;
 using CIS.ExternalServicesHelpers.Configuration;
 using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.InternalServices.ServiceDiscovery.Contracts;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement;
 using DomainServices.CustomerService.Api.Clients.CustomerProfile;
 using DomainServices.CustomerService.Api.Clients.IdentifiedSubjectBr;
 using DomainServices.CustomerService.Api.Configuration;
@@ -29,7 +28,6 @@ internal static class ClientsStartupExtensions
         var config = builder.CreateAndCheckExternalServiceConfiguration<CustomerManagementConfiguration>(CustomerManagementServiceName);
 
         builder.Services
-               .AddCustomerManagementService(config)
                .AddCustomerProfileService(config)
                .ResolveServiceDiscoveryUriIfEnabled(config, CustomerManagementServiceName);
     }

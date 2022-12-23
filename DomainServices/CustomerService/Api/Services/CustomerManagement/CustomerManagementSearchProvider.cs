@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
+using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 
@@ -10,14 +9,14 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 [ScopedService, SelfService]
 internal class CustomerManagementSearchProvider
 {
-    private readonly ICustomerManagementClient _customerManagement;
+    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
 
     private List<Endpoints.Countries.CountriesItem> _countries = null!;
     private List<Endpoints.Genders.GenderItem> _genders = null!;
     private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CustomerManagementSearchProvider(ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementSearchProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -27,9 +26,9 @@ internal class CustomerManagementSearchProvider
     {
         await InitializeCodebooks(cancellationToken);
 
-        var foundCustomers = await _customerManagement.Search(ParseRequest(searchRequest), Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
+        var foundCustomers = await _customerManagement.Search(ParseRequest(searchRequest), cancellationToken);
 
-        return foundCustomers.Where(c => c.Party is NaturalPersonSearchResult)
+        return foundCustomers.Where(c => c.Party is __Contracts.NaturalPersonSearchResult)
                              .Select(c =>
                              {
                                  var item = new SearchCustomersItem
@@ -54,9 +53,9 @@ internal class CustomerManagementSearchProvider
         async Task DocTypes() => _docTypes = await _codebook.IdentificationDocumentTypes(cancellationToken);
     }
 
-    private CustomerManagementSearchRequest ParseRequest(SearchCustomersRequest searchRequest)
+    private ExternalServices.CustomerManagement.Dto.CustomerManagementSearchRequest ParseRequest(SearchCustomersRequest searchRequest)
     {
-        var cmRequest = new CustomerManagementSearchRequest
+        var cmRequest = new ExternalServices.CustomerManagement.Dto.CustomerManagementSearchRequest
         {
             NumberOfEntries = 20,
             CustomerId = searchRequest.Identity?.IdentityId,
@@ -84,9 +83,9 @@ internal class CustomerManagementSearchProvider
         return cmRequest;
     }
 
-    private NaturalPersonBasicInfo CreateNaturalPerson(CustomerSearchResultRow customer)
+    private NaturalPersonBasicInfo CreateNaturalPerson(__Contracts.CustomerSearchResultRow customer)
     {
-        var np = (NaturalPersonSearchResult)customer.Party;
+        var np = (__Contracts.NaturalPersonSearchResult)customer.Party;
 
         return new NaturalPersonBasicInfo
         {
@@ -98,7 +97,7 @@ internal class CustomerManagementSearchProvider
         };
     }
 
-    private Contracts.IdentificationDocument? CreateIdentificationDocument(Clients.CustomerManagement.V1.IdentificationDocument? document)
+    private Contracts.IdentificationDocument? CreateIdentificationDocument(__Contracts.IdentificationDocument? document)
     {
         if (document is null)
             return null;
@@ -115,7 +114,7 @@ internal class CustomerManagementSearchProvider
         };
     }
 
-    private void FillAddressData(SearchCustomersItem result, Address? address)
+    private void FillAddressData(SearchCustomersItem result, __Contracts.Address? address)
     {
         if (address is null)
             return;

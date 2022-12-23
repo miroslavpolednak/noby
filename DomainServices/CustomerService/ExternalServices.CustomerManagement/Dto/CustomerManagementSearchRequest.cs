@@ -68,7 +68,7 @@ public sealed class CustomerManagementSearchRequest
     public bool? IsInKbi { get; set; }
 
     //Legal status filter
-    public IEnumerable<Anonymous>? LegalStatusCode { get; set; }
+    public IEnumerable<V1.Contracts.Anonymous>? LegalStatusCode { get; set; }
 
     /// <summary>
     /// Flag indicating whether archived customers will be returned

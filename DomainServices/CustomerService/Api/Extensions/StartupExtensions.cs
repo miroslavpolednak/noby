@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CustomerService.Api.Clients;
+using DomainServices.CustomerService.ExternalServices;
 
 namespace DomainServices.CustomerService.Api.Extensions;
 
@@ -10,6 +11,8 @@ internal static class StartupExtensions
         builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb"));
 
         builder.AddCustomerManagementService();
+
+        builder.AddExternalService<ExternalServices.CustomerManagement.V1.ICustomerManagementClient>();
 
         // CodebookService
         builder.Services.AddCodebookService();

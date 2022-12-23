@@ -17,12 +17,9 @@ internal static class CustomerProfileStartupExtensions
                 }).ConfigurePrimaryHttpMessageHandler<CustomerManagementHttpHandler<V1.RealCustomerProfileClient>>();
                 break;
 
-            case (Version.V1, _):
+            default:
                 services.AddScoped<V1.ICustomerProfileClient, V1.MockCustomerProfileClient>();
                 break;
-
-            default:
-                throw new NotImplementedException($"CustomerProfile version {config.CustomerProfileVersion} client is not implemented");
         }
 
         return services;
