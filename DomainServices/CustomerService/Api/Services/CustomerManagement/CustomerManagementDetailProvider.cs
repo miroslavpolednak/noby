@@ -119,12 +119,15 @@ internal class CustomerManagementDetailProvider
         };
 
         // tax residence countries
-        person.TaxResidence.ResidenceCountries.AddRange(customer.TaxResidence.ResidenceCountries.Select(t => new NaturalPersonResidenceCountry
+        if (customer.TaxResidence?.ResidenceCountries?.Any() ?? false)
         {
-            CountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
-            Tin = t.Tin,
-            TinMissingReasonDescription = t.TinMissingReasonDescription
-        }));
+            person.TaxResidence.ResidenceCountries.AddRange(customer.TaxResidence.ResidenceCountries.Select(t => new NaturalPersonResidenceCountry
+            {
+                CountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
+                Tin = t.Tin,
+                TinMissingReasonDescription = t.TinMissingReasonDescription
+            }));
+        }
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
             person.CitizenshipCountriesId.AddRange(_countries.Where(t => np.CitizenshipCodes.Contains(t.ShortName)).Select(t => t.Id));
