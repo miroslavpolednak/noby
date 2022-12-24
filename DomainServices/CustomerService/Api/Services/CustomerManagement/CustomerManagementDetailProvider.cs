@@ -67,7 +67,7 @@ internal class CustomerManagementDetailProvider
 
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
-        return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes(), ProfessionTypes(), NetMonthEarnings(), IncomeMainTypesAML());
+        return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes(), ProfessionTypes(), NetMonthEarnings(), IncomeMainTypesAML(), LegalCapacityRestrictionTypes());
 
         async Task Countries() => _countries = await _codebook.Countries(cancellationToken);
         async Task Genders() => _genders = await _codebook.Genders(cancellationToken);
@@ -78,6 +78,7 @@ internal class CustomerManagementDetailProvider
         async Task ProfessionTypes() => _professionTypes = await _codebook.ProfessionTypes(cancellationToken);
         async Task NetMonthEarnings() => _netMonthEarnings = await _codebook.NetMonthEarnings(cancellationToken);
         async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
+        async Task LegalCapacityRestrictionTypes() => _legalCapacityRestrictionTypes = await _codebook.LegalCapacityRestrictionTypes(cancellationToken);
     }
 
     private Contracts.NaturalPerson CreateNaturalPerson(__Contracts.CustomerBaseInfo customer)
@@ -108,12 +109,12 @@ internal class CustomerManagementDetailProvider
             NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString() == t.RdmCode)?.Id,
             TaxResidence = new NaturalPersonTaxResidence
             {
-                ValidFrom = customer.TaxResidence.ValidFrom
+                ValidFrom = customer.TaxResidence?.ValidFrom
             },
             LegalCapacity = new NaturalPersonLegalCapacity
             {
                 RestrictionTypeId = _legalCapacityRestrictionTypes.FirstOrDefault(t => t.RdmCode == np.LegalCapacityRestriction?.RestrictionType)?.Id,
-                RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil,
+                RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil
             }
         };
 
