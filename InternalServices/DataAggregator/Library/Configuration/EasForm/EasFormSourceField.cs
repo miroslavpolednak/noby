@@ -6,7 +6,12 @@ internal class EasFormSourceField
 
     public DataSource DataSource { get; init; }
 
-    public EasFormType FormType { get; set; }
+    public EasFormType FormType { get; private set; }
+
+    public string FormTypeString
+    {
+        set => FormType = Enum.Parse<EasFormType>(value);
+    }
 
     public string FieldPath { get; init; } = null!;
 

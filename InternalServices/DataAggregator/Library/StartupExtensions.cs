@@ -41,7 +41,7 @@ public static class StartupExtensions
 
         void TryAddService<TServiceType>(Func<IServiceCollection> func)
         {
-            if (services.Any(x => x.ServiceType != typeof(TServiceType)))
+            if (services.Any(x => x.ServiceType == typeof(TServiceType)))
                 return;
 
             func();

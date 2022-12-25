@@ -1,6 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-
-namespace CIS.InternalServices.DataAggregator.EasForms.Json;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms.Json;
 
 internal class EasFormJsonObjectImpl : EasFormJsonObject
 {

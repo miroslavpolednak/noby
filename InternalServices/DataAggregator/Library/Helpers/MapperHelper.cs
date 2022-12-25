@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-using CIS.InternalServices.DataAggregator.DataServices;
+﻿using CIS.InternalServices.DataAggregator.DataServices;
 using FastMember;
 
 namespace CIS.InternalServices.DataAggregator.Helpers;

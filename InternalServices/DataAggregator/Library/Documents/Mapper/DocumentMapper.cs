@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CIS.InternalServices.DataAggregator.Configuration;
 using CIS.InternalServices.DataAggregator.Configuration.Document;
 using CIS.InternalServices.DataAggregator.DataServices;
 using CIS.InternalServices.DataAggregator.Documents.Table;

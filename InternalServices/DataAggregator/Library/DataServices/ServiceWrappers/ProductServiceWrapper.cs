@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Results;
-using CIS.InternalServices.DataAggregator.Configuration;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 

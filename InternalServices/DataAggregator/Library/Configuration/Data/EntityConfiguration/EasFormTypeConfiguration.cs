@@ -13,5 +13,13 @@ internal class EasFormTypeConfiguration : IEntityTypeConfiguration<EasFormType>
         builder.Property(x => x.EasFormTypeId).ValueGeneratedNever();
 
         builder.Property(x => x.EasFormTypeName).HasMaxLength(50).IsRequired();
+
+        builder.Property(x => x.Version).IsRequired();
+
+        builder.Property(x => x.ValidFrom).IsRequired();
+
+        builder.Property(x => x.ValidTo).IsRequired();
+
+        builder.HasIndex(x => new { x.EasFormTypeName, x.Version }).IsUnique();
     }
 }
