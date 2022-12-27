@@ -8,24 +8,30 @@ internal class GetFullPaymentScheduleByOfferIdHandler
 {
     public async Task<Dto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
     {
-        var result = await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken);
-
-        var items = result.PaymentScheduleFull.Select(i =>
-            new PaymentScheduleFullItem
-            {
-                PaymentNumber = i.PaymentNumber,
-                Date = i.Date,
-                Amount = i.Amount,
-                Principal = i.Principal,
-                Interest = i.Interest,
-                RemainingPrincipal = i.RemainingPrincipal,
-            }
-        ).ToList();
-
-        return new GetFullPaymentScheduleResponse
+        try
         {
-            Items = items
-        };
+            var result = await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken);
+
+            return new GetFullPaymentScheduleResponse
+            {
+                Items = result.PaymentScheduleFull.Select(i =>
+                    new PaymentScheduleFullItem
+                    {
+                        PaymentNumber = i.PaymentNumber,
+                        Date = i.Date,
+                        Amount = i.Amount,
+                        Principal = i.Principal,
+                        Interest = i.Interest,
+                        RemainingPrincipal = i.RemainingPrincipal,
+                    }
+                ).ToList()
+            };
+        }
+        catch (CisArgumentException ex)
+        {
+            // rethrow to be catched by validation middleware
+            throw new CisValidationException(ex.ExceptionCode, ex.Message);
+        }
     }
 
     private readonly IOfferServiceClient _offerService;
