@@ -88,6 +88,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.WorkflowTaskTypes);
         AddCodebook(s => s.WorkSectors);
         AddCodebook(s => s.ProductTypes);
+        AddCodebook(s => s.IncomeMainTypesAML);
     }
 
     private void AddCodebook(Expression<Func<ICodebookServiceClients, Delegate>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!)
