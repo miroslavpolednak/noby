@@ -144,6 +144,7 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SendToCmp.SendToCmpResponse), StatusCodes.Status400BadRequest)]
     public async Task<SendToCmp.SendToCmpResponse> SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
         => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
 

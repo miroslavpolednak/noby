@@ -11,13 +11,16 @@ internal class SendToCmpHandler
 
     #region Construction
 
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public SendToCmpHandler(
+        IHttpContextAccessor httpContextAccessor,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        _httpContextAccessor = httpContextAccessor;
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
     }
@@ -31,9 +34,16 @@ internal class SendToCmpHandler
 
         // provolat validaci SA
         var validationResult = await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
+        bool validationContainErrors = validationResult
+            ?.ValidationMessages
+            ?.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error) ?? false;
+
         if (validationResult?.ValidationMessages?.Any() ?? false 
-            && validationResult.ValidationMessages.Any(t => t.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error))
+            && (validationContainErrors || !request.IgnoreWarnings))
         {
+            //TODO workaround, toto vyresit inteligentneji - az budeme resit komplexni error handling na FE API
+            _httpContextAccessor.HttpContext.Response.StatusCode = 400;
+
             return new SendToCmpResponse
             {
                 Categories = validationResult.ValidationMessages
