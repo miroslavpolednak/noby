@@ -6,7 +6,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
 internal class SendToCmpHandler
-    : IRequestHandler<SendToCmpRequest, SendToCmpResponse>
+    : IRequestHandler<SendToCmpRequest, IActionResult>
 {
 
     #region Construction
@@ -27,7 +27,7 @@ internal class SendToCmpHandler
 
     #endregion
 
-    public async Task<SendToCmpResponse> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -41,10 +41,7 @@ internal class SendToCmpHandler
         if (validationResult?.ValidationMessages?.Any() ?? false 
             && (validationContainErrors || !request.IgnoreWarnings))
         {
-            //TODO workaround, toto vyresit inteligentneji - az budeme resit komplexni error handling na FE API
-            _httpContextAccessor.HttpContext.Response.StatusCode = 400;
-
-            return new SendToCmpResponse
+            return new BadRequestObjectResult(new SendToCmpResponse
             {
                 Categories = validationResult.ValidationMessages
                     .GroupBy(t => t.NobyMessageDetail.Category)
@@ -58,7 +55,7 @@ internal class SendToCmpHandler
                             Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? MessageSeverity.Error : MessageSeverity.Warning
                         }).ToList()
                     }).ToList()
-            };
+            });
         }
 
         // odeslat do SB
@@ -67,6 +64,6 @@ internal class SendToCmpHandler
         // update case state
         await _caseService.UpdateCaseState(saInstance.CaseId, 2, cancellationToken);
 
-        return new SendToCmpResponse();
+        return new OkResult();
     }
 }
