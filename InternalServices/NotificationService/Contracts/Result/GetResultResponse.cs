@@ -4,7 +4,7 @@ using ProtoBuf;
 namespace CIS.InternalServices.NotificationService.Contracts.Result;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
-public class ResultGetResponse
+public class GetResultResponse
 {
     [ProtoMember(1)]
     public Guid NotificationId { get; set; }

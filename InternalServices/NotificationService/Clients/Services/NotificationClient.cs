@@ -19,31 +19,31 @@ public class NotificationClient : INotificationClient
         _logger = logger;
     }
 
-    public async Task<SmsSendResponse> SendSms(SmsSendRequest request, CancellationToken token)
+    public async Task<SendSmsResponse> SendSms(SendSmsRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendSms));
         return await _notificationService.SendSms(request, token);
     }
 
-    public async Task<SmsFromTemplateSendResponse> SendSmsFromTemplate(SmsFromTemplateSendRequest request, CancellationToken token)
+    public async Task<SendSmsFromTemplateResponse> SendSmsFromTemplate(SendSmsFromTemplateRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendSmsFromTemplate));
         return await _notificationService.SendSmsFromTemplate(request, token);
     }
 
-    public async Task<EmailSendResponse> SendEmail(EmailSendRequest request, CancellationToken token)
+    public async Task<SendEmailResponse> SendEmail(SendEmailRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendEmail));
         return await _notificationService.SendEmail(request, token);
     }
 
-    public async Task<EmailFromTemplateSendResponse> SendEmailFromTemplate(EmailFromTemplateSendRequest request, CancellationToken token)
+    public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate(SendEmailFromTemplateRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendEmailFromTemplate));
         return await _notificationService.SendEmailFromTemplate(request, token);
     }
 
-    public async Task<ResultGetResponse> GetResult(ResultGetRequest request, CancellationToken token)
+    public async Task<GetResultResponse> GetResult(GetResultRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(GetResult));
         return await _notificationService.GetResult(request, token);

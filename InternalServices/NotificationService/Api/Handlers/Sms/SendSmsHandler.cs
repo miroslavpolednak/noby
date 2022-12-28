@@ -9,7 +9,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 
-public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
+public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly NotificationRepository _repository;
@@ -28,7 +28,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
         _logger = logger;
     }
     
-    public async Task<SmsSendResponse> Handle(SmsSendRequest request, CancellationToken cancellationToken)
+    public async Task<SendSmsResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
         var notificationResult = await _repository.CreateSmsResult(
             request.Identifier?.Identity,
@@ -60,7 +60,7 @@ public class SendSmsHandler : IRequestHandler<SmsSendRequest, SmsSendResponse>
             NotificationState.Sent,
             token: cancellationToken);
         
-        return new SmsSendResponse
+        return new SendSmsResponse
         {
             NotificationId = notificationId
         };

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
-public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetResponse>
+public class GetResultHandler : IRequestHandler<GetResultRequest, GetResultResponse>
 {
     private readonly NotificationRepository _repository;
 
@@ -13,11 +13,11 @@ public class GetResultHandler : IRequestHandler<ResultGetRequest, ResultGetRespo
         _repository = repository;
     }
     
-    public async Task<ResultGetResponse> Handle(ResultGetRequest request, CancellationToken cancellationToken)
+    public async Task<GetResultResponse> Handle(GetResultRequest request, CancellationToken cancellationToken)
     {
         var notificationResult = await _repository.GetResult(request.NotificationId, cancellationToken);
         
-        return new ResultGetResponse
+        return new GetResultResponse
         {
             NotificationId = notificationResult.Id,
             Channel = notificationResult.Channel,

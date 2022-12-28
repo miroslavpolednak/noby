@@ -7,7 +7,7 @@ using ProtoBuf;
 namespace CIS.InternalServices.NotificationService.Contracts.Email;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
-public class EmailSendRequest : IRequest<EmailSendResponse>, IValidatableRequest
+public class SendEmailRequest : IRequest<SendEmailResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
     public EmailAddress From { get; set; } = new();
