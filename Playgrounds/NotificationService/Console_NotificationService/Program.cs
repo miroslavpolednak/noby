@@ -41,7 +41,7 @@ var phone = new Phone
     NationalNumber = "Phone"
 };
 
-var smsSendRequest = new SmsSendRequest
+var smsSendRequest = new SendSmsRequest
 {
     Phone = phone,
     Type = type,
@@ -52,7 +52,7 @@ var smsSendRequest = new SmsSendRequest
 var smsSendResponse =  await client.SendSms(smsSendRequest, token);
 Console.WriteLine($"Sms send response: {smsSendResponse.NotificationId}");
 
-var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
+var smsFromTemplateSendRequest = new SendSmsFromTemplateRequest
 {
     Phone = phone,
     Type = type,
@@ -66,7 +66,7 @@ var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
 var smsFromTemplateSendResponse = await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token);
 Console.WriteLine($"Sms from template send response: {smsFromTemplateSendResponse.NotificationId}");
 
-var resultRequest = new ResultGetRequest { NotificationId = smsFromTemplateSendResponse.NotificationId };
+var resultRequest = new GetResultRequest { NotificationId = smsFromTemplateSendResponse.NotificationId };
 
 var resultResponse = await client.GetResult(resultRequest, CancellationToken.None);
 Console.WriteLine($"Result response: {resultResponse.NotificationId}");

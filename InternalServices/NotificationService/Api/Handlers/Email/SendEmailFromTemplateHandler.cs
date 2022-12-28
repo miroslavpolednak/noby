@@ -10,7 +10,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Email;
 
-public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSendRequest, EmailFromTemplateSendResponse>
+public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplateRequest, SendEmailFromTemplateResponse>
 {
     private readonly MpssEmailProducer _mpssEmailProducer;
     private readonly McsEmailProducer _mcsEmailProducer;
@@ -32,7 +32,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
         _logger = logger;
     }
     
-    public async Task<EmailFromTemplateSendResponse> Handle(EmailFromTemplateSendRequest request, CancellationToken cancellationToken)
+    public async Task<SendEmailFromTemplateResponse> Handle(SendEmailFromTemplateRequest request, CancellationToken cancellationToken)
     {
         var notificationResult = await _repository.CreateEmailResult(
             request.Identifier?.Identity,
@@ -84,7 +84,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<EmailFromTemplateSen
             NotificationState.Sent,
             token: cancellationToken);
         
-        return new EmailFromTemplateSendResponse
+        return new SendEmailFromTemplateResponse
         {
             NotificationId = Guid.NewGuid()
         };

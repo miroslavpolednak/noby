@@ -9,7 +9,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Sms;
 
-public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendRequest, SmsFromTemplateSendResponse>
+public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateRequest, SendSmsFromTemplateResponse>
 {
     private readonly McsSmsProducer _mcsSmsProducer;
     private readonly NotificationRepository _repository;
@@ -28,7 +28,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
         _logger = logger;
     }
     
-    public async Task<SmsFromTemplateSendResponse> Handle(SmsFromTemplateSendRequest request, CancellationToken cancellationToken)
+    public async Task<SendSmsFromTemplateResponse> Handle(SendSmsFromTemplateRequest request, CancellationToken cancellationToken)
     {
         // todo: call codebook service and get notification type text
         // todo: placeholders
@@ -63,7 +63,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SmsFromTemplateSendReq
             NotificationState.Sent,
             token: cancellationToken);
         
-        return new SmsFromTemplateSendResponse
+        return new SendSmsFromTemplateResponse
         {
             NotificationId = notificationId
         };

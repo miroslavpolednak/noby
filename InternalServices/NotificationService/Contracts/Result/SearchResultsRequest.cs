@@ -5,7 +5,7 @@ using ProtoBuf;
 namespace CIS.InternalServices.NotificationService.Contracts.Result;
 
 [ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
-public class ResultsSearchByRequest : IRequest<ResultsSearchByResponse>, IValidatableRequest
+public class SearchResultsRequest : IRequest<SearchResultsResponse>, IValidatableRequest
 {
     [ProtoMember(1)]
     public string Identity { get; set; } = string.Empty;

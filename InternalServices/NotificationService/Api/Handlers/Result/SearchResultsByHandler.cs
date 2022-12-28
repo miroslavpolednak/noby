@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
-public class SearchResultsByHandler : IRequestHandler<ResultsSearchByRequest, ResultsSearchByResponse>
+public class SearchResultsByHandler : IRequestHandler<SearchResultsRequest, SearchResultsResponse>
 {
     private readonly NotificationRepository _repository;
 
@@ -14,7 +14,7 @@ public class SearchResultsByHandler : IRequestHandler<ResultsSearchByRequest, Re
         _repository = repository;
     }
     
-    public async Task<ResultsSearchByResponse> Handle(ResultsSearchByRequest request, CancellationToken cancellationToken)
+    public async Task<SearchResultsResponse> Handle(SearchResultsRequest request, CancellationToken cancellationToken)
     {
         var results = await _repository.SearchResultsBy(
             request.Identity,
@@ -22,7 +22,7 @@ public class SearchResultsByHandler : IRequestHandler<ResultsSearchByRequest, Re
             request.CustomId,
             request.DocumentId);
 
-        return new ResultsSearchByResponse
+        return new SearchResultsResponse
         {
             Results = results.Map().ToList()
         };

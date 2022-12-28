@@ -3,13 +3,13 @@ using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Validators.Result;
 
-public class GetResultRequestValidator : AbstractValidator<ResultGetRequest>
+public class GetResultRequestValidator : AbstractValidator<GetResultRequest>
 {
     public GetResultRequestValidator()
     {
         RuleFor(request => request.NotificationId)
             .NotEmpty()
                 .WithErrorCode(ErrorCodes.Result.NotificationIdNotEmpty)
-                .WithMessage($"{nameof(ResultGetRequest.NotificationId)} must be not empty.");
+                .WithMessage($"{nameof(GetResultRequest.NotificationId)} must be not empty.");
     }
 }

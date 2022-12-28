@@ -31,8 +31,8 @@ public class NotificationController : ControllerBase
     [HttpPost("sms")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(SmsSendResponse), StatusCodes.Status200OK)]
-    public async Task<SmsSendResponse> SendSms([FromBody] SmsSendRequest request, CancellationToken token)
+    [ProducesResponseType(typeof(SendSmsResponse), StatusCodes.Status200OK)]
+    public async Task<SendSmsResponse> SendSms([FromBody] SendSmsRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
     /// <summary>
@@ -44,8 +44,8 @@ public class NotificationController : ControllerBase
     [HttpPost("smsFromTemplate")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(SmsFromTemplateSendResponse), StatusCodes.Status200OK)]
-    public async Task<SmsFromTemplateSendResponse> SendSmsFromTemplate([FromBody] SmsFromTemplateSendRequest request, CancellationToken token)
+    [ProducesResponseType(typeof(SendSmsFromTemplateResponse), StatusCodes.Status200OK)]
+    public async Task<SendSmsFromTemplateResponse> SendSmsFromTemplate([FromBody] SendSmsFromTemplateRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
     /// <summary>
@@ -57,8 +57,8 @@ public class NotificationController : ControllerBase
     [HttpPost("email")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(EmailSendResponse), StatusCodes.Status200OK)]
-    public async Task<EmailSendResponse> SendEmail([FromBody] EmailSendRequest request, CancellationToken token)
+    [ProducesResponseType(typeof(SendEmailResponse), StatusCodes.Status200OK)]
+    public async Task<SendEmailResponse> SendEmail([FromBody] SendEmailRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
     
     /// <summary>
@@ -70,8 +70,8 @@ public class NotificationController : ControllerBase
     [HttpPost("emailFromTemplate")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(EmailFromTemplateSendResponse), StatusCodes.Status200OK)]
-    public async Task<EmailFromTemplateSendResponse> SendEmailFromTemplate([FromBody] EmailFromTemplateSendRequest request, CancellationToken token)
+    [ProducesResponseType(typeof(SendEmailFromTemplateResponse), StatusCodes.Status200OK)]
+    public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate([FromBody] SendEmailFromTemplateRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 
     /// <summary>
@@ -83,9 +83,9 @@ public class NotificationController : ControllerBase
     [HttpGet("result/{id}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(ResultGetResponse), StatusCodes.Status200OK)]
-    public async Task<ResultGetResponse> GetResult([Required] Guid id, CancellationToken token)
-        => await _mediator.Send(new ResultGetRequest { NotificationId = id }, token);
+    [ProducesResponseType(typeof(GetResultResponse), StatusCodes.Status200OK)]
+    public async Task<GetResultResponse> GetResult([Required] Guid id, CancellationToken token)
+        => await _mediator.Send(new GetResultRequest { NotificationId = id }, token);
 
     /// <summary>
     /// Vyhledat výsledky o notifikací podle vyhledávacích kritérií
@@ -99,7 +99,7 @@ public class NotificationController : ControllerBase
     public async Task<List<Result>> SearchResults([FromQuery] string identity, [FromQuery] string identityScheme,
         [FromQuery] string customId, [FromQuery] string documentId, CancellationToken token)
     {
-        var response = await _mediator.Send(new ResultsSearchByRequest
+        var response = await _mediator.Send(new SearchResultsRequest
         {
             Identity = identity,
             IdentityScheme = identityScheme,
