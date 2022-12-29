@@ -1,4 +1,5 @@
-﻿using CIS.Core.Exceptions;
+﻿using CIS.Core;
+using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
@@ -8,45 +9,61 @@ namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
 public class ConsumeResultHandler : IRequestHandler<ResultConsumeRequest, ResultConsumeResponse>
 {
+    private readonly IDateTime _dateTime;
     private readonly NotificationRepository _repository;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
+    private static readonly Dictionary<string, NotificationState> _map = new()
+    {
+        { "INVALID", NotificationState.Invalid },
+        { "UNSENT", NotificationState.Unsent },
+        { "DELIVERED", NotificationState.Delivered },
+        { "SENT", NotificationState.Sent }
+    };
+
     public ConsumeResultHandler(
+        IDateTime dateTime,
         NotificationRepository repository,
         ILogger<ConsumeResultHandler> logger)
     {
+        _dateTime = dateTime;
         _repository = repository;
         _logger = logger;
     }
-    
-    
+
     public async Task<ResultConsumeResponse> Handle(ResultConsumeRequest request, CancellationToken cancellationToken)
     {
-        var notificationReport = request.NotificationReport;
-        if (!Guid.TryParse(notificationReport.id, out var notificationId))
+        var report = request.NotificationReport;
+        if (!Guid.TryParse(report.id, out var id))
         {
-            _logger.LogInformation("Skipped for notificationId: {id}", notificationReport.id);
+            _logger.LogInformation("Skipped for notificationId: {id}", report.id);
         }
 
         try
         {
-            // todo: consume state and errors from request
-            var notificationResult = await _repository.UpdateResult(
-                notificationId,
-                NotificationState.Delivered,
-                token: cancellationToken);
+            var state = _map[report.state];
+            var errorCodes = report.notificationErrors.Select(e => e.code).ToHashSet();
+
+            var result = await _repository.GetResult(id, cancellationToken);
+            result.State = state;
+            
+            var errorSet = new HashSet<string>();
+            errorSet.UnionWith(result.ErrorSet);
+            errorSet.UnionWith(errorCodes);
+            result.ErrorSet = errorSet;
+
+            await _repository.SaveChanges(cancellationToken);
         }
         catch (CisNotFoundException)
         {
-            _logger.LogInformation("Skipped for notificationId: {id}", notificationReport.id);
+            _logger.LogInformation("Skipped for notificationId: {id}", report.id);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed for notificationId: {id}", notificationReport.id);
-            throw;
+            _logger.LogError(e, "Failed for notificationId: {id}", report.id);
+            throw new CisException(399, "todo");
         }
 
         return new ResultConsumeResponse();
     }
-
 }
