@@ -264,7 +264,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{D04EA6BB-7A06-47AB-8085-DC295BACE3E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example_MassTransit", "Playgrounds\NotificationService\Example_MassTransit\Example_MassTransit.csproj", "{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example_MassTransit", "Playgrounds\NotificationService\Example_MassTransit\Example_MassTransit.csproj", "{A7BA2B2A-4DBB-400B-AB56-8E4CD80A1578}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{27850C16-B6E6-435B-B0C4-4938D881823F}"
 	ProjectSection(SolutionItems) = preProject
@@ -277,7 +277,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerProfile", "DomainServices\CustomerService\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj", "{C7BE5EA3-E65A-4652-95AB-F36121AF30BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CustomerService.ExternalServices.Common", "DomainServices\CustomerService\DomainServices.CustomerService.ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj", "{0B3BAD08-EB17-4E38-803E-655B0A85347E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Common", "DomainServices\CustomerService\DomainServices.CustomerService.ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj", "{0B3BAD08-EB17-4E38-803E-655B0A85347E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{4FDD79BE-4EC7-4394-8088-4F9527AF510D}"
+	ProjectSection(SolutionItems) = preProject
+		DomainServices\OfferService\DatabaseMigrations\1-initial_creation.sql = DomainServices\OfferService\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
+	ProjectSection(SolutionItems) = preProject
+		DomainServices\SalesArrangementService\DatabaseMigrations\1-initial_creation.sql = DomainServices\SalesArrangementService\DatabaseMigrations\1-initial_creation.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\2-initial_seed.sql = DomainServices\SalesArrangementService\DatabaseMigrations\2-initial_seed.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
+	ProjectSection(SolutionItems) = preProject
+		NOBY\DatabaseMigrations\1-initial_creation.sql = NOBY\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1156,6 +1172,9 @@ Global
 		{18DAE40B-0268-4361-8A64-0B418206BCCE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{C7BE5EA3-E65A-4652-95AB-F36121AF30BE} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
 		{0B3BAD08-EB17-4E38-803E-655B0A85347E} = {7B04CC9B-7F95-457D-B1B1-77B14F6FA95C}
+		{4FDD79BE-4EC7-4394-8088-4F9527AF510D} = {2F700A61-C2C8-4740-94CE-633E9B4806AA}
+		{DED83C45-FD79-47CA-8ADB-CDB821F07B0B} = {36409700-CB0A-4C91-97A5-071D3300FF91}
+		{D07D1FE1-DFC2-404C-9D4B-9A8732945D84} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
