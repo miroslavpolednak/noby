@@ -10,8 +10,6 @@ Parser.Default
         e => -1
     );
 
-Console.ReadKey();
-
 int runMigration(MigrateOptions o)
 {
     // check folder

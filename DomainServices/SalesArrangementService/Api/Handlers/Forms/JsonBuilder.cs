@@ -504,7 +504,7 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                 var cDegreeBeforeId = c.NaturalPerson?.DegreeBeforeId;
                 var cGenderId = c.NaturalPerson?.GenderId;
 
-                var taxResidencyCountryId = c.NaturalPerson?.TaxResidencyCountryId;
+                var taxResidencyCountryId = c.NaturalPerson?.TaxResidence?.ResidenceCountries?.FirstOrDefault()?.CountryId;
                 var taxResidencyCountryCode = taxResidencyCountryId.HasValue ? (data.CountriesById.ContainsKey(taxResidencyCountryId.Value) ? data.CountriesById[taxResidencyCountryId.Value].ShortName : null) : null;
 
                 //string? isLegallyIncapable = c.NaturalPerson?.IsLegallyIncapable;
@@ -536,8 +536,8 @@ namespace DomainServices.SalesArrangementService.Api.Handlers.Forms
                     pohlavi = cGenderId.HasValue ? data.GendersById[cGenderId.Value].StarBuildJsonCode : null,
                     statni_prislusnost = cCitizenshipCountriesId.ToJsonString(),
                     //pravni_omezeni_typ = pravniOmezeniTyp.ToJsonString(),
-                    pravni_omezeni_typ = c.NaturalPerson?.IsLegallyIncapable,
-                    pravni_omezeni_do = c.NaturalPerson?.LegallyIncapableUntil.ToJsonString(),
+                    pravni_omezeni_typ = c.NaturalPerson?.LegalCapacity?.RestrictionTypeId?.ToJsonString(),
+                    pravni_omezeni_do = c.NaturalPerson?.LegalCapacity?.RestrictionUntil?.ToJsonString(),
                     rezident = (taxResidencyCountryCode?.ToUpperInvariant() == "CZ").ToJsonString(),
                     PEP = c.NaturalPerson?.IsPoliticallyExposed.ToJsonString(),
                     seznam_adres = c.Addresses?.OrderBy(i => i.AddressTypeId).Select(i => MapAddress(i)).ToArray() ?? Array.Empty<object>(),

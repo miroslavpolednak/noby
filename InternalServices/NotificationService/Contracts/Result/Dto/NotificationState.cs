@@ -24,4 +24,7 @@ public enum NotificationState
     
     [ProtoEnum]
     Invalid = 5,
+    
+    [ProtoEnum]
+    Error = 6
 }

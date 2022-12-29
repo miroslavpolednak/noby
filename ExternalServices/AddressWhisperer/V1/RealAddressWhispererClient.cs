@@ -65,6 +65,7 @@ internal class RealAddressWhispererClient
                         EvidenceNumber = baseNode.Element(_ns2 + "evidenceNumber")?.Value,
                         DeliveryDetails = baseNode.Element(_ns2 + "deliveryDetails")?.Value,
                         PragueDistrict = baseNode.Element(_ns2 + "pragueDistrict")?.Value,
+                        AddressPointId = baseNode.Element(_ns2 + "id")?.Value
                     };
                 }
                 else

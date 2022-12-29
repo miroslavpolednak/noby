@@ -12,13 +12,28 @@ public static class ServiceCollectionExtensions
             .Validate(config =>
                     config != null,
                 $"{nameof(AppConfiguration)} required.")
+            .Validate(config =>
+                    config.KafkaTopics != null,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)} required.")
+            .Validate(config =>
+                !string.IsNullOrEmpty(config.KafkaTopics.McsResult),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsResult)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config.KafkaTopics.McsSender),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsSender)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config.KafkaTopics.NobyResult),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobyResult)} required.")
+            .Validate(config =>
+                    !string.IsNullOrEmpty(config.KafkaTopics.NobySendEmail),
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobySendEmail)} required.")
             .ValidateOnStart();
         
         builder.Services
             .AddOptions<S3Configuration>()
             .Bind(builder.Configuration.GetSection(nameof(S3Configuration)))
-            .Validate(config => !string.IsNullOrEmpty(config.ServiceURL),
-                $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceURL)} required.")
+            .Validate(config => !string.IsNullOrEmpty(config.ServiceUrl),
+                $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceUrl)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.AccessKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.SecretKey),
@@ -29,12 +44,8 @@ public static class ServiceCollectionExtensions
             .Bind(builder.Configuration.GetSection(nameof(KafkaConfiguration)))
             .Validate(config => !string.IsNullOrEmpty(config.GroupId),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.GroupId)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.SchemaRegistryUrl),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.SchemaRegistryUrl)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Business?.BootstrapServers),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Business)}.{nameof(KafkaConfiguration.Nodes.Business.BootstrapServers)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config.Nodes?.Logman?.BootstrapServers),
-                $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Nodes)}.{nameof(KafkaConfiguration.Nodes.Logman)}.{nameof(KafkaConfiguration.Nodes.Logman.BootstrapServers)} required.")
             .Validate(config => !string.IsNullOrEmpty(config.Debug),
                 $"{nameof(KafkaConfiguration)}.{nameof(KafkaConfiguration.Debug)}")
             .ValidateOnStart();
@@ -53,6 +64,11 @@ public static class ServiceCollectionExtensions
         return builder;
     }
 
+    public static AppConfiguration GetAppConfiguration(this WebApplicationBuilder builder)
+    {
+        return builder.GetConfiguration<AppConfiguration>();
+    }
+    
     public static S3Configuration GetS3Configuration(this WebApplicationBuilder builder)
     {
         return builder.GetConfiguration<S3Configuration>();

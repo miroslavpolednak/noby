@@ -14,7 +14,7 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 		<Title>MediatR extensions</Title>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>CIS.Infrastructure.MediatR.xml</DocumentationFile>
+		<DocumentationFile>CIS.Infrastructure.CisMediatR.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
 		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>

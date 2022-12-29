@@ -51,4 +51,9 @@ public class AddressDetail
     /// Obvod Prahy - AddressWhispererBEService|city pokud regEx 'Praha ([1-2][0-9]|[1-9])', jinak null
     /// </summary>
     public string? PragueDistrict { get; set; }
+
+    /// <summary>
+    /// Id RUIAN adresního bodu - AddressWhispererBEService|id
+    /// </summary>
+    public string? AddressPointId { get; set; }
 }

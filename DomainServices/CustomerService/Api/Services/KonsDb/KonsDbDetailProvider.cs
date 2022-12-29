@@ -153,7 +153,8 @@ public class KonsDbDetailProvider
             BirthNumber = partner.BirthNumber ?? string.Empty,
             DateOfBirth = partner.BirthDate,
             PlaceOfBirth = partner.PlaceOfBirth ?? string.Empty,
-            IsPoliticallyExposed = partner.IsPoliticallyExposed
+            IsPoliticallyExposed = partner.IsPoliticallyExposed,
+            IsUSPerson = partner.IsUSPerson
         };
 
         if (partner.CitizenshipCountryId.HasValue)

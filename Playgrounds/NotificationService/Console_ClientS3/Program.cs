@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Text;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -64,5 +65,11 @@ var getRequest = new GetObjectRequest()
 };
 
 var getResponse = await s3Client.GetObjectAsync(getRequest);
+
+using var memoryStream = new MemoryStream();
+
+await getResponse.ResponseStream.CopyToAsync(memoryStream);
+
+var content = Encoding.Default.GetString(memoryStream.ToArray());
 
 Console.WriteLine("end");

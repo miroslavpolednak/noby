@@ -43,5 +43,5 @@ internal class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUserId
 
     public DateTime? FirstSignedDate { get; set; }
 
-    public bool IsOfferDocumentArchived { get; set; }
+    public string? OfferDocumentId { get; set; }
 }

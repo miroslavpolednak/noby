@@ -87,9 +87,8 @@ public class CodebookMap : ICodebookMap
         AddCodebook(s => s.WorkflowTaskStates);
         AddCodebook(s => s.WorkflowTaskTypes);
         AddCodebook(s => s.WorkSectors);
-
-        var productTypesEndpoint = new CodebookEndpoint<ProductTypeItem>("producttypes", ProductTypesCall, default!);
-        _endpoints.Add(productTypesEndpoint.Code, productTypesEndpoint);
+        AddCodebook(s => s.ProductTypes);
+        AddCodebook(s => s.IncomeMainTypesAML);
     }
 
     private void AddCodebook(Expression<Func<ICodebookServiceClients, Delegate>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!)
@@ -120,34 +119,6 @@ public class CodebookMap : ICodebookMap
         var returnTaskListType = returnTaskType.GetGenericArguments().First();
 
         return returnTaskListType.GetGenericArguments().First();
-    }
-
-    private static Func<CancellationToken, Task<List<ProductTypeItem>>> ProductTypesCall(ICodebookServiceClients codebookService)
-    {
-        return CallProductTypesEndpoint;
-
-        async Task<List<ProductTypeItem>> CallProductTypesEndpoint(CancellationToken cancellationToken)
-        {
-            var loanKinds = await codebookService.LoanKinds(cancellationToken);
-            var productTypes = await codebookService.ProductTypes(cancellationToken);
-
-            return productTypes
-                .Where(t => t.IsValid)
-                .Select(t => new GetAll.Dto.ProductTypeItem
-                {
-                    Id = t.Id,
-                    LoanAmountMax = t.LoanAmountMax,
-                    LoanAmountMin = t.LoanAmountMin,
-                    LoanDurationMax = t.LoanDurationMax,
-                    LoanDurationMin = t.LoanDurationMin,
-                    LtvMax = t.LtvMax,
-                    LtvMin = t.LtvMin,
-                    MandantId = t.MandantId,
-                    Name = t.Name,
-                    LoanKinds = t.LoanKindIds is null ? null : loanKinds.Where(x => t.LoanKindIds.Contains(x.Id)).ToList()
-                })
-                .ToList();
-        }
     }
 
     public IEnumerator<ICodebookEndpoint> GetEnumerator() => _endpoints.Values.GetEnumerator();

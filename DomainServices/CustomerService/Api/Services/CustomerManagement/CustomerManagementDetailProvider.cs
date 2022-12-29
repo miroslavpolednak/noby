@@ -1,25 +1,27 @@
-﻿using System.Diagnostics;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Api.Clients.CustomerManagement.V1;
-using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
+using __Contracts = DomainServices.CustomerService.ExternalServices.CustomerManagement.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
 internal class CustomerManagementDetailProvider
 {
-    private readonly ICustomerManagementClient _customerManagement;
+    private readonly ExternalServices.CustomerManagement.V1.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClients _codebook;
 
-    private List<Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<Endpoints.Genders.GenderItem> _genders = null!;
-    private List<Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
+    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
+    private List<CodebookService.Contracts.Endpoints.Genders.GenderItem> _genders = null!;
+    private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
-    private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.ProfessionTypes.ProfessionTypeItem> _professionTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.NetMonthEarnings.NetMonthEarningItem> _netMonthEarnings = null!;
+    private List<CodebookService.Contracts.Endpoints.LegalCapacityRestrictionTypes.LegalCapacityRestrictionTypeItem> _legalCapacityRestrictionTypes = null!;
+    private List<CodebookService.Contracts.GenericCodebookItemWithRdmCode> _incomeMainTypesAML = null!;
+    private List<CodebookService.Contracts.Endpoints.EducationLevels.EducationLevelItem> _educations = null!;
+    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CustomerManagementDetailProvider(ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
+    public CustomerManagementDetailProvider(ExternalServices.CustomerManagement.V1.ICustomerManagementClient customerManagement, ICodebookServiceClients codebook)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
@@ -27,7 +29,7 @@ internal class CustomerManagementDetailProvider
 
     public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)
     {
-        var customer = await _customerManagement.GetDetail(customerId, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
+        var customer = await _customerManagement.GetDetail(customerId, cancellationToken);
 
         await InitializeCodebooks(cancellationToken);
 
@@ -36,7 +38,7 @@ internal class CustomerManagementDetailProvider
 
     public async Task<IEnumerable<CustomerDetailResponse>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
     {
-        var customers = await _customerManagement.GetList(customerIds, Activity.Current?.TraceId.ToHexString() ?? "", cancellationToken);
+        var customers = await _customerManagement.GetList(customerIds, cancellationToken);
 
         if (!customers.Any())
             return Enumerable.Empty<CustomerDetailResponse>();
@@ -46,7 +48,7 @@ internal class CustomerManagementDetailProvider
         return customers.Select(CreateDetailResponse);
     }
 
-    private CustomerDetailResponse CreateDetailResponse(CustomerBaseInfo customer)
+    private CustomerDetailResponse CreateDetailResponse(__Contracts.CustomerBaseInfo customer)
     {
         var response = new CustomerDetailResponse
         {
@@ -65,7 +67,7 @@ internal class CustomerManagementDetailProvider
 
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
-        return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes());
+        return Task.WhenAll(Countries(), Genders(), Maritals(), Titles(), Educations(), DocTypes(), ProfessionTypes(), NetMonthEarnings(), IncomeMainTypesAML(), LegalCapacityRestrictionTypes());
 
         async Task Countries() => _countries = await _codebook.Countries(cancellationToken);
         async Task Genders() => _genders = await _codebook.Genders(cancellationToken);
@@ -73,11 +75,15 @@ internal class CustomerManagementDetailProvider
         async Task Titles() => _titles = await _codebook.AcademicDegreesBefore(cancellationToken);
         async Task Educations() => _educations = await _codebook.EducationLevels(cancellationToken);
         async Task DocTypes() => _docTypes = await _codebook.IdentificationDocumentTypes(cancellationToken);
+        async Task ProfessionTypes() => _professionTypes = await _codebook.ProfessionTypes(cancellationToken);
+        async Task NetMonthEarnings() => _netMonthEarnings = await _codebook.NetMonthEarnings(cancellationToken);
+        async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
+        async Task LegalCapacityRestrictionTypes() => _legalCapacityRestrictionTypes = await _codebook.LegalCapacityRestrictionTypes(cancellationToken);
     }
 
-    private Contracts.NaturalPerson CreateNaturalPerson(CustomerBaseInfo customer)
+    private Contracts.NaturalPerson CreateNaturalPerson(__Contracts.CustomerBaseInfo customer)
     {
-        var np = (Clients.CustomerManagement.V1.NaturalPerson)customer.Party;
+        var np = (ExternalServices.CustomerManagement.V1.Contracts.NaturalPerson)customer.Party;
 
         var person = new Contracts.NaturalPerson
         {
@@ -93,13 +99,35 @@ internal class CustomerManagementDetailProvider
             DegreeBeforeId = _titles.FirstOrDefault(t => string.Equals(t.Name, np.Title, StringComparison.InvariantCultureIgnoreCase))?.Id,
             EducationLevelId = _educations.FirstOrDefault(t => t.RdmCode.Equals(customer.Kyc?.NaturalPersonKyc?.EducationCode ?? "", StringComparison.InvariantCultureIgnoreCase))?.Id ?? 0,
             IsPoliticallyExposed = customer.IsPoliticallyExposed,
+            IsUSPerson = false, //je vzdy false!
             IsBrSubscribed = customer.BrSubscription?.IsSubscribed ?? false,
-            IsLegallyIncapable = np.LegalCapacityRestriction?.RestrictionType ?? string.Empty,
-            LegallyIncapableUntil = np.LegalCapacityRestriction?.RestrictionUntil,
-            TaxResidencyCountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
             KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty,
-            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty
+            Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty,
+            ProfessionCategoryId = customer.Kyc?.NaturalPersonKyc?.Employment?.CategoryCode,
+            ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode == t.RdmCode)?.Id,
+            NetMonthEarningAmountId = _netMonthEarnings.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.NetMonthEarningCode == t.RdmCode)?.Id,
+            NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString() == t.RdmCode)?.Id,
+            TaxResidence = new NaturalPersonTaxResidence
+            {
+                ValidFrom = customer.TaxResidence?.ValidFrom
+            },
+            LegalCapacity = new NaturalPersonLegalCapacity
+            {
+                RestrictionTypeId = _legalCapacityRestrictionTypes.FirstOrDefault(t => t.RdmCode == np.LegalCapacityRestriction?.RestrictionType)?.Id,
+                RestrictionUntil = np.LegalCapacityRestriction?.RestrictionUntil
+            }
         };
+
+        // tax residence countries
+        if (customer.TaxResidence?.ResidenceCountries?.Any() ?? false)
+        {
+            person.TaxResidence.ResidenceCountries.AddRange(customer.TaxResidence.ResidenceCountries.Select(t => new NaturalPersonResidenceCountry
+            {
+                CountryId = _countries.FirstOrDefault(t => t.ShortName == customer.TaxResidence?.CountryCode)?.Id,
+                Tin = t.Tin,
+                TinMissingReasonDescription = t.TinMissingReasonDescription
+            }));
+        }
 
         if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
             person.CitizenshipCountriesId.AddRange(_countries.Where(t => np.CitizenshipCodes.Contains(t.ShortName)).Select(t => t.Id));
@@ -107,7 +135,7 @@ internal class CustomerManagementDetailProvider
         return person;
     }
 
-    private Contracts.IdentificationDocument? CreateIdentificationDocument(Clients.CustomerManagement.V1.IdentificationDocument? document)
+    private Contracts.IdentificationDocument? CreateIdentificationDocument(__Contracts.IdentificationDocument? document)
     {
         if (document is null)
             return null;
@@ -126,8 +154,8 @@ internal class CustomerManagementDetailProvider
 
     private void AddAddress(AddressTypes addressType,
                             Action<GrpcAddress> onAddAddress,
-                            Address? address,
-                            ComponentAddress? componentAddress,
+                            __Contracts.Address? address,
+                            __Contracts.ComponentAddress? componentAddress,
                             DateTime? primaryAddressFrom)
     {
         if (address is null)
@@ -153,7 +181,7 @@ internal class CustomerManagementDetailProvider
         });
     }
 
-    private static void AddContacts(CustomerBaseInfo customer, Action<Contact> onAddContact)
+    private static void AddContacts(__Contracts.CustomerBaseInfo customer, Action<Contact> onAddContact)
     {
         if (customer.PrimaryPhone is not null)
         {
@@ -161,7 +189,8 @@ internal class CustomerManagementDetailProvider
             {
                 ContactTypeId = (int)ContactTypes.Mobil,
                 Value = customer.PrimaryPhone.PhoneNumber,
-                IsPrimary = true
+                IsPrimary = true,
+                Confirmed = customer.PrimaryPhone.Confirmed
             });
         }
 
@@ -171,7 +200,8 @@ internal class CustomerManagementDetailProvider
             {
                 ContactTypeId = (int)ContactTypes.Email,
                 Value = customer.PrimaryEmail.EmailAddress,
-                IsPrimary = true
+                IsPrimary = true,
+                Confirmed = customer.PrimaryEmail.Confirmed
             });
         }
     }

@@ -1,14 +1,13 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CIS.Core.Configuration;
-using CIS.Core.Results;
 using CIS.Core.Security;
 using CIS.Infrastructure.Security.ContextUser;
 using CIS.InternalServices.NotificationService.Clients;
 using CIS.InternalServices.NotificationService.Clients.Interfaces;
+using CIS.InternalServices.NotificationService.Contracts.Common;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
-using CIS.InternalServices.NotificationService.Contracts.Sms.Dto;
 using Console_NotificationService;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,7 +32,7 @@ var client = serviceProvider.GetRequiredService<INotificationClient>();
 
 var token = CancellationToken.None;
 var text = "Text";
-var type = SmsNotificationType.Unknown;
+var type = "Test type";
 var priority = 5;
 
 var phone = new Phone
@@ -42,7 +41,7 @@ var phone = new Phone
     NationalNumber = "Phone"
 };
 
-var smsSendRequest = new SmsSendRequest
+var smsSendRequest = new SendSmsRequest
 {
     Phone = phone,
     Type = type,
@@ -50,10 +49,10 @@ var smsSendRequest = new SmsSendRequest
     Text = text,
 };
 
-var smsSendResponse =  ServiceCallResult.ResolveAndThrowIfError<SmsSendResponse>(await client.SendSms(smsSendRequest, token));
+var smsSendResponse =  await client.SendSms(smsSendRequest, token);
 Console.WriteLine($"Sms send response: {smsSendResponse.NotificationId}");
 
-var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
+var smsFromTemplateSendRequest = new SendSmsFromTemplateRequest
 {
     Phone = phone,
     Type = type,
@@ -64,12 +63,12 @@ var smsFromTemplateSendRequest = new SmsFromTemplateSendRequest
     },
 };
 
-var smsFromTemplateSendResponse = ServiceCallResult.ResolveAndThrowIfError<SmsFromTemplateSendResponse>(await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token));
+var smsFromTemplateSendResponse = await client.SendSmsFromTemplate(smsFromTemplateSendRequest, token);
 Console.WriteLine($"Sms from template send response: {smsFromTemplateSendResponse.NotificationId}");
 
-var resultRequest = new ResultGetRequest { NotificationId = smsFromTemplateSendResponse.NotificationId };
+var resultRequest = new GetResultRequest { NotificationId = smsFromTemplateSendResponse.NotificationId };
 
-var resultResponse = ServiceCallResult.ResolveAndThrowIfError<ResultGetResponse>(await client.GetResult(resultRequest, CancellationToken.None));
+var resultResponse = await client.GetResult(resultRequest, CancellationToken.None);
 Console.WriteLine($"Result response: {resultResponse.NotificationId}");
 
 Console.WriteLine("Press any key to exit...");

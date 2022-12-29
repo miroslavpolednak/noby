@@ -128,13 +128,13 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateIsOfferDocumentArchived(int salesArrangementId, bool isOfferDocumentArchived, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await _service.UpdateIsOfferDocumentArchivedAsync(
+        await _service.UpdateOfferDocumentIdAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
-                IsOfferDocumentArchived = isOfferDocumentArchived
+                OfferDocumentId = offerDocumentId
             }, cancellationToken: cancellationToken);
     }
 

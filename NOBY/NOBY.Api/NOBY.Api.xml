@@ -486,6 +486,7 @@
              - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216289">JobTypes</a>
@@ -1103,16 +1104,25 @@
             </remarks> 
             <param name="caseId">ID Case-u</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCalculation(System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Vygenerování dokumentu ze šablony
+            Vygenerování dokumentu kalkulace ze šablony
             </summary>
             <remarks>
-            Vygenerování dokumentu ze šablony. A případně uložení do eArchiv-u (např. Nabídka se ukládá).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
             </remarks>
-            <param name="documentTemplateTypeId">ID document template type</param>
-            <param name="salesArrangementId">ID Sales Arrangement-u</param>
+            <param name="offerId">Offer ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetPaymentSchedule(System.Int32,System.Threading.CancellationToken)">
+             <summary>
+             Vygenerování dokumentu splátkový kalendář ze šablony
+             </summary>
+             <remarks>
+            Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+             </remarks>
+             <param name="offerId">Offer ID</param>
         </member>
         <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.SalesArrangementId">
             <summary>
