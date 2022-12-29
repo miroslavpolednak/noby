@@ -71,8 +71,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Document\GetDocument\" />
     <Folder Include="Endpoints\DocumentArchive\_Shared\" />
+    <Folder Include="Endpoints\Document\PaymentSchedule\" />
   </ItemGroup>
 
 </Project>

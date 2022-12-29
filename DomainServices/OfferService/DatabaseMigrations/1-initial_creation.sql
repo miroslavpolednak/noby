@@ -1,4 +1,4 @@
-﻿DROP TABLE [dbo].[Offer]
+DROP TABLE IF EXISTS [dbo].[Offer]
 GO
 
 SET ANSI_NULLS ON
