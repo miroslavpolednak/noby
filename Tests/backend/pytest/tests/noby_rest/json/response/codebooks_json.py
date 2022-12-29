@@ -33591,6 +33591,11 @@ json_resp_employment_types = [
         "id": 3,
         "name": "Dohoda  pracovní činnosti",
         "code": "DPC"
+      },
+      {
+        "id": 4,
+        "name": "Dohoda  provedení práce",
+        "code": "DPP"
       }
     ]
 json_resp_paymentDays = [
