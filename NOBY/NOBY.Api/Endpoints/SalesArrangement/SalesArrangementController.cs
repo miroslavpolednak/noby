@@ -17,6 +17,7 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}/validate")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Validate.ValidateResponse), StatusCodes.Status200OK)]
     public async Task<Validate.ValidateResponse> Validate([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new Validate.ValidateRequest(salesArrangementId), cancellationToken);
@@ -144,9 +145,8 @@ public class SalesArrangementController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(SendToCmp.SendToCmpResponse), StatusCodes.Status400BadRequest)]
-    //[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
         => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
 
     private readonly IMediator _mediator;
