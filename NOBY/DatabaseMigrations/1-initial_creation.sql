@@ -1,13 +1,10 @@
-USE [NOBY]
-GO
-
-/****** Object:  Table [dbo].[FormInstanceInterface]    Script Date: 20.06.2022 0:28:23 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
+DROP TABLE IF EXISTS [FormInstanceInterface]
+GO
 CREATE TABLE [dbo].[FormInstanceInterface](
 	[DOKUMENT_ID] [varchar](30) NULL,
 	[TYP_FORMULARE] [varchar](7) NULL,
@@ -37,12 +34,8 @@ CREATE TABLE [dbo].[DataProtectionKeys](
 GO
 
 
-SET ANSI_NULLS ON
+DROP TABLE IF EXISTS [DataProtectionKeys]
 GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[DataProtectionKeys](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[FriendlyName] [nvarchar](max) NULL,

@@ -3,25 +3,35 @@ ALTER TABLE [dbo].[CustomerOnSAIncome] SET ( SYSTEM_VERSIONING = OFF  )
 GO
 DROP TABLE IF EXISTS [dbo].[CustomerOnSAIncome]
 GO
+DROP TABLE IF EXISTS [dbo].[CustomerOnSAIncomeHistory]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomerOnSAObligation]') AND type in (N'U'))
 ALTER TABLE [dbo].[CustomerOnSAObligation] SET ( SYSTEM_VERSIONING = OFF  )
 GO
 DROP TABLE IF EXISTS [dbo].[CustomerOnSAObligation]
+GO
+DROP TABLE IF EXISTS [dbo].[CustomerOnSAObligationHistory]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomerOnSA]') AND type in (N'U'))
 ALTER TABLE [dbo].[CustomerOnSA] SET ( SYSTEM_VERSIONING = OFF  )
 GO
 DROP TABLE IF EXISTS [dbo].[CustomerOnSA]
 GO
+DROP TABLE IF EXISTS [dbo].[CustomerOnSAHistory]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Household]') AND type in (N'U'))
 ALTER TABLE [dbo].[Household] SET ( SYSTEM_VERSIONING = OFF  )
 GO
 DROP TABLE IF EXISTS [dbo].[Household]
 GO
+DROP TABLE IF EXISTS [dbo].[HouseholdHistory]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomerOnSAIdentity]') AND type in (N'U'))
 ALTER TABLE [dbo].[CustomerOnSAIdentity] SET ( SYSTEM_VERSIONING = OFF  )
 GO
 DROP TABLE IF EXISTS [dbo].[CustomerOnSAIdentity]
+GO
+DROP TABLE IF EXISTS [dbo].[CustomerOnSAIdentityHistory]
 GO
 SET ANSI_NULLS ON
 GO
