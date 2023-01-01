@@ -14,8 +14,6 @@ internal class ConditionalFormValues
         _data = data;
     }
 
-    public int? LoanKindId => _specificJsonKeys.GetValueOrNull(JsonKey.UvDruh, _data.Offer.SimulationInputs.LoanKindId);
-
     public int? DeveloperId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperId, NullIfZero(_data.Offer.SimulationInputs.Developer?.DeveloperId));
 
     public int? DeveloperProjectId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperProjektId, NullIfZero(_data.Offer.SimulationInputs.Developer?.ProjectId));

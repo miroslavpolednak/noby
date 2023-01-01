@@ -1,7 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Api.Handlers.Forms;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text.RegularExpressions;
 using static DomainServices.SalesArrangementService.Api.Handlers.Services.ValidationTransformationCache;
 
@@ -12,7 +10,7 @@ internal sealed partial class ValidationTransformationServiceFactory
     private class ValidationTransformationService
         : IValidationTransformationService
     {
-        public List<Contracts.ValidationMessage> TransformErrors(Form form, Dictionary<string, ExternalServices.Eas.R21.CheckFormV2.Error[]>? errors)
+        public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors)
         {
             // no errors -> empty list
             if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
@@ -21,7 +19,7 @@ internal sealed partial class ValidationTransformationServiceFactory
             var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
 
             // parse json data to searchable object
-            _jsonFormData = JObject.Parse(form.JSON)!;
+            _jsonFormData = JObject.Parse(json)!;
 
             // for each error field
             foreach (var errorGroup in errors)

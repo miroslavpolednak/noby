@@ -28,7 +28,7 @@ internal class EasFormJsonValue : EasFormJsonObject
             NullableGrpcDate nullableGrpcDate => Format((DateTime?)nullableGrpcDate),
             DateTime dateTime => Format(dateTime),
             bool b => b ? "1" : "0",
-            Identity identity => $"{identity.IdentityScheme}|{identity.IdentityId}",
+            Identity identity => identity.IdentityId.ToString(CultureInfo.InvariantCulture),
             IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
             null => null,
             _ => obj.ToString()

@@ -30,7 +30,8 @@ var serviceProvider = new ServiceCollection()
     {
         EnvironmentName = "dev",
         DefaultApplicationKey = "console",
-        ServiceDiscoveryUrl = "https://localhost:5005",
+        //ServiceDiscoveryUrl = "https://localhost:5005",
+        ServiceDiscoveryUrl = "https://172.30.35.51:30000",
         InternalServicesLogin = "a",
         InternalServicePassword = "a"
     })
