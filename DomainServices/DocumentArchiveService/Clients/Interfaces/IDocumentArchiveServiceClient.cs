@@ -28,8 +28,6 @@ public interface IDocumentArchiveServiceClient
     /// <summary>
     /// Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">14015, File with documentid already exist in database</exception>
     Task UploadDocument(UploadDocumentRequest request, CancellationToken cancellationToken = default);
 }

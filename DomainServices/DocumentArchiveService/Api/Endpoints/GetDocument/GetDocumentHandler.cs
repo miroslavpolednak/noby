@@ -1,16 +1,16 @@
-﻿using DomainServices.DocumentArchiveService.Api.Mappers;
+﻿using DomainServices.DocumentArchiveService.Api.ExternalServices.Sdf.V1;
+using DomainServices.DocumentArchiveService.Api.ExternalServices.Sdf.V1.Model;
+using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1;
+using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1.Clients;
+using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1.Model;
+using DomainServices.DocumentArchiveService.Api.Mappers;
 using DomainServices.DocumentArchiveService.Contracts;
-using ExternalServices.Sdf.V1.Clients;
-using ExternalServices.Sdf.V1.Model;
-using ExternalServicesTcp.V1.Clients;
-using ExternalServicesTcp.V1.Model;
-using ExternalServicesTcp.V1.Repositories;
 using Google.Protobuf;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
 
-public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
+internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
 {
     private const string DocumentPrefix = "KBH";
     private readonly ISdfClient _sdfClient;

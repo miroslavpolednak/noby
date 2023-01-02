@@ -1,11 +1,9 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
+using DomainServices.DocumentArchiveService.Api.Extensions;
+using DomainServices.DocumentArchiveService.Api.ExternalServices.Sdf.V1;
+using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1;
 using DomainServices.DocumentArchiveService.Api.Mappers;
-using ExternalServices.Sdf;
-using ExternalServices.Sdf.V1.Clients;
-using ExternalServicesTcp;
-using ExternalServicesTcp.V1.Repositories;
-using FluentValidation;
 
 namespace DomainServices.DocumentArchiveService.Api;
 

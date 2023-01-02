@@ -41,10 +41,19 @@ public class SaveDocumentToArchiveHandler : IRequestHandler<SaveDocumentToArchiv
         }
 
         var documentId = await _client.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
-        
+
         var file = await File.ReadAllBytesAsync(filePath, cancellationToken);
 
-        await _client.UploadDocument(new()
+        await _client.UploadDocument(MapRequest(file, documentId, request), cancellationToken);
+
+        File.Delete(filePath);
+
+        return Unit.Value;
+    }
+
+    private UploadDocumentRequest MapRequest(byte[] file, string documentId, SaveDocumentToArchiveRequest request)
+    {
+        return new UploadDocumentRequest
         {
             BinaryData = ByteString.CopyFrom(file),
             Kdv = 0,
@@ -57,11 +66,6 @@ public class SaveDocumentToArchiveHandler : IRequestHandler<SaveDocumentToArchiv
                 AuthorUserLogin = _currentUserAccessor.User is not null ? _currentUserAccessor.User.Id.ToString() : "Unknow NOBY user",
                 CreatedOn = _dateTime.Now.Date
             }
-
-        }, cancellationToken);
-
-        File.Delete(filePath);
-
-        return Unit.Value;
+        };
     }
 }

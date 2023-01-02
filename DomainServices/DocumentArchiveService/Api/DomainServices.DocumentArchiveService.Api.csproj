@@ -24,18 +24,18 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
+		<PackageReference Include="Polly" Version="7.2.3" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.179" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.179" />
 		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
 		<ProjectReference Include="..\..\..\CIS\ExternalServicesHelpers\CIS.ExternalServicesHelpers.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
-		<ProjectReference Include="..\..\..\ExternalServices\Sdf\ExternalServices.Sdf.csproj" />
-		<ProjectReference Include="..\..\..\ExternalServices\Tcp\ExternalServicesTcp.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj" />
 	</ItemGroup>
 
@@ -45,5 +45,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Database\Migrations\" />
+	  <Folder Include="ExternalServices\Sdf\V1\Generated\" />
 	</ItemGroup>
 </Project>

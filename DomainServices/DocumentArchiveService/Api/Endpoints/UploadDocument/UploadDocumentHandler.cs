@@ -1,6 +1,7 @@
 ﻿using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentArchiveService.Api.Database.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 
@@ -15,6 +16,11 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest>
 
     public async Task<Unit> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
+        if (await _context.DocumentInterface.AnyAsync(e => e.DocumentId == request.Metadata.DocumentId, cancellationToken))
+        {
+            throw new CisAlreadyExistsException(14015, "File with documentid already exist in database");
+        }
+
         await _context.DocumentInterface.AddAsync(MapToEntity(request), cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return Unit.Value;
