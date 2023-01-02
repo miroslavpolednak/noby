@@ -331,6 +331,11 @@
             Zmocněnec pro komunikaci
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.IsKYCSuccessful">
+            <summary>
+            Příznak o úspěšně doběhlé KYC proceduře
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.FirstName">
             <summary>
             Jméno

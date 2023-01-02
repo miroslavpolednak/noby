@@ -17,7 +17,7 @@ internal class GetCustomersHandler
         // seznam zemi
         var countries = (await _codebookService.Countries(cancellationToken));
 
-        List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, bool Agent)> customerIdentities;
+        List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, bool Agent, bool IsKYCSuccessful)> customerIdentities;
 
         if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
         {
@@ -43,7 +43,8 @@ internal class GetCustomersHandler
                     t.CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
-                    saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId
+                    saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
+                    false
                 ))
                 .ToList();
         }
@@ -60,7 +61,8 @@ internal class GetCustomersHandler
                     Identity: t.CustomerIdentifiers.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
                     CustomerOnSA: default(_HO.CustomerOnSA),
                     Role: t.RelationshipCustomerProductTypeId,
-                    Agent: t.Agent ?? false
+                    Agent: t.Agent ?? false,
+                    IsKYCSuccessful: t.IsKYCSuccessful
                  ))
                 .ToList();
         }
@@ -92,6 +94,7 @@ internal class GetCustomersHandler
             return new GetCustomersResponseCustomer
             {
                 Agent = t.Agent,
+                IsKYCSuccessful= t.IsKYCSuccessful,
                 Email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Value,
                 Mobile = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Value,
                 KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),

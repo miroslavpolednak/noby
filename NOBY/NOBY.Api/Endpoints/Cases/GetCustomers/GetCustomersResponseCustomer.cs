@@ -13,6 +13,11 @@ public sealed class GetCustomersResponseCustomer
     public bool Agent { get; set; }
 
     /// <summary>
+    /// Příznak o úspěšně doběhlé KYC proceduře
+    /// </summary>
+    public bool IsKYCSuccessful { get; set; }
+
+    /// <summary>
     /// Jméno
     /// </summary>
     public string? FirstName { get; set; }
