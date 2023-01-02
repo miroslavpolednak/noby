@@ -16,7 +16,7 @@ public static class CodebookServiceExtensions
     /// </summary>
     public const string ServiceName = "DS:CodebookService";
 
-    public static int DefaultAbsoluteCacheExpirationMinutes { get; private set; } = 1;
+    public static int DefaultAbsoluteCacheExpirationMinutes { get; private set; } = 10;
 
     public static IServiceCollection AddCodebookService(this IServiceCollection services)
     {

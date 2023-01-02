@@ -12,6 +12,8 @@ public class Household
         _household = household;
     }
 
+    public int HouseholdId => _household.HouseholdId;
+
     public int Number { get; }
 
     public HouseholdTypes HouseholdType => (HouseholdTypes)_household.HouseholdTypeId;

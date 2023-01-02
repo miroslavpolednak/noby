@@ -1,25 +1,15 @@
-﻿using ExternalServices.ESignatures;
-using CIS.Infrastructure.StartupExtensions;
-using FluentValidation;
+﻿using FluentValidation;
+using ExternalServices;
 
 namespace DomainServices.DocumentService.Api;
 
 internal static class StartupExtensions
 {
-    /// <summary>
-    /// Kontrola zda je vse v konfiguracnim souboru korektne
-    /// </summary>
-    public static void CheckAppConfiguration(this AppConfiguration configuration)
-    {
-        if (configuration == null)
-            throw new ArgumentNullException("AppConfiguration");
-    }
-
-    public static WebApplicationBuilder AddDocumentService(this WebApplicationBuilder builder, AppConfiguration appConfiguration)
+    public static WebApplicationBuilder AddDocumentService(this WebApplicationBuilder builder)
     {
         builder.Services
             .AddMediatR(typeof(Program).Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.gRPC.Validation.GrpcValidationBehavior<,>));
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.CisMediatR.GrpcValidationBehavior<,>));
 
         // add validators
         builder.Services.Scan(selector => selector
@@ -29,7 +19,7 @@ internal static class StartupExtensions
                 .WithTransientLifetime());
 
         // ESignatures
-        builder.Services.AddExternalServiceESignatures(appConfiguration.ESignatures);
+        builder.AddExternalService<ESignatures.IESignaturesClient>();
 
         //// dbcontext
         //string connectionString = builder.Configuration.GetConnectionString("default");

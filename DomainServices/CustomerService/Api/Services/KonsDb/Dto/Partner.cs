@@ -31,6 +31,9 @@ public record Partner
     [Column("PEP")]
     public bool IsPoliticallyExposed { get; init; }
 
+    [Column("OsobaUsa")]
+    public bool IsUSPerson { get; init; }
+
     [Column("StatniPrislusnostId")]
     public int? CitizenshipCountryId { get; init; }
 

@@ -11,13 +11,12 @@ public static class StartupExtensions
 
     public static WebApplicationBuilder AddExternalService<TClient>(this WebApplicationBuilder builder)
         where TClient : class, MpHome.V1_1.IMpHomeClient
-        => builder.AddMpHome<TClient>();
+        => builder.AddMpHome<TClient>(MpHome.V1_1.IMpHomeClient.Version);
 
-    static WebApplicationBuilder AddMpHome<TClient>(this WebApplicationBuilder builder)
+    static WebApplicationBuilder AddMpHome<TClient>(this WebApplicationBuilder builder, string version)
         where TClient : class, IExternalServiceClient
     {
         // ziskat konfigurace pro danou verzi sluzby
-        string version = getVersion<TClient>();
         var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
 
         switch (version, configuration.ImplementationType)
@@ -39,11 +38,4 @@ public static class StartupExtensions
 
         return builder;
     }
-
-    static string getVersion<TClient>()
-        => typeof(TClient) switch
-        {
-            Type t when t.IsAssignableFrom(typeof(MpHome.V1_1.IMpHomeClient)) => MpHome.V1_1.IMpHomeClient.Version,
-            _ => throw new NotImplementedException($"Unknown implmenetation {typeof(TClient)}")
-        };
 }

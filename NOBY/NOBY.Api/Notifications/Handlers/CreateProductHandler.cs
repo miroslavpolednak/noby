@@ -5,7 +5,7 @@ using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
 using _Product = DomainServices.ProductService.Contracts;
-using CIS.Infrastructure.MediatR.Rollback;
+using CIS.Infrastructure.CisMediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 namespace NOBY.Api.Notifications.Handlers;
@@ -33,7 +33,7 @@ internal sealed class CreateProductHandler
         catch { }
 
         // detail SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
             throw new CisValidationException($"SalesArrangement #{notification.SalesArrangementId} is not bound to Offer");
 

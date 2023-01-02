@@ -23,12 +23,16 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+	  <Compile Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <Compile Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <Compile Remove="wwwroot\**" />
+	  <Content Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <Content Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <Content Remove="wwwroot\**" />
+	  <EmbeddedResource Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <EmbeddedResource Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
+	  <None Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
 	  <None Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <None Remove="wwwroot\**" />
 	</ItemGroup>
@@ -49,7 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CIS\Infrastructure.MediatR\CIS.Infrastructure.MediatR.csproj" />
+    <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
@@ -65,10 +69,14 @@
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
+    <ProjectReference Include="..\..\InternalServices\DataAggregator\Library\CIS.InternalServices.DataAggregator.csproj" />
+    <ProjectReference Include="..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\DocumentArchive\_Shared\" />
+    <Folder Include="Endpoints\Document\PaymentSchedule\" />
     <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
   </ItemGroup>
 

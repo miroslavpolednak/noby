@@ -1,7 +1,5 @@
-﻿using CIS.Infrastructure.gRPC;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using Grpc.Core;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateCase;
 
@@ -18,7 +16,7 @@ internal sealed class CreateCaseHandler
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ziskat caseId
-        long newCaseId = resolveCaseIdResult(await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId));
+        long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId);
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
@@ -86,15 +84,6 @@ internal sealed class CreateCaseHandler
 
         return entity;
     }
-
-    private static long resolveCaseIdResult(IServiceCallResult result) =>
-        result switch
-        {
-            SuccessfulServiceCallResult<long> r when r.Model > 0 => r.Model,
-            SuccessfulServiceCallResult<long> r when r.Model == 0 => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, "Unable to get CaseId from SB", 13004),
-            ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, err.Errors[0].Message, err.Errors[0].Key),
-            _ => throw new NotImplementedException()
-        };
 
     private readonly IMediator _mediator;
     private readonly CIS.Core.IDateTime _dateTime;

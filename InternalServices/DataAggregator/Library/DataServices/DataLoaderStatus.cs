@@ -1,6 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-
-namespace CIS.InternalServices.DataAggregator.DataServices;
+﻿namespace CIS.InternalServices.DataAggregator.DataServices;
 
 internal class DataLoaderStatus
 {

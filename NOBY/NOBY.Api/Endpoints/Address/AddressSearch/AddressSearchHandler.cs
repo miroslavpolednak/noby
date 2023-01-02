@@ -12,21 +12,14 @@ internal sealed class AddressSearchHandler
 
         var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, country, cancellationToken);
 
-        return result switch
-        {
-            SuccessfulServiceCallResult<List<ExternalServices.AddressWhisperer.Shared.FoundSuggestion>> t => new AddressSearchResponse 
-            { 
-                PageSize = request.PageSize, 
-                Rows = t.Model.Select(x => new Dto.AddressLine
-                {
-                    Id = x.AddressId,
-                    Title = x.Title
-                }).ToList()
-            },
-            
-            EmptyServiceCallResult => new AddressSearchResponse { PageSize = request.PageSize },
-            
-            _ => throw new NotImplementedException("AddressSearchHandler result not implemented")
+        return new AddressSearchResponse 
+        { 
+            PageSize = request.PageSize, 
+            Rows = result.Select(x => new Dto.AddressLine
+            {
+                Id = x.AddressId,
+                Title = x.Title
+            }).ToList()
         };
     }
 

@@ -288,3 +288,64 @@ GO
 	(4, 'D'),
 	(5, 'E');
 GO
+
+DROP TABLE IF EXISTS [dbo].IncomeMainTypesAMLExtension;
+CREATE TABLE [dbo].IncomeMainTypesAMLExtension(
+	Id [int] NOT NULL,
+	[RdmCode] [varchar](50) NULL,
+CONSTRAINT [PK_IncomeMainTypesAMLExtension] PRIMARY KEY CLUSTERED 
+(
+	Id ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY];
+GO
+
+	INSERT INTO [dbo].IncomeMainTypesAMLExtension(Id,[RdmCode])
+    VALUES
+	(1, '1'),
+	(2, '2'),
+	(3, '3'),
+	(4, '4'),
+	(5, '5'),
+	(6, '6');
+GO
+
+
+-- table 'DocumentTemplateVersion'
+DROP TABLE IF EXISTS [dbo].[DocumentTemplateVersion];
+CREATE TABLE [dbo].[DocumentTemplateVersion](
+	[DocumentTemplateVersionId] [int] NOT NULL,
+	[DocumentTemplateTypeId] [int] NOT NULL,
+	[DocumentVersion] [nvarchar](50) NOT NULL,
+	[ValidFrom] [datetime] NOT NULL,
+	[ValidTo] [datetime] NULL,
+CONSTRAINT [PK_DocumentTemplateVersion] PRIMARY KEY CLUSTERED 
+(
+	[DocumentTemplateVersionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY];
+GO
+
+	INSERT INTO [dbo].[DocumentTemplateVersion]([DocumentTemplateVersionId], [DocumentTemplateTypeId], [DocumentVersion], [ValidFrom])
+    VALUES
+	(1, 1, '001A', '2022-01-01'),
+	(2, 2, '001A', '2022-01-01'),
+	(3, 3, '001A', '2022-01-01'),
+	(4, 4, '001A', '2022-01-01'),
+	(5, 5, '001A', '2022-01-01'),
+	(6, 6, '001A', '2022-01-01');
+GO
+
+CREATE TABLE [dbo].[SmsNotificationType](
+	[Id] [int] NOT NULL,
+	[Code] [varchar](100) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[SmsText] [nvarchar](max) NULL,
+	[McsCode] [varchar](100) NULL,
+	[IsAuditLogEnabled] [bit] NOT NULL,
+ CONSTRAINT [PK_SmsNotificationType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO

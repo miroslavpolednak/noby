@@ -48,6 +48,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
   </ItemGroup>
 
 </Project>

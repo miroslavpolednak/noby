@@ -97,9 +97,12 @@ Oba middleware nastavují *Serilog* tak, aby ignoroval Health Check requesty.
 **LoggerCisUserWebapiMiddleware**  
 *LogType = WebApi*. Do kontextu každého záznamu vloží klíč **CisUserId** s hodnotou ID uživatele z **ICurrentUserAccessor.User.Id**. Zároveň *Serilog* loguje pouze requesty s URL začínající na "/api/".
 
-## Automatické logování
-Registrací logování se do *MediatR* pipeline automaticky přidá `CIS.Infrastructure.Telemetry.MediatrLoggingBehavior`.
+## Automatické logování MediatR requestů v gRPC službách
+Registrací logování se do *MediatR* pipeline automaticky přidá `CIS.Infrastructure.CisMediatR.PayloadLoggerBehavior`.
 Jedná se handler, který loguje payload všech request a response objektů do kontextu log záznamu pod klíčem **Payload**.
+
+## Automatické logování HTTP requestů v Web Api aplikacích
+Pro kompletní logování HTTP requestu používáme standardní extension metodu .NETu `appBuilder.UseHttpLogging()`.
 
 ## Jak správně logovat standardní log
 Snažíme se logovat podle doporučení pro **High Performance logging** (https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging).

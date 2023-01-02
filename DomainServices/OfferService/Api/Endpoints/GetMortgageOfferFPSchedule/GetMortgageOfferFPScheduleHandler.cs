@@ -27,7 +27,7 @@ internal sealed class GetMortgageOfferFPScheduleHandler
 
         // get simulation outputs
         var easSimulationReq = inputs.ToEasSimulationRequest(basicParameters, drawingDurationsById, drawingTypeById).ToEasSimulationFullPaymentScheduleRequest();
-        var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
+        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq);
 
         var fullPaymentSchedule = easSimulationRes.ToFullPaymentSchedule();
 

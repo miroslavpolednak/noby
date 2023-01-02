@@ -8,7 +8,6 @@ using DomainServices.CodebookService.Clients;
 using ExternalServices.MpHome.V1_1;
 using ExternalServices.MpHome.V1_1.Contracts;
 using FastEnumUtility;
-using Endpoints = DomainServices.CodebookService.Contracts.Endpoints;
 using IdentificationDocument = ExternalServices.MpHome.V1_1.Contracts.IdentificationDocument;
 
 namespace DomainServices.CustomerService.Api.Services.KonsDb;
@@ -21,9 +20,9 @@ public class MpDigiCreateClient
     private readonly ICodebookServiceClients _codebook;
 
     private List<CodebookService.Contracts.GenericCodebookItem> _titles = null!;
-    private List<Endpoints.Countries.CountriesItem> _countries = null!;
-    private List<Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
-    private List<Endpoints.ContactTypes.ContactTypeItem> _contactTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.Countries.CountriesItem> _countries = null!;
+    private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
+    private List<CodebookService.Contracts.Endpoints.ContactTypes.ContactTypeItem> _contactTypes = null!;
 
     public MpDigiCreateClient(IMpHomeClient mpHomeClient, IConnectionProvider konsDbProvider, ICodebookServiceClients codebook)
     {

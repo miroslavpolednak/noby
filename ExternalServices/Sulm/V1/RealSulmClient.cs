@@ -1,12 +1,11 @@
-﻿using CIS.Infrastructure.Logging;
-using System.Text;
+﻿using System.Text;
 
 namespace ExternalServices.Sulm.V1;
 
 internal sealed class RealSulmClient 
     : ISulmClient
 {
-    public async Task<IServiceCallResult> StartUse(long partyId, string usageCode, CancellationToken cancellationToken)
+    public async Task StartUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken))
     {
         string text = $@"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ns=""http://correlation.kb.cz/datatypes/1/0"" xmlns:ns1=""http://esb.kb.cz/core/dataTypes/1/0"" xmlns:ns2=""http://esb.kb.cz/Sulm/interface/1/0"">
    <soapenv:Header/>
@@ -18,8 +17,6 @@ internal sealed class RealSulmClient
    </soapenv:Body>
 </soapenv:Envelope>";
 
-        _logger.LogSerializedObject("SULM StartUse request", text);
-
         using (HttpContent content = new StringContent(text, Encoding.UTF8, "text/xml"))
         using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration.ServiceUrl))
         {
@@ -27,17 +24,12 @@ internal sealed class RealSulmClient
             request.Content = content;
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
             {
-                if (response.Content is not null)
-                    _logger.LogSerializedObject("SULM StartUse response", await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false));
-
                 response.EnsureSuccessStatusCode();
             }
         }
-
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> StopUse(long partyId, string usageCode, CancellationToken cancellationToken) 
+    public async Task StopUse(long partyId, string usageCode, CancellationToken cancellationToken = default(CancellationToken)) 
     {
         string text = $@"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ns=""http://correlation.kb.cz/datatypes/1/0"" xmlns:ns1=""http://esb.kb.cz/core/dataTypes/1/0"" xmlns:ns2=""http://esb.kb.cz/Sulm/interface/1/0"">
    <soapenv:Header/>
@@ -49,8 +41,6 @@ internal sealed class RealSulmClient
    </soapenv:Body>
 </soapenv:Envelope>";
 
-        _logger.LogSerializedObject("SULM StopUse request", text);
-
         using (HttpContent content = new StringContent(text, Encoding.UTF8, "text/xml"))
         using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _configuration.ServiceUrl))
         {
@@ -58,24 +48,17 @@ internal sealed class RealSulmClient
             request.Content = content;
             using (HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
             {
-                if (response.Content is not null)
-                    _logger.LogSerializedObject("SULM StopUse response", await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false));
-                
                 response.EnsureSuccessStatusCode();
             }
         }
-
-        return new SuccessfulServiceCallResult();
     }
 
-    private readonly ILogger<RealSulmClient> _logger;
     private readonly HttpClient _httpClient;
-    private readonly SulmConfiguration _configuration;
+    private readonly CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<ISulmClient> _configuration;
 
-    public RealSulmClient(HttpClient httpClient, SulmConfiguration configuration, ILogger<RealSulmClient> logger)
+    public RealSulmClient(HttpClient httpClient, CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<ISulmClient> configuration)
     {
         _configuration = configuration;
         _httpClient = httpClient;
-        _logger = logger;
     }
 }

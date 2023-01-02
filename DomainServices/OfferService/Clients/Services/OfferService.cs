@@ -1,4 +1,5 @@
-﻿using CIS.Core.Exceptions;
+﻿using Azure.Core;
+using CIS.Core.Exceptions;
 using CIS.Infrastructure.gRPC;
 using DomainServices.OfferService.Contracts;
 using Grpc.Core;
@@ -49,10 +50,29 @@ internal sealed class OfferService
     }
 
     public async Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default(CancellationToken))
-        => await _service.GetMortgageOfferFPScheduleAsync(new GetMortgageOfferFPScheduleRequest() 
-        { 
-            OfferId = offerId 
-        }, cancellationToken: cancellationToken);
+    {
+        try
+        {
+            return await _service.GetMortgageOfferFPScheduleAsync(new GetMortgageOfferFPScheduleRequest()
+            {
+                OfferId = offerId
+            }, cancellationToken: cancellationToken);
+        }
+        catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument) // EAS chyba zadani
+        {
+            throw new CisValidationException(ex.GetErrorMessagesFromRpcExceptionWithIntKeys());
+        }
+        catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.FailedPrecondition) // EAS vratilo standardni chybu
+        {
+            int code = ex.GetExceptionCodeFromTrailers();
+
+            return code switch
+            {
+                10011 => throw new CisValidationException(ex.GetValueFromTrailers("eassimerrortext-bin")),//ex.GetValueFromTrailers("eassimerrorcode-bin"),
+                _ => throw new CisValidationException(ex.GetErrorMessagesFromRpcExceptionWithIntKeys())
+            };
+        }
+    }
 
     private readonly Contracts.v1.OfferService.OfferServiceClient _service;
     public OfferService(Contracts.v1.OfferService.OfferServiceClient service)

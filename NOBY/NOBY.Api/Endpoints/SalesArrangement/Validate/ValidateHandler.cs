@@ -8,7 +8,7 @@ internal sealed class ValidateHandler
 {
     public async Task<ValidateResponse> Handle(ValidateRequest request, CancellationToken cancellationToken)
     {
-        var response = ServiceCallResult.ResolveAndThrowIfError<_SA.ValidateSalesArrangementResponse>(await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken));
+        var response = await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         return new ValidateResponse
         {

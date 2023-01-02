@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using CIS.Infrastructure.Logging;
+﻿using CIS.Infrastructure.Logging;
 using CIS.InternalServices.NotificationService.Clients.Interfaces;
 using CIS.InternalServices.NotificationService.Contracts;
 using CIS.InternalServices.NotificationService.Contracts.Email;
@@ -20,38 +19,33 @@ public class NotificationClient : INotificationClient
         _logger = logger;
     }
 
-    public async Task<IServiceCallResult> SendSms(SmsSendRequest request, CancellationToken token)
+    public async Task<SendSmsResponse> SendSms(SendSmsRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendSms));
-        var response = await _notificationService.SendSms(request, token);
-        return new SuccessfulServiceCallResult<SmsSendResponse>(response);
+        return await _notificationService.SendSms(request, token);
     }
 
-    public async Task<IServiceCallResult> SendSmsFromTemplate(SmsFromTemplateSendRequest request, CancellationToken token)
+    public async Task<SendSmsFromTemplateResponse> SendSmsFromTemplate(SendSmsFromTemplateRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendSmsFromTemplate));
-        var response = await _notificationService.SendSmsFromTemplate(request, token);
-        return new SuccessfulServiceCallResult<SmsFromTemplateSendResponse>(response);
+        return await _notificationService.SendSmsFromTemplate(request, token);
     }
 
-    public async Task<IServiceCallResult> SendEmail(EmailSendRequest request, CancellationToken token)
+    public async Task<SendEmailResponse> SendEmail(SendEmailRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendEmail));
-        var response = await _notificationService.SendEmail(request, token);
-        return new SuccessfulServiceCallResult<EmailSendResponse>(response);
+        return await _notificationService.SendEmail(request, token);
     }
 
-    public async Task<IServiceCallResult> SendEmailFromTemplate(EmailFromTemplateSendRequest request, CancellationToken token)
+    public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate(SendEmailFromTemplateRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendEmailFromTemplate));
-        var response = await _notificationService.SendEmailFromTemplate(request, token);
-        return new SuccessfulServiceCallResult<EmailFromTemplateSendResponse>(response);
+        return await _notificationService.SendEmailFromTemplate(request, token);
     }
 
-    public async Task<IServiceCallResult> GetResult(ResultGetRequest request, CancellationToken token)
+    public async Task<GetResultResponse> GetResult(GetResultRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(GetResult));
-        var response = await _notificationService.GetResult(request, token);
-        return new SuccessfulServiceCallResult<ResultGetResponse>(response);
+        return await _notificationService.GetResult(request, token);
     }
 }

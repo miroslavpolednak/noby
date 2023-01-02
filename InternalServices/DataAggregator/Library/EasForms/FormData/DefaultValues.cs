@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.DataAggregator.EasForms.FormData;
 
-internal class DefaultValues
+public class DefaultValues
 {
     private DefaultValues()
     {

@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-using CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
+﻿using CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 using CIS.InternalServices.DataAggregator.Helpers;
 using DomainServices.CodebookService.Clients;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,7 @@ internal class DataServicesLoader
     {
         var status = new DataLoaderStatus
         {
-            RemainingDataSources = inputConfig.DataSources.ToList(),
+            RemainingDataSources = inputConfig.DataSources.Concat(inputConfig.DynamicInputParameters.Select(i => i.SourceDataSource).Distinct()).ToList(),
             RelatedInputParameters = inputConfig.DynamicInputParameters.ToList()
         };
 

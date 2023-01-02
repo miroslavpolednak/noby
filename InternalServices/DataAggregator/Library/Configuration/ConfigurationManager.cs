@@ -38,7 +38,7 @@ internal class ConfigurationManager
     public async Task<EasFormConfiguration> LoadEasFormConfiguration(int easFormRequestType)
     {
         var fields = await _repository.LoadEasFormSourceFields(easFormRequestType);
-            
+
         return new EasFormConfiguration
         {
             InputConfig = new InputConfig

@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregator.Configuration;
 using CIS.InternalServices.DataAggregator.Documents;
 using CIS.InternalServices.DataAggregator.EasForms;
 

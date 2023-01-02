@@ -18,7 +18,7 @@
 
 	<ItemGroup>
 	  <None Remove="DeleteSalesArrangement.proto" />
-	  <None Remove="UpdateIsOfferDocumentArchived.proto" />
+	  <None Remove="UpdateOfferDocumentId.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,7 +36,7 @@
 
 	<ItemGroup>
 		<Protobuf Include="DeleteSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="UpdateIsOfferDocumentArchived.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="UpdateOfferDocumentId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CreateSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="LinkModelationToSalesArrangement.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />

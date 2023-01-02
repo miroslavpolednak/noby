@@ -1,13 +1,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.SalesArrangementService.Api;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Clients;
-using DomainServices.CustomerService.Clients;
-using CIS.InternalServices.ServiceDiscovery.Clients;
 using CIS.Infrastructure.Telemetry;
 using CIS.Infrastructure.Security;
-using DomainServices.ProductService.Clients;
 using DomainServices;
 using CIS.InternalServices;
 
@@ -21,16 +15,7 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-appConfiguration.CheckAppConfiguration();
-#endregion strongly typed configuration
-
 #region register builder.Services
-// strongly-typed konfigurace aplikace
-builder.Services.AddSingleton(appConfiguration);
-
 builder.Services.AddAttributedServices(typeof(Program));
 
 // globalni nastaveni prostredi
@@ -51,15 +36,14 @@ builder.AddCisServiceAuthentication();
 builder.Services
     .AddCisServiceDiscovery()
     .AddCaseService()
-    .AddProductService()
     .AddCodebookService()
     .AddOfferService()
-    .AddCustomerService()
-    .AddHouseholdService()
     .AddUserService();
 
+builder.Services.AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
+
 builder.Services.AddCisGrpcInfrastructure(typeof(Program));
-builder.AddSalesArrangementService(appConfiguration);
+builder.AddSalesArrangementService();
 
 builder.Services.AddGrpc(options =>
 {

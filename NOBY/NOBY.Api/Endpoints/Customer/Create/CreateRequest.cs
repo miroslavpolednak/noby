@@ -41,7 +41,7 @@ public class CreateRequest
     /// <summary>
     /// Státní příslušnost/občanství
     /// </summary>
-    public int CitizenshipCountryId { get; set; }
+    public int? CitizenshipCountryId { get; set; }
 
     /// <summary>
     /// E-mail
@@ -63,5 +63,5 @@ public class CreateRequest
     /// </summary>
     public CIS.Foms.Types.Address? PrimaryAddress { get; set; }
 
-    public SharedDto.IdentificationDocumentWithIssuedBy? IdentificationDocument { get; set; }
+    public SharedDto.IdentificationDocumentFull? IdentificationDocument { get; set; }
 }

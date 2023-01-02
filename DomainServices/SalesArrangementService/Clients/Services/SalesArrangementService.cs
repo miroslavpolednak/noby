@@ -2,9 +2,10 @@
 
 namespace DomainServices.SalesArrangementService.Clients.Services;
 
-internal class SalesArrangementService : ISalesArrangementServiceClient
+internal sealed class SalesArrangementService 
+    : ISalesArrangementServiceClient
 {
-    public async Task<IServiceCallResult> DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeleteSalesArrangement(int salesArrangementId, bool hardDelete = false, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.DeleteSalesArrangementAsync(
             new()
@@ -12,10 +13,9 @@ internal class SalesArrangementService : ISalesArrangementServiceClient
                 SalesArrangementId = salesArrangementId,
                 HardDelete = hardDelete
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateSalesArrangementAsync(
             new() { 
@@ -23,59 +23,56 @@ internal class SalesArrangementService : ISalesArrangementServiceClient
                 SalesArrangementTypeId = salesArrangementTypeId, 
                 OfferId = offerId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
+        return result.SalesArrangementId;
     }
 
-    public async Task<IServiceCallResult> CreateSalesArrangement(CreateSalesArrangementRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<int> CreateSalesArrangement(CreateSalesArrangementRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateSalesArrangementAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<int>(result.SalesArrangementId);
+        return result.SalesArrangementId;
     }
 
-    public async Task<IServiceCallResult> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<SalesArrangement> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.GetSalesArrangementAsync(
+        return await _service.GetSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<SalesArrangement>(result);
     }
     
-    public async Task<IServiceCallResult> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetSalesArrangementByOfferIdAsync(
             new()
             {
                 OfferId = offerId
             }, cancellationToken: cancellationToken);
-        return result.IsExisting ? new SuccessfulServiceCallResult<SalesArrangement>(result.Instance) : new EmptyServiceCallResult();
+        return result.IsExisting ? result.Instance : null;
     }
 
-    public async Task<IServiceCallResult> LinkModelationToSalesArrangement(int salesArrangementId, int offerId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task LinkModelationToSalesArrangement(int salesArrangementId, int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.LinkModelationToSalesArrangementAsync(
+        await _service.LinkModelationToSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
                 OfferId = offerId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> GetSalesArrangementList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<GetSalesArrangementListResponse> GetSalesArrangementList(long caseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        var result = await _service.GetSalesArrangementListAsync(
+        return await _service.GetSalesArrangementListAsync(
             new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<GetSalesArrangementListResponse>(result);
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, DateTime? firstSignedDate, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, DateTime? firstSignedDate, CancellationToken cancellationToken = default(CancellationToken))
     {
-         var result = await _service.UpdateSalesArrangementAsync(
+         await _service.UpdateSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
@@ -83,49 +80,44 @@ internal class SalesArrangementService : ISalesArrangementServiceClient
                 RiskBusinessCaseId = riskBusinessCaseId ?? "",
                 FirstSignedDate = firstSignedDate,
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-         var result = await _service.UpdateSalesArrangementStateAsync(
+         await _service.UpdateSalesArrangementStateAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
                 State = state
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateSalesArrangementParameters(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateSalesArrangementParameters(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-         var result = await _service.UpdateSalesArrangementParametersAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
+         await _service.UpdateSalesArrangementParametersAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default)
+    public async Task<ValidateSalesArrangementResponse> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-         var result = await _service.ValidateSalesArrangementAsync(
+         return await _service.ValidateSalesArrangementAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<ValidateSalesArrangementResponse>(result);
     }
 
-    public async Task<IServiceCallResult> SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
+    public async Task SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-         var result = await _service.SendToCmpAsync(
+         await _service.SendToCmpAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task<IServiceCallResult> UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default(CancellationToken))
     {
-         var result = await _service.UpdateLoanAssessmentParametersAsync(
+         await _service.UpdateLoanAssessmentParametersAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
@@ -134,16 +126,15 @@ internal class SalesArrangementService : ISalesArrangementServiceClient
                 CommandId = commandId ?? "",
                 RiskBusinessCaseExpirationDate = riskBusinessCaseExpirationDate,
             }, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult();
     }
 
-    public async Task UpdateIsOfferDocumentArchived(int salesArrangementId, bool isOfferDocumentArchived, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await _service.UpdateIsOfferDocumentArchivedAsync(
+        await _service.UpdateOfferDocumentIdAsync(
             new()
             {
                 SalesArrangementId = salesArrangementId,
-                IsOfferDocumentArchived = isOfferDocumentArchived
+                OfferDocumentId = offerDocumentId
             }, cancellationToken: cancellationToken);
     }
 

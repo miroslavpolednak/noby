@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using NOBY.Api.Endpoints.Customer.GetDetail;
 using NOBY.Api.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.Create;
@@ -12,6 +11,7 @@ internal static class CreateExtensions
     {
         var model = new _Cust.CreateCustomerRequest
         {
+            Mandant = Mandants.Kb,
             NaturalPerson = new()
             {
                 FirstName = request.FirstName ?? "",
@@ -33,8 +33,8 @@ internal static class CreateExtensions
             model.Addresses.Add(request.PrimaryAddress);
         }
         // narodnost
-        if (request.CitizenshipCountryId > 0)
-            model.NaturalPerson.CitizenshipCountriesId.Add(request.CitizenshipCountryId);
+        if (request.CitizenshipCountryId.GetValueOrDefault() > 0)
+            model.NaturalPerson.CitizenshipCountriesId.Add(request.CitizenshipCountryId!.Value);
 
         return model;
     }
@@ -56,44 +56,6 @@ internal static class CreateExtensions
         if (customerOnSA.CustomerIdentifiers is not null)
             model.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
         model.Customer.CustomerIdentifiers.Add(customerKb.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
-
-        return model;
-    }
-
-    public static _Cust.CreateCustomerRequest ToDomainService(this _Cust.CustomerDetailResponse customer)
-    {
-        var model = new _Cust.CreateCustomerRequest
-        {
-            NaturalPerson = new()
-            {
-                FirstName = customer.NaturalPerson?.FirstName ?? "",
-                LastName = customer.NaturalPerson?.LastName ?? "",
-                BirthNumber = customer.NaturalPerson?.BirthNumber ?? "",
-                DateOfBirth = customer.NaturalPerson?.DateOfBirth,
-                PlaceOfBirth = customer.NaturalPerson?.PlaceOfBirth ?? "",
-                GenderId = customer.NaturalPerson?.GenderId ?? 0,
-                IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed ?? false,
-                MaritalStatusStateId = customer.NaturalPerson?.MaritalStatusStateId ?? 0,
-                BirthCountryId = customer.NaturalPerson?.BirthCountryId,
-                BirthName = customer.NaturalPerson?.BirthName ?? "",
-                DegreeBeforeId = customer.NaturalPerson?.DegreeBeforeId ?? 0,
-                DegreeAfterId = customer.NaturalPerson?.DegreeAfterId ?? 0,
-                EducationLevelId = customer.NaturalPerson?.EducationLevelId ?? 0,
-                KbRelationshipCode = customer.NaturalPerson?.KbRelationshipCode,
-                TaxResidencyCountryId = customer.NaturalPerson?.TaxResidencyCountryId,
-                IsLegallyIncapable = customer.NaturalPerson?.IsLegallyIncapable,
-                IsPoliticallyExposed = customer.NaturalPerson?.IsPoliticallyExposed,
-                LegallyIncapableUntil = customer.NaturalPerson?.LegallyIncapableUntil
-            },
-            IdentificationDocument = customer.IdentificationDocument,
-            Identities = { new Identity { IdentityScheme = Identity.Types.IdentitySchemes.Kb } }
-        };
-        if (customer.NaturalPerson?.CitizenshipCountriesId is not null)
-            model.NaturalPerson!.CitizenshipCountriesId.AddRange(customer.NaturalPerson!.CitizenshipCountriesId);
-        if (customer.Contacts is not null)
-            model.Contacts.AddRange(customer.Contacts);
-        if (customer.Addresses is not null)
-            model.Addresses.AddRange(customer.Addresses);
 
         return model;
     }

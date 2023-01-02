@@ -82,7 +82,7 @@ public static class StartupExtensions
     {
         services
             .AddMediatR(assemblyType.Assembly)
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Validation.GrpcValidationBehavior<,>));
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CisMediatR.GrpcValidationBehavior<,>));
 
         // add validators
         services.Scan(selector => selector

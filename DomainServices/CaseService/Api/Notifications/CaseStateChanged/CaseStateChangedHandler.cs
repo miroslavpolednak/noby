@@ -2,7 +2,7 @@
 
 namespace DomainServices.CaseService.Api.Notifications.Handlers;
 
-internal class CaseStateChangedHandler
+internal sealed class CaseStateChangedHandler
     : INotificationHandler<CaseStateChangedNotification>
 {
     public async Task Handle(CaseStateChangedNotification notification, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ internal class CaseStateChangedHandler
             .ToList();
 
         // get rbcid
-        var saList = ServiceCallResult.ResolveAndThrowIfError<_SA.GetSalesArrangementListResponse>(await _salesArrangementService.GetSalesArrangementList(notification.CaseId, cancellationToken: cancellationToken));
+        var saList = await _salesArrangementService.GetSalesArrangementList(notification.CaseId, cancellationToken: cancellationToken);
         string? rbcId = saList.SalesArrangements.FirstOrDefault(t => allowedSaTypeId.Contains(t.SalesArrangementTypeId))?.RiskBusinessCaseId;
 
         //TODO login

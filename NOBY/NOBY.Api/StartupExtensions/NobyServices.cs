@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 using NOBY.Infrastructure.Security;
+using ExternalServices.AddressWhisperer.V1;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -32,7 +33,7 @@ internal static class NobyServices
             });
 
         // ext services
-        builder.AddExternalServiceAddressWhisperer();
+        builder.AddExternalService<IAddressWhispererClient>();
 
         return builder;
     }

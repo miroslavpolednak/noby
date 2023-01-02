@@ -16,7 +16,7 @@ internal sealed class CreateSalesArrangementHandler
         var createRequest = await builder.UpdateParameters(cancellationToken);
 
         // vytvorit SA
-        var newSaId = ServiceCallResult.ResolveAndThrowIfError<int>(await _salesArrangementService.CreateSalesArrangement(createRequest, cancellationToken));
+        var newSaId = await _salesArrangementService.CreateSalesArrangement(createRequest, cancellationToken);
 
         return new CreateSalesArrangementResponse
         {

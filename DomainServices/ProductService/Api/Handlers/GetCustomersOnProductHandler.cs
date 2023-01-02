@@ -36,6 +36,10 @@ internal class GetCustomersOnProductHandler
             item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.MpId, CIS.Foms.Enums.IdentitySchemes.Mp));
             item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId!.Value, CIS.Foms.Enums.IdentitySchemes.Kb));
 
+            //TODO MOCK https://jira.kb.cz/browse/HFICH-3284
+            var random = new Random();
+            item.IsKYCSuccessful = random.Next(2) == 1;
+
             model.Customers.Add(item);
         }
 

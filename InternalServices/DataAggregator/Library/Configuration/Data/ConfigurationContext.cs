@@ -5,11 +5,7 @@ namespace CIS.InternalServices.DataAggregator.Configuration.Data;
 
 internal class ConfigurationContext : DbContext
 {
-    public ConfigurationContext()
-    {
-    }
-
-    public ConfigurationContext(DbContextOptions options) : base(options)
+    public ConfigurationContext(DbContextOptions<ConfigurationContext> options) : base(options)
     {
     }
 
@@ -41,11 +37,5 @@ internal class ConfigurationContext : DbContext
         {
             entityType.SetTableName(entityType.DisplayName());
         }
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(
-            "Data Source=localhost;Initial Catalog=DataAggregator;Persist Security Info=True;User ID=SA;Password=Test123456;TrustServerCertificate=True");
     }
 }

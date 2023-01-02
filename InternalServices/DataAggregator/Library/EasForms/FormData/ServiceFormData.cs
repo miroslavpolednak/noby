@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration.EasForm;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts;
 
@@ -10,7 +11,7 @@ internal class ServiceFormData : DataServices.AggregatedData, IServiceFormData
 
     EasFormRequestType IEasFormData.EasFormRequestType => EasFormRequestType.Service;
 
-    public MockValues MockValues = new();
+    public MockValues MockValues { get; } = new();
 
     public string? DegreeBefore
     {
@@ -21,6 +22,8 @@ internal class ServiceFormData : DataServices.AggregatedData, IServiceFormData
             return degreeBeforeId.HasValue ? _academicDegreesBefore.First(x => x.Id == degreeBeforeId).Name : null;
         }
     }
+
+    public long IdentityKb => Customer.Identities.Single(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
 
     public bool IsAgent => SalesArrangement.Drawing.Agent is not null;
 

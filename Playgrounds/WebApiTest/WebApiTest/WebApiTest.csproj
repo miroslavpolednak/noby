@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.MediatR\CIS.Infrastructure.MediatR.csproj" />
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />

@@ -16,12 +16,6 @@ var webAppOptions = runAsWinSvc
     new WebApplicationOptions { Args = args };
 var builder = WebApplication.CreateBuilder(webAppOptions);
 
-#region strongly typed configuration
-AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
-appConfiguration.CheckAppConfiguration();
-#endregion strongly typed configuration
-
 #region register builder.Services
 // strongly-typed konfigurace aplikace
 //builder.Services.AddSingleton(appConfiguration);
@@ -45,7 +39,7 @@ builder.AddCisServiceAuthentication();
 builder.Services.AddCisServiceDiscovery(); // kvuli auto dotazeni URL pro EAS
 
 // add my services
-builder.AddDocumentService(appConfiguration);
+builder.AddDocumentService();
 
 builder.Services.AddGrpc(options =>
 {

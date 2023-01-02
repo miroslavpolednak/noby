@@ -1,17 +1,15 @@
 using System.IO.Compression;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
-using CIS.Infrastructure.gRPC.Validation;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Endpoints.Notification;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 using CIS.InternalServices.NotificationService.Api.Extensions;
-using CIS.InternalServices.NotificationService.Api.Mcs;
-using CIS.InternalServices.NotificationService.Api.Repositories;
-using CIS.InternalServices.NotificationService.Api.S3;
-using CIS.InternalServices.NotificationService.Api.Smtp;
-using DomainServices.CodebookService.Clients;
+using CIS.InternalServices.NotificationService.Api.Services.Mcs;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.S3;
+using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using FluentValidation;
 using MediatR;
 using ProtoBuf.Grpc.Server;
@@ -47,7 +45,7 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // Validators
 builder.Services
-    .AddTransient(typeof(IPipelineBehavior<,>), typeof(GrpcValidationBehavior<,>));
+    .AddTransient(typeof(IPipelineBehavior<,>), typeof(CIS.Infrastructure.CisMediatR.GrpcValidationBehavior<,>));
 
 builder.Services.Scan(selector => selector
     .FromAssembliesOf(typeof(Program))
@@ -68,13 +66,14 @@ builder.Services
 builder.Services.AddCodebookService();
 
 // messaging - kafka consumers and producers
-builder.Services.AddMessaging(builder.GetKafkaConfiguration());
+
+builder.AddMessaging();
 
 // s3 client
-builder.Services.AddS3Client(builder.GetS3Configuration());
+builder.AddS3Client();
 
 // smtp
-builder.Services.AddSmtpClient(builder.GetSmtpConfiguration());
+builder.AddSmtpClient();
 
 // database
 builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");

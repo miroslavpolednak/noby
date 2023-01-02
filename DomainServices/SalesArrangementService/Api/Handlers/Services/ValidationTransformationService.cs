@@ -1,5 +1,4 @@
-﻿using DomainServices.SalesArrangementService.Api.Handlers.Forms;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using static DomainServices.SalesArrangementService.Api.Handlers.Services.ValidationTransformationCache;
@@ -11,7 +10,7 @@ internal sealed partial class ValidationTransformationServiceFactory
     private class ValidationTransformationService
         : IValidationTransformationService
     {
-        public List<Contracts.ValidationMessage> TransformErrors(Form form, Dictionary<string, ExternalServices.Eas.R21.CheckFormV2.Error[]>? errors)
+        public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors)
         {
             // no errors -> empty list
             if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
@@ -20,7 +19,7 @@ internal sealed partial class ValidationTransformationServiceFactory
             var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
 
             // parse json data to searchable object
-            _jsonFormData = JObject.Parse(form.JSON)!;
+            _jsonFormData = JObject.Parse(json)!;
 
             // for each error field
             foreach (var errorGroup in errors)
@@ -53,11 +52,12 @@ internal sealed partial class ValidationTransformationServiceFactory
         {
             ValidationTransformationCache.TransformationItem titem;
             var message = new Contracts.ValidationMessageNoby();
-
+            
             var matches = _arrayIndexesRegex.Matches(item.Parameter);
             if (matches.Any())
             {
-                titem = _transformationMatrix[_arrayIndexesRegex.Replace(item.Parameter, _parameterReplaceEvaluator)];
+                string key = _arrayIndexesRegex.Replace(item.Parameter, _parameterReplaceEvaluator);
+                titem = getTransformationItem(key);
                 string[] arguments = matches.Select(m =>
                 {
                     switch (m.Groups["par"].Value)
@@ -72,7 +72,7 @@ internal sealed partial class ValidationTransformationServiceFactory
             }
             else
             {
-                titem = _transformationMatrix[item.Parameter];
+                titem = getTransformationItem(item.Parameter);
                 message.Message = titem.Text;
             }
 
@@ -88,6 +88,24 @@ internal sealed partial class ValidationTransformationServiceFactory
                 message.Severity = item.ErrorQueue == "A" ? Contracts.ValidationMessageNoby.Types.NobySeverity.Error : Contracts.ValidationMessageNoby.Types.NobySeverity.Warning;
 
             return message;
+
+            TransformationItem getTransformationItem(string key)
+            {
+                if (_transformationMatrix.Any(t => t.Key == item.Parameter))
+                {
+                    return _transformationMatrix[key];
+                }
+                else
+                {
+                    // polozka neexistuje v transformacni tabulce... co s tim?
+                    return new TransformationItem
+                    {
+                        Name = item.Parameter,
+                        Category = "-unknown-",
+                        Text = item.Message
+                    };
+                }
+            }
         }
 
         private string getJsonValue(string path)

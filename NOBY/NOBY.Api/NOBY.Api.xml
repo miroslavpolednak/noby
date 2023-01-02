@@ -331,6 +331,11 @@
             Zmocněnec pro komunikaci
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.IsKYCSuccessful">
+            <summary>
+            Příznak o úspěšně doběhlé KYC proceduře
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCustomers.GetCustomersResponseCustomer.FirstName">
             <summary>
             Jméno
@@ -463,7 +468,6 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
              - ActionCodesSavings - obsolete
              - ActionCodesSavingsLoan - obsolete
-             - BankCodes
              - <a href="https://wiki.kb.cz/confluence/display/HT/CaseState">CaseStates</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216251">ClassificationOfEconomicActivities</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
@@ -472,7 +476,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
              - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a> - zatím není na FE API implementováno
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
              - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
@@ -487,6 +491,7 @@
              - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> - zatím není na FE API implementováno
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216289">JobTypes</a>
@@ -1103,6 +1108,26 @@
             <i>DS:</i>DocumentArchiveService/getDocumentList
             </remarks> 
             <param name="caseId">ID Case-u</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCalculation(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vygenerování dokumentu kalkulace ze šablony
+            </summary>
+            <remarks>
+            Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+            </remarks>
+            <param name="offerId">Offer ID</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetPaymentSchedule(System.Int32,System.Threading.CancellationToken)">
+             <summary>
+             Vygenerování dokumentu splátkový kalendář ze šablony
+             </summary>
+             <remarks>
+            Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+             </remarks>
+             <param name="offerId">Offer ID</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.UploadDocument(Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
             <summary>
@@ -2384,12 +2409,12 @@
             Číslo osobního dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentWithIssuedBy.IssuingCountryId">
+        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuingCountryId">
             <summary>
             Stát vydání dokladu
             </summary>
         </member>
-        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentWithIssuedBy.IssuedBy">
+        <member name="P:NOBY.Api.SharedDto.IdentificationDocumentFull.IssuedBy">
             <summary>
             Doklad vydal
             </summary>

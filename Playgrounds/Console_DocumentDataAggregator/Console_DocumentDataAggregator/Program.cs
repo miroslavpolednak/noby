@@ -1,4 +1,6 @@
-﻿using CIS.Core.Configuration;
+﻿using CIS.Core;
+using CIS.Core.Configuration;
+using CIS.Core.Exceptions;
 using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices;
@@ -10,6 +12,7 @@ using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using Console_CustomerService;
 using Console_DocumentDataAggregator;
+using DomainServices;
 using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("Hello, World!");
@@ -18,15 +21,29 @@ var services = new ServiceCollection();
 
 services.AddTransient<ICurrentUserAccessor, MockCurrentUserAccessor>();
 services.AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration());
-services.AddDataAggregator();
+services.AddDataAggregator("Data Source=localhost;Initial Catalog=DataAggregator;Persist Security Info=True;User ID=SA;Password=Test123456;TrustServerCertificate=True");
 //services.AddDocumentGeneratorService("https://localhost:5009");
 services.AddDocumentGeneratorService();
 services.AddCisServiceDiscovery("https://localhost:5005");
 
+var foundServices = services
+                    .Where(t => t is { Lifetime: ServiceLifetime.Singleton, ImplementationInstance: IIsServiceDiscoverable })
+                    .Select(t => t.ImplementationInstance as IIsServiceDiscoverable)
+                    .Where(t => t is not null && t.UseServiceDiscovery)
+                    .ToList();
+
+foundServices.ForEach(instance =>
+{
+    // nastavit URL ze ServiceDiscovery
+    instance!.ServiceUrl = new Uri("https://localhost");
+});
+
 var serviceProvider = services.BuildServiceProvider();
+
 var dataAggregator = serviceProvider.GetRequiredService<IDataAggregator>();
 
-await GenerateDocument(dataAggregator, serviceProvider.GetRequiredService<IDocumentGeneratorServiceClient>());
+//await GenerateDocument(dataAggregator, serviceProvider.GetRequiredService<IDocumentGeneratorServiceClient>());
+await BuildForms(dataAggregator);
 
 Console.ReadKey();
 
@@ -73,7 +90,7 @@ static async Task GenerateDocument(IDataAggregator dataAggregator, IDocumentGene
 static async Task BuildForms(IDataAggregator dataAggregator)
 {
     var easForm = await dataAggregator.GetEasForm<IProductFormData>(97);
-
+    return;
     try
     {
         var test = easForm.BuildForms(Enumerable.Range(1, 3).Select(c => new DynamicFormValues

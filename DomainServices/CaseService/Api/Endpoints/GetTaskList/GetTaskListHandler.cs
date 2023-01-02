@@ -35,7 +35,7 @@ internal sealed class GetTaskListHandler
         };
 
         // load tasks
-        var easTasks = ResolveFindTasks(await _easSimulationHTClient.FindTasks(header, messsage));
+        var easTasks = await _easSimulationHTClient.FindTasks(header, messsage);
         var tasks = easTasks.Select(i => i.ToWorkflowTask()).ToArray();
 
         // check tasks

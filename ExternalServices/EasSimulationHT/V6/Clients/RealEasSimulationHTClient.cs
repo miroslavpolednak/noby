@@ -4,28 +4,21 @@ using CIS.Core.Exceptions;
 
 namespace ExternalServices.EasSimulationHT.V6;
 
-internal sealed class RealEasSimulationHTClient : Shared.BaseClient<RealEasSimulationHTClient>, IEasSimulationHTClient
+internal sealed class RealEasSimulationHTClient 
+    : Shared.BaseClient<RealEasSimulationHTClient>, IEasSimulationHTClient
 {
-    public RealEasSimulationHTClient(EasSimulationHTConfiguration configuration, ILogger<RealEasSimulationHTClient> logger)
-       : base(Versions.V6, configuration, logger) { }
+    public RealEasSimulationHTClient(CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration<IEasSimulationHTClient> configuration, ILogger<RealEasSimulationHTClient> logger)
+       : base(configuration, logger) { }
 
-
-    public async Task<IServiceCallResult> RunSimulationHT(SimulationHTRequest request)
+    public async Task<SimulationHTResponse> RunSimulationHT(SimulationHTRequest request)
     {
-        return await callMethod(async () =>
+        return await callMethod<SimulationHTResponse>(async () =>
         {
             using HT_WS_SB_ServicesClient client = createClient();
 
             _logger.LogSerializedObject("SimulationHTRequest", request);
             var result = await client.SimulationHTAsync(request);
             _logger.LogSerializedObject("SimulationHTResponse", result);
-
-            //if (result.errorInfo != null)
-            //{
-            //    var message = $"Error occured during call external service EAS [{result.errorInfo.kodChyby} : {result.errorInfo.textChyby}]";
-            //    _logger.LogWarning(message);
-            //    return new ErrorServiceCallResult(99999, message); //TODO: error code
-            //}
 
             if ((result.errorInfo?.kodChyby ?? 0) != 0)
             {
@@ -34,13 +27,13 @@ internal sealed class RealEasSimulationHTClient : Shared.BaseClient<RealEasSimul
                 throw new CisValidationException(10020, result.errorInfo!.textChyby);
             }
 
-            return new SuccessfulServiceCallResult<SimulationHTResponse>(result);
+            return result;
         });
     }
 
-    public async Task<IServiceCallResult> FindTasks(WFS_Header header, WFS_Find_ByCaseId message)
+    public async Task<WFS_FindItem[]> FindTasks(WFS_Header header, WFS_Find_ByCaseId message)
     {
-        return await callMethod(async () =>
+        return await callMethod<WFS_FindItem[]>(async () =>
         {
             using HT_WS_SB_ServicesClient client = createClient();
 
@@ -48,7 +41,7 @@ internal sealed class RealEasSimulationHTClient : Shared.BaseClient<RealEasSimul
             var result = await client.WFS_FindTasksAsync(header, message);
             _logger.LogSerializedObject("FindTasksResponse", result);
 
-            return new SuccessfulServiceCallResult<WFS_FindItem[]>(result.tasks);
+            return result.tasks;
         });
     }
 

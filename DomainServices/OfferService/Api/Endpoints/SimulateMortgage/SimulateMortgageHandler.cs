@@ -22,7 +22,7 @@ internal sealed class SimulateMortgageHandler
 
         // get simulation outputs
         var easSimulationReq = request.SimulationInputs.ToEasSimulationRequest(request.BasicParameters, drawingDurationsById, drawingTypeById);
-        var easSimulationRes = resolveRunSimulationHT(await _easSimulationHTClient.RunSimulationHT(easSimulationReq));
+        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq);
         var results = easSimulationRes.ToSimulationResults();
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
 

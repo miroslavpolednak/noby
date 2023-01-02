@@ -27,7 +27,7 @@ internal class CreateRiskBusinessCaseHandler
         }
 
         //SA
-        var saInstance = ServiceCallResult.ResolveAndThrowIfError<_SA.SalesArrangement>(await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken));
+        var saInstance = await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken);
         if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId)) // RBCID je jiz zalozene, ukonci flow
         {
             _logger.LogInformation($"SalesArrangement #{notification.SalesArrangementId} already contains RiskBusinessCaseId");
@@ -48,13 +48,13 @@ internal class CreateRiskBusinessCaseHandler
         // ziskat segment
         string riskSegment = await getRiskSegment();
 
-        bool updated1 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, saInstance.RiskBusinessCaseExpirationDate, cancellationToken));
+        await _salesArrangementService.UpdateLoanAssessmentParameters(notification.SalesArrangementId, null, riskSegment, null, saInstance.RiskBusinessCaseExpirationDate, cancellationToken);
 
         // get rbcId
         var createRBCResponse = ServiceCallResult.ResolveAndThrowIfError<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCreateResponse>(await _riskBusinessCaseService.CreateCase(notification.SalesArrangementId, offerInstance.ResourceProcessId, cancellationToken));
 
         // ulozit na SA
-        bool updated2 = ServiceCallResult.Resolve(await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken));
+        await _salesArrangementService.UpdateSalesArrangement(notification.SalesArrangementId, null, createRBCResponse.RiskBusinessCaseId, null, cancellationToken);
 
         #region local fce
         async Task<string> getRiskSegment()
@@ -64,21 +64,21 @@ internal class CreateRiskBusinessCaseHandler
                 SalesArrangementId = notification.SalesArrangementId,
                 LoanApplicationDataVersion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
                 Households = new()
-            {
-                new()
                 {
-                    HouseholdId = households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId,
-                    Customers = new()
+                    new()
                     {
-                        new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationCustomer
+                        HouseholdId = households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId,
+                        Customers = new()
                         {
-                            InternalCustomerId = notification.CustomerOnSAId,
-                            PrimaryCustomerId = kbId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                            CustomerRoleId = (int)CustomerRoles.Debtor
+                            new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationCustomer
+                            {
+                                InternalCustomerId = notification.CustomerOnSAId,
+                                PrimaryCustomerId = kbId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                                CustomerRoleId = (int)CustomerRoles.Debtor
+                            }
                         }
-                    }
+                    },
                 },
-            },
                 Product = new()
                 {
                     ProductTypeId = caseInstance.Data.ProductTypeId,

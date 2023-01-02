@@ -118,13 +118,5 @@
             po přechodu na grpc transcoding ostraníme
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.gRPC.Validation.GrpcValidationBehavior`2">
-            <summary>
-            MediatR pipeline, která přidává do flow requestu FluentValidation.
-            </summary>
-            <remarks>
-            Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
-            </remarks>
-        </member>
     </members>
 </doc>

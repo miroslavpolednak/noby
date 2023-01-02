@@ -1,9 +1,10 @@
 using CIS.Infrastructure.StartupExtensions;
 using NOBY.Api.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.MediatR;
+using CIS.Infrastructure.CisMediatR;
 using DomainServices;
 using CIS.InternalServices;
+using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,12 @@ builder
     .AddCisTracing()
     .AddCisHealthChecks();
 
+// add .NET logging
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+});
+
 // add domain services
 builder.Services
     .AddUserService()
@@ -36,6 +43,11 @@ builder.Services
     .AddSalesArrangementService()
     .AddRiskIntegrationService()
     .AddDocumentArchiveService();
+
+// add internal services
+builder.Services
+       .AddDocumentGeneratorService()
+       .AddDataAggregator(builder.Configuration.GetConnectionString("dataAggregator")!);
 
 // FOMS services
 builder

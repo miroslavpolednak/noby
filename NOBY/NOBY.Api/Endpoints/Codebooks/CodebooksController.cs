@@ -21,7 +21,6 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
     /// - ActionCodesSavings - obsolete
     /// - ActionCodesSavingsLoan - obsolete
-    /// - BankCodes
     /// - <a href="https://wiki.kb.cz/confluence/display/HT/CaseState">CaseStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216251">ClassificationOfEconomicActivities</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392877756">ContactTypes</a>
@@ -30,7 +29,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=424127746">Currencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/CustomerProfile">CustomerProfiles</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421386916">CustomerRoles</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a> - zatím není na FE API implementováno
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCodes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developers</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProjects</a>
     /// - <a href="https://wiki.kb.cz/display/HT/DocumentOnSAType">DocumentOnSATypes</a>
@@ -45,6 +44,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=426158089">IncomeMainTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967686">IncomeMainTypesAML</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216188">IncomeForeignTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440881532">IncomeOtherTypes</a> - zatím není na FE API implementováno
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216289">JobTypes</a>
