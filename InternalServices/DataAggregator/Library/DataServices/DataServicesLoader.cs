@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-using CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
+﻿using CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 using CIS.InternalServices.DataAggregator.Helpers;
 using DomainServices.CodebookService.Clients;
 using Microsoft.Extensions.DependencyInjection;

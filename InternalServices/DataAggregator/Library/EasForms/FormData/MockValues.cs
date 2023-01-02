@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DataAggregator.EasForms.FormData;
 
-internal class MockValues
+public class MockValues
 {
     public string UserCPM => "99806569";
 

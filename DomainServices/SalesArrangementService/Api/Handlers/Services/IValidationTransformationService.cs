@@ -1,8 +1,6 @@
-﻿using DomainServices.SalesArrangementService.Api.Handlers.Forms;
-
-namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
+﻿namespace DomainServices.SalesArrangementService.Api.Handlers.Services;
 
 internal interface IValidationTransformationService
 {
-    List<Contracts.ValidationMessage> TransformErrors(Form form, Dictionary<string, ExternalServices.Eas.R21.CheckFormV2.Error[]>? errors);
+    List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.Error[]>? errors);
 }

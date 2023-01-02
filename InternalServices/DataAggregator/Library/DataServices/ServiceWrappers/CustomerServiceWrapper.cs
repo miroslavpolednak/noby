@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients;
 
 namespace CIS.InternalServices.DataAggregator.DataServices.ServiceWrappers;
 

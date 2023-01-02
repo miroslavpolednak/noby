@@ -1,120 +1,74 @@
 ﻿using Grpc.Core;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.SalesArrangementService.Api.Handlers.Forms;
 using CIS.Foms.Enums;
+using CIS.InternalServices.DataAggregator.Configuration.EasForm;
+using CIS.InternalServices.DataAggregator.EasForms;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
 internal class ValidateSalesArrangementHandler
     : IRequestHandler<Dto.ValidateSalesArrangementMediatrRequest, ValidateSalesArrangementResponse>
 {
-
-    #region Construction
+    private static readonly int[] ValidCommonValues = { 0, 6 };
 
     private readonly Services.ValidationTransformationServiceFactory _transformationServiceFactory;
-    private readonly FormsService _formsService;
-    private readonly ILogger<ValidateSalesArrangementHandler> _logger;
     private readonly Eas.IEasClient _easClient;
+    private readonly Forms.FormsService _formsService;
 
     public ValidateSalesArrangementHandler(
         Services.ValidationTransformationServiceFactory transformationServiceFactory,
-        FormsService formsService,
-        ILogger<ValidateSalesArrangementHandler> logger,
-        Eas.IEasClient easClient)
+        Eas.IEasClient easClient,
+        Forms.FormsService formsService)
     {
         _transformationServiceFactory = transformationServiceFactory;
-        _formsService = formsService;
-        _logger = logger;
         _easClient = easClient;
+        _formsService = formsService;
     }
 
-    #endregion
-
-    private static int[] ValidCommonValues = new int[] { 0, 6 };
-
-    public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellation)
+    public async Task<ValidateSalesArrangementResponse> Handle(Dto.ValidateSalesArrangementMediatrRequest request, CancellationToken cancellationToken)
     {
-        // load arrangement
-        var arrangement = await _formsService.LoadArrangement(request.SalesArrangementId, cancellation);
+        var category = await _formsService.LoadSalesArrangementCategory(request.SalesArrangementId, cancellationToken);
 
-        // build forms
-        var forms = await GetForms(arrangement, cancellation);
+        var easForm = await GetEasForm(request.SalesArrangementId, category, cancellationToken);
 
-        // check forms
-        return await CheckForms(forms, arrangement.ContractNumber);
+        return await CheckForms(easForm);
     }
 
-    private async Task<List<Form>> GetForms(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
+    private async Task<IEasForm<IEasFormData>> GetEasForm(int salesArrangementId, SalesArrangementCategories category, CancellationToken cancellationToken)
     {
-        var arrangementCategory = await _formsService.LoadArrangementCategory(arrangement, cancellation);
-
-        List<Form>? forms;
-
-        switch (arrangementCategory)
+        return category switch
         {
-            case SalesArrangementCategories.ProductRequest:
-                forms = await ProcessProductRequest(arrangement, cancellation);
-                break;
-
-            case SalesArrangementCategories.ServiceRequest:
-                forms = await ProcessServiceRequest(arrangement, cancellation);
-                break;
-
-            default:
-                forms = new List<Form>();
-                break;
-        }
-
-        return forms;
+            SalesArrangementCategories.ProductRequest => await ProcessProductRequest(salesArrangementId, cancellationToken),
+            SalesArrangementCategories.ServiceRequest => await _formsService.LoadServiceForm(salesArrangementId),
+            _ => throw new NotImplementedException()
+        };
     }
 
-    private async Task<List<Form>> ProcessProductRequest(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
+    private async Task<IEasForm<IEasFormData>> ProcessProductRequest(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var formData = await _formsService.LoadProductFormData(arrangement, cancellation);
-        FormsService.CheckFormData(formData);
-        await _formsService.SetContractNumber(formData, cancellation);
-        var builder = new JsonBuilder();
-        return builder.BuildForms(formData);  // ??? HH jaké FormId použít pro CheckForm 
+        var productForm = await _formsService.LoadProductForm(salesArrangementId);
+
+        await _formsService.UpdateContractNumber(productForm.FormData, cancellationToken);
+
+        return productForm;
     }
 
-    private async Task<List<Form>> ProcessServiceRequest(Contracts.SalesArrangement arrangement, CancellationToken cancellation)
+    private async Task<ValidateSalesArrangementResponse> CheckForms(IEasForm<IEasFormData> easForm)
     {
-        var formData = await _formsService.LoadServiceFormData(arrangement, cancellation);
-        FormsService.CheckFormData(formData);
-        var builder = new JsonBuilder();
-        return builder.BuildForms(formData);  // ??? HH jaké FormId použít pro CheckForm 
-    }
+        var response = new ValidateSalesArrangementResponse();
 
-    private async Task<ValidateSalesArrangementResponse> CheckForms(List<Form> forms, string contractNumber)
-    {
-        int GetFormularId(EFormType type) {
-            switch (type)
-            {
-                case EFormType.F3601: return 3601001;
-                case EFormType.F3602: return 3602001;
-                case EFormType.F3700: return 3700001;
-            }
-            return 0;
-        }
-
-        var actualDate = DateTime.Now.Date;
-
-        var response = new ValidateSalesArrangementResponse { };
-
-        for (int i = 0; i < forms.Count; i++)
+        foreach (var form in easForm.BuildForms(Enumerable.Empty<DynamicFormValues>()))
         {
-            var form = forms[i];
-            
-            var checkFormData = new Eas.EasWrapper.CheckFormData()
+            var checkFormData = new Eas.EasWrapper.CheckFormData
             {
                 //formular_id = 3601001,
                 //cislo_smlouvy = formData.Arrangement.ContractNumber,
-                formular_id = GetFormularId(form.FormType),
-                cislo_smlouvy = contractNumber,
+                formular_id = GetFormId(form.FormType),
+                cislo_smlouvy = easForm.FormData.SalesArrangement.ContractNumber,
                 // dokument_id = "9876543210",                      // ??? dokument_id je nepovinné, to neposílej
-                dokument_id = JsonBuilder.MockDokumentId,           // TODO: dočasný mock - odstranit až si to Assecco odladí
-                datum_prijeti = actualDate,                         // ??? datum prijeti dej v D1.2 aktuální datum
-                data = form.JSON,
+                dokument_id = easForm.FormData.MockValues.MockDocumentId,           // TODO: dočasný mock - odstranit až si to Assecco odladí
+                datum_prijeti = DateTime.Now.Date,                         // ??? datum prijeti dej v D1.2 aktuální datum
+                data = form.Json,
             };
 
             var checkFormResult = await _easClient.CheckFormV2(checkFormData);
@@ -133,10 +87,21 @@ internal class ValidateSalesArrangementHandler
             }
 
             var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);
-            response.ValidationMessages.AddRange(transformationService.TransformErrors(form, checkFormResult.Detail?.errors));
+            response.ValidationMessages.AddRange(transformationService.TransformErrors(form.Json, checkFormResult.Detail?.errors));
         }
 
         return response;
+
+        static int GetFormId(EasFormType type)
+        {
+            return type switch
+            {
+                EasFormType.F3601 => 3601001,
+                EasFormType.F3602 => 3602001,
+                EasFormType.F3700 => 3700001,
+                _ => 0
+            };
+        }
     }
 }
 
