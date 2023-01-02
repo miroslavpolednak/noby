@@ -24,6 +24,10 @@ def noby_sit1_url():
     return "https://sit1.noby.cz/api"
 
 
+def noby_fat_url():
+    return "https://fat.noby.cz/api"
+
+
 def get_noby_sit1_cookies():
     session = requests.session()
     session.post(
@@ -34,6 +38,16 @@ def get_noby_sit1_cookies():
     )
     return session.cookies
 
+
+def get_noby_fat_cookies():
+    session = requests.session()
+    session.post(
+        noby_fat_url() + "/users/signin",
+        json={
+            "Login": "99917587"
+        }
+    )
+    return session.cookies
 
 @pytest.fixture(scope="session")
 def cpm(request):

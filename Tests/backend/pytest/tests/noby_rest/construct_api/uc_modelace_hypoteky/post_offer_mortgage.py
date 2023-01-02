@@ -1,7 +1,8 @@
 import requests
 import pytest
 
-from Tests.backend.pytest.tests.noby_rest.conftest import webapi_url, get_cookies, noby_sit1_url, get_noby_sit1_cookies
+from Tests.backend.pytest.tests.noby_rest.conftest import webapi_url, get_cookies, noby_sit1_url, get_noby_sit1_cookies, \
+    get_noby_fat_cookies, noby_fat_url
 from request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
 
 
@@ -31,8 +32,8 @@ def post_offer_mortgage_basic(webapi_url, get_cookies):
 def post_offer_mortgage_basic_2():
     session = requests.session()
     resp = session.post(
-        noby_sit1_url() + "/offer/mortgage",
-        cookies=get_noby_sit1_cookies(),
+        noby_fat_url() + "/offer/mortgage",
+        cookies=get_noby_fat_cookies(),
         json=json_req_mortgage_basic_params
     )
     print(resp)

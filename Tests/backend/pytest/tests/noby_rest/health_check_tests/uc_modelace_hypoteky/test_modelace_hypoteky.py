@@ -24,11 +24,11 @@ def test_get_offer_mortgage(get_offer_mortgage_basic):
     assert resp.status_code == 200, resp.content
 
 
-#@pytest.mark.parametrize("call_mortgage_json, call_create_case_json", [
- #   (
-  #      json_req_mortgage_basic_params, json_req_create_case
-   # )]
-#)
-def test_post_create_case():
-    resp = post_create_case()
+@pytest.mark.parametrize("call_create_case_json", [
+    (
+        json_req_create_case
+    )]
+)
+def test_post_create_case(call_create_case_json):
+    resp = post_create_case(call_create_case_json)
     assert resp.status_code == 200, resp.content

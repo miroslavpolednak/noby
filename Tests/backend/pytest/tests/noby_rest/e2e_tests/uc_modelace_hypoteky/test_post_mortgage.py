@@ -9,7 +9,7 @@ from ...db_util import select_offer_fat
     (
             json_req_mortgage_basic_params
     )]
-                         )
+    )
 def test_post_offer_mortgage(post_offer_mortgage, noby_fat_db_cursor):
     resp = post_offer_mortgage
     assert resp.status_code == 200, resp.content
