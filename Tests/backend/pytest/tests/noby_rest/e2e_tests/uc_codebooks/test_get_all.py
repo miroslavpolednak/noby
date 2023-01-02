@@ -86,7 +86,7 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
     ),
 ]
 )
-def test_get_codebooks(codebook_name, expected_resp_json):
+def test_e2e_get_codebooks(codebook_name, expected_resp_json):
     resp = get_all_codebooks(codebook_name)
 
     assert resp[0] == 200

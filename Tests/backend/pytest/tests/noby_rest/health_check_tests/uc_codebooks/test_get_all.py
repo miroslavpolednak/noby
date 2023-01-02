@@ -7,21 +7,27 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
 @pytest.mark.parametrize("codebook_name", [
     Codebooks.ACADEMICDEGREESAFTER,
     Codebooks.ACADEMICDEGREESBEFORE,
-    Codebooks.ACTIONCODESSAVINGS,
-    Codebooks.ACTIONCODESSAVINGSLOAN,
+    Codebooks.BANKCODES,
     Codebooks.CASESTATES,
     Codebooks.CLASSIFICATIONOFECONOMICACTIVITIES,
     Codebooks.CONTACTTYPES,
     Codebooks.COUNTRIES,
     Codebooks.CURRENCIES,
+    Codebooks.CUSTOMERPROFILES,
     Codebooks.CUSTOMERROLES,
     Codebooks.DEVELOPERS,
     Codebooks.DEVELOPERPROJECTS,
+    Codebooks.DOCUMENTONSATYPES,
+    Codebooks.DRAWINGDURATIONS,
+    Codebooks.DRAWINGTYPES,
+    Codebooks.EACODESMAIN,
     Codebooks.EDUCATIONLEVELS,
     Codebooks.EMPLOYMENTTYPES,
     Codebooks.FEES,
     Codebooks.FIXEDRATEPERIODS,
+    Codebooks.FORMTYPES,
     Codebooks.GENDERS,
+    Codebooks.HOUSEHOLDTYPES,
     Codebooks.IDENTIFICATIONDOCUMENTTYPES,
     Codebooks.INCOMEMAINTYPES,
     Codebooks.INCOMEFOREIGNTYPES,
@@ -30,10 +36,13 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
     Codebooks.LEGALCAPACITIES,
     Codebooks.LOANPURPOSES,
     Codebooks.LOANKINDS,
+    Codebooks.LOANINTERESTRATEANNOUNCEDTYPES,
     Codebooks.MANDANTS,
     Codebooks.MARITALSTATUSES,
+    Codebooks.OBLIGATIONCORRECTIONTYPES,
     Codebooks.OBLIGATIONTYPES,
     Codebooks.PAYMENTDAYS,
+    Codebooks.PAYOUTTYPES,
     Codebooks.POSTCODES,
     Codebooks.PRODUCTTYPES,
     Codebooks.PROPERTYSETTLEMENTS,
@@ -49,6 +58,6 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
 
 ]
 )
-def test_get_all_codebooks(get_all_codebooks, get_cookies, webapi_url, codebook_name):
-    resp = get_all_codebooks
+def test_get_all_codebooks(get_cookies, webapi_url, codebook_name):
+    resp = get_all_codebooks(codebook_name)
     assert resp[0] == 200
