@@ -83,7 +83,7 @@ internal class Customer
         }).FirstOrDefault();
 
     public IEnumerable<IncomeOther> IncomesOther =>
-        _customerIncomes[CustomerIncomeTypes.Employement].Select(i => new IncomeOther(i, Incomes[i.IncomeId])
+        _customerIncomes[CustomerIncomeTypes.Other].Select(i => new IncomeOther(i, Incomes[i.IncomeId])
         {
             Number = _customerOnSa.Incomes.IndexOf(i)
         });

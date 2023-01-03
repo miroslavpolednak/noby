@@ -121,12 +121,14 @@ internal class ConfigurationRepository
         {
             return _dbContext.EasFormDataFields
                              .AsNoTracking()
-                             .Where(e => e.EasRequestTypeId == requestTypeId)
+                             .Where(e => e.EasRequestTypeId == requestTypeId && 
+                                         e.EasFormType.ValidFrom < DateTime.Now &&
+                                         e.EasFormType.ValidTo > DateTime.Now)
                              .Select(e => new EasFormSourceField
                              {
                                  SourceFieldId = e.EasFormTypeId,
                                  DataSource = (DataSource)e.DataField.DataServiceId,
-                                 FormType = (EasFormType)e.EasFormTypeId,
+                                 FormTypeString = e.EasFormType.EasFormTypeName,
                                  FieldPath = e.DataField.FieldPath,
                                  JsonPropertyName = e.JsonPropertyName
                              });
@@ -136,12 +138,14 @@ internal class ConfigurationRepository
         {
             return _dbContext.EasFormSpecialDataFields
                              .AsNoTracking()
-                             .Where(e => e.EasRequestTypeId == requestTypeId)
+                             .Where(e => e.EasRequestTypeId == requestTypeId &&
+                                         e.EasFormType.ValidFrom < DateTime.Now &&
+                                         e.EasFormType.ValidTo > DateTime.Now)
                              .Select(e => new EasFormSourceField
                              {
                                  SourceFieldId = default,
                                  DataSource = (DataSource)e.DataServiceId,
-                                 FormType = (EasFormType)e.EasFormTypeId,
+                                 FormTypeString = e.EasFormType.EasFormTypeName,
                                  FieldPath = e.FieldPath,
                                  JsonPropertyName = e.JsonPropertyName
                              });

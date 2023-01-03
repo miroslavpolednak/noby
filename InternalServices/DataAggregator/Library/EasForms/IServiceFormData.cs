@@ -1,8 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
-
-namespace CIS.InternalServices.DataAggregator.EasForms;
+﻿namespace CIS.InternalServices.DataAggregator.EasForms;
 
 public interface IServiceFormData : IEasFormData
 {
-    SalesArrangement SalesArrangement { get; }
 }

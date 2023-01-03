@@ -1,6 +1,4 @@
-﻿using CIS.InternalServices.DataAggregator.Configuration;
-
-namespace CIS.InternalServices.DataAggregator.Helpers;
+﻿namespace CIS.InternalServices.DataAggregator.Helpers;
 
 internal static class CollectionPathHelper
 {
