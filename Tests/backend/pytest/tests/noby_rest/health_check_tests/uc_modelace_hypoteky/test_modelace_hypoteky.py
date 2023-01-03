@@ -3,7 +3,7 @@ import pytest
 from request.simulation_mortgage.simulation_mortgage_basic_json import json_req_mortgage_basic_params
 from request.create_case.create_case_json import json_req_create_case
 from ...construct_api.uc_modelace_hypoteky.post_offer_mortgage import post_offer_mortgage, post_offer_mortgage_basic
-from ...construct_api.uc_modelace_hypoteky.get_offer_mortgage_offerid import get_offer_mortgage_basic
+from ...construct_api.uc_modelace_hypoteky.get_offer_mortgage_offerid import get_offer_mortgage_basic, get_offer
 from ...construct_api.uc_modelace_hypoteky.post_create_case import post_create_case
 
 
@@ -24,12 +24,14 @@ def test_get_offer_mortgage(get_offer_mortgage_basic):
     assert resp.status_code == 200, resp.content
 
 
-@pytest.mark.parametrize("call_create_case_json", [
+@pytest.mark.parametrize("call_mortgage, call_create_case_json", [
     (
-        json_req_create_case(json_req_mortgage_basic_params)
+        json_req_mortgage_basic_params, json_req_create_case
     )]
 )
-def test_post_create_case(call_create_case_json):
+def test_post_create_case(call_mortgage, call_create_case_json):
+    offer_id = get_offer(call_mortgage)
+    call_create_case_json["offerId"] = offer_id
     resp = post_create_case(call_create_case_json)
     print(resp)
     assert resp.status_code == 200, resp.content
