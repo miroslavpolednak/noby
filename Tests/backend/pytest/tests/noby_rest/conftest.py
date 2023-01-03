@@ -49,6 +49,7 @@ def get_noby_fat_cookies():
     )
     return session.cookies
 
+
 @pytest.fixture(scope="session")
 def cpm(request):
     return request.config.getoption("--cpm")

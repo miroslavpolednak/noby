@@ -29,12 +29,12 @@ def post_offer_mortgage_basic(webapi_url, get_cookies):
 
 
 #for basic create-case
-def post_offer_mortgage_basic_2():
+def post_offer_mortgage_basic_2(mortgage):
     session = requests.session()
     resp = session.post(
         noby_fat_url() + "/offer/mortgage",
         cookies=get_noby_fat_cookies(),
-        json=json_req_mortgage_basic_params
+        json=mortgage
     )
     print(resp)
     return resp
