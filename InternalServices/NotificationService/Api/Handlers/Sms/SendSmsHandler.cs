@@ -52,6 +52,8 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.IdentityScheme = request.Identifier?.IdentityScheme;
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
+        result.RequestTimestamp = _dateTime.Now;
+        
         result.Text = request.Text;
         result.CountryCode = request.Phone.CountryCode;
         result.PhoneNumber = request.Phone.NationalNumber;
