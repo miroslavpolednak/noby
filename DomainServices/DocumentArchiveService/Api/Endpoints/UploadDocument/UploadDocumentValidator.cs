@@ -55,7 +55,7 @@ public sealed class DocumentMetadataValidator : AbstractValidator<DocumentMetada
 
         RuleFor(e => e.Filename)
            .NotEmpty()
-           .WithMessage($"Metadata.{nameof(DocumentMetadata.DocumentId)} cannot be null or empty string");
+           .WithMessage($"Metadata.{nameof(DocumentMetadata.Filename)} cannot be null or empty string");
 
         RuleFor(e => e.CreatedOn)
          .Must(CommonValidators.ValidateDateOnly)

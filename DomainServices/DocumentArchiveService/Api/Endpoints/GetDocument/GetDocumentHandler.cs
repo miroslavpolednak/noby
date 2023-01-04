@@ -1,10 +1,10 @@
-﻿using DomainServices.DocumentArchiveService.Api.ExternalServices.Sdf.V1;
-using DomainServices.DocumentArchiveService.Api.ExternalServices.Sdf.V1.Model;
-using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1;
-using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1.Clients;
-using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1.Model;
-using DomainServices.DocumentArchiveService.Api.Mappers;
+﻿using DomainServices.DocumentArchiveService.Api.Mappers;
 using DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Clients;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Model;
 using Google.Protobuf;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 
@@ -42,21 +42,10 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
             var tcpResult = await LoadFromTcpArchive(request, cancellationToken);
             return await MapTcpResponse(tcpResult, request, cancellationToken);
         }
-
     }
 
     private async Task<GetDocumentResponse> MapTcpResponse(DocumentServiceQueryResult tcpResult, GetDocumentRequest request, CancellationToken cancellationToken)
     {
-        if (tcpResult is null)
-        {
-            throw new ArgumentNullException(nameof(tcpResult));
-        }
-
-        if (request is null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
-
         var response = new GetDocumentResponse
         {
             Metadata = _documentMapper.MapTcpDocumentMetadata(tcpResult),
@@ -73,11 +62,6 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
 
     private GetDocumentResponse MapCspResponse(GetDocumentByExternalIdOutput cspResponse)
     {
-        if (cspResponse.Metadata is null)
-        {
-            throw new ArgumentNullException(nameof(cspResponse.Metadata));
-        }
-
         var response = new GetDocumentResponse
         {
             Metadata = _documentMapper.MapSdfDocumentMetadata(cspResponse.Metadata),
@@ -94,11 +78,6 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
 
     private async Task<DocumentServiceQueryResult> LoadFromTcpArchive(GetDocumentRequest request, CancellationToken cancellationToken)
     {
-        if (request is null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
-
         return await _documentServiceRepository.GetDocumentByExternalId(new GetDocumentByExternalIdTcpQuery
         {
             DocumentId = request.DocumentId,
@@ -109,11 +88,6 @@ internal class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocum
 
     private async Task<GetDocumentByExternalIdOutput> LoadFromCspArchive(GetDocumentRequest request, CancellationToken cancellationToken)
     {
-        if (request is null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
-
         return await _sdfClient
        .GetDocumentByExternalId(new GetDocumentByExternalIdSdfQuery
        {

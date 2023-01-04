@@ -1,7 +1,7 @@
-﻿using DomainServices.DocumentArchiveService.Api.ExternalServices.Sdf.V1;
-using DomainServices.DocumentArchiveService.Api.ExternalServices.Tcp.V1;
-using DomainServices.DocumentArchiveService.Api.Mappers;
+﻿using DomainServices.DocumentArchiveService.Api.Mappers;
 using DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
 

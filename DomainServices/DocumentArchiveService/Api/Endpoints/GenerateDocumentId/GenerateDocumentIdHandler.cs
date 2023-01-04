@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Configuration;
 using CIS.Infrastructure.Data;
+using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
 
@@ -10,11 +11,11 @@ internal sealed class GenerateDocumentIdHandler
 {
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
-    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _connectionProvider;
+    private readonly CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> _connectionProvider;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
 
     public GenerateDocumentIdHandler(
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> connectionProvider,
+        CIS.Core.Data.IConnectionProvider<IXxvDapperConnectionProvider> connectionProvider,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         AppConfiguration configuration,
         ICisEnvironmentConfiguration cisEnvironment)

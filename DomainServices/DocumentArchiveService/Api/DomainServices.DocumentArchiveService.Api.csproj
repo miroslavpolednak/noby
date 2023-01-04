@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AnalysisMode>All</AnalysisMode>
+		<AnalysisMode>Recommended</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
@@ -19,8 +19,8 @@
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
@@ -37,6 +37,8 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj" />
+		<ProjectReference Include="..\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj" />
+		<ProjectReference Include="..\ExternalServices.Tcp\DomainServices.DocumentArchiveService.ExternalServices.Tcp.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,7 +46,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Database\Migrations\" />
-	  <Folder Include="ExternalServices\Sdf\V1\Generated\" />
+		<Folder Include="Database\Migrations\" />
 	</ItemGroup>
 </Project>
