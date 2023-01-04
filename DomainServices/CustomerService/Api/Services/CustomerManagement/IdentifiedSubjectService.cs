@@ -7,7 +7,7 @@ using FastEnumUtility;
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal class CreateIdentifiedSubject
+internal class IdentifiedSubjectService
 {
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClients _codebook;
@@ -19,7 +19,7 @@ internal class CreateIdentifiedSubject
     private List<CodebookService.Contracts.Endpoints.MaritalStatuses.MaritalStatusItem> _maritals = null!;
     private List<CodebookService.Contracts.Endpoints.IdentificationDocumentTypes.IdentificationDocumentTypesItem> _docTypes = null!;
 
-    public CreateIdentifiedSubject(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
+    public IdentifiedSubjectService(ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClients codebook, CustomerManagementErrorMap errorMap)
     {
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
@@ -37,6 +37,11 @@ internal class CreateIdentifiedSubject
         return new Identity(_errorMap.ResolveAndThrowIfError(response), IdentitySchemes.Kb);
     }
 
+    public async Task UpdateSubject(CancellationToken cancellationToken)
+    {
+        await InitializeCodebooks(cancellationToken);
+    }
+    
     private Task InitializeCodebooks(CancellationToken cancellationToken)
     {
         return Task.WhenAll(Genders(), Titles(), Countries(), Maritals(), DocTypes());
@@ -65,6 +70,11 @@ internal class CreateIdentifiedSubject
         };
     }
 
+    private __Contracts.IdentifiedSubject BuildUpdateRequest(UpdateCustomerRequest request)
+    {
+        return default;
+    }
+    
     private __Contracts.NaturalPersonAttributes CreateNaturalPersonAttributes(NaturalPerson naturalPerson)
     {
         var citizenshipCodes = naturalPerson.CitizenshipCountriesId.Select(id => _countries.First(c => c.Id == id).ShortName).ToList();
