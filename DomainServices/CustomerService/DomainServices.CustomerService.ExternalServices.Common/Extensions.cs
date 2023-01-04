@@ -3,7 +3,7 @@
 public static class Extensions
 {
     public static string ToQuery(this bool? value)
-        => value.ToQuery();
+        => !value.GetValueOrDefault(false) ? "false" : "true";
 
     public static string ToQuery(this bool value)
         => value ? "true" : "false";
