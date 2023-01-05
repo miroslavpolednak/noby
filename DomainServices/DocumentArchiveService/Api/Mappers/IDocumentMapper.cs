@@ -1,7 +1,7 @@
 ﻿using DomainServices.DocumentArchiveService.Contracts;
-using ExternalServices.Sdf.V1.Model;
-using ExternalServicesTcp.V1.Model;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Model;
 
 namespace DomainServices.DocumentArchiveService.Api.Mappers;
 

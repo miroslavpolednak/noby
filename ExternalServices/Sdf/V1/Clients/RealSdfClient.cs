@@ -8,6 +8,7 @@ using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
+using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 

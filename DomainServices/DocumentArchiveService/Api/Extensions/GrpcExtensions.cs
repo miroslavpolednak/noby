@@ -11,6 +11,9 @@ internal static class GrpcExtensions
         builder.Services.AddGrpc(options =>
         {
             options.Interceptors.Add<GenericServerExceptionInterceptor>();
+            options.MaxReceiveMessageSize = 25 * 1024 * 1024; // 25 MB
+            options.MaxSendMessageSize = 25 * 1024 * 1024; // 25 MB
+
         })
         .AddJsonTranscoding(opt =>
         {
@@ -26,8 +29,7 @@ internal static class GrpcExtensions
 
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1",
-                            new OpenApiInfo { Title = "DocumentArchive Service API", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "DocumentArchive Service API", Version = "v1" });
 
             // generate the XML docs that'll drive the swagger docs
             var path = Path.Combine(AppContext.BaseDirectory, "DomainServices.DocumentArchiveService.xml");

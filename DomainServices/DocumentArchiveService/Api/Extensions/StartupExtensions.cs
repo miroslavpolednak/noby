@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
+using DomainServices.DocumentArchiveService.Api.Database;
 using DomainServices.DocumentArchiveService.Api.Mappers;
-using ExternalServices.Sdf;
-using ExternalServices.Sdf.V1.Clients;
-using ExternalServicesTcp;
-using ExternalServicesTcp.V1.Repositories;
-using FluentValidation;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 
 namespace DomainServices.DocumentArchiveService.Api;
 
@@ -37,7 +37,10 @@ internal static class StartupExtensions
 
         // databases
         builder.Services
-            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("default"));
+            .AddDapper<IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("default")!);
+
+        // dbcontext
+        builder.AddEntityFramework<Database.DocumentArchiveDbContext>(connectionStringKey: "default");
 
         return builder;
     }

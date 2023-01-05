@@ -1,11 +1,11 @@
 ﻿using DomainServices.DocumentArchiveService.Api.Mappers;
 using DomainServices.DocumentArchiveService.Contracts;
-using ExternalServices.Sdf.V1.Clients;
-using ExternalServicesTcp.V1.Repositories;
+using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
+using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocumentList;
 
-public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, GetDocumentListResponse>
+internal class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, GetDocumentListResponse>
 {
     private readonly ISdfClient _sdfClient;
     private readonly IDocumentServiceRepository _tcpRepository;
@@ -36,7 +36,7 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 
         var tcpResult = await _tcpRepository.FindTcpDocument(_documentMapper.MapTcpDocumentQuery(request), cancellationToken);
         response.Metadata.AddRange(tcpResult.Select(_documentMapper.MapTcpDocumentMetadata));
-        
+
         return response;
     }
 }
