@@ -15,12 +15,7 @@ internal sealed class GenerateDocumentIdValidator
         {
             RuleFor(t => t.EnvironmentName)
                 .IsInEnum()
-                .NotEqual(EnvironmentNames.Unknown)
                 .WithMessage("Unknown EnvironmentName.").WithErrorCode("14009");
-
-            RuleFor(t => t.EnvironmentIndex)
-                .LessThanOrEqualTo(9)
-                .WithMessage("Unknown EnvironmentIndex.").WithErrorCode("14010");
         });
     }
 }

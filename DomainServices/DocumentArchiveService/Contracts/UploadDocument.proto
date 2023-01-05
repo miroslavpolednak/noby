@@ -9,5 +9,7 @@ message UploadDocumentRequest{
     DocumentMetadata Metadata = 1;
     // Soubour (pole bajtů) ve formě base64string 
     bytes BinaryData = 2;
+    // Příznak (1/0 ano/ne), který určuje, zda se při archivaci vytvoří věta na rozhraní kdv, pokud ea kód použitý pro archivaci je pro kdv určen (Default: 0).
+    int32 Kdv = 3;
 }
 

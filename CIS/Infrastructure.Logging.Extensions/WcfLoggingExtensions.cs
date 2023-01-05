@@ -70,7 +70,7 @@ namespace CIS.Infrastructure.Logging.Extensions
             {
                 // copying message to buffer to avoid accidental corruption
                 request = Clone(request);
-                _logger.LogInformation("{LogMask}: Sending SOAP request:\r\n{0}", _logMask, request.ToString());
+                _logger.LogInformation("{LogMask}: Sending SOAP request:\r\n{Request}", _logMask, request.ToString());
                 return null;
             }
 
