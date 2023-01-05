@@ -24,4 +24,10 @@ public interface IDocumentArchiveServiceClient
     /// Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů (např. CaseId, Autor, ...)
     /// </summary>
     Task<GetDocumentListResponse> GetDocumentList(GetDocumentListRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+    /// </summary>
+    /// <exception cref="CIS.Core.Exceptions.CisAlreadyExistsException">14015, File with documentid already exist in database</exception>
+    Task UploadDocument(UploadDocumentRequest request, CancellationToken cancellationToken = default);
 }

@@ -1,8 +1,11 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 using CIS.Infrastructure.Logging.Extensions;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
@@ -26,6 +29,8 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
         _client = new SoapClient();
         _client.Endpoint.Address = new EndpointAddress(_configuration.ServiceUrl);
         _client.Endpoint.Binding = CreateBinding();
+
+        _client.Endpoint.EndpointBehaviors.Add(new MaxFaultSizeBehavior(2147483647));
 
         if (_configuration.LogPayloads)
         {
@@ -61,3 +66,4 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
     }
     protected abstract Binding CreateBinding();
 }
+

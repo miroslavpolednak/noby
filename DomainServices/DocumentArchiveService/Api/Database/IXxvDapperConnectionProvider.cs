@@ -1,4 +1,4 @@
-﻿namespace DomainServices.DocumentArchiveService.Api.Data;
+﻿namespace DomainServices.DocumentArchiveService.Api.Database;
 
 // marker interface
 internal interface IXxvDapperConnectionProvider { }

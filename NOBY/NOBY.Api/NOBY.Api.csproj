@@ -24,12 +24,16 @@
 	
 	<ItemGroup>
 	  <Compile Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
+	  <Compile Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <Compile Remove="wwwroot\**" />
 	  <Content Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
+	  <Content Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <Content Remove="wwwroot\**" />
 	  <EmbeddedResource Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
+	  <EmbeddedResource Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
 	  <None Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
+	  <None Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <None Remove="wwwroot\**" />
 	</ItemGroup>
 	
@@ -73,6 +77,7 @@
   <ItemGroup>
     <Folder Include="Endpoints\DocumentArchive\_Shared\" />
     <Folder Include="Endpoints\Document\PaymentSchedule\" />
+    <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
   </ItemGroup>
 
 </Project>

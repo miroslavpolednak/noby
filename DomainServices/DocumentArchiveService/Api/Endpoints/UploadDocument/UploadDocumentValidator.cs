@@ -1,8 +1,6 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.DocumentArchiveService.Api.Endpoints.Common.Validators;
+﻿using DomainServices.DocumentArchiveService.Api.Endpoints.Common.Validators;
 using DomainServices.DocumentArchiveService.Contracts;
 using FluentValidation;
-using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.UploadDocument;
 
@@ -13,10 +11,17 @@ public sealed class UploadDocumentValidator : AbstractValidator<UploadDocumentRe
         RuleFor(t => t).NotEmpty();
 
         When(t => t is not null, () =>
+                {
+                    RuleFor(t => t.BinaryData)
+                        .NotEmpty()
+                        .WithMessage("BinaryData cannot be emty");
+                });
+
+        When(t => t is not null, () =>
         {
-            RuleFor(t => t.BinaryData)
-                .NotEmpty()
-                .WithMessage("BinaryData cannot be emty");
+            RuleFor(t => t.Kdv)
+                .InclusiveBetween(0, 1)
+                .WithMessage("Kdv have to be in range 0-1");
         });
 
         When(t => t is not null, () =>
@@ -50,22 +55,15 @@ public sealed class DocumentMetadataValidator : AbstractValidator<DocumentMetada
 
         RuleFor(e => e.Filename)
            .NotEmpty()
-           .WithMessage($"Metadata.{nameof(DocumentMetadata.DocumentId)} cannot be null or empty string");
+           .WithMessage($"Metadata.{nameof(DocumentMetadata.Filename)} cannot be null or empty string");
 
         RuleFor(e => e.CreatedOn)
          .Must(CommonValidators.ValidateDateOnly)
          .WithMessage($"Metadata.{nameof(DocumentMetadata.CreatedOn)} is null or invalid date format");
 
-        RuleFor(e => e.Filename)
+        RuleFor(e => e.AuthorUserLogin)
             .NotEmpty()
             .WithMessage($"Metadata.{nameof(DocumentMetadata.AuthorUserLogin)} cannot be null or empty string");
 
-        RuleFor(e => e.FolderDocument)
-            .IsInEnum()
-            .WithMessage($"Unknown Metadata.{nameof(DocumentMetadata.FolderDocument)}");
-
-        RuleFor(e => e.DocumentDirection)
-            .IsInEnum()
-            .WithMessage($"Unknown Metadata.{nameof(DocumentMetadata.DocumentDirection)}");
     }
 }
