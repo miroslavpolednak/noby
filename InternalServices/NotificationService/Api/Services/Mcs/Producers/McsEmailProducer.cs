@@ -1,4 +1,5 @@
-﻿using CIS.Core;
+﻿using Avro.Specific;
+using CIS.Core;
 using CIS.Core.Attributes;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers.Infrastructure;
@@ -11,13 +12,13 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Mcs.Producers;
 [ScopedService, SelfService]
 public class McsEmailProducer
 {
-    private readonly ITopicProducer<SendEmail> _producer;
+    private readonly ITopicProducer<ISpecificRecord> _producer;
     private readonly IDateTime _dateTime;
     private readonly KafkaTopics _kafkaTopics;
     private readonly KafkaConfiguration _kafkaConfiguration;
 
     public McsEmailProducer(
-        ITopicProducer<SendEmail> producer,
+        ITopicProducer<ISpecificRecord> producer,
         IDateTime dateTime,
         IOptions<AppConfiguration> appOptions,
         IOptions<KafkaConfiguration> kafkaOptions)
@@ -31,7 +32,7 @@ public class McsEmailProducer
     public async Task SendEmail(SendEmail sendEmail, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid().ToString("N");
-        var pipe = new ProducerPipe<SendEmail>(id, _kafkaTopics.McsResult,
+        var pipe = new ProducerPipe<ISpecificRecord>(id, _kafkaTopics.McsResult,
             _kafkaConfiguration.Nodes.Business.BootstrapServers, _dateTime.Now);
         
         await _producer.Produce(sendEmail, pipe, cancellationToken);
