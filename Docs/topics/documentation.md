@@ -53,4 +53,10 @@ Obsah souboru *DefaultDocumentation.json*:
 Klíče `AssemblyFilePath` a `OutputDirectoryPath` se nastavují dle názvu aktuálního projektu.
 
 ## Ručně psaná dokumentace
-Jedná se o popisy používaných patternů, dokumentaci a způsob použití jednotlivých infrastrukturních projektů atd.
+Jedná se o popisy používaných patternů, dokumentaci a způsob použití jednotlivých infrastrukturních projektů atd. 
+Všechny témata pro ručně psanou dokumentaci ukládáme jako .md soubory do adresáře /Docs/topics.
+Zároveň je potřeba prolinkovat nově vytvořený soubor z hlavní stránky dokumentace (/Docs/index.md), kde musí v části "Témata" vzniknout nový hypertextový odkaz.
+
+Nové soubory s dokumentací je kromě toho také potřeba přidat do solution tak, aby byly zobrazené i ve Visual Studiu.
+
+
