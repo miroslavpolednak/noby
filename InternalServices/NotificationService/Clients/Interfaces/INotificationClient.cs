@@ -10,5 +10,6 @@ public interface INotificationClient
     Task<SendSmsFromTemplateResponse> SendSmsFromTemplate(SendSmsFromTemplateRequest request, CancellationToken token);
     Task<SendEmailResponse> SendEmail(SendEmailRequest request, CancellationToken token);
     Task<SendEmailFromTemplateResponse> SendEmailFromTemplate(SendEmailFromTemplateRequest request, CancellationToken token);
+    Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, CancellationToken token);
     Task<GetResultResponse> GetResult(GetResultRequest request, CancellationToken token);
 }
