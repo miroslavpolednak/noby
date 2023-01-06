@@ -9,7 +9,6 @@ internal static class SwaggerExtensions
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(x =>
         {
-            x.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
             x.SwaggerDoc("v1", new OpenApiInfo { Title = "Notification Service API", Version = "v1" });
             x.AddSecurityDefinition("basic", new OpenApiSecurityScheme
             {
@@ -34,7 +33,7 @@ internal static class SwaggerExtensions
                 }
             });
             
-            x.EnableAnnotations();
+            x.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
