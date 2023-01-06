@@ -14,6 +14,8 @@ public static class RequestResponseLoggerExtensions
     private static readonly Action<ILogger, string, string, Exception> _httpRequestPayload;
     private static readonly Action<ILogger, string, string, int, Exception> _httpResponsePayload;
     private static readonly Action<ILogger, string, Exception> _requestHandlerFinishedWithEmptyResult;
+    private static readonly Action<ILogger, string, string, Exception> _soapRequestPayload;
+    private static readonly Action<ILogger, string, Exception> _soapResponsePayload;
 
     static RequestResponseLoggerExtensions()
     {
@@ -21,6 +23,16 @@ public static class RequestResponseLoggerExtensions
             LogLevel.Information,
             new EventId(EventIdCodes.HttpRequestPayload, nameof(HttpRequestPayload)),
             "Request Payload for {HttpMethod} {Url}");
+
+        _soapRequestPayload = LoggerMessage.Define<string, string>(
+          LogLevel.Information,
+          new EventId(EventIdCodes.SoapRequestPayload, nameof(SoapRequestPayload)),
+          "Soap request {SoapMethod} {Url} started");
+
+        _soapResponsePayload = LoggerMessage.Define<string>(
+          LogLevel.Information,
+          new EventId(EventIdCodes.SoapResponsePayload, nameof(SoapResponsePayload)),
+          "Soap response {Url} finished");
 
         _httpResponsePayload = LoggerMessage.Define<string, string, int>(
             LogLevel.Information,
@@ -61,6 +73,12 @@ public static class RequestResponseLoggerExtensions
 
     public static void HttpRequestPayload(this ILogger logger, HttpRequestMessage request)
         => _httpRequestPayload(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);
+    
+    public static void SoapRequestPayload(this ILogger logger, string soapMethod, string url)
+        => _soapRequestPayload(logger, soapMethod, url, null!);
+
+    public static void SoapResponsePayload(this ILogger logger, string url)
+        => _soapResponsePayload(logger, url, null!);
 
     public static void HttpRequestStarted(this ILogger logger, HttpRequestMessage request)
         => _httpRequestStarted(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);

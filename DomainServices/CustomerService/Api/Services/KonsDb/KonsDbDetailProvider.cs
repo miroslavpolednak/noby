@@ -85,7 +85,7 @@ public class KonsDbDetailProvider
         return result.GroupBy(p => p.PartnerId).Select(p =>
         {
             var partner = p.First();
-            partner.Contacts = p.Select(c => c.Contacts.Single()).ToList();
+            partner.Contacts = p.SelectMany(c => c.Contacts).ToList();
 
             return partner;
         }).FirstOrDefault() ?? throw new CisNotFoundException(11000, $"Customer ID {partnerId} does not exist.");
@@ -114,7 +114,7 @@ public class KonsDbDetailProvider
         return result.GroupBy(p => p.PartnerId).Select(p =>
         {
             var partner = p.First();
-            partner.Contacts = p.Select(c => c.Contacts.Single()).ToList();
+            partner.Contacts = p.SelectMany(c => c.Contacts).ToList();
 
             return partner;
         });

@@ -1,11 +1,9 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using CIS.Infrastructure.ExternalServicesHelpers.Soap;
-using CIS.Infrastructure.Logging.Extensions;
+using CIS.Infrastructure.Logging.Extensions.Extensions;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
@@ -34,7 +32,7 @@ public abstract class SoapClientBase<SoapClient, SoapClientChannel> : IDisposabl
 
         if (_configuration.LogPayloads)
         {
-            _client.Endpoint.SetTraceLogging(logger, _configuration.ServiceName ?? string.Empty);
+            _client.Endpoint.SetTraceLogging(logger, _configuration.ServiceUrl.AbsoluteUri!);
         }
 
         if (_configuration.Authentication == ExternalServicesAuthenticationTypes.Basic)

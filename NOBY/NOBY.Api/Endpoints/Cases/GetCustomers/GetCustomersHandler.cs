@@ -46,6 +46,7 @@ internal class GetCustomersHandler
                     saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
                     false
                 ))
+                .OrderBy(t => t.CustomerRoleId).ThenBy(t => t.Item2!.Name)
                 .ToList();
         }
         else

@@ -83,5 +83,5 @@ public sealed class CustomerManagementSearchRequest
     /// <summary>
     /// Flag indicating whether unidentified subjects should filtered out from result
     /// </summary>
-    public bool ShowOnlyIdentified { get; set; }
+    public bool? ShowOnlyIdentified { get; set; }
 }
