@@ -27,6 +27,9 @@ def noby_sit1_url():
 def noby_fat_url():
     return "https://fat.noby.cz/api"
 
+def noby_dev_url():
+    return "https://dev.noby.cz/api"
+
 
 def get_noby_sit1_cookies():
     session = requests.session()
@@ -43,6 +46,16 @@ def get_noby_fat_cookies():
     session = requests.session()
     session.post(
         noby_fat_url() + "/users/signin",
+        json={
+            "Login": "99917587"
+        }
+    )
+    return session.cookies
+
+def get_noby_dev_cookies():
+    session = requests.session()
+    session.post(
+        noby_dev_url() + "/users/signin",
         json={
             "Login": "99917587"
         }

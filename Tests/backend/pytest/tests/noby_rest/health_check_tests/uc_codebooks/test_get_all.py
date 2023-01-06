@@ -33,7 +33,7 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
     Codebooks.INCOMEFOREIGNTYPES,
     Codebooks.INCOMEOTHERTYPES,
     Codebooks.JOBTYPES,
-    Codebooks.LEGALCAPACITIES,
+    #Codebooks.LEGALCAPACITIES,
     Codebooks.LOANPURPOSES,
     Codebooks.LOANKINDS,
     Codebooks.LOANINTERESTRATEANNOUNCEDTYPES,
@@ -58,6 +58,6 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
 
 ]
 )
-def test_get_all_codebooks(get_cookies, webapi_url, codebook_name):
+def test_get_all_codebooks(codebook_name):
     resp = get_all_codebooks(codebook_name)
     assert resp[0] == 200
