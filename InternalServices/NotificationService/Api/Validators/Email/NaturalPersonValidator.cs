@@ -18,8 +18,7 @@ public class NaturalPersonValidator : AbstractValidator<NaturalPerson>
         RuleFor(person => person.MiddleName)
             .MaximumLength(40)
                 .WithErrorCode(ErrorCodes.NaturalPerson.MiddleNameLengthLimitExceeded)
-                .WithMessage($"Maximum length of {nameof(NaturalPerson.MiddleName)} is 40.")
-            .WithErrorCode(nameof(NaturalPerson.MiddleName));
+                .WithMessage($"Maximum length of {nameof(NaturalPerson.MiddleName)} is 40.");
 
         RuleFor(person => person.Surname)
             .NotEmpty()

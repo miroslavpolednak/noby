@@ -33,7 +33,7 @@ internal static class SwaggerExtensions
                 }
             });
             
-            x.EnableAnnotations();
+            x.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 

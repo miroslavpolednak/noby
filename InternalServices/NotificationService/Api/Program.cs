@@ -66,7 +66,6 @@ builder.Services
 builder.Services.AddCodebookService();
 
 // messaging - kafka consumers and producers
-
 builder.AddMessaging();
 
 // s3 client

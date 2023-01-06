@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Api.Configuration;
+﻿using Avro.Specific;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Mcs.Consumers;
 using Confluent.Kafka;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
@@ -50,8 +51,9 @@ public static class ServiceCollectionExtensions
                 rider.AddConsumer<ResultConsumer>();
                 
                 // add producers
-                rider.AddProducerAvro<SendEmail>(topics.McsSender);
-                rider.AddProducerAvro<SendSMS>(topics.McsSender);
+                rider.AddProducerAvro<ISpecificRecord>(topics.McsSender);
+                // rider.AddProducerAvro<SendEmail>(topics.McsSender);
+                // rider.AddProducerAvro<SendSMS>(topics.McsSender);
                 // todo: Add Mpss SendEmail, Push, MsgBox...
                 
                 rider.UsingKafka((context, k) =>

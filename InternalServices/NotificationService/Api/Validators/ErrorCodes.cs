@@ -24,76 +24,82 @@ public static class ErrorCodes
     
     public static class EmailParty
     {
-        public const string LegalPersonInvalid = "308";
-        public const string NaturalPersonInvalid = "309";
+        public const string EitherLegalOrNaturalPersonRequired = "308";
+        public const string LegalPersonInvalid = "309";
+        public const string NaturalPersonInvalid = "310";
     }
     
     public static class EmailAddress
     {
-        public const string ValueRequired = "310";
-        public const string ValueInvalid = "311";
-        public const string PartyRequired = "312";
-        public const string PartyInvalid = "313";
+        public const string ValueRequired = "311";
+        public const string ValueInvalid = "312";
+        public const string PartyRequired = "313";
+        public const string PartyInvalid = "314";
     }
 
     public static class EmailContent
     {
-        public const string FormatRequired = "314";
-        public const string LanguageRequired = "315";
-        public const string TextRequired = "316";
+        public const string FormatRequired = "315";
+        public const string LanguageRequired = "316";
+        public const string TextRequired = "317";
     }
     
     public static class EmailAttachment
     {
-        public const string BinaryRequired = "317";
-        public const string FilenameRequired = "318";
-        public const string FilenameLengthLimitExceeded = "319";
-    }
- 
-    public static class SendEmail
-    {
-        public const string FromRequired = "320";
-        public const string FromInvalid = "321";
-        public const string ToNotEmpty = "322";
-        public const string ToInvalid = "323";
-        public const string BccInvalid = "324";
-        public const string CcInvalid = "326";
-        public const string ReplyToInvalid = "326";
-        public const string SubjectRequired = "327";
-        public const string SubjectInvalid = "328";
-        public const string ContentRequired = "329";
-        public const string ContentInvalid = "330";
-        public const string AttachmentsInvalid = "331";
+        public const string BinaryRequired = "318";
+        public const string FilenameRequired = "319";
+        public const string FilenameLengthLimitExceeded = "320";
     }
 
     public static class Phone
     {
-        public const string CountryCodeRequired = "332";
-        public const string CountryCodeInvalid = "333";
-        public const string NationalNumberRequired = "334";
-        public const string NationalNumberInvalid = "335";
+        public const string CountryCodeRequired = "321";
+        public const string CountryCodeInvalid = "322";
+        public const string NationalNumberRequired = "323";
+        public const string NationalNumberInvalid = "324";
     }
-
+    
+    public static class SearchResult
+    {
+        public const string IdentityInvalid = "330";
+    }
+    
+    public static class SendEmail
+    {
+        public const string FromRequired = "340";
+        public const string FromInvalid = "341";
+        public const string ToNotEmpty = "342";
+        public const string ToInvalid = "343";
+        public const string BccInvalid = "344";
+        public const string CcInvalid = "345";
+        public const string ReplyToInvalid = "346";
+        public const string SubjectRequired = "347";
+        public const string SubjectInvalid = "348";
+        public const string ContentRequired = "349";
+        public const string ContentInvalid = "350";
+        public const string AttachmentsInvalid = "351";
+    }
+    
     public static class SendSms
     {
-        public const string PhoneRequired = "336";
-        public const string PhoneInvalid = "337";
-        public const string ProcessPriorityInvalid = "338";
-        public const string TypeInvalid = "339";
-        public const string TextRequired = "340";
-        public const string TextLengthLimitExceeded = "341";
+        public const string PhoneRequired = "360";
+        public const string PhoneInvalid = "361";
+        public const string ProcessPriorityInvalid = "362";
+        public const string TypeInvalid = "363";
+        public const string TextRequired = "364";
+        public const string TextLengthLimitExceeded = "365";
     }
 
     public static class SendSmsFromTemplate
     {
-        public const string PhoneRequired = "342";
-        public const string PhoneInvalid = "343";
-        public const string ProcessPriorityInvalid = "344";
-        public const string TypeInvalid = "345";
-        public const string TextRequired = "346";
-        public const string TextLengthLimitExceeded = "347";
-        public const string PlaceholdersRequired = "348";
-        public const string PlaceholdersInvalid = "349";
+        public const string PhoneRequired = "370";
+        public const string PhoneInvalid = "371";
+        public const string ProcessPriorityInvalid = "372";
+        public const string TypeInvalid = "373";
+        public const string TextRequired = "374";
+        public const string TextLengthLimitExceeded = "375";
+        public const string PlaceholdersRequired = "376";
+        public const string PlaceholdersInvalid = "377";
     }
     
 }
