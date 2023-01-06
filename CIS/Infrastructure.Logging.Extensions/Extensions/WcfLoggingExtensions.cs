@@ -68,7 +68,7 @@ internal sealed class ClientMessageLoggingBehavior :
                   { "Payload", response.ToString() }
             }))
             {
-                _logger.SoapPesponsePayload(_url);
+                _logger.SoapResponsePayload(_url);
             }
         }
 

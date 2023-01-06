@@ -73,10 +73,11 @@ public static class RequestResponseLoggerExtensions
 
     public static void HttpRequestPayload(this ILogger logger, HttpRequestMessage request)
         => _httpRequestPayload(logger, request.Method.ToString(), request.RequestUri!.ToString(), null!);
+    
     public static void SoapRequestPayload(this ILogger logger, string soapMethod, string url)
         => _soapRequestPayload(logger, soapMethod, url, null!);
 
-    public static void SoapPesponsePayload(this ILogger logger, string url)
+    public static void SoapResponsePayload(this ILogger logger, string url)
         => _soapResponsePayload(logger, url, null!);
 
     public static void HttpRequestStarted(this ILogger logger, HttpRequestMessage request)
