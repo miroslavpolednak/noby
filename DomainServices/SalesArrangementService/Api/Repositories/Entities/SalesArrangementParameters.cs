@@ -24,4 +24,5 @@ internal enum SalesArrangementParametersTypes : byte
     Mortgage = 1,
     Drawing = 2,
     GeneralChange = 3,
+    HUBN = 4
 }

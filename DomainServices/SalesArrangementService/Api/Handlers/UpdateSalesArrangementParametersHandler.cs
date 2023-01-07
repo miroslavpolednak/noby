@@ -51,6 +51,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => Repositories.Entities.SalesArrangementParametersTypes.Mortgage,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => Repositories.Entities.SalesArrangementParametersTypes.Drawing,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => Repositories.Entities.SalesArrangementParametersTypes.GeneralChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => Repositories.Entities.SalesArrangementParametersTypes.HUBN,
             _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
         };
 
@@ -60,6 +61,7 @@ internal sealed class UpdateSalesArrangementParametersHandler
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => request.Drawing,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => request.GeneralChange,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => request.HUBN,
             _ => null
         };
 

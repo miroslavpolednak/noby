@@ -32,6 +32,9 @@ internal sealed class GetSalesArrangementHandler
                 case Repositories.Entities.SalesArrangementParametersTypes.GeneralChange:
                     model.GeneralChange = _SA.SalesArrangementParametersGeneralChange.Parser.ParseFrom(parameters.Bin);
                     break;
+                case Repositories.Entities.SalesArrangementParametersTypes.HUBN:
+                    model.HUBN = _SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
+                    break;
                 default:
                     throw new NotImplementedException($"SalesArrangementParametersType {parameters.ParameterType} is not implemented");
             }

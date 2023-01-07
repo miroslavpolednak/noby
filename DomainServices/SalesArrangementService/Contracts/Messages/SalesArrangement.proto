@@ -6,6 +6,7 @@ import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
+import "Parameters/SalesArrangementParametersHUBN.proto";
 import "Parameters/SalesArrangementParametersMortgage.proto";
 import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
@@ -57,5 +58,6 @@ message SalesArrangement {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 30;
 		DomainServices.SalesArrangementService.SalesArrangementParametersDrawing Drawing = 31;
 		SalesArrangementParametersGeneralChange GeneralChange = 32;
+		SalesArrangementParametersHUBN HUBN = 33;
     }
 }
