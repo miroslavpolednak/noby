@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "Parameters/SalesArrangementParametersMortgage.proto";
+import "Parameters/SalesArrangementParametersDrawing.proto";
+import "Parameters/SalesArrangementParametersGeneralChange.proto";
+
+message UpdateSalesArrangementParametersRequest {
+	int32 SalesArrangementId = 1;
+	
+	oneof Data {
+        DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 20;
+		DomainServices.SalesArrangementService.SalesArrangementParametersDrawing Drawing = 21;
+		SalesArrangementParametersGeneralChange GeneralChange = 22;
+    }
+}

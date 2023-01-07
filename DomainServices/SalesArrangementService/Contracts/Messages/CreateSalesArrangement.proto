@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "Parameters/SalesArrangementParametersMortgage.proto";
+import "Parameters/SalesArrangementParametersDrawing.proto";
+import "Parameters/SalesArrangementParametersGeneralChange.proto";
+import "NullableGrpcDecimal.proto";
+import "google/protobuf/wrappers.proto";
+
+message CreateSalesArrangementRequest {
+	// ID Case v ramci ktereho ma byt SA zalozen
+	int64 CaseId = 1;
+
+	// Druh SA
+	int32 SalesArrangementTypeId = 2;
+
+	// ID modelace, ktera je spojena s timto SA - neni povinne
+	google.protobuf.Int32Value OfferId = 3;
+	
+	string ContractNumber = 4;
+
+	google.protobuf.Int32Value SalesArrangementSignatureTypeId = 5;
+	
+	oneof Data {
+        SalesArrangementParametersMortgage Mortgage = 20;
+		SalesArrangementParametersDrawing Drawing = 21;
+		SalesArrangementParametersGeneralChange GeneralChange = 22;
+    }
+}
+
+message CreateSalesArrangementResponse {
+	// ID nove zalozeneho SA
+	int32 SalesArrangementId = 1;
+}

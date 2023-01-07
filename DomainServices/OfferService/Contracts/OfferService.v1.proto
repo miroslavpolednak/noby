@@ -2,11 +2,11 @@ syntax = "proto3";
 package DomainServices.OfferService.v1;
 option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 
-import "GetOffer.proto";
-import "Mortgage/GetMortgageOffer.proto";
-import "Mortgage/GetMortgageOfferDetail.proto";
-import "Mortgage/SimulateMortgage.proto";
-import "Mortgage/GetMortgageOfferFPSchedule.proto";
+import "Messages/GetOffer.proto";
+import "Messages/GetMortgageOffer.proto";
+import "Messages/GetMortgageOfferDetail.proto";
+import "Messages/SimulateMortgage.proto";
+import "Messages/GetMortgageOfferFPSchedule.proto";
 
 service OfferService {
 	rpc GetOffer (DomainServices.OfferService.GetOfferRequest) returns (DomainServices.OfferService.GetOfferResponse);

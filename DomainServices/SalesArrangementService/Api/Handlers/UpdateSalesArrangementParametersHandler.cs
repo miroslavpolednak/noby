@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
-using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
-internal class UpdateSalesArrangementParametersHandler
+internal sealed class UpdateSalesArrangementParametersHandler
     : IRequestHandler<Dto.UpdateSalesArrangementParametersMediatrRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Dto.UpdateSalesArrangementParametersMediatrRequest request, CancellationToken cancellation)
@@ -51,6 +50,7 @@ internal class UpdateSalesArrangementParametersHandler
         {
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => Repositories.Entities.SalesArrangementParametersTypes.Mortgage,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => Repositories.Entities.SalesArrangementParametersTypes.Drawing,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => Repositories.Entities.SalesArrangementParametersTypes.GeneralChange,
             _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
         };
 
@@ -59,6 +59,7 @@ internal class UpdateSalesArrangementParametersHandler
         {
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage,
             Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => request.Drawing,
+            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => request.GeneralChange,
             _ => null
         };
 

@@ -3,13 +3,13 @@ package DomainServices.HouseholdService.v1;
 option csharp_namespace = "DomainServices.HouseholdService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "CreateHousehold.proto";
-import "GetHouseholdRequest.proto";
-import "GetHouseholdList.proto";
-import "Household.proto";
-import "UpdateHousehold.proto";
-import "LinkCustomerOnSAToHousehold.proto";
-import "DeleteHousehold.proto";
+import "Messages/CreateHousehold.proto";
+import "Messages/GetHouseholdRequest.proto";
+import "Messages/GetHouseholdList.proto";
+import "Messages/Household.proto";
+import "Messages/UpdateHousehold.proto";
+import "Messages/LinkCustomerOnSAToHousehold.proto";
+import "Messages/DeleteHousehold.proto";
 
 service HouseholdService {
     rpc CreateHousehold (CreateHouseholdRequest) returns (CreateHouseholdResponse);

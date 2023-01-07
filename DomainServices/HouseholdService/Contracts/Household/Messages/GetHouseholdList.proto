@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "Messages/Household.proto";
+
+message GetHouseholdListRequest {
+    int32 SalesArrangementId = 1;
+}
+
+message GetHouseholdListResponse {
+    repeated DomainServices.HouseholdService.Household Households = 1;
+}

@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "ModificationStamp.proto";
+import "Messages/BasicParameters.proto";
+import "Messages/MortgageSimulationInputs.proto";
+import "Messages/MortgageSimulationResults.proto";
+import "Messages/AdditionalMortgageSimulationResults.proto";
+
+message GetMortgageOfferDetailRequest {
+	int32 OfferId = 1;
+}
+
+message GetMortgageOfferDetailResponse {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	cis.types.ModificationStamp Created = 3;
+	BasicParameters BasicParameters = 4;
+	MortgageSimulationInputs SimulationInputs = 5;
+	MortgageSimulationResults SimulationResults = 6;
+	AdditionalMortgageSimulationResults AdditionalSimulationResults = 7;
+}

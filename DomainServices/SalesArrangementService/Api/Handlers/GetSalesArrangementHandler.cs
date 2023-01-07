@@ -3,7 +3,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
-internal class GetSalesArrangementHandler
+internal sealed class GetSalesArrangementHandler
     : IRequestHandler<Dto.GetSalesArrangementMediatrRequest, _SA.SalesArrangement>
 {
     public async Task<_SA.SalesArrangement> Handle(Dto.GetSalesArrangementMediatrRequest request, CancellationToken cancellation)
@@ -29,6 +29,9 @@ internal class GetSalesArrangementHandler
                 case Repositories.Entities.SalesArrangementParametersTypes.Drawing:
                     model.Drawing = _SA.SalesArrangementParametersDrawing.Parser.ParseFrom(parameters.Bin);
                     break;
+                case Repositories.Entities.SalesArrangementParametersTypes.GeneralChange:
+                    model.GeneralChange = _SA.SalesArrangementParametersGeneralChange.Parser.ParseFrom(parameters.Bin);
+                    break;
                 default:
                     throw new NotImplementedException($"SalesArrangementParametersType {parameters.ParameterType} is not implemented");
             }
@@ -39,15 +42,12 @@ internal class GetSalesArrangementHandler
 
     private readonly Repositories.SalesArrangementServiceDbContext _dbContext;
     private readonly Repositories.SalesArrangementServiceRepository _repository;
-    private readonly ILogger<GetSalesArrangementHandler> _logger;
     
     public GetSalesArrangementHandler(
         Repositories.SalesArrangementServiceRepository repository,
-        Repositories.SalesArrangementServiceDbContext dbContext,
-        ILogger<GetSalesArrangementHandler> logger)
+        Repositories.SalesArrangementServiceDbContext dbContext)
     {
         _dbContext = dbContext;
         _repository = repository;
-        _logger = logger;
     }
 }

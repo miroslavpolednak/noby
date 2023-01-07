@@ -18,6 +18,7 @@ Konvence pro pojmenování těchto souborů je následovná:
 Např. *CreateHousehold.proto*
 - pokud se jedná o definici samostatného objektu, je soubor pojmenován podle daného objektu.  
 Např. *Household.proto*
+- *proto* soubory s kontrakty služby jsou uložené v podadresáři `Messages`.
 
 ## Podpora pro použití proto kontraktu v MediatR pipeline
 Abychom nemuseli pro každý MediatR handler / gRPC endpoint vytvářet umělou `IRequest` třídu, můžeme využít toho, že **ProtoC** generuje všechny *proto* kontrakty jako `partial` class.

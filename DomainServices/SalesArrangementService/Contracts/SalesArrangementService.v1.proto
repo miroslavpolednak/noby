@@ -3,19 +3,19 @@ package DomainServices.SalesArrangementService.v1;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "CreateSalesArrangement.proto";
-import "SalesArrangement.proto";
-import "LinkModelationToSalesArrangement.proto";
-import "UpdateSalesArrangementState.proto";
-import "GetSalesArrangementList.proto";
-import "GetSalesArrangementByOfferId.proto";
-import "UpdateSalesArrangement.proto";
-import "SalesArrangementIdRequest.proto";
-import "ValidateSalesArrangement.proto";
-import "UpdateLoanAssessmentParameters.proto";
-import "UpdateSalesArrangementParameters.proto";
-import "DeleteSalesArrangement.proto";
-import "UpdateOfferDocumentId.proto";
+import "Messages/CreateSalesArrangement.proto";
+import "Messages/SalesArrangement.proto";
+import "Messages/LinkModelationToSalesArrangement.proto";
+import "Messages/UpdateSalesArrangementState.proto";
+import "Messages/GetSalesArrangementList.proto";
+import "Messages/GetSalesArrangementByOfferId.proto";
+import "Messages/UpdateSalesArrangement.proto";
+import "Messages/SalesArrangementIdRequest.proto";
+import "Messages/ValidateSalesArrangement.proto";
+import "Messages/UpdateLoanAssessmentParameters.proto";
+import "Messages/UpdateSalesArrangementParameters.proto";
+import "Messages/DeleteSalesArrangement.proto";
+import "Messages/UpdateOfferDocumentId.proto";
 
 service SalesArrangementService {
 	// zalozeni noveho SA

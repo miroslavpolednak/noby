@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Messages/Types.proto";
+
+message AdditionalMortgageSimulationResults {
+	repeated PaymentScheduleSimple PaymentScheduleSimple = 1;
+	repeated ResultMarketingAction MarketingActions = 2;
+	repeated ResultFee Fees = 3;
+}

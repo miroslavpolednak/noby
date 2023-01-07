@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Handlers;
 
-internal class CreateSalesArrangementHandler
+internal sealed class CreateSalesArrangementHandler
     : IRequestHandler<Dto.CreateSalesArrangementMediatrRequest, CreateSalesArrangementResponse>
 {
     public async Task<CreateSalesArrangementResponse> Handle(Dto.CreateSalesArrangementMediatrRequest request, CancellationToken cancellation)
@@ -50,6 +50,9 @@ internal class CreateSalesArrangementHandler
                 case CreateSalesArrangementRequest.DataOneofCase.Drawing:
                     data.Drawing = request.Request.Drawing;
                     break;
+                case CreateSalesArrangementRequest.DataOneofCase.GeneralChange:
+                    data.GeneralChange = request.Request.GeneralChange;
+                    break;
             }
             var updateMediatrRequest = new Dto.UpdateSalesArrangementParametersMediatrRequest(data);
 
@@ -76,6 +79,7 @@ internal class CreateSalesArrangementHandler
         {
             >= 1 and <= 5 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage => true,
             6 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing => true,
+            7 when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,//TODO jake ID???
             _ => throw new CisValidationException(0, $"CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={salesArrangementTypeId}")
         };
 

@@ -22,5 +22,6 @@ internal class SalesArrangementParameters
 internal enum SalesArrangementParametersTypes : byte
 {
     Mortgage = 1,
-    Drawing = 2
+    Drawing = 2,
+    GeneralChange = 3,
 }
