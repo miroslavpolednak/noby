@@ -73,4 +73,82 @@ internal static class UpdateParametersExtensions
 
         return model;
     }
+
+    public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this Dto.ParametersGeneralChange parameters)
+    {
+        return new()
+        {
+            Applicant = parameters.Applicant,
+            Collateral = new()
+            {
+                IsActive = parameters.Collateral.IsActive,
+                AddLoanRealEstateCollateral = parameters.Collateral.AddLoanRealEstateCollateral,
+                ReleaseLoanRealEstateCollateral = parameters.Collateral.ReleaseLoanRealEstateCollateral
+            },
+            PaymentDay = new()
+            {
+                IsActive = parameters.PaymentDay.IsActive,
+                AgreedPaymentDay = parameters.PaymentDay.AgreedPaymentDay,
+                NewPaymentDay = parameters.PaymentDay.NewPaymentDay
+            },
+            DrawingDateTo = new()
+            {
+                IsActive = parameters.DrawingDateTo.IsActive,
+                AgreedDrawingDateTo = parameters.DrawingDateTo.AgreedDrawingDateTo,
+                CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
+                ExtensionByMonths = parameters.DrawingDateTo.ExtensionByMonths
+            },
+            PaymentAccount = new()
+            {
+                IsActive = parameters.PaymentAccount.IsActive,
+                AgreedBankCode = parameters.PaymentAccount.AgreedBankCode,
+                AgreedNumber = parameters.PaymentAccount.AgreedNumber,
+                AgreedPrefix = parameters.PaymentAccount.AgreedPrefix,
+                BankCode = parameters.PaymentAccount.BankCode,
+                Number = parameters.PaymentAccount.Number,
+                OwnerDateOfBirth = parameters.PaymentAccount.OwnerDateOfBirth,
+                OwnerFirstName = parameters.PaymentAccount.OwnerFirstName,
+                OwnerLastName = parameters.PaymentAccount.OwnerLastName,
+                Prefix = parameters.PaymentAccount.Prefix
+            },
+            LoanPaymentAmount = new()
+            {
+                IsActive = parameters.LoanPaymentAmount.IsActive,
+                NewLoanPaymentAmount = parameters.LoanPaymentAmount.NewLoanPaymentAmount,
+                ActualLoanPaymentAmount = parameters.LoanPaymentAmount.ActualLoanPaymentAmount,
+                ConnectionExtraordinaryPayment = parameters.LoanPaymentAmount.ConnectionExtraordinaryPayment
+            },
+            DueDate = new()
+            {
+                IsActive = parameters.DueDate.IsActive,
+                ActualLoanDueDate = parameters.DueDate.ActualLoanDueDate,
+                ConnectionExtraordinaryPayment = parameters.DueDate.ConnectionExtraordinaryPayment,
+                NewLoanDueDate = parameters.DueDate.NewLoanDueDate
+            },
+            LoanRealEstate = null,
+            LoanPurpose = new()
+            {
+                IsActive = parameters.LoanPurpose.IsActive,
+                LoanPurposesComment = parameters.LoanPurpose.LoanPurposesComment
+            },
+            DrawingAndOtherConditions = new()
+            {
+                IsActive = parameters.DrawingAndOtherConditions.IsActive,
+                CommentToChangeContractConditions = parameters.DrawingAndOtherConditions.CommentToChangeContractConditions
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = parameters.CommentToChangeRequest.IsActive,
+                GeneralComment = parameters.CommentToChangeRequest.GeneralComment
+            }
+        };
+    }
+
+    public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.ParametersHUBN parameters)
+    {
+        return new()
+        {
+
+        };
+    }
 }

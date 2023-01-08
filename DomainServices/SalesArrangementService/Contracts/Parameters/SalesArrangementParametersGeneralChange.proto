@@ -51,7 +51,7 @@ message SalesArrangementParametersGeneralChange {
 		google.protobuf.StringValue BankCode = 7;
 		google.protobuf.StringValue OwnerFirstName = 8;
 		google.protobuf.StringValue OwnerLastName = 9;
-		google.protobuf.StringValue OwnerDateOfBirth = 10;
+		cis.types.NullableGrpcDate OwnerDateOfBirth = 10;
 	}
 
 	message LoanPaymentAmountObject {
@@ -80,7 +80,7 @@ message SalesArrangementParametersGeneralChange {
 
 	message LoanPurposeObject {
 		bool IsActive = 1;
-		google.protobuf.StringValue LoanPurposesComment = 2;
+		cis.types.NullableGrpcDate LoanPurposesComment = 2;
 	}
 
 	message DrawingAndOtherConditionsObject {

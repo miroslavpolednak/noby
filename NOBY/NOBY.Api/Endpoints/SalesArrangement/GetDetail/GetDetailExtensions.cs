@@ -60,4 +60,77 @@ internal static class GetDetailExtensions
                 }
             }
         };
+
+    public static ParametersGeneralChange ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
+        => new()
+        {
+            Applicant = model.Applicant,
+            Collateral = new CollateralObject
+            {
+                IsActive = model.Collateral.IsActive,
+                AddLoanRealEstateCollateral = model.Collateral.AddLoanRealEstateCollateral,
+                ReleaseLoanRealEstateCollateral = model.Collateral.ReleaseLoanRealEstateCollateral
+            },
+            PaymentDay = new PaymentDayObject
+            {
+                IsActive = model.PaymentDay.IsActive,
+                AgreedPaymentDay = model.PaymentDay.AgreedPaymentDay,
+                NewPaymentDay = model.PaymentDay.NewPaymentDay
+            },
+            DrawingDateTo = new DrawingDateToObject
+            {
+                IsActive = model.DrawingDateTo.IsActive,
+                AgreedDrawingDateTo = model.DrawingDateTo.AgreedDrawingDateTo,
+                CommentToDrawingDateTo = model.DrawingDateTo.CommentToDrawingDateTo,
+                ExtensionByMonths = model.DrawingDateTo.ExtensionByMonths
+            },
+            PaymentAccount = new PaymentAccountObject
+            {
+                IsActive = model.PaymentAccount.IsActive,
+                AgreedBankCode = model.PaymentAccount.AgreedBankCode,
+                AgreedNumber = model.PaymentAccount.AgreedNumber,
+                AgreedPrefix = model.PaymentAccount.AgreedPrefix,
+                BankCode = model.PaymentAccount.BankCode,
+                Number = model.PaymentAccount.Number,
+                OwnerDateOfBirth = model.PaymentAccount.OwnerDateOfBirth,
+                OwnerFirstName = model.PaymentAccount.OwnerFirstName,
+                OwnerLastName = model.PaymentAccount.OwnerLastName
+            },
+            LoanPaymentAmount = new LoanPaymentAmountObject
+            {
+                IsActive = model.LoanPaymentAmount.IsActive,
+                ActualLoanPaymentAmount = model.LoanPaymentAmount.ActualLoanPaymentAmount,
+                NewLoanPaymentAmount = model.LoanPaymentAmount.NewLoanPaymentAmount,
+                ConnectionExtraordinaryPayment = model.LoanPaymentAmount.ConnectionExtraordinaryPayment
+            },
+            DueDate = new DueDateObject
+            {
+                IsActive = model.DueDate.IsActive,
+                ActualLoanDueDate = model.DueDate.ActualLoanDueDate,
+                ConnectionExtraordinaryPayment = model.DueDate.ConnectionExtraordinaryPayment,
+                NewLoanDueDate = model.DueDate.NewLoanDueDate
+            },
+            LoanRealEstates = null,
+            LoanPurpose = new LoanPurposeObject
+            {
+                IsActive = model.LoanPurpose.IsActive,
+                LoanPurposesComment = model.LoanPurpose.LoanPurposesComment
+            },
+            DrawingAndOtherConditions = new DrawingAndOtherConditionsObject
+            {
+                IsActive = model.DrawingAndOtherConditions.IsActive,
+                CommentToChangeContractConditions = model.DrawingAndOtherConditions.CommentToChangeContractConditions
+            },
+            CommentToChangeRequest = new CommentToChangeRequestObject
+            {
+                IsActive = model.CommentToChangeRequest.IsActive,
+                GeneralComment = model.CommentToChangeRequest.GeneralComment
+            }
+        };
+
+    public static ParametersHUBN ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
+        => new()
+        {
+
+        };
 }
