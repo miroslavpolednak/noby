@@ -131,6 +131,43 @@ internal static class GetDetailExtensions
     public static ParametersHUBN ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
         => new()
         {
-
+            Applicant = model.Applicant,
+            CollateralIdentification = new()
+            {
+                RealEstateIdentification = model.CollateralIdentification.RealEstateIdentification
+            },
+            LoanAmount = new()
+            {
+                ChangeAgreedLoanAmount = model.LoanAmount.ChangeAgreedLoanAmount,
+                RequiredLoanAmount = model.LoanAmount.RequiredLoanAmount,
+                PreserveAgreedPaymentAmount = model.LoanAmount.PreserveAgreedLoanPaymentAmount,
+                PreserveLoanDueDate = model.LoanAmount.PreserveAgreedLoanDueDate
+            },
+            ExpectedDateOfDrawing = new()
+            {
+                IsActive = model.ExpectedDateOfDrawing.IsActive,
+                NewExpectedDateOfDrawing = model.ExpectedDateOfDrawing.NewExpectedDateOfDrawing
+            },
+            DrawingDateTo = new()
+            {
+                IsActive = model.DrawingDateTo.IsActive,
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo.ExtensionDrawingDateToByMonths
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = model.CommentToChangeRequest.IsActive,
+                GeneralComment = model.CommentToChangeRequest.GeneralComment
+            },
+            LoanPurposes = model.LoanPurposes.Select(t => new LoanPurposeItem
+            {
+                Id = t.LoanPurposeId,
+                Sum = t.Sum
+            }).ToList(),
+            LoanRealEstates = model.LoanRealEstates.Select(t => new LoanRealEstateItem2
+            {
+                IsCollateral = t.IsCollateral,
+                RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                RealEstateTypeId = t.RealEstateTypeId
+            }).ToList()
         };
 }

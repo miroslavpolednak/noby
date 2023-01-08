@@ -154,9 +154,6 @@ internal static class UpdateParametersExtensions
             LoanAmount = new()
             {
                 ChangeAgreedLoanAmount = parameters.LoanAmount.ChangeAgreedLoanAmount,
-                AgreedLoanAmount = parameters.LoanAmount.AgreedLoanAmount,
-                AgreedLoanDueDate = parameters.LoanAmount.AgreedLoanDueDate,
-                AgreedLoanPaymentAmount = parameters.LoanAmount.AgreedLoanPaymentAmount,
                 PreserveAgreedLoanDueDate = parameters.LoanAmount.PreserveLoanDueDate,
                 PreserveAgreedLoanPaymentAmount = parameters.LoanAmount.PreserveAgreedPaymentAmount,
                 RequiredLoanAmount = parameters.LoanAmount.RequiredLoanAmount
