@@ -1,31 +1,55 @@
 ﻿using CIS.Foms.Types;
+using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 public sealed class ParametersHUBN
 {
+    /// <summary>
+    /// Identita klienta
+    /// </summary>
     public CustomerIdentity? Applicant { get; set; }
 
-    public PaymentAccountObject2 PaymentAccount { get; set; }
-
+    /// <summary>
+    /// Výše úvěru
+    /// </summary>
+    [Required]
     public LoanAmountObject LoanAmount { get; set; }
 
     /// <summary>
     /// Účely úvěru
     /// </summary>
-    public List<LoanPurposeItem2> LoanPurposes { get; set; }
+    [Required]
+    public List<LoanPurposeItem> LoanPurposes { get; set; }
 
     /// <summary>
     /// Objekty úvěru
     /// </summary>
+    [Required]
     public List<LoanRealEstateItem2> LoanRealEstates { get; set; }
 
+    /// <summary>
+    /// Identifikace zajištění
+    /// </summary>
+    [Required]
     public CollateralIdentificationObject CollateralIdentification { get; set; }
 
-    public ExpectedDateOfDrawingObject2 ExpectedDateOfDrawing { get; set; }
+    /// <summary>
+    /// Předpokládaný termín prvního čerpání
+    /// </summary>
+    [Required]
+    public ExpectedDateOfDrawingObject ExpectedDateOfDrawing { get; set; }
 
+    /// <summary>
+    /// Lhůta ukončení čerpání
+    /// </summary>
+    [Required]
     public DrawingDateToObject2 DrawingDateTo { get; set; }
 
+    /// <summary>
+    /// Komentář k žádosti o změnu
+    /// </summary>
+    [Required]
     public CommentToChangeRequestObject CommentToChangeRequest { get; set; }
 }
 
@@ -55,11 +79,13 @@ public sealed class LoanAmountObject
     /// <summary>
     /// Změnit sjednanou výši úvěru
     /// </summary>
+    [Required]
     public bool ChangeAgreedLoanAmount { get; set; }
 
     /// <summary>
     /// Sjednaná výše úvěru
     /// </summary>
+    [Required]
     public decimal AgreedLoanAmount { get; set; }
 
     /// <summary>
@@ -70,28 +96,32 @@ public sealed class LoanAmountObject
     /// <summary>
     /// Zachovat sjednanou splatnost do
     /// </summary>
+    [Required]
     public bool PreserveLoanDueDate { get; set; }
 
     /// <summary>
     /// Sjednaná splatnost do
     /// </summary>
+    [Required]
     public DateTime AgreedLoanDueDate { get; set; }
 
     /// <summary>
     /// Zachovat sjednanou splátku
     /// </summary>
+    [Required]
     public bool PreserveAgreedPaymentAmount { get; set; }
 
     /// <summary>
     /// Sjednaná měsíční splátka
     /// </summary>
-    public double AgreedLoanPaymentAmount { get; set; }
+    [Required]
+    public decimal AgreedLoanPaymentAmount { get; set; }
 }
 
 /// <summary>
 /// Účel úvěru
 /// </summary>
-public sealed class LoanPurposeItem2
+public sealed class LoanPurposeItem
 {
     /// <summary>
     /// Účel úvěru
@@ -106,10 +136,19 @@ public sealed class LoanPurposeItem2
 
 public sealed class LoanRealEstateItem2
 {
+    /// <summary>
+    /// Typ nemovitosti
+    /// </summary>
     public int RealEstateTypeId { get; set; }
 
+    /// <summary>
+    /// Slouží k zajištění
+    /// </summary>
     public bool IsCollateral { get; set; }
 
+    /// <summary>
+    /// Účel pořízení nemovitosti
+    /// </summary>
     public int RealEstatePurchaseTypeId { get; set; }
 }
 
@@ -121,11 +160,12 @@ public sealed class CollateralIdentificationObject
     public string RealEstateIdentification { get; set; }
 }
 
-public sealed class ExpectedDateOfDrawingObject2
+public sealed class ExpectedDateOfDrawingObject
 {
     /// <summary>
     /// Sekce aktivní
     /// </summary>
+    [Required]
     public bool IsActive { get; set; }
 
     /// <summary>
@@ -144,6 +184,7 @@ public sealed class DrawingDateToObject2
     /// <summary>
     /// Sekce aktivní
     /// </summary>
+    [Required]
     public bool IsActive { get; set; }
 
     /// <summary>

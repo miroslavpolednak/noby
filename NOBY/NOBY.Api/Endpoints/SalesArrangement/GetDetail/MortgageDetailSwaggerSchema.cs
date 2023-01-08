@@ -14,7 +14,9 @@ internal class MortgageDetailSwaggerSchema : ISchemaFilter
         var possibleTypes = new[]
         {
             typeof(ParametersMortgage),
-            typeof(ParametersDrawing)
+            typeof(ParametersDrawing),
+            typeof(ParametersGeneralChange),
+            typeof(ParametersHUBN)
         };
 
         foreach (var type in possibleTypes)

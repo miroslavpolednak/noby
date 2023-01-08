@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
@@ -146,9 +144,56 @@ internal static class UpdateParametersExtensions
 
     public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.ParametersHUBN parameters)
     {
-        return new()
+        var model = new _SA.SalesArrangementParametersHUBN()
         {
-
+            Applicant = parameters.Applicant,
+            CollateralIdentification = new()
+            {
+                RealEstateIdentification = parameters.CollateralIdentification.RealEstateIdentification
+            },
+            LoanAmount = new()
+            {
+                ChangeAgreedLoanAmount = parameters.LoanAmount.ChangeAgreedLoanAmount,
+                AgreedLoanAmount = parameters.LoanAmount.AgreedLoanAmount,
+                AgreedLoanDueDate = parameters.LoanAmount.AgreedLoanDueDate,
+                AgreedLoanPaymentAmount = parameters.LoanAmount.AgreedLoanPaymentAmount,
+                PreserveAgreedLoanDueDate = parameters.LoanAmount.PreserveLoanDueDate,
+                PreserveAgreedLoanPaymentAmount = parameters.LoanAmount.PreserveAgreedPaymentAmount,
+                RequiredLoanAmount = parameters.LoanAmount.RequiredLoanAmount
+            },
+            ExpectedDateOfDrawing = new()
+            {
+                AgreedExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing.AgreedDateOfDrawing,
+                IsActive = parameters.ExpectedDateOfDrawing.IsActive,
+                NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing.NewExpectedDateOfDrawing
+            },
+            DrawingDateTo = new()
+            {
+                AgreedDrawingDateTo = parameters.DrawingDateTo.AgreedDrawingDateTo,
+                IsActive = parameters.DrawingDateTo.IsActive,
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
+            },
+            CommentToChangeRequest = new()
+            {
+                IsActive = parameters.CommentToChangeRequest.IsActive,
+                GeneralComment = parameters.CommentToChangeRequest.GeneralComment
+            }
         };
+
+        if (parameters.LoanPurposes != null)
+            model.LoanPurposes.AddRange(parameters.LoanPurposes.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanPurposeItem
+            {
+                LoanPurposeId = t.Id,
+                Sum = t.Sum
+            }));
+        if (parameters.LoanRealEstates != null)
+            model.LoanRealEstates.AddRange(parameters.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanRealEstateItem
+            {
+                IsCollateral = t.IsCollateral,
+                RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                RealEstateTypeId = t.RealEstateTypeId
+            }));
+
+        return model;
     }
 }
