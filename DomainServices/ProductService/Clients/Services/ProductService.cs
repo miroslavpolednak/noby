@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using DomainServices.ProductService.Contracts;
 
 namespace DomainServices.ProductService.Clients.Services;
@@ -25,60 +24,44 @@ internal class ProductService : IProductServiceClient
 
     #endregion
 
-    public async Task<IServiceCallResult> GetProductList(long caseId, CancellationToken cancellationToken = default)
+    public async Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetProductListAsync(new CaseIdRequest() { CaseId = caseId }, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<GetProductListResponse>(result);
+        return await _service.GetProductListAsync(new CaseIdRequest() { CaseId = caseId }, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> GetProductObligationList(GetProductObligationListRequest request, CancellationToken cancellationToken = default)
+    public async Task<GetProductObligationListResponse> GetProductObligationList(GetProductObligationListRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetProductObligationListAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<GetProductObligationListResponse>(result);
+        return await _service.GetProductObligationListAsync(request, cancellationToken: cancellationToken);
     }
 
-
-    public async Task<IServiceCallResult> GetMortgage(long productId, CancellationToken cancellationToken = default)
+    public async Task<GetMortgageResponse> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetMortgageAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<GetMortgageResponse>(result);
+        return await _service.GetMortgageAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
+    public async Task<ProductIdReqRes> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
-        return new SuccessfulServiceCallResult<ProductIdReqRes>(result);
+        return await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
     }
     
-    public async Task<IServiceCallResult> UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
+    public async Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.UpdateMortgageAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult();
+        await _service.UpdateMortgageAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> CreateContractRelationship(CreateContractRelationshipRequest request, CancellationToken cancellationToken = default)
+    public async Task CreateContractRelationship(CreateContractRelationshipRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.CreateContractRelationshipAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult();
+        await _service.CreateContractRelationshipAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> DeleteContractRelationship(DeleteContractRelationshipRequest request, CancellationToken cancellationToken = default)
+    public async Task DeleteContractRelationship(DeleteContractRelationshipRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.DeleteContractRelationshipAsync(request, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult();
+        await _service.DeleteContractRelationshipAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<IServiceCallResult> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default)
+    public async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetCustomersOnProductAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
-
-        return new SuccessfulServiceCallResult<GetCustomersOnProductResponse>(result);
+        return await _service.GetCustomersOnProductAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
 }

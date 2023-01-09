@@ -28,7 +28,7 @@ internal sealed class DrawingBuilder
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         try
         {
-            var mortgageInstance = ServiceCallResult.ResolveAndThrowIfError<__Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));
+            var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.PaymentAccount?.BankCode))
             {

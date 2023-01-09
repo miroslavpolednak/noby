@@ -21,6 +21,6 @@ internal class ProductServiceWrapper : IServiceWrapper
 
         var result = await _productService.GetMortgage(input.CaseId.Value, cancellationToken);
 
-        data.Mortgage = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(result).Mortgage;
+        data.Mortgage = result.Mortgage;
     }
 }
