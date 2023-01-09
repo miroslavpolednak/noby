@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.ContactTypes;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.ContactTypes;
 
 [DataContract]
 public class ContactTypeItem
@@ -15,7 +13,6 @@ public class ContactTypeItem
     public string MpDigiApiCode { get; set; }
 
     [DataMember(Order = 4)]
-    [JsonIgnore]
     public bool IsValid { get; set; }
 
     [DataMember(Order = 5)]
