@@ -1,13 +1,14 @@
-﻿using DomainServices.CodebookService.Contracts.Endpoints.IncomeOtherTypes;
+﻿using DomainServices.CodebookService.Contracts;
+using DomainServices.CodebookService.Contracts.Endpoints.IncomeOtherTypes;
 
 namespace DomainServices.CodebookService.Endpoints.IncomeOtherTypes;
 
 public class IncomeOtherTypesHandler
-    : IRequestHandler<IncomeOtherTypesRequest, List<IncomeOtherTypeItem>>
+    : IRequestHandler<IncomeOtherTypesRequest, List<GenericCodebookItemWithCode>>
 {
-    public async Task<List<IncomeOtherTypeItem>> Handle(IncomeOtherTypesRequest request, CancellationToken cancellationToken)
+    public async Task<List<GenericCodebookItemWithCode>> Handle(IncomeOtherTypesRequest request, CancellationToken cancellationToken)
     {
-        return await FastMemoryCache.GetOrCreate<IncomeOtherTypeItem>(nameof(IncomeOtherTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<IncomeOtherTypeItem>(_sqlQuery, cancellationToken));
+        return await FastMemoryCache.GetOrCreate<GenericCodebookItemWithCode>(nameof(IncomeOtherTypesHandler), async () => await _connectionProvider.ExecuteDapperRawSqlToList<GenericCodebookItemWithCode>(_sqlQuery, cancellationToken));
     }
 
     const string _sqlQuery = @"SELECT KOD 'Id', CODE 'Code', TEXT_CZE 'Name', CASE WHEN SYSDATETIME() BETWEEN[PLATNOST_OD] AND ISNULL([PLATNOST_DO], '9999-12-31') THEN 1 ELSE 0 END 'IsValid' 
