@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Identity.proto";
+
+message GetCustomersOnProductRequest {
+    int64 ProductId = 1;
+}
+
+message GetCustomersOnProductResponse {
+	repeated GetCustomersOnProductResponseItem Customers = 1;
+}
+
+message GetCustomersOnProductResponseItem {
+	repeated cis.types.Identity CustomerIdentifiers = 1;
+	int32 RelationshipCustomerProductTypeId = 2;
+	google.protobuf.BoolValue Agent = 3;
+	bool IsKYCSuccessful = 4;
+}

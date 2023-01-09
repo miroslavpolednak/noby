@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+message GetProductListRequest {
+    int64 CaseId = 1;
+}
+
+message GetProductListResponse {
+    repeated GetProductListItem Products = 1;
+}
+
+message GetProductListItem {
+    int64 ProductId = 1;
+    int32 ProductTypeId = 2;
+}

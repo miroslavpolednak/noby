@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+
 namespace DomainServices.CodebookService.Contracts.Endpoints.RealEstatePurchaseTypes;
 
 [DataContract]
@@ -11,7 +12,6 @@ public class RealEstatePurchaseTypeItem
     public string Name { get; set; }
 
     [DataMember(Order = 3)]
-    [JsonIgnore]
     public bool IsValid { get; set; }
 
     [DataMember(Order = 4)]

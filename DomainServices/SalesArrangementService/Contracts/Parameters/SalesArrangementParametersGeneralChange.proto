@@ -1,0 +1,95 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDecimal.proto";
+import "GrpcDate.proto";
+import "Identity.proto";
+
+message SalesArrangementParametersGeneralChange {
+	cis.types.Identity Applicant = 1;
+	CollateralObject Collateral = 2;
+	PaymentDayObject PaymentDay = 3;
+	DrawingDateToObject DrawingDateTo = 4;
+	PaymentAccountObject PaymentAccount = 5;
+	LoanPaymentAmountObject LoanPaymentAmount = 6;
+	DueDateObject DueDate = 7;
+	LoanRealEstateObject LoanRealEstate = 8;
+	LoanPurposeObject LoanPurpose = 9;
+	DrawingAndOtherConditionsObject DrawingAndOtherConditions = 10;
+	CommentToChangeRequestObject CommentToChangeRequest = 11;
+
+	message CollateralObject {
+		bool IsActive = 1;
+		google.protobuf.StringValue AddLoanRealEstateCollateral = 2;
+		google.protobuf.StringValue ReleaseLoanRealEstateCollateral = 3;
+	}
+
+	message PaymentDayObject {
+		bool IsActive = 1;
+		int32 AgreedPaymentDay = 2;
+		google.protobuf.Int32Value NewPaymentDay = 3;
+	}
+
+	message DrawingDateToObject {
+		bool IsActive = 1;
+		cis.types.GrpcDate AgreedDrawingDateTo = 2;
+		google.protobuf.Int32Value ExtensionDrawingDateToByMonths = 3;
+		google.protobuf.StringValue CommentToDrawingDateTo = 4;
+	}
+
+	message PaymentAccountObject {
+		bool IsActive = 1;
+		string AgreedPrefix = 2;
+		string AgreedNumber = 3;
+		string AgreedBankCode = 4;
+		google.protobuf.StringValue Prefix = 5;
+		google.protobuf.StringValue Number = 6;
+		google.protobuf.StringValue BankCode = 7;
+		google.protobuf.StringValue OwnerFirstName = 8;
+		google.protobuf.StringValue OwnerLastName = 9;
+		cis.types.NullableGrpcDate OwnerDateOfBirth = 10;
+	}
+
+	message LoanPaymentAmountObject {
+		bool IsActive = 1;
+		cis.types.NullableGrpcDecimal NewLoanPaymentAmount = 2;
+		cis.types.GrpcDecimal ActualLoanPaymentAmount = 3;
+		bool ConnectionExtraordinaryPayment = 4;
+	}
+
+	message DueDateObject {
+		bool IsActive = 1;
+		cis.types.NullableGrpcDate NewLoanDueDate = 2;
+		cis.types.GrpcDate ActualLoanDueDate = 3;
+		bool ConnectionExtraordinaryPayment = 4;
+	}
+
+	message LoanRealEstateObject {
+		bool IsActive = 1;
+		repeated LoanRealEstatesItem LoanRealEstates = 2;
+	}
+
+	message LoanRealEstatesItem {
+		int32 RealEstateTypeId = 1;
+		int32 RealEstatePurchaseTypeId = 2;
+	}
+
+	message LoanPurposeObject {
+		bool IsActive = 1;
+		cis.types.NullableGrpcDate LoanPurposesComment = 2;
+	}
+
+	message DrawingAndOtherConditionsObject {
+		bool IsActive = 1;
+		google.protobuf.StringValue CommentToChangeContractConditions = 2;
+	}
+
+	message CommentToChangeRequestObject {
+		bool IsActive = 1;
+		google.protobuf.StringValue GeneralComment = 2;
+	}
+}

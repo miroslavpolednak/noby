@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "Messages/MortgageData.proto";
+
+message GetMortgageRequest {
+    int64 ProductId = 1;
+}
+
+message GetMortgageResponse {
+    MortgageData Mortgage = 1;
+}

@@ -135,7 +135,7 @@ internal sealed class GetCaseParametersHandler
         CancellationToken cancellation
         )
     {
-        var mortgageData = ServiceCallResult.ResolveAndThrowIfError<GetMortgageResponse>(await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
+        var mortgageData = (await _productService.GetMortgage(caseInstance.CaseId, cancellation)).Mortgage;
 
         return new GetCaseParametersResponse
         {

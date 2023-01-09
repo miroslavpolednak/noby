@@ -3,11 +3,11 @@ syntax = "proto3";
 package DomainServices.CustomerService.V1;
 option csharp_namespace = "DomainServices.CustomerService.Contracts.V1";
 
-import "ProfileCheck.proto";
-import "CreateCustomer.proto";
-import "CustomerDetail.proto";
-import "CustomerList.proto";
-import "SearchCustomers.proto";
+import "Messages/ProfileCheck.proto";
+import "Messages/CreateCustomer.proto";
+import "Messages/CustomerDetail.proto";
+import "Messages/CustomerList.proto";
+import "Messages/SearchCustomers.proto";
 
 service CustomerService {
    rpc ProfileCheck(ProfileCheckRequest) returns (ProfileCheckResponse);

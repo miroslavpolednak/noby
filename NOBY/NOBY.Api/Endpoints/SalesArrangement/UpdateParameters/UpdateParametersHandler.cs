@@ -3,7 +3,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
-internal class UpdateParametersHandler
+internal sealed class UpdateParametersHandler
     : AsyncRequestHandler<UpdateParametersRequest>
 {
     protected override async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
@@ -31,6 +31,18 @@ internal class UpdateParametersHandler
                     var o2 = System.Text.Json.JsonSerializer.Deserialize<Dto.ParametersDrawing>(dataString, _jsonSerializerOptions);
                     if (o2 is not null)
                         updateRequest.Drawing = o2.ToDomainService();
+                    break;
+
+                case 7:
+                    var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.ParametersGeneralChange>(dataString, _jsonSerializerOptions);
+                    if (o3 is not null)
+                        updateRequest.GeneralChange = o3.ToDomainService();
+                    break;
+
+                case 8:
+                    var o4 = System.Text.Json.JsonSerializer.Deserialize<Dto.ParametersHUBN>(dataString, _jsonSerializerOptions);
+                    if (o4 is not null)
+                        updateRequest.HUBN = o4.ToDomainService();
                     break;
 
                 default:

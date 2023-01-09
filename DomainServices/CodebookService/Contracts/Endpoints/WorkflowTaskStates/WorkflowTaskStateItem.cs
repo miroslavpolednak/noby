@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.WorkflowTaskStates;
 
 [DataContract]
 public class WorkflowTaskStateItem
@@ -12,7 +10,6 @@ public class WorkflowTaskStateItem
     public string Name { get; set; }
 
     [DataMember(Order = 3)]
-    [JsonIgnore]
     public EWorkflowTaskStateFlag Flag { get; set; }
 
 }

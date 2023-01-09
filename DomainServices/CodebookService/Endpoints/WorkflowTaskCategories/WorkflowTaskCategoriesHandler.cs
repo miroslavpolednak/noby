@@ -14,6 +14,7 @@ public class WorkflowTaskCategoriesHandler
             {
                 Id = (int)t,
                 Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                IsValid = true,
             })
             .ToList();
 

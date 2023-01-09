@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-namespace DomainServices.CodebookService.Contracts.Endpoints.BankCodes;
+﻿namespace DomainServices.CodebookService.Contracts.Endpoints.BankCodes;
 
 [DataContract]
 public class BankCodeItem
@@ -17,6 +16,5 @@ public class BankCodeItem
     public string State { get; set; }
 
     [DataMember(Order = 5)]
-    [JsonIgnore]
     public bool IsValid { get; set; }
 }

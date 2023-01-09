@@ -20,7 +20,7 @@ internal class DrawingValidator
     {
         var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         // instance hypo
-        var productInstance = ServiceCallResult.ResolveAndThrowIfError<_Pr.GetMortgageResponse>(await productService.GetMortgage(_request.CaseId, cancellationToken));
+        var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
         if (productInstance.Mortgage.AvailableForDrawing <= 0M)
             throw new CisValidationException("Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit");
