@@ -167,5 +167,5 @@ public sealed class DrawingDateToObject2
     /// <summary>
     /// Prodloužení konce lhůty čerpání o kolik měsíců
     /// </summary>
-    public int ExtensionDrawingDateToByMonths { get; set; }
+    public int? ExtensionDrawingDateToByMonths { get; set; }
 }

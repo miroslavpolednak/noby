@@ -74,7 +74,7 @@ internal static class UpdateParametersExtensions
 
     public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this Dto.ParametersGeneralChange parameters)
     {
-        return new()
+        var model = new _SA.SalesArrangementParametersGeneralChange()
         {
             Applicant = parameters.Applicant,
             Collateral = new()
@@ -94,7 +94,7 @@ internal static class UpdateParametersExtensions
                 IsActive = parameters.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = parameters.DrawingDateTo.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
-                ExtensionByMonths = parameters.DrawingDateTo.ExtensionByMonths
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
             },
             PaymentAccount = new()
             {
@@ -123,7 +123,10 @@ internal static class UpdateParametersExtensions
                 ConnectionExtraordinaryPayment = parameters.DueDate.ConnectionExtraordinaryPayment,
                 NewLoanDueDate = parameters.DueDate.NewLoanDueDate
             },
-            LoanRealEstate = null,
+            LoanRealEstate = new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstateObject
+            {
+                IsActive = parameters.LoanRealEstate.IsActive
+            },
             LoanPurpose = new()
             {
                 IsActive = parameters.LoanPurpose.IsActive,
@@ -140,6 +143,15 @@ internal static class UpdateParametersExtensions
                 GeneralComment = parameters.CommentToChangeRequest.GeneralComment
             }
         };
+
+        if (parameters.LoanRealEstate?.LoanRealEstates != null)
+            model.LoanRealEstate.LoanRealEstates.AddRange(parameters.LoanRealEstate.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
+            {
+                RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                RealEstateTypeId = t.RealEstateTypeId
+            }));
+
+        return model;
     }
 
     public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.ParametersHUBN parameters)
@@ -160,13 +172,11 @@ internal static class UpdateParametersExtensions
             },
             ExpectedDateOfDrawing = new()
             {
-                AgreedExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing.AgreedDateOfDrawing,
                 IsActive = parameters.ExpectedDateOfDrawing.IsActive,
                 NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()
             {
-                AgreedDrawingDateTo = parameters.DrawingDateTo.AgreedDrawingDateTo,
                 IsActive = parameters.DrawingDateTo.IsActive,
                 ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
             },

@@ -82,7 +82,7 @@ internal static class GetDetailExtensions
                 IsActive = model.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = model.DrawingDateTo.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = model.DrawingDateTo.CommentToDrawingDateTo,
-                ExtensionByMonths = model.DrawingDateTo.ExtensionByMonths
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo.ExtensionDrawingDateToByMonths
             },
             PaymentAccount = new PaymentAccountObject
             {
@@ -110,7 +110,15 @@ internal static class GetDetailExtensions
                 ConnectionExtraordinaryPayment = model.DueDate.ConnectionExtraordinaryPayment,
                 NewLoanDueDate = model.DueDate.NewLoanDueDate
             },
-            LoanRealEstates = null,
+            LoanRealEstate = new LoanRealEstateObject
+            {
+                IsActive = model.LoanRealEstate.IsActive,
+                LoanRealEstates = model.LoanRealEstate.LoanRealEstates?.Select(t => new LoanRealEstateItem
+                {
+                    RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
+                    RealEstateTypeId = t.RealEstateTypeId
+                }).ToList()
+            },
             LoanPurpose = new LoanPurposeObject
             {
                 IsActive = model.LoanPurpose.IsActive,

@@ -1,6 +1,5 @@
 ﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using _SA = DomainServices.SalesArrangementService.Contracts;
 using _Cu = DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients;
 using CIS.Infrastructure.gRPC.CisTypes;
@@ -98,7 +97,7 @@ internal sealed class CreateProductHandler
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value)
         };
 
-        var result = ServiceCallResult.ResolveAndThrowIfError<_Product.ProductIdReqRes>(await _productService.CreateMortgage(request, cancellationToken));
+        var result = await _productService.CreateMortgage(request, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result.ProductId);
         //TODO rollbackovat i vytvoreni klienta?
 

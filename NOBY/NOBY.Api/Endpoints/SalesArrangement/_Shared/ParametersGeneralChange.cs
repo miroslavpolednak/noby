@@ -50,7 +50,7 @@ public sealed class ParametersGeneralChange
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public LoanRealEstateObject LoanRealEstates { get; set; }
+    public LoanRealEstateObject LoanRealEstate { get; set; }
 
     /// <summary>
     /// Účel úvěru
@@ -79,13 +79,22 @@ public sealed class LoanRealEstateObject
     [Required]
     public bool IsActive { get; set; }
 
-    public List<LoanRealEstateItem> LoanRealEstates { get; set; }
+    public List<LoanRealEstateItem>? LoanRealEstates { get; set; }
 }
 
+/// <summary>
+/// Objekt úvěru
+/// </summary>
 public sealed class LoanRealEstateItem
 {
+    /// <summary>
+    /// Typ nemovitosti
+    /// </summary>
     public int RealEstateTypeId { get; set; }
 
+    /// <summary>
+    /// Účel pořízení nemovitosti
+    /// </summary>
     public int RealEstatePurchaseTypeId { get; set; }
 }
 
@@ -155,7 +164,7 @@ public sealed class DrawingDateToObject
     /// <summary>
     /// Prodloužení konce lhůty čerpání o kolik měsíců
     /// </summary>
-    public int? ExtensionByMonths { get; set; }
+    public int? ExtensionDrawingDateToByMonths { get; set; }
 
     /// <summary>
     /// Komentář ke lhůtě ukončení čerpání

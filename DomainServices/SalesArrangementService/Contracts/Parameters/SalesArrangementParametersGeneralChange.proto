@@ -37,7 +37,7 @@ message SalesArrangementParametersGeneralChange {
 	message DrawingDateToObject {
 		bool IsActive = 1;
 		cis.types.GrpcDate AgreedDrawingDateTo = 2;
-		google.protobuf.Int32Value ExtensionByMonths = 3;
+		google.protobuf.Int32Value ExtensionDrawingDateToByMonths = 3;
 		google.protobuf.StringValue CommentToDrawingDateTo = 4;
 	}
 
