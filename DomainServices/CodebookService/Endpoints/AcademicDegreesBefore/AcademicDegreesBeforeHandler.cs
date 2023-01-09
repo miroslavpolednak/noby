@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesBefore
                 await using (var connection = _connectionProvider.Create())
                 {
                     await connection.OpenAsync();
-                    return (await connection.QueryAsync<GenericCodebookItem>("SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY] ORDER BY TEXT ASC")).ToList();
+                    return (await connection.QueryAsync<GenericCodebookItem>("SELECT KOD 'Id', TEXT 'Name', CAST(1 as bit) 'IsValid' FROM [SBR].[CIS_TITULY] ORDER BY TEXT ASC")).ToList();
                 }
             });
         }
