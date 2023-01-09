@@ -14,7 +14,7 @@ namespace DomainServices.CodebookService.Endpoints.AcademicDegreesAfter
         }
 
         private const string _sqlQuery =
-            "SELECT KOD 'Id', TEXT 'Name' FROM [SBR].[CIS_TITULY_ZA] ORDER BY TEXT ASC";
+            "SELECT KOD 'Id', TEXT 'Name', CAST(1 as bit) 'IsValid' FROM [SBR].[CIS_TITULY_ZA] ORDER BY TEXT ASC";
 
         private readonly CIS.Core.Data.IConnectionProvider<IXxdDapperConnectionProvider> _connectionProvider;
         private readonly ILogger<AcademicDegreesAfterHandler> _logger;

@@ -13,7 +13,8 @@ public class AddressTypesHandler : IRequestHandler<AddressTypesRequest, List<Gen
                 {
                     Id = (int)t,
                     Code = t.ToString(),
-                    Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? ""
+                    Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+                    IsValid = true
                 })
                 .ToList();
 
