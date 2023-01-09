@@ -26,7 +26,9 @@ BEGIN
 	(3, 'Žádost o hypoteční úvěr bez příjmu', 20003, 1),
 	(4, 'Žádost o doprodej neúčelové části', 20004, 1),
 	(5, 'Žádost o americkou hypotéku', 20010, 1),
-	(6, 'Žádost o čerpání', NULL, 2);
+	(6, 'Žádost o čerpání', NULL, 2),
+	(7, 'Žádost o obecnou změnu', NULL, 2),
+	(8, 'Žádost o změnu HUBN', NULL, 2);
 END
 
 
