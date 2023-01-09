@@ -45,9 +45,9 @@ public partial class UpdateLoanAssessmentParametersRequest
 { }
 
 public partial class DeleteSalesArrangementRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }
 
 public partial class UpdateOfferDocumentIdRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }

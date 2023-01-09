@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "Messages/Types.proto";
+
+message CreateContractRelationshipRequest {
+    int64 ProductId = 1;
+    Relationship Relationship = 2;
+}

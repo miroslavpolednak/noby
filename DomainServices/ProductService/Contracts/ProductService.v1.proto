@@ -3,25 +3,29 @@ package DomainServices.ProductService.v1;
 option csharp_namespace = "DomainServices.ProductService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
-import "Messages/Types.proto";
-import "Messages/TypesMortgage.proto";
+import "Messages/GetProductList.proto";
+import "Messages/GetProductObligationList.proto";
+import "Messages/GetMortgage.proto";
+import "Messages/CreateMortgage.proto";
+import "Messages/UpdateMortgage.proto";
+import "Messages/CreateContractRelationship.proto";
+import "Messages/DeleteContractRelationship.proto";
+import "Messages/GetCustomersOnProduct.proto";
 
 service ProductService {
+   rpc GetProductList (GetProductListRequest) returns (GetProductListResponse);
    
-   // BuildingSavings (out of scope)
-   rpc CreateProductInstance (CreateProductInstanceRequest) returns (CreateProductInstanceResponse);
-   rpc GetHousingSavingsInstance (ProductInstanceIdRequest) returns (GetHousingSavingsInstanceResponse);
-   rpc GetHousingSavingsInstanceBasicDetail (ProductInstanceIdRequest) returns (GetHousingSavingsInstanceBasicDetailResponse);
-   rpc GetProductInstanceList (GetProductInstanceListRequest) returns (GetProductInstanceListResponse);
-   rpc UpdateHousingSavingsInstance (ProductInstanceIdRequest) returns (google.protobuf.Empty);
-   
-   // Mortgage
-   rpc GetProductList (CaseIdRequest) returns (GetProductListResponse);
    rpc GetProductObligationList (GetProductObligationListRequest) returns (GetProductObligationListResponse);
-   rpc GetMortgage (ProductIdReqRes) returns (GetMortgageResponse);
-   rpc CreateMortgage (CreateMortgageRequest) returns (ProductIdReqRes);
+   
+   rpc GetMortgage (GetMortgageRequest) returns (GetMortgageResponse);
+   
+   rpc CreateMortgage (CreateMortgageRequest) returns (CreateMortgageResponse);
+   
    rpc UpdateMortgage (UpdateMortgageRequest) returns (google.protobuf.Empty);
+   
    rpc CreateContractRelationship (CreateContractRelationshipRequest) returns (google.protobuf.Empty);
+   
    rpc DeleteContractRelationship (DeleteContractRelationshipRequest) returns (google.protobuf.Empty);
-   rpc GetCustomersOnProduct (ProductIdReqRes) returns (GetCustomersOnProductResponse);
+   
+   rpc GetCustomersOnProduct (GetCustomersOnProductRequest) returns (GetCustomersOnProductResponse);
 }

@@ -31,7 +31,7 @@ internal static class MortgageExtensions
     /// <summary>
     /// Converts db entity Loan (table dbo.Uver) to contract object MortgageData.
     /// </summary>
-    public static MortgageData ToMortgage(this Repositories.Entities.Loan eLoan, List<Repositories.Entities.Relationship> eRelationships)
+    public static MortgageData ToMortgage(this Database.Entities.Loan eLoan, List<Database.Entities.Relationship> eRelationships)
     {
         var mortgage = new MortgageData
         {
@@ -84,7 +84,7 @@ internal static class MortgageExtensions
     /// <summary>
     /// Converts db entity Relationship (table dbo.VztahUver) to contract object Relationship .
     /// </summary>
-    public static Relationship ToRelationship(this Repositories.Entities.Relationship eRelationship)
+    public static Relationship ToRelationship(this Database.Entities.Relationship eRelationship)
     {
         return new Relationship
         {

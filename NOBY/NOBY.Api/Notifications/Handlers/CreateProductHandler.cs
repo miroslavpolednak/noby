@@ -98,10 +98,10 @@ internal sealed class CreateProductHandler
         };
 
         var result = await _productService.CreateMortgage(request, cancellationToken);
-        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result.ProductId);
+        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
         //TODO rollbackovat i vytvoreni klienta?
 
-        _logger.EntityCreated(nameof(_Product.Product), result.ProductId);
+        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }
 
     private readonly IRollbackBag _bag;

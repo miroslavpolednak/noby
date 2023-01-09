@@ -13,10 +13,10 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.MpHome.V1_1.IMpHomeClient>();
 
         // dbcontext
-        builder.AddEntityFramework<Repositories.ProductServiceDbContext>(connectionStringKey: "konsDb");
+        builder.AddEntityFramework<Database.ProductServiceDbContext>(connectionStringKey: "konsDb");
 
         // repos
-        builder.Services.AddScoped<Repositories.LoanRepository>();
+        builder.Services.AddScoped<Database.LoanRepository>();
 
         builder.Services.AddCodebookService();
             

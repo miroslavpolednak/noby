@@ -1,5 +1,4 @@
-﻿using CIS.Core.Results;
-using DomainServices.ProductService.Contracts;
+﻿using DomainServices.ProductService.Contracts;
 
 namespace DomainServices.ProductService.Clients;
 
@@ -30,7 +29,8 @@ public interface IProductServiceClient
     /// <summary>
     /// Vytvoření produktu KB Hypotéky
     /// </summary>
-    Task<ProductIdReqRes> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    /// <returns>ProductId</returns>
+    Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Aktualizace produktu KB Hypotéky

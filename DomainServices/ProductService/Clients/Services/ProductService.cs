@@ -26,7 +26,7 @@ internal class ProductService : IProductServiceClient
 
     public async Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetProductListAsync(new CaseIdRequest() { CaseId = caseId }, cancellationToken: cancellationToken);
+        return await _service.GetProductListAsync(new GetProductListRequest() { CaseId = caseId }, cancellationToken: cancellationToken);
     }
 
     public async Task<GetProductObligationListResponse> GetProductObligationList(GetProductObligationListRequest request, CancellationToken cancellationToken = default)
@@ -36,12 +36,13 @@ internal class ProductService : IProductServiceClient
 
     public async Task<GetMortgageResponse> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetMortgageAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
+        return await _service.GetMortgageAsync(new GetMortgageRequest() { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
-    public async Task<ProductIdReqRes> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
+    public async Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
     {
-        return await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
+        var result = await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
+        return result.ProductId;
     }
     
     public async Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
@@ -61,7 +62,7 @@ internal class ProductService : IProductServiceClient
 
     public async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(long productId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetCustomersOnProductAsync(new ProductIdReqRes() { ProductId = productId }, cancellationToken: cancellationToken);
+        return await _service.GetCustomersOnProductAsync(new GetCustomersOnProductRequest() { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
 }
