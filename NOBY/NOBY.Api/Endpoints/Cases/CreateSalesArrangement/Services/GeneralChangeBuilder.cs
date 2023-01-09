@@ -3,12 +3,12 @@ using __Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-internal sealed class DrawingBuilder
-        : BaseBuilder, ICreateSalesArrangementParametersBuilder
+internal sealed class GeneralChangeBuilder
+    : BaseBuilder, ICreateSalesArrangementParametersBuilder
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DrawingBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+    public GeneralChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
         : base(logger, request)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -16,12 +16,18 @@ internal sealed class DrawingBuilder
 
     public async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
-        _request.Drawing = new __SA.SalesArrangementParametersDrawing
+        _request.GeneralChange = new __SA.SalesArrangementParametersGeneralChange
         {
-            RepaymentAccount = new __SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
-            {
-                IsAccountNumberMissing = true
-            }
+            Collateral = new(),
+            PaymentDay = new(),
+            DrawingDateTo = new(),
+            PaymentAccount = new(),
+            LoanPaymentAmount = new(),
+            DueDate = new(),
+            LoanRealEstate = new(),
+            LoanPurpose = new(),
+            DrawingAndOtherConditions = new(),
+            CommentToChangeRequest = new()
         };
 
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage

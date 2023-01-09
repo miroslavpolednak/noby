@@ -82,8 +82,8 @@ internal sealed class CreateSalesArrangementHandler
         {
             >= 1 and <= 5 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Mortgage => true,
             6 when dataCase == CreateSalesArrangementRequest.DataOneofCase.Drawing => true,
-            7 when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,//TODO jake ID???
-            8 when dataCase == CreateSalesArrangementRequest.DataOneofCase.HUBN => true,//TODO jake ID???
+            7 when dataCase == CreateSalesArrangementRequest.DataOneofCase.GeneralChange => true,
+            8 when dataCase == CreateSalesArrangementRequest.DataOneofCase.HUBN => true,
             _ => throw new CisValidationException(0, $"CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={salesArrangementTypeId}")
         };
 
