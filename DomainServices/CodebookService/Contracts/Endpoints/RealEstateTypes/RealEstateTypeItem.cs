@@ -1,6 +1,5 @@
-﻿using System.Diagnostics;
-using System.Runtime.Intrinsics.X86;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+
 namespace DomainServices.CodebookService.Contracts.Endpoints.RealEstateTypes;
 
 [DataContract]
@@ -13,7 +12,6 @@ public class RealEstateTypeItem
     public string Name { get; set; }
 
     [DataMember(Order = 3)]
-    [JsonIgnore]
     public bool IsValid { get; set; }
 
     [DataMember(Order = 4)]
