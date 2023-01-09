@@ -1,5 +1,4 @@
 ﻿using __SA = DomainServices.SalesArrangementService.Contracts;
-using __Pr = DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
@@ -36,12 +35,20 @@ internal sealed class GeneralChangeBuilder
         {
             var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
 
-            _request.GeneralChange.PaymentDay.AgreedPaymentDay = mortgageInstance.Mortgage.PaymentDay.GetValueOrDefault();
-
+            _request.GeneralChange.PaymentDay.AgreedPaymentDay = mortgageInstance.Mortgage?.PaymentDay ?? 0;
+            _request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
+            if (mortgageInstance.Mortgage?.PaymentAccount != null)
+            {
+                _request.GeneralChange.PaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.PaymentAccount.Prefix;
+                _request.GeneralChange.PaymentAccount.AgreedNumber = mortgageInstance.Mortgage.PaymentAccount.Number;
+                _request.GeneralChange.PaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.PaymentAccount.BankCode;
+            }
+            _request.GeneralChange.LoanPaymentAmount.ActualLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
+            _request.GeneralChange.DueDate.ActualLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
         }
         catch
         {
-            _logger.LogInformation("DrawingBuilder: Account not found in ProductService");
+            _logger.LogInformation("GeneralChangeBuilder: Account not found in ProductService");
         }
 
         return _request;
