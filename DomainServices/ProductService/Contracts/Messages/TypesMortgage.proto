@@ -7,7 +7,6 @@ import "GrpcDecimal.proto";
 import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 
-
 message CaseIdRequest {
     int64 CaseId = 1;
 }
