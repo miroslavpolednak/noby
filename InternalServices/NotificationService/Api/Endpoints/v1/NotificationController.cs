@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto.Abstraction;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -96,8 +96,8 @@ public class NotificationController : ControllerBase
     [HttpGet("result/search")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(List<Result>), StatusCodes.Status200OK)]
-    public async Task<List<Result>> SearchResults([FromQuery] string identity, [FromQuery] string identityScheme,
-        [FromQuery] string customId, [FromQuery] string documentId, CancellationToken token)
+    public async Task<List<Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
+        [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
     {
         var response = await _mediator.Send(new SearchResultsRequest
         {

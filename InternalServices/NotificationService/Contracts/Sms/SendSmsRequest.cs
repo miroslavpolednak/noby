@@ -5,7 +5,7 @@ using ProtoBuf;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class SendSmsRequest : IRequest<SendSmsResponse>, IValidatableRequest
 {
     [ProtoMember(1)]

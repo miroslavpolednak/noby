@@ -1,15 +1,18 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Mappers;
 using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
+using EmailResult = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.EmailResult;
 
 namespace CIS.InternalServices.NotificationService.Api.Handlers.Result;
 
-public class SearchResultsByHandler : IRequestHandler<SearchResultsRequest, SearchResultsResponse>
+public class SearchResultsHandler : IRequestHandler<SearchResultsRequest, SearchResultsResponse>
 {
     private readonly NotificationRepository _repository;
 
-    public SearchResultsByHandler(NotificationRepository repository)
+    public SearchResultsHandler(NotificationRepository repository)
     {
         _repository = repository;
     }

@@ -1,10 +1,10 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.NotificationService.Contracts.Common;
+﻿using CIS.InternalServices.NotificationService.Contracts.Common;
 using ProtoBuf;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 
-public class EmailResult : Abstraction.Result
+[ProtoContract]
+public class Result
 {
     [ProtoMember(1)]
     public Guid NotificationId { get; set; }
@@ -19,17 +19,20 @@ public class EmailResult : Abstraction.Result
     public List<string> Errors { get; set; } = new();
     
     [ProtoMember(5)]
-    public Identifier Identifier { get; set; } = default!;
+    public Identifier? Identifier { get; set; }
     
     [ProtoMember(6)]
-    public string CustomId { get; set; } = string.Empty;
+    public string? CustomId { get; set; }
     
     [ProtoMember(7)]
-    public string DocumentId { get; set; } = string.Empty;
+    public string? DocumentId { get; set; }
 
     [ProtoMember(8)]
-    public GrpcDateTime RequestTimestamp { get; set; } = default!;
-    
+    public DateTime? RequestTimestamp { get; set; }
+
     [ProtoMember(9)]
-    public GrpcDateTime HandoverToMcsTimestamp { get; set; } = default!;
+    public RequestData RequestData { get; set; } = null!;
+    
+    [ProtoMember(10)]
+    public DateTime? HandoverToMcsTimestamp { get; set; }
 }

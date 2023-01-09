@@ -3,6 +3,7 @@ using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
+using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
 
@@ -46,7 +47,7 @@ public class NotificationRepository
             ?? throw new CisNotFoundException(399, $"Result with id = '{id}' not found.");
     }
 
-    public async Task<IEnumerable<Result>> SearchResultsBy(string identity, string identityScheme, string customId, string documentId)
+    public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId)
     {
         return await _dbContext.Results
             .Where(r => string.IsNullOrEmpty(identity) || r.Identity == identity)

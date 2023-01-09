@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.NotificationService.Contracts.Sms;
 
-[ProtoContract, CompatibilityLevel(CompatibilityLevel.Level300)]
+[ProtoContract]
 public class SendSmsFromTemplateResponse
 {
     [ProtoMember(1)]
