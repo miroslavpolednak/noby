@@ -1,10 +1,9 @@
 ﻿using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DSContract = DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
-internal class SimulateMortgageHandler
+internal sealed class SimulateMortgageHandler
     : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
 {
     public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)

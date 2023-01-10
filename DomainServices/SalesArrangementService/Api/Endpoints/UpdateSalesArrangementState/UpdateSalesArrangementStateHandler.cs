@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
 
-internal class UpdateSalesArrangementStateHandler
+internal sealed class UpdateSalesArrangementStateHandler
     : IRequestHandler<Contracts.UpdateSalesArrangementStateRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementStateRequest request, CancellationToken cancellation)
@@ -14,7 +14,7 @@ internal class UpdateSalesArrangementStateHandler
 
         // kontrola aktualniho stavu vuci novemu stavu
         if (saEntity.State == request.State)
-            throw GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already in state {request.State}", 18007);
+            throw new CisValidationException(18007, $"SalesArrangement {request.SalesArrangementId} is already in state {request.State}");
 
         // update stavu SA
         await _repository.UpdateSalesArrangementState(request.SalesArrangementId, request.State, cancellation);
@@ -24,15 +24,12 @@ internal class UpdateSalesArrangementStateHandler
 
     private readonly CodebookService.Clients.ICodebookServiceClients _codebookService;
     private readonly Database.SalesArrangementServiceRepository _repository;
-    private readonly ILogger<UpdateSalesArrangementStateHandler> _logger;
 
     public UpdateSalesArrangementStateHandler(
         CodebookService.Clients.ICodebookServiceClients codebookService,
-        Database.SalesArrangementServiceRepository repository,
-        ILogger<UpdateSalesArrangementStateHandler> logger)
+        Database.SalesArrangementServiceRepository repository)
     {
         _codebookService = codebookService;
         _repository = repository;
-        _logger = logger;
     }
 }

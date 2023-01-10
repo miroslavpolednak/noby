@@ -90,7 +90,7 @@ public class DocumentArchiveController : ControllerBase
      [FromBody] SaveDocumentToArchiveRequest request,
      CancellationToken cancellationToken)
     {
-        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), 
+        await _mediator.Send(request?.InfuseCaseId(caseId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)), 
                              cancellationToken);
         return Accepted();
     }

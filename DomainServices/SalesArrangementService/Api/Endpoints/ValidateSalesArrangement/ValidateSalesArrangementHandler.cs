@@ -76,14 +76,7 @@ internal class ValidateSalesArrangementHandler
             if (!ValidCommonValues.Contains(checkFormResult.CommonValue))
             {
                 var message = $"Check form common error [CommonValue: {checkFormResult.CommonValue}, CommonText: {checkFormResult.CommonText}]";
-                if (checkFormResult.CommonValue == 2)
-                {
-                    throw new CisValidationException(18041, message);
-                }
-                else
-                {
-                    throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, message, 18040);
-                }
+                throw new CisValidationException(checkFormResult.CommonValue == 2 ? 18041 : 18040, message);
             }
 
             var transformationService = _transformationServiceFactory.CreateService(checkFormData.formular_id);

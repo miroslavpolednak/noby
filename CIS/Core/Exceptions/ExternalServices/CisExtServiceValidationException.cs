@@ -6,19 +6,27 @@ namespace CIS.Core.Exceptions.ExternalServices;
 /// HTTP 400. Chyba, která vzniká při volání API třetích stran. Pokud API vrátí HTTP 4xx, vytáhneme z odpovědi chybu a vyvoláme tuto vyjímku. Podporuje seznam chyb.
 /// </summary>
 public sealed class CisExtServiceValidationException
-    : BaseCisValidationException
+    : CisValidationException
 {
     /// <param name="message">Chybová zpráva</param>
     public CisExtServiceValidationException(string message)
-        : base(UnknownExceptionCode, message)
-    {
-    }
+        : base(BaseCisException.UnknownExceptionCode, message)
+    { }
+
+    /// <param name="exceptionCode">CIS error kód</param>
+    /// <param name="message">Chybová zpráva</param>
+    public CisExtServiceValidationException(int exceptionCode, string message)
+        : base(exceptionCode, message)
+    { }
+
+    /// <param name="exceptionCode">CIS error kód</param>
+    /// <param name="message">Chybová zpráva</param>
+    public CisExtServiceValidationException(string exceptionCode, string message)
+        : base(exceptionCode, message)
+    { }
 
     /// <param name="errors">Seznam chyb</param>
-    /// <param name="message">Souhrná chybová zpráva</param>
-    public CisExtServiceValidationException(IEnumerable<(string Key, string Message)> errors, string message = "")
-        : base(UnknownExceptionCode, message)
-    {
-        Errors = errors.ToImmutableList();
-    }
+    public CisExtServiceValidationException(IEnumerable<CisExceptionItem> errors)
+        : base(errors)
+    { }
 }

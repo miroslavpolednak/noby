@@ -96,14 +96,6 @@ internal sealed class GetTaskListHandler
         return identity ?? string.Empty;
     }
 
-    private static EasSimulationHT.EasSimulationHTWrapper.WFS_FindItem[] ResolveFindTasks(IServiceCallResult result) =>
-     result switch
-     {
-         SuccessfulServiceCallResult<EasSimulationHT.EasSimulationHTWrapper.WFS_FindItem[]> r => r.Model,
-         ErrorServiceCallResult err => throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, err.Errors[0].Message, err.Errors[0].Key),
-         _ => throw new NotImplementedException("FindTasks")
-     };
-
     private readonly ILogger<GetTaskListHandler> _logger;
     private readonly ICodebookServiceClients _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;

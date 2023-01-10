@@ -51,7 +51,7 @@ public class CustomerObligationController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task Update([FromRoute] int customerOnSAId, [FromRoute] int obligationId, [FromBody] UpdateObligation.UpdateObligationRequest? request)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     /// <summary>
     /// Vytvoření závazku customera
@@ -65,7 +65,7 @@ public class CustomerObligationController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     public async Task<int> Create([FromRoute] int customerOnSAId, [FromBody] CreateObligation.CreateObligationRequest? request)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentNullException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
+        => await _mediator.Send(request?.InfuseId(customerOnSAId) ?? throw new CisArgumentException(ErrorCodes.PayloadIsEmpty, "Payload is empty", nameof(request)));
 
     private readonly IMediator _mediator;
     public CustomerObligationController(IMediator mediator) => _mediator = mediator;

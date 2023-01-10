@@ -40,7 +40,7 @@ public sealed class CustomerIdentity
     public CustomerIdentity(long id, string? scheme)
     {
         if (!Enum.TryParse(scheme, out IdentitySchemes parsedScheme))
-            throw new CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(scheme));
+            throw new ArgumentException("CustomerIdentity scheme is not in valid format", nameof(scheme));
 
         Id = id;
         Scheme = parsedScheme;
@@ -52,11 +52,11 @@ public sealed class CustomerIdentity
 
         int idx = token.IndexOf(':');
         if (idx < 1)
-            throw new CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
+            throw new ArgumentException("CustomerIdentity token is not in valid format", nameof(token));
         if (!long.TryParse(token.AsSpan(idx + 1), out long id))
-            throw new CisArgumentException(1, "CustomerIdentity token is not in valid format", nameof(token));
+            throw new ArgumentException("CustomerIdentity token is not in valid format", nameof(token));
         if (!Enum.TryParse(token.Substring(0, idx), out IdentitySchemes parsedScheme))
-            throw new CisArgumentException(1, "CustomerIdentity scheme is not in valid format", nameof(token));
+            throw new ArgumentException("CustomerIdentity scheme is not in valid format", nameof(token));
 
         Id = id;
         Scheme = parsedScheme;

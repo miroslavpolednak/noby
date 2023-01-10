@@ -29,8 +29,7 @@ public sealed class GrpcValidationBehavior<TRequest, TResponse>
 
         if (validationFailures.Any())
         {
-            string message = string.Join("; ", validationFailures.Select(t => t.ErrorMessage));
-            throw new Core.Exceptions.CisValidationException(validationFailures.Select(t => (Key: t.ErrorCode, Message: t.ErrorMessage)), message);
+            throw new Core.Exceptions.CisValidationException(validationFailures.Select(t => new CIS.Core.Exceptions.CisExceptionItem(t.ErrorCode, t.ErrorMessage)));
         }
         
         return next();
