@@ -107,7 +107,8 @@ Příklad konfiguračního souboru:
 ```
 
 ### Nastavení databáze
-Connection stringy do databází se konfigurují standardním .NET způsobem.
+Connection stringy do databází se konfigurují standardním .NET způsobem. 
+Pokud má služba vlastní databázi, connection string na tuto databázi se vždy jmenuje `default`.
 ```
 "ConnectionStrings": { ... }
 ```

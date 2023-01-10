@@ -31,7 +31,7 @@ internal class SendToCmpHandler
 
         var easForm = await GetEasForm(request.SalesArrangementId, category, cancellationToken);
 
-        //await SaveForms(easForm, cancellationToken);
+        await SaveForms(easForm, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

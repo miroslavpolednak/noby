@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 public sealed class ParametersDrawing
 {
@@ -25,7 +27,8 @@ public sealed class ParametersDrawing
     /// <summary>
     /// Datum čerpání
     /// </summary>
-    public DateTime DrawingDate { get; set; }
+    [Required]
+    public DateTime? DrawingDate { get; set; }
 
     /// <summary>
     /// Čerpání bezodkladně
@@ -68,7 +71,7 @@ public sealed class ParametersDrawingPayout
     /// <summary>
     /// Výše čerpané částky
     /// </summary>
-    public decimal DrawingAmount { get; set; }
+    public decimal? DrawingAmount { get; set; }
 
     /// <summary>
     /// Předčíslí účtu

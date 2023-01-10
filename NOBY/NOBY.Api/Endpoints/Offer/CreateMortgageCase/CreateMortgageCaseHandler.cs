@@ -4,7 +4,6 @@ using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.CaseService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
-using _Offer = DomainServices.OfferService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
