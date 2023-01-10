@@ -3,6 +3,7 @@ using System.Security.Authentication;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions;
 using System.Globalization;
+using CIS.Infrastructure.WebApi.Types;
 
 namespace CIS.Infrastructure.WebApi.Middlewares;
 
@@ -29,7 +30,11 @@ public class ApiExceptionMiddleware
         catch (AuthenticationException ex)
         {
             logger.WebApiAuthenticationException(ex.Message, ex);
-            await Results.Unauthorized().ExecuteAsync(context);
+            var model = new ApiAuthenticationProblemDetail
+            {
+                RedirectUri = "presmerovat_na_caas"
+            };
+            await Results.Json(model, statusCode: 401).ExecuteAsync(context);
         }
         catch (NotImplementedException ex)
         {
