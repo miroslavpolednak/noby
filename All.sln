@@ -293,6 +293,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentArchiveService.ExternalServices.Tcp", "DomainServices\DocumentArchiveService\ExternalServices.Tcp\DomainServices.DocumentArchiveService.ExternalServices.Tcp.csproj", "{CADB57D2-13B4-4464-9AE8-92F4A11DCFD3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{575507BC-3755-40BB-AC02-E7B8823C6F90}"
+	ProjectSection(SolutionItems) = preProject
+		DomainServices\CaseService\DatabaseMigrations\1-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
+	ProjectSection(SolutionItems) = preProject
+		DomainServices\CodebookService\DatabaseMigrations\1-initial_creation.sql = DomainServices\CodebookService\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\ServiceDiscovery\DatabaseMigrations\1-initial_creation.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\DocumentGeneratorService\DatabaseMigrations\1-initial_creation.sql = InternalServices\DocumentGeneratorService\DatabaseMigrations\1-initial_creation.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1164,6 +1184,10 @@ Global
 		{D07D1FE1-DFC2-404C-9D4B-9A8732945D84} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
 		{F969A020-76AF-48A6-BF8F-959A58D0C982} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{CADB57D2-13B4-4464-9AE8-92F4A11DCFD3} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
+		{575507BC-3755-40BB-AC02-E7B8823C6F90} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
+		{DA6B2E80-1075-4DE9-A090-A0711F4F92F1} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
+		{DED5BF40-8A83-4B48-AD27-E14BBFE76338} = {376AF902-B4C3-4C31-9CA1-63F154C18A4C}
+		{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7} = {4184CEDA-0D2B-4BEC-8EE1-7D50B6A3E22E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}
