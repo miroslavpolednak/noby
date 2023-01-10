@@ -97,13 +97,13 @@ internal sealed class FormsService
     private async Task UpdateSalesArrangement(SalesArrangement entity, string contractNumber, CancellationToken cancellationToken)
     {
         await _mediator.Send(new UpdateSalesArrangementRequest
-        {
-            SalesArrangementId = entity.SalesArrangementId,
-            ContractNumber = contractNumber,
-            RiskBusinessCaseId = entity.RiskBusinessCaseId,
-            FirstSignedDate = entity.FirstSignedDate,
-            SalesArrangementSignatureTypeId = entity.SalesArrangementSignatureTypeId
-        },
+                             {
+                                 SalesArrangementId = entity.SalesArrangementId,
+                                 ContractNumber = contractNumber,
+                                 RiskBusinessCaseId = entity.RiskBusinessCaseId,
+                                 FirstSignedDate = entity.FirstSignedDate,
+                                 SalesArrangementSignatureTypeId = entity.SalesArrangementSignatureTypeId
+                             },
                              cancellationToken);
 
         entity.ContractNumber = contractNumber;

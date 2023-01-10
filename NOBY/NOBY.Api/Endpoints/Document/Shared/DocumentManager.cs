@@ -1,13 +1,12 @@
-﻿using CIS.Core.Security;
+﻿using System.Globalization;
+using System.Runtime.InteropServices;
+using CIS.Core.Attributes;
+using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregator.Configuration;
 using DomainServices.CodebookService.Clients;
-using NOBY.Api.Endpoints.Document.Shared;
-using System.Globalization;
-using CIS.Core.Attributes;
-using System.Runtime.InteropServices;
 
-namespace NOBY.Api.Endpoints.Document;
+namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
 public class DocumentManager

@@ -1146,6 +1146,16 @@
             Popis dokumentu
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetOffer(System.Int32,System.Threading.CancellationToken)">
+             <summary>
+             Vygenerování dokumentu nabídka ze šablony
+             </summary>
+             <remarks>
+            Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u..<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+             </remarks>
+             <param name="salesArrangementId">Sales Arrangement ID</param>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCalculation(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Vygenerování dokumentu kalkulace ze šablony

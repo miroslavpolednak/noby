@@ -76,8 +76,10 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\DocumentArchive\_Shared\" />
+    <Folder Include="Endpoints\Document\Offer\" />
     <Folder Include="Endpoints\Document\PaymentSchedule\" />
     <Folder Include="Endpoints\Codebooks\GetAll\CodebookMap\" />
+    <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
   </ItemGroup>
 
 </Project>
