@@ -46,7 +46,7 @@ internal sealed class GetDetailHandler
     async Task<Dto.MortgageDetailDto> getDataInternal(_SA.SalesArrangement saInstance, _Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellationToken)
     {
         if (!saInstance.OfferId.HasValue)
-            throw new CisArgumentNullException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{saInstance.OfferId}", "OfferId");
+            throw new CisArgumentException(ErrorCodes.SalesArrangementOfferIdIsNull, $"Offer does not exist for Case #{saInstance.OfferId}", "OfferId");
 
         var loanKindName = (await _codebookService.LoanKinds(cancellationToken)).FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId)?.Name ?? "-";
 

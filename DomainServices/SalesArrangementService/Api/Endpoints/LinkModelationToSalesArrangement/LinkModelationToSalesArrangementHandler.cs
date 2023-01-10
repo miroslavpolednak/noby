@@ -1,5 +1,4 @@
-﻿using Grpc.Core;
-using Google.Protobuf;
+﻿using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
 using __SA = DomainServices.SalesArrangementService.Contracts;
@@ -20,7 +19,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}", 18012);
+            throw new CisValidationException(18012, $"SalesArrangement {request.SalesArrangementId} is already linked to Offer {request.OfferId}");
 
         // validace na existenci offer
         var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation)
@@ -28,7 +27,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, $"Offer {request.OfferId} is already linked to another SA", 18057);
+            throw new CisValidationException(18057, $"Offer {request.OfferId} is already linked to another SA");
 
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (salesArrangementInstance.OfferId.HasValue)

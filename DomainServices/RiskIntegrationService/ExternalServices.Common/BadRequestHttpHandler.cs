@@ -37,11 +37,7 @@ public sealed class BadRequestHttpHandler
             }
             else
             {
-                throw new CisExtServiceValidationException(new List<(string Key, string Message)>
-                {
-                    (result.Code ?? "", result.Message ?? "")
-                },
-                $"{_serviceName} error: HttpStatusCode: 400, Category: {result.Category}; Code: {result.Code};");
+                throw new CisExtServiceValidationException(result.Code ?? "", result.Message ?? "");
             }
         }
 

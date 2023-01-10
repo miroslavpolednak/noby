@@ -1,8 +1,8 @@
-﻿namespace NOBY.Infrastructure.ErrorHandling;
+﻿namespace CIS.Infrastructure.WebApi.Types;
 
 public struct ApiErrorItem
 {
-    public int ErrorCode { get; set; }
+    public string ErrorCode { get; set; }
 
     public string Message { get; set; }
 

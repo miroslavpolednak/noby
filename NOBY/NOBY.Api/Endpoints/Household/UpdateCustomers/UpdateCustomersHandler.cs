@@ -67,7 +67,7 @@ internal class UpdateCustomersHandler
 
                     return (customer.CustomerOnSAId.Value, identities);
                 }
-                catch (CisArgumentException ex) when (ex.ExceptionCode == 16033)
+                catch (CisArgumentException ex) when (ex.ExceptionCode == "16033")
                 {
                     // osetrena vyjimka, kdy je klient identifikovan KB identitou, ale nepodarilo se vytvorit identitu v MP
                     //TODO je otazka, jak se zde zachovat?

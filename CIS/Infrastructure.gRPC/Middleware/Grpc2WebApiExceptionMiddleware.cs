@@ -40,10 +40,10 @@ public sealed class Grpc2WebApiExceptionMiddleware
             await Results.Problem(ex.Message, title: "External service server error", statusCode: (int)HttpStatusCode.FailedDependency).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
-        catch (Core.Exceptions.BaseCisValidationException ex)
+        catch (Core.Exceptions.CisValidationException ex)
         {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
+            var errors = ex.Errors?.GroupBy(k => k.Code)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             await getValidationProblemObject(context, errors!);
         }
@@ -53,7 +53,7 @@ public sealed class Grpc2WebApiExceptionMiddleware
             var messages = ex.GetErrorMessagesFromRpcException();
             if (messages.Any()) // most likely its validation exception
             {
-                var errors = messages.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
+                var errors = messages.GroupBy(k => k.Code)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
                 await getValidationProblemObject(context, errors!);
             }
             else // its single argument exception

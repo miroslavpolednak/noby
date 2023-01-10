@@ -22,7 +22,7 @@ internal class GetUserByLoginHandler
         }
 
         if (cachedUser is null) // uzivatele se nepovedlo podle loginu najit
-            throw CIS.Infrastructure.gRPC.GrpcExceptionHelpers.CreateRpcException(Grpc.Core.StatusCode.NotFound, $"User '{request.Login}' not found", 1);
+            throw new CIS.Core.Exceptions.CisNotFoundException(0, "User", request.Login);
 
         // vytvorit finalni model
         var model = new Contracts.User

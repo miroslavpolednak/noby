@@ -33,47 +33,36 @@ public sealed class GenericServerExceptionInterceptor
         catch (CisServiceUnavailableException ex)
         {
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' unavailable", 0);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' unavailable");
         }
         // 500 z volane externi sluzby
         catch (CisServiceServerErrorException ex)
         {
             setHttpStatus(StatusCodes.Status424FailedDependency);
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' failed with HTTP 500", 0);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, $"Service '{ex.ServiceName}' failed with HTTP 500");
         }
-        catch (Core.Exceptions.CisNotFoundException e) // entity neexistuje
+        catch (CisNotFoundException e) // entity neexistuje
         {
             setHttpStatus(StatusCodes.Status404NotFound);
             _logger.EntityNotFound(e);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, e.Message, e.ExceptionCode);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.NotFound, e);
         }
-        catch (Core.Exceptions.CisAlreadyExistsException e) // entita jiz existuje
+        catch (CisAlreadyExistsException e) // entita jiz existuje
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
             _logger.EntityAlreadyExist(e);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, e.Message, e.ExceptionCode);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.AlreadyExists, e);
         }
-        catch (Core.Exceptions.CisServiceCallResultErrorException e)
-        {
-            setHttpStatus(StatusCodes.Status400BadRequest);
-            throw GrpcExceptionHelpers.CreateRpcExceptionFromServiceCall(e);
-        }
-        catch (Core.Exceptions.CisValidationException e)
-        {
-            setHttpStatus(StatusCodes.Status400BadRequest);
-            var collection = new GrpcErrorCollection(e.Errors!.Select(t => new GrpcErrorCollection.GrpcErrorCollectionItem(t.Key, t.Message)));
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.InvalidArgument, e.Message, collection);
-        }
-        catch (Core.Exceptions.BaseCisException e)
+        catch (CisValidationException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
             throw GrpcExceptionHelpers.CreateRpcException(e);
         }
-        catch (Core.Exceptions.BaseCisArgumentException e)
+        catch (BaseCisException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
-            throw GrpcExceptionHelpers.CreateRpcException(e);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Unknown, e);
         }
         catch (Exception e) when (e is not RpcException) // neosetrena vyjimka
         {

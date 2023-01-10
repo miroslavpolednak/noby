@@ -47,11 +47,6 @@
             Adresa služby.
             </summary>
         </member>
-        <member name="T:CIS.Infrastructure.gRPC.GrpcErrorCollection">
-            <summary>
-            Kolekce chyb uložená v Trailers grpc response (ve chvíli, kdy se vrací RpcException)
-            </summary>
-        </member>
         <member name="T:CIS.Infrastructure.gRPC.GrpcExceptionHelpers">
             <summary>
             Helpery pro vytváření RpcException.

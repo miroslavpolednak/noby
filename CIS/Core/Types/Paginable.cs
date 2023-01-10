@@ -52,7 +52,7 @@ public sealed class Paginable
     /// <summary>
     /// Premapuje Field names na hodnoty v databazi. Zaroven kontroluje, ze v mapperu jsou vsechna Field names z puvodni kolekce.
     /// </summary>
-    /// <exception cref="Exceptions.CisArgumentException">Sort Field not allowed</exception>
+    /// <exception cref="Exceptions.CisValidationException">Sort Field not allowed</exception>
     public Paginable EnsureAndTranslateSortFields(IEnumerable<MapperField> mapper)
     {
         if (HasSorting)
@@ -62,7 +62,7 @@ public sealed class Paginable
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 var field = mapper
                     .FirstOrDefault(x => x.Name.Equals(t.Field, StringComparison.OrdinalIgnoreCase)) 
-                            ?? throw new Exceptions.CisArgumentException(13, "Sort Field not allowed", "Field");
+                            ?? throw new Exceptions.CisValidationException(13, "Sort Field not allowed");
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
                 t.Field = field.TranslateTo;
             });
