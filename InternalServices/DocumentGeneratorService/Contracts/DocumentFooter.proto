@@ -12,5 +12,5 @@ message DocumentFooter {
 
 	google.protobuf.Int32Value SalesArrangementId = 3;
 
-	google.protobuf.Int32Value DocumentId = 4;
+	google.protobuf.StringValue DocumentId = 4;
 }
