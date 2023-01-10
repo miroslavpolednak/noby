@@ -9,6 +9,8 @@ Pokud jiná aplikace potřebuje provádět operace nad databází této služby,
 
 V případě potřeby auditu změn na databázových entitách používáme na MS SQL serveru feature [Temporal Tables](https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal-tables?view=sql-server-ver16).
 
+U všech aplikací, které mají vlastní databázi dodržujeme standard pojmenování connection string v *appsettings.json* pro databázi aplikace `default`.
+
 ## Dapper
 *Dapper* používáme výhradně pro READ operace. Jeho výhodou je lepší práce s raw SQL dotazy.
 Pro použití *Dapper* je nutné z DI získat instanci interface `CIS.Core.Data.IConnectionProvider`.
