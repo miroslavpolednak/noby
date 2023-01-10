@@ -1,9 +1,7 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using System.Diagnostics;
 using System.Reflection;
 using NOBY.Infrastructure.Security;
-using Serilog;
 
 namespace NOBY.Api.StartupExtensions;
 
