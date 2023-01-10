@@ -224,7 +224,7 @@ CREATE TABLE [dbo].[IdentificationDocumentTypeExtension](
 	(1, 'IDCard'),
 	(2, 'Passport'),
 	(3, 'ResidencePermit'),
-	(4, 'Undefined');
+	(4, 'Foreign');
 GO
 
 
