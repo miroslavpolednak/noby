@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using System.Net;
 using System.Security.Authentication;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions;
@@ -67,6 +66,7 @@ public class ApiExceptionMiddleware
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
+
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             var errors = ex.Errors?.GroupBy(k => k.Key)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly

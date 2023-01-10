@@ -159,7 +159,7 @@ public sealed class DrawingDateToObject
     /// Sjednaný termín čerpání do
     /// </summary>
     [Required]
-    public DateTime AgreedDrawingDateTo { get; set; }
+    public DateTime? AgreedDrawingDateTo { get; set; }
 
     /// <summary>
     /// Prodloužení konce lhůty čerpání o kolik měsíců
@@ -248,7 +248,7 @@ public sealed class LoanPaymentAmountObject
     /// Aktuální výše měsíční splátky
     /// </summary>
     [Required]
-    public decimal ActualLoanPaymentAmount { get; set; }
+    public decimal? ActualLoanPaymentAmount { get; set; }
 
     /// <summary>
     /// Nová výše měsíční splátky
@@ -276,7 +276,7 @@ public sealed class DueDateObject
     /// Aktuální datum splatnosti
     /// </summary>
     [Required]
-    public DateTime ActualLoanDueDate { get; set; }
+    public DateTime? ActualLoanDueDate { get; set; }
 
     /// <summary>
     /// Nový datum splatnosti
